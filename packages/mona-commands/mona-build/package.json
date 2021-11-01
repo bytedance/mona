@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-build",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "mona subcommands - build",
   "main": "./bin/mona-build",
   "types": "./dist/index.d.ts",
@@ -30,13 +30,13 @@
     "typescript-transform-paths": "^2.2.4"
   },
   "dependencies": {
-    "@bytedance/mona": "^0.0.5",
-    "@bytedance/mona-runtime": "^0.0.5",
-    "@bytedance/mona-shared": "^0.0.3",
     "@babel/core": "^7.15.8",
     "@babel/preset-env": "^7.15.8",
     "@babel/preset-react": "^7.14.5",
     "@babel/preset-typescript": "^7.15.0",
+    "@bytedance/mona": "^0.0.5",
+    "@bytedance/mona-runtime": "^0.0.5",
+    "@bytedance/mona-shared": "^0.0.3",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.1",
     "babel-loader": "^8.2.2",
     "chalk": "^4.1.2",
