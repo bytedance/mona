@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Merchant app's developing and building tools",
   "main": "./dist/index",
   "scripts": {
@@ -14,7 +14,7 @@
   "license": "MIT",
   "dependencies": {
     "@bytedance/mona-plugin-events": "^0.0.3",
-    "@bytedance/mona-runtime": "^0.0.3"
+    "@bytedance/mona-runtime": "^0.0.4"
   },
   "publishConfig": {
     "access": "public",
