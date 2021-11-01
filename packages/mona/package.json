@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Merchant app's developing and building tools",
   "main": "./dist/index",
   "scripts": {
@@ -13,8 +13,8 @@
   "author": "zhangxiaowei.chris@bytedance.com",
   "license": "MIT",
   "dependencies": {
-    "@bytedance/mona-plugin-events": "^0.0.2",
-    "@bytedance/mona-runtime": "^0.0.2"
+    "@bytedance/mona-plugin-events": "^0.0.3",
+    "@bytedance/mona-runtime": "^0.0.3"
   },
   "publishConfig": {
     "access": "public",
