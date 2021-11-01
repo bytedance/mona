@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "mona subcommands - build",
   "main": "./bin/mona-build",
+  "types": "./dist/index.d.ts",
   "bin": {
     "mona-build": "./bin/mona-build",
     "mona-start": "./bin/mona-start"

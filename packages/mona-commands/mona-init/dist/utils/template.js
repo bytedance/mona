@@ -12,10 +12,11 @@ const chalk_1 = __importDefault(require("chalk"));
 const child_process_1 = require("child_process");
 const download_git_repo_1 = __importDefault(require("download-git-repo"));
 const file_1 = require("./file");
-const TEMPLATE_SOURCE = 'github:bytedance/mona-templates';
+const TEMPLATE_SOURCE = 'github:bytedance/mona-templates#main';
 const TEMPLATE_DIR = '.tpl';
 const fetchTemplate = function (projectRoot, templateName) {
     return new Promise((resolve, reject) => {
+        (0, file_1.makeDir)(projectRoot);
         const tplDest = path_1.default.join(projectRoot, TEMPLATE_DIR);
         (0, file_1.makeDir)(tplDest);
         const spinner = (0, ora_1.default)('拉取并生成最新模板...').start();
@@ -26,8 +27,9 @@ const fetchTemplate = function (projectRoot, templateName) {
             }
             else {
                 try {
-                    const moveCmd = `mv ${tplDest}/${templateName}/* ./ && rm -rf ${tplDest}`;
+                    const moveCmd = `mv ${tplDest}/${templateName}/* ${projectRoot} && rm -rf ${tplDest}`;
                     (0, child_process_1.execSync)(moveCmd, { stdio: 'ignore' });
+                    console.log('exec success');
                 }
                 catch (err) {
                     return reject(error);

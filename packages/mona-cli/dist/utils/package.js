@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPkgVersion = exports.getPkgName = exports.getPkgPublicName = void 0;
 const currentVersion_1 = __importDefault(require("../currentVersion"));
-const getPkgPublicName = () => '@ecom/mona-cli';
+const getPkgPublicName = () => '@bytedance/mona-cli';
 exports.getPkgPublicName = getPkgPublicName;
 const getPkgName = () => 'mona';
 exports.getPkgName = getPkgName;

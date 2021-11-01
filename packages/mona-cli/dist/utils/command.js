@@ -107,6 +107,7 @@ function isGlobaInstalled() {
 // }
 function joinCmdPath(cmd) {
     // TODO: ensure pkg exist
+    console.log("isGlobal", __dirname, isGlobaInstalled());
     if (isGlobaInstalled()) {
         // const globalModules = getGlobalModules();
         // for (let gm of globalModules) {

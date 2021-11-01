@@ -7,13 +7,14 @@ import { execSync } from 'child_process';
 import download from 'download-git-repo';
 import { makeDir, readAllFiles, removeEmptyDirs } from './file';
 
-const TEMPLATE_SOURCE = 'github:bytedance/mona-templates'
+const TEMPLATE_SOURCE = 'github:bytedance/mona-templates#main'
 const TEMPLATE_DIR = '.tpl';
 export const fetchTemplate = function (
   projectRoot: string,
   templateName: string
 ) {
   return new Promise((resolve, reject) => {
+    makeDir(projectRoot);
     const tplDest = path.join(projectRoot, TEMPLATE_DIR);
     makeDir(tplDest);
     const spinner = ora('拉取并生成最新模板...').start();
@@ -23,8 +24,9 @@ export const fetchTemplate = function (
         return reject(error)
       } else {
         try {
-          const moveCmd = `mv ${tplDest}/${templateName}/* ./ && rm -rf ${tplDest}`
+          const moveCmd = `mv ${tplDest}/${templateName}/* ${projectRoot} && rm -rf ${tplDest}`
           execSync(moveCmd, { stdio: 'ignore' });
+          console.log('exec success');
         } catch (err) {
            return reject(error)
         }

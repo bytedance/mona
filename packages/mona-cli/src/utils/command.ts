@@ -1,9 +1,7 @@
 import { CommandInfo } from '../cmds';
 import path from 'path';
-// import fs from 'fs';
 import pkgDir from 'pkg-dir';
 import childProcess, { execSync } from 'child_process';
-// import { getPkgPublicName } from './package';
 
 const commandLineUsage = require('command-line-usage');
 
@@ -93,6 +91,7 @@ function isGlobaInstalled() {
 
 export function joinCmdPath(cmd: CommandInfo) {
   // TODO: ensure pkg exist
+  console.log("isGlobal", __dirname, isGlobaInstalled());
   if (isGlobaInstalled()) {
     // const globalModules = getGlobalModules();
     // for (let gm of globalModules) {
@@ -105,7 +104,7 @@ export function joinCmdPath(cmd: CommandInfo) {
     const pkgPath = pkgDir.sync(require.resolve(cmd.package))!;
     return path.resolve(pkgPath, cmd.cli);
   } else {
-    const pkgPath = pkgDir.sync(require.resolve(cmd.package, { paths: [process.cwd()] }))!;
+    const pkgPath = pkgDir.sync(require.resolve(cmd.package, { paths: [process.cwd()],  }))!;
     return path.resolve(pkgPath, cmd.cli);
   }
 }
