@@ -1,0 +1,2 @@
+!function(o,n){"object"==typeof exports&&"undefined"!=typeof module?module.exports=n():"function"==typeof define&&define.amd?define(n):(o="undefined"!=typeof globalThis?globalThis:o||self).mona=n()}(this,(function(){"use strict";return new Proxy({},{get:function(o,n){var e;return"globalStore"===n?null===window||void 0===window?void 0:window.monaGlobalStore:null===(e=null===window||void 0===window?void 0:window.____MONA_SDK_NAME_IN_WINDOW____)||void 0===e?void 0:e[n]},set:function(){return!1}})}));
+//# sourceMappingURL=index.umd.js.map

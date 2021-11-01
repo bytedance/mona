@@ -1,0 +1,35 @@
+{
+  "name": "@bytedance/mona-cli",
+  "version": "0.0.1",
+  "displayName": "mona",
+  "description": "Merchant app's developing and building tools",
+  "main": "./bin/mona",
+  "bin": {
+    "mona": "./bin/mona"
+  },
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "scripts": {
+    "build": "rm -rf ./dist && node generateVersion.js && tsc -b",
+    "start": "tsc -b -w"
+  },
+  "author": "zhangxiaowei.chris@bytedance.com",
+  "license": "MIT",
+  "dependencies": {
+    "@bytedance/mona-build": "0.0.1",
+    "@bytedance/mona-init": "0.0.1",
+    "chalk": "^4.1.2",
+    "command-line-usage": "^6.1.1",
+    "ora": "^5.4.1",
+    "pkg-dir": "^5.0.0",
+    "yargs": "^17.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^16.4.5",
+    "@types/yargs": "^16.0.0",
+    "rollup": "^2.53.2",
+    "typescript": "^4.4.4"
+  }
+}

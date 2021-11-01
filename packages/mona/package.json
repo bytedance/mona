@@ -1,0 +1,19 @@
+{
+  "name": "@bytedance/mona",
+  "version": "0.0.1",
+  "description": "Merchant app's developing and building tools",
+  "main": "./dist/index",
+  "scripts": {
+    "build": "rm -rf dist && ttsc -b",
+    "start": "ttsc -b -w"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "zhangxiaowei.chris@bytedance.com",
+  "license": "MIT",
+  "dependencies": {
+    "@bytedance/mona-runtime": "0.0.1",
+    "@bytedance/mona-plugin-events": "0.0.1"
+  }
+}

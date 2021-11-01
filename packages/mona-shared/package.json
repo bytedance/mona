@@ -1,0 +1,30 @@
+{
+  "name": "@bytedance/mona-shared",
+  "displayName": "mona-shared",
+  "version": "0.0.1",
+  "description": "mona shared utils",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "scripts": {
+    "build": "rm -rf ./dist && ttsc -b",
+    "start": "ttsc -b -w"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "zhangxiaowei.chris@bytedance.com",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/core": "^7.15.8",
+    "@babel/preset-env": "^7.15.6",
+    "@babel/preset-react": "^7.14.5",
+    "@babel/preset-typescript": "^7.15.0",
+    "@babel/register": "^7.15.3"
+  },
+  "devDependencies": {
+    "@types/node": "^16.4.5",
+    "ttypescript": "^1.5.12",
+    "typescript-json-schema": "^0.43.0",
+    "typescript-transform-paths": "^2.2.4"
+  }
+}

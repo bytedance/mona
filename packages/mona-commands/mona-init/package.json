@@ -1,0 +1,36 @@
+{
+  "name": "@bytedance/mona-init",
+  "version": "0.0.1",
+  "description": "mona subcommands - init",
+  "main": "./bin/mona-init",
+  "bin": {
+    "mona-init": "./bin/mona-init"
+  },
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "scripts": {
+    "build": "rm -rf ./dist && ttsc -b",
+    "start": "ttsc -b -w"
+  },
+  "author": "zhangxiaowei.chris@bytedance.com",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/ejs": "^3.0.7",
+    "@types/inquirer": "^7.3.3",
+    "@types/node": "^16.4.5",
+    "@types/yargs": "^16.0.0",
+    "ttypescript": "^1.5.12",
+    "typescript-json-schema": "^0.43.0",
+    "typescript-transform-paths": "^2.2.4"
+  },
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "download-git-repo": "^3.0.2",
+    "ejs": "^3.1.6",
+    "inquirer": "^8.1.2",
+    "ora": "^5.4.1",
+    "yargs": "^17.0.1"
+  }
+}
