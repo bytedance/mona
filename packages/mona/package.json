@@ -12,10 +12,6 @@
   ],
   "author": "zhangxiaowei.chris@bytedance.com",
   "license": "MIT",
-  "dependencies": {
-    "@bytedance/mona-plugin-events": "^0.0.3",
-    "@bytedance/mona-runtime": "^0.0.4"
-  },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"

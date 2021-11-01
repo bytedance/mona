@@ -9,14 +9,13 @@ var __createBinding = (this && this.__createBinding) || (Object.create ? (functi
 var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createPlugin = exports.createPageConfig = exports.createAppConfig = exports.createProjectConfig = void 0;
-var createProjectConfig_1 = require("./createProjectConfig");
-Object.defineProperty(exports, "createProjectConfig", { enumerable: true, get: function () { return createProjectConfig_1.createProjectConfig; } });
-var createAppConfig_1 = require("./createAppConfig");
-Object.defineProperty(exports, "createAppConfig", { enumerable: true, get: function () { return createAppConfig_1.createAppConfig; } });
-var createPageConfig_1 = require("./createPageConfig");
-Object.defineProperty(exports, "createPageConfig", { enumerable: true, get: function () { return createPageConfig_1.createPageConfig; } });
+exports.createPlugin = exports.pigeon = void 0;
+const mona_plugin_events_1 = __importDefault(require("@bytedance/mona-plugin-events"));
+exports.pigeon = mona_plugin_events_1.default.pigeon;
 var createPlugin_1 = require("./createPlugin");
 Object.defineProperty(exports, "createPlugin", { enumerable: true, get: function () { return createPlugin_1.createPlugin; } });
 __exportStar(require("./components"), exports);

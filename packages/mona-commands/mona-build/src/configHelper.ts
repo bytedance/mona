@@ -1,7 +1,7 @@
 import webpack, { RuleSetRule, Configuration } from 'webpack';
 import path from 'path';
 import { readConfig, searchScriptFile } from '@bytedance/mona-shared';
-import { ProjectConfig, AppConfig } from '@bytedance/mona-runtime';
+import { ProjectConfig, AppConfig } from '@bytedance/mona';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';

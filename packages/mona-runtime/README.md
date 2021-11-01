@@ -8,7 +8,7 @@ mona运行时
 #### 例子
 
 ```jsx
-import { Link } from '@bytedance/mona';
+import { Link } from '@bytedance/mona-runtime';
 
 const Index = () => {
   return (
@@ -32,7 +32,7 @@ export default Index;
 
 #### 例子
 ```js
-import { navigateTo } from '@bytedance/mona';
+import { navigateTo } from '@bytedance/mona-runtime';
 
 navigateTo('/pages/home/index')
 ```
@@ -42,7 +42,7 @@ navigateTo('/pages/home/index')
 
 #### 例子
 ```js
-import { redirectTo } from '@bytedance/mona';
+import { redirectTo } from '@bytedance/mona-runtime';
 
 redirectTo('/pages/home/index')
 ```
@@ -53,7 +53,7 @@ redirectTo('/pages/home/index')
 #### 例子
 ```js
 // mona.config.ts
-import { createProjectConfig } from '@bytedance/mona';
+import { createProjectConfig } from '@bytedance/mona-runtime';
 export default createProjectConfig({
   projectName: 'demo',
   input: './src/app.tsx',
@@ -73,7 +73,7 @@ export default createProjectConfig({
 #### 例子
 ```js
 // app.config.ts
-import { createAppConfig } from '@bytedance/mona';
+import { createAppConfig } from '@bytedance/mona-runtime';
 export default createAppConfig({
   pages: [
     'pages/Home/index',
@@ -94,7 +94,7 @@ export default createAppConfig({
 #### 例子
 ```js
 // page.config.ts
-import { createPageConfig } from '@bytedance/mona';
+import { createPageConfig } from '@bytedance/mona-runtime';
 export default createPageConfig({
   navigationBarTitleText: 'page title'
 })

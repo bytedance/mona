@@ -35,7 +35,8 @@
   },
   "dependencies": {
     "react-router": "^5.2.1",
-    "react-router-dom": "^5.3.0"
+    "react-router-dom": "^5.3.0",
+    "@bytedance/mona-plugin-events": "^0.0.3"
   },
   "publishConfig": {
     "access": "public",

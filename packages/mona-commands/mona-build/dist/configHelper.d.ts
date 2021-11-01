@@ -1,5 +1,5 @@
 import webpack from 'webpack';
-import { ProjectConfig, AppConfig } from '@bytedance/mona-runtime';
+import { ProjectConfig, AppConfig } from '@bytedance/mona';
 import EntryModule from "./EntryModule";
 interface ConfigHelperOptions {
     dev: boolean;

@@ -3,7 +3,7 @@ import VirtualModulesPlugin from 'webpack-virtual-modules';
 import { WebpackPluginInstance } from 'webpack';
 import ConfigHelper from './configHelper';
 import { readConfig } from '@bytedance/mona-shared';
-import { PageConfig } from '@bytedance/mona-runtime';
+import { PageConfig } from '@bytedance/mona';
 
 class EntryModule {
   configHelper: ConfigHelper;
@@ -41,14 +41,14 @@ class EntryModule {
   }
 
   private _generatePluginEntryCode(filename: string) {
-    const pages = this.configHelper.appConfig.pages || [];
+    const pages = (this.configHelper.appConfig.pages || []) as string[];
     let routesCode = pages.map((page, index) => `import Page${index} from './${page}';`).join('');
     routesCode += `const routes = [${pages
       .map((page, index) => `{ path: '${page}', component: Page${index}, title: '${this.getPageTitle(page)}' }`)
       .join(',')}];`;
 
     const code = `
-      import { createPlugin } from '@bytedance/mona';
+      import { createPlugin } from '@bytedance/mona-runtime';
       import App from './${path.basename(filename)}';
       ${routesCode}
       

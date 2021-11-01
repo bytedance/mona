@@ -33,13 +33,13 @@ class EntryModule {
         return pageConfig.navigationBarTitleText || '';
     }
     _generatePluginEntryCode(filename) {
-        const pages = this.configHelper.appConfig.pages || [];
+        const pages = (this.configHelper.appConfig.pages || []);
         let routesCode = pages.map((page, index) => `import Page${index} from './${page}';`).join('');
         routesCode += `const routes = [${pages
             .map((page, index) => `{ path: '${page}', component: Page${index}, title: '${this.getPageTitle(page)}' }`)
             .join(',')}];`;
         const code = `
-      import { createPlugin } from '@bytedance/mona';
+      import { createPlugin } from '@bytedance/mona-runtime';
       import App from './${path_1.default.basename(filename)}';
       ${routesCode}
       

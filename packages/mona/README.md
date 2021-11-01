@@ -1,53 +1,6 @@
 # mona
-对外暴露mona组件以及API
-
-## 组件
-### Link
-跳转组件，支持插件/应用间页面跳转
-
-#### 例子
-
-```jsx
-import { Link } from '@bytedance/mona';
-
-const Index = () => {
-  return (
-    <div>
-      <Link to="/pages/home/index">navigate to home </Link>
-    </div>
-  )
-}
-
-export default Index;
-```
-#### 参数说明
-
-|  参数   | 说明  | 是否必填 | 类型 | 默认值 |
-|  ----  | ----  | ---- | ---- | ---- |
-| to  | 要跳转的页面路由 | 是 | string | - |
-
-## API
-### navigateTo
-路由跳转，跳转到新的页面
-
-#### 例子
-```js
-import { navigateTo } from '@bytedance/mona';
-
-navigateTo('/pages/home/index')
-```
-
-### redirectTo
-路由重定向，跳转并替换当前页面路由
-
-#### 例子
-```js
-import { redirectTo } from '@bytedance/mona';
-
-redirectTo('/pages/home/index')
-```
-
-## 其他
+对外暴露提供构建API
+## 配置创建
 ### createProjectConfig
 创建项目配置，`mona.config.ts`中使用
 #### 例子

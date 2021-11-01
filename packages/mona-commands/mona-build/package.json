@@ -19,6 +19,7 @@
   "author": "zhangxiaowei.chris@bytedance.com",
   "license": "MIT",
   "devDependencies": {
+    "@bytedance/mona": "^0.0.4",
     "@bytedance/mona-runtime": "^0.0.4",
     "@bytedance/mona-shared": "^0.0.3",
     "@types/ejs": "^3.0.7",
