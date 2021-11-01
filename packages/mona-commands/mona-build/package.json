@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-build",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "mona subcommands - build",
   "main": "./bin/mona-build",
   "types": "./dist/index.d.ts",
@@ -19,8 +19,8 @@
   "author": "zhangxiaowei.chris@bytedance.com",
   "license": "MIT",
   "devDependencies": {
-    "@bytedance/mona-runtime": "0.0.1",
-    "@bytedance/mona-shared": "0.0.1",
+    "@bytedance/mona-runtime": "^0.0.2",
+    "@bytedance/mona-shared": "^0.0.2",
     "@types/ejs": "^3.0.7",
     "@types/inquirer": "^7.3.3",
     "@types/mini-css-extract-plugin": "^2.4.0",
