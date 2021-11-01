@@ -9,7 +9,6 @@ import { update } from './utils/update';
 function checkNewVersion() {
   const currentVersion = getCurrentVersion();
   const newestVersion = getNewestVersion();
-  // console.log(`${getPkgName()} current version: ${currentVersion}\n`)
   if (currentVersion && compareVersion(currentVersion, newestVersion) < 0) {
     console.log(`新版本可更新! 你可以使用 ${getPkgName()} update 更新到版本 ${newestVersion} \n`);
   }

@@ -9,7 +9,7 @@ export function getNewestVersion() {
   let newestVersion = '0.0.0';
   try {
     const cmd = `npm show ${getPkgPublicName()} version`;
-    newestVersion = execSync(cmd, { stdio: 'ignore' }).toString().replace(/\s/, '');
+    newestVersion = execSync(cmd).toString().replace(/\s/, '');
   } catch (err) {
     // Do Nothing
   }

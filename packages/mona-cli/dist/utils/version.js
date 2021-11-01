@@ -11,7 +11,7 @@ function getNewestVersion() {
     let newestVersion = '0.0.0';
     try {
         const cmd = `npm show ${(0, package_1.getPkgPublicName)()} version`;
-        newestVersion = (0, child_process_1.execSync)(cmd, { stdio: 'ignore' }).toString().replace(/\s/, '');
+        newestVersion = (0, child_process_1.execSync)(cmd).toString().replace(/\s/, '');
     }
     catch (err) {
         // Do Nothing

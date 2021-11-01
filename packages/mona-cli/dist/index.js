@@ -13,7 +13,6 @@ const update_1 = require("./utils/update");
 function checkNewVersion() {
     const currentVersion = (0, version_1.getCurrentVersion)();
     const newestVersion = (0, version_1.getNewestVersion)();
-    // console.log(`${getPkgName()} current version: ${currentVersion}\n`)
     if (currentVersion && (0, version_1.compareVersion)(currentVersion, newestVersion) < 0) {
         console.log(`新版本可更新! 你可以使用 ${(0, package_1.getPkgName)()} update 更新到版本 ${newestVersion} \n`);
     }

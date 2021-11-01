@@ -24,10 +24,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.dispatchCommand = exports.joinCmdPath = exports.commandUsage = void 0;
 const path_1 = __importDefault(require("path"));
-// import fs from 'fs';
 const pkg_dir_1 = __importDefault(require("pkg-dir"));
 const child_process_1 = __importStar(require("child_process"));
-// import { getPkgPublicName } from './package';
 const commandLineUsage = require('command-line-usage');
 const commandUsage = (cmds) => {
     const content = cmds.map(cmd => ({ name: cmd.name, summary: cmd.description }));
@@ -107,7 +105,6 @@ function isGlobaInstalled() {
 // }
 function joinCmdPath(cmd) {
     // TODO: ensure pkg exist
-    console.log("isGlobal", __dirname, isGlobaInstalled());
     if (isGlobaInstalled()) {
         // const globalModules = getGlobalModules();
         // for (let gm of globalModules) {
@@ -121,7 +118,7 @@ function joinCmdPath(cmd) {
         return path_1.default.resolve(pkgPath, cmd.cli);
     }
     else {
-        const pkgPath = pkg_dir_1.default.sync(require.resolve(cmd.package, { paths: [process.cwd()] }));
+        const pkgPath = pkg_dir_1.default.sync(require.resolve(cmd.package, { paths: [process.cwd()], }));
         return path_1.default.resolve(pkgPath, cmd.cli);
     }
 }

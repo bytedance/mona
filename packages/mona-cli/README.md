@@ -1,13 +1,13 @@
 # mona-cli
 ## 介绍
-mona-cli是电商商家应用的CLI工具，主要为了能够提升商家应用在各端运行效率，对齐开发规范，统一开放方案，保证开放安全。
+mona-cli是电商商家应用的CLI工具，主要为了能够提升商家应用在各端开发和运行效率，统一开放方案，从而保证安全开放。
 ## 快速开始
 ### 安装CLI
 快速开始开发一个插件需要先安装该CLI工具，使用如下命令进行安装
 ```bash
-npm install -g @ecom/mona-cli
+npm install -g @bytedance/mona-cli
 // 或使用yarn安装，任选其一
-yarn global add @ecom/mona-cli
+yarn global add @bytedance/mona-cli
 ```
 
 安装完成后，控制台输入
@@ -38,33 +38,52 @@ mona build
 ```
 
 ## 配置
-默认配置文件为项目根目录下的`mona.config.js`，配置文件内容如下：
+### 项目配置
+项目配置文件为项目根目录下的`mona.config.js`，配置文件内容如下：
 ```js
-import { createProjectConfig } from '@ecom/mona'
-
+// mona.config.ts
+import { createProjectConfig } from '@bytedance/mona';
 export default createProjectConfig({
-  projectName: 'test1',
+  projectName: 'demo',
   input: './src/app.tsx',
   output: 'dist'
 })
 ```
+|  参数   | 说明  | 是否必填 | 类型 | 默认值 |
+|  ----  | ----  | ---- | ---- | ---- |
+| projectName  | 应用/插件名称 | 是 | string | - |
+| input  | 入口文件路径 | 是 | string | - |
+| output  | 打包后的文件目录路径 | 否 | string | - |
 
-### projectName
-即应用名称或插件名称
-
-### input
-入口文件
-### output
-项目输出文件夹
-
-### abilities
-配置是否开启ts和less
+### 应用配置
+应用配置文件为项目根目录下的`app.config.js`，配置文件内容如下：
 ```js
-{
-  ts: true,
-  less: true,
-}
+// app.config.ts
+import { createAppConfig } from '@bytedance/mona';
+export default createAppConfig({
+  pages: [
+    'pages/Home/index',
+    'pages/Info/index',
+    'pages/List/index'
+  ]
+})
 ```
+|  参数   | 说明  | 是否必填 | 类型 | 默认值 |
+|  ----  | ----  | ---- | ---- | ---- |
+| pages  | 页面路径 | 是 | string[] | - |
+### 页面配置
+页面配置文件为每个页面目录下的`page.config.js`，配置文件内容如下：
+```js
+// page.config.ts
+import { createPageConfig } from '@bytedance/mona';
+export default createPageConfig({
+  navigationBarTitleText: 'page title'
+})
+```
+
+|  参数   | 说明  | 是否必填 | 类型 | 默认值 |
+|  ----  | ----  | ---- | ---- | ---- |
+| navigationBarTitleText  | 当前页面标题 | 否 | string | - |
 
 ## 命令
 可以使用`mona -h`查看帮助命令，`mona -v`查看当前版本
