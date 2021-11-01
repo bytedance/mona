@@ -26,5 +26,10 @@
     "ttypescript": "^1.5.12",
     "typescript-json-schema": "^0.43.0",
     "typescript-transform-paths": "^2.2.4"
-  }
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "gitHead": "d273d42cd62b0bde5a6606cc68ec5c5e4d34814a"
 }

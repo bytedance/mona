@@ -52,5 +52,10 @@
     "webpack-dev-server": "^4.3.1",
     "webpack-virtual-modules": "^0.4.3",
     "yargs": "^17.0.1"
-  }
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "gitHead": "d273d42cd62b0bde5a6606cc68ec5c5e4d34814a"
 }

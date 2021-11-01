@@ -31,5 +31,10 @@
     "@types/yargs": "^16.0.0",
     "rollup": "^2.53.2",
     "typescript": "^4.4.4"
-  }
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "gitHead": "d273d42cd62b0bde5a6606cc68ec5c5e4d34814a"
 }
