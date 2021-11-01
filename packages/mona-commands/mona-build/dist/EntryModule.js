@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = __importDefault(require("path"));
 const webpack_virtual_modules_1 = __importDefault(require("webpack-virtual-modules"));
 const configHelper_1 = __importDefault(require("./configHelper"));
-const mona_shared_1 = require("@ecom/mona-shared");
+const mona_shared_1 = require("@bytedance/mona-shared");
 class EntryModule {
     constructor(configHelper) {
         this.configHelper = configHelper;
@@ -29,7 +29,7 @@ class EntryModule {
     }
     getPageTitle(page) {
         const pageConfigPath = path_1.default.join(this.configHelper.cwd, `./src/${page}`, '..', 'page.config');
-        const pageConfig = mona_shared_1.readConfig(pageConfigPath);
+        const pageConfig = (0, mona_shared_1.readConfig)(pageConfigPath);
         return pageConfig.navigationBarTitleText || '';
     }
     _generatePluginEntryCode(filename) {
@@ -39,7 +39,7 @@ class EntryModule {
             .map((page, index) => `{ path: '${page}', component: Page${index}, title: '${this.getPageTitle(page)}' }`)
             .join(',')}];`;
         const code = `
-      import { createPlugin } from '@ecom/mona';
+      import { createPlugin } from '@bytedance/mona';
       import App from './${path_1.default.basename(filename)}';
       ${routesCode}
       

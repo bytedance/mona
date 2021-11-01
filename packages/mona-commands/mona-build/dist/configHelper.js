@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = __importDefault(require("path"));
-const mona_shared_1 = require("@ecom/mona-shared");
+const mona_shared_1 = require("@bytedance/mona-shared");
 const mini_css_extract_plugin_1 = __importDefault(require("mini-css-extract-plugin"));
 const react_refresh_webpack_plugin_1 = __importDefault(require("@pmmmwh/react-refresh-webpack-plugin"));
 const html_webpack_plugin_1 = __importDefault(require("html-webpack-plugin"));
@@ -15,7 +15,7 @@ class ConfigHelper {
         this.cwd = process.cwd();
         this.projectConfig = this._readConfig('mona.config');
         this.appConfig = this._readConfig('app.config');
-        this.entryPath = mona_shared_1.searchScriptFile(path_1.default.resolve(this.cwd, this.projectConfig.input));
+        this.entryPath = (0, mona_shared_1.searchScriptFile)(path_1.default.resolve(this.cwd, this.projectConfig.input));
         this.entryModule = new EntryModule_1.default(this);
     }
     generate() {
@@ -40,8 +40,8 @@ class ConfigHelper {
     }
     _readConfig(configName) {
         const projectConfigPath = path_1.default.join(this.cwd, configName);
-        const fullConfigPath = mona_shared_1.searchScriptFile(projectConfigPath);
-        const projectConfig = mona_shared_1.readConfig(fullConfigPath);
+        const fullConfigPath = (0, mona_shared_1.searchScriptFile)(projectConfigPath);
+        const projectConfig = (0, mona_shared_1.readConfig)(fullConfigPath);
         return projectConfig;
     }
     _createEntry() {

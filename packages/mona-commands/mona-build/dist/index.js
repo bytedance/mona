@@ -18,7 +18,7 @@ function build({ dev }) {
         // 生成webpack配置
         const webpackConfig = configHelper.generate();
         // 调用webpack进行打包
-        const webpackCompiler = webpack_1.default(webpackConfig);
+        const webpackCompiler = (0, webpack_1.default)(webpackConfig);
         if (dev) {
             const devServer = new webpack_dev_server_1.default({
                 static: {
@@ -27,16 +27,16 @@ function build({ dev }) {
                 headers: {
                     "Access-Control-Allow-Origin": "*",
                 },
-                hot: true,
+                // hot: true,
                 open: true,
                 historyApiFallback: true,
-                compress: true,
+                // compress: true,
                 port,
                 host: '127.0.0.1',
                 allowedHosts: 'all'
             }, webpackCompiler);
             devServer.startCallback(() => {
-                console.log('starting server on http://localhost:9000');
+                console.log(`starting server on http://localhost:${port}`);
             });
         }
         else {

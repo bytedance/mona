@@ -12,7 +12,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "rm -rf ./dist && node generateVersion.js && tsc -b",
+    "build": "rm -rf ./dist && tsc -b",
     "start": "tsc -b -w"
   },
   "author": "zhangxiaowei.chris@bytedance.com",
