@@ -1,3 +1,3 @@
-export declare const getPkgPublicName: () => string;
-export declare const getPkgName: () => string;
-export declare const getPkgVersion: () => string;
+export declare const getPkgPublicName: () => any;
+export declare const getPkgName: () => any;
+export declare const getPkgVersion: () => any;

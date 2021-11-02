@@ -22,11 +22,13 @@
     "@bytedance/mona-init": "^0.0.4",
     "chalk": "^4.1.2",
     "command-line-usage": "^6.1.1",
+    "compare-version": "^0.1.2",
     "ora": "^5.4.1",
     "pkg-dir": "^5.0.0",
     "yargs": "^17.0.1"
   },
   "devDependencies": {
+    "@types/compare-version": "^0.1.31",
     "@types/node": "^16.4.5",
     "@types/yargs": "^16.0.0",
     "rollup": "^2.53.2",

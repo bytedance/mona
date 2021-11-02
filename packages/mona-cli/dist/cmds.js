@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const cmds = [
+var cmds = [
     {
         name: 'init',
         cli: './bin/mona-init',

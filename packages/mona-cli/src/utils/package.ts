@@ -1,7 +1,7 @@
-import currentVersion from '../currentVersion';
+const pkg = require('../../package.json');
 
-export const getPkgPublicName = () => '@bytedance/mona-cli';
+export const getPkgPublicName = () => pkg.name;
 
-export const getPkgName = () => 'mona';
+export const getPkgName = () => pkg.displayName;
 
-export const getPkgVersion = () => currentVersion;
+export const getPkgVersion = () => pkg.version;

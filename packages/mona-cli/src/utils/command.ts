@@ -43,6 +43,25 @@ function hasYarn() {
   }
 }
 
+let _pkgMan: string;
+export function getGlobalInstallPkgMan() {
+  if (_pkgMan !== null) {
+    return _pkgMan;
+  }
+  if (hasYarn()) {
+    const [yarnGlobalDir] = execSync('yarn global dir').toString().split('\n');
+    if (__dirname.includes(yarnGlobalDir)) {
+      return (_pkgMan = 'yarn');
+    }
+  }
+  const [npmGlobalPrefix] = execSync('npm config get prefix').toString().split('\n');
+  if (__dirname.includes(npmGlobalPrefix)) {
+    return (_pkgMan = 'npm');
+  }
+
+  return( _pkgMan = 'npm');
+}
+
 // 判断是否是全局安装
 let _isGlobaInstalled: null | boolean = null;
 function isGlobaInstalled() {
