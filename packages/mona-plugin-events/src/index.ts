@@ -7,7 +7,7 @@ const MONA_GLOBAL_STORE = 'monaGlobalStore';
 const handler = {
   get: function (_: any, prop: string) {
     if (prop === 'globalStore') {
-      return window?.[MONA_GLOBAL_STORE];
+      return window?.[MONA_GLOBAL_STORE].pigeon.xxxx;
     }
     return window?.[SDK_NAME_IN_WINDOW]?.[prop];
   },

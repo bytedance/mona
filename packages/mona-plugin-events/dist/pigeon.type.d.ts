@@ -1,40 +1,26 @@
 import { InputCallbackParams, PluginSdkBaseType } from './type';
-export declare type TextMessageContent = string;
-export interface ImageInfo {
-    uri: string;
-    width: number;
-    height: number;
+declare type OfficialParams = 'after_sale_id' | 'order_id' | 'product_id' | 'sku_order_id';
+export interface lifeCycleShow {
+    showFrom: 0 | 1 | 2 | 3 | 4;
+    query: Record<OfficialParams, string>;
+    extraData: Record<string, string>;
 }
-export interface CustomerInfo {
-    conversationId: string;
-    customerId: string;
-    shopId: string;
-    userId: string;
-    goodsId?: string;
-    orderId?: string;
+export interface UserInfo {
+    user_id: string;
 }
-export interface FocusGoods {
-    orderId?: string;
-    goodsId?: string;
-    conversationId: string;
-    userId: string;
-    customerId: string;
-    shopId: string;
+export interface InitInfo {
+    customer_service_id: string;
+    user_id: string;
+    shop_id: number;
+    customer_service_name: string;
 }
 interface PigeonOn {
-    onFocusGoods: (callback: (message: FocusGoods) => void) => void;
-    onCurrentCustomerInfoChanged: (callback: (customerInfo: CustomerInfo) => void) => void;
+    onCurrentCustomerChange: (callback: (userInfo: UserInfo) => void) => void;
+    onShow: (callback: (data: lifeCycleShow) => void) => void;
 }
 interface PigeonEmit {
-    sendTextMessage: (params: InputCallbackParams<TextMessageContent, undefined>) => void;
-    sendImgMessage: (params: InputCallbackParams<ImageInfo, undefined>) => void;
-    addToInputBox: (params: InputCallbackParams<TextMessageContent, undefined>) => void;
-    openImgPreview: (params: InputCallbackParams<{
-        urls: string | string[];
-        defaultIndex: number;
-    }, undefined>) => void;
-    getCurrentCustomerInfo: (params: InputCallbackParams<undefined, CustomerInfo>) => void;
-    openGoodsDetailPage: (params: InputCallbackParams<string, undefined>) => void;
+    getInitInfo: (params: InputCallbackParams<string, InitInfo>) => void;
+    addToInputBoxSafely: (params: InputCallbackParams<string, undefined>) => void;
 }
 export declare type Pigeon = PigeonEmit & PigeonOn & PluginSdkBaseType;
 export {};

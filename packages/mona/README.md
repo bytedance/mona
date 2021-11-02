@@ -1,5 +1,5 @@
-# mona
-对外暴露提供构建API
+# @bytedance/mona
+对外暴露提供构建时API
 ## 配置创建
 ### createProjectConfig
 创建项目配置，`mona.config.ts`中使用
