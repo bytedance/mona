@@ -52,8 +52,11 @@ export default createProjectConfig({
 |  参数   | 说明  | 是否必填 | 类型 | 默认值 |
 |  ----  | ----  | ---- | ---- | ---- |
 | projectName  | 应用/插件名称 | 是 | string | - |
-| input  | 入口文件路径 | 是 | string | - |
+| input  | 入口文件路径 | 否 | string | - |
 | output  | 打包后的文件目录路径 | 否 | string | - |
+| raw  | 定义函数来修改webpack配置 | 否 | (options: any) => any | - |
+| dev  | 用来修改本地服务配置 | 否 | string | { port: 9999 } |
+
 
 ### 应用配置
 应用配置文件为项目根目录下的`app.config.js`，配置文件内容如下：

@@ -3,20 +3,38 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.DEAULT_HOST = exports.DEFAULT_PORT = void 0;
 const path_1 = __importDefault(require("path"));
+const fs_1 = __importDefault(require("fs"));
 const mona_shared_1 = require("@bytedance/mona-shared");
 const mini_css_extract_plugin_1 = __importDefault(require("mini-css-extract-plugin"));
 const react_refresh_webpack_plugin_1 = __importDefault(require("@pmmmwh/react-refresh-webpack-plugin"));
 const html_webpack_plugin_1 = __importDefault(require("html-webpack-plugin"));
 const EntryModule_1 = __importDefault(require("./EntryModule"));
+exports.DEFAULT_PORT = '9999';
+exports.DEAULT_HOST = 'localhost';
+const DEFAULT_PROJECT_CONFIG = {
+    projectName: 'mona-app',
+    input: './src/app.tsx',
+    output: 'dist',
+    dev: {
+        port: exports.DEFAULT_PORT
+    }
+};
+const DEFAULT_APP_CONFIG = {
+    pages: []
+};
 class ConfigHelper {
     constructor(options) {
         this.options = options;
         this.cwd = process.cwd();
-        this.projectConfig = this._readConfig('mona.config');
-        this.appConfig = this._readConfig('app.config');
+        this.projectConfig = Object.assign(Object.assign({}, DEFAULT_PROJECT_CONFIG), this._readConfig('mona.config'));
+        this.appConfig = Object.assign(Object.assign({}, DEFAULT_APP_CONFIG), this._readConfig('app.config'));
         this.entryPath = (0, mona_shared_1.searchScriptFile)(path_1.default.resolve(this.cwd, this.projectConfig.input));
         this.entryModule = new EntryModule_1.default(this);
+        if (options.port) {
+            this.projectConfig.dev = Object.assign(Object.assign({}, this.projectConfig.dev), { port: options.port });
+        }
     }
     generate() {
         const config = {
@@ -28,7 +46,8 @@ class ConfigHelper {
             module: this._createModule(),
             plugins: this._createPlugins(),
         };
-        return config;
+        const raw = this.projectConfig.raw;
+        return raw ? raw(config) : config;
     }
     _createResolve() {
         return {
@@ -41,8 +60,13 @@ class ConfigHelper {
     _readConfig(configName) {
         const projectConfigPath = path_1.default.join(this.cwd, configName);
         const fullConfigPath = (0, mona_shared_1.searchScriptFile)(projectConfigPath);
-        const projectConfig = (0, mona_shared_1.readConfig)(fullConfigPath);
-        return projectConfig;
+        if (fs_1.default.existsSync(fullConfigPath)) {
+            const projectConfig = (0, mona_shared_1.readConfig)(fullConfigPath);
+            return projectConfig;
+        }
+        else {
+            throw new Error('无效的项目目录，请在mona项目根目录执行命令');
+        }
     }
     _createEntry() {
         return this.entryModule.name;
@@ -51,9 +75,10 @@ class ConfigHelper {
         return process.env.NODE_ENV !== 'production' ? 'development' : 'production';
     }
     _createOutput() {
+        var _a;
         return {
             path: path_1.default.join(this.cwd, this.projectConfig.output),
-            publicPath: `http://127.0.0.1:${this.options.port}/`,
+            publicPath: `http://${exports.DEAULT_HOST}:${((_a = this.projectConfig.dev) === null || _a === void 0 ? void 0 : _a.port) || exports.DEFAULT_PORT}/`,
             libraryTarget: 'umd',
             globalObject: 'window',
             chunkLoadingGlobal: `webpackJsonp_${this.projectConfig.projectName}_${Date.now()}`,

@@ -1,6 +1,7 @@
-import webpack from 'webpack';
 import { ProjectConfig, AppConfig } from '@bytedance/mona';
 import EntryModule from "./EntryModule";
+export declare const DEFAULT_PORT = "9999";
+export declare const DEAULT_HOST = "localhost";
 interface ConfigHelperOptions {
     dev: boolean;
     port: string;
@@ -13,7 +14,7 @@ declare class ConfigHelper {
     entryModule: EntryModule;
     options: ConfigHelperOptions;
     constructor(options: ConfigHelperOptions);
-    generate(): webpack.Configuration;
+    generate(): any;
     private _createResolve;
     private _readConfig;
     private _createEntry;

@@ -5,8 +5,7 @@ import cmds from './cmds';
 import { commandUsage, dispatchCommand, joinCmdPath } from './utils/command';
 import PackageUpdater from './PackageUpdater';
 function mona() {
-  // 检查新版本, 提示更新
-  yargs.help(false).version(false);
+  yargs.help(false).version(false).alias('h', 'help').alias('v', 'version');
   
   // 注册子命令，并匹配当前命令进行调用
   const currentCmd = yargs.argv._.slice(0)[0] as string;
@@ -22,14 +21,15 @@ function mona() {
 
   // 当使用-h时输出帮助命令
   if (!currentCmd) {
-    if (yargs.argv.h || yargs.argv.help) {
+    if (yargs.argv.help) {
       console.log(commandUsage(cmds));
-    } else if (yargs.argv.v || yargs.argv.version) {
+    } else if (yargs.argv.version) {
       console.log(`mona v${getPkgVersion()}`);
     } else {
       console.log(`mona v${getPkgVersion()}`);
     }
   } else if (currentCmd === 'update') {
+    // 检查新版本, 提示更新
     const pkgUpdater = new PackageUpdater();
     pkgUpdater.start();
   } else {

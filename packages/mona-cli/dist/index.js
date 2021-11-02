@@ -10,8 +10,7 @@ var cmds_1 = __importDefault(require("./cmds"));
 var command_1 = require("./utils/command");
 var PackageUpdater_1 = __importDefault(require("./PackageUpdater"));
 function mona() {
-    // 检查新版本, 提示更新
-    yargs_1.default.help(false).version(false);
+    yargs_1.default.help(false).version(false).alias('h', 'help').alias('v', 'version');
     // 注册子命令，并匹配当前命令进行调用
     var currentCmd = yargs_1.default.argv._.slice(0)[0];
     var currentCmdInfo = cmds_1.default.find(function (cmd) { return cmd.name === currentCmd; });
@@ -25,10 +24,10 @@ function mona() {
     }
     // 当使用-h时输出帮助命令
     if (!currentCmd) {
-        if (yargs_1.default.argv.h || yargs_1.default.argv.help) {
+        if (yargs_1.default.argv.help) {
             console.log((0, command_1.commandUsage)(cmds_1.default));
         }
-        else if (yargs_1.default.argv.v || yargs_1.default.argv.version) {
+        else if (yargs_1.default.argv.version) {
             console.log("mona v" + (0, package_1.getPkgVersion)());
         }
         else {
@@ -36,6 +35,7 @@ function mona() {
         }
     }
     else if (currentCmd === 'update') {
+        // 检查新版本, 提示更新
         var pkgUpdater = new PackageUpdater_1.default();
         pkgUpdater.start();
     }

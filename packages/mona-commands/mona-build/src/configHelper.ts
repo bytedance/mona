@@ -1,11 +1,27 @@
 import webpack, { RuleSetRule, Configuration } from 'webpack';
 import path from 'path';
+import fs from 'fs';
 import { readConfig, searchScriptFile } from '@bytedance/mona-shared';
-import { ProjectConfig, AppConfig } from '@bytedance/mona';
+import { ProjectConfig, AppConfig } from '@bytedance/mona'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import EntryModule from './EntryModule';
+
+export const DEFAULT_PORT = '9999';
+export const DEAULT_HOST = 'localhost';
+const DEFAULT_PROJECT_CONFIG: ProjectConfig = {
+  projectName: 'mona-app',
+  input: './src/app.tsx',
+  output: 'dist',
+  dev: {
+    port: DEFAULT_PORT
+  }
+}
+
+const DEFAULT_APP_CONFIG: AppConfig = {
+  pages: []
+}
 
 interface ConfigHelperOptions {
   dev: boolean;
@@ -22,10 +38,13 @@ class ConfigHelper {
   constructor(options: ConfigHelperOptions) {
     this.options = options;
     this.cwd = process.cwd();
-    this.projectConfig = this._readConfig<ProjectConfig>('mona.config');
-    this.appConfig = this._readConfig<AppConfig>('app.config');
+    this.projectConfig = { ...DEFAULT_PROJECT_CONFIG, ...this._readConfig<ProjectConfig>('mona.config') };
+    this.appConfig = { ...DEFAULT_APP_CONFIG, ...this._readConfig<AppConfig>('app.config') };
     this.entryPath = searchScriptFile(path.resolve(this.cwd, this.projectConfig.input));
     this.entryModule = new EntryModule(this);
+    if (options.port) {
+      this.projectConfig.dev = { ...this.projectConfig.dev, port: options.port };
+    }
   }
 
   generate() {
@@ -39,7 +58,8 @@ class ConfigHelper {
       plugins: this._createPlugins(),
     };
 
-    return config;
+    const raw = this.projectConfig.raw;
+    return raw ? raw(config) : config;
   }
 
   private _createResolve() {
@@ -54,8 +74,12 @@ class ConfigHelper {
   private _readConfig<T>(configName: string): T {
     const projectConfigPath = path.join(this.cwd, configName);
     const fullConfigPath = searchScriptFile(projectConfigPath);
-    const projectConfig = readConfig<T>(fullConfigPath);
-    return projectConfig;
+    if (fs.existsSync(fullConfigPath)) {
+      const projectConfig = readConfig<T>(fullConfigPath);
+      return projectConfig;
+    } else {
+      throw new Error('无效的项目目录，请在mona项目根目录执行命令')
+    }
   }
 
   private _createEntry() {
@@ -69,7 +93,7 @@ class ConfigHelper {
   private _createOutput() {
     return {
       path: path.join(this.cwd, this.projectConfig.output),
-      publicPath: `http://127.0.0.1:${this.options.port}/`,
+      publicPath: `http://${DEAULT_HOST}:${this.projectConfig.dev?.port || DEFAULT_PORT}/`,
       libraryTarget: 'umd',
       globalObject: 'window',
       chunkLoadingGlobal: `webpackJsonp_${this.projectConfig.projectName}_${Date.now()}`,
