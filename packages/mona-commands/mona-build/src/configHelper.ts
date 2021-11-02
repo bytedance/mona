@@ -58,7 +58,7 @@ class ConfigHelper {
       resolve: this._createResolve(),
       module: this._createModule(),
       plugins: this._createPlugins(),
-      optimization: this._createOptimization(),
+      optimization: this._createOptimization() as any,
     };
 
     const raw = this.projectConfig.raw;
@@ -69,7 +69,35 @@ class ConfigHelper {
     if (this.options.dev) return {};
     return {
       minimize: true,
-      minimizer: [new TerserWebpackPlugin({ parallel: true, extractComments: false }), new CssMiniminzerPlugin()]
+      minimizer: [new TerserWebpackPlugin({ parallel: true, extractComments: false }), new CssMiniminzerPlugin()],
+      splitChunks: {
+        chunks: 'async',
+        minSize: 20000,
+        minRemainingSize: 0,
+        minChunks: 1,
+        maxAsyncRequests: 30,
+        maxInitialRequests: 30,
+        enforceSizeThreshold: 50000,
+        cacheGroups: {
+          reactBase: {
+            name: 'react-chunk',
+            test: /react/,
+            chunks: 'initial',
+            priority: 10,
+          },
+          common: {
+            name: 'common',
+            chunks: 'initial',
+            priority: 2,
+            minChunks: 2,
+          },
+          default: {
+            minChunks: 2,
+            priority: -20,
+            reuseExistingChunk: true
+          }
+        }
+      }
     }
   }
 
@@ -98,13 +126,14 @@ class ConfigHelper {
   }
 
   private _createMode() {
-    return process.env.NODE_ENV !== 'production' ? 'development' : 'production';
+    return this.options.dev ? 'development' : 'production';
   }
 
   private _createOutput() {
     return {
       path: path.join(this.cwd, this.projectConfig.output),
-      publicPath: this.options ? `http://${DEAULT_HOST}:${this.projectConfig.dev?.port || DEFAULT_PORT}/` : '/',
+      filename: '[name].[contenthash:7].js',
+      publicPath: this.options.dev ? `http://${DEAULT_HOST}:${this.projectConfig.dev?.port || DEFAULT_PORT}/` : '/',
       libraryTarget: 'umd',
       globalObject: 'window',
       chunkLoadingGlobal: `webpackJsonp_${this.projectConfig.projectName}_${Date.now()}`,
@@ -178,7 +207,9 @@ class ConfigHelper {
   private _createPlugins() {
     const EntryMoudleInstance = this.entryModule.module;
     let plugins = [
-      new MiniCssExtractPlugin(),
+      new MiniCssExtractPlugin({
+        filename: '[name].[contenthash:7].css'
+      }),
       EntryMoudleInstance,
       new HtmlWebpackPlugin({
         templateContent: `

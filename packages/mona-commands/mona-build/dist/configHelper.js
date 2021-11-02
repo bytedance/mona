@@ -57,7 +57,35 @@ class ConfigHelper {
             return {};
         return {
             minimize: true,
-            minimizer: [new terser_webpack_plugin_1.default({ parallel: true, extractComments: false }), new css_minimizer_webpack_plugin_1.default()]
+            minimizer: [new terser_webpack_plugin_1.default({ parallel: true, extractComments: false }), new css_minimizer_webpack_plugin_1.default()],
+            splitChunks: {
+                chunks: 'async',
+                minSize: 20000,
+                minRemainingSize: 0,
+                minChunks: 1,
+                maxAsyncRequests: 30,
+                maxInitialRequests: 30,
+                enforceSizeThreshold: 50000,
+                cacheGroups: {
+                    reactBase: {
+                        name: 'react-chunk',
+                        test: /react/,
+                        chunks: 'initial',
+                        priority: 10,
+                    },
+                    common: {
+                        name: 'common',
+                        chunks: 'initial',
+                        priority: 2,
+                        minChunks: 2,
+                    },
+                    default: {
+                        minChunks: 2,
+                        priority: -20,
+                        reuseExistingChunk: true
+                    }
+                }
+            }
         };
     }
     _createResolve() {
@@ -83,13 +111,14 @@ class ConfigHelper {
         return this.entryModule.name;
     }
     _createMode() {
-        return process.env.NODE_ENV !== 'production' ? 'development' : 'production';
+        return this.options.dev ? 'development' : 'production';
     }
     _createOutput() {
         var _a;
         return {
             path: path_1.default.join(this.cwd, this.projectConfig.output),
-            publicPath: this.options ? `http://${exports.DEAULT_HOST}:${((_a = this.projectConfig.dev) === null || _a === void 0 ? void 0 : _a.port) || exports.DEFAULT_PORT}/` : '/',
+            filename: '[name].[contenthash:7].js',
+            publicPath: this.options.dev ? `http://${exports.DEAULT_HOST}:${((_a = this.projectConfig.dev) === null || _a === void 0 ? void 0 : _a.port) || exports.DEFAULT_PORT}/` : '/',
             libraryTarget: 'umd',
             globalObject: 'window',
             chunkLoadingGlobal: `webpackJsonp_${this.projectConfig.projectName}_${Date.now()}`,
@@ -155,7 +184,9 @@ class ConfigHelper {
     _createPlugins() {
         const EntryMoudleInstance = this.entryModule.module;
         let plugins = [
-            new mini_css_extract_plugin_1.default(),
+            new mini_css_extract_plugin_1.default({
+                filename: '[name].[contenthash:7].css'
+            }),
             EntryMoudleInstance,
             new html_webpack_plugin_1.default({
                 templateContent: `
