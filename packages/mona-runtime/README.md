@@ -26,7 +26,7 @@ export default Index;
 |  ----  | ----  | ---- | ---- | ---- |
 | to  | 要跳转的页面路由 | 是 | string | - |
 
-## API
+## 通用API
 ### navigateTo
 路由跳转，跳转到新的页面
 
@@ -47,61 +47,21 @@ import { redirectTo } from '@bytedance/mona-runtime';
 redirectTo('/pages/home/index')
 ```
 
-## 其他
-### createProjectConfig
-创建项目配置，`mona.config.ts`中使用
-#### 例子
-```js
-// mona.config.ts
-import { createProjectConfig } from '@bytedance/mona-runtime';
-export default createProjectConfig({
-  projectName: 'demo',
-  input: './src/app.tsx',
-  output: 'dist'
-})
-```
+## 飞鸽API
 
-#### 参数说明
-|  参数   | 说明  | 是否必填 | 类型 | 默认值 |
-|  ----  | ----  | ---- | ---- | ---- |
-| projectName  | 应用/插件名称 | 是 | string | - |
-| input  | 入口文件路径 | 是 | string | - |
-| output  | 打包后的文件目录路径 | 否 | string | - |
+飞鸽API分为两类，一类是以`onXXXX`开头的监听类API，该类API接受回调函数作为参数，当在飞鸽中相应事件发生时，飞鸽会调用传过来的回调函数。
+另一类非`onXXXX`开头的普通的API，可以直接触发飞鸽中相应的动作
 
-### createAppConfig
-创建应用配置，`app.config.ts`中使用
-#### 例子
-```js
-// app.config.ts
-import { createAppConfig } from '@bytedance/mona-runtime';
-export default createAppConfig({
-  pages: [
-    'pages/Home/index',
-    'pages/Info/index',
-    'pages/List/index'
-  ]
-})
-```
-#### 参数说明
-|  参数   | 说明  | 是否必填 | 类型 | 默认值 |
-|  ----  | ----  | ---- | ---- | ---- |
-| pages  | 页面路径 | 是 | string[] | - |
+注意：飞鸽API需要在开放平台中拥有相应的插件API权限
 
+### onCurrentCustomerChange
+监听用户改变，当切换飞鸽左侧的用户时，会触发该API回调
 
-### createPageConfig
-创建页面配置，需在每个页面目录的`page.config.ts`中使用
+### onShow
+监听插件展示，当插件在飞鸽中前台展示时，会触发该API回调
 
-#### 例子
-```js
-// page.config.ts
-import { createPageConfig } from '@bytedance/mona-runtime';
-export default createPageConfig({
-  navigationBarTitleText: 'page title'
-})
-```
-#### 参数说明
-|  参数   | 说明  | 是否必填 | 类型 | 默认值 |
-|  ----  | ----  | ---- | ---- | ---- |
-| navigationBarTitleText  | 当前页面标题 | 否 | string | - |
-
+### getInitInfo
+获取初始化数据
+### addToInputBoxSafely
+复制文本到飞鸽会话框
 
