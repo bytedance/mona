@@ -27,9 +27,12 @@ class EntryModule {
     const { entryPath } = this.configHelper;
 
     const module: Record<string, string> = {};
+    const publicPathVirtualPath = path.join(entryPath, '..', 'public-path.js')
+    module[publicPathVirtualPath] = '__webpack_public_path__ = window.__mona_public_path__;'
     const virtualPath = EntryModule.extendEntryName(entryPath);
     module[virtualPath] = this._generatePluginEntryCode(entryPath);
     this.name = virtualPath;
+
 
     return new VirtualModulesPlugin(module) as unknown as WebpackPluginInstance;
   }
@@ -48,6 +51,7 @@ class EntryModule {
       .join(',')}];`;
 
     const code = `
+      import './public-path';
       import { createPlugin } from '@bytedance/mona-runtime';
       import App from './${path.basename(filename)}';
       ${routesCode}

@@ -6,6 +6,8 @@ import { ProjectConfig, AppConfig } from '@bytedance/mona'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import CssMiniminzerPlugin from 'css-minimizer-webpack-plugin';
+import TerserWebpackPlugin from 'terser-webpack-plugin';
 import EntryModule from './EntryModule';
 
 export const DEFAULT_PORT = '9999';
@@ -50,16 +52,25 @@ class ConfigHelper {
   generate() {
     const config: Configuration = {
       mode: this._createMode(),
-      devtool: 'cheap-source-map',
+      devtool: this.options.dev ? 'cheap-source-map' : undefined,
       entry: this._createEntry(),
       output: this._createOutput(),
       resolve: this._createResolve(),
       module: this._createModule(),
       plugins: this._createPlugins(),
+      optimization: this._createOptimization(),
     };
 
     const raw = this.projectConfig.raw;
     return raw ? raw(config) : config;
+  }
+
+  private _createOptimization() {
+    if (this.options.dev) return {};
+    return {
+      minimize: true,
+      minimizer: [new TerserWebpackPlugin({ parallel: true, extractComments: false }), new CssMiniminzerPlugin()]
+    }
   }
 
   private _createResolve() {
@@ -93,7 +104,7 @@ class ConfigHelper {
   private _createOutput() {
     return {
       path: path.join(this.cwd, this.projectConfig.output),
-      publicPath: `http://${DEAULT_HOST}:${this.projectConfig.dev?.port || DEFAULT_PORT}/`,
+      publicPath: this.options ? `http://${DEAULT_HOST}:${this.projectConfig.dev?.port || DEFAULT_PORT}/` : '/',
       libraryTarget: 'umd',
       globalObject: 'window',
       chunkLoadingGlobal: `webpackJsonp_${this.projectConfig.projectName}_${Date.now()}`,

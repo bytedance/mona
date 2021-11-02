@@ -15,6 +15,7 @@ declare class ConfigHelper {
     options: ConfigHelperOptions;
     constructor(options: ConfigHelperOptions);
     generate(): any;
+    private _createOptimization;
     private _createResolve;
     private _readConfig;
     private _createEntry;

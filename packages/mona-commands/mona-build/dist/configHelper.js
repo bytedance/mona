@@ -10,6 +10,8 @@ const mona_shared_1 = require("@bytedance/mona-shared");
 const mini_css_extract_plugin_1 = __importDefault(require("mini-css-extract-plugin"));
 const react_refresh_webpack_plugin_1 = __importDefault(require("@pmmmwh/react-refresh-webpack-plugin"));
 const html_webpack_plugin_1 = __importDefault(require("html-webpack-plugin"));
+const css_minimizer_webpack_plugin_1 = __importDefault(require("css-minimizer-webpack-plugin"));
+const terser_webpack_plugin_1 = __importDefault(require("terser-webpack-plugin"));
 const EntryModule_1 = __importDefault(require("./EntryModule"));
 exports.DEFAULT_PORT = '9999';
 exports.DEAULT_HOST = 'localhost';
@@ -39,15 +41,24 @@ class ConfigHelper {
     generate() {
         const config = {
             mode: this._createMode(),
-            devtool: 'cheap-source-map',
+            devtool: this.options.dev ? 'cheap-source-map' : undefined,
             entry: this._createEntry(),
             output: this._createOutput(),
             resolve: this._createResolve(),
             module: this._createModule(),
             plugins: this._createPlugins(),
+            optimization: this._createOptimization(),
         };
         const raw = this.projectConfig.raw;
         return raw ? raw(config) : config;
+    }
+    _createOptimization() {
+        if (this.options.dev)
+            return {};
+        return {
+            minimize: true,
+            minimizer: [new terser_webpack_plugin_1.default({ parallel: true, extractComments: false }), new css_minimizer_webpack_plugin_1.default()]
+        };
     }
     _createResolve() {
         return {
@@ -78,7 +89,7 @@ class ConfigHelper {
         var _a;
         return {
             path: path_1.default.join(this.cwd, this.projectConfig.output),
-            publicPath: `http://${exports.DEAULT_HOST}:${((_a = this.projectConfig.dev) === null || _a === void 0 ? void 0 : _a.port) || exports.DEFAULT_PORT}/`,
+            publicPath: this.options ? `http://${exports.DEAULT_HOST}:${((_a = this.projectConfig.dev) === null || _a === void 0 ? void 0 : _a.port) || exports.DEFAULT_PORT}/` : '/',
             libraryTarget: 'umd',
             globalObject: 'window',
             chunkLoadingGlobal: `webpackJsonp_${this.projectConfig.projectName}_${Date.now()}`,

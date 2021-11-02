@@ -68,12 +68,12 @@ function build({ dev }) {
                 });
             }
             else {
+                console.log('start bundling');
                 webpackCompiler.run((error, stats) => {
                     var _a, _b;
                     if (error) {
                         throw error;
                     }
-                    console.log('start bundling');
                     const info = stats === null || stats === void 0 ? void 0 : stats.toJson();
                     if (stats === null || stats === void 0 ? void 0 : stats.hasErrors()) {
                         (_a = info === null || info === void 0 ? void 0 : info.errors) === null || _a === void 0 ? void 0 : _a.forEach((err) => {

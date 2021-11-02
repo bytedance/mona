@@ -20,6 +20,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/command-line-usage": "^5.0.2",
+    "@types/css-minimizer-webpack-plugin": "^3.0.2",
     "@types/ejs": "^3.0.7",
     "@types/inquirer": "^7.3.3",
     "@types/mini-css-extract-plugin": "^2.4.0",
@@ -43,6 +44,7 @@
     "chalk": "^4.1.2",
     "command-line-usage": "^6.1.1",
     "css-loader": "^6.4.0",
+    "css-minimizer-webpack-plugin": "^3.1.1",
     "ejs": "^3.1.6",
     "html-webpack-plugin": "^5.4.0",
     "inquirer": "^8.1.2",

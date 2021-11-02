@@ -48,12 +48,12 @@ function build({ dev }: { dev: boolean }) {
           console.log(`starting server on http://${DEAULT_HOST}:${port}`);
         });
       } else {
+        console.log('start bundling');
         webpackCompiler.run((error, stats) => {
           if (error) {
             throw error;
           }
 
-          console.log('start bundling');
           const info = stats?.toJson();
           if (stats?.hasErrors()) {
             info?.errors?.forEach((err: any) => {

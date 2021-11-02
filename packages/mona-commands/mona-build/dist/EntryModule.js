@@ -22,6 +22,8 @@ class EntryModule {
     createModule() {
         const { entryPath } = this.configHelper;
         const module = {};
+        const publicPathVirtualPath = path_1.default.join(entryPath, '..', 'public-path.js');
+        module[publicPathVirtualPath] = '__webpack_public_path__ = window.__mona_public_path__;';
         const virtualPath = EntryModule.extendEntryName(entryPath);
         module[virtualPath] = this._generatePluginEntryCode(entryPath);
         this.name = virtualPath;
@@ -39,6 +41,7 @@ class EntryModule {
             .map((page, index) => `{ path: '${page}', component: Page${index}, title: '${this.getPageTitle(page)}' }`)
             .join(',')}];`;
         const code = `
+      import './public-path';
       import { createPlugin } from '@bytedance/mona-runtime';
       import App from './${path_1.default.basename(filename)}';
       ${routesCode}
