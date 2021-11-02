@@ -3,10 +3,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.MONA_PUBLIC_PATH = void 0;
 const path_1 = __importDefault(require("path"));
 const webpack_virtual_modules_1 = __importDefault(require("webpack-virtual-modules"));
 const configHelper_1 = __importDefault(require("./configHelper"));
 const mona_shared_1 = require("@bytedance/mona-shared");
+exports.MONA_PUBLIC_PATH = '__mona_public_path__';
 class EntryModule {
     constructor(configHelper) {
         this.configHelper = configHelper;
@@ -23,7 +25,7 @@ class EntryModule {
         const { entryPath } = this.configHelper;
         const module = {};
         const publicPathVirtualPath = path_1.default.join(entryPath, '..', 'public-path.js');
-        module[publicPathVirtualPath] = '__webpack_public_path__ = window.__mona_public_path__;';
+        module[publicPathVirtualPath] = `__webpack_public_path__ = window.${exports.MONA_PUBLIC_PATH};`;
         const virtualPath = EntryModule.extendEntryName(entryPath);
         module[virtualPath] = this._generatePluginEntryCode(entryPath);
         this.name = virtualPath;

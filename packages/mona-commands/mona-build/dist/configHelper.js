@@ -15,6 +15,7 @@ const terser_webpack_plugin_1 = __importDefault(require("terser-webpack-plugin")
 const EntryModule_1 = __importDefault(require("./EntryModule"));
 exports.DEFAULT_PORT = '9999';
 exports.DEAULT_HOST = 'localhost';
+const HTML_HANDLE_TAG = 'createdByMonaCli';
 const DEFAULT_PROJECT_CONFIG = {
     projectName: 'mona-app',
     input: './src/app.tsx',
@@ -114,11 +115,10 @@ class ConfigHelper {
         return this.options.dev ? 'development' : 'production';
     }
     _createOutput() {
-        var _a;
         return {
             path: path_1.default.join(this.cwd, this.projectConfig.output),
             filename: '[name].[contenthash:7].js',
-            publicPath: this.options.dev ? `http://${exports.DEAULT_HOST}:${((_a = this.projectConfig.dev) === null || _a === void 0 ? void 0 : _a.port) || exports.DEFAULT_PORT}/` : '/',
+            publicPath: '/',
             libraryTarget: 'umd',
             globalObject: 'window',
             chunkLoadingGlobal: `webpackJsonp_${this.projectConfig.projectName}_${Date.now()}`,
@@ -190,6 +190,7 @@ class ConfigHelper {
             EntryMoudleInstance,
             new html_webpack_plugin_1.default({
                 templateContent: `
+          <!-- ${HTML_HANDLE_TAG} -->
           <!DOCTYPE html>
           <html>
             <head>
@@ -201,6 +202,15 @@ class ConfigHelper {
             </body>
           </html>
         `,
+                minify: {
+                    collapseWhitespace: true,
+                    keepClosingSlash: true,
+                    removeComments: false,
+                    removeRedundantAttributes: true,
+                    removeScriptTypeAttributes: true,
+                    removeStyleLinkTypeAttributes: true,
+                    useShortDoctype: true
+                }
             }),
         ];
         if (this.options.dev) {

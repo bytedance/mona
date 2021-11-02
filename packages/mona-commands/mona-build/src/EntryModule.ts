@@ -5,6 +5,8 @@ import ConfigHelper from './configHelper';
 import { readConfig } from '@bytedance/mona-shared';
 import { PageConfig } from '@bytedance/mona';
 
+export const MONA_PUBLIC_PATH = '__mona_public_path__'
+
 class EntryModule {
   configHelper: ConfigHelper;
   name: string;
@@ -28,7 +30,7 @@ class EntryModule {
 
     const module: Record<string, string> = {};
     const publicPathVirtualPath = path.join(entryPath, '..', 'public-path.js')
-    module[publicPathVirtualPath] = '__webpack_public_path__ = window.__mona_public_path__;'
+    module[publicPathVirtualPath] = `__webpack_public_path__ = window.${MONA_PUBLIC_PATH};`
     const virtualPath = EntryModule.extendEntryName(entryPath);
     module[virtualPath] = this._generatePluginEntryCode(entryPath);
     this.name = virtualPath;

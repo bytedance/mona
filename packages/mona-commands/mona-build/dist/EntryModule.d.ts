@@ -1,5 +1,6 @@
 import { WebpackPluginInstance } from 'webpack';
 import ConfigHelper from "./configHelper";
+export declare const MONA_PUBLIC_PATH = "__mona_public_path__";
 declare class EntryModule {
     configHelper: ConfigHelper;
     name: string;

@@ -12,6 +12,7 @@ import EntryModule from './EntryModule';
 
 export const DEFAULT_PORT = '9999';
 export const DEAULT_HOST = 'localhost';
+const HTML_HANDLE_TAG = 'createdByMonaCli';
 const DEFAULT_PROJECT_CONFIG: ProjectConfig = {
   projectName: 'mona-app',
   input: './src/app.tsx',
@@ -133,7 +134,7 @@ class ConfigHelper {
     return {
       path: path.join(this.cwd, this.projectConfig.output),
       filename: '[name].[contenthash:7].js',
-      publicPath: this.options.dev ? `http://${DEAULT_HOST}:${this.projectConfig.dev?.port || DEFAULT_PORT}/` : '/',
+      publicPath: '/',
       libraryTarget: 'umd',
       globalObject: 'window',
       chunkLoadingGlobal: `webpackJsonp_${this.projectConfig.projectName}_${Date.now()}`,
@@ -213,6 +214,7 @@ class ConfigHelper {
       EntryMoudleInstance,
       new HtmlWebpackPlugin({
         templateContent: `
+          <!-- ${HTML_HANDLE_TAG} -->
           <!DOCTYPE html>
           <html>
             <head>
@@ -224,6 +226,15 @@ class ConfigHelper {
             </body>
           </html>
         `,
+        minify: {
+          collapseWhitespace: true,
+          keepClosingSlash: true,
+          removeComments: false,
+          removeRedundantAttributes: true,
+          removeScriptTypeAttributes: true,
+          removeStyleLinkTypeAttributes: true,
+          useShortDoctype: true
+        }
       }),
     ]
 
