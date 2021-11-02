@@ -1,0 +1,4 @@
+#! /usr/bin/env node
+
+const plubish = require('../dist').default;
+plubish();

@@ -1,11 +1,10 @@
 {
-  "name": "@bytedance/mona-init",
-  "version": "0.0.4",
-  "description": "mona subcommands - init",
-  "main": "./bin/mona-init",
-  "types": "./dist/index.d.ts",
+  "name": "@bytedance/mona-publish",
+  "version": "0.0.1",
+  "description": "mona subcommands - publish",
+  "main": "./bin/mona-publish",
   "bin": {
-    "mona-init": "./bin/mona-init"
+    "mona-publish": "./bin/mona-publish"
   },
   "files": [
     "bin",
@@ -19,8 +18,6 @@
   "license": "MIT",
   "devDependencies": {
     "@types/command-line-usage": "^5.0.2",
-    "@types/ejs": "^3.0.7",
-    "@types/inquirer": "^7.3.3",
     "@types/node": "^16.4.5",
     "@types/yargs": "^16.0.0",
     "ttypescript": "^1.5.12",
@@ -28,17 +25,12 @@
     "typescript-transform-paths": "^2.2.4"
   },
   "dependencies": {
+    "@bytedance/mona": "^0.0.4",
+    "@bytedance/mona-shared": "^0.0.3",
     "chalk": "^4.1.2",
     "command-line-usage": "^6.1.1",
-    "download-git-repo": "^3.0.2",
-    "ejs": "^3.1.6",
-    "inquirer": "^8.1.2",
+    "compressing": "^1.5.1",
     "ora": "^5.4.1",
     "yargs": "^17.0.1"
-  },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org"
-  },
-  "gitHead": "d273d42cd62b0bde5a6606cc68ec5c5e4d34814a"
+  }
 }

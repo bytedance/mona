@@ -11,9 +11,15 @@ const child_process_1 = require("child_process");
 const ask_1 = require("./utils/ask");
 const template_1 = require("./utils/template");
 const common_1 = require("./utils/common");
+const help_1 = require("./help");
 function init() {
-    yargs_1.default.version(false).help(false);
-    yargs_1.default.command('$0', false, {}, async function () {
+    yargs_1.default.version(false).help(false).alias('h', 'help');
+    yargs_1.default.command('$0', false, {}, async function (argv) {
+        if (argv.help) {
+            const helpInfo = (0, help_1.commandUsage)();
+            console.log(helpInfo);
+            return;
+        }
         (0, common_1.printWelcomeMessage)();
         // 交互式提问
         const answer = await (0, ask_1.ask)();

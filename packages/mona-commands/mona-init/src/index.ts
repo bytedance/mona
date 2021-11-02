@@ -6,10 +6,17 @@ import { execSync } from 'child_process';
 import { ask } from './utils/ask';
 import { caclProjectType, fetchTemplate, processTemplates } from './utils/template';
 import { hasYarn, printWelcomeMessage, printFinishMessage } from './utils/common';
+import { commandUsage } from './help';
 
 function init() {
-  yargs.version(false).help(false);
-  yargs.command('$0', false, {}, async function () {
+  yargs.version(false).help(false).alias('h', 'help');
+  yargs.command('$0', false, {}, async function (argv) {
+    if (argv.help) {
+      const helpInfo = commandUsage();
+      console.log(helpInfo);
+      return;
+    }
+
     printWelcomeMessage();
 
     // 交互式提问

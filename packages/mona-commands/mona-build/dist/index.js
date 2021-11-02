@@ -30,7 +30,7 @@ const webpack_dev_server_1 = __importDefault(require("webpack-dev-server"));
 const configHelper_1 = __importStar(require("./configHelper"));
 const help_1 = require("./help");
 function build({ dev }) {
-    yargs_1.default.version(false).help(false);
+    yargs_1.default.version(false).help(false).alias('p', 'port').alias('h', 'help');
     yargs_1.default.command('$0', false, {}, async function (argv) {
         var _a;
         if (argv.help) {
@@ -99,7 +99,7 @@ function build({ dev }) {
         catch (err) {
             console.log(chalk_1.default.red(err.message));
         }
-    }).alias('p', 'port').alias('h', 'help').argv;
+    }).argv;
 }
 exports.default = build;
 //# sourceMappingURL=index.js.map

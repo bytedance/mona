@@ -7,7 +7,7 @@ import ConfigHelper, { DEAULT_HOST, DEFAULT_PORT } from './configHelper';
 import { buildCommandUsage, startCommandUsage } from './help';
 
 function build({ dev }: { dev: boolean }) {
-  yargs.version(false).help(false);
+  yargs.version(false).help(false).alias('p', 'port').alias('h', 'help');
   yargs.command('$0', false, {}, async function (argv) {
     if (argv.help) {
       const helpInfo = dev ? startCommandUsage() : buildCommandUsage();
@@ -78,7 +78,7 @@ function build({ dev }: { dev: boolean }) {
     } catch (err: any) {
       console.log(chalk.red(err.message));
     }
-  }).alias('p', 'port').alias('h', 'help').argv;
+  }).argv;
 }
 
 export default build;

@@ -95,10 +95,12 @@ export default createPageConfig({
 初始化一个商家应用/商家应用插件项目
 
 ### mona start
-启动开发模式服务器
+启动本地开发服务器
 
 ### mona build
 对项目进行打包
 
 ### mona update
 更新CLI命令
+### mona publish
+压缩打包后的产物，以便在开放平台发布

@@ -11,13 +11,19 @@ var cmds = [
         name: 'start',
         cli: './bin/mona-start',
         package: '@bytedance/mona-build',
-        description: '启动开发服务',
+        description: '启动本地开发服务器',
     },
     {
         name: 'build',
         cli: './bin/mona-build',
         package: '@bytedance/mona-build',
-        description: '构建项目',
+        description: '对项目进行打包',
+    },
+    {
+        name: 'publish',
+        cli: './bin/mona-publish',
+        package: '@bytedance/mona-publish',
+        description: '压缩打包后的产物，以便在开放平台发布',
     },
 ];
 exports.default = cmds;
