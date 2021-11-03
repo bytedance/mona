@@ -26,7 +26,6 @@ export const fetchTemplate = function (
         try {
           const moveCmd = `mv ${tplDest}/${templateName}/* ${projectRoot} && rm -rf ${tplDest}`
           execSync(moveCmd, { stdio: 'ignore' });
-          console.log('exec success');
         } catch (err) {
            return reject(error)
         }
@@ -91,26 +90,4 @@ export async function processTemplates(dirPath: string, templateData: Record<str
   await Promise.all(files.map(file => processTemplate(file, templateData)));
   // 再次遍历，删除空文件夹
   removeEmptyDirs(dirPath);
-}
-
-export function caclProjectType(templateType: 'pc' | 'mobile' | 'plugin' | 'monorepo') {
-  let res: string | string[] = 'web';
-  switch (templateType) {
-    case 'pc':
-      res = ['web', 'desktop'];
-      break;
-    case 'mobile':
-      res = ['miniapp', 'web'];
-      break;
-    case 'plugin':
-      res = ['plugin'];
-      break;
-    case 'monorepo':
-      res = ['monorepo'];
-      break;
-    default:
-      res = ['web'];
-      break;
-  }
-  return JSON.stringify(res);
 }

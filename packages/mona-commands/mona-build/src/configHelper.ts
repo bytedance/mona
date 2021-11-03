@@ -15,7 +15,7 @@ export const DEAULT_HOST = 'localhost';
 const HTML_HANDLE_TAG = 'createdByMonaCli';
 const DEFAULT_PROJECT_CONFIG: ProjectConfig = {
   projectName: 'mona-app',
-  input: './src/app.tsx',
+  input: './src/app',
   output: 'dist',
   dev: {
     port: DEFAULT_PORT

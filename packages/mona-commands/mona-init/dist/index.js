@@ -30,9 +30,7 @@ function init() {
         await (0, template_1.fetchTemplate)(dirPath, templateType);
         // 文件处理
         await (0, template_1.processTemplates)(dirPath, {
-            projectTarget: (0, template_1.caclProjectType)(templateType),
             projectName,
-            input: './src/app.tsx',
             cssExt: styleProcessor,
             typescript: useTypescript,
         });

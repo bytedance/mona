@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.caclProjectType = exports.processTemplates = exports.processTemplate = exports.fetchTemplate = void 0;
+exports.processTemplates = exports.processTemplate = exports.fetchTemplate = void 0;
 const fs_1 = __importDefault(require("fs"));
 const ora_1 = __importDefault(require("ora"));
 const ejs_1 = __importDefault(require("ejs"));
@@ -29,7 +29,6 @@ const fetchTemplate = function (projectRoot, templateName) {
                 try {
                     const moveCmd = `mv ${tplDest}/${templateName}/* ${projectRoot} && rm -rf ${tplDest}`;
                     (0, child_process_1.execSync)(moveCmd, { stdio: 'ignore' });
-                    console.log('exec success');
                 }
                 catch (err) {
                     return reject(error);
@@ -94,26 +93,4 @@ async function processTemplates(dirPath, templateData) {
     (0, file_1.removeEmptyDirs)(dirPath);
 }
 exports.processTemplates = processTemplates;
-function caclProjectType(templateType) {
-    let res = 'web';
-    switch (templateType) {
-        case 'pc':
-            res = ['web', 'desktop'];
-            break;
-        case 'mobile':
-            res = ['miniapp', 'web'];
-            break;
-        case 'plugin':
-            res = ['plugin'];
-            break;
-        case 'monorepo':
-            res = ['monorepo'];
-            break;
-        default:
-            res = ['web'];
-            break;
-    }
-    return JSON.stringify(res);
-}
-exports.caclProjectType = caclProjectType;
 //# sourceMappingURL=template.js.map

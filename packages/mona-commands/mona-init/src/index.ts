@@ -4,7 +4,7 @@ import yargs from 'yargs';
 import chalk from 'chalk';
 import { execSync } from 'child_process';
 import { ask } from './utils/ask';
-import { caclProjectType, fetchTemplate, processTemplates } from './utils/template';
+import { fetchTemplate, processTemplates } from './utils/template';
 import { hasYarn, printWelcomeMessage, printFinishMessage } from './utils/common';
 import { commandUsage } from './help';
 
@@ -30,9 +30,7 @@ function init() {
 
     // 文件处理
     await processTemplates(dirPath, {
-      projectTarget: caclProjectType(templateType),
       projectName,
-      input: './src/app.tsx',
       cssExt: styleProcessor,
       typescript: useTypescript,
     });

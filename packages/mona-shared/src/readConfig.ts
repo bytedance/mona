@@ -7,7 +7,7 @@ function readTypescriptFile(filename: string): Record<string, any> {
       [require.resolve('@babel/preset-env'), { modules: 'commonjs' }],
       require.resolve('@babel/preset-typescript'),
     ],
-    extensions: ['.ts'],
+    extensions: ['.ts', '.tsx'],
     cache: false,
   });
   delete require.cache[require.resolve(filename)];
@@ -16,6 +16,13 @@ function readTypescriptFile(filename: string): Record<string, any> {
 }
 
 function readJavascriptFile(filename: string) {
+  require('@babel/register')({
+    presets: [
+      [require.resolve('@babel/preset-env'), { modules: 'commonjs' }],
+    ],
+    extensions: ['.js', 'jsx'],
+    cache: false,
+  });
   delete require.cache[require.resolve(filename)];
   const config = require(filename).default || require(filename);
   return config;

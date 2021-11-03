@@ -77,6 +77,7 @@ function build({ dev }: { dev: boolean }) {
       }
     } catch (err: any) {
       console.log(chalk.red(err.message));
+      console.log(err);
     }
   }).argv;
 }

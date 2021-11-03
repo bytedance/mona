@@ -98,6 +98,7 @@ function build({ dev }) {
         }
         catch (err) {
             console.log(chalk_1.default.red(err.message));
+            console.log(err);
         }
     }).argv;
 }
