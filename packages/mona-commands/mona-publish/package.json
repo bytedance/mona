@@ -32,5 +32,10 @@
     "compressing": "^1.5.1",
     "ora": "^5.4.1",
     "yargs": "^17.0.1"
-  }
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "gitHead": "cc5aa5283af595fd7d8a7b4921f54e2797504edd"
 }
