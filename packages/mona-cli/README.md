@@ -91,16 +91,27 @@ export default createPageConfig({
 ## 命令
 可以使用`mona -h`查看帮助命令，`mona -v`查看当前版本
 
-### mona init
+### mona init <projectName>
 初始化一个商家应用/商家应用插件项目
+
+- -h, --help：输出帮助信息
+- -u, --use-typescript：是否使用typescript
+- -s, --style：指定样式处理器(css/less)
+- -t, --template：指定模板(plugin)
 
 ### mona start
 启动本地开发服务器
 
+- -h, --help：输出帮助信息
+- -p, --port：指定本地服务器端口
 ### mona build
 对项目进行打包
 
-### mona update
-更新CLI命令
+- -h, --help：输出帮助信息
 ### mona publish
 压缩打包后的产物，以便在开放平台发布
+
+- -h, --help：输出帮助信息
+
+### mona update
+更新@bytedance/mona-cli到最新版本
