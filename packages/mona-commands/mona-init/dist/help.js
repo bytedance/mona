@@ -26,7 +26,7 @@ const commandUsage = () => {
         },
         {
             header: '举例',
-            content: 'mona init mona-demo -t plugin'
+            content: 'mona init demo -t plugin'
         },
     ];
     return (0, command_line_usage_1.default)(sections);

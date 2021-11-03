@@ -25,5 +25,5 @@ export function printWelcomeMessage() {
 export function printFinishMessage(projectName: string) {
   console.log('');
   console.log(chalk.green(`创建项目 ${chalk.green.bold(projectName)} 成功！`));
-  console.log(chalk.green(`下面进入项目目录 ${chalk.green.bold(projectName)} 开始使用吧！have a happy time！`));
+  console.log(chalk.green(`下面进入项目目录 ${chalk.cyan.bold(`cd ${projectName}`)}，然后运行 ${chalk.cyan.bold(`${hasYarn() ? 'yarn start' : 'npm start'}`)} 开始开发吧！have a happy coding time！`));
 }

@@ -30,7 +30,7 @@ exports.printWelcomeMessage = printWelcomeMessage;
 function printFinishMessage(projectName) {
     console.log('');
     console.log(chalk_1.default.green(`创建项目 ${chalk_1.default.green.bold(projectName)} 成功！`));
-    console.log(chalk_1.default.green(`下面进入项目目录 ${chalk_1.default.green.bold(projectName)} 开始使用吧！have a happy time！`));
+    console.log(chalk_1.default.green(`下面进入项目目录 ${chalk_1.default.cyan.bold(`cd ${projectName}`)}，然后运行 ${chalk_1.default.cyan.bold(`${hasYarn() ? 'yarn start' : 'npm start'}`)} 开始开发吧！have a happy coding time！`));
 }
 exports.printFinishMessage = printFinishMessage;
 //# sourceMappingURL=common.js.map
