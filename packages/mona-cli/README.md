@@ -44,6 +44,46 @@ mona publish
 
 生成后的压缩包，需要在开放平台 -> 应用管理 -> 插件管理 -> 新增版本中上传该压缩包，并填写版本描述
 
+## 目录结构
+```bash
+.
+├── README.md
+├── app.config.ts // 应用配置文件
+├── mona.config.ts // 项目配置文件
+├── package.json
+├── src
+│   ├── app.tsx
+│   ├── common
+│   ├── components
+│   │   └── Wrapper
+│   │       ├── index.less
+│   │       └── index.tsx
+│   ├── pages
+│   │   ├── Home
+│   │   │   ├── index.less
+│   │   │   ├── index.tsx
+│   │   │   └── page.config.ts // 页面配置文件
+│   │   ├── Info
+│   │   │   ├── index.tsx
+│   │   │   └── page.config.ts
+│   │   └── List
+│   │       ├── index.tsx
+│   │       └── page.config.ts
+│   └── typings
+│       └── assetsDefinition.d.ts
+└── tsconfig.json
+```
+
+所有的页面文件应放在pages中，所有的组件文件应放在components中。
+
+项目构建配置文件为`mona.config.ts`，可以在该文件中更改构建配置
+
+应用配置文件为`app.config.ts`，可以在该文件中配置路由
+
+页面配置文件分别放在页面文件下`pages.config.ts`中，可以在这里配置页面相关的配置
+
+详细配置见下面的配置介绍
+
 ## 配置
 ### 项目配置
 项目配置文件为项目根目录下的`mona.config.js`，配置文件内容如下：
