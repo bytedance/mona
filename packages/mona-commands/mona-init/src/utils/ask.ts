@@ -1,13 +1,15 @@
 import fs from 'fs';
 import inquirer from 'inquirer';
 
-async function askTypescript(prompts: Record<string, unknown>[]) {
-  prompts.push({
-    type: 'confirm',
-    name: 'useTypescript',
-    message: '是否使用Typescript',
-    default: true,
-  });
+async function askTypescript(prompts: Record<string, unknown>[], defaultUseTs?: boolean) {
+  if (typeof defaultUseTs !== 'boolean') {
+    prompts.push({
+      type: 'confirm',
+      name: 'useTypescript',
+      message: '是否使用Typescript',
+      default: true,
+    });
+  }
 }
 
 const templates = [
@@ -31,20 +33,23 @@ const templates = [
   // },
 ];
 
-async function askTemplate(prompts: Record<string, unknown>[]) {
-  prompts.push({
-    type: 'list',
-    name: 'templateType',
-    message: '请选择模板',
-    choices: templates,
-  });
+async function askTemplate(prompts: Record<string, unknown>[], defaultTemplate?: string) {
+  if (!defaultTemplate || !templates.find(t => t.value === defaultTemplate)) {
+    prompts.push({
+      type: 'list',
+      name: 'templateType',
+      message: '请选择模板',
+      choices: templates,
+    });
+  }
 }
 
 const styleProcessors = [
   { name: 'less', value: 'less' },
   { name: 'css', value: 'css' },
 ];
-async function askStyleProcessor(prompts: Record<string, unknown>[]) {
+async function askStyleProcessor(prompts: Record<string, unknown>[], defaultStyle?: string) {
+  if (!defaultStyle || !styleProcessors.find(s => s.value === defaultStyle))
   prompts.push({
     type: 'list',
     name: 'styleProcessor',
@@ -53,8 +58,9 @@ async function askStyleProcessor(prompts: Record<string, unknown>[]) {
   });
 }
 
-async function askProjectName(prompts: Record<string, unknown>[]) {
-  prompts.push({
+async function askProjectName(prompts: Record<string, unknown>[], defaultProjectName?: string) {
+  if (!defaultProjectName) {
+    prompts.push({
     type: 'input',
     name: 'projectName',
     message: '请输入应用名称！',
@@ -68,6 +74,7 @@ async function askProjectName(prompts: Record<string, unknown>[]) {
       return true;
     },
   });
+  }
 }
 
 export type TemplateType = 'pc' | 'mobile' | 'plugin' | 'monorepo';
@@ -76,15 +83,22 @@ export interface Answer {
   projectName: string;
   templateType: TemplateType;
   useTypescript: boolean;
-  styleProcessor: 'less' | 'scss' | 'css';
+  styleProcessor: 'less' | 'css';
 }
 
-export async function ask() {
+interface AskOpts {
+  projectName?: string;
+  templateType?: string;
+  useTypescript?: boolean;
+  styleProcessor?: string;
+}
+
+export async function ask(opts: AskOpts) {
   const prompts: Record<string, unknown>[] = [];
-  askProjectName(prompts);
-  askTemplate(prompts);
-  askTypescript(prompts);
-  askStyleProcessor(prompts);
+  askProjectName(prompts, opts.projectName);
+  askTemplate(prompts, opts.templateType);
+  askTypescript(prompts, opts.useTypescript);
+  askStyleProcessor(prompts, opts.styleProcessor);
   const answer: Answer = await inquirer.prompt(prompts);
-  return answer;
+  return Object.assign({}, opts, answer);
 }

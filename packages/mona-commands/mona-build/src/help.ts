@@ -10,7 +10,7 @@ export const startCommandUsage = () => {
       header: '可选项',
       optionList: [
         { name: 'help', description: '输出帮助信息', alias: 'h', type: Boolean },
-        { name: 'port', description: '输出当前CLI版本', alias: 'p', type: Boolean },
+        { name: 'port', description: '指定本地服务器端口', alias: 'p', type: Number },
       ],
     }
   ];

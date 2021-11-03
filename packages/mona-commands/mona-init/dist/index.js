@@ -13,7 +13,19 @@ const template_1 = require("./utils/template");
 const common_1 = require("./utils/common");
 const help_1 = require("./help");
 function init() {
-    yargs_1.default.version(false).help(false).alias('h', 'help');
+    yargs_1.default.version(false).help(false).alias('h', 'help')
+        .option('style', {
+        alias: 's',
+        type: 'string'
+    })
+        .option('use-typescript', {
+        alias: 'u',
+        type: 'boolean'
+    })
+        .option('template', {
+        alias: 't',
+        type: 'string'
+    });
     yargs_1.default.command('$0', false, {}, async function (argv) {
         if (argv.help) {
             const helpInfo = (0, help_1.commandUsage)();
@@ -21,8 +33,14 @@ function init() {
             return;
         }
         (0, common_1.printWelcomeMessage)();
+        const askOpts = {
+            projectName: typeof argv._[0] === 'number' ? `${argv._[0]}` : argv._[0],
+            useTypescript: argv.u,
+            styleProcessor: argv.s,
+            templateType: argv.t,
+        };
         // 交互式提问
-        const answer = await (0, ask_1.ask)();
+        const answer = await (0, ask_1.ask)(askOpts);
         const { projectName, templateType, useTypescript, styleProcessor } = answer;
         const appPath = process.cwd();
         const dirPath = path_1.default.resolve(appPath, projectName);

@@ -3,6 +3,13 @@ export interface Answer {
     projectName: string;
     templateType: TemplateType;
     useTypescript: boolean;
-    styleProcessor: 'less' | 'scss' | 'css';
+    styleProcessor: 'less' | 'css';
 }
-export declare function ask(): Promise<Answer>;
+interface AskOpts {
+    projectName?: string;
+    templateType?: string;
+    useTypescript?: boolean;
+    styleProcessor?: string;
+}
+export declare function ask(opts: AskOpts): Promise<AskOpts & Answer>;
+export {};

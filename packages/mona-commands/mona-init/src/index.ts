@@ -9,7 +9,19 @@ import { hasYarn, printWelcomeMessage, printFinishMessage } from './utils/common
 import { commandUsage } from './help';
 
 function init() {
-  yargs.version(false).help(false).alias('h', 'help');
+  yargs.version(false).help(false).alias('h', 'help')
+    .option('style', {
+      alias: 's',
+      type: 'string'
+    })
+    .option('use-typescript', {
+      alias: 'u',
+      type: 'boolean'
+    })
+    .option('template', {
+      alias: 't',
+      type: 'string'
+    })
   yargs.command('$0', false, {}, async function (argv) {
     if (argv.help) {
       const helpInfo = commandUsage();
@@ -19,8 +31,15 @@ function init() {
 
     printWelcomeMessage();
 
+    const askOpts = {
+      projectName: typeof argv._[0] === 'number' ? `${argv._[0]}` : argv._[0] as string,
+      useTypescript: argv.u as boolean,
+      styleProcessor: argv.s as string,
+      templateType: argv.t as string,
+    }
+
     // 交互式提问
-    const answer = await ask();
+    const answer = await ask(askOpts);
     const { projectName, templateType, useTypescript, styleProcessor } = answer;
     const appPath = process.cwd();
     const dirPath = path.resolve(appPath, projectName);
