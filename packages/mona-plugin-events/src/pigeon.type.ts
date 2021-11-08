@@ -33,7 +33,7 @@ interface PigeonOn {
 }
 
 interface PigeonEmit {
-  getInitInfo: (params: InputCallbackParams<string, InitInfo>) => void;
+  getInitInfo: (params?: InputCallbackParams<string, InitInfo>) => void;
   addToInputBoxSafely: (params: InputCallbackParams<string, undefined>) => void;
 }
 
