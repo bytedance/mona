@@ -152,19 +152,27 @@ class ConfigHelper {
                 },
             ],
         });
+        const styleLoader = [
+            {
+                loader: require.resolve('css-loader'),
+                options: {
+                    modules: {
+                        localIdentName: '[local]___[hash:base64:5]'
+                    },
+                },
+            },
+            require.resolve('less-loader'),
+        ];
+        if (!this.options.dev) {
+            styleLoader.unshift(mini_css_extract_plugin_1.default.loader);
+        }
+        else {
+            styleLoader.unshift(require.resolve('style-loader'));
+        }
         // handle style
         rules.push({
             test: /\.(c|le)ss$/i,
-            use: [
-                mini_css_extract_plugin_1.default.loader,
-                {
-                    loader: require.resolve('css-loader'),
-                    options: {
-                        modules: { localIdentName: '[local]___[hash:base64:5]' },
-                    },
-                },
-                require.resolve('less-loader'),
-            ],
+            use: styleLoader,
         });
         // handle assets
         rules.push({
@@ -184,9 +192,6 @@ class ConfigHelper {
     _createPlugins() {
         const EntryMoudleInstance = this.entryModule.module;
         let plugins = [
-            new mini_css_extract_plugin_1.default({
-                filename: '[name].[contenthash:7].css'
-            }),
             EntryMoudleInstance,
             new html_webpack_plugin_1.default({
                 templateContent: `
@@ -214,7 +219,18 @@ class ConfigHelper {
             }),
         ];
         if (this.options.dev) {
-            plugins = [new react_refresh_webpack_plugin_1.default(), ...plugins];
+            plugins = [
+                new react_refresh_webpack_plugin_1.default(),
+                ...plugins
+            ];
+        }
+        else {
+            plugins = [
+                new mini_css_extract_plugin_1.default({
+                    filename: '[name].[contenthash:7].css'
+                }),
+                ...plugins
+            ];
         }
         return plugins;
     }

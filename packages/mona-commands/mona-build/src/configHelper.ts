@@ -173,19 +173,27 @@ class ConfigHelper {
       ],
     });
 
+    const styleLoader = [
+      {
+        loader: require.resolve('css-loader'),
+        options: {
+          modules: {
+            localIdentName: '[local]___[hash:base64:5]'
+          },
+        },
+      },
+      require.resolve('less-loader'),
+    ]
+    if (!this.options.dev) {
+      styleLoader.unshift(MiniCssExtractPlugin.loader)
+    } else {
+      styleLoader.unshift(require.resolve('style-loader'))
+    }
+
     // handle style
     rules.push({
       test: /\.(c|le)ss$/i,
-      use: [
-        MiniCssExtractPlugin.loader,
-        {
-          loader: require.resolve('css-loader'),
-          options: {
-            modules: { localIdentName: '[local]___[hash:base64:5]' },
-          },
-        },
-        require.resolve('less-loader'),
-      ],
+      use: styleLoader,
     });
 
     // handle assets
@@ -208,9 +216,6 @@ class ConfigHelper {
   private _createPlugins() {
     const EntryMoudleInstance = this.entryModule.module;
     let plugins = [
-      new MiniCssExtractPlugin({
-        filename: '[name].[contenthash:7].css'
-      }),
       EntryMoudleInstance,
       new HtmlWebpackPlugin({
         templateContent: `
@@ -239,7 +244,17 @@ class ConfigHelper {
     ]
 
     if (this.options.dev) {
-      plugins = [new ReactRefreshWebpackPlugin(), ...plugins]
+      plugins = [
+        new ReactRefreshWebpackPlugin(),
+        ...plugins
+      ]
+    } else {
+      plugins = [
+        new MiniCssExtractPlugin({
+          filename: '[name].[contenthash:7].css'
+        }),
+        ...plugins
+      ]
     }
     return plugins;
   }
