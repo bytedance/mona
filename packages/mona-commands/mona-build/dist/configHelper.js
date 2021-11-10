@@ -12,7 +12,9 @@ const react_refresh_webpack_plugin_1 = __importDefault(require("@pmmmwh/react-re
 const html_webpack_plugin_1 = __importDefault(require("html-webpack-plugin"));
 const css_minimizer_webpack_plugin_1 = __importDefault(require("css-minimizer-webpack-plugin"));
 const terser_webpack_plugin_1 = __importDefault(require("terser-webpack-plugin"));
+const loader_utils_1 = __importDefault(require("loader-utils"));
 const EntryModule_1 = __importDefault(require("./EntryModule"));
+const md5_1 = require("./utils/md5");
 exports.DEFAULT_PORT = '9999';
 exports.DEAULT_HOST = 'localhost';
 const HTML_HANDLE_TAG = 'createdByMonaCli';
@@ -27,9 +29,24 @@ const DEFAULT_PROJECT_CONFIG = {
 const DEFAULT_APP_CONFIG = {
     pages: []
 };
+function createUniqueId() {
+    const random = () => Number(Math.random().toString().substr(2)).toString(36);
+    const arr = [String(Date.now())];
+    function createId() {
+        var num = random();
+        arr.push(num);
+    }
+    var i = 0;
+    while (i < 4) {
+        createId();
+        i++;
+    }
+    return (0, md5_1.hexMD5)(arr.join(','));
+}
 class ConfigHelper {
     constructor(options) {
         this.options = options;
+        this.buildId = `_${createUniqueId()}`;
         this.cwd = process.cwd();
         this.projectConfig = Object.assign(Object.assign({}, DEFAULT_PROJECT_CONFIG), this._readConfig('mona.config'));
         this.appConfig = Object.assign(Object.assign({}, DEFAULT_APP_CONFIG), this._readConfig('app.config'));
@@ -152,19 +169,54 @@ class ConfigHelper {
                 },
             ],
         });
+        const styleLoader = [
+            {
+                loader: require.resolve('css-loader'),
+                options: {
+                    modules: {
+                        localIdentName: '[local]___[hash:base64:5]',
+                        getLocalIdent: (loaderContext, localIdentName, localName, options) => {
+                            // 配合postcss-pre-selector插件
+                            if (localName === this.buildId) {
+                                return localName;
+                            }
+                            if (!options.context) {
+                                options.context = loaderContext.rootContext;
+                            }
+                            const request = path_1.default
+                                .relative(options.context, loaderContext.resourcePath)
+                                .replace(/\\/g, '/');
+                            options.content = `${options.hashPrefix + request}+${localName}`;
+                            localIdentName = localIdentName.replace(/\[local\]/gi, localName);
+                            const hash = loader_utils_1.default.interpolateName(loaderContext, localIdentName, options);
+                            return hash;
+                        }
+                    },
+                },
+            },
+            {
+                loader: require.resolve('postcss-loader'),
+                options: {
+                    postcssOptions: {
+                        plugins: [
+                            require.resolve('postcss-import'),
+                            [path_1.default.join(__dirname, './plugins/postcss-pre-selector.js'), { selector: `#${this.buildId}` }]
+                        ]
+                    }
+                }
+            },
+            require.resolve('less-loader'),
+        ];
+        if (!this.options.dev) {
+            styleLoader.unshift(mini_css_extract_plugin_1.default.loader);
+        }
+        else {
+            styleLoader.unshift(require.resolve('style-loader'));
+        }
         // handle style
         rules.push({
             test: /\.(c|le)ss$/i,
-            use: [
-                mini_css_extract_plugin_1.default.loader,
-                {
-                    loader: require.resolve('css-loader'),
-                    options: {
-                        modules: { localIdentName: '[local]___[hash:base64:5]' },
-                    },
-                },
-                require.resolve('less-loader'),
-            ],
+            use: styleLoader,
         });
         // handle assets
         rules.push({
@@ -184,15 +236,12 @@ class ConfigHelper {
     _createPlugins() {
         const EntryMoudleInstance = this.entryModule.module;
         let plugins = [
-            new mini_css_extract_plugin_1.default({
-                filename: '[name].[contenthash:7].css'
-            }),
             EntryMoudleInstance,
             new html_webpack_plugin_1.default({
                 templateContent: `
           <!-- ${HTML_HANDLE_TAG} -->
           <!DOCTYPE html>
-          <html>
+          <html id="${this.buildId}">
             <head>
               <meta charset="utf-8">
               <title>Mona Plugin</title>
@@ -214,7 +263,18 @@ class ConfigHelper {
             }),
         ];
         if (this.options.dev) {
-            plugins = [new react_refresh_webpack_plugin_1.default(), ...plugins];
+            plugins = [
+                new react_refresh_webpack_plugin_1.default(),
+                ...plugins
+            ];
+        }
+        else {
+            plugins = [
+                new mini_css_extract_plugin_1.default({
+                    filename: '[name].[contenthash:7].css'
+                }),
+                ...plugins
+            ];
         }
         return plugins;
     }

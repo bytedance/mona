@@ -8,7 +8,9 @@ import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CssMiniminzerPlugin from 'css-minimizer-webpack-plugin';
 import TerserWebpackPlugin from 'terser-webpack-plugin';
+import loaderUtils from 'loader-utils';
 import EntryModule from './EntryModule';
+import { hexMD5 } from './utils/md5';
 
 export const DEFAULT_PORT = '9999';
 export const DEAULT_HOST = 'localhost';
@@ -30,6 +32,22 @@ interface ConfigHelperOptions {
   dev: boolean;
   port: string;
 }
+
+function createUniqueId() {
+  const random = () => Number(Math.random().toString().substr(2)).toString(36)
+  const arr = [String(Date.now())];
+  function createId() {
+      var num = random();
+      arr.push(num)
+  }
+  var i = 0;
+  while(i < 4) {
+      createId();
+      i++;
+  }
+  return hexMD5(arr.join(','));
+}
+
 class ConfigHelper {
   cwd: string;
   projectConfig: ProjectConfig;
@@ -37,9 +55,11 @@ class ConfigHelper {
   entryPath: string;
   entryModule: EntryModule;
   options: ConfigHelperOptions;
+  buildId: string
 
   constructor(options: ConfigHelperOptions) {
     this.options = options;
+    this.buildId = `_${createUniqueId()}`;
     this.cwd = process.cwd();
     this.projectConfig = { ...DEFAULT_PROJECT_CONFIG, ...this._readConfig<ProjectConfig>('mona.config') };
     this.appConfig = { ...DEFAULT_APP_CONFIG, ...this._readConfig<AppConfig>('app.config') };
@@ -173,19 +193,64 @@ class ConfigHelper {
       ],
     });
 
+    const styleLoader = [
+      {
+        loader: require.resolve('css-loader'),
+        options: {
+          modules: {
+            localIdentName: '[local]___[hash:base64:5]',
+            getLocalIdent: (loaderContext: any, localIdentName: string, localName: string, options: any) => {
+              // 配合postcss-pre-selector插件
+              if (localName === this.buildId) {
+                return localName;
+              }
+
+              if (!options.context) {
+                options.context = loaderContext.rootContext;
+              }
+
+              const request = path
+                .relative(options.context, loaderContext.resourcePath)
+                .replace(/\\/g, '/');
+
+              options.content = `${options.hashPrefix + request}+${localName}`;
+
+              localIdentName = localIdentName.replace(/\[local\]/gi, localName);
+
+              const hash = loaderUtils.interpolateName(
+                loaderContext,
+                localIdentName,
+                options
+              );
+
+              return hash
+            }
+          },
+        },
+      },
+      {
+        loader: require.resolve('postcss-loader'),
+        options: {
+          postcssOptions: {
+            plugins: [
+              require.resolve('postcss-import'),
+              [path.join(__dirname, './plugins/postcss-pre-selector.js'), { selector: `#${this.buildId}` }]
+            ]
+          }
+        }
+      },
+      require.resolve('less-loader'),
+    ]
+    if (!this.options.dev) {
+      styleLoader.unshift(MiniCssExtractPlugin.loader)
+    } else {
+      styleLoader.unshift(require.resolve('style-loader'))
+    }
+
     // handle style
     rules.push({
       test: /\.(c|le)ss$/i,
-      use: [
-        MiniCssExtractPlugin.loader,
-        {
-          loader: require.resolve('css-loader'),
-          options: {
-            modules: { localIdentName: '[local]___[hash:base64:5]' },
-          },
-        },
-        require.resolve('less-loader'),
-      ],
+      use: styleLoader,
     });
 
     // handle assets
@@ -208,15 +273,12 @@ class ConfigHelper {
   private _createPlugins() {
     const EntryMoudleInstance = this.entryModule.module;
     let plugins = [
-      new MiniCssExtractPlugin({
-        filename: '[name].[contenthash:7].css'
-      }),
       EntryMoudleInstance,
       new HtmlWebpackPlugin({
         templateContent: `
           <!-- ${HTML_HANDLE_TAG} -->
           <!DOCTYPE html>
-          <html>
+          <html id="${this.buildId}">
             <head>
               <meta charset="utf-8">
               <title>Mona Plugin</title>
@@ -239,7 +301,17 @@ class ConfigHelper {
     ]
 
     if (this.options.dev) {
-      plugins = [new ReactRefreshWebpackPlugin(), ...plugins]
+      plugins = [
+        new ReactRefreshWebpackPlugin(),
+        ...plugins
+      ]
+    } else {
+      plugins = [
+        new MiniCssExtractPlugin({
+          filename: '[name].[contenthash:7].css'
+        }),
+        ...plugins
+      ]
     }
     return plugins;
   }
