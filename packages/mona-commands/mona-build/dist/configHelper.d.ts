@@ -13,6 +13,7 @@ declare class ConfigHelper {
     entryPath: string;
     entryModule: EntryModule;
     options: ConfigHelperOptions;
+    buildId: string;
     constructor(options: ConfigHelperOptions);
     generate(): any;
     private _createOptimization;
