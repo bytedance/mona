@@ -15,6 +15,7 @@ const emptyHandler = {
   },
   set: () => false
 };
+
 const emptyObj = new Proxy({}, emptyHandler);
 
 
