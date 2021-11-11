@@ -1,1 +1,0 @@
-{"version":3,"file":"EntryPlugin.js","sourceRoot":"","sources":["../../src/plugins/EntryPlugin.ts"],"names":[],"mappings":";;AAEA,MAAM,WAAW;IACf,KAAK,CAAC,QAAkB;QACtB,QAAQ,CAAC,KAAK,CAAC,WAAW,CAAC,GAAG,CAAC,aAAa,EAAE;YAC5C,OAAO,CAAC,GAAG,CAAC,uBAAuB,CAAC,CAAA;QACtC,CAAC,CAAC,CAAA;IACJ,CAAC;CACF;AAED,kBAAe,WAAW,CAAC"}
