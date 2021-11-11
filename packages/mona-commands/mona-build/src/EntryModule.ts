@@ -1,6 +1,5 @@
 import path from 'path';
-import VirtualModulesPlugin from 'webpack-virtual-modules';
-import { WebpackPluginInstance } from 'webpack';
+import VirtualModulesPlugin from './plugins/VirtualModulesPlugin';
 import ConfigHelper from './configHelper';
 import { readConfig } from '@bytedance/mona-shared';
 import { PageConfig } from '@bytedance/mona';
@@ -10,7 +9,7 @@ export const MONA_PUBLIC_PATH = '__mona_public_path__'
 class EntryModule {
   configHelper: ConfigHelper;
   name: string;
-  module: WebpackPluginInstance;
+  module: VirtualModulesPlugin;
 
   constructor(configHelper: ConfigHelper) {
     this.configHelper = configHelper;
@@ -31,12 +30,22 @@ class EntryModule {
     const module: Record<string, string> = {};
     const publicPathVirtualPath = path.join(entryPath, '..', 'public-path.js')
     module[publicPathVirtualPath] = `__webpack_public_path__ = window.${MONA_PUBLIC_PATH} || '/';`
-    const virtualPath = EntryModule.extendEntryName(entryPath);
+    const virtualPath = path.join(entryPath, '..', 'app.entry.js')
     module[virtualPath] = this._generatePluginEntryCode(entryPath);
     this.name = virtualPath;
 
 
-    return new VirtualModulesPlugin(module) as unknown as WebpackPluginInstance;
+    return new VirtualModulesPlugin(module);
+  }
+
+  updateModule() {
+    // update config first
+    this.configHelper.readAllConfig();
+
+    // update module
+    const code = this._generatePluginEntryCode(this.configHelper.entryPath);
+    const virtualPath = this.name;
+    this.module.writeModule(virtualPath, code);
   }
 
   getPageTitle(page: string) {
@@ -46,7 +55,7 @@ class EntryModule {
   }
 
   private _generatePluginEntryCode(filename: string) {
-    const pages = (this.configHelper.appConfig.pages || []) as string[];
+    const pages = Array.from(new Set((this.configHelper.appConfig.pages || []) as string[]));
     let routesCode = pages.map((page, index) => `import Page${index} from './${page}';`).join('');
     routesCode += `const routes = [${pages
       .map((page, index) => `{ path: '${page}', component: Page${index}, title: '${this.getPageTitle(page)}' }`)

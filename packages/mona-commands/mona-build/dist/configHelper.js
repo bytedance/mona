@@ -13,8 +13,8 @@ const html_webpack_plugin_1 = __importDefault(require("html-webpack-plugin"));
 const css_minimizer_webpack_plugin_1 = __importDefault(require("css-minimizer-webpack-plugin"));
 const terser_webpack_plugin_1 = __importDefault(require("terser-webpack-plugin"));
 const loader_utils_1 = __importDefault(require("loader-utils"));
-const EntryModule_1 = __importDefault(require("./EntryModule"));
 const md5_1 = require("./utils/md5");
+const ConfigHMRPlugin_1 = __importDefault(require("./plugins/ConfigHMRPlugin"));
 exports.DEFAULT_PORT = '9999';
 exports.DEAULT_HOST = 'localhost';
 const HTML_HANDLE_TAG = 'createdByMonaCli';
@@ -45,15 +45,21 @@ function createUniqueId() {
 }
 class ConfigHelper {
     constructor(options) {
+        this.projectConfig = {};
+        this.appConfig = {};
+        this.entryPath = '';
         this.options = options;
         this.buildId = `_${createUniqueId()}`;
         this.cwd = process.cwd();
+        this.readAllConfig();
+        // this.entryModule = new EntryModule(this);
+    }
+    readAllConfig() {
         this.projectConfig = Object.assign(Object.assign({}, DEFAULT_PROJECT_CONFIG), this._readConfig('mona.config'));
         this.appConfig = Object.assign(Object.assign({}, DEFAULT_APP_CONFIG), this._readConfig('app.config'));
         this.entryPath = (0, mona_shared_1.searchScriptFile)(path_1.default.resolve(this.cwd, this.projectConfig.input));
-        this.entryModule = new EntryModule_1.default(this);
-        if (options.port) {
-            this.projectConfig.dev = Object.assign(Object.assign({}, this.projectConfig.dev), { port: options.port });
+        if (this.options.port) {
+            this.projectConfig.dev = Object.assign(Object.assign({}, this.projectConfig.dev), { port: this.options.port });
         }
     }
     generate() {
@@ -126,7 +132,7 @@ class ConfigHelper {
         }
     }
     _createEntry() {
-        return this.entryModule.name;
+        return path_1.default.join(this.entryPath, '..', 'app.entry.js');
     }
     _createMode() {
         return this.options.dev ? 'development' : 'production';
@@ -176,7 +182,7 @@ class ConfigHelper {
                     modules: {
                         localIdentName: '[local]___[hash:base64:5]',
                         getLocalIdent: (loaderContext, localIdentName, localName, options) => {
-                            // 配合postcss-pre-selector插件
+                            // 配合PostcssPreSelector插件
                             if (localName === this.buildId) {
                                 return localName;
                             }
@@ -200,7 +206,7 @@ class ConfigHelper {
                     postcssOptions: {
                         plugins: [
                             require.resolve('postcss-import'),
-                            [path_1.default.join(__dirname, './plugins/postcss-pre-selector.js'), { selector: `#${this.buildId}` }]
+                            [path_1.default.join(__dirname, './plugins/PostcssPreSelector.js'), { selector: `#${this.buildId}` }]
                         ]
                     }
                 }
@@ -234,9 +240,14 @@ class ConfigHelper {
         return rules;
     }
     _createPlugins() {
-        const EntryMoudleInstance = this.entryModule.module;
+        // const EntryMoudleInstance = this.entryModule.module;
         let plugins = [
-            EntryMoudleInstance,
+            // EntryMoudleInstance,
+            new ConfigHMRPlugin_1.default(this),
+            new mini_css_extract_plugin_1.default({
+                filename: '[name].[contenthash:7].css'
+            }),
+            // EntryMoudleInstance,
             new html_webpack_plugin_1.default({
                 templateContent: `
           <!-- ${HTML_HANDLE_TAG} -->

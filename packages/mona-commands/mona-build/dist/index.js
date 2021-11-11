@@ -47,7 +47,7 @@ function build({ dev }) {
             // 调用webpack进行打包
             const webpackCompiler = (0, webpack_1.default)(webpackConfig);
             if (dev) {
-                const devServerOptions = {
+                const devServer = new webpack_dev_server_1.default({
                     static: {
                         directory: path_1.default.join(configHelper.cwd, configHelper.projectConfig.output),
                     },
@@ -60,9 +60,8 @@ function build({ dev }) {
                     compress: true,
                     port,
                     host: configHelper_1.DEAULT_HOST,
-                    allowedHosts: 'all'
-                };
-                const devServer = new webpack_dev_server_1.default(devServerOptions, webpackCompiler);
+                    allowedHosts: 'all',
+                }, webpackCompiler);
                 devServer.startCallback(() => {
                     console.log(`starting server on http://${configHelper_1.DEAULT_HOST}:${port}`);
                 });

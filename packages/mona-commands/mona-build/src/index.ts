@@ -27,7 +27,7 @@ function build({ dev }: { dev: boolean }) {
       const webpackCompiler = webpack(webpackConfig);
 
       if (dev) {
-        const devServerOptions = {
+        const devServer = new WebpackDevServer({
           static: {
             directory: path.join(configHelper.cwd, configHelper.projectConfig.output),
           },
@@ -40,9 +40,8 @@ function build({ dev }: { dev: boolean }) {
           compress: true,
           port,
           host: DEAULT_HOST,
-          allowedHosts: 'all'
-        }
-        const devServer = new WebpackDevServer(devServerOptions, webpackCompiler as any);
+          allowedHosts: 'all',
+        }, webpackCompiler as any);
 
         devServer.startCallback(() => {
           console.log(`starting server on http://${DEAULT_HOST}:${port}`);

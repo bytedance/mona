@@ -25,4 +25,4 @@ module.exports = (opts) => {
     };
 };
 module.exports.postcss = true;
-//# sourceMappingURL=postcss-pre-selector.js.map
+//# sourceMappingURL=PostcssPreSelector.js.map
