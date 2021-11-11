@@ -1,5 +1,4 @@
 "use strict";
-// this is postcss plugin for create scoped css for mona plugin
 Object.defineProperty(exports, "__esModule", { value: true });
 const processed = Symbol('processed');
 const reg = /(?:^|[ ]|,)(html|body)(?:$|[ ]|,)/;
@@ -26,4 +25,4 @@ module.exports = (opts) => {
     };
 };
 module.exports.postcss = true;
-//# sourceMappingURL=postcss-pre-selector.js.map
+//# sourceMappingURL=PostcssPreSelector.js.map

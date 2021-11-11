@@ -1,3 +1,4 @@
+// this is postcss plugin for create scoped css for mona plugin
 import { Rule } from 'postcss';
 const processed = Symbol('processed')
 
