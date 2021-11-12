@@ -42,7 +42,7 @@ export default createAppConfig({
 |  ----  | ----  | ---- | ---- | ---- |
 | pages  | 页面路径 | 是 | string[] | - |
 
-
+默认`pages`的第一项为首页
 ### createPageConfig
 创建页面配置，需在每个页面目录的`page.config.ts`中使用
 

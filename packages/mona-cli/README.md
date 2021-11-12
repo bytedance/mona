@@ -84,6 +84,22 @@ mona publish
 
 详细配置见下面的配置介绍
 
+### svg
+svg资源会使用`@svgr/webpack`处理成React组件，可以直接通过组件的方式来引入svg图片，示例
+```js
+import Logo from '@/common/imgs/logo.svg';
+
+const App = () => {
+  return (
+    <div>
+      <Logo className={styles.logo} />
+    </div>
+  )
+}
+
+export default App
+```
+
 ## 配置
 ### 项目配置
 项目配置文件为项目根目录下的`mona.config.js`，配置文件内容如下：
@@ -121,6 +137,9 @@ export default createAppConfig({
 |  参数   | 说明  | 是否必填 | 类型 | 默认值 |
 |  ----  | ----  | ---- | ---- | ---- |
 | pages  | 页面路径 | 是 | string[] | - |
+
+默认`pages`的第一项为首页
+
 ### 页面配置
 页面配置文件为每个页面目录下的`page.config.js`，配置文件内容如下：
 ```js
