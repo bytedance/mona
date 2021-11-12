@@ -202,6 +202,7 @@ class ConfigHelper {
         loader: require.resolve('css-loader'),
         options: {
           modules: {
+            auto: (filename: string) => /\.module\.\w+$/i.test(filename),
             localIdentName: '[local]___[hash:base64:5]',
             getLocalIdent: (loaderContext: any, localIdentName: string, localName: string, options: any) => {
               // 配合PostcssPreSelector插件

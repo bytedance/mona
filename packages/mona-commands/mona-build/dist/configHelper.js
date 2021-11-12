@@ -180,6 +180,7 @@ class ConfigHelper {
                 loader: require.resolve('css-loader'),
                 options: {
                     modules: {
+                        auto: (filename) => /\.module\.\w+$/i.test(filename),
                         localIdentName: '[local]___[hash:base64:5]',
                         getLocalIdent: (loaderContext, localIdentName, localName, options) => {
                             // 配合PostcssPreSelector插件

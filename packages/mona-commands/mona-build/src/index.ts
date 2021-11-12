@@ -47,7 +47,7 @@ function build({ dev }: { dev: boolean }) {
           console.log(`starting server on http://${DEAULT_HOST}:${port}`);
         });
       } else {
-        console.log('start bundling');
+        console.log(chalk.cyan('开始打包'))
         webpackCompiler.run((error, stats) => {
           if (error) {
             throw error;
@@ -55,23 +55,26 @@ function build({ dev }: { dev: boolean }) {
 
           const info = stats?.toJson();
           if (stats?.hasErrors()) {
-            info?.errors?.forEach((err: any) => {
-              console.error(err);
+            info?.errors?.forEach(err => {
+              console.log(chalk.red(err.message));
             });
             process.exit(1);
           }
-          if (stats?.hasWarnings) {
-            console.warn(info?.warnings?.join('\n'));
+          if (stats?.hasWarnings()) {
+            info?.warnings?.forEach(w => {
+              console.log(chalk.yellow(w.message));
+            });
           }
           Object.keys(info?.assetsByChunkName || {}).forEach((chunkName) => {
             const assets = (info?.assetsByChunkName || {})[chunkName];
-            console.info(`Chunk: ${chunkName}`);
+            console.info(chalk.green(`Chunk: ${chunkName}`));
             if (Array.isArray(assets)) {
-              assets.forEach(asset => console.log(` file: ${asset}\n`))
+              assets.forEach(asset => console.log(chalk.green(` file: ${asset}`)))
             }
             console.log('')
           })
-          console.log('bundle finish');
+          console.log(chalk.green('打包完成'));
+          process.exit(0)
         });
       }
     } catch (err: any) {
