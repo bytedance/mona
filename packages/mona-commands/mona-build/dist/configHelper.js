@@ -232,7 +232,9 @@ class ConfigHelper {
         });
         rules.push({
             test: /\.svg$/i,
-            type: 'asset/inline',
+            use: [
+                { loader: require.resolve('@svgr/webpack') },
+            ]
         });
         rules.push({
             test: /\.(ttf|eot|woff|woff2)$/i,

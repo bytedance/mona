@@ -8,7 +8,7 @@ module.exports = (opts?: { selector: string }) => {
   return {
     postcssPlugin: 'postcss-pre-selector',
     Rule (rule: Rule & { [index: symbol]: boolean }) {
-      if (!rule[processed]) {
+      if (!rule[processed] && rule?.parent?.type !== 'atrule') {
         const s = opts?.selector || ''
         rule.selector = `${s ? `${s} ` : ''}${rule.selector}`;
         rule[processed] = true;

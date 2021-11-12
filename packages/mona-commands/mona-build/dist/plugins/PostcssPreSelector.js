@@ -6,7 +6,8 @@ module.exports = (opts) => {
     return {
         postcssPlugin: 'postcss-pre-selector',
         Rule(rule) {
-            if (!rule[processed]) {
+            var _a;
+            if (!rule[processed] && ((_a = rule === null || rule === void 0 ? void 0 : rule.parent) === null || _a === void 0 ? void 0 : _a.type) !== 'atrule') {
                 const s = (opts === null || opts === void 0 ? void 0 : opts.selector) || '';
                 rule.selector = `${s ? `${s} ` : ''}${rule.selector}`;
                 rule[processed] = true;
