@@ -4,6 +4,9 @@
   "version": "0.0.1",
   "description": "mona",
   "main": "",
+  "scripts": {
+    "build": "yarn workspaces run build"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/bytedance/mona"
