@@ -1,9 +1,10 @@
 name: Mona CI
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'the reason to publish'
+        required: true
 
 jobs:
   build:
