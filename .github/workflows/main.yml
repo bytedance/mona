@@ -53,8 +53,7 @@ jobs:
     strategy:
       matrix:
         node-version: [ 12.22.0 ]
-        artifact-name: mona-build
-        
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
