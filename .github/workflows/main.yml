@@ -125,6 +125,7 @@ jobs:
 
       # build and test
       - name: Build Packages
+        if: startsWith( env.commitmsg , 'chore(release):' ) && steps.tag_check.outputs.exists_tag == 'false'
         run: yarn build
 
       # git stash
