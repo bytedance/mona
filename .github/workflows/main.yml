@@ -120,7 +120,7 @@ jobs:
       # install dependencies
       - name: Install Lerna
         if: startsWith( env.commitmsg , 'chore(release):' ) && steps.tag_check.outputs.exists_tag == 'false'
-        run: yarn add lerna
+        run: yarn add lerna -W
       - name: Install Dependencies
         if: startsWith( env.commitmsg , 'chore(release):' ) && steps.tag_check.outputs.exists_tag == 'false'
         run: yarn bootstrap
