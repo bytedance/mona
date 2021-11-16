@@ -5,7 +5,9 @@
   "description": "mona",
   "main": "",
   "scripts": {
-    "build": "yarn workspaces run build",
+    "build": "lerna run build",
+    "clean": "lerna clean",
+    "bootstrap": "lerna bootstrap",
     "test": "echo 'test'"
   },
   "repository": {
