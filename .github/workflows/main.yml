@@ -1,0 +1,62 @@
+name: Mona CI
+on:
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'the reason to publish'
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [ 12.22.0 ]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        registry-url: 'https://registry.npmjs.org'
+        node-version: ${{ matrix.node-version }}
+        
+    - name: Install Dependencies
+      run: yarn install
+
+    - name: Build Packages
+      run: yarn build
+
+    - name: Run Test Cases
+      run: yarn test
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/')
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Build Changelog
+      id: github_release
+      uses: mikepenz/release-changelog-builder-action@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create Release
+      uses: actions/create-release@v1
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: ${{ github.ref }}
+        body: ${{steps.github_release.outputs.changelog}}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    # - name: Publish Packages
+    #   env:
+    #     NODE_AUTH_TOKEN: ${{ secrets.YARN_TOKEN }}
+
+    
+      
+
