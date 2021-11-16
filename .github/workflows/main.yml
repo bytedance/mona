@@ -29,6 +29,15 @@ jobs:
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # login npm
+      - name: Authenticate with Registry
+        run: |
+          npm set registry "http://registry.npmjs.org"
+          npm set //registry.npmjs.org/:_authToken $NPM_TOKEN  
+          npm whoami
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       
       # get commit message
       - name: Get Commit Message
@@ -133,12 +142,12 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       # generate changelog auto
-      - name: Build Changelog
-        id: github_release
-        if: startsWith( env.commitmsg , 'chore(release):' ) && steps.tag_check.outputs.exists_tag == 'false' && github.event.pull_request.merged == true
-        uses: mikepenz/release-changelog-builder-action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Build Changelog
+      #   id: github_release
+      #   if: startsWith( env.commitmsg , 'chore(release):' ) && steps.tag_check.outputs.exists_tag == 'false' && github.event.pull_request.merged == true
+      #   uses: mikepenz/release-changelog-builder-action@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Create relase when event is PR
       - name: Create Release
@@ -150,7 +159,8 @@ jobs:
         with:
           tag_name: v${{ env.CURRENT_VERSION }}
           release_name: ${{ github.event.pull_request.title }}
-          body: ${{steps.github_release.outputs.changelog}}
+          body: |
+            ${{ github.event.pull_request.body }}
           draft: false
           prerelease: false
 
