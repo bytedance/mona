@@ -8,7 +8,10 @@
     "build": "lerna run build",
     "clean": "lerna clean",
     "bootstrap": "lerna bootstrap",
-    "test": "echo 'test'"
+    "test": "echo 'test'",
+    "v": "yarn v:lerna && yarn v:git",
+    "v:lerna": "lerna version ${npm_config_lerna_version} --exact --no-git-tag-version --force-publish --yes",
+    "v:git": "git add . && git commit -m \"chore(release): publish ${npm_config_lerna_version}\""
   },
   "repository": {
     "type": "git",
