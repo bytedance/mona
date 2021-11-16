@@ -133,10 +133,13 @@ jobs:
         if: startsWith( env.commitmsg , 'chore(release):' ) && steps.tag_check.outputs.exists_tag == 'false'
         run: |
           if [ '${{ github.event_name }}' == 'pull_request' ] ; then
-            yarn lerna publish --yes
+            yarn lerna publish from-package --yes
           elif [ '${{ github.event_name }}' == 'push' ] ; then
-            yarn lerna publish --dist-tag ${{ env.disttag }} --yes
+            yarn lerna publish from-package --dist-tag ${{ env.disttag }} --yes
           fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       # generate changelog auto
       # - name: Build Changelog
@@ -151,6 +154,8 @@ jobs:
         id: create_release
         if: startsWith( env.commitmsg , 'chore(release):' ) && steps.tag_check.outputs.exists_tag == 'false' && github.event.pull_request.merged == true
         uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: v${{ env.CURRENT_VERSION }}
           release_name: ${{ github.event.pull_request.title }}
@@ -158,8 +163,6 @@ jobs:
             ${{ github.event.pull_request.body }}
           draft: false
           prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Comment in PR
         uses: actions/github-script@0.8.0
