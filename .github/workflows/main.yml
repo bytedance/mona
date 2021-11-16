@@ -1,61 +1,120 @@
 name: Mona CI
 on:
-  workflow_dispatch:
-    inputs:
-      reason:
-        description: 'the reason to publish'
-        required: true
+  push:
+    branches:
+      - main
+      
+  pull_request:
+    branches:
+      - main
+    types: [closed]
 
 jobs:
-  build:
+  # build and test mona
+  # build:
+  #   runs-on: ubuntu-latest
+
+  #   strategy:
+  #     matrix:
+  #       node-version: [ 12.22.0 ]
+  #       artifact-name: mona-build
+
+  #   steps:
+  #   - uses: actions/checkout@v2
+
+  #   - name: Use Node.js ${{ matrix.node-version }}
+  #     uses: actions/setup-node@v2
+  #     with:
+  #       registry-url: 'https://registry.npmjs.org'
+  #       node-version: ${{ matrix.node-version }}
+        
+  #   - name: Install Dependencies
+  #     run: yarn install
+
+  #   - name: Build Packages
+  #     run: yarn build
+
+  #   - name: Run Test Cases
+  #     run: yarn test
+
+  #   - name: Upload Artifact
+  #     uses: actions/upload-artifact@v2
+  #     with:
+  #       name: ${{ matrix.artifact-name }}
+  #       path: |
+  #         .
+  #         !node_modules
+  
+  publish:
+    # needs: build
+
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
         node-version: [ 12.22.0 ]
+        artifact-name: mona-build
+      
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    steps:
-    - uses: actions/checkout@v2
+      - name: Get Commit Message
+        run: |
+          COMMIT_MESSAGE=$(git log --format=%s -n 1)
+          echo "commitmsg=${COMMIT_MESSAGE}" >> $GITHUB_ENV
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
-      with:
-        registry-url: 'https://registry.npmjs.org'
-        node-version: ${{ matrix.node-version }}
+      - name: Show Commit Message
+        run: echo "$commitmsg"
+
+    # - name: Use Node.js ${{ matrix.node-version }}
+    #   uses: actions/setup-node@v2
+    #   with:
+    #     registry-url: 'https://registry.npmjs.org'
+    #     node-version: ${{ matrix.node-version }}
+
+    # - name: Make Publish Directory
+    #   run: |
+    #     mkdir -p ${{ matrix.artifact-name }}
+    #     cd ${{ matrix.artifact-name }}
+
+    # - name: Download Artifact
+    #   uses: actions/download-artifact@v2
+    #   with: 
+    #     name: ${{ matrix.artifact-name }}
         
-    - name: Install Dependencies
-      run: yarn install
-
-    - name: Build Packages
-      run: yarn build
-
-    - name: Run Test Cases
-      run: yarn test
-
-  release:
-    if: startsWith(github.ref, 'refs/tags/')
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Build Changelog
-      id: github_release
-      uses: mikepenz/release-changelog-builder-action@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Create Release
-      uses: actions/create-release@v1
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: ${{ github.ref }}
-        body: ${{steps.github_release.outputs.changelog}}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    # - name: Publish Packages
+    # - name: Authenticate NPM
+    #   run: |
+    #     npm logout
+    #     echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
+    #     npm whoami
     #   env:
-    #     NODE_AUTH_TOKEN: ${{ secrets.YARN_TOKEN }}
+    #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+    # - name: Publish Packages To NPM
+    #   run: |
+    #     npx lerna publish --yes --message 'chore: release new versions'
+
+  # release:
+  #   needs: [build, publish]
+  #   if: startsWith(github.ref, 'refs/tags/')
+
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #   - name: Build Changelog
+  #     id: github_release
+  #     uses: mikepenz/release-changelog-builder-action@v1
+  #     env:
+  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  #   - name: Create Release
+  #     uses: actions/create-release@v1
+  #     with:
+  #       tag_name: ${{ github.ref }}
+  #       release_name: ${{ github.ref }}
+  #       body: ${{steps.github_release.outputs.changelog}}
+  #     env:
+  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     
       
