@@ -22,5 +22,6 @@
   "workspaces": [
     "packages/*",
     "packages/mona-commands/*"
-  ]
+  ],
+  "packageManager": "yarn@1.22.4"
 }
