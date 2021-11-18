@@ -30,7 +30,7 @@ export const commandUsage = (cmds: CommandInfo[]) => {
 
 // 判断是否有yarn
 let _hasYarn: null | boolean = null;
-function hasYarn() {
+export function hasYarn() {
   if (_hasYarn !== null) {
     return _hasYarn;
   }
