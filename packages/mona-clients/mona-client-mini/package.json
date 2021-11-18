@@ -12,5 +12,11 @@
     "mona"
   ],
   "author": "zhangxiaowei.chris@bytedance.com",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "react-reconciler": "^0.26.2"
+  },
+  "devDependencies": {
+    "@types/react-reconciler": "^0.26.4"
+  }
 }
