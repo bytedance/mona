@@ -1,0 +1,16 @@
+{
+  "name": "@bytedance/mona-client-web",
+  "version": "0.0.1",
+  "description": "web for mona",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "rm -rf ./dist && tsc -b",
+    "start": "tsc -b -w"
+  },
+  "keywords": [
+    "web",
+    "mona"
+  ],
+  "author": "zhangxiaowei.chris@bytedance.com",
+  "license": "MIT"
+}

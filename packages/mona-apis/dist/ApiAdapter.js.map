@@ -1,0 +1,1 @@
+{"version":3,"file":"ApiAdapter.js","sourceRoot":"","sources":["../src/ApiAdapter.ts"],"names":[],"mappings":"AAKA;IAIE,oBAAY,EAAqB;YAAnB,GAAG,SAAA;QACf,IAAI,CAAC,GAAG,GAAG,GAAG,CAAC;QACf,gBAAgB;QAChB,iBAAiB;QACjB,kCAAkC;QAClC,mBAAmB;QACnB,oCAAoC;QACpC,gBAAgB;QAChB,aAAa;QACb,iCAAiC;QACjC,IAAI;IACN,CAAC;IACH,iBAAC;AAAD,CAAC,AAhBD,IAgBC;AAED,eAAe,UAAU,CAAC"}
