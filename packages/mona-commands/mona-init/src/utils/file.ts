@@ -3,14 +3,14 @@ import path from 'path';
 
 export const makeDir = (dirPath: string) => {
   if (fs.existsSync(dirPath) && fs.readdirSync(dirPath).length !== 0) {
-    new Error('target directory is not empty!');
+    throw new Error('target directory is not empty!');
   }
   if (!fs.existsSync(dirPath)) {
     fs.mkdirSync(dirPath);
   }
 };
 
-const readFileRecursive = (rootPath: string, files: string[]) => {
+export const readFileRecursive = (rootPath: string, files: string[]) => {
   fs.readdirSync(rootPath).forEach(fileName => {
     const filePath = path.join(rootPath, fileName);
     // 判断是否是文件夹

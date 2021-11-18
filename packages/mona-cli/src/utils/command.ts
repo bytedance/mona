@@ -11,19 +11,19 @@ export const commandUsage = (cmds: CommandInfo[]) => {
   const sections = [
     {
       header: '描述',
-      content: '商家应用开发和构建工具',
+      content: '商家应用开发和构建工具'
     },
     {
       header: '可选项',
       optionList: [
         { name: 'help', description: '输出帮助信息', alias: 'h', type: Boolean },
-        { name: 'version', description: '输出当前CLI版本', alias: 'v', type: Boolean },
-      ],
+        { name: 'version', description: '输出当前CLI版本', alias: 'v', type: Boolean }
+      ]
     },
     {
       header: '命令',
-      content,
-    },
+      content
+    }
   ];
   return commandLineUsage(sections);
 };
@@ -59,7 +59,7 @@ export function getGlobalInstallPkgMan() {
     return (_pkgMan = 'npm');
   }
 
-  return( _pkgMan = 'npm');
+  return (_pkgMan = 'npm');
 }
 
 // 判断是否是全局安装
@@ -71,6 +71,7 @@ function isGlobaInstalled() {
 
   if (hasYarn()) {
     const [yarnGlobalDir] = execSync('yarn global dir').toString().split('\n');
+
     if (__dirname.includes(yarnGlobalDir)) {
       return (_isGlobaInstalled = true);
     }
@@ -122,7 +123,7 @@ export function joinCmdPath(cmd: CommandInfo) {
     const pkgPath = pkgDir.sync(require.resolve(cmd.package))!;
     return path.resolve(pkgPath, cmd.cli);
   } else {
-    const pkgPath = pkgDir.sync(require.resolve(cmd.package, { paths: [process.cwd()],  }))!;
+    const pkgPath = pkgDir.sync(require.resolve(cmd.package, { paths: [process.cwd()] }))!;
     return path.resolve(pkgPath, cmd.cli);
   }
 }
@@ -132,7 +133,7 @@ export function dispatchCommand(cliPath: string) {
   const res = childProcess.spawnSync('node', [cliPath, ...process.argv.slice(3)], {
     cwd: process.cwd(),
     shell: true,
-    stdio: 'inherit',
+    stdio: 'inherit'
   });
 
   if (res.status !== 0) {

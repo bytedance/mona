@@ -22,5 +22,5 @@ test('pkgVersion', async () => {
   expect([getCurrentVersion(), semver.valid(getCurrentVersion()) !== null]).toEqual([version, true]);
   expect([getPkgVersion(), semver.valid(getPkgVersion()) !== null]).toEqual([version, true]);
 
-  expect(semver.valid(getNewestVersion()) !== null).toBe(true);
+  expect(semver.valid(getNewestVersion())).not.toBeNull();
 });
