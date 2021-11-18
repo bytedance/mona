@@ -1,9 +1,10 @@
 import { makeDir, readFileRecursive, readAllFiles, removeEmptyDirs } from './file';
-
+import { execSync } from 'child_process';
 import { printWelcomeMessage, printFinishMessage, hasYarn } from './common';
-import { fetchTemplate, renameFile, processTemplate, processTemplates } from './template';
+import { fetchTemplate, processTemplates } from './template';
 import fse from 'fs-extra';
 import { join } from 'path';
+import PackageUpdater from '@bytedance/mona-cli/src/PackageUpdater';
 describe('file', () => {
   // const rootDir =
   let tempDir = `./monaJest${new Date().valueOf()}`;
@@ -12,6 +13,7 @@ describe('file', () => {
   beforeEach(() => {
     tempDir = `./monaJest${new Date().valueOf()}`;
   });
+
   test('makeDir error', async () => {
     expect(() => makeDir(__dirname)).toThrow();
 
@@ -52,16 +54,56 @@ describe('common', () => {
 
 describe('template', () => {
   let tempDir = `./monaJest${new Date().valueOf()}`;
-
-  beforeEach(() => {
-    tempDir = `./monaJest${new Date().valueOf()}`;
-  });
+  new PackageUpdater().start();
   test('fetchTemplate', async () => {
     expect(await catchError(() => fetchTemplate(tempDir, new Date().valueOf() + ''))).toBe(true);
     await fse.remove(tempDir);
     expect(await catchError(() => fetchTemplate(tempDir, 'plugin'))).toBe(false);
     await fse.remove(tempDir);
   });
+  test('process Ts Templates', async () => {
+    expect(await catchError(() => fetchTemplate(tempDir, 'plugin'))).toBe(false);
+    // css测试浪费时间
+    expect(
+      await catchError(() =>
+        processTemplates(tempDir, {
+          projectName: 'monaTest',
+          cssExt: 'less',
+          typescript: true
+        })
+      )
+    ).toBe(false);
+  }, 100000);
+
+  test('template Ts build', async () => {
+    // 安装依赖
+    const command = `npm i  --registry=https://registry.npmjs.org`;
+    const build = `npm run build`;
+
+    execSync(`cd ${tempDir} && ${command} && ${build}`, { stdio: 'ignore' });
+
+    await fse.remove(tempDir);
+  }, 100000);
+
+  test('process Js Templates', async () => {
+    expect(await catchError(() => fetchTemplate(tempDir, 'plugin'))).toBe(false);
+    expect(
+      await catchError(() =>
+        processTemplates(tempDir, {
+          projectName: 'monaTest',
+          cssExt: 'less',
+          typescript: false
+        })
+      )
+    ).toBe(false);
+  }, 100000);
+  test('template Js build', async () => {
+    // 安装依赖
+    const command = `npm i --registry=https://registry.npmjs.org`;
+    const build = `npm run build`;
+    execSync(`cd ${tempDir} && ${command} && ${build}`, { stdio: 'ignore' });
+    await fse.remove(tempDir);
+  }, 100000);
 });
 
 const catchError = async (fn: any) => {

@@ -3,6 +3,8 @@ import { getPkgPublicName, getPkgName, getPkgVersion } from './package';
 import { join } from 'path';
 import semver from 'semver';
 import fse from 'fs-extra';
+import { commandUsage, getGlobalInstallPkgMan, hasYarn, isGlobaInstalled } from './command';
+import cmds from '../cmds';
 
 const pkgDirname = join(__dirname, '../../package.json');
 
@@ -23,4 +25,18 @@ test('pkgVersion', async () => {
   expect([getPkgVersion(), semver.valid(getPkgVersion()) !== null]).toEqual([version, true]);
 
   expect(semver.valid(getNewestVersion())).not.toBeNull();
+});
+
+test('command', () => {
+  expect(() => commandUsage(cmds)).not.toThrow();
+
+  expect(hasYarn).not.toThrow();
+
+  expect(getGlobalInstallPkgMan).not.toThrow();
+
+  expect(['yarn', 'npm'].includes(getGlobalInstallPkgMan())).toBe(true);
+
+  expect(isGlobaInstalled).not.toThrow();
+
+  expect([true, false].includes(isGlobaInstalled())).toBe(true);
 });

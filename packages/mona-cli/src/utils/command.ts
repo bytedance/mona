@@ -45,7 +45,7 @@ export function hasYarn() {
 
 let _pkgMan: string;
 export function getGlobalInstallPkgMan() {
-  if (_pkgMan !== null) {
+  if (_pkgMan !== undefined) {
     return _pkgMan;
   }
   if (hasYarn()) {
@@ -64,7 +64,7 @@ export function getGlobalInstallPkgMan() {
 
 // 判断是否是全局安装
 let _isGlobaInstalled: null | boolean = null;
-function isGlobaInstalled() {
+export function isGlobaInstalled() {
   if (_isGlobaInstalled !== null) {
     return _isGlobaInstalled;
   }
