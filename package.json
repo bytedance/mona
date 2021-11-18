@@ -12,6 +12,7 @@
   "license": "MIT",
   "workspaces": [
     "packages/*",
-    "packages/mona-commands/*"
+    "packages/mona-commands/*",
+    "packages/mona-clients/*"
   ]
 }

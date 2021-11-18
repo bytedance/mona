@@ -1,0 +1,16 @@
+{
+  "name": "@bytedance/mona-client-mini",
+  "version": "0.0.1",
+  "description": "miniapp for mona",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "rm -rf ./dist && tsc -b",
+    "start": "tsc -b -w"
+  },
+  "keywords": [
+    "miniapp",
+    "mona"
+  ],
+  "author": "zhangxiaowei.chris@bytedance.com",
+  "license": "MIT"
+}

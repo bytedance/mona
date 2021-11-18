@@ -1,0 +1,16 @@
+{
+  "name": "@bytedance/mona-client-plugin",
+  "version": "0.0.1",
+  "description": "plugin for mona",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "rm -rf ./dist && tsc -b",
+    "start": "tsc -b -w"
+  },
+  "keywords": [
+    "plugin",
+    "mona"
+  ],
+  "author": "zhangxiaowei.chris@bytedance.com",
+  "license": "MIT"
+}

@@ -1,0 +1,16 @@
+{
+  "name": "@bytedance/mona-apis",
+  "version": "0.0.1",
+  "description": "api for mona",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "rm -rf ./dist && tsc -b",
+    "start": "tsc -b -w"
+  },
+  "keywords": [
+    "mona",
+    "api"
+  ],
+  "author": "zhangxiaowei.chris@bytedance.com",
+  "license": "MIT"
+}
