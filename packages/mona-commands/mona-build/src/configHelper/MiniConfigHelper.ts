@@ -45,6 +45,7 @@ class MiniConfigHelper extends BaseConfigHelper {
 
   private _createMode() {
     return this.options.dev ? 'development' : 'production';
+    // return 'development';
   }
 
   private _createOutput() {
@@ -120,11 +121,12 @@ class MiniConfigHelper extends BaseConfigHelper {
     return rules;
   }
 
+  // TODO: fix compressing css bug, when the extension is 'ttss'
   private _createPlugins(...extraPlugin: any[]) {
     return [
       ...extraPlugin,
       new MiniCssExtractPlugin({
-        filename: '[name].[contenthash:7].css'
+        filename: '[name].ttss'
       })
     ]
   }

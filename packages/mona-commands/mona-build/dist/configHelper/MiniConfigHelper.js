@@ -43,6 +43,7 @@ class MiniConfigHelper extends BaseConfigHelper_1.default {
     }
     _createMode() {
         return this.options.dev ? 'development' : 'production';
+        // return 'development';
     }
     _createOutput() {
         return {
@@ -108,11 +109,12 @@ class MiniConfigHelper extends BaseConfigHelper_1.default {
         });
         return rules;
     }
+    // TODO: fix compressing css bug, when the extension is 'ttss'
     _createPlugins(...extraPlugin) {
         return [
             ...extraPlugin,
             new mini_css_extract_plugin_1.default({
-                filename: '[name].[contenthash:7].css'
+                filename: '[name].ttss'
             })
         ];
     }
