@@ -10,7 +10,6 @@ const PluginConfigHelper_1 = __importDefault(require("./PluginConfigHelper"));
 const BaseConfigHelper_1 = __importDefault(require("./BaseConfigHelper"));
 class ConfigHelperAdapter {
     constructor(options) {
-        console.log('build for ', options.target);
         let configHelper;
         switch (options.target) {
             case 'mini':
@@ -32,7 +31,6 @@ class ConfigHelperAdapter {
     }
     // generate webpack config
     generate() {
-        console.log('generate webpack config');
         return this.configHelper.generate();
     }
     readAllConfig() {

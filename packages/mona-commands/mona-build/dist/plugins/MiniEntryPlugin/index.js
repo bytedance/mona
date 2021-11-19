@@ -11,13 +11,18 @@ class MiniEntryPlugin {
         this.entryModule = new MiniEntryModule_1.default(configHelper);
     }
     apply(compiler) {
-        const { module, entries } = this.entryModule;
+        const { module } = this.entryModule;
         // Applying a webpack compiler to the virtual module
         module.apply(compiler);
         // add entry file
-        compiler.hooks.afterEnvironment.tap(this.pluginName, () => {
-            compiler.options.entry = Object.assign({}, entries);
-        });
+        // compiler.hooks.environment.tap(this.pluginName, () => {
+        //   compiler.options.entry = {
+        //     ...entries
+        //   }
+        // })
+        // @ts-ignore
+        // new EntryPlugin(this.configHelper.cwd, entries['app'].filename).apply(compiler);
+        // new EntryPlugin('')
     }
 }
 exports.default = MiniEntryPlugin;

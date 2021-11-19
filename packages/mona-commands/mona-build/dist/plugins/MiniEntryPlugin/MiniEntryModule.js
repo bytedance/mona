@@ -36,7 +36,7 @@ class MiniEntryModule {
     createModule() {
         const { entryPath, appConfig, cwd } = this.configHelper;
         const pages = appConfig.pages;
-        const realPagePaths = pages.map(page => (0, mona_shared_1.searchScriptFile)(path_1.default.resolve(cwd, page)));
+        const realPagePaths = pages.map(page => (0, mona_shared_1.searchScriptFile)(path_1.default.resolve(cwd, 'src', page)));
         const names = ['app', ...pages];
         const realPaths = [entryPath, ...realPagePaths];
         const module = {};
@@ -45,9 +45,7 @@ class MiniEntryModule {
             const name = names[i];
             const realPath = realPaths[i];
             const virtualPath = MiniEntryModule.extendEntryName(realPath);
-            entries[name] = {
-                filename: virtualPath.toLowerCase()
-            };
+            entries[name.toLowerCase()] = virtualPath;
             // this first entry is app entry
             if (i === 0) {
                 module[virtualPath] = MiniEntryModule.generateAppEntryCode(realPath);

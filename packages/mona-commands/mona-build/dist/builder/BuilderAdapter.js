@@ -9,10 +9,12 @@ const WebBuilder_1 = __importDefault(require("./WebBuilder"));
 const PluginBuilder_1 = __importDefault(require("./PluginBuilder"));
 const constants_1 = require("../constants");
 const BaseBuilder_1 = __importDefault(require("./BaseBuilder"));
+const chalk_1 = __importDefault(require("chalk"));
 class BuilderAdapter {
     constructor(options) {
         const requiredOptions = { target: options.target || 'web', port: options.port || constants_1.DEFAULT_PORT, dev: options.dev || false };
         const configHelper = new configHelper_1.ConfigHelper(requiredOptions);
+        console.log(chalk_1.default.cyan(`当前打包目标端：${requiredOptions.target}`));
         const target = options.target || 'web';
         let builder;
         switch (target) {

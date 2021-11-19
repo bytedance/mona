@@ -9,13 +9,16 @@ import { ConfigHelper } from '.';
 
 class MiniConfigHelper extends BaseConfigHelper {
   generate() {
+    const miniEntryPlugin = new MiniEntryPlugin(this as unknown as ConfigHelper);
+
     const config: Configuration = {
       mode: this._createMode(),
       devtool: this.options.dev ? 'cheap-source-map' : undefined,
       output: this._createOutput(),
+      entry: miniEntryPlugin.entryModule.entries,
       resolve: this._createResolve(),
       module: this._createModule(),
-      plugins: this._createPlugins(),
+      plugins: this._createPlugins(miniEntryPlugin),
       optimization: this._createOptimization() as any,
     };
 
@@ -117,9 +120,9 @@ class MiniConfigHelper extends BaseConfigHelper {
     return rules;
   }
 
-  private _createPlugins() {
+  private _createPlugins(...extraPlugin: any[]) {
     return [
-      new MiniEntryPlugin(this as unknown as ConfigHelper),
+      ...extraPlugin,
       new MiniCssExtractPlugin({
         filename: '[name].[contenthash:7].css'
       })

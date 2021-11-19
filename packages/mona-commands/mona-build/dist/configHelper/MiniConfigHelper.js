@@ -11,13 +11,15 @@ const BaseConfigHelper_1 = __importDefault(require("./BaseConfigHelper"));
 const MiniEntryPlugin_1 = __importDefault(require("../plugins/MiniEntryPlugin"));
 class MiniConfigHelper extends BaseConfigHelper_1.default {
     generate() {
+        const miniEntryPlugin = new MiniEntryPlugin_1.default(this);
         const config = {
             mode: this._createMode(),
             devtool: this.options.dev ? 'cheap-source-map' : undefined,
             output: this._createOutput(),
+            entry: miniEntryPlugin.entryModule.entries,
             resolve: this._createResolve(),
             module: this._createModule(),
-            plugins: this._createPlugins(),
+            plugins: this._createPlugins(miniEntryPlugin),
             optimization: this._createOptimization(),
         };
         const raw = this.projectConfig.raw;
@@ -106,9 +108,9 @@ class MiniConfigHelper extends BaseConfigHelper_1.default {
         });
         return rules;
     }
-    _createPlugins() {
+    _createPlugins(...extraPlugin) {
         return [
-            new MiniEntryPlugin_1.default(this),
+            ...extraPlugin,
             new mini_css_extract_plugin_1.default({
                 filename: '[name].[contenthash:7].css'
             })

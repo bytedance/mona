@@ -4,7 +4,7 @@ import path from 'path';
 import VirtualModulesPlugin from '../VirtualModulesPlugin';
 
 export default class MiniEntryModule {
-  entries: Record<string, { filename: string }> = {}
+  entries: Record<string, string> = {}
   module: VirtualModulesPlugin;
   configHelper: ConfigHelper;
 
@@ -40,20 +40,18 @@ export default class MiniEntryModule {
   createModule() {
     const { entryPath, appConfig, cwd } = this.configHelper;
     const pages = appConfig.pages;
-    const realPagePaths = pages.map(page => searchScriptFile(path.resolve(cwd, page)))
+    const realPagePaths = pages.map(page => searchScriptFile(path.resolve(cwd, 'src', page)))
     const names = ['app', ...pages];
     const realPaths = [entryPath, ...realPagePaths];
 
     const module: Record<string, string> = {};
-    const entries: Record<string, { filename: string }> = {};
+    const entries: Record<string, string> = {};
 
     for (let i = 0; i < names.length; i++) {
       const name = names[i];
       const realPath = realPaths[i];
       const virtualPath = MiniEntryModule.extendEntryName(realPath);
-      entries[name] = {
-        filename: virtualPath.toLowerCase()
-      };
+      entries[name.toLowerCase()] = virtualPath;
       // this first entry is app entry
       if (i === 0) {
         module[virtualPath] = MiniEntryModule.generateAppEntryCode(realPath);

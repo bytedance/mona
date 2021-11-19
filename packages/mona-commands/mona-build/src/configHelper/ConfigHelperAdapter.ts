@@ -16,8 +16,6 @@ class ConfigHelperAdapter implements BaseConfigHelper {
   configHelper: BaseConfigHelper;
 
   constructor(options: Required<Options>) {
-    console.log('build for ', options.target);
-
     let configHelper: BaseConfigHelper;
     switch (options.target) {
       case 'mini':
@@ -41,7 +39,6 @@ class ConfigHelperAdapter implements BaseConfigHelper {
 
   // generate webpack config
   generate() {
-    console.log('generate webpack config');
     return this.configHelper.generate();
   }
 

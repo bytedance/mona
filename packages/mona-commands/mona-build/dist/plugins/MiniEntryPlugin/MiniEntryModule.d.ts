@@ -1,9 +1,7 @@
 import { ConfigHelper } from "../../configHelper";
 import VirtualModulesPlugin from "../VirtualModulesPlugin";
 export default class MiniEntryModule {
-    entries: Record<string, {
-        filename: string;
-    }>;
+    entries: Record<string, string>;
     module: VirtualModulesPlugin;
     configHelper: ConfigHelper;
     constructor(configHelper: ConfigHelper);
