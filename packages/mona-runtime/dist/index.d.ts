@@ -2,3 +2,4 @@ export declare const pigeon: import("@bytedance/mona-plugin-events/dist/pigeon.t
 export { createPlugin, PageProps } from "./createPlugin";
 export * from "./components";
 export * from "./apis";
+export * from '@bytedance/mona-client-mini';

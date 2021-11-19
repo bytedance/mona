@@ -1,0 +1,25 @@
+import TaskController from './TaskController';
+import ServerElement from './ServerElement';
+export default function createHostConfig(): {
+    appendInitialChild(parent: ServerElement, child: ServerElement): void;
+    createInstance(type: string, props: any, taskController: TaskController): ServerElement;
+    createTextInstance(text: string, taskController: TaskController): ServerElement;
+    prepareForCommit(): void;
+    resetAfterCommit(): void;
+    resetTextContent(element: ServerElement): void;
+    prepareUpdate(domElement: any, type: string, oldProps: any, newProps: any): string[];
+    getRootHostContext(rootInstance: any): {};
+    getChildHostContext(parentHostContext: any, type: string): {};
+    shouldSetTextContent(type: string, props: any): boolean;
+    now: () => void;
+    supportsMutation: boolean;
+    appendAllChildren(children: ServerElement[]): void;
+    appendChild(parent: ServerElement, child: ServerElement): void;
+    appendChildToContainer(parent: ServerElement, child: ServerElement): void;
+    removeChild(parent: ServerElement, child: ServerElement): void;
+    removeChildFromContainer(parent: ServerElement, child: ServerElement): void;
+    insertBefore(parent: ServerElement, child: ServerElement, beforeChild: ServerElement): void;
+    commitUpdate(instance: any, updatePayload: any, type: any, oldProps: any, newProps: any): void;
+    commitMount(instance: any, updatePayload: any, type: any, oldProps: any, newProps: any): void;
+    commitTextUpdate(textInstance: ServerElement, oldText: string, newText: string): void;
+};

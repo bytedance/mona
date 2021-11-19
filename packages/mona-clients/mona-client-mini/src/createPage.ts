@@ -46,7 +46,7 @@ function createConfig(Component: React.ComponentType<any>) {
     },
 
     onShow(options: any) {
-      this.$callLifecycle(PageLifecycle.show);
+      this.$callLifecycle(PageLifecycle.show, options);
     },
 
     onHide() {

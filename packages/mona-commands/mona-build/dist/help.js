@@ -19,6 +19,7 @@ const startCommandUsage = () => {
             header: '可选项',
             optionList: [
                 { name: 'help', description: '输出帮助信息', alias: 'h', type: Boolean },
+                { name: 'target', description: '指定打包类型', alias: 't', type: String },
                 { name: 'port', description: '指定本地服务器端口', alias: 'p', type: Number },
             ],
         },
@@ -44,6 +45,7 @@ const buildCommandUsage = () => {
             header: '可选项',
             optionList: [
                 { name: 'help', description: '输出帮助信息', alias: 'h', type: Boolean },
+                { name: 'target', description: '指定打包类型', alias: 't', type: String },
             ],
         },
         {

@@ -20,4 +20,5 @@ var createPlugin_1 = require("./createPlugin");
 Object.defineProperty(exports, "createPlugin", { enumerable: true, get: function () { return createPlugin_1.createPlugin; } });
 __exportStar(require("./components"), exports);
 __exportStar(require("./apis"), exports);
+__exportStar(require("@bytedance/mona-client-mini"), exports);
 //# sourceMappingURL=index.js.map

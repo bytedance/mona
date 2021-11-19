@@ -1,0 +1,1 @@
+{"version":3,"file":"BaseBuilder.js","sourceRoot":"","sources":["../../src/builder/BaseBuilder.ts"],"names":[],"mappings":";;;;;AACA,sDAA4C;AAE5C,MAA8B,WAAW;IAIvC,YAAY,YAA0B;QACpC,IAAI,CAAC,YAAY,GAAG,YAAY,CAAC;QAEjC,0BAA0B;QAC1B,MAAM,aAAa,GAAG,IAAI,CAAC,YAAY,CAAC,QAAQ,EAAE,CAAC;QAEnD,oBAAoB;QACpB,IAAI,CAAC,QAAQ,GAAG,IAAA,iBAAO,EAAC,aAAa,CAAC,CAAC;IACzC,CAAC;CAIF;AAhBD,8BAgBC"}
