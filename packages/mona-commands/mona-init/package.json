@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-init",
-  "version": "0.0.6",
+  "version": "0.1.3",
   "description": "mona subcommands - init",
   "main": "./bin/mona-init",
   "types": "./dist/index.d.ts",
