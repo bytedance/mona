@@ -9,6 +9,7 @@ const css_minimizer_webpack_plugin_1 = __importDefault(require("css-minimizer-we
 const terser_webpack_plugin_1 = __importDefault(require("terser-webpack-plugin"));
 const BaseConfigHelper_1 = __importDefault(require("./BaseConfigHelper"));
 const MiniEntryPlugin_1 = __importDefault(require("../plugins/MiniEntryPlugin"));
+const MiniAssetsPlugin_1 = __importDefault(require("../plugins/MiniAssetsPlugin"));
 class MiniConfigHelper extends BaseConfigHelper_1.default {
     generate() {
         const miniEntryPlugin = new MiniEntryPlugin_1.default(this);
@@ -113,6 +114,7 @@ class MiniConfigHelper extends BaseConfigHelper_1.default {
     _createPlugins(...extraPlugin) {
         return [
             ...extraPlugin,
+            new MiniAssetsPlugin_1.default(this),
             new mini_css_extract_plugin_1.default({
                 filename: '[name].ttss'
             })

@@ -6,6 +6,7 @@ import TerserWebpackPlugin from 'terser-webpack-plugin';
 import BaseConfigHelper from "./BaseConfigHelper";
 import MiniEntryPlugin from '@/plugins/MiniEntryPlugin';
 import { ConfigHelper } from '.';
+import MiniAssetsPlugin from '@/plugins/MiniAssetsPlugin';
 
 class MiniConfigHelper extends BaseConfigHelper {
   generate() {
@@ -125,6 +126,7 @@ class MiniConfigHelper extends BaseConfigHelper {
   private _createPlugins(...extraPlugin: any[]) {
     return [
       ...extraPlugin,
+      new MiniAssetsPlugin(this as unknown as ConfigHelper),
       new MiniCssExtractPlugin({
         filename: '[name].ttss'
       })
