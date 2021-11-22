@@ -2,18 +2,25 @@ import React from 'react';
 import { appLifecycleContext } from './lifecycle/hooks';
 import { AppLifecycle } from './lifecycle/context';
 import render from './reconciler';
+import TaskController from './reconciler/TaskController';
 
 class AppConfig {
-  private _container: any;
+  private _controller: TaskController
   private _Component: React.ComponentType<any>;
 
   constructor(Component: React.ComponentType<any>) {
-    this._container = {};
+    this._controller = {
+      tasks: [],
+      context: {},
+      _root: null,
+      requestUpdate: () => {},
+      applyUpdate: () => {}
+    }
     this._Component = Component;
   }
 
   onLaunch(options: any) {
-    render(React.createElement(this._Component, {}, []), this._container);
+    render(React.createElement(this._Component, {}, []), this._controller);
     this._callLifecycle(AppLifecycle.lanuch, options);
   }
 

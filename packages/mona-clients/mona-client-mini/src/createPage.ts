@@ -1,10 +1,10 @@
 import React from 'react';
 import { PageLifecycleGlobalContext, LifecycleContext, PageLifecycle } from './lifecycle/context';
 import render from './reconciler';
-import PageContainer from './reconciler/TaskController';
+import TaskController from './reconciler/TaskController';
 
 interface PageConfig {
-  _container: PageContainer;
+  _controller: TaskController;
   _Component: React.ComponentType<any>;
   _pageLifecycleContext: LifecycleContext;
   onLoad: (options: any) => void;
@@ -25,14 +25,14 @@ function createConfig(Component: React.ComponentType<any>) {
   const config: PageConfig = {
     _pageLifecycleContext: new LifecycleContext(),
     _Component: Component,
-    _container: new PageContainer({}),
+    _controller: new TaskController({}),
 
     onLoad(this: any, options: any) {
       const element = React.createElement(this._Component, {}, []);
       const wrapper = React.createElement(PageLifecycleGlobalContext.Provider, { value: this._pageLifecycleContext }, [element]);
 
-      this._container = new PageContainer(this);
-      render(wrapper, this._container);
+      this._controller = new TaskController(this);
+      render(wrapper, this._controller);
       this.$callLifecycle(PageLifecycle.load, options);
     },
 
