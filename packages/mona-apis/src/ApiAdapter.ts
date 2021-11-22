@@ -14,8 +14,10 @@ class ApiAdapter {
     switch(env) {
       case 'mini':
         this.apiInstance = miniApi;
+        break;
       case 'plugin':
         this.apiInstance = pluginApi;
+        break;
       case 'web':
       default:
         this.apiInstance = webApi;
