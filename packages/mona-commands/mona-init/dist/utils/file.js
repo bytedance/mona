@@ -3,12 +3,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.removeEmptyDirs = exports.readAllFiles = exports.makeDir = void 0;
+exports.removeEmptyDirs = exports.readAllFiles = exports.readFileRecursive = exports.makeDir = void 0;
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const makeDir = (dirPath) => {
     if (fs_1.default.existsSync(dirPath) && fs_1.default.readdirSync(dirPath).length !== 0) {
-        new Error('target directory is not empty!');
+        throw new Error('target directory is not empty!');
     }
     if (!fs_1.default.existsSync(dirPath)) {
         fs_1.default.mkdirSync(dirPath);
@@ -20,16 +20,17 @@ const readFileRecursive = (rootPath, files) => {
         const filePath = path_1.default.join(rootPath, fileName);
         // 判断是否是文件夹
         if (fs_1.default.lstatSync(filePath).isDirectory()) {
-            readFileRecursive(filePath, files);
+            (0, exports.readFileRecursive)(filePath, files);
         }
         else {
             files.push(filePath);
         }
     });
 };
+exports.readFileRecursive = readFileRecursive;
 const readAllFiles = (rootPath) => {
     const files = [];
-    readFileRecursive(rootPath, files);
+    (0, exports.readFileRecursive)(rootPath, files);
     return files;
 };
 exports.readAllFiles = readAllFiles;

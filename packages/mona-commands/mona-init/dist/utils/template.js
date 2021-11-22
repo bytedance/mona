@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.processTemplates = exports.processTemplate = exports.fetchTemplate = void 0;
+exports.processTemplates = exports.processTemplate = exports.renameFile = exports.fetchTemplate = void 0;
 const fs_1 = __importDefault(require("fs"));
 const ora_1 = __importDefault(require("ora"));
 const ejs_1 = __importDefault(require("ejs"));
@@ -56,6 +56,7 @@ function renameFile(filePath, { typescript, cssExt }) {
     fs_1.default.renameSync(filePath, newPath);
     return newPath;
 }
+exports.renameFile = renameFile;
 async function processTemplate(filePath, templateData) {
     // 判断文件是否应该存在, 不应该则直接删除
     // 如果不是ts则不应该存在tsconfig.json和d.ts文件
@@ -70,15 +71,15 @@ async function processTemplate(filePath, templateData) {
     if (/^\.[jt]sx?$/.test(ext) || /^\.(c|le|sa|sc)ss$/.test(ext) || ext === '.json') {
         // 修改内容
         const fileContent = await ejs_1.default.renderFile(filePath, {
-            data: templateData,
+            data: templateData
         }, {
-            async: true,
+            async: true
         });
         fs_1.default.writeFileSync(filePath, fileContent);
         // 修改后缀
         newFilePath = renameFile(filePath, {
             typescript: templateData.typescript,
-            cssExt: templateData.cssExt,
+            cssExt: templateData.cssExt
         });
     }
     // 打印出来文件成功

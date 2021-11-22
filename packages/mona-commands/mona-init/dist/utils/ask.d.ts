@@ -5,11 +5,10 @@ export interface Answer {
     useTypescript: boolean;
     styleProcessor: 'less' | 'css';
 }
-interface AskOpts {
-    projectName?: string;
-    templateType?: string;
-    useTypescript?: boolean;
-    styleProcessor?: string;
+export interface AskOpts {
+    projectName: string;
+    templateType: TemplateType;
+    useTypescript: boolean;
+    styleProcessor: Answer['styleProcessor'];
 }
 export declare function ask(opts: AskOpts): Promise<AskOpts & Answer>;
-export {};

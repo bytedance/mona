@@ -1,3 +1,7 @@
 export declare const fetchTemplate: (projectRoot: string, templateName: string) => Promise<unknown>;
+export declare function renameFile(filePath: string, { typescript, cssExt }: {
+    typescript: boolean;
+    cssExt: string;
+}): string;
 export declare function processTemplate(filePath: string, templateData: Record<string, any>): Promise<void>;
 export declare function processTemplates(dirPath: string, templateData: Record<string, any>): Promise<void>;

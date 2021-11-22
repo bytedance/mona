@@ -3,13 +3,16 @@ import path from 'path';
 import yargs from 'yargs';
 import chalk from 'chalk';
 import { execSync } from 'child_process';
-import { ask } from './utils/ask';
+import { ask, AskOpts } from './utils/ask';
 import { fetchTemplate, processTemplates } from './utils/template';
 import { hasYarn, printWelcomeMessage, printFinishMessage } from './utils/common';
 import { commandUsage } from './help';
 
 function init() {
-  yargs.version(false).help(false).alias('h', 'help')
+  yargs
+    .version(false)
+    .help(false)
+    .alias('h', 'help')
     .option('style', {
       alias: 's',
       type: 'string'
@@ -21,7 +24,7 @@ function init() {
     .option('template', {
       alias: 't',
       type: 'string'
-    })
+    });
   yargs.command('$0', false, {}, async function (argv) {
     if (argv.help) {
       const helpInfo = commandUsage();
@@ -31,12 +34,12 @@ function init() {
 
     printWelcomeMessage();
 
-    const askOpts = {
-      projectName: typeof argv._[0] === 'number' ? `${argv._[0]}` : argv._[0] as string,
-      useTypescript: argv.u as boolean,
-      styleProcessor: argv.s as string,
-      templateType: argv.t as string,
-    }
+    const askOpts: AskOpts = {
+      projectName: typeof argv._[0] === 'number' ? `${argv._[0]}` : (argv._[0] as string),
+      useTypescript: argv.u as AskOpts['useTypescript'],
+      styleProcessor: argv.s as AskOpts['styleProcessor'],
+      templateType: argv.t as AskOpts['templateType']
+    };
 
     // 交互式提问
     const answer = await ask(askOpts);
@@ -51,7 +54,7 @@ function init() {
     await processTemplates(dirPath, {
       projectName,
       cssExt: styleProcessor,
-      typescript: useTypescript,
+      typescript: useTypescript
     });
 
     // 安装依赖

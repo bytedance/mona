@@ -13,7 +13,10 @@ const template_1 = require("./utils/template");
 const common_1 = require("./utils/common");
 const help_1 = require("./help");
 function init() {
-    yargs_1.default.version(false).help(false).alias('h', 'help')
+    yargs_1.default
+        .version(false)
+        .help(false)
+        .alias('h', 'help')
         .option('style', {
         alias: 's',
         type: 'string'
@@ -37,7 +40,7 @@ function init() {
             projectName: typeof argv._[0] === 'number' ? `${argv._[0]}` : argv._[0],
             useTypescript: argv.u,
             styleProcessor: argv.s,
-            templateType: argv.t,
+            templateType: argv.t
         };
         // 交互式提问
         const answer = await (0, ask_1.ask)(askOpts);
@@ -50,7 +53,7 @@ function init() {
         await (0, template_1.processTemplates)(dirPath, {
             projectName,
             cssExt: styleProcessor,
-            typescript: useTypescript,
+            typescript: useTypescript
         });
         // 安装依赖
         const command = (0, common_1.hasYarn)() ? 'yarn install' : 'npm install';
