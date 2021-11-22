@@ -14,7 +14,8 @@
   ],
   "scripts": {
     "build": "rm -rf ./dist && ttsc -b",
-    "start": "ttsc -b -w"
+    "start": "ttsc -b -w",
+    "copy": "cp ./src/plugins/MiniEntryPlugin/project.config.js.ejs ./dist/plugins/MiniEntryPlugin/project.config.js.ejs"
   },
   "author": "zhangxiaowei.chris@bytedance.com",
   "license": "MIT",
