@@ -21,7 +21,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: npm install and npm test
         run: |
-          yarn config get registry http://registry.npmjs.org
+          yarn config set registry http://registry.npmjs.org
           yarn install
           yarn global add @bytedance/mona
           yarn test
