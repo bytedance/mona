@@ -1,6 +1,6 @@
 name: Mona Test
 on:
- push:
+  push:
     branches:
       - feat/tests
 
@@ -12,7 +12,7 @@ jobs:
       matrix:
         node-version: [12.22.0]
     steps:
-        # prepare env
+      # prepare env
       - name: Checkout
         uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
@@ -20,9 +20,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: npm install and npm test
-        run: npm i
-        run: npm install -g @bytedance/mona
-        run: npm test
+        run: |
+          npm i
+          npm install -g @bytedance/mona
+          npm test
 
       # - name: npm publish
       #   run: |
