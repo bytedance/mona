@@ -21,14 +21,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: npm install and npm test
         run: |
-          npm i
-          npm install -g @bytedance/mona
-          npm test
-
-      # - name: npm publish
-      #   run: |
-      #     npm config set //registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN
-      #     npm run trypublish
-      #   env:
-      #     CI: true
-      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+          yarn config get registry http://registry.npmjs.org
+          yarn install
+          yarn global add @bytedance/mona
+          yarn test
