@@ -1,14 +1,8 @@
 name: Mona Test
-
 on:
  push:
     branches:
-      - 'feat/tests'
-
-  pull_request:
-    branches:
-      - main
-    types: [closed]
+      - feat/tests
 
 jobs:
   test:
