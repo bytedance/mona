@@ -11,21 +11,23 @@ jobs:
     strategy:
       matrix:
         node-version: [12.22.0]
-  steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: npm install and npm test
-      run: npm i
-      run: npm install -g @bytedance/mona
-      run: npm test
+    steps:
+        # prepare env
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: npm install and npm test
+        run: npm i
+        run: npm install -g @bytedance/mona
+        run: npm test
 
-    # - name: npm publish
-    #   run: |
-    #     npm config set //registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN
-    #     npm run trypublish
-    #   env:
-    #     CI: true
-    #     NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      # - name: npm publish
+      #   run: |
+      #     npm config set //registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN
+      #     npm run trypublish
+      #   env:
+      #     CI: true
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
