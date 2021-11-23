@@ -31,7 +31,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.dispatchCommand = exports.joinCmdPath = exports.getGlobalInstallPkgMan = exports.commandUsage = void 0;
+exports.dispatchCommand = exports.joinCmdPath = exports.isGlobaInstalled = exports.getGlobalInstallPkgMan = exports.hasYarn = exports.commandUsage = void 0;
 var path_1 = __importDefault(require("path"));
 var pkg_dir_1 = __importDefault(require("pkg-dir"));
 var child_process_1 = __importStar(require("child_process"));
@@ -42,19 +42,19 @@ var commandUsage = function (cmds) {
     var sections = [
         {
             header: '描述',
-            content: '商家应用开发和构建工具',
+            content: '商家应用开发和构建工具'
         },
         {
             header: '可选项',
             optionList: [
                 { name: 'help', description: '输出帮助信息', alias: 'h', type: Boolean },
-                { name: 'version', description: '输出当前CLI版本', alias: 'v', type: Boolean },
-            ],
+                { name: 'version', description: '输出当前CLI版本', alias: 'v', type: Boolean }
+            ]
         },
         {
             header: '命令',
-            content: content,
-        },
+            content: content
+        }
     ];
     return commandLineUsage(sections);
 };
@@ -73,9 +73,10 @@ function hasYarn() {
         return (_hasYarn = false);
     }
 }
+exports.hasYarn = hasYarn;
 var _pkgMan;
 function getGlobalInstallPkgMan() {
-    if (_pkgMan !== null) {
+    if (_pkgMan !== undefined) {
         return _pkgMan;
     }
     if (hasYarn()) {
@@ -109,6 +110,7 @@ function isGlobaInstalled() {
     }
     return (_isGlobaInstalled = false);
 }
+exports.isGlobaInstalled = isGlobaInstalled;
 // 获取全局模块
 // let _globalModules: string[] = [];
 // function getGlobalModules() {
@@ -145,7 +147,7 @@ function joinCmdPath(cmd) {
         return path_1.default.resolve(pkgPath, cmd.cli);
     }
     else {
-        var pkgPath = pkg_dir_1.default.sync(require.resolve(cmd.package, { paths: [process.cwd()], }));
+        var pkgPath = pkg_dir_1.default.sync(require.resolve(cmd.package, { paths: [process.cwd()] }));
         return path_1.default.resolve(pkgPath, cmd.cli);
     }
 }
@@ -155,7 +157,7 @@ function dispatchCommand(cliPath) {
     var res = child_process_1.default.spawnSync('node', __spreadArray([cliPath], process.argv.slice(3), true), {
         cwd: process.cwd(),
         shell: true,
-        stdio: 'inherit',
+        stdio: 'inherit'
     });
     if (res.status !== 0) {
         process.exit(res.status);

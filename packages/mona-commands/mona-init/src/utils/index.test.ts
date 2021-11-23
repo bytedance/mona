@@ -5,6 +5,7 @@ import { fetchTemplate, processTemplates } from './template';
 import fse from 'fs-extra';
 import { join } from 'path';
 import PackageUpdater from '@bytedance/mona-cli/src/PackageUpdater';
+import { askConfig, ask, AskOpts } from './ask';
 describe('file', () => {
   // const rootDir =
   let tempDir = `./monaJest${new Date().valueOf()}`;
@@ -104,6 +105,17 @@ describe('template', () => {
     execSync(`cd ${tempDir} && ${command} && ${build}`, { stdio: 'ignore' });
     await fse.remove(tempDir);
   }, 100000);
+});
+
+describe('ask', () => {
+  test('ask use default value', async () => {
+    const params = Object.keys(askConfig).reduce<AskOpts>((res, item) => {
+      const askItemConfig = askConfig[item];
+      res[item] = askItemConfig?.testDefault || askItemConfig.default;
+      return res;
+    }, <AskOpts>{});
+    await ask(params);
+  }, 10000);
 });
 
 const catchError = async (fn: any) => {

@@ -37,7 +37,6 @@ async function ask(opts) {
             prompts.push(itemInst);
         }
     });
-    console.log(prompts);
     const answer = await inquirer_1.default.prompt(prompts);
     return Object.assign({}, opts, answer);
 }
@@ -47,27 +46,6 @@ const styleProcessors = [
     { name: 'css', value: 'css' }
 ];
 const askConfig = {
-    useTypescript: {
-        type: 'confirm',
-        name: 'useTypescript',
-        message: '是否使用Typescript',
-        default: true,
-        checkAsk: (defaultValue) => typeof defaultValue !== 'boolean'
-    },
-    templateType: {
-        type: 'list',
-        name: 'templateType',
-        message: '请选择模板',
-        choices: templates,
-        checkAsk: (defaultValue) => !defaultValue || !templates.find(t => t.value === defaultValue)
-    },
-    styleProcessor: {
-        type: 'list',
-        name: 'styleProcessor',
-        message: '请选择样式预处理器',
-        choices: styleProcessors,
-        checkAsk: (defaultValue) => !defaultValue || !styleProcessors.find(s => s.value === defaultValue)
-    },
     projectName: {
         type: 'input',
         name: 'projectName',
@@ -82,6 +60,29 @@ const askConfig = {
             }
             return true;
         }
+    },
+    useTypescript: {
+        type: 'confirm',
+        name: 'useTypescript',
+        message: '是否使用Typescript',
+        default: true,
+        checkAsk: (defaultValue) => typeof defaultValue !== 'boolean'
+    },
+    styleProcessor: {
+        type: 'list',
+        name: 'styleProcessor',
+        message: '请选择样式预处理器',
+        choices: styleProcessors,
+        default: styleProcessors[1].value,
+        checkAsk: (defaultValue) => !defaultValue || !styleProcessors.find(s => s.value === defaultValue)
+    },
+    templateType: {
+        type: 'list',
+        name: 'templateType',
+        message: '请选择模板',
+        choices: templates,
+        default: templates[0].value,
+        checkAsk: (defaultValue) => !defaultValue || !templates.find(t => t.value === defaultValue)
     }
 };
 //# sourceMappingURL=ask.js.map

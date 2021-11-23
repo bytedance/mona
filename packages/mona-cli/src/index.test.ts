@@ -1,29 +1,17 @@
-import PackageUpdater from './PackageUpdater';
-const coffee = require('coffee');
+import { execSync } from 'child_process';
+import { join } from 'path';
+describe('mona ', () => {
+  // const pkgUpdate = new PackageUpdater();
+  execSync(`cd ${join(__dirname, '../')} && npm run build`, { stdio: 'ignore' });
+  
+  test('mona -v', () => {
+    execSync(`node ${join(__dirname, '../bin/mona')} -v`, { encoding: 'utf-8' });
+  });
 
+  test('mona -h', () => {
+    const helpInfo = execSync(`node ${join(__dirname, '../bin/mona')} -h`, { encoding: 'utf-8' });
+    console.log(helpInfo);
+  });
 
-
-// describe('pkgVersion', () => {
-//   const pkgUpdate = new PackageUpdater();
-//   test('pkg update', () => {
-//     //@ts-ignore
-//     const preIncompatible = pkgUpdate._incompatible;
-//     //@ts-ignore
-//     pkgUpdate._incompatible = true;
-//     pkgUpdate.update();
-//     //@ts-ignore
-//     pkgUpdate._incompatible = preIncompatible;
-//   });
-
-//   test('pkg check version', () => {
-//     pkgUpdate.check();
-//   });
-
-//   test('pkg start', () => {
-//     //@ts-ignore
-//     pkgUpdate._currentVersion = '0.0.0';
-//     pkgUpdate.start();
-
-//     new PackageUpdater().start();
-//   });
-// });
+  // TODO: MONA命令集成测试
+});

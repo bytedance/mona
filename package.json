@@ -9,7 +9,7 @@
     "clean": "lerna clean",
     "bootstrap": "lerna bootstrap",
     "test": "jest",
-    "test:coverage": "jest --coverage",
+    "test:c": "jest --coverage",
     "v": "yarn v:lerna && yarn v:git",
     "v:lerna": "lerna version ${npm_config_lerna_version} --exact --no-git-tag-version --force-publish --yes",
     "v:git": "git add . && git commit -m \"chore(release): publish ${npm_config_lerna_version}\""

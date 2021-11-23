@@ -38,10 +38,10 @@ export interface AskOpts {
   styleProcessor: Answer['styleProcessor'];
 }
 
-export async function ask(opts: AskOpts) {
+export async function ask(opts: Partial<AskOpts>) {
   const prompts: inquirer.DistinctQuestion<Answer>[] = [];
 
-  Object.keys(opts).map(type => {
+  Object.keys(askConfig).map(type => {
     const defaultValue = opts[type as keyof AskOpts];
     const itemInst = askConfig[type as keyof AskOpts];
     if (itemInst && (itemInst?.checkAsk?.(defaultValue) || typeof itemInst?.checkAsk !== 'function')) {
@@ -58,8 +58,8 @@ const styleProcessors = [
   { name: 'css', value: 'css' }
 ];
 
-type AskItem = DistinctQuestion & { checkAsk?: (defaultValue?: any) => boolean };
-const askConfig: Record<keyof AskOpts, AskItem> = {
+type AskItem = DistinctQuestion & { checkAsk?: (defaultValue?: any) => boolean; testDefault?: any };
+export const askConfig: Record<keyof AskOpts, AskItem> = {
   projectName: {
     type: 'input',
     name: 'projectName',
@@ -73,7 +73,9 @@ const askConfig: Record<keyof AskOpts, AskItem> = {
         return '当前目录已存在同名文件夹，请更换应用名称！';
       }
       return true;
-    }
+    },
+    // 用于测试
+    testDefault: 'mona'
   },
   useTypescript: {
     type: 'confirm',
@@ -87,6 +89,7 @@ const askConfig: Record<keyof AskOpts, AskItem> = {
     name: 'styleProcessor',
     message: '请选择样式预处理器',
     choices: styleProcessors,
+    default: styleProcessors[0].value,
     checkAsk: (defaultValue?: string) => !defaultValue || !styleProcessors.find(s => s.value === defaultValue)
   },
   templateType: {
@@ -94,6 +97,7 @@ const askConfig: Record<keyof AskOpts, AskItem> = {
     name: 'templateType',
     message: '请选择模板',
     choices: templates,
+    default: templates[0].value,
     checkAsk: (defaultValue?: string) => !defaultValue || !templates.find(t => t.value === defaultValue)
   }
 };
