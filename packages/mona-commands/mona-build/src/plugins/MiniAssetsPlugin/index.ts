@@ -1,6 +1,8 @@
 import { ConfigHelper } from '@/configHelper';
 import { Compiler, Compilation } from 'webpack';
 import createJson from './createJson';
+import createSjs from './createSjs';
+import createTtml from './createTtml';
 
 class MiniAssetsPlugin {
   configHelper: ConfigHelper;
@@ -20,10 +22,13 @@ class MiniAssetsPlugin {
         await createJson(compilation, this.configHelper)
 
         // ttml
+        await createTtml(compilation, this.configHelper)
 
+        // sjs
+        await createSjs(compilation)
       })
     })
   }
-}
+}    
 
 export default MiniAssetsPlugin;

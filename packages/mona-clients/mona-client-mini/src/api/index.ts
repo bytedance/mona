@@ -1,4 +1,4 @@
-import { promisify } from '@/utils/promisify';
+import { promisify } from '../utils/promisify';
 import { Api as BaseApi } from '@bytedance/mona-apis'
 
 class Api extends BaseApi {

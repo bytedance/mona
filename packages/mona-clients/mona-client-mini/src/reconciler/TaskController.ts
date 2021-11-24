@@ -29,7 +29,11 @@ export default class TaskController {
   }
 
   applyUpdate() {
-    this.context.setData(this.tasks);
+    const data = this.tasks.map(t => ({ ...t, child: t.child?.serialize() }));
+    console.log('applyUpdate', data)
+    this.context.setData({
+      tasks: data
+    });
     this.tasks = [];
   }
 }

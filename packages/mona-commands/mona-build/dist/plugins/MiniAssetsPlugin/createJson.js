@@ -16,7 +16,7 @@ async function createJson(compilation, configHelper) {
     // project.config.json
     const projectFile = 'project.config.json';
     if (!compilation.getAsset(projectFile)) {
-        const tplPath = path_1.default.join(__dirname, './project.config.js.ejs');
+        const tplPath = path_1.default.join(__dirname, '../../ejs', './project.config.js.ejs');
         const raw = await ejs_1.default.renderFile(tplPath, { appid: projectConfig.appId || constants_1.DEFAULT_APPID, name: projectConfig.projectName });
         const source = new RawSource(raw);
         compilation.emitAsset(projectFile, source);
@@ -31,14 +31,14 @@ async function createJson(compilation, configHelper) {
     // page json
     pages.forEach(page => {
         const pageDistPath = path_1.default.join(page.toLowerCase());
-        const pageConfigPath = path_1.default.join(cwd, `./src/${page}`, '..', 'page.config');
-        const pageConfig = (0, mona_shared_1.readConfig)(pageConfigPath);
-        // generate json file
-        const source = new RawSource(JSON.stringify(pageConfig));
         const file = `${pageDistPath}.json`;
         if (compilation.getAsset(file)) {
             return;
         }
+        const pageConfigPath = path_1.default.join(cwd, `./src/${page}`, '..', 'page.config');
+        const pageConfig = (0, mona_shared_1.readConfig)(pageConfigPath);
+        // generate json file
+        const source = new RawSource(JSON.stringify(pageConfig));
         compilation.emitAsset(file, source);
     });
 }

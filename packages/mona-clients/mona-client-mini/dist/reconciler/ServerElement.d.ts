@@ -19,4 +19,5 @@ export default class ServerElement {
     appendChild(child: ServerElement): void;
     removeChild(child: ServerElement): void;
     insertBefore(child: ServerElement, nextSibling: ServerElement): void;
+    serialize(): any;
 }

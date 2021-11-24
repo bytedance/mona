@@ -4,6 +4,8 @@ export default function createHostConfig(): {
     appendInitialChild(parent: ServerElement, child: ServerElement): void;
     createInstance(type: string, props: any, taskController: TaskController): ServerElement;
     createTextInstance(text: string, taskController: TaskController): ServerElement;
+    finalizeInitialChildren(element: ServerElement, type: string, props: any): boolean;
+    clearContainer(): void;
     prepareForCommit(): void;
     resetAfterCommit(): void;
     resetTextContent(element: ServerElement): void;
@@ -15,7 +17,7 @@ export default function createHostConfig(): {
     supportsMutation: boolean;
     appendAllChildren(children: ServerElement[]): void;
     appendChild(parent: ServerElement, child: ServerElement): void;
-    appendChildToContainer(parent: ServerElement, child: ServerElement): void;
+    appendChildToContainer(container: any, child: ServerElement): void;
     removeChild(parent: ServerElement, child: ServerElement): void;
     removeChildFromContainer(parent: ServerElement, child: ServerElement): void;
     insertBefore(parent: ServerElement, child: ServerElement, beforeChild: ServerElement): void;

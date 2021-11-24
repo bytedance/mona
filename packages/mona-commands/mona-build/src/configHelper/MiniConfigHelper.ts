@@ -14,7 +14,7 @@ class MiniConfigHelper extends BaseConfigHelper {
 
     const config: Configuration = {
       mode: this._createMode(),
-      devtool: this.options.dev ? 'cheap-source-map' : undefined,
+      devtool: false,
       output: this._createOutput(),
       entry: miniEntryPlugin.entryModule.entries,
       resolve: this._createResolve(),
@@ -46,7 +46,6 @@ class MiniConfigHelper extends BaseConfigHelper {
 
   private _createMode() {
     return this.options.dev ? 'development' : 'production';
-    // return 'development';
   }
 
   private _createOutput() {

@@ -74,7 +74,7 @@ function createConfig(Component: React.ComponentType<any>) {
     },
 
     $callLifecycle(name: PageLifecycle, params?: any) {
-      const cbs = this._pageLifecycleContext.lifecycles[name];
+      const cbs = this._pageLifecycleContext.lifecycles[name] || [];
       cbs.forEach(cb => {
         cb(params);
       });

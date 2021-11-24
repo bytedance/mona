@@ -4,11 +4,17 @@ import { AppLifecycle } from './lifecycle/context';
 import render from './reconciler';
 var AppConfig = /** @class */ (function () {
     function AppConfig(Component) {
-        this._container = {};
+        this._controller = {
+            tasks: [],
+            context: {},
+            _root: null,
+            requestUpdate: function () { },
+            applyUpdate: function () { }
+        };
         this._Component = Component;
     }
     AppConfig.prototype.onLaunch = function (options) {
-        render(React.createElement(this._Component, {}, []), this._container);
+        render(React.createElement(this._Component, {}, []), this._controller);
         this._callLifecycle(AppLifecycle.lanuch, options);
     };
     AppConfig.prototype.onShow = function (options) {
@@ -24,7 +30,7 @@ var AppConfig = /** @class */ (function () {
         this._callLifecycle(AppLifecycle.pageNodeFound, msg);
     };
     AppConfig.prototype._callLifecycle = function (name, params) {
-        var cbs = appLifecycleContext.lifecycles[name];
+        var cbs = appLifecycleContext.lifecycles[name] || [];
         cbs.forEach(function (cb) {
             cb(params);
         });

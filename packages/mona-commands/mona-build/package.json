@@ -15,7 +15,7 @@
   "scripts": {
     "build": "rm -rf ./dist && ttsc -b",
     "start": "ttsc -b -w",
-    "copy": "cp ./src/plugins/MiniAssetsPlugin/project.config.js.ejs ./dist/plugins/MiniAssetsPlugin/project.config.js.ejs"
+    "copy": "copyfiles -f ./src/ejs/*.ejs ./dist/ejs"
   },
   "author": "zhangxiaowei.chris@bytedance.com",
   "license": "MIT",
@@ -29,6 +29,7 @@
     "@types/node": "^16.4.5",
     "@types/webpack-dev-server": "^4.3.1",
     "@types/yargs": "^16.0.0",
+    "copyfiles": "^2.4.1",
     "ttypescript": "^1.5.12",
     "typescript-json-schema": "^0.43.0",
     "typescript-transform-paths": "^2.2.4"

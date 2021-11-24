@@ -1,17 +1,17 @@
 import React from 'react';
 import { PageLifecycleGlobalContext, LifecycleContext, PageLifecycle } from './lifecycle/context';
 import render from './reconciler';
-import PageContainer from './reconciler/TaskController';
+import TaskController from './reconciler/TaskController';
 function createConfig(Component) {
     var config = {
         _pageLifecycleContext: new LifecycleContext(),
         _Component: Component,
-        _container: new PageContainer({}),
+        _controller: new TaskController({}),
         onLoad: function (options) {
             var element = React.createElement(this._Component, {}, []);
             var wrapper = React.createElement(PageLifecycleGlobalContext.Provider, { value: this._pageLifecycleContext }, [element]);
-            this._container = new PageContainer(this);
-            render(wrapper, this._container);
+            this._controller = new TaskController(this);
+            render(wrapper, this._controller);
             this.$callLifecycle(PageLifecycle.load, options);
         },
         onUnload: function () {
@@ -42,7 +42,7 @@ function createConfig(Component) {
             this.$callLifecycle(PageLifecycle.pageScroll);
         },
         $callLifecycle: function (name, params) {
-            var cbs = this._pageLifecycleContext.lifecycles[name];
+            var cbs = this._pageLifecycleContext.lifecycles[name] || [];
             cbs.forEach(function (cb) {
                 cb(params);
             });

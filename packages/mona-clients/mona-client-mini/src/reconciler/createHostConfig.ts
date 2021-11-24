@@ -26,33 +26,33 @@ export default function createHostConfig() {
     },
 
     createTextInstance(text: string, taskController: TaskController) {
-      const element = new ServerElement({ type: 'text', taskController });
+      const element = new ServerElement({ type: 'ptext', taskController });
       element.text = text;
       return element;
     },
 
-    // finalizeInitialChildren(element: ServerElement, type: string, props: any) {
-    //     const result = {}
-    //     Object.keys(props).forEach((key) => {
-    //         if (isEventName(key) && typeof props[key] === 'function') {
-    //             const eventKey = generateEventKey();
-    //             result[key] = eventKey;
-    //             // 进入事件池
-    //             eventPool.set(eventKey, props[key]);
-    //         } else if (key !== 'children') {
-    //             result[key] = props[key];
-    //         }
-    //     })
-    //     element.props = result;
-    //     return false
-    // },
+    finalizeInitialChildren(element: ServerElement, type: string, props: any) {
+        // const result = {}
+        // Object.keys(props).forEach((key) => {
+        //     if (isEventName(key) && typeof props[key] === 'function') {
+        //         const eventKey = generateEventKey();
+        //         result[key] = eventKey;
+        //         // 进入事件池
+        //         eventPool.set(eventKey, props[key]);
+        //     } else if (key !== 'children') {
+        //         result[key] = props[key];
+        //     }
+        // })
+        // element.props = result;
+        return false
+    },
 
     // getPublicInstance(inst:) {
     //     return inst
     // },
-    // clearContainer() {
-    //     console.log('clearContainer')
-    // },
+    clearContainer() {
+        console.log('clearContainer')
+    },
 
     prepareForCommit() {
       // empty
@@ -104,11 +104,11 @@ export default function createHostConfig() {
       });
     },
 
-    appendChildToContainer(parent: ServerElement, child: ServerElement) {
+    appendChildToContainer(container: any, child: ServerElement) {
       // console.log('appendChildToContainer', child.children.get(2).children.get(1).children.size);
       // WorkerElement.markSent(child)
       // console.log('mark end all');
-      parent.requestUpdate({
+      child.requestUpdate({
         method: 'appendChildToContainer',
         child,
       });

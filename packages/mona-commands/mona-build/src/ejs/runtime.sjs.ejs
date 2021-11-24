@@ -1,0 +1,21 @@
+var pageNodesMap = {}
+
+
+function execTask(task, pageId) {
+    var type = task.method;
+    if (type === 'appendChildToContainer') {
+        pageNodesMap[pageId] = task.child;
+    }
+}
+
+function parseNodes(tasks, pageId) {
+    tasks.forEach(function(task){
+        execTask(task, pageId);
+    })
+
+    return pageNodesMap[pageId];
+}
+
+module.exports = {
+    parseNodes: parseNodes
+}

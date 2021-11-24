@@ -15,7 +15,7 @@ export default async function createJson(compilation: Compilation, configHelper:
   // project.config.json
   const projectFile = 'project.config.json';
   if (!compilation.getAsset(projectFile)) {
-    const tplPath = path.join(__dirname, './project.config.js.ejs');
+    const tplPath = path.join(__dirname, '../../ejs', './project.config.js.ejs');
     const raw = await ejs.renderFile(tplPath, { appid: projectConfig.appId || DEFAULT_APPID, name: projectConfig.projectName })
     const source = new RawSource(raw);
     compilation.emitAsset(projectFile, source);
@@ -32,16 +32,17 @@ export default async function createJson(compilation: Compilation, configHelper:
   // page json
   pages.forEach(page => {
     const pageDistPath = path.join(page.toLowerCase());
+    const file = `${pageDistPath}.json`;
+
+     if (compilation.getAsset(file)) {
+      return;
+    }
+
     const pageConfigPath = path.join(cwd, `./src/${page}`, '..', 'page.config');
     const pageConfig = readConfig<PageConfig>(pageConfigPath);
 
     // generate json file
     const source = new RawSource(JSON.stringify(pageConfig))
-    const file = `${pageDistPath}.json`;
-
-    if (compilation.getAsset(file)) {
-      return;
-    }
     compilation.emitAsset(file, source)
   })
 }

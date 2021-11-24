@@ -13,7 +13,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import { promisify } from '@/utils/promisify';
+import { promisify } from '../utils/promisify';
 import { Api as BaseApi } from '@bytedance/mona-apis';
 var Api = /** @class */ (function (_super) {
     __extends(Api, _super);

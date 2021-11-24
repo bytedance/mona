@@ -3,6 +3,14 @@ import TaskController, { Task } from './TaskController';
 let id = 1;
 const generateId = () => id++;
 
+const allTypes = new Set(['view', 'button', 'text', 'ptext'])
+function formatType(type: string): string {
+  if (allTypes.has(type)) {
+    return type;
+  }
+  return 'view';
+}
+
 export default class ServerElement {
   type: string;
   taskController: TaskController;
@@ -16,7 +24,7 @@ export default class ServerElement {
   nextSiblingKey: number | null = null;
 
   constructor({ type, props, taskController }: { type: string; taskController: TaskController; props?: any }) {
-    this.type = type;
+    this.type = formatType(type);
     this.props = props;
     this.key = generateId();
     this.taskController = taskController;
@@ -85,5 +93,22 @@ export default class ServerElement {
       // added in between
       this.firstChildKey = child.key;
     }
+  }
+
+  serialize() {
+    const childrenKeys = this.children ? Array.from(this.children.keys()) : []
+    const children = childrenKeys.map(key => this.children.get(key)?.serialize())
+
+    // remove children from props
+    const { children: _, cookiedProps } = this.props || {};
+
+    const json: any = {
+      key: this.key,
+      type: this.type,
+      text: this.text,
+      props: cookiedProps,
+      children: children
+    }
+    return json;
   }
 }

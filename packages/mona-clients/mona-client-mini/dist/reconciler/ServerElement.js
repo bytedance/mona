@@ -1,5 +1,12 @@
 var id = 1;
 var generateId = function () { return id++; };
+var allTypes = new Set(['view', 'button', 'text', 'ptext']);
+function formatType(type) {
+    if (allTypes.has(type)) {
+        return type;
+    }
+    return 'view';
+}
 var ServerElement = /** @class */ (function () {
     function ServerElement(_a) {
         var type = _a.type, props = _a.props, taskController = _a.taskController;
@@ -7,7 +14,7 @@ var ServerElement = /** @class */ (function () {
         this.lastChildKey = null;
         this.prevSiblingKey = null;
         this.nextSiblingKey = null;
-        this.type = type;
+        this.type = formatType(type);
         this.props = props;
         this.key = generateId();
         this.taskController = taskController;
@@ -76,6 +83,21 @@ var ServerElement = /** @class */ (function () {
             // added in between
             this.firstChildKey = child.key;
         }
+    };
+    ServerElement.prototype.serialize = function () {
+        var _this = this;
+        var childrenKeys = this.children ? Array.from(this.children.keys()) : [];
+        var children = childrenKeys.map(function (key) { var _a; return (_a = _this.children.get(key)) === null || _a === void 0 ? void 0 : _a.serialize(); });
+        // remove children from props
+        var _a = this.props || {}, _ = _a.children, cookiedProps = _a.cookiedProps;
+        var json = {
+            key: this.key,
+            type: this.type,
+            text: this.text,
+            props: cookiedProps,
+            children: children
+        };
+        return json;
     };
     return ServerElement;
 }());

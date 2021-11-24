@@ -41,7 +41,7 @@ class AppConfig {
   }
 
   private _callLifecycle(name: AppLifecycle, params?: any) {
-    const cbs = appLifecycleContext.lifecycles[name];
+    const cbs = appLifecycleContext.lifecycles[name] || [];
     cbs.forEach(cb => {
       cb(params);
     });

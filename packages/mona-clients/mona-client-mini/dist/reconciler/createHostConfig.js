@@ -37,31 +37,31 @@ export default function createHostConfig() {
             return new ServerElement({ type: type, props: props, taskController: taskController });
         },
         createTextInstance: function (text, taskController) {
-            var element = new ServerElement({ type: 'text', taskController: taskController });
+            var element = new ServerElement({ type: 'ptext', taskController: taskController });
             element.text = text;
             return element;
         },
-        // finalizeInitialChildren(element: ServerElement, type: string, props: any) {
-        //     const result = {}
-        //     Object.keys(props).forEach((key) => {
-        //         if (isEventName(key) && typeof props[key] === 'function') {
-        //             const eventKey = generateEventKey();
-        //             result[key] = eventKey;
-        //             // 进入事件池
-        //             eventPool.set(eventKey, props[key]);
-        //         } else if (key !== 'children') {
-        //             result[key] = props[key];
-        //         }
-        //     })
-        //     element.props = result;
-        //     return false
-        // },
+        finalizeInitialChildren: function (element, type, props) {
+            // const result = {}
+            // Object.keys(props).forEach((key) => {
+            //     if (isEventName(key) && typeof props[key] === 'function') {
+            //         const eventKey = generateEventKey();
+            //         result[key] = eventKey;
+            //         // 进入事件池
+            //         eventPool.set(eventKey, props[key]);
+            //     } else if (key !== 'children') {
+            //         result[key] = props[key];
+            //     }
+            // })
+            // element.props = result;
+            return false;
+        },
         // getPublicInstance(inst:) {
         //     return inst
         // },
-        // clearContainer() {
-        //     console.log('clearContainer')
-        // },
+        clearContainer: function () {
+            console.log('clearContainer');
+        },
         prepareForCommit: function () {
             // empty
         },
@@ -101,11 +101,11 @@ export default function createHostConfig() {
             parent.appendChild(child);
             parent.requestUpdate(__assign({ parentKey: parent.key }, identifier));
         },
-        appendChildToContainer: function (parent, child) {
+        appendChildToContainer: function (container, child) {
             // console.log('appendChildToContainer', child.children.get(2).children.get(1).children.size);
             // WorkerElement.markSent(child)
             // console.log('mark end all');
-            parent.requestUpdate({
+            child.requestUpdate({
                 method: 'appendChildToContainer',
                 child: child,
             });

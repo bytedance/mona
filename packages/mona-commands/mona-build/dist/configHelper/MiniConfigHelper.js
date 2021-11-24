@@ -15,7 +15,7 @@ class MiniConfigHelper extends BaseConfigHelper_1.default {
         const miniEntryPlugin = new MiniEntryPlugin_1.default(this);
         const config = {
             mode: this._createMode(),
-            devtool: this.options.dev ? 'cheap-source-map' : undefined,
+            devtool: false,
             output: this._createOutput(),
             entry: miniEntryPlugin.entryModule.entries,
             resolve: this._createResolve(),
@@ -44,7 +44,6 @@ class MiniConfigHelper extends BaseConfigHelper_1.default {
     }
     _createMode() {
         return this.options.dev ? 'development' : 'production';
-        // return 'development';
     }
     _createOutput() {
         return {
