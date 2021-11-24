@@ -1,5 +1,4 @@
 name: Mona Test
-description: 
 on:
   push:
     branches:
