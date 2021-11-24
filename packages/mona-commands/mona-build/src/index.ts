@@ -18,7 +18,7 @@ function build({ dev }: { dev: boolean }) {
     try {
       // 分析参数
       const configHelper = new ConfigHelper({ ...argv, dev, port: argv.port as string });
-      const port = configHelper.projectConfig.dev?.port || DEFAULT_PORT
+      const port = configHelper.projectConfig.dev?.port || DEFAULT_PORT;
 
       // 生成webpack配置
       const webpackConfig = configHelper.generate();
@@ -27,27 +27,30 @@ function build({ dev }: { dev: boolean }) {
       const webpackCompiler = webpack(webpackConfig);
 
       if (dev) {
-        const devServer = new WebpackDevServer({
-          static: {
-            directory: path.join(configHelper.cwd, configHelper.projectConfig.output),
+        const devServer = new WebpackDevServer(
+          {
+            static: {
+              directory: path.join(configHelper.cwd, configHelper.projectConfig.output)
+            },
+            headers: {
+              'Access-Control-Allow-Origin': '*'
+            },
+            hot: true,
+            open: true,
+            historyApiFallback: true,
+            compress: true,
+            port,
+            host: DEAULT_HOST,
+            allowedHosts: 'all'
           },
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-          },
-          hot: true,
-          open: true,
-          historyApiFallback: true,
-          compress: true,
-          port,
-          host: DEAULT_HOST,
-          allowedHosts: 'all',
-        }, webpackCompiler as any);
+          webpackCompiler as any
+        );
 
         devServer.startCallback(() => {
           console.log(`starting server on http://${DEAULT_HOST}:${port}`);
         });
       } else {
-        console.log(chalk.cyan('开始打包'))
+        console.log(chalk.cyan('开始打包'));
         webpackCompiler.run((error, stats) => {
           if (error) {
             throw error;
@@ -65,16 +68,16 @@ function build({ dev }: { dev: boolean }) {
               console.log(chalk.yellow(w.message));
             });
           }
-          Object.keys(info?.assetsByChunkName || {}).forEach((chunkName) => {
+          Object.keys(info?.assetsByChunkName || {}).forEach(chunkName => {
             const assets = (info?.assetsByChunkName || {})[chunkName];
             console.info(chalk.green(`Chunk: ${chunkName}`));
             if (Array.isArray(assets)) {
-              assets.forEach(asset => console.log(chalk.green(` file: ${asset}`)))
+              assets.forEach(asset => console.log(chalk.green(` file: ${asset}`)));
             }
-            console.log('')
-          })
+            console.log('');
+          });
           console.log(chalk.green('打包完成'));
-          process.exit(0)
+          process.exit(0);
         });
       }
     } catch (err: any) {

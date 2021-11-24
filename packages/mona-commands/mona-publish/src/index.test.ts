@@ -1,14 +1,22 @@
 import { compressToZipFromDir } from './utils/common';
 import { commandUsage } from './help';
 import fse from 'fs-extra';
-import path from 'path';
+import { execSync } from 'child_process';
+import { join } from 'path';
 
 test('pkg start', async () => {
-  expect((await compressToZipFromDir(__dirname))?.length > 0).toBe(true);
+  const destPath = await compressToZipFromDir(__dirname);
+  expect(destPath?.length > 0).toBe(true);
 
-  await fse.remove(path.resolve(__dirname, '../', 'publish.zip'));
+  await fse.remove(destPath);
 });
 
 test('commandUsage', async () => {
   expect(commandUsage).not.toThrow();
 });
+
+test('build project', () => {
+  execSync(`cd ${join(__dirname, '../')} && npm run build`, { stdio: 'ignore' });
+});
+
+//TODO publish

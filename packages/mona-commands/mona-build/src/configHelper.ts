@@ -33,7 +33,7 @@ interface ConfigHelperOptions {
   port: string;
 }
 
-function createUniqueId() {
+export function createUniqueId() {
   const random = () => Number(Math.random().toString().substr(2)).toString(36)
   const arr = [String(Date.now())];
   function createId() {

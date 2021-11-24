@@ -3,14 +3,13 @@ import { join } from 'path';
 describe('mona ', () => {
   // const pkgUpdate = new PackageUpdater();
   execSync(`cd ${join(__dirname, '../')} && npm run build`, { stdio: 'ignore' });
-  
+
   test('mona -v', () => {
     execSync(`node ${join(__dirname, '../bin/mona')} -v`, { encoding: 'utf-8' });
   });
 
   test('mona -h', () => {
-    const helpInfo = execSync(`node ${join(__dirname, '../bin/mona')} -h`, { encoding: 'utf-8' });
-    console.log(helpInfo);
+    execSync(`node ${join(__dirname, '../bin/mona')} -h`, { encoding: 'utf-8' });
   });
 
   // TODO: MONA命令集成测试

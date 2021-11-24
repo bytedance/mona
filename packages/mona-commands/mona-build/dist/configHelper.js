@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DEAULT_HOST = exports.DEFAULT_PORT = void 0;
+exports.createUniqueId = exports.DEAULT_HOST = exports.DEFAULT_PORT = void 0;
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
 const mona_shared_1 = require("@bytedance/mona-shared");
@@ -43,6 +43,7 @@ function createUniqueId() {
     }
     return (0, md5_1.hexMD5)(arr.join(','));
 }
+exports.createUniqueId = createUniqueId;
 class ConfigHelper {
     constructor(options) {
         this.projectConfig = {};

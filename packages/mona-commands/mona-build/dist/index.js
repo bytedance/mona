@@ -49,10 +49,10 @@ function build({ dev }) {
             if (dev) {
                 const devServer = new webpack_dev_server_1.default({
                     static: {
-                        directory: path_1.default.join(configHelper.cwd, configHelper.projectConfig.output),
+                        directory: path_1.default.join(configHelper.cwd, configHelper.projectConfig.output)
                     },
                     headers: {
-                        "Access-Control-Allow-Origin": "*",
+                        'Access-Control-Allow-Origin': '*'
                     },
                     hot: true,
                     open: true,
@@ -60,7 +60,7 @@ function build({ dev }) {
                     compress: true,
                     port,
                     host: configHelper_1.DEAULT_HOST,
-                    allowedHosts: 'all',
+                    allowedHosts: 'all'
                 }, webpackCompiler);
                 devServer.startCallback(() => {
                     console.log(`starting server on http://${configHelper_1.DEAULT_HOST}:${port}`);
@@ -85,7 +85,7 @@ function build({ dev }) {
                             console.log(chalk_1.default.yellow(w.message));
                         });
                     }
-                    Object.keys((info === null || info === void 0 ? void 0 : info.assetsByChunkName) || {}).forEach((chunkName) => {
+                    Object.keys((info === null || info === void 0 ? void 0 : info.assetsByChunkName) || {}).forEach(chunkName => {
                         const assets = ((info === null || info === void 0 ? void 0 : info.assetsByChunkName) || {})[chunkName];
                         console.info(chalk_1.default.green(`Chunk: ${chunkName}`));
                         if (Array.isArray(assets)) {

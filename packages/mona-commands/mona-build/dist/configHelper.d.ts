@@ -5,6 +5,7 @@ interface ConfigHelperOptions {
     dev: boolean;
     port: string;
 }
+export declare function createUniqueId(): string;
 declare class ConfigHelper {
     cwd: string;
     projectConfig: ProjectConfig;
