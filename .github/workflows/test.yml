@@ -7,7 +7,6 @@ on:
   pull_request:
     branches:
       - main
-      - chore/test
       - feat/tests
 jobs:
   test:
