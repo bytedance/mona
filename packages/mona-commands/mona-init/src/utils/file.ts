@@ -1,3 +1,6 @@
+/**
+ * ! 此文件夹更新时，注意更新mona-template的测试文件。路径__test__/plugin.test.ts
+ */
 import fs from 'fs';
 import path from 'path';
 
