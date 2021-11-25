@@ -9,7 +9,7 @@ const jsFilePath = join(__dirname, '../dist/index.js');
 const emptyFilePath = `./${new Date()}`;
 
 describe('mona-shared readConfig', () => {
-  test('readTypescriptFile', async () => {
+  test('readTypescriptFile ', async () => {
     readTypescriptFile(tsFilePath);
   });
 
