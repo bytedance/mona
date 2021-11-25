@@ -1,5 +1,4 @@
-import { Api as BaseApi } from '@bytedance/mona-apis';
-declare class Api extends BaseApi {
-    constructor();
+declare class Api {
+    showToast(params: any): Promise<any>;
 }
 export default Api;

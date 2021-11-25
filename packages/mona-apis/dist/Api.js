@@ -1,4 +1,3 @@
-// @ts-nocheck
 var Api = /** @class */ (function () {
     function Api() {
     }

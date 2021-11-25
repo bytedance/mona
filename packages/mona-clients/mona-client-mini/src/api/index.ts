@@ -1,10 +1,8 @@
 import { promisify } from '../utils/promisify';
-import { Api as BaseApi } from '@bytedance/mona-apis'
-
+import { BaseApi } from '@bytedance/mona-apis'
 class Api extends BaseApi {
-  constructor() {
-    super();
-    this.showToast = promisify(tt.showToast);
+  showToast(params: any) {
+    return promisify(tt.showToast)(params);
   }
 }
 

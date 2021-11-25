@@ -1,6 +1,7 @@
 import ApiAdapter from "./ApiAdapter";
+import Api from './Api';
+export const BaseApi = Api;
 
-const apiAdapterInstance = new ApiAdapter({ env: 'mini' }).apiInstance;
+const apiAdapterInstance = new ApiAdapter({ env: 'mini' }).apiInstance!;
 
-export const api = apiAdapterInstance;
-export { default as Api } from './Api';
+export const showToast = apiAdapterInstance.showToast;

@@ -1,0 +1,20 @@
+export declare const baseComponentpropsMap: {
+    id: string;
+    className: string;
+    style: string;
+    hidden: string;
+    hoverClassName: string;
+    hoverStartTime: string;
+    hoverStayTime: string;
+    hoverStopPropagation: string;
+    size: string;
+    type: string;
+    disabled: string;
+    loading: string;
+    formType: string;
+    openType: string;
+    onGetPhoneNumber: string;
+    selectable: string;
+    space: string;
+    decode: string;
+};

@@ -1,4 +1,4 @@
-import { Api as BaseApi } from '@bytedance/mona-apis'
+import { BaseApi } from '@bytedance/mona-apis'
 
 class Api extends BaseApi {
   constructor() {

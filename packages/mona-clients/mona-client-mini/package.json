@@ -14,7 +14,8 @@
   "author": "zhangxiaowei.chris@bytedance.com",
   "license": "MIT",
   "dependencies": {
-    "react-reconciler": "^0.26.2"
+    "react-reconciler": "^0.26.2",
+    "@bytedance/mona-apis": "^0.0.1"
   },
   "devDependencies": {
     "@types/react-reconciler": "^0.26.4"

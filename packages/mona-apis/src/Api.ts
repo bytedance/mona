@@ -1,8 +1,9 @@
-// @ts-nocheck
-export default abstract class Api {
-  showToast: (params: {
+abstract class Api {
+  abstract showToast(params: {
     title: string;
     icon: 'success' | 'loading' | 'none' | 'fail';
     duration: number;
-  }) => Promise<any>;
+  }): Promise<any>;
 }
+
+export default Api

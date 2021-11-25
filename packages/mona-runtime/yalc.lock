@@ -1,0 +1,9 @@
+{
+  "version": "v1",
+  "packages": {
+    "@bytedance/mona-runtime": {
+      "signature": "79e63ebe13e206576940fbbafcac29e7",
+      "file": true
+    }
+  }
+}

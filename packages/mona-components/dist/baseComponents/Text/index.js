@@ -1,3 +1,3 @@
 import createComponent from '../../createComponent';
-export var Button = createComponent('button');
+export var Text = createComponent('text');
 //# sourceMappingURL=index.js.map

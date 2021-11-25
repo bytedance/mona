@@ -1,0 +1,21 @@
+export var baseComponentpropsMap = {
+    'id': 'id',
+    'className': 'class',
+    'style': 'style',
+    'hidden': 'hidden',
+    'hoverClassName': 'hover-class',
+    'hoverStartTime': 'hover-start-time',
+    'hoverStayTime': 'hover-stay-time',
+    'hoverStopPropagation': 'hover-stop-propagation',
+    'size': 'size',
+    'type': 'type',
+    'disabled': 'disabled',
+    'loading': 'loading',
+    'formType': 'form-type',
+    'openType': 'open-type',
+    'onGetPhoneNumber': 'bindgetphonenumber',
+    'selectable': 'selectable',
+    'space': 'space',
+    'decode': 'decode',
+};
+//# sourceMappingURL=prop.js.map

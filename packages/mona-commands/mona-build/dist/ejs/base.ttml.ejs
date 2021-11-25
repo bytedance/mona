@@ -14,6 +14,12 @@
   </text>
 </template>
 
+<template name="mona-button">
+  <button>
+    <template tt:for="{{node.children}}" tt:key={{item.key}} is="{{ 'mona-' + item.type }}" data="{{ node: item }}"></template>
+  </button>
+</template>
+
 <template name="mona-ptext">
   <block>{{node.text}}</block>
 </template>

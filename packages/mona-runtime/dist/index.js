@@ -18,7 +18,10 @@ const mona_plugin_events_1 = __importDefault(require("@bytedance/mona-plugin-eve
 exports.pigeon = mona_plugin_events_1.default.pigeon;
 var createPlugin_1 = require("./createPlugin");
 Object.defineProperty(exports, "createPlugin", { enumerable: true, get: function () { return createPlugin_1.createPlugin; } });
-__exportStar(require("./components"), exports);
-__exportStar(require("./apis"), exports);
+// TODO
+// export * from './components';
+// export * from './apis';
 __exportStar(require("@bytedance/mona-client-mini"), exports);
+__exportStar(require("@bytedance/mona-components"), exports);
+__exportStar(require("@bytedance/mona-apis"), exports);
 //# sourceMappingURL=index.js.map
