@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - feat/tests
+      - chore/test
       - main
   pull_request:
     branches:
