@@ -1,4 +1,4 @@
-name2: ‘Mona Test’
+name: Mona Test
 on:
   push:
     branches:
@@ -11,7 +11,7 @@ on:
       - feat/tests
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on2: ubuntu-latest
 
     strategy:
       matrix:
