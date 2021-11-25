@@ -10,7 +10,7 @@ on:
       - feat/tests
 jobs:
   test:
-    runs-on2: ubuntu-latest
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:

@@ -10,6 +10,7 @@ const emptyFilePath = `./${new Date()}`;
 
 describe('mona-shared readConfig', () => {
   test('readTypescriptFile ', async () => {
+    throw new Error('ci test');
     readTypescriptFile(tsFilePath);
   });
 
