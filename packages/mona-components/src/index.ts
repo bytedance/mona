@@ -1,13 +1,82 @@
 import adapter from './adapter';
+import './BaseComponents';
 
-export * from './baseComponents';
-export * from './baseComponents/prop';
+export * from './prop';
 
 // BUILD_TARGET will inject by DefinePlugin
 const comonents = adapter(BUILD_TARGET);
 
 const {
-  Button: TestButton
+  Text,
+  RichText,
+  Progress,
+  Icon,
+  View,
+  ScrollView,
+  Swiper,
+  SwiperItem,
+  MovableArea,
+  MovableView,
+  Button,
+  Checkbox,
+  CheckboxGroup,
+  Form,
+  Input,
+  Label,
+  Picker,
+  PickerView,
+  PickerViewColumn,
+  Radio,
+  RadioGroup,
+  Slider,
+  Switch,
+  Textarea,
+  Navigator,
+  Image,
+  Video,
+  LivePlayer,
+  Camera,
+  Canvas,
+  Map,
+  Webview,
+  Ad,
+  OpenData,
 } = comonents;
 
-export { TestButton }
+
+export {
+  Text,
+  RichText,
+  Progress,
+  Icon,
+  View,
+  ScrollView,
+  Swiper,
+  SwiperItem,
+  MovableArea,
+  MovableView,
+  Button,
+  Checkbox,
+  CheckboxGroup,
+  Form,
+  Input,
+  Label,
+  Picker,
+  PickerView,
+  PickerViewColumn,
+  Radio,
+  RadioGroup,
+  Slider,
+  Switch,
+  Textarea,
+  Navigator,
+  Image,
+  Video,
+  LivePlayer,
+  Camera,
+  Canvas,
+  Map,
+  Webview,
+  Ad,
+  OpenData,
+}

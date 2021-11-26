@@ -20,6 +20,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 };
 import ServerElement from './ServerElement';
 var emptyObject = {};
+// TODO: android低版本兼容问题，尽量不要引入polyfill
 function changedProps(oldObj, newObj) {
     // Return a diff between the new and the old object
     var uniqueProps = new Set(__spreadArray(__spreadArray([], Object.keys(oldObj), true), Object.keys(newObj), true));
@@ -72,6 +73,8 @@ export default function createHostConfig() {
             // empty
         },
         prepareUpdate: function (domElement, type, oldProps, newProps) {
+            console.log('prepareUpdate', { domElement: domElement, type: type, oldProps: oldProps, newProps: newProps });
+            console.log('prepareUpdate', changedProps(oldProps, newProps).filter(function (prop) { return prop !== 'children'; }));
             return changedProps(oldProps, newProps).filter(function (prop) { return prop !== 'children'; });
         },
         getRootHostContext: function (rootInstance) {
@@ -107,7 +110,7 @@ export default function createHostConfig() {
             // console.log('mark end all');
             child.requestUpdate({
                 method: 'appendChildToContainer',
-                child: child,
+                child: child
             });
             // console.log('send', child)
         },
@@ -116,7 +119,7 @@ export default function createHostConfig() {
             parent.requestUpdate({
                 method: 'removeChild',
                 parentKey: parent.key,
-                childKey: child.key,
+                childKey: child.key
             });
         },
         removeChildFromContainer: function (parent, child) {
@@ -137,6 +140,7 @@ export default function createHostConfig() {
             parent.requestUpdate(__assign({ parentKey: parent.key, beforeKey: beforeChild.key }, identifier));
         },
         commitUpdate: function (instance, updatePayload, type, oldProps, newProps) {
+            console.log('commitUpdate', { updatePayload: updatePayload, type: type, oldProps: oldProps, newProps: newProps });
             if (updatePayload.length) {
                 // throw new Error('not yet implemented')
                 // sendMessage({
@@ -160,9 +164,9 @@ export default function createHostConfig() {
             textInstance.requestUpdate({
                 method: 'commitTextUpdate',
                 key: textInstance.key,
-                text: newText,
+                text: newText
             });
-        },
+        }
     };
     return hostConfig;
 }
