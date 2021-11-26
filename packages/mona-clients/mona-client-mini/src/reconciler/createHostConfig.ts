@@ -3,6 +3,7 @@ import TaskController from './TaskController';
 import ServerElement from './ServerElement';
 
 const emptyObject = {};
+// TODO: android低版本兼容问题，尽量不要引入polyfill
 
 function changedProps(oldObj: Record<string, any>, newObj: Record<string, any>) {
   // Return a diff between the new and the old object
@@ -32,26 +33,26 @@ export default function createHostConfig() {
     },
 
     finalizeInitialChildren(element: ServerElement, type: string, props: any) {
-        // const result = {}
-        // Object.keys(props).forEach((key) => {
-        //     if (isEventName(key) && typeof props[key] === 'function') {
-        //         const eventKey = generateEventKey();
-        //         result[key] = eventKey;
-        //         // 进入事件池
-        //         eventPool.set(eventKey, props[key]);
-        //     } else if (key !== 'children') {
-        //         result[key] = props[key];
-        //     }
-        // })
-        // element.props = result;
-        return false
+      // const result = {}
+      // Object.keys(props).forEach((key) => {
+      //     if (isEventName(key) && typeof props[key] === 'function') {
+      //         const eventKey = generateEventKey();
+      //         result[key] = eventKey;
+      //         // 进入事件池
+      //         eventPool.set(eventKey, props[key]);
+      //     } else if (key !== 'children') {
+      //         result[key] = props[key];
+      //     }
+      // })
+      // element.props = result;
+      return false;
     },
 
     // getPublicInstance(inst:) {
     //     return inst
     // },
     clearContainer() {
-        console.log('clearContainer')
+      console.log('clearContainer')
     },
 
     prepareForCommit() {
@@ -65,6 +66,12 @@ export default function createHostConfig() {
     },
 
     prepareUpdate(domElement: any, type: string, oldProps: any, newProps: any) {
+      console.log('prepareUpdate', { domElement, type, oldProps, newProps });
+      console.log(
+        'prepareUpdate',
+        changedProps(oldProps, newProps).filter(prop => prop !== 'children')
+      );
+
       return changedProps(oldProps, newProps).filter(prop => prop !== 'children');
     },
 
@@ -100,7 +107,7 @@ export default function createHostConfig() {
       parent.appendChild(child);
       parent.requestUpdate({
         parentKey: parent.key,
-        ...identifier,
+        ...identifier
       });
     },
 
@@ -110,7 +117,7 @@ export default function createHostConfig() {
       // console.log('mark end all');
       child.requestUpdate({
         method: 'appendChildToContainer',
-        child,
+        child
       });
       // console.log('send', child)
     },
@@ -120,7 +127,7 @@ export default function createHostConfig() {
       parent.requestUpdate({
         method: 'removeChild',
         parentKey: parent.key,
-        childKey: child.key,
+        childKey: child.key
       });
     },
 
@@ -143,11 +150,12 @@ export default function createHostConfig() {
       parent.requestUpdate({
         parentKey: parent.key,
         beforeKey: beforeChild.key,
-        ...identifier,
+        ...identifier
       });
     },
 
     commitUpdate(instance: any, updatePayload: any, type: any, oldProps: any, newProps: any) {
+      console.log('commitUpdate', { updatePayload, type, oldProps, newProps });
       if (updatePayload.length) {
         // throw new Error('not yet implemented')
         // sendMessage({
@@ -173,9 +181,9 @@ export default function createHostConfig() {
       textInstance.requestUpdate({
         method: 'commitTextUpdate',
         key: textInstance.key,
-        text: newText,
+        text: newText
       });
-    },
+    }
   };
   return hostConfig;
 }
