@@ -1,6 +1,7 @@
 import ApiAdapter from "./ApiAdapter";
-import Api from './Api';
-export var BaseApi = Api;
-var apiAdapterInstance = new ApiAdapter({ env: 'mini' }).apiInstance;
-export var showToast = apiAdapterInstance.showToast;
+export { default as BaseApi } from './Api';
+// BUILD_TARGET will inject by DefinePlugin
+var apiAdapterInstance = new ApiAdapter({ env: BUILD_TARGET }).apiInstance;
+var showToast = apiAdapterInstance.showToast;
+export { showToast };
 //# sourceMappingURL=index.js.map

@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const BaseConfigHelper_1 = __importDefault(require("./BaseConfigHelper"));
+const webpack_1 = require("webpack");
 const path_1 = __importDefault(require("path"));
 const mini_css_extract_plugin_1 = __importDefault(require("mini-css-extract-plugin"));
 const react_refresh_webpack_plugin_1 = __importDefault(require("@pmmmwh/react-refresh-webpack-plugin"));
@@ -229,6 +230,9 @@ class PluginConfigHelper extends BaseConfigHelper_1.default {
                     useShortDoctype: true
                 }
             }),
+            new webpack_1.DefinePlugin({
+                BUILD_TARGET: JSON.stringify('plugin')
+            })
         ];
         if (this.options.dev) {
             plugins = [

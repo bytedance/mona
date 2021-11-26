@@ -4,7 +4,10 @@
     "outDir": "dist",
     "baseUrl": "."
   },
-  "include": ["src"],
+  "include": [
+    "src/**/*",
+    "typings/**/*"
+  ],
   "exclude": [
     "dist",
   ]

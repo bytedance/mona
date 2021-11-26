@@ -15,6 +15,7 @@
     "skipLibCheck": true,
     "pretty": true,
     "sourceMap": true,
+    "jsx": "react",
     "declaration": true,
     "paths": {
       "@/*": [

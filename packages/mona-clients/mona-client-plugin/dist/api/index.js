@@ -13,15 +13,13 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import { Api as BaseApi } from '@bytedance/mona-apis';
+import { Api as WebApi } from '@bytedance/mona-client-web';
 var Api = /** @class */ (function (_super) {
     __extends(Api, _super);
     function Api() {
-        var _this = _super.call(this) || this;
-        _this.showToast = function () { return Promise.resolve(); };
-        return _this;
+        return _super.call(this) || this;
     }
     return Api;
-}(BaseApi));
+}(WebApi));
 export default Api;
 //# sourceMappingURL=index.js.map

@@ -13,3 +13,7 @@ export interface HoverProps {
   hoverStayTime?: number;
   hoverStopPropagation?: boolean;
 }
+
+export interface EventHandler {
+  (event: any): void
+}

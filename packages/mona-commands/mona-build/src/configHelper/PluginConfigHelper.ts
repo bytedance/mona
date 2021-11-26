@@ -1,6 +1,6 @@
 import BaseConfigHelper from "./BaseConfigHelper";
 
-import webpack, { RuleSetRule, Configuration } from 'webpack';
+import webpack, { RuleSetRule, Configuration, DefinePlugin } from 'webpack';
 import path from 'path';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
@@ -257,6 +257,9 @@ class PluginConfigHelper extends BaseConfigHelper {
           useShortDoctype: true
         }
       }),
+      new DefinePlugin({
+        BUILD_TARGET: JSON.stringify('plugin')
+      })
     ]
 
     if (this.options.dev) {

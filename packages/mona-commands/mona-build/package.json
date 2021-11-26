@@ -13,7 +13,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "rm -rf ./dist && ttsc -b",
+    "build": "rm -rf ./dist && yarn copy && ttsc -b",
     "start": "ttsc -b -w",
     "copy": "copyfiles -f ./src/ejs/*.ejs ./dist/ejs"
   },
