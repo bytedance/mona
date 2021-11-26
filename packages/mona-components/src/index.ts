@@ -1,8 +1,6 @@
 import adapter from './adapter';
 import '@bytedance/mona';
 
-export * from './prop';
-
 // BUILD_TARGET will inject by DefinePlugin
 const comonents = adapter(BUILD_TARGET);
 
