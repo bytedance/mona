@@ -1,4 +1,6 @@
-import { Components as MiniComponents } from '@bytedance/mona-client-mini'
+import { MiniComponents } from '@bytedance/mona-client-mini'
+import { WebComponents } from '@bytedance/mona-client-web'
+import { PluginComponents } from '@bytedance/mona-client-plugin'
 import { BaseComponents } from '@bytedance/mona';
 
 type Env = 'mini' | 'web' | 'plugin';
@@ -7,15 +9,14 @@ export default function adapter(env: Env) {
   let components: BaseComponents;
   switch(env) {
     case 'mini':
-    default:
       components = new MiniComponents() as BaseComponents;
-    //   break;
-    // case 'plugin':
-    //   api = new PluginApi();
-    //   break;
-    // case 'web':
-    // default:
-    //   api = new WebApi();
+      break;
+    case 'plugin':
+      components = new PluginComponents() as BaseComponents;
+      break;
+    case 'web':
+    default:
+      components = new WebComponents() as BaseComponents;
   }
 
   return components;

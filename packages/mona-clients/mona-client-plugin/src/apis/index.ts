@@ -1,4 +1,4 @@
-import { Apis as WebApis } from '@bytedance/mona-client-web'
+import { WebApis } from '@bytedance/mona-client-web'
 class Apis extends WebApis {
   constructor() {
     super();

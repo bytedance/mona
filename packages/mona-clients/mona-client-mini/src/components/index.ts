@@ -37,6 +37,12 @@ class MiniComponents extends BaseComponents {
   Webview = createBaseComponent('web-view')
   Ad = createBaseComponent('ad')
   OpenData = createBaseComponent('open-data')
+  // 自定义
+  Link = (function createBaseComponent(name){
+    const Component = React.forwardRef(({ children, to }, ref) => (React.createElement(name, { url: to, ref }, children)));
+    Component.displayName = name;
+    return Component;
+  }('navigator'))
 }
 
 export default MiniComponents;

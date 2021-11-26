@@ -13,7 +13,8 @@
     "mona"
   ],
   "dependencies": {
-    "@bytedance/mona-client-web": "^0.0.1"
+    "@bytedance/mona-client-web": "^0.0.1",
+    "@bytedance/mona-shared": "^0.1.3"
   },
   "author": "zhangxiaowei.chris@bytedance.com",
   "license": "MIT"

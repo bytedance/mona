@@ -440,6 +440,10 @@ export interface OpenDataProps extends BaseProps {
   onError?: EventHandler;
 }
 
+export interface LinkProps extends BaseProps {
+  to: string;
+}
+
 abstract class BaseComponents {
   // 基础内容
   abstract Text: React.ComponentType<TextProps>
@@ -483,6 +487,8 @@ abstract class BaseComponents {
   abstract Webview: React.ComponentType<WebviewProps>
   abstract Ad: React.ComponentType<AdProps>
   abstract OpenData: React.ComponentType<OpenDataProps>
+  // 自定义
+  abstract Link: React.ComponentType<LinkProps>
 }
 
 export default BaseComponents;

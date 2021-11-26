@@ -1,6 +1,6 @@
-import { Apis as MiniApis } from '@bytedance/mona-client-mini'
-import { Apis as WebApis } from '@bytedance/mona-client-web'
-import { Apis as PluginApis } from '@bytedance/mona-client-plugin'
+import { MiniApis } from '@bytedance/mona-client-mini'
+import { WebApis } from '@bytedance/mona-client-web'
+import { PluginApis } from '@bytedance/mona-client-plugin'
 import { BaseApis } from '@bytedance/mona';
 
 type Env = 'mini' | 'web' | 'plugin';

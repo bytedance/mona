@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
-import { formatPath } from './utils/formatPath';
-import Link from './components/Link';
+import { formatPath } from '@bytedance/mona-shared';
+import { PluginComponents } from '.';
+
+const Link = new PluginComponents().Link;
 
 const WrapperComponent: React.FC<{ title: string }> = ({ children, title }) => {
   useEffect(() => {

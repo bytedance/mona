@@ -1,4 +1,4 @@
-import { formatPath } from '@/utils/formatPath';
+import { formatPath } from '@bytedance/mona-shared';
 
 export function navigateTo(url: string) {
   history.pushState({}, '', formatPath(url));

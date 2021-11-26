@@ -1,1 +1,3 @@
-export { default as Apis } from './apis';
+export * from './createPlugin';
+export { default as PluginApis } from './apis';
+export { default as PluginComponents } from './components';
