@@ -5,7 +5,7 @@ import render from './reconciler';
 import TaskController from './reconciler/TaskController';
 
 class AppConfig {
-  private _controller: TaskController
+  private _controller: TaskController;
   private _Component: React.ComponentType<any>;
 
   constructor(Component: React.ComponentType<any>) {
@@ -14,8 +14,9 @@ class AppConfig {
       context: {},
       _root: null,
       requestUpdate: () => {},
-      applyUpdate: () => {}
-    }
+      applyUpdate: () => {},
+      stopUpdate: () => {},
+    };
     this._Component = Component;
   }
 

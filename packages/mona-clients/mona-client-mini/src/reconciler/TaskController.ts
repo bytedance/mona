@@ -13,6 +13,7 @@ export default class TaskController {
   context: any;
   _root: any;
   tasks: Task[];
+  _stopUpdate?: boolean;
 
   constructor(context: any) {
     this.context = context;
@@ -23,17 +24,24 @@ export default class TaskController {
     if (this.tasks.length === 0) {
       Promise.resolve().then(() => {
         this.applyUpdate();
-      })
+      });
     }
     this.tasks.push(task);
   }
 
   applyUpdate() {
+    if (this._stopUpdate || this.tasks.length === 0) {
+      return;
+    }
     const data = this.tasks.map(t => ({ ...t, child: t.child?.serialize() }));
-    console.log('applyUpdate', data)
+    console.log('applyUpdate', data);
     this.context.setData({
-      tasks: data
+      tasks: data,
     });
     this.tasks = [];
+  }
+
+  stopUpdate() {
+    this._stopUpdate = true;
   }
 }

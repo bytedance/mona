@@ -15,13 +15,12 @@ interface PageConfig {
   onResize: () => void;
   onPullDownRefresh: () => void;
   onReachBottom: () => void;
-  onShareAppMessage: () => void;
+  onShareAppMessage: (options: { channel?: string }) => void;
   onPageScroll: () => void;
   $callLifecycle: (name: PageLifecycle, params?: any) => void;
 }
 
 function createConfig(Component: React.ComponentType<any>) {
-
   const config: PageConfig = {
     _pageLifecycleContext: new LifecycleContext(),
     _Component: Component,
@@ -29,7 +28,9 @@ function createConfig(Component: React.ComponentType<any>) {
 
     onLoad(this: any, options: any) {
       const element = React.createElement(this._Component, {}, []);
-      const wrapper = React.createElement(PageLifecycleGlobalContext.Provider, { value: this._pageLifecycleContext }, [element]);
+      const wrapper = React.createElement(PageLifecycleGlobalContext.Provider, { value: this._pageLifecycleContext }, [
+        element,
+      ]);
 
       this._controller = new TaskController(this);
       render(wrapper, this._controller);
@@ -37,9 +38,9 @@ function createConfig(Component: React.ComponentType<any>) {
     },
 
     onUnload() {
+      this._controller.stopUpdate();
       this.$callLifecycle(PageLifecycle.unload);
     },
-
 
     onReady() {
       this.$callLifecycle(PageLifecycle.ready);
@@ -65,8 +66,8 @@ function createConfig(Component: React.ComponentType<any>) {
       this.$callLifecycle(PageLifecycle.reachBottom);
     },
 
-    onShareAppMessage() {
-      this.$callLifecycle(PageLifecycle.shareAppMessage);
+    onShareAppMessage(options) {
+      this.$callLifecycle(PageLifecycle.shareAppMessage, options);
     },
 
     onPageScroll() {
@@ -78,7 +79,7 @@ function createConfig(Component: React.ComponentType<any>) {
       cbs.forEach(cb => {
         cb(params);
       });
-    }
+    },
   };
 
   return config;
