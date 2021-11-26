@@ -4,8 +4,9 @@
   "description": "Merchant app's developing and building tools",
   "main": "./dist/index",
   "scripts": {
-    "build": "rm -rf dist && ttsc -b",
-    "start": "ttsc -b -w"
+    "build": "yarn clean && ttsc -b",
+    "start": "ttsc -b -w",
+    "clean": "rm -rf dist"
   },
   "files": [
     "dist"
@@ -36,8 +37,11 @@
   "dependencies": {
     "@bytedance/mona-apis": "^0.0.1",
     "@bytedance/mona-client-mini": "^0.0.1",
+    "@bytedance/mona-client-plugin": "^0.0.1",
+    "@bytedance/mona-client-web": "^0.0.1",
     "@bytedance/mona-components": "^0.0.1",
     "@bytedance/mona-plugin-events": "0.1.3",
+    "@bytedance/mona-shared": "^0.1.3",
     "react-router": "^5.2.1",
     "react-router-dom": "^5.3.0"
   },

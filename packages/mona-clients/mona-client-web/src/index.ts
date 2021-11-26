@@ -1,1 +1,2 @@
-export { default as Api } from './api';
+export { default as WebApis } from './apis';
+export { default as WebComponents } from './components';

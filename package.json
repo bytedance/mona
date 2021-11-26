@@ -6,7 +6,8 @@
   "main": "",
   "scripts": {
     "build": "lerna run build",
-    "clean": "lerna clean",
+    "clean": "lerna run clean",
+    "clean:dp": "learn clean",
     "bootstrap": "lerna bootstrap",
     "test": "echo 'test'",
     "v": "yarn v:lerna && yarn v:git",

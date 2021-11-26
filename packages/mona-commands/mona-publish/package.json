@@ -11,8 +11,9 @@
     "dist"
   ],
   "scripts": {
-    "build": "rm -rf ./dist && ttsc -b",
-    "start": "ttsc -b -w"
+    "build": "yarn clean && ttsc -b",
+    "start": "ttsc -b -w",
+    "clean": "rm -rf dist"
   },
   "author": "zhangxiaowei.chris@bytedance.com",
   "license": "MIT",

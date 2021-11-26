@@ -4,8 +4,9 @@
   "description": "Merchant application plugin side communication package",
   "author": "fengbo.lucky@bytedance.com",
   "scripts": {
-    "start": "rollup -c -w",
-    "build": "rollup -c"
+    "start": "yarn clean && rollup -c -w",
+    "build": "rollup -c",
+    "clean": "rm -rf dist"
   },
   "files": [
     "dist"
