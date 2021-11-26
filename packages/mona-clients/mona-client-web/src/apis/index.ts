@@ -1,5 +1,5 @@
 import { BaseApis } from '@bytedance/mona'
-import { formatPath } from '@bytedance/mona-shared';
+import formatPath from '../utils/formatPath';
 class WebApis extends BaseApis {
   showToast(params: any) {
     window.alert(params.title);

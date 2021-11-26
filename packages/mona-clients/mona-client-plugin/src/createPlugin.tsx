@@ -1,10 +1,7 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
-import { formatPath } from '@bytedance/mona-shared';
-import { PluginComponents } from '.';
-
-const Link = new PluginComponents().Link;
+import formatPath from './utils/formatPath';
 
 const WrapperComponent: React.FC<{ title: string }> = ({ children, title }) => {
   useEffect(() => {
@@ -52,9 +49,9 @@ const NoMatch: React.FC<{ defaultPath: string }>  = ({ defaultPath }) => {
           <div>
             <span>
               不存在路由 {location.pathname}{' '}
-              <Link to={defaultPath}>
+              <a onClick={() => history.pushState({}, '', formatPath(defaultPath))}>
                返回首页
-              </Link>
+              </a>
             </span>
           </div>
         </div>

@@ -1,4 +1,5 @@
 // @ts-nocheck
+import React from 'react';
 import { BaseComponents } from '@bytedance/mona'
 import createBaseComponent from '../createBaseComponent';
 
