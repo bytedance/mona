@@ -77,6 +77,16 @@ abstract class Api {
     icon: 'success' | 'loading' | 'none' | 'fail';
     duration: number;
   }): Promise<any>;
+  abstract navigateTo(params: {
+    url: string;
+  } | string): Promise<any>;
+  abstract redirectTo(params: {
+    url: string;
+  } | string): Promise<any>;
+  // 自定义
+   abstract open(params: {
+    url: string;
+  } | string): Promise<any>;
 }
 
 export default Api

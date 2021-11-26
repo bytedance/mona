@@ -1,12 +1,24 @@
 import { promisify } from '../utils/promisify';
 import { BaseApis } from '@bytedance/mona'
-
-type PropType<B, K extends keyof B> = B[K];
-
-class Apis extends BaseApis {
-  showToast(...params: Parameters<PropType<BaseApis, 'showToast'>>) {
-    return promisify(tt.showToast)(params);
+class MiniApis extends BaseApis {
+  showToast = promisify(tt.showToast)
+  navigateTo(params: any) {
+    let opts = params;
+    if (typeof params === 'string') {
+      opts = { url: params };
+    }
+    return promisify(tt.navigateTo)(opts)
+  }
+  redirectTo(params: any) {
+    let opts = params;
+    if (typeof params === 'string') {
+      opts = { url: params };
+    }
+    return promisify(tt.redirectTo)(opts)
+  }
+  open() {
+    return Promise.reject(new Error('not implemented in miniapp'));
   }
 }
 
-export default Apis
+export default MiniApis

@@ -1,8 +1,8 @@
-import { WebApis } from '@bytedance/mona-client-web'
-class Apis extends WebApis {
+import { WebApis } from '@bytedance/mona-client-web';
+class PluginApis extends WebApis {
   constructor() {
     super();
   }
 }
 
-export default Apis
+export default PluginApis

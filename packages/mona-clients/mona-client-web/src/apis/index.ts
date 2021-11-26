@@ -1,11 +1,25 @@
 import { BaseApis } from '@bytedance/mona'
-
-type PropType<B, K extends keyof B> = B[K];
-class Apis extends BaseApis {
-  showToast(...params: Parameters<PropType<BaseApis, 'showToast'>>) {
-    console.log('show toast in web', params)
-    return Promise.resolve('showToast')
+import { formatPath } from '@bytedance/mona-shared';
+class WebApis extends BaseApis {
+  showToast(params: any) {
+    window.alert(params.title);
+    return Promise.resolve();
+  }
+  navigateTo(params: any) {
+    const url = typeof params === 'string' ? params : params.url;
+    history.pushState({}, '', formatPath(url));
+    return Promise.resolve();
+  }
+  redirectTo(params: any) {
+    const url = typeof params === 'string' ? params : params.url;
+    window.location.href = formatPath(url);
+    return Promise.resolve();
+  }
+  open(params: any) {
+    const url = typeof params === 'string' ? params : params.url;
+    window.open(formatPath(url));
+    return Promise.resolve();
   }
 }
 
-export default Apis
+export default WebApis
