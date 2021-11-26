@@ -1,5 +1,6 @@
-import { Api as BaseApi } from '@bytedance/mona-apis';
+import { BaseApi } from '@bytedance/mona-apis';
+declare type PropType<B, K extends keyof B> = B[K];
 declare class Api extends BaseApi {
-    constructor();
+    showToast(...params: Parameters<PropType<BaseApi, 'showToast'>>): Promise<string>;
 }
 export default Api;

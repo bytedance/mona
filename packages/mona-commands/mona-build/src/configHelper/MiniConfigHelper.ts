@@ -1,5 +1,5 @@
 import path from 'path';
-import webpack, { Configuration, RuleSetRule } from 'webpack';
+import webpack, { Configuration, DefinePlugin, RuleSetRule } from 'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import CssMiniminzerPlugin from 'css-minimizer-webpack-plugin';
 import TerserWebpackPlugin from 'terser-webpack-plugin';
@@ -128,6 +128,9 @@ class MiniConfigHelper extends BaseConfigHelper {
       new MiniAssetsPlugin(this as unknown as ConfigHelper),
       new MiniCssExtractPlugin({
         filename: '[name].ttss'
+      }),
+      new DefinePlugin({
+        BUILD_TARGET: JSON.stringify('mini')
       })
     ]
   }

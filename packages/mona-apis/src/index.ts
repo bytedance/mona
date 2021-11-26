@@ -1,7 +1,10 @@
-import ApiAdapter from "./ApiAdapter";
-import Api from './Api';
-export const BaseApi = Api;
+import adapter from "./adapter";
 
-const apiAdapterInstance = new ApiAdapter({ env: 'mini' }).apiInstance!;
+// BUILD_TARGET will inject by DefinePlugin
+const api = adapter(BUILD_TARGET);
 
-export const showToast = apiAdapterInstance.showToast;
+const {
+  showToast,
+} = api;
+
+export { showToast }

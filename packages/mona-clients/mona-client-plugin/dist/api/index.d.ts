@@ -1,5 +1,5 @@
-import { Api as BaseApi } from '@bytedance/mona-apis';
-declare class Api extends BaseApi {
+import { Api as WebApi } from '@bytedance/mona-client-web';
+declare class Api extends WebApi {
     constructor();
 }
 export default Api;

@@ -1,0 +1,1 @@
+{"version":3,"file":"formatPath.js","sourceRoot":"","sources":["../../src/utils/formatPath.ts"],"names":[],"mappings":"AAAA,MAAM,UAAU,UAAU,CAAC,GAAW;IACpC,OAAO,KAAK,CAAC,IAAI,CAAC,GAAG,CAAC,CAAC,CAAC,CAAC,GAAG,CAAC,WAAW,EAAE,CAAC,CAAC,CAAC,MAAI,GAAG,CAAC,WAAW,EAAI,CAAC;AACvE,CAAC"}

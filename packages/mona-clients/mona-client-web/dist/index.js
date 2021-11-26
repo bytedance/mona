@@ -1,3 +1,2 @@
-import Api from './api';
-export var api = new Api();
+export { default as Api } from './api';
 //# sourceMappingURL=index.js.map

@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = __importDefault(require("path"));
+const webpack_1 = require("webpack");
 const mini_css_extract_plugin_1 = __importDefault(require("mini-css-extract-plugin"));
 const css_minimizer_webpack_plugin_1 = __importDefault(require("css-minimizer-webpack-plugin"));
 const terser_webpack_plugin_1 = __importDefault(require("terser-webpack-plugin"));
@@ -116,6 +117,9 @@ class MiniConfigHelper extends BaseConfigHelper_1.default {
             new MiniAssetsPlugin_1.default(this),
             new mini_css_extract_plugin_1.default({
                 filename: '[name].ttss'
+            }),
+            new webpack_1.DefinePlugin({
+                BUILD_TARGET: JSON.stringify('mini')
             })
         ];
     }
