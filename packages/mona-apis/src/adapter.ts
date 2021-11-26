@@ -1,23 +1,23 @@
-import { api as miniApi } from '@bytedance/mona-client-mini'
-import { Api as WebApi } from '@bytedance/mona-client-web'
-import { Api as PluginApi } from '@bytedance/mona-client-plugin'
-import Api from './Api';
+import { Apis as MiniApis } from '@bytedance/mona-client-mini'
+import { Apis as WebApis } from '@bytedance/mona-client-web'
+import { Apis as PluginApis } from '@bytedance/mona-client-plugin'
+import { BaseApis } from '@bytedance/mona';
 
 type Env = 'mini' | 'web' | 'plugin';
 
 export default function adapter(env: Env) {
-  let api: Api;
+  let apis: BaseApis;
   switch(env) {
     case 'mini':
-      api = miniApi;
+      apis = new MiniApis();
       break;
     case 'plugin':
-      api = new PluginApi();
+      apis = new PluginApis();
       break;
     case 'web':
     default:
-      api = new WebApi();
+      apis = new WebApis();
   }
 
-  return api
+  return apis
 }

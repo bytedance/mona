@@ -1,5 +1,5 @@
 import adapter from './adapter';
-import './BaseComponents';
+import '@bytedance/mona';
 
 export * from './prop';
 

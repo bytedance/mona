@@ -1,5 +1,5 @@
 // @ts-nocheck
-import BaseComponents from '@bytedance/mona-components/dist/BaseComponents'
+import { BaseComponents } from '@bytedance/mona'
 import createBaseComponent from '../createBaseComponent';
 
 class MiniComponents extends BaseComponents {

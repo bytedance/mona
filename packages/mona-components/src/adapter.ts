@@ -1,5 +1,5 @@
 import { Components as MiniComponents } from '@bytedance/mona-client-mini'
-import BaseComponents from './BaseComponents';
+import { BaseComponents } from '@bytedance/mona';
 
 type Env = 'mini' | 'web' | 'plugin';
 

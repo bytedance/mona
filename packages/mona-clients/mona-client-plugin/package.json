@@ -12,6 +12,9 @@
     "plugin",
     "mona"
   ],
+  "dependencies": {
+    "@bytedance/mona-client-web": "^0.0.1"
+  },
   "author": "zhangxiaowei.chris@bytedance.com",
   "license": "MIT"
 }
