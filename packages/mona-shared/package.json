@@ -6,8 +6,9 @@
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
   "scripts": {
-    "build": "rm -rf ./dist && ttsc -b",
-    "start": "ttsc -b -w"
+    "build": "yarn clean && ttsc -b",
+    "start": "ttsc -b -w",
+    "clean": "rm -rf dist"
   },
   "files": [
     "dist"

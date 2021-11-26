@@ -4,8 +4,9 @@
   "description": "api for mona",
   "main": "./dist/index.js",
   "scripts": {
-    "build": "rm -rf ./dist && tsc -b",
-    "start": "tsc -b -w"
+    "build": "yarn clean && tsc -b",
+    "start": "tsc -b -w",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
     "@bytedance/mona-client-mini": "^0.0.1",

@@ -4,8 +4,9 @@
   "description": "web for mona",
   "main": "./dist/index.js",
   "scripts": {
-    "build": "rm -rf ./dist && tsc -b",
-    "start": "tsc -b -w"
+    "build": "yarn clean && tsc -b",
+    "start": "tsc -b -w",
+    "clean": "rm -rf dist"
   },
   "keywords": [
     "web",

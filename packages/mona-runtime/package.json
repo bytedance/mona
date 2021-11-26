@@ -4,8 +4,9 @@
   "description": "Merchant app's developing and building tools",
   "main": "./dist/index",
   "scripts": {
-    "build": "rm -rf dist && ttsc -b",
-    "start": "ttsc -b -w"
+    "build": "yarn clean && ttsc -b",
+    "start": "ttsc -b -w",
+    "clean": "rm -rf dist"
   },
   "files": [
     "dist"
