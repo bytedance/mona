@@ -1,5 +1,5 @@
 import { promisify } from '../utils/promisify';
-import { BaseApi } from '@bytedance/mona-apis'
+import { BaseApi } from '@bytedance/mona-apis';
 
 type PropType<B, K extends keyof B> = B[K];
 
@@ -9,4 +9,4 @@ class Api extends BaseApi {
   }
 }
 
-export default Api
+export default Api;

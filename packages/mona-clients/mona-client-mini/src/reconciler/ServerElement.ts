@@ -3,7 +3,7 @@ import TaskController, { Task } from './TaskController';
 let id = 1;
 const generateId = () => id++;
 
-const allTypes = new Set(['view', 'button', 'text', 'ptext'])
+const allTypes = new Set(['view', 'button', 'text', 'ptext']);
 function formatType(type: string): string {
   if (allTypes.has(type)) {
     return type;
@@ -18,6 +18,7 @@ export default class ServerElement {
   text?: string;
   key: number;
   children: Map<number, ServerElement>;
+  parent: ServerElement | null;
   firstChildKey: number | null = null;
   lastChildKey: number | null = null;
   prevSiblingKey: number | null = null;
@@ -29,6 +30,7 @@ export default class ServerElement {
     this.key = generateId();
     this.taskController = taskController;
     this.children = new Map();
+    this.parent = null;
   }
 
   requestUpdate(task: Task) {
@@ -40,6 +42,7 @@ export default class ServerElement {
       this.removeChild(child);
     }
     this.children.set(child.key, child);
+    child.parent = this;
     if (!this.firstChildKey) {
       this.firstChildKey = child.key;
     } else if (this.lastChildKey) {
@@ -74,6 +77,7 @@ export default class ServerElement {
       this.firstChildKey = null;
       this.lastChildKey = null;
     }
+    child.parent = null;
     this.children.delete(child.key);
   }
 
@@ -93,11 +97,12 @@ export default class ServerElement {
       // added in between
       this.firstChildKey = child.key;
     }
+    child.parent = this;
   }
 
   serialize() {
-    const childrenKeys = this.children ? Array.from(this.children.keys()) : []
-    const children = childrenKeys.map(key => this.children.get(key)?.serialize())
+    const childrenKeys = this.children ? Array.from(this.children.keys()) : [];
+    const children = childrenKeys.map(key => this.children.get(key)?.serialize());
 
     // remove children from props
     const { children: _, cookiedProps } = this.props || {};
@@ -107,8 +112,8 @@ export default class ServerElement {
       type: this.type,
       text: this.text,
       props: cookiedProps,
-      children: children
-    }
+      children: children,
+    };
     return json;
   }
 }
