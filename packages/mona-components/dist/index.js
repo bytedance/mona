@@ -1,8 +1,0 @@
-import adapter from './adapter';
-import './BaseComponents';
-export * from './prop';
-// BUILD_TARGET will inject by DefinePlugin
-var comonents = adapter(BUILD_TARGET);
-var Text = comonents.Text, RichText = comonents.RichText, Progress = comonents.Progress, Icon = comonents.Icon, View = comonents.View, ScrollView = comonents.ScrollView, Swiper = comonents.Swiper, SwiperItem = comonents.SwiperItem, MovableArea = comonents.MovableArea, MovableView = comonents.MovableView, Button = comonents.Button, Checkbox = comonents.Checkbox, CheckboxGroup = comonents.CheckboxGroup, Form = comonents.Form, Input = comonents.Input, Label = comonents.Label, Picker = comonents.Picker, PickerView = comonents.PickerView, PickerViewColumn = comonents.PickerViewColumn, Radio = comonents.Radio, RadioGroup = comonents.RadioGroup, Slider = comonents.Slider, Switch = comonents.Switch, Textarea = comonents.Textarea, Navigator = comonents.Navigator, Image = comonents.Image, Video = comonents.Video, LivePlayer = comonents.LivePlayer, Camera = comonents.Camera, Canvas = comonents.Canvas, Map = comonents.Map, Webview = comonents.Webview, Ad = comonents.Ad, OpenData = comonents.OpenData;
-export { Text, RichText, Progress, Icon, View, ScrollView, Swiper, SwiperItem, MovableArea, MovableView, Button, Checkbox, CheckboxGroup, Form, Input, Label, Picker, PickerView, PickerViewColumn, Radio, RadioGroup, Slider, Switch, Textarea, Navigator, Image, Video, LivePlayer, Camera, Canvas, Map, Webview, Ad, OpenData, };
-//# sourceMappingURL=index.js.map
