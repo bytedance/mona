@@ -15,6 +15,7 @@ class AppConfig {
       _root: null,
       requestUpdate: () => {},
       applyUpdate: () => {},
+      stopUpdate: () => {},
     };
     this._Component = Component;
   }
