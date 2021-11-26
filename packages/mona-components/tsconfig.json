@@ -5,6 +5,7 @@
     "baseUrl": "."
   },
   "include": [
-    "src"
+    "src",
+    "typings"
   ]
 }

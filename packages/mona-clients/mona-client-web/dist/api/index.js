@@ -13,7 +13,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import { BaseApi } from '@bytedance/mona-apis';
+import BaseApi from '@bytedance/mona-apis/dist/Api';
 var Api = /** @class */ (function (_super) {
     __extends(Api, _super);
     function Api() {

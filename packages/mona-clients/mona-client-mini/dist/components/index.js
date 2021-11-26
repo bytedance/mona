@@ -13,21 +13,17 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import { promisify } from '../utils/promisify';
-import BaseApi from '@bytedance/mona-apis/dist/Api';
-var Api = /** @class */ (function (_super) {
-    __extends(Api, _super);
-    function Api() {
-        return _super !== null && _super.apply(this, arguments) || this;
+// @ts-nocheck
+import BaseComponents from '@bytedance/mona-components/dist/Base';
+import createBaseComponent from '../createBaseComponent';
+var MiniComponents = /** @class */ (function (_super) {
+    __extends(MiniComponents, _super);
+    function MiniComponents() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.Button = createBaseComponent('button');
+        return _this;
     }
-    Api.prototype.showToast = function () {
-        var params = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            params[_i] = arguments[_i];
-        }
-        return promisify(tt.showToast)(params);
-    };
-    return Api;
-}(BaseApi));
-export default Api;
+    return MiniComponents;
+}(BaseComponents));
+export default MiniComponents;
 //# sourceMappingURL=index.js.map

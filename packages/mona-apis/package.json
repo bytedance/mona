@@ -7,6 +7,11 @@
     "build": "rm -rf ./dist && tsc -b",
     "start": "tsc -b -w"
   },
+  "dependencies": {
+    "@bytedance/mona-client-mini": "^0.0.1",
+    "@bytedance/mona-client-web": "^0.0.1",
+    "@bytedance/mona-client-plugin": "^0.0.1"
+  },
   "keywords": [
     "mona",
     "api"
