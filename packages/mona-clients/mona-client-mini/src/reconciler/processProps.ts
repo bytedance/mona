@@ -1,12 +1,16 @@
+import { CALLBACK_SYMBOL } from '../utils/contants';
 import { baseComponentPropsMap } from '../components/prop';
 import { isEventName } from '../utils/utils';
-export function updateProps(props: Record<string, any>) {
+import ServerElement from './ServerElement';
+export function processProps(props: Record<string, any>, node: ServerElement) {
   let key: string;
   const newProps: Record<string, any> = {};
   for (key in props) {
     if (key === 'key' || key === 'children' || key === 'ref') {
     } else if (isEventName(key)) {
-      processEvent(newProps, key, props[key]);
+      const cbKey = `${CALLBACK_SYMBOL}_${node.key}_${key}`;
+      node.taskController.addCallback(cbKey, props[key]);
+      processEvent(newProps, key, cbKey);
     } else if (key === 'style') {
       newProps[key] = props[key] || '';
     } else {
@@ -18,14 +22,14 @@ export function updateProps(props: Record<string, any>) {
 
 /**
  * TODO: 1. 支持支持stopPropagation
- * 2. 事件名称处理，优化为编译时
+ * 2. 事件名称处理，编译时添加名称
  */
-export function processEvent(obj: Record<string, any>, event: string, callback: any) {
+export function processEvent(obj: Record<string, any>, event: string, cbKey: any) {
   if (BUBBLE_EVENTS.includes(event)) {
     //优化为编译时
-    obj[baseComponentPropsMap[event]] = callback;
+    obj[baseComponentPropsMap[event]] = cbKey;
   } else {
-    obj[event] = callback;
+    obj[event] = cbKey;
   }
 }
 

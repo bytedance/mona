@@ -26,6 +26,7 @@ export default class TaskController {
     //     this.applyUpdate();
     //   });
     // }
+
     this.tasks.push(task);
   }
 
@@ -43,5 +44,9 @@ export default class TaskController {
 
   stopUpdate() {
     this._stopUpdate = true;
+  }
+
+  addCallback(name: string, cb: (...args: any) => any) {
+    this.context[name] = cb;
   }
 }

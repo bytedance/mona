@@ -1,4 +1,4 @@
-import { updateProps } from './processProps';
+import { processProps } from './processProps';
 import TaskController, { Task } from './TaskController';
 
 let id = 1;
@@ -105,16 +105,14 @@ export default class ServerElement {
     const childrenKeys = this.children ? Array.from(this.children.keys()) : [];
     const children = childrenKeys.map(key => this.children.get(key)?.serialize());
 
-    // remove children from props
-    const { children: _, ...restProps } = this.props || {};
-    // console.log('updateProps(restProps)', updateProps(restProps));
     const json: any = {
       key: this.key,
       type: this.type,
       text: this.text,
-      props: updateProps(restProps),
+      props: processProps(this.props, this),
       children: children,
     };
+
     return json;
   }
 }
