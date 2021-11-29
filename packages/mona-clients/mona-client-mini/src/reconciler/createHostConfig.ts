@@ -23,6 +23,7 @@ export default function createHostConfig() {
     },
 
     createInstance(type: string, props: any, taskController: TaskController) {
+      // console.log('createInstance', new ServerElement({ type, props, taskController }));
       return new ServerElement({ type, props, taskController });
     },
 
@@ -52,14 +53,18 @@ export default function createHostConfig() {
     //     return inst
     // },
     clearContainer() {
-      console.log('clearContainer')
+      console.log('clearContainer');
     },
 
     prepareForCommit() {
       // empty
+      return null;
     },
-    resetAfterCommit() {
-      // empty
+    preparePortalMount: () => {
+      // nothing to do
+    },
+    resetAfterCommit: (taskController: TaskController) => {
+      taskController.applyUpdate();
     },
     resetTextContent(element: ServerElement) {
       // empty
@@ -69,7 +74,7 @@ export default function createHostConfig() {
       console.log('prepareUpdate', { domElement, type, oldProps, newProps });
       console.log(
         'prepareUpdate',
-        changedProps(oldProps, newProps).filter(prop => prop !== 'children')
+        changedProps(oldProps, newProps).filter(prop => prop !== 'children'),
       );
 
       return changedProps(oldProps, newProps).filter(prop => prop !== 'children');
@@ -107,7 +112,7 @@ export default function createHostConfig() {
       parent.appendChild(child);
       parent.requestUpdate({
         parentKey: parent.key,
-        ...identifier
+        ...identifier,
       });
     },
 
@@ -117,7 +122,7 @@ export default function createHostConfig() {
       // console.log('mark end all');
       child.requestUpdate({
         method: 'appendChildToContainer',
-        child
+        child,
       });
       // console.log('send', child)
     },
@@ -127,7 +132,7 @@ export default function createHostConfig() {
       parent.requestUpdate({
         method: 'removeChild',
         parentKey: parent.key,
-        childKey: child.key
+        childKey: child.key,
       });
     },
 
@@ -150,7 +155,7 @@ export default function createHostConfig() {
       parent.requestUpdate({
         parentKey: parent.key,
         beforeKey: beforeChild.key,
-        ...identifier
+        ...identifier,
       });
     },
 
@@ -181,9 +186,9 @@ export default function createHostConfig() {
       textInstance.requestUpdate({
         method: 'commitTextUpdate',
         key: textInstance.key,
-        text: newText
+        text: newText,
       });
-    }
+    },
   };
   return hostConfig;
 }

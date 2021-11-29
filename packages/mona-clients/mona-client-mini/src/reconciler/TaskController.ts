@@ -21,11 +21,11 @@ export default class TaskController {
   }
 
   requestUpdate(task: Task) {
-    if (this.tasks.length === 0) {
-      Promise.resolve().then(() => {
-        this.applyUpdate();
-      });
-    }
+    // if (this.tasks.length === 0) {
+    //   Promise.resolve().then(() => {
+    //     this.applyUpdate();
+    //   });
+    // }
     this.tasks.push(task);
   }
 
