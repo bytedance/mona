@@ -5,3 +5,4 @@ tsconfig.tsbuildinfo
 .DS_Store
 *.log
 coverage
+dist
