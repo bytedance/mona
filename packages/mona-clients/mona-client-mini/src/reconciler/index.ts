@@ -1,7 +1,6 @@
 import Reconciler from 'react-reconciler';
 import TaskController from './TaskController';
 import createHostConfig from './createHostConfig';
-
 const renderInstance = Reconciler(createHostConfig() as any);
 
 export default function render(rootElement: React.ReactElement | null, controller: TaskController) {

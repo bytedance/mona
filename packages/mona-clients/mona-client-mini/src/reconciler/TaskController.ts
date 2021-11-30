@@ -21,11 +21,12 @@ export default class TaskController {
   }
 
   requestUpdate(task: Task) {
-    if (this.tasks.length === 0) {
-      Promise.resolve().then(() => {
-        this.applyUpdate();
-      });
-    }
+    // if (this.tasks.length === 0) {
+    //   Promise.resolve().then(() => {
+    //     this.applyUpdate();
+    //   });
+    // }
+
     this.tasks.push(task);
   }
 
@@ -43,5 +44,9 @@ export default class TaskController {
 
   stopUpdate() {
     this._stopUpdate = true;
+  }
+
+  addCallback(name: string, cb: (...args: any) => any) {
+    this.context[name] = cb;
   }
 }
