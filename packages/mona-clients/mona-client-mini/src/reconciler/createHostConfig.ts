@@ -84,66 +84,28 @@ export default function createHostConfig() {
     // ========== Mutation Methods ===========
     appendChild(parent: ServerElement, child: ServerElement) {
       console.log('appendChild', child);
-
-      const identifier = { children: child, method: 'appendChild' };
-
       parent.appendChild(child);
-      parent.requestUpdate({
-        parentKey: parent.key,
-        ...identifier,
-      });
     },
     // appendAllChildren(children: ServerElement[]) {},
 
     appendChildToContainer(container: TaskController, child: ServerElement) {
       console.log('appendChildToContainer', container, child);
       container.appendChild(child);
-      // container.requestUpdate({
-      //   method: 'appendChildToContainer',
-      //   children: child,
-      // });
       child.mounted = true;
     },
 
     insertBefore(parent: ServerElement, child: ServerElement, beforeChild: ServerElement) {
-      // console.log('insertBefore');
-      const identifier = { children: child, method: 'insertBefore' };
       parent.insertBefore(child, beforeChild);
-      parent.requestUpdate({
-        parentKey: parent.key,
-        beforeKey: beforeChild.key,
-        ...identifier,
-      });
     },
     insertInContainerBefore(parent: ServerElement, child: ServerElement, beforeChild: ServerElement) {
-      // console.log('insertInContainerBefore');
-
-      const identifier = { children: child, method: 'insertBefore' };
       parent.insertBefore(child, beforeChild);
-      parent.requestUpdate({
-        parentKey: parent.key,
-        beforeKey: beforeChild.key,
-        ...identifier,
-      });
     },
 
     removeChild(parent: ServerElement, child: ServerElement) {
       parent.removeChild(child);
-      parent.requestUpdate({
-        method: 'removeChild',
-        parentKey: parent.key,
-        childKey: child.key,
-      });
     },
 
-    removeChildFromContainer() {
-      // debugger
-      // throw new Error('not yet implemented')
-      // sendMessage({
-      //   method: 'removeChildFromContainer',
-      //   parentInstance, child
-      // })
-    },
+    removeChildFromContainer() {},
 
     resetTextContent() {
       // empty
@@ -164,10 +126,6 @@ export default function createHostConfig() {
     commitMount(_instance: any, updatePayload: any) {
       if (updatePayload.length) {
         throw new Error('not yet implemented');
-        // sendMessage({
-        //   method: 'commitMount',
-        //   instance, updatePayload, type, oldProps, newProps
-        // })
       }
     },
     commitUpdate(_instance: any, updatePayload: any, type: any, oldProps: any, newProps: any) {

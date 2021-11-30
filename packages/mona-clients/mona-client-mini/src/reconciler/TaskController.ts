@@ -9,6 +9,8 @@ export interface Task {
   beforeKey?: number;
   childKey?: number;
   children?: ServerElement;
+
+  
   node?: any;
   // @ts-ignore
   type?: NodeUpdate;

@@ -25,7 +25,9 @@ export default class ServerElement {
   lastChildKey: number | null = null;
   prevSiblingKey: number | null = null;
   nextSiblingKey: number | null = null;
-  mounted = false;
+  mounted: boolean;
+  // diff时复用节点
+  deleted: boolean;
 
   constructor({
     type,
@@ -42,6 +44,8 @@ export default class ServerElement {
     this.taskController = taskController;
     this.children = new Map();
     this.parent = null;
+    this.deleted = false;
+    this.mounted = false;
   }
 
   requestUpdate(task: Task) {
@@ -67,12 +71,13 @@ export default class ServerElement {
       }
     }
     this.lastChildKey = child.key;
+    child.deleted = false;
     if (this.isMounted()) {
       this.requestUpdate({
         node: this.serialize(),
         type: NodeUpdate.SPLICE,
         path: this.path,
-        children: this.children,
+        // children: this.children,
       } as any);
     }
   }
@@ -100,6 +105,15 @@ export default class ServerElement {
     }
     child.parent = null;
     this.children.delete(child.key);
+    child.deleted = true;
+
+    if (this.isMounted()) {
+      this.requestUpdate({
+        node: this.serialize(),
+        type: NodeUpdate.SPLICE,
+        path: this.path,
+      } as any);
+    }
   }
 
   insertBefore(child: ServerElement, nextSibling: ServerElement) {
@@ -119,12 +133,27 @@ export default class ServerElement {
       this.firstChildKey = child.key;
     }
     child.parent = this;
+    child.deleted = false;
+    if (this.isMounted()) {
+      this.requestUpdate({
+        node: this.serialize(),
+        type: NodeUpdate.SPLICE,
+        path: this.path,
+      } as any);
+    }
   }
 
   serialize() {
-    const childrenKeys = this.children ? Array.from(this.children.keys()) : [];
-    const children = childrenKeys.map(key => this.children.get(key)?.serialize());
+    const childrenValues = this.children ? Array.from(this.children.values()) : [];
+    let v;
+    const children = [];
 
+    //@ts-ignore
+    for (v of childrenValues) {
+      if (v && !v.deleted) {
+        children.push(v.serialize());
+      }
+    }
     const json: any = {
       key: this.key,
       type: this.type,
@@ -147,6 +176,7 @@ export default class ServerElement {
     }
     return nodePath;
   }
+
   isMounted(): boolean {
     return this.parent ? this.parent.isMounted() : this.mounted;
   }
