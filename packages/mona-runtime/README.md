@@ -16,7 +16,7 @@ import { Link } from '@bytedance/mona-runtime';
 const Index = () => {
   return (
     <div>
-      <Link to='/pages/home/index'>navigate to home </Link>
+      <Link to="/pages/home/index">navigate to home </Link>
     </div>
   );
 };
@@ -103,7 +103,7 @@ pigeon.addToInputBoxSafely({
   success: () => {},
   fail: error => {
     console.log(error);
-  } // {code: -100, message: '未知错误'}
+  }, // {code: -100, message: '未知错误'}
 });
 ```
 
@@ -117,7 +117,7 @@ pigeon.addToInputBoxSafely({
 
 | 权限名称               | 所属权限包   | 所属权限组 | 权限描述 | 对应参数              |
 | ---------------------- | ------------ | ---------- | -------- | --------------------- |
-| UserID                 | 端操作权限   | 端操作权限 | 用户 ID  | user_id               |
+| UserID                 | 用户数据权限 | 端数据权限 | 用户 ID  | user_id               |
 | ShopID                 | 店铺数据权限 | 端数据权限 | 店铺 ID  | shop_id               |
 | CustomsServiceNo       | 客服数据权限 | 端数据权限 | 客服编号 | customer_service_id   |
 | CustomsServiceNickName | 客服数据权限 | 端数据权限 | 客服昵称 | customer_service_name |
@@ -155,7 +155,7 @@ pigeon.getInitInfo({
   },
   fail: error => {
     console.log(error);
-  } // {code: -100, message: '未知错误'}
+  }, // {code: -100, message: '未知错误'}
 });
 ```
 
@@ -168,9 +168,9 @@ pigeon.getInitInfo({
 
 #### 对应权限
 
-| 权限名称 | 所属权限包 | 所属权限组 | 权限描述 | 对应参数 |
-| -------- | ---------- | ---------- | -------- | -------- |
-| UserID   | 端操作权限 | 端操作权限 | 用户 ID  | user_id  |
+| 权限名称 | 所属权限包   | 所属权限组 | 权限描述 | 对应参数 |
+| -------- | ------------ | ---------- | -------- | -------- |
+| UserID   | 用户数据权限 | 端数据权限 | 用户 ID  | user_id  |
 
 #### 出参
 
