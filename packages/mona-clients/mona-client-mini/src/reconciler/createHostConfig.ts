@@ -95,7 +95,7 @@ export default function createHostConfig() {
     },
     // appendAllChildren(children: ServerElement[]) {},
 
-    appendChildToContainer(_container: any, child: ServerElement) {
+    appendChildToContainer(_container: TaskController, child: ServerElement) {
       console.log('appendChildToContainer', child);
 
       // container.appendChild(child);
@@ -106,7 +106,7 @@ export default function createHostConfig() {
     },
 
     insertBefore(parent: ServerElement, child: ServerElement, beforeChild: ServerElement) {
-      console.log('insertBefore');
+      // console.log('insertBefore');
       const identifier = { child, method: 'insertBefore' };
       parent.insertBefore(child, beforeChild);
       parent.requestUpdate({
@@ -116,10 +116,9 @@ export default function createHostConfig() {
       });
     },
     insertInContainerBefore(parent: ServerElement, child: ServerElement, beforeChild: ServerElement) {
-      console.log('insertInContainerBefore');
+      // console.log('insertInContainerBefore');
 
       const identifier = { child, method: 'insertBefore' };
-      // WorkerElement.markSent(child)
       parent.insertBefore(child, beforeChild);
       parent.requestUpdate({
         parentKey: parent.key,
@@ -127,6 +126,7 @@ export default function createHostConfig() {
         ...identifier,
       });
     },
+
     removeChild(parent: ServerElement, child: ServerElement) {
       parent.removeChild(child);
       parent.requestUpdate({

@@ -11,22 +11,17 @@ export interface Task {
 
 export default class TaskController {
   context: any;
-  _root: any;
+  _root?: ServerElement;
   tasks: Task[];
   _stopUpdate?: boolean;
 
   constructor(context: any) {
     this.context = context;
     this.tasks = [];
+    // this._root = new ServerElement({ type: 'root', taskController: this });
   }
 
   requestUpdate(task: Task) {
-    // if (this.tasks.length === 0) {
-    //   Promise.resolve().then(() => {
-    //     this.applyUpdate();
-    //   });
-    // }
-
     this.tasks.push(task);
   }
 
@@ -49,4 +44,16 @@ export default class TaskController {
   addCallback(name: string, cb: (...args: any) => any) {
     this.context[name] = cb;
   }
+
+  // appendChild(child: ServerElement) {
+  //   this._root.appendChild(child);
+  // }
+
+  // removeChild(child: ServerElement) {
+  //   this._root.removeChild(child);
+  // }
+
+  // insertBefore(child: ServerElement, beforeChild: ServerElement) {
+  //   this._root.insertBefore(child, beforeChild);
+  // }
 }

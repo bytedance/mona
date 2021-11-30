@@ -3,25 +3,31 @@ import { appLifecycleContext } from './lifecycle/hooks';
 import { AppLifecycle } from './lifecycle/context';
 import render from './reconciler';
 import TaskController from './reconciler/TaskController';
+// import AppTaskController from './reconciler/AppTaskController';
 
 class AppConfig {
-  private _controller: TaskController;
+  private _controller?: TaskController;
   private _Component: React.ComponentType<any>;
 
   constructor(Component: React.ComponentType<any>) {
     this._controller = {
       tasks: [],
       context: {},
+      //@ts-ignore
       _root: null,
       requestUpdate: () => {},
       applyUpdate: () => {},
       stopUpdate: () => {},
       addCallback: () => {},
     };
+
     this._Component = Component;
   }
 
   onLaunch(options: any) {
+    // this._controller = new AppTaskController(this);
+    // this._controller = new TaskController(this);
+    //@ts-ignore
     render(React.createElement(this._Component, {}, []), this._controller);
     this._callLifecycle(AppLifecycle.lanuch, options);
   }

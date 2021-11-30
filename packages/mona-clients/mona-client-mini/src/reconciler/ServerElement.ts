@@ -25,7 +25,15 @@ export default class ServerElement {
   prevSiblingKey: number | null = null;
   nextSiblingKey: number | null = null;
 
-  constructor({ type, props, taskController }: { type: string; taskController: TaskController; props?: any }) {
+  constructor({
+    type,
+    props,
+    taskController,
+  }: {
+    type: string;
+    taskController: TaskController;
+    props?: Record<string, any>;
+  }) {
     this.type = formatType(type);
     this.props = props;
     this.key = generateId();
