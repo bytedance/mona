@@ -1,10 +1,23 @@
 import React from 'react';
 // base
-interface BaseProps {
+interface BaseProps<T = Touch> {
   id?: string;
   className?: string;
   style?: React.CSSProperties;
   hidden?: boolean;
+  // 事件
+  onTouchStart?: TouchEventHandler<T>;
+  onTouchMove?: TouchEventHandler<T>;
+  onTouchCancel?: TouchEventHandler<T>;
+  onTouchEnd?: TouchEventHandler<T>;
+  onTap?: TouchEventHandler<T>;
+  onLongPress?: TouchEventHandler<T>;
+  onLongTap?: TouchEventHandler<T>;
+  onTransitionEnd?: TouchEventHandler<T>;
+  onAnimationStart?: TouchEventHandler<T>;
+  onAnimationIteration?: TouchEventHandler<T>;
+  onAnimationEnd?: TouchEventHandler<T>;
+  onTouchForceChange?: TouchEventHandler<T>;
 }
 
 interface HoverProps {
@@ -14,10 +27,45 @@ interface HoverProps {
   hoverStopPropagation?: boolean;
 }
 
-interface EventHandler {
-  (event: any): void
+interface BaseTarget {
+  id: string;
+  tagName: string;
+  dataset: Record<string, any>;
 }
 
+interface BaseEvent {
+  type: string;
+  timeStamp: number;
+  target: BaseTarget
+  currentTarget: BaseTarget;
+}
+
+interface Touch {
+  identifier: number;
+  pageX: number;
+  pageY: number;
+  clientX: number;
+  clientY: number;
+}
+
+interface CanvasTouch {
+  identifier: number;
+  x: number;
+  y: number;
+}
+
+interface TouchEvent<T> extends BaseEvent {
+  touches: T[];
+  changedTouches: T[];
+}
+
+interface EventHandler {
+  (event: BaseEvent): void
+}
+
+interface TouchEventHandler<T> {
+  (event: TouchEvent<T>): void
+}
 
 // 基础内容
 export interface TextProps extends BaseProps {
@@ -344,13 +392,9 @@ export interface CameraProps extends BaseProps {
 }
 
 // 画布
-export interface CanvasProps extends BaseProps {
+export interface CanvasProps extends BaseProps<CanvasTouch> {
   canvasId: string;
   type: '2d' | 'webgl';
-  onTouchStart?: EventHandler
-  onTouchMove?: EventHandler
-  onTouchEnd?: EventHandler
-  onTouchCancel?: EventHandler
 }
 
 // 地图
