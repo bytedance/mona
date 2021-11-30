@@ -1,3 +1,4 @@
+import { FiberRoot } from 'react-reconciler';
 import ServerElement from './ServerElement';
 export interface Task {
   method: string;
@@ -11,14 +12,16 @@ export interface Task {
 
 export default class TaskController {
   context: any;
-  _root?: ServerElement;
+  _root: ServerElement;
   tasks: Task[];
-  _stopUpdate?: boolean;
+  _stopUpdate: boolean;
+  rootContainer?: FiberRoot;
 
   constructor(context: any) {
     this.context = context;
     this.tasks = [];
-    // this._root = new ServerElement({ type: 'root', taskController: this });
+    this._root = new ServerElement({ type: 'root', taskController: this });
+    this._stopUpdate = false;
   }
 
   requestUpdate(task: Task) {
@@ -45,15 +48,15 @@ export default class TaskController {
     this.context[name] = cb;
   }
 
-  // appendChild(child: ServerElement) {
-  //   this._root.appendChild(child);
-  // }
+  appendChild(child: ServerElement) {
+    this._root.appendChild(child);
+  }
 
-  // removeChild(child: ServerElement) {
-  //   this._root.removeChild(child);
-  // }
+  removeChild(child: ServerElement) {
+    this._root.removeChild(child);
+  }
 
-  // insertBefore(child: ServerElement, beforeChild: ServerElement) {
-  //   this._root.insertBefore(child, beforeChild);
-  // }
+  insertBefore(child: ServerElement, beforeChild: ServerElement) {
+    this._root.insertBefore(child, beforeChild);
+  }
 }

@@ -38,7 +38,7 @@ export default function createHostConfig() {
     },
 
     appendInitialChild(parent: ServerElement, child: ServerElement) {
-      console.log('appendInitialChild', child);
+      // console.log('appendInitialChild', child);
       parent.appendChild(child);
     },
 
@@ -95,11 +95,11 @@ export default function createHostConfig() {
     },
     // appendAllChildren(children: ServerElement[]) {},
 
-    appendChildToContainer(_container: TaskController, child: ServerElement) {
-      console.log('appendChildToContainer', child);
+    appendChildToContainer(container: TaskController, child: ServerElement) {
+      console.log('appendChildToContainer', container, child);
 
-      // container.appendChild(child);
-      child.requestUpdate({
+      container.appendChild(child);
+      container.requestUpdate({
         method: 'appendChildToContainer',
         child,
       });

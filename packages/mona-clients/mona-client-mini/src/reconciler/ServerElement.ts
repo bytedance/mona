@@ -47,7 +47,9 @@ export default class ServerElement {
   }
 
   appendChild(child: ServerElement) {
+    console.log('node.appendChild', child);
     if (this.children.get(child.key)) {
+      console.log('this.children.get(child.key)', true);
       this.removeChild(child);
     }
     this.children.set(child.key, child);
@@ -63,6 +65,12 @@ export default class ServerElement {
       }
     }
     this.lastChildKey = child.key;
+    // this.requestUpdate({
+    //   method: 'splice',
+    //   // children,
+    //   items: [child.serialize()],
+    //   key: child.key,
+    // });
   }
 
   removeChild(child: ServerElement) {
@@ -123,4 +131,18 @@ export default class ServerElement {
 
     return json;
   }
+  // serialize2() {
+  //   const childrenKeys = this.children ? Array.from(this.children.keys()) : [];
+  //   const children = childrenKeys.map(key => this.children.get(key)?.serialize());
+
+  //   const json: any = {
+  //     key: this.key,
+  //     type: this.type,
+  //     text: this.text,
+  //     props: processProps(this.props, this),
+  //     children: children,
+  //   };
+
+  //   return json;
+  // }
 }
