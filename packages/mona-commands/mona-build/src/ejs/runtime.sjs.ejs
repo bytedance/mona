@@ -4,13 +4,20 @@ var pageNodesMap = {}
 function execTask(task, pageId) {
     var type = task.method;
     if (type === 'appendChildToContainer') {
-        pageNodesMap[pageId] = task.child;
+        pageNodesMap[pageId] = task.children;
     }
+}
+function processTask(task){
+    return task.node
 }
 
 function parseNodes(tasks, pageId) {
-    tasks.forEach(function(task){
-        execTask(task, pageId);
+   
+    tasks.forEach(task=>{
+        if(pageNodesMap[pageId]){
+        } else {
+          pageNodesMap[pageId] = processTask(task)
+        }
     })
     return pageNodesMap[pageId];
 }

@@ -1,4 +1,4 @@
-import { CALLBACK_SYMBOL } from '../utils/contants';
+import { CALLBACK_SYMBOL } from '../utils/constants';
 import { baseComponentPropsMap } from '../components/prop';
 import { isEventName } from '../utils/utils';
 import ServerElement from './ServerElement';

@@ -1,3 +1,4 @@
+import { NodeUpdate } from '../utils/constants';
 import { processProps } from './processProps';
 import TaskController, { Task } from './TaskController';
 
@@ -24,6 +25,7 @@ export default class ServerElement {
   lastChildKey: number | null = null;
   prevSiblingKey: number | null = null;
   nextSiblingKey: number | null = null;
+  mounted = false;
 
   constructor({
     type,
@@ -65,12 +67,14 @@ export default class ServerElement {
       }
     }
     this.lastChildKey = child.key;
-    // this.requestUpdate({
-    //   method: 'splice',
-    //   // children,
-    //   items: [child.serialize()],
-    //   key: child.key,
-    // });
+    if (this.isMounted()) {
+      this.requestUpdate({
+        node: this.serialize(),
+        type: NodeUpdate.SPLICE,
+        path: this.path,
+        children: this.children,
+      } as any);
+    }
   }
 
   removeChild(child: ServerElement) {
@@ -127,9 +131,24 @@ export default class ServerElement {
       text: this.text,
       props: processProps(this.props, this),
       children: children,
+      // path: this.path.join('.'),
     };
 
     return json;
+  }
+
+  get path() {
+    const nodePath = [];
+    let parent: ServerElement | null = this;
+    while (parent) {
+      console.log(parent);
+      nodePath.unshift(parent.key);
+      parent = parent.parent;
+    }
+    return nodePath;
+  }
+  isMounted(): boolean {
+    return this.parent ? this.parent.isMounted() : this.mounted;
   }
   // serialize2() {
   //   const childrenKeys = this.children ? Array.from(this.children.keys()) : [];

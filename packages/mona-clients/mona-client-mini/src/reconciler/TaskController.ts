@@ -1,5 +1,6 @@
 import { FiberRoot } from 'react-reconciler';
 import ServerElement from './ServerElement';
+import { NodeUpdate } from '../utils/constants';
 export interface Task {
   method: string;
   key?: number;
@@ -7,7 +8,10 @@ export interface Task {
   parentKey?: number;
   beforeKey?: number;
   childKey?: number;
-  child?: ServerElement;
+  children?: ServerElement;
+  node?: any;
+  // @ts-ignore
+  type?: NodeUpdate;
 }
 
 export default class TaskController {
@@ -21,6 +25,7 @@ export default class TaskController {
     this.context = context;
     this.tasks = [];
     this._root = new ServerElement({ type: 'root', taskController: this });
+    this._root.mounted = true;
     this._stopUpdate = false;
   }
 
@@ -32,10 +37,10 @@ export default class TaskController {
     if (this._stopUpdate || this.tasks.length === 0) {
       return;
     }
-    const data = this.tasks.map(t => ({ ...t, child: t.child?.serialize() }));
-    console.log('applyUpdate', data);
+    // const data = this.tasks.map(t => ({ ...t, children: t.children?.serialize() }));
+    console.log('applyUpdate', this.tasks);
     this.context.setData({
-      tasks: data,
+      tasks: this.tasks,
     });
     this.tasks = [];
   }

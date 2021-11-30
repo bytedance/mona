@@ -7,7 +7,7 @@ export interface Task {
   parentKey?: number;
   beforeKey?: number;
   childKey?: number;
-  child?: ServerElement;
+  children?: ServerElement;
 }
 
 export default class AppTaskController extends TaskController {
@@ -21,7 +21,7 @@ export default class AppTaskController extends TaskController {
   //   if (this._stopUpdate || this.tasks.length === 0) {
   //     return;
   //   }
-  //   const data = this.tasks.map(t => ({ ...t, child: t.children?.serialize() }));
+  //   const data = this.tasks.map(t => ({ ...t, children: t.children?.serialize() }));
   //   console.log('applyUpdate', data);
   //   this.context.setData({
   //     tasks: data,

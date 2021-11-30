@@ -85,7 +85,7 @@ export default function createHostConfig() {
     appendChild(parent: ServerElement, child: ServerElement) {
       console.log('appendChild', child);
 
-      const identifier = { child, method: 'appendChild' };
+      const identifier = { children: child, method: 'appendChild' };
 
       parent.appendChild(child);
       parent.requestUpdate({
@@ -97,17 +97,17 @@ export default function createHostConfig() {
 
     appendChildToContainer(container: TaskController, child: ServerElement) {
       console.log('appendChildToContainer', container, child);
-
       container.appendChild(child);
-      container.requestUpdate({
-        method: 'appendChildToContainer',
-        child,
-      });
+      // container.requestUpdate({
+      //   method: 'appendChildToContainer',
+      //   children: child,
+      // });
+      child.mounted = true;
     },
 
     insertBefore(parent: ServerElement, child: ServerElement, beforeChild: ServerElement) {
       // console.log('insertBefore');
-      const identifier = { child, method: 'insertBefore' };
+      const identifier = { children: child, method: 'insertBefore' };
       parent.insertBefore(child, beforeChild);
       parent.requestUpdate({
         parentKey: parent.key,
@@ -118,7 +118,7 @@ export default function createHostConfig() {
     insertInContainerBefore(parent: ServerElement, child: ServerElement, beforeChild: ServerElement) {
       // console.log('insertInContainerBefore');
 
-      const identifier = { child, method: 'insertBefore' };
+      const identifier = { children: child, method: 'insertBefore' };
       parent.insertBefore(child, beforeChild);
       parent.requestUpdate({
         parentKey: parent.key,
