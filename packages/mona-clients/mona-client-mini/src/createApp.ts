@@ -17,7 +17,7 @@ class AppConfig {
   onLaunch(options: any) {
     this._controller = new AppTaskController(this);
     //@ts-ignore
-    render(React.createElement(this._Component, {}, []), this._controller);
+    render(React.createElement(this._Component, null, []), this._controller);
     this._callLifecycle(AppLifecycle.lanuch, options);
   }
 

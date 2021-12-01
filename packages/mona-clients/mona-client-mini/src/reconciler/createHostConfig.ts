@@ -91,6 +91,17 @@ export default function createHostConfig() {
     appendChildToContainer(container: TaskController, child: ServerElement) {
       console.log('appendChildToContainer', container, child);
       container.appendChild(child);
+      // setTimeout(() => {
+      //   child.key = 2222;
+      //   const t = new ServerElement({ type: 'ptext', taskController: child.taskController });
+      //   t.text = '123123';
+      //   container.appendChild(t);
+      //   child.taskController.applyUpdate();
+      //   setTimeout(() => {
+      //     container.removeChild(t);
+      //     child.taskController.applyUpdate();
+      //   }, 1000);
+      // }, 1000);
       child.mounted = true;
     },
 
@@ -115,11 +126,11 @@ export default function createHostConfig() {
       // WorkerElement.markSent(textInstance);
       if (oldText !== newText) {
         textInstance.text = newText;
-        textInstance.requestUpdate({
-          method: 'commitTextUpdate',
-          key: textInstance.key,
-          text: newText,
-        });
+        // textInstance.requestUpdate({
+        //   method: 'commitTextUpdate',
+        //   key: textInstance.key,
+        //   text: newText,
+        // });
       }
     },
 

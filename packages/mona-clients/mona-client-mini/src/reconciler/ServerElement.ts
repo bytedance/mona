@@ -112,7 +112,7 @@ export default class ServerElement {
         node: this.serialize(),
         type: NodeUpdate.SPLICE,
         path: this.path,
-      } as any);
+      });
     }
   }
 
@@ -139,7 +139,7 @@ export default class ServerElement {
         node: this.serialize(),
         type: NodeUpdate.SPLICE,
         path: this.path,
-      } as any);
+      });
     }
   }
 
@@ -170,7 +170,6 @@ export default class ServerElement {
     const nodePath = [];
     let parent: ServerElement | null = this;
     while (parent) {
-      console.log(parent);
       nodePath.unshift(parent.key);
       parent = parent.parent;
     }

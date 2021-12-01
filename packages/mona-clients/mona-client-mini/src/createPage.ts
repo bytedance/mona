@@ -27,7 +27,7 @@ function createConfig(Component: React.ComponentType<any>) {
     _controller: new TaskController({}),
 
     onLoad(this: any, options: any) {
-      const element = React.createElement(this._Component, {}, []);
+      const element = React.createElement(this._Component, null, []);
       const wrapper = React.createElement(PageLifecycleGlobalContext.Provider, { value: this._pageLifecycleContext }, [
         element,
       ]);

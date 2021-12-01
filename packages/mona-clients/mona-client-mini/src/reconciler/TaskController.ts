@@ -2,18 +2,12 @@ import { FiberRoot } from 'react-reconciler';
 import ServerElement from './ServerElement';
 import { NodeUpdate } from '../utils/constants';
 export interface Task {
-  method: string;
   key?: number;
-  text?: string;
-  parentKey?: number;
-  beforeKey?: number;
-  childKey?: number;
-  children?: ServerElement;
-
-  
-  node?: any;
+  // children?: ServerElement;
+  node: any;
   // @ts-ignore
-  type?: NodeUpdate;
+  type: NodeUpdate;
+  path: any;
 }
 
 export default class TaskController {

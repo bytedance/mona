@@ -1,27 +1,45 @@
-var pageNodesMap = {}
+var pageNodesMap = {};
 
-
-function execTask(task, pageId) {
-    var type = task.method;
-    if (type === 'appendChildToContainer') {
-        pageNodesMap[pageId] = task.children;
-    }
+function processTask(task, pageId) {
+  const { type, node: target, path } = task;
+  const root = pageNodesMap[pageId];
+  if (type === 'splice') {
+    const oldNode = findNode(root, path);
+    oldNode.children = target.children;
+    // 寻找节点
+  }
 }
-function processTask(task){
-    return task.node
+
+function findNode(root, path, currentIdx = 0) {
+  const tKey = path[currentIdx];
+
+  if (root.key === tKey) {
+    if (path.length === currentIdx + 1) {
+      return root;
+    }
+    let targetNode;
+    root.children?.forEach(item => {
+      if (!targetNode) {
+        targetNode = findNode(item, path, currentIdx + 1);
+      }
+    });
+    return targetNode;
+  } else {
+    return;
+  }
 }
 
 function parseNodes(tasks, pageId) {
-   
-    tasks.forEach(task=>{
-        if(pageNodesMap[pageId]){
-        } else {
-          pageNodesMap[pageId] = processTask(task)
-        }
-    })
-    return pageNodesMap[pageId];
+  tasks.forEach(task => {
+    if (pageNodesMap[pageId]) {
+      processTask(task, pageId);
+    } else {
+      pageNodesMap[pageId] = task.node;
+    }
+  });
+  return pageNodesMap[pageId];
 }
 
 module.exports = {
-    parseNodes: parseNodes
-}
+  parseNodes: parseNodes,
+};
