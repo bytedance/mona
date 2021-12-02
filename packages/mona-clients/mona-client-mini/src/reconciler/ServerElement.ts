@@ -74,7 +74,6 @@ export default class ServerElement {
 
   appendChild(child: ServerElement) {
     if (this.children.get(child.key)) {
-      console.log('this.children.get(child.key)', true);
       this.removeChild(child);
     }
     this.children.set(child.key, child);
@@ -104,6 +103,8 @@ export default class ServerElement {
   }
 
   removeChild(child: ServerElement) {
+    console.log('removeChild');
+
     const prevSibling = child.prevSiblingKey ? this.children.get(child.prevSiblingKey) : null;
     const nextSibling = child.nextSiblingKey ? this.children.get(child.nextSiblingKey) : null;
     if (prevSibling && nextSibling) {
@@ -141,6 +142,8 @@ export default class ServerElement {
   }
 
   insertBefore(child: ServerElement, nextSibling: ServerElement) {
+    console.log('removeChild');
+
     if (this.children.get(child.key)) {
       this.removeChild(child);
     }
@@ -160,11 +163,12 @@ export default class ServerElement {
     child.deleted = false;
     if (this.isMounted()) {
       this.requestUpdate({
-        targetNode: this.serialize(),
+        targetNode: child.serialize(),
         type: NodeUpdate.SPLICE,
         parentPath: this.path,
         parentNode: this,
         key: child.key,
+        children: this.orderedChildren,
       });
     }
   }
@@ -185,16 +189,15 @@ export default class ServerElement {
     const children = [];
     const nodes: RenderNode['nodes'] = {};
     let currKey = this.firstChildKey;
-    let currItem: ServerElement;
-
+    let currItem: ServerElement | null = currKey ? this.children.get(currKey)! : null;
     // currKey 不为0
-    while (currKey) {
-      currItem = this.children.get(currKey)!;
+    while (currItem) {
       if (!currItem.deleted) {
-        nodes[currKey] = currItem.serialize();
-        children.push(currKey);
+        nodes[currKey!] = currItem.serialize();
+        children.push(currKey!);
       }
       currKey = currItem.nextSiblingKey;
+      currItem = this.children.get(currKey!) || null;
     }
 
     return {
@@ -210,18 +213,18 @@ export default class ServerElement {
   get orderedChildren() {
     const children = [];
     let currKey = this.firstChildKey;
-    let currItem: ServerElement;
+    let currItem: ServerElement | null = currKey ? this.children.get(currKey)! : null;
 
     // currKey 不为0
-    while (currKey) {
-      currItem = this.children.get(currKey)!;
+    while (currItem) {
       if (!currItem.deleted) {
         children.push(currKey);
       }
       currKey = currItem.nextSiblingKey;
+      currItem = this.children.get(currKey!) || null;
     }
 
-    return children;
+    return children as number[];
   }
 
   get path() {

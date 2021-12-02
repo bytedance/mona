@@ -6,11 +6,6 @@
     <template is="{{'mona-' + root.nodes[item].type}}" data="{{node: root.nodes[item]}}" />
   </block>
 </template>
-<template name="mona-root">
-    <block tt:for="{{node.children}}" tt:key="*this">
-      <template is="{{'mona-' + node.nodes[item].type}}" data="{{node: node.nodes[item]}}" />
-    </block>
-</template>
 <template name="mona-view">
   <view>
     <template
