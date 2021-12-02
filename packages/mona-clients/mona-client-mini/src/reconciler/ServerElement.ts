@@ -103,10 +103,9 @@ export default class ServerElement {
   }
 
   removeChild(child: ServerElement) {
-    console.log('removeChild');
-
     const prevSibling = child.prevSiblingKey ? this.children.get(child.prevSiblingKey) : null;
     const nextSibling = child.nextSiblingKey ? this.children.get(child.nextSiblingKey) : null;
+
     if (prevSibling && nextSibling) {
       // middle element
       prevSibling.nextSiblingKey = nextSibling.key;
@@ -128,6 +127,8 @@ export default class ServerElement {
     child.parent = null;
     this.children.delete(child.key);
     child.deleted = true;
+    child.nextSiblingKey = null;
+    child.prevSiblingKey = null;
 
     if (this.isMounted()) {
       this.requestUpdate({
@@ -142,8 +143,6 @@ export default class ServerElement {
   }
 
   insertBefore(child: ServerElement, nextSibling: ServerElement) {
-    console.log('removeChild');
-
     if (this.children.get(child.key)) {
       this.removeChild(child);
     }
@@ -151,7 +150,7 @@ export default class ServerElement {
     const prevSibling = nextSibling.prevSiblingKey ? this.children.get(nextSibling.prevSiblingKey) : null;
     child.nextSiblingKey = nextSibling.key;
     nextSibling.prevSiblingKey = child.key;
-    child.prevSiblingKey = nextSibling.prevSiblingKey;
+    child.prevSiblingKey = prevSibling ? prevSibling.key : null;
     if (prevSibling) {
       // added as first child, prepended
       prevSibling.nextSiblingKey = child.key;
@@ -161,6 +160,7 @@ export default class ServerElement {
     }
     child.parent = this;
     child.deleted = false;
+
     if (this.isMounted()) {
       this.requestUpdate({
         targetNode: child.serialize(),
@@ -223,7 +223,7 @@ export default class ServerElement {
       currKey = currItem.nextSiblingKey;
       currItem = this.children.get(currKey!) || null;
     }
-
+    // console.log('children', children);
     return children as number[];
   }
 
@@ -240,7 +240,7 @@ export default class ServerElement {
       currNode = currNode.parent;
     }
     for (let i = 0; i < nodePath.length; i++) {
-      const child = nodePath[i + 1] || this;
+      const child = nodePath[i];
       res.push(NODE_MAP_NAME);
       res.push(child.key);
     }

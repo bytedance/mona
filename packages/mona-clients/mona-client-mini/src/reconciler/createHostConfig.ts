@@ -84,13 +84,13 @@ export default function createHostConfig() {
 
     // ========== Mutation Methods ===========
     appendChild(parent: ServerElement, child: ServerElement) {
-      console.log('appendChild', child);
+      // console.log('appendChild', child);
       parent.appendChild(child);
     },
     // appendAllChildren(children: ServerElement[]) {},
 
     appendChildToContainer(container: TaskController, child: ServerElement) {
-      console.log('appendChildToContainer', container, child);
+      // console.log('appendChildToContainer', container, child);
       container.appendChild(child);
       // setTimeout(function () {
       //   var t = new ServerElement({
