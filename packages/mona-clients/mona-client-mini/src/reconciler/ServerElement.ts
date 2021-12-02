@@ -3,14 +3,24 @@ import { processProps } from './processProps';
 import TaskController, { Task } from './TaskController';
 
 let id = 1;
-const generateId = () => id++;
+function generateId() {
+  return id++;
+}
 
-const allTypes = new Set(['view', 'button', 'text', 'ptext']);
+export const NodeType = {
+  ROOT: 'monaRoot',
+  VIEW: 'view',
+  TEXT: 'text',
+  PTEXT: 'ptext',
+  BUTTON: 'button',
+};
+
+const allTypes = new Set(Object.values(NodeType));
 function formatType(type: string): string {
   if (allTypes.has(type)) {
     return type;
   }
-  return 'view';
+  return NodeType.VIEW;
 }
 
 export interface RenderNode {
@@ -159,6 +169,18 @@ export default class ServerElement {
     }
   }
 
+  updateProps() {
+    // 处理text
+    //
+    // this.requestUpdate({
+    //   type: NodeUpdate.SPLICE,
+    //   targetNode: this.serialize(),
+    //   parentPath: this.path,
+    //   parentNode: this,
+    //   key: child.key,
+    // });
+  }
+
   serialize(): RenderNode {
     const children = [];
     const nodes: RenderNode['nodes'] = {};
@@ -209,11 +231,9 @@ export default class ServerElement {
     let currNode: ServerElement | null = this;
 
     while (currNode) {
-      // if (currNode.type !== 'root') {
-      //   nodePath.unshift(currNode);
-      //   currNode = currNode.parent;
-      // }
-      nodePath.unshift(currNode);
+      if (currNode.type !== NodeType.ROOT) {
+        nodePath.unshift(currNode);
+      }
       currNode = currNode.parent;
     }
     for (let i = 0; i < nodePath.length; i++) {
@@ -221,7 +241,6 @@ export default class ServerElement {
       res.push(NODE_MAP_NAME);
       res.push(child.key);
     }
-    console.log('path', res);
     return res;
   }
 

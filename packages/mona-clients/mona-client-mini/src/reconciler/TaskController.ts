@@ -1,15 +1,26 @@
 import { FiberRoot } from 'react-reconciler';
-import ServerElement, { RenderNode } from './ServerElement';
+import ServerElement, { RenderNode, NodeType } from './ServerElement';
 import { NodeUpdate } from '../utils/constants';
-export interface Task {
+
+interface SpliceTask {
+  type: NodeUpdate.SPLICE;
   key?: number;
   children?: number[];
   // children?: ServerElement;
   targetNode: RenderNode | null;
   parentNode: ServerElement;
-  type: NodeUpdate;
-  parentPath: any;
+  parentPath: any[];
 }
+interface UpdateTask {
+  type: NodeUpdate.UPDATE;
+  key?: number;
+  children?: number[];
+  // children?: ServerElement;
+  propName: string;
+  propValue: any;
+  parentPath: any[];
+}
+export type Task = SpliceTask | UpdateTask;
 
 export const ROOT_KEY = 'mona';
 export default class TaskController {
@@ -23,7 +34,7 @@ export default class TaskController {
   constructor(context: any) {
     this.context = context;
     this.tasks = [];
-    this._root = new ServerElement({ type: 'root', taskController: this });
+    this._root = new ServerElement({ type: NodeType.ROOT, taskController: this });
     this._root.mounted = true;
     this._stopUpdate = false;
     this.rootKey = ROOT_KEY;
@@ -47,12 +58,10 @@ export default class TaskController {
         if (task.children) {
           res[this.processUpdatePath([...task.parentPath, 'children'])] = task.children;
         }
-        if (!task.parentNode.parent) {
+        if (task.parentNode.type === NodeType.ROOT) {
           // res[this.processUpdatePath([...task.parentPath, 'nodes', task.key])] = task.targetNode;
-          res[this.processUpdatePath(['children'])] = [task.parentNode.key];
-          res[this.processUpdatePath([...task.parentPath, 'type'])] = 'root';
-
-          // res[this.processUpdatePath([...task.parentPath])] = [task.parentNode.key];
+          // res[this.processUpdatePath(['children'])] = [task.parentNode.key];
+          res[this.processUpdatePath([...task.parentPath, 'type'])] = task.parentNode.type;
         }
       } else {
         // TODO: 更新属性
