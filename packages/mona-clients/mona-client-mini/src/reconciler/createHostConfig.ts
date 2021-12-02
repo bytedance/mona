@@ -92,15 +92,13 @@ export default function createHostConfig() {
       console.log('appendChildToContainer', container, child);
       container.appendChild(child);
       // setTimeout(() => {
-      //   child.key = 2222;
-      //   const t = new ServerElement({ type: 'ptext', taskController: child.taskController });
-      //   t.text = '123123';
-      //   container.appendChild(t);
-      //   child.taskController.applyUpdate();
-      //   setTimeout(() => {
-      //     container.removeChild(t);
-      //     child.taskController.applyUpdate();
-      //   }, 1000);
+      //   const t = new ServerElement({ type: 'ptext', taskController: container });
+      //   // const c = new ServerElement({ type: 'ptext', taskController: child.taskController });
+      //   t.text = 'dddd';
+      //   // t.appendChild(c);
+      //   child.key = 1233;
+      //   container.appendChild(child);
+      //   container.applyUpdate();
       // }, 1000);
       child.mounted = true;
     },
@@ -135,6 +133,7 @@ export default function createHostConfig() {
     },
 
     commitMount(_instance: any, updatePayload: any) {
+      
       if (updatePayload.length) {
         throw new Error('not yet implemented');
       }

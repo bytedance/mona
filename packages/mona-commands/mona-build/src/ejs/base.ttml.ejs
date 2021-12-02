@@ -1,25 +1,49 @@
-<template name="mona-base">
+<!-- <template name="mona-base">
   <template is="{{ 'mona-' + root.type }}" data="{{ node: root }}"></template>
+</template> -->
+<template name="mona-base">
+  <block tt:for="{{root.children}}" tt:key="*this">
+    <template is="{{'mona-' + root.nodes[item].type}}" data="{{node: root.nodes[item]}}" />
+  </block>
 </template>
-
+<template name="mona-root">
+    <block tt:for="{{node.children}}" tt:key="*this">
+      <template is="{{'mona-' + node.nodes[item].type}}" data="{{node: node.nodes[item]}}" />
+    </block>
+</template>
 <template name="mona-view">
   <view>
-    <template tt:for="{{node.children}}" tt:key={{item.key}} is="{{ 'mona-' + item.type }}" data="{{ node: item }}"></template>
+    <template
+      tt:for="{{ node.children }}"
+      tt:key="{{ item.key }}"
+      is="{{ 'mona-' + node.nodes[item].type }}"
+      data="{{ node: node.nodes[item] }}"
+    ></template>
   </view>
 </template>
 
 <template name="mona-text">
   <text>
-    <template tt:for="{{node.children}}" tt:key={{item.key}} is="{{ 'mona-' + item.type }}" data="{{ node: item }}"></template>
+    <template
+      tt:for="{{ node.children }}"
+      tt:key="{{ item.key }}"
+      is="{{ 'mona-' + node.nodes[item].type }}"
+      data="{{ node: node.nodes[item] }}"
+    ></template>
   </text>
 </template>
 
 <template name="mona-button">
   <button>
-    <template tt:for="{{node.children}}" tt:key={{item.key}} is="{{ 'mona-' + item.type }}" data="{{ node: item }}"></template>
+    <template
+      tt:for="{{ node.children }}"
+      tt:key="{{ item.key }}"
+      is="{{ 'mona-' + node.nodes[item].type }}"
+      data="{{ node: node.nodes[item] }}"
+    ></template>
   </button>
 </template>
 
 <template name="mona-ptext">
-  <block>{{node.text}}</block>
+  <block>{{ node.text }}</block>
 </template>

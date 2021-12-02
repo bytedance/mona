@@ -1,21 +1,24 @@
 import { FiberRoot } from 'react-reconciler';
-import ServerElement from './ServerElement';
+import ServerElement, { RenderNode } from './ServerElement';
 import { NodeUpdate } from '../utils/constants';
 export interface Task {
   key?: number;
+  children?: number[];
   // children?: ServerElement;
-  node: any;
-  // @ts-ignore
+  targetNode: RenderNode | null;
+  parentNode: ServerElement;
   type: NodeUpdate;
-  path: any;
+  parentPath: any;
 }
 
+export const ROOT_KEY = 'mona';
 export default class TaskController {
   context: any;
   _root: ServerElement;
   tasks: Task[];
   _stopUpdate: boolean;
   rootContainer?: FiberRoot;
+  rootKey: string;
 
   constructor(context: any) {
     this.context = context;
@@ -23,6 +26,7 @@ export default class TaskController {
     this._root = new ServerElement({ type: 'root', taskController: this });
     this._root.mounted = true;
     this._stopUpdate = false;
+    this.rootKey = ROOT_KEY;
   }
 
   requestUpdate(task: Task) {
@@ -34,13 +38,34 @@ export default class TaskController {
       return;
     }
     // const data = this.tasks.map(t => ({ ...t, children: t.children?.serialize() }));
-    console.log('applyUpdate', this.tasks);
-    this.context.setData({
-      tasks: this.tasks,
+
+    const res: Record<string, any> = {};
+    this.tasks.forEach(task => {
+      // 更新children
+      if (task.type === NodeUpdate.SPLICE) {
+        res[this.processUpdatePath([...task.parentPath, 'nodes', task.key])] = task.targetNode;
+        if (task.children) {
+          res[this.processUpdatePath([...task.parentPath, 'children'])] = task.children;
+        }
+        if (!task.parentNode.parent) {
+          // res[this.processUpdatePath([...task.parentPath, 'nodes', task.key])] = task.targetNode;
+          res[this.processUpdatePath(['children'])] = [task.parentNode.key];
+          res[this.processUpdatePath([...task.parentPath, 'type'])] = 'root';
+
+          // res[this.processUpdatePath([...task.parentPath])] = [task.parentNode.key];
+        }
+      } else {
+        // TODO: 更新属性
+      }
     });
+    console.log('applyUpdate', res);
+    this.context.setData(res);
     this.tasks = [];
   }
 
+  processUpdatePath(paths: string[]) {
+    return [this.rootKey, ...paths].join('.');
+  }
   stopUpdate() {
     this._stopUpdate = true;
   }
@@ -50,6 +75,7 @@ export default class TaskController {
   }
 
   appendChild(child: ServerElement) {
+    console.log('taskController appendCHild', child);
     this._root.appendChild(child);
   }
 

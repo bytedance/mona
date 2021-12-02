@@ -13,6 +13,16 @@ function formatType(type: string): string {
   return 'view';
 }
 
+export interface RenderNode {
+  key: number;
+  type: string;
+  props: Record<string, any>;
+  nodes: Record<number, RenderNode>;
+  children: number[];
+  text: string;
+}
+export const NODE_MAP_NAME = 'nodes';
+
 export default class ServerElement {
   type: string;
   taskController: TaskController;
@@ -53,7 +63,6 @@ export default class ServerElement {
   }
 
   appendChild(child: ServerElement) {
-    console.log('node.appendChild', child);
     if (this.children.get(child.key)) {
       console.log('this.children.get(child.key)', true);
       this.removeChild(child);
@@ -74,11 +83,13 @@ export default class ServerElement {
     child.deleted = false;
     if (this.isMounted()) {
       this.requestUpdate({
-        node: this.serialize(),
+        targetNode: child.serialize(),
         type: NodeUpdate.SPLICE,
-        path: this.path,
-        // children: this.children,
-      } as any);
+        parentPath: this.path,
+        parentNode: this,
+        children: this.orderedChildren,
+        key: child.key,
+      });
     }
   }
 
@@ -109,9 +120,12 @@ export default class ServerElement {
 
     if (this.isMounted()) {
       this.requestUpdate({
-        node: this.serialize(),
+        targetNode: null,
+        children: this.orderedChildren,
         type: NodeUpdate.SPLICE,
-        path: this.path,
+        parentPath: this.path,
+        parentNode: this,
+        key: child.key,
       });
     }
   }
@@ -136,44 +150,79 @@ export default class ServerElement {
     child.deleted = false;
     if (this.isMounted()) {
       this.requestUpdate({
-        node: this.serialize(),
+        targetNode: this.serialize(),
         type: NodeUpdate.SPLICE,
-        path: this.path,
+        parentPath: this.path,
+        parentNode: this,
+        key: child.key,
       });
     }
   }
 
-  serialize() {
-    const childrenValues = this.children ? Array.from(this.children.values()) : [];
-    let v;
+  serialize(): RenderNode {
     const children = [];
+    const nodes: RenderNode['nodes'] = {};
+    let currKey = this.firstChildKey;
+    let currItem: ServerElement;
 
-    //@ts-ignore
-    for (v of childrenValues) {
-      if (v && !v.deleted) {
-        children.push(v.serialize());
+    // currKey 不为0
+    while (currKey) {
+      currItem = this.children.get(currKey)!;
+      if (!currItem.deleted) {
+        nodes[currKey] = currItem.serialize();
+        children.push(currKey);
       }
+      currKey = currItem.nextSiblingKey;
     }
-    const json: any = {
+
+    return {
       key: this.key,
       type: this.type,
-      text: this.text,
+      text: this.text!,
       props: processProps(this.props, this),
       children: children,
-      // path: this.path.join('.'),
+      [NODE_MAP_NAME]: nodes,
     };
+  }
 
-    return json;
+  get orderedChildren() {
+    const children = [];
+    let currKey = this.firstChildKey;
+    let currItem: ServerElement;
+
+    // currKey 不为0
+    while (currKey) {
+      currItem = this.children.get(currKey)!;
+      if (!currItem.deleted) {
+        children.push(currKey);
+      }
+      currKey = currItem.nextSiblingKey;
+    }
+
+    return children;
   }
 
   get path() {
     const nodePath = [];
-    let parent: ServerElement | null = this;
-    while (parent) {
-      nodePath.unshift(parent.key);
-      parent = parent.parent;
+    const res = [];
+
+    let currNode: ServerElement | null = this;
+
+    while (currNode) {
+      // if (currNode.type !== 'root') {
+      //   nodePath.unshift(currNode);
+      //   currNode = currNode.parent;
+      // }
+      nodePath.unshift(currNode);
+      currNode = currNode.parent;
     }
-    return nodePath;
+    for (let i = 0; i < nodePath.length; i++) {
+      const child = nodePath[i + 1] || this;
+      res.push(NODE_MAP_NAME);
+      res.push(child.key);
+    }
+    console.log('path', res);
+    return res;
   }
 
   isMounted(): boolean {
