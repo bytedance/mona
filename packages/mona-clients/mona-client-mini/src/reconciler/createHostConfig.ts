@@ -119,7 +119,9 @@ export default function createHostConfig() {
       parent.removeChild(child);
     },
 
-    removeChildFromContainer() {},
+    removeChildFromContainer(container: TaskController, child: ServerElement) {
+      container.removeChild(child);
+    },
 
     resetTextContent() {
       // empty

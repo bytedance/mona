@@ -6,3 +6,4 @@ tsconfig.tsbuildinfo
 *.log
 coverage
 dist
+local-test-fb
