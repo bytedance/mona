@@ -19,6 +19,7 @@ interface UpdateTask {
   propName: string;
   propValue: any;
   parentPath: any[];
+  parentNode: ServerElement;
 }
 export type Task = SpliceTask | UpdateTask;
 
@@ -52,6 +53,10 @@ export default class TaskController {
 
     const res: Record<string, any> = {};
     this.tasks.forEach(task => {
+      // requestUpdate时，不会立即执行applyUpdate，在这段延迟时间内，该节点可能被删除
+      if (task.parentNode.isDeleted()) {
+        return;
+      }
       // 更新children
       if (task.type === NodeUpdate.SPLICE) {
         res[this.processUpdatePath([...task.parentPath, 'nodes', task.key])] = task.targetNode;
@@ -63,7 +68,7 @@ export default class TaskController {
           // res[this.processUpdatePath(['children'])] = [task.parentNode.key];
           res[this.processUpdatePath([...task.parentPath, 'type'])] = task.parentNode.type;
         }
-      } else {
+      } else if (task.type === NodeUpdate.UPDATE) {
         // TODO: 更新属性
       }
     });

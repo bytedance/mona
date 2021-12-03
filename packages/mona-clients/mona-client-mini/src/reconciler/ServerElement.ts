@@ -124,8 +124,10 @@ export default class ServerElement {
       this.firstChildKey = null;
       this.lastChildKey = null;
     }
-    child.parent = null;
+
     this.children.delete(child.key);
+
+    child.parent = null;
     child.deleted = true;
     child.nextSiblingKey = null;
     child.prevSiblingKey = null;
@@ -190,14 +192,12 @@ export default class ServerElement {
     const nodes: RenderNode['nodes'] = {};
     let currKey = this.firstChildKey;
     let currItem: ServerElement | null = currKey ? this.children.get(currKey)! : null;
-    // currKey 不为0
     while (currItem) {
-      if (!currItem.deleted) {
-        nodes[currKey!] = currItem.serialize();
-        children.push(currKey!);
-      }
+      nodes[currKey!] = currItem.serialize();
+      children.push(currKey!);
+
       currKey = currItem.nextSiblingKey;
-      currItem = this.children.get(currKey!) || null;
+      currItem = currKey ? this.children.get(currKey)! : null;
     }
 
     return {
@@ -213,17 +213,14 @@ export default class ServerElement {
   get orderedChildren() {
     const children = [];
     let currKey = this.firstChildKey;
+    // currKey 不为0
     let currItem: ServerElement | null = currKey ? this.children.get(currKey)! : null;
 
-    // currKey 不为0
     while (currItem) {
-      if (!currItem.deleted) {
-        children.push(currKey);
-      }
+      children.push(currKey);
       currKey = currItem.nextSiblingKey;
-      currItem = this.children.get(currKey!) || null;
+      currItem = currKey ? this.children.get(currKey)! : null;
     }
-    // console.log('children', children);
     return children as number[];
   }
 
@@ -250,18 +247,7 @@ export default class ServerElement {
   isMounted(): boolean {
     return this.parent ? this.parent.isMounted() : this.mounted;
   }
-  // serialize2() {
-  //   const childrenKeys = this.children ? Array.from(this.children.keys()) : [];
-  //   const children = childrenKeys.map(key => this.children.get(key)?.serialize());
-
-  //   const json: any = {
-  //     key: this.key,
-  //     type: this.type,
-  //     text: this.text,
-  //     props: processProps(this.props, this),
-  //     children: children,
-  //   };
-
-  //   return json;
-  // }
+  isDeleted(): boolean {
+    return this.deleted ? this.deleted : this.parent?.isDeleted() ?? false;
+  }
 }
