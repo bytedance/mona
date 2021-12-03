@@ -1,4 +1,4 @@
-export enum NodeUpdate {
+export enum NodeTask {
   SPLICE = 'splice',
   UPDATE = 'update',
 }

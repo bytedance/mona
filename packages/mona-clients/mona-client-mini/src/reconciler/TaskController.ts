@@ -1,9 +1,9 @@
 import { FiberRoot } from 'react-reconciler';
 import ServerElement, { RenderNode, NodeType } from './ServerElement';
-import { NodeUpdate } from '../utils/constants';
+import { NodeTask } from '../utils/constants';
 
 interface SpliceTask {
-  type: NodeUpdate.SPLICE;
+  type: NodeTask.SPLICE;
   key?: number;
   children?: number[];
   // children?: ServerElement;
@@ -12,13 +12,12 @@ interface SpliceTask {
   parentPath: any[];
 }
 interface UpdateTask {
-  type: NodeUpdate.UPDATE;
+  type: NodeTask.UPDATE;
   key?: number;
-  children?: number[];
   // children?: ServerElement;
   propName: string;
   propValue: any;
-  parentPath: any[];
+  path: any[];
   parentNode: ServerElement;
 }
 export type Task = SpliceTask | UpdateTask;
@@ -58,17 +57,18 @@ export default class TaskController {
         return;
       }
       // 更新children
-      if (task.type === NodeUpdate.SPLICE) {
-        res[this.processUpdatePath([...task.parentPath, 'nodes', task.key])] = task.targetNode;
+      if (task.type === NodeTask.SPLICE) {
+        res[this.genUpdatePath([...task.parentPath, 'nodes', task.key])] = task.targetNode;
         if (task.children) {
-          res[this.processUpdatePath([...task.parentPath, 'children'])] = task.children;
+          res[this.genUpdatePath([...task.parentPath, 'children'])] = task.children;
         }
         if (task.parentNode.type === NodeType.ROOT) {
-          // res[this.processUpdatePath([...task.parentPath, 'nodes', task.key])] = task.targetNode;
-          // res[this.processUpdatePath(['children'])] = [task.parentNode.key];
-          res[this.processUpdatePath([...task.parentPath, 'type'])] = task.parentNode.type;
+          // res[this.genUpdatePath([...task.parentPath, 'nodes', task.key])] = task.targetNode;
+          // res[this.genUpdatePath(['children'])] = [task.parentNode.key];
+          res[this.genUpdatePath([...task.parentPath, 'type'])] = task.parentNode.type;
         }
-      } else if (task.type === NodeUpdate.UPDATE) {
+      } else if (task.type === NodeTask.UPDATE) {
+        res[this.genUpdatePath([...task.path, 'props', task.propName])] = task.propValue;
         // TODO: 更新属性
       }
     });
@@ -77,7 +77,7 @@ export default class TaskController {
     this.tasks = [];
   }
 
-  processUpdatePath(paths: string[]) {
+  genUpdatePath(paths: string[]) {
     return [this.rootKey, ...paths].join('.');
   }
   stopUpdate() {
