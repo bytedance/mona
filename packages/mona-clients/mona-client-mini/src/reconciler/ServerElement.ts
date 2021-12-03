@@ -1,4 +1,4 @@
-import { NodeUpdate } from '../utils/constants';
+import { NodeTask } from '../utils/constants';
 import { processProps } from './processProps';
 import TaskController, { Task } from './TaskController';
 
@@ -90,10 +90,11 @@ export default class ServerElement {
     }
     this.lastChildKey = child.key;
     child.deleted = false;
+
     if (this.isMounted()) {
       this.requestUpdate({
         targetNode: child.serialize(),
-        type: NodeUpdate.SPLICE,
+        type: NodeTask.SPLICE,
         parentPath: this.path,
         parentNode: this,
         children: this.orderedChildren,
@@ -136,7 +137,7 @@ export default class ServerElement {
       this.requestUpdate({
         targetNode: null,
         children: this.orderedChildren,
-        type: NodeUpdate.SPLICE,
+        type: NodeTask.SPLICE,
         parentPath: this.path,
         parentNode: this,
         key: child.key,
@@ -166,7 +167,7 @@ export default class ServerElement {
     if (this.isMounted()) {
       this.requestUpdate({
         targetNode: child.serialize(),
-        type: NodeUpdate.SPLICE,
+        type: NodeTask.SPLICE,
         parentPath: this.path,
         parentNode: this,
         key: child.key,
@@ -175,11 +176,24 @@ export default class ServerElement {
     }
   }
 
-  updateProps() {
+  updateProps(updatePropsMap: Record<string, any>) {
+    console.log('updatePayload', updatePropsMap);
+
+    let propKey: string;
+    for (propKey in updatePropsMap) {
+      this.requestUpdate({
+        type: NodeTask.UPDATE,
+        parentNode: this,
+        key: this.key,
+        propName: propKey,
+        propValue: updatePropsMap[propKey],
+        path: this.path,
+      });
+    }
     // 处理text
     //
     // this.requestUpdate({
-    //   type: NodeUpdate.SPLICE,
+    //   type: NodeTask.SPLICE,
     //   targetNode: this.serialize(),
     //   parentPath: this.path,
     //   parentNode: this,

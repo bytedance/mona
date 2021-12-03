@@ -2,19 +2,36 @@ import { CALLBACK_SYMBOL } from '../utils/constants';
 import { baseComponentPropsMap } from '../components/prop';
 import { isEventName } from '../utils/utils';
 import ServerElement from './ServerElement';
+import { plainStyle } from '../utils/transformStyle';
+
+/**
+ * picker-view 组件： indicatorStyle,maskStyle
+ * input\textarea组件: placeholderStyle
+ */
+const styleMap: Record<string, boolean> = {
+  style: true,
+  placeholderStyle: true,
+  indicatorStyle: true,
+  maskStyle: true,
+};
+
+const filterPropsMap: Record<string, boolean> = {
+  key: true,
+  children: true,
+  ref: true,
+};
 export function processProps(props: Record<string, any>, node: ServerElement) {
   let key: string;
   let cbKey: string;
   const newProps: Record<string, any> = {};
   for (key in props) {
-    if (key === 'key' || key === 'children' || key === 'ref') {
+    if (filterPropsMap[key]) {
     } else if (isEventName(key)) {
       cbKey = `${CALLBACK_SYMBOL}_${node.key}_${key}`;
       node.taskController.addCallback(cbKey, props[key]);
-      // processEvent(newProps, key, cbKey);
       newProps[key] = cbKey;
-    } else if (key === 'style') {
-      newProps[key] = props[key] || '';
+    } else if (styleMap[key]) {
+      newProps[key] = plainStyle(props[key]);
     } else {
       newProps[key] = props[key];
     }
@@ -22,9 +39,63 @@ export function processProps(props: Record<string, any>, node: ServerElement) {
   return newProps;
 }
 
-export function diffProperties(_oldProps: Record<string, any>, _newProps: Record<string, any>) {
+/**
+ * 需更新的2种情况
+ * ①新无旧有,设为null。
+ * ②新旧value不同的。
+ */
+export function diffProperties(oldProps: Record<string, any>, newProps: Record<string, any>) {
+  let propKey: string;
+  const propUpdateObj: Record<string, any> = {};
+  let styleKey: string;
+  let oldStyle: any, newStyle: any;
+  for (propKey in oldProps) {
+    if (filterPropsMap[propKey]) {
+      continue;
+    } else if (styleMap[propKey]) {
+      oldStyle = oldProps[propKey] ?? {};
+      newStyle = newProps[propKey] ?? {};
+      // TODO:区分string、object
+      for (styleKey in oldStyle) {
+        if (!newStyle.hasOwnProperty(styleKey)) {
+          propUpdateObj[propKey] = newProps[propKey];
+          break;
+        }
+      }
+    } else if (!newProps.hasOwnProperty(propKey)) {
+      propUpdateObj[propKey] = null;
+    }
+  }
+  let newProp: string;
+  let oldProp: string;
+  for (propKey in newProps) {
+    newProp = newProps[propKey];
+    oldProp = oldProps ? oldProps[propKey] : null;
 
+    if (
+      newProp === oldProp ||
+      (newProp == null && oldProp == null) ||
+      !newProps.hasOwnProperty(propKey) ||
+      filterPropsMap[propKey]
+    ) {
+      continue;
+    } else {
+      if (styleMap[propKey]) {
+        newStyle = newProps[propKey] ?? {};
+        oldStyle = oldProps[propKey] ?? {};
+        for (styleKey in newStyle) {
+          if (oldStyle[styleKey] !== newStyle[styleKey]) {
+            propUpdateObj[propKey] = newProp;
+            break;
+          }
+        }
+      } else {
+        propUpdateObj[propKey] = newProp;
+      }
+    }
+  }
 
+  return propUpdateObj;
 }
 
 /**

@@ -1,7 +1,7 @@
 import scheduler from 'scheduler';
 import TaskController from './TaskController';
 import ServerElement from './ServerElement';
-import { processProps } from './processProps';
+import { diffProperties, processProps } from './processProps';
 
 const {
   unstable_scheduleCallback: scheduleDeferredCallback,
@@ -14,15 +14,15 @@ const emptyObject = {};
 // const emptyFunc = function () {};
 // TODO: android低版本兼容问题，尽量不要引入polyfill
 
-function changedProps(oldObj: Record<string, any>, newObj: Record<string, any>) {
-  // Return a diff between the new and the old object
-  const uniqueProps = new Set([...Object.keys(oldObj), ...Object.keys(newObj)]);
-  const props = Array.from(uniqueProps).filter(propName => oldObj[propName] !== newObj[propName]);
+// function changedProps(oldObj: Record<string, any>, newObj: Record<string, any>) {
+//   // Return a diff between the new and the old object
+//   const uniqueProps = new Set([...Object.keys(oldObj), ...Object.keys(newObj)]);
+//   const props = Array.from(uniqueProps).filter(propName => oldObj[propName] !== newObj[propName]);
 
-  // const finalChangedProps = dealEvent(changedProps);
+//   // const finalChangedProps = dealEvent(changedProps);
 
-  return props;
-}
+//   return props;
+// }
 
 // eslint-disable-next-line max-lines-per-function
 export default function createHostConfig() {
@@ -48,12 +48,8 @@ export default function createHostConfig() {
     },
 
     // 这里有必要diff吗
-    prepareUpdate(node: ServerElement, _type: string, oldProps: any, newProps: any) {
-      processProps(oldProps, node);
-
-      processProps(newProps, node);
-
-      return changedProps(oldProps, newProps).filter(prop => prop !== 'children');
+    prepareUpdate(_node: ServerElement, _type: string, oldProps: any, newProps: any) {
+      return diffProperties(oldProps ?? {}, newProps ?? {});
     },
     shouldSetTextContent() {
       return false;
@@ -140,9 +136,9 @@ export default function createHostConfig() {
       }
     },
 
-    commitUpdate(node: ServerElement, _updatePayload: any, _type: any, _oldProps: any, newProps: any) {
+    commitUpdate(node: ServerElement, updatePayload: any, _type: any, _oldProps: any, newProps: any) {
       node.props = newProps;
-      node.updateProps();
+      node.updateProps(processProps(updatePayload, node));
     },
 
     schedulePassiveEffects: scheduleDeferredCallback,
