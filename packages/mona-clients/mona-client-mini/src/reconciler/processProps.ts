@@ -4,13 +4,15 @@ import { isEventName } from '../utils/utils';
 import ServerElement from './ServerElement';
 export function processProps(props: Record<string, any>, node: ServerElement) {
   let key: string;
+  let cbKey: string;
   const newProps: Record<string, any> = {};
   for (key in props) {
     if (key === 'key' || key === 'children' || key === 'ref') {
     } else if (isEventName(key)) {
-      const cbKey = `${CALLBACK_SYMBOL}_${node.key}_${key}`;
+      cbKey = `${CALLBACK_SYMBOL}_${node.key}_${key}`;
       node.taskController.addCallback(cbKey, props[key]);
-      processEvent(newProps, key, cbKey);
+      // processEvent(newProps, key, cbKey);
+      newProps[key] = cbKey;
     } else if (key === 'style') {
       newProps[key] = props[key] || '';
     } else {
@@ -18,6 +20,11 @@ export function processProps(props: Record<string, any>, node: ServerElement) {
     }
   }
   return newProps;
+}
+
+export function diffProperties(_oldProps: Record<string, any>, _newProps: Record<string, any>) {
+
+
 }
 
 /**

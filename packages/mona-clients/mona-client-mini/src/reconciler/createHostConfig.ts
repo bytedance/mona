@@ -1,6 +1,7 @@
 import scheduler from 'scheduler';
 import TaskController from './TaskController';
 import ServerElement from './ServerElement';
+import { processProps } from './processProps';
 
 const {
   unstable_scheduleCallback: scheduleDeferredCallback,
@@ -45,12 +46,12 @@ export default function createHostConfig() {
     finalizeInitialChildren() {
       return false;
     },
-    prepareUpdate(_domElement: any, _type: string, oldProps: any, newProps: any) {
-      // console.log('prepareUpdate', { domElement, type, oldProps, newProps });
-      // console.log(
-      //   'prepareUpdate',
-      //   changedProps(oldProps, newProps).filter(prop => prop !== 'children'),
-      // );
+
+    // 这里有必要diff吗
+    prepareUpdate(node: ServerElement, _type: string, oldProps: any, newProps: any) {
+      processProps(oldProps, node);
+
+      processProps(newProps, node);
 
       return changedProps(oldProps, newProps).filter(prop => prop !== 'children');
     },
@@ -83,23 +84,25 @@ export default function createHostConfig() {
 
     // ========== Mutation Methods ===========
     appendChild(parent: ServerElement, child: ServerElement) {
-      console.log('appendChild', child);
+      // console.log('appendChild', child);
       parent.appendChild(child);
     },
     // appendAllChildren(children: ServerElement[]) {},
 
     appendChildToContainer(container: TaskController, child: ServerElement) {
-      console.log('appendChildToContainer', container, child);
+      // console.log('appendChildToContainer', container, child);
       container.appendChild(child);
-      // setTimeout(() => {
-      //   child.key = 2222;
-      //   const t = new ServerElement({ type: 'ptext', taskController: child.taskController });
-      //   t.text = '123123';
+      // setTimeout(function () {
+      //   var t = new ServerElement({
+      //     type: 'ptext',
+      //     taskController: container,
+      //   });
+      //   t.text = 'dddd';
       //   container.appendChild(t);
-      //   child.taskController.applyUpdate();
-      //   setTimeout(() => {
+      //   container.applyUpdate();
+      //   setTimeout(function () {
       //     container.removeChild(t);
-      //     child.taskController.applyUpdate();
+      //     container.applyUpdate();
       //   }, 1000);
       // }, 1000);
       child.mounted = true;
@@ -116,7 +119,9 @@ export default function createHostConfig() {
       parent.removeChild(child);
     },
 
-    removeChildFromContainer() {},
+    removeChildFromContainer(container: TaskController, child: ServerElement) {
+      container.removeChild(child);
+    },
 
     resetTextContent() {
       // empty
@@ -126,11 +131,6 @@ export default function createHostConfig() {
       // WorkerElement.markSent(textInstance);
       if (oldText !== newText) {
         textInstance.text = newText;
-        // textInstance.requestUpdate({
-        //   method: 'commitTextUpdate',
-        //   key: textInstance.key,
-        //   text: newText,
-        // });
       }
     },
 
@@ -139,16 +139,12 @@ export default function createHostConfig() {
         throw new Error('not yet implemented');
       }
     },
-    commitUpdate(_instance: any, updatePayload: any, type: any, oldProps: any, newProps: any) {
-      console.log('commitUpdate', { updatePayload, type, oldProps, newProps });
-      if (updatePayload.length) {
-        // throw new Error('not yet implemented')
-        // sendMessage({
-        //   method: 'commitUpdate',
-        //   instance, updatePayload, type, oldProps, newProps
-        // })
-      }
+
+    commitUpdate(node: ServerElement, _updatePayload: any, _type: any, _oldProps: any, newProps: any) {
+      node.props = newProps;
+      node.updateProps();
     },
+
     schedulePassiveEffects: scheduleDeferredCallback,
     cancelPassiveEffects: cancelDeferredCallback,
     shouldYield,

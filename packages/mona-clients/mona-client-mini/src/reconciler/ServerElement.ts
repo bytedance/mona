@@ -3,15 +3,35 @@ import { processProps } from './processProps';
 import TaskController, { Task } from './TaskController';
 
 let id = 1;
-const generateId = () => id++;
+function generateId() {
+  return id++;
+}
 
-const allTypes = new Set(['view', 'button', 'text', 'ptext']);
+export const NodeType = {
+  ROOT: 'monaRoot',
+  VIEW: 'view',
+  TEXT: 'text',
+  PTEXT: 'ptext',
+  BUTTON: 'button',
+};
+
+const allTypes = new Set(Object.values(NodeType));
 function formatType(type: string): string {
   if (allTypes.has(type)) {
     return type;
   }
-  return 'view';
+  return NodeType.VIEW;
 }
+
+export interface RenderNode {
+  key: number;
+  type: string;
+  props: Record<string, any>;
+  nodes: Record<number, RenderNode>;
+  children: number[];
+  text: string;
+}
+export const NODE_MAP_NAME = 'nodes';
 
 export default class ServerElement {
   type: string;
@@ -53,9 +73,7 @@ export default class ServerElement {
   }
 
   appendChild(child: ServerElement) {
-    console.log('node.appendChild', child);
     if (this.children.get(child.key)) {
-      console.log('this.children.get(child.key)', true);
       this.removeChild(child);
     }
     this.children.set(child.key, child);
@@ -74,17 +92,20 @@ export default class ServerElement {
     child.deleted = false;
     if (this.isMounted()) {
       this.requestUpdate({
-        node: this.serialize(),
+        targetNode: child.serialize(),
         type: NodeUpdate.SPLICE,
-        path: this.path,
-        // children: this.children,
-      } as any);
+        parentPath: this.path,
+        parentNode: this,
+        children: this.orderedChildren,
+        key: child.key,
+      });
     }
   }
 
   removeChild(child: ServerElement) {
     const prevSibling = child.prevSiblingKey ? this.children.get(child.prevSiblingKey) : null;
     const nextSibling = child.nextSiblingKey ? this.children.get(child.nextSiblingKey) : null;
+
     if (prevSibling && nextSibling) {
       // middle element
       prevSibling.nextSiblingKey = nextSibling.key;
@@ -103,15 +124,22 @@ export default class ServerElement {
       this.firstChildKey = null;
       this.lastChildKey = null;
     }
-    child.parent = null;
+
     this.children.delete(child.key);
+
+    child.parent = null;
     child.deleted = true;
+    child.nextSiblingKey = null;
+    child.prevSiblingKey = null;
 
     if (this.isMounted()) {
       this.requestUpdate({
-        node: this.serialize(),
+        targetNode: null,
+        children: this.orderedChildren,
         type: NodeUpdate.SPLICE,
-        path: this.path,
+        parentPath: this.path,
+        parentNode: this,
+        key: child.key,
       });
     }
   }
@@ -124,7 +152,7 @@ export default class ServerElement {
     const prevSibling = nextSibling.prevSiblingKey ? this.children.get(nextSibling.prevSiblingKey) : null;
     child.nextSiblingKey = nextSibling.key;
     nextSibling.prevSiblingKey = child.key;
-    child.prevSiblingKey = nextSibling.prevSiblingKey;
+    child.prevSiblingKey = prevSibling ? prevSibling.key : null;
     if (prevSibling) {
       // added as first child, prepended
       prevSibling.nextSiblingKey = child.key;
@@ -134,63 +162,92 @@ export default class ServerElement {
     }
     child.parent = this;
     child.deleted = false;
+
     if (this.isMounted()) {
       this.requestUpdate({
-        node: this.serialize(),
+        targetNode: child.serialize(),
         type: NodeUpdate.SPLICE,
-        path: this.path,
+        parentPath: this.path,
+        parentNode: this,
+        key: child.key,
+        children: this.orderedChildren,
       });
     }
   }
 
-  serialize() {
-    const childrenValues = this.children ? Array.from(this.children.values()) : [];
-    let v;
-    const children = [];
+  updateProps() {
+    // 处理text
+    //
+    // this.requestUpdate({
+    //   type: NodeUpdate.SPLICE,
+    //   targetNode: this.serialize(),
+    //   parentPath: this.path,
+    //   parentNode: this,
+    //   key: child.key,
+    // });
+  }
 
-    //@ts-ignore
-    for (v of childrenValues) {
-      if (v && !v.deleted) {
-        children.push(v.serialize());
-      }
+  serialize(): RenderNode {
+    const children = [];
+    const nodes: RenderNode['nodes'] = {};
+    let currKey = this.firstChildKey;
+    let currItem: ServerElement | null = currKey ? this.children.get(currKey)! : null;
+    while (currItem) {
+      nodes[currKey!] = currItem.serialize();
+      children.push(currKey!);
+
+      currKey = currItem.nextSiblingKey;
+      currItem = currKey ? this.children.get(currKey)! : null;
     }
-    const json: any = {
+
+    return {
       key: this.key,
       type: this.type,
-      text: this.text,
+      text: this.text!,
       props: processProps(this.props, this),
       children: children,
-      // path: this.path.join('.'),
+      [NODE_MAP_NAME]: nodes,
     };
+  }
 
-    return json;
+  get orderedChildren() {
+    const children = [];
+    let currKey = this.firstChildKey;
+    // currKey 不为0
+    let currItem: ServerElement | null = currKey ? this.children.get(currKey)! : null;
+
+    while (currItem) {
+      children.push(currKey);
+      currKey = currItem.nextSiblingKey;
+      currItem = currKey ? this.children.get(currKey)! : null;
+    }
+    return children as number[];
   }
 
   get path() {
     const nodePath = [];
-    let parent: ServerElement | null = this;
-    while (parent) {
-      nodePath.unshift(parent.key);
-      parent = parent.parent;
+    const res = [];
+
+    let currNode: ServerElement | null = this;
+
+    while (currNode) {
+      if (currNode.type !== NodeType.ROOT) {
+        nodePath.unshift(currNode);
+      }
+      currNode = currNode.parent;
     }
-    return nodePath;
+    for (let i = 0; i < nodePath.length; i++) {
+      const child = nodePath[i];
+      res.push(NODE_MAP_NAME);
+      res.push(child.key);
+    }
+    return res;
   }
 
   isMounted(): boolean {
     return this.parent ? this.parent.isMounted() : this.mounted;
   }
-  // serialize2() {
-  //   const childrenKeys = this.children ? Array.from(this.children.keys()) : [];
-  //   const children = childrenKeys.map(key => this.children.get(key)?.serialize());
-
-  //   const json: any = {
-  //     key: this.key,
-  //     type: this.type,
-  //     text: this.text,
-  //     props: processProps(this.props, this),
-  //     children: children,
-  //   };
-
-  //   return json;
-  // }
+  isDeleted(): boolean {
+    return this.deleted ? this.deleted : this.parent?.isDeleted() ?? false;
+  }
 }

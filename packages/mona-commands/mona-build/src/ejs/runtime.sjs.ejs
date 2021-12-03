@@ -1,28 +1,32 @@
 var pageNodesMap = {};
 
 function processTask(task, pageId) {
-  const { type, node: target, path } = task;
-  const root = pageNodesMap[pageId];
-  if (type === 'splice') {
-    const oldNode = findNode(root, path);
-    oldNode.children = target.children;
+  var root = pageNodesMap[pageId];
+  if (task.type === 'splice') {
+    var oldNode = findNode(root, task.path, 0);
+    oldNode.children = task.node.children;
     // 寻找节点
   }
 }
 
-function findNode(root, path, currentIdx = 0) {
-  const tKey = path[currentIdx];
+function findNode(root, path, currentIdx) {
+    var tKey = path[currentIdx];
 
   if (root.key === tKey) {
     if (path.length === currentIdx + 1) {
       return root;
     }
-    let targetNode;
-    root.children?.forEach(item => {
-      if (!targetNode) {
-        targetNode = findNode(item, path, currentIdx + 1);
+    var targetNode;
+    var children = root.children
+    if(children){
+      for(var idx = 0; idx < children.length; idx++){
+        if (!targetNode) {
+          targetNode = findNode(children[idx], path, currentIdx + 1);
+        } else {
+          break;
+        }
       }
-    });
+    }
     return targetNode;
   } else {
     return;
@@ -30,14 +34,7 @@ function findNode(root, path, currentIdx = 0) {
 }
 
 function parseNodes(tasks, pageId) {
-  tasks.forEach(task => {
-    if (pageNodesMap[pageId]) {
-      processTask(task, pageId);
-    } else {
-      pageNodesMap[pageId] = task.node;
-    }
-  });
-  return pageNodesMap[pageId];
+  return {data: JSON.stringify(tasks ,null,2)};
 }
 
 module.exports = {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { PageLifecycleGlobalContext, LifecycleContext, PageLifecycle } from './lifecycle/context';
 import render from './reconciler';
-import TaskController from './reconciler/TaskController';
+import TaskController, { ROOT_KEY } from './reconciler/TaskController';
 
 interface PageConfig {
   _controller: TaskController;
@@ -27,6 +27,13 @@ function createConfig(Component: React.ComponentType<any>) {
     _controller: new TaskController({}),
 
     onLoad(this: any, options: any) {
+      this.data = {
+        [ROOT_KEY]: {
+          children: [],
+          // 设置初始值，防止将obj[number]序列化为数组
+          nodes: {},
+        },
+      };
       const element = React.createElement(this._Component, null, []);
       const wrapper = React.createElement(PageLifecycleGlobalContext.Provider, { value: this._pageLifecycleContext }, [
         element,
