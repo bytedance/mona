@@ -1486,7 +1486,7 @@ abstract class Api {
   abstract unsubscribeAllSpecifiedUserComment(options: Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>): void;
   abstract onReceiveSpecifiedComment(callback: (res: OnReceiveSpecifiedCommentOptions) => void): void;
   // 自定义
-  abstract open(url: string): Promise<any>;
+  abstract open(url: string): void;
 }
 
 export default Api
