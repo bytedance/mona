@@ -1,4 +1,4 @@
-interface EnterOrLaunchOptions {
+export interface EnterOrLaunchOptions {
   path: string;
   scene: string;
   query: object;
@@ -6,34 +6,34 @@ interface EnterOrLaunchOptions {
   showFrom: number;
 }
 
-interface UpdateManager {
+export interface UpdateManager {
   onCheckForUpdate: (callback: (param: { hasUpdate: boolean }) => void) => void;
   onUpdateReady: (callback: () => void) => void;
   onUpdateFailed: (callback: (err: string) => void) => void;
   applyUpdate: (calllback: () => void) => void;
 }
 
-interface Callbacks<SuccessArg = any, FailArg = any> {
+export interface Callbacks<SuccessArg = any, FailArg = any> {
   success?: (arg: SuccessArg) => void;
   fail?: (arg: FailArg) => void;
   complete?: (arg: SuccessArg | FailArg) => void;
 }
 
-interface CommonErrorArgs {
+export interface CommonErrorArgs {
   errMsg: string;
 }
 
-interface DownloadFileCallbackSuccessArgs {
+export interface DownloadFileCallbackSuccessArgs {
   tempFilePath: string;
   statusCode: number;
 }
 
-interface DownloadFileOptions extends Callbacks<DownloadFileCallbackSuccessArgs, CommonErrorArgs> {
+export interface DownloadFileOptions extends Callbacks<DownloadFileCallbackSuccessArgs, CommonErrorArgs> {
   url: string;
   header?: object;
 }
 
-interface ReqeustResponseProfile {
+export interface ReqeustResponseProfile {
   domainLookupStart: number;
   domainLookupEnd: number;
   connectStart: number;
@@ -49,19 +49,19 @@ interface ReqeustResponseProfile {
   socketReused: boolean;
 }
 
-interface RequestSuccesssCallbackArgs {
+export interface RequestSuccesssCallbackArgs {
   statusCode: number;
   header: object;
   data: object | string | ArrayBuffer;
   profile: ReqeustResponseProfile
 }
 
-interface RequestFailCallbackArgs extends CommonErrorArgs {
+export interface RequestFailCallbackArgs extends CommonErrorArgs {
   errNo: string;
   profile?: ReqeustResponseProfile
 }
 
-interface RequestOptions extends Callbacks<RequestSuccesssCallbackArgs, RequestFailCallbackArgs> {
+export interface RequestOptions extends Callbacks<RequestSuccesssCallbackArgs, RequestFailCallbackArgs> {
   url: string;
   header?: object;
   method?: 'GET' | 'HEAD' | 'OPTIONS' | 'POST' | 'DELETE' | 'PUT' | 'TRACE'  | 'CONNECT'
@@ -72,11 +72,11 @@ interface RequestOptions extends Callbacks<RequestSuccesssCallbackArgs, RequestF
   responseType?: 'text' | 'arraybuffer';
 }
 
-interface UploadFileSuccesssCallbackArgs {
+export interface UploadFileSuccesssCallbackArgs {
   data: string;
   statusCode: number;
 }
-interface UploadFileOptions extends Callbacks<UploadFileSuccesssCallbackArgs, CommonErrorArgs> {
+export interface UploadFileOptions extends Callbacks<UploadFileSuccesssCallbackArgs, CommonErrorArgs> {
   url: string;
   filePath: string;
   name: string;
@@ -84,22 +84,22 @@ interface UploadFileOptions extends Callbacks<UploadFileSuccesssCallbackArgs, Co
   formData?: object
 }
 
-interface ConnectSocketSuccessCallbackArgs {
+export interface ConnectSocketSuccessCallbackArgs {
   errMsg: string;
   socketTaskId: number;
 }
-interface ConnectSocketOptions extends Callbacks<ConnectSocketSuccessCallbackArgs, CommonErrorArgs> {
+export interface ConnectSocketOptions extends Callbacks<ConnectSocketSuccessCallbackArgs, CommonErrorArgs> {
   url: string;
   header?: object;
   protocols: string[];
 }
 
-interface DownloadTask {
+export interface DownloadTask {
   abort: () => void;
   onProgress: (callback: { progress: number; totalBytesWritten: number; totalBytesExpectedToWrite: number }) => void;
 }
 
-interface RequestTask {
+export interface RequestTask {
   abort: () => void;
 }
 
@@ -112,15 +112,15 @@ enum SocketTaskReadyState {
   CLOSED = 3
 }
 
-interface SocketTaskSendOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
+export interface SocketTaskSendOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   data: string | ArrayBuffer;
 }
 
-interface SocketTaskCloseOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
+export interface SocketTaskCloseOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   code?: 1000 | 1001;
   reason?: string;
 }
-interface SocketTask {
+export interface SocketTask {
   readyState?: SocketTaskReadyState;
   send: (options: SocketTaskSendOptions) => void;
   close: (options: SocketTaskCloseOptions) => void;
@@ -146,25 +146,25 @@ interface SocketTask {
   }) => void) => void
 }
 
-interface ChooseImageSuccessCallbackArgs {
+export interface ChooseImageSuccessCallbackArgs {
   tempFilePaths: string[];
   tempFiles: { path: string; size: number }[];
 }
-interface ChooseImageOptions extends Callbacks<ChooseImageSuccessCallbackArgs, CommonErrorArgs> {
+export interface ChooseImageOptions extends Callbacks<ChooseImageSuccessCallbackArgs, CommonErrorArgs> {
   count?: number;
   sourceType?: ('album' | 'camera')[];
 }
 
-interface SaveImageOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
+export interface SaveImageOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   filePath: string;
 }
 
-interface PreviewImageOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
+export interface PreviewImageOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   urls: string[];
   current?: string;
 }
 
-interface GetImageInfoSuccessCallbackArgs {
+export interface GetImageInfoSuccessCallbackArgs {
   errMsg: string;
   width: number;
   height: number;
@@ -173,21 +173,21 @@ interface GetImageInfoSuccessCallbackArgs {
   orientation: 'up' | 'up-mirrored' | 'down' | 'down-mirrored' | 'left' | 'left-mirrored' | 'right' | 'right-mirrored';
 }
 
-interface GetImageInfoOptions extends Callbacks<GetImageInfoSuccessCallbackArgs, CommonErrorArgs> {
+export interface GetImageInfoOptions extends Callbacks<GetImageInfoSuccessCallbackArgs, CommonErrorArgs> {
   src: string;
 }
 
-interface CompressImageSuccessCallbackArgs {
+export interface CompressImageSuccessCallbackArgs {
   errMsg: string;
   tempFilePath: string;
 }
 
-interface CompressImageOptions extends Callbacks<CompressImageSuccessCallbackArgs, CommonErrorArgs> {
+export interface CompressImageOptions extends Callbacks<CompressImageSuccessCallbackArgs, CommonErrorArgs> {
   src: string;
   quality?: number;
 }
 
-interface RecorderManagerStartOptions {
+export interface RecorderManagerStartOptions {
   duration?: number;
   sampleRate?: number;
   numberOfChannels?: number;
@@ -195,7 +195,7 @@ interface RecorderManagerStartOptions {
   frameSize?: number;
   format?: string;
 }
-interface RecorderManager {
+export interface RecorderManager {
   pause: () => void;
   start: (options: RecorderManagerStartOptions) => void;
   resume: () => void;
@@ -209,7 +209,7 @@ interface RecorderManager {
   onFrameRecorded: (callback: (data: { isLastFrame: boolean; frameBuffer: Buffer }) => void) => void;
 }
 
-interface BackgroundAudioManager {
+export interface BackgroundAudioManager {
   src?: string;
   startTime?: number;
   title?: string;
@@ -244,7 +244,7 @@ interface BackgroundAudioManager {
   offTimeUpdate: (callback: (data: any) => void) => void;
 }
 
-interface InnerAudioContext {
+export interface InnerAudioContext {
   src: string;
   startTime?: number;
   autoplay?: boolean
@@ -284,7 +284,7 @@ interface InnerAudioContext {
   offSeeked: (callback: (data: any) => void) => void;
 }
 
-interface ChooseVideoSuccessCallbackArgs {
+export interface ChooseVideoSuccessCallbackArgs {
   errMsg: string;
   tempFilePath: string;
   duraction: number;
@@ -292,18 +292,18 @@ interface ChooseVideoSuccessCallbackArgs {
   width: number;
   height: number;
 }
-interface ChooseVideoOptions extends Callbacks<ChooseVideoSuccessCallbackArgs, CommonErrorArgs> {
+export interface ChooseVideoOptions extends Callbacks<ChooseVideoSuccessCallbackArgs, CommonErrorArgs> {
   sourceType?: ('album' | 'camera')[];
   compressed?: boolean;
   camera?: 'back' | 'front';
   maxDuration?: number;
 }
 
-interface SaveVideoOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
+export interface SaveVideoOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   filePath: string;
 }
 
-interface VideoContext {
+export interface VideoContext {
   play: () => void;
   pause: () => void;
   stop: () => void;
@@ -312,7 +312,7 @@ interface VideoContext {
   exitFullScreen: () => void;
 }
 
-interface LivePlayerContext {
+export interface LivePlayerContext {
   play: () => void;
   stop: () => void;
   mute: () => void;
@@ -321,49 +321,49 @@ interface LivePlayerContext {
   exitFullScreen: () => void;
 }
 
-interface PreloadVideoOptions {
+export interface PreloadVideoOptions {
   src: string;
   size?: number;
 }
 
-interface PreloadVideoTask {
+export interface PreloadVideoTask {
   abort: () => void;
 }
 
-interface CameraFrameListener {
+export interface CameraFrameListener {
   start: (options: Callbacks) => void;
   stop: (options: Callbacks) => void;
 }
 
-interface CameraContextOnCameraFrameCallbackArgs {
+export interface CameraContextOnCameraFrameCallbackArgs {
   width: number;
   height: number;
   data: ArrayBuffer;
   timestamp: number
 }
 
-interface CameraContextSetZoomSuccessCallbackArgs {
+export interface CameraContextSetZoomSuccessCallbackArgs {
   width: number;
   errMsg: string;
   height: number;
   data: ArrayBuffer;
 }
 
-interface CameraContextSetZoomFailCallbackArgs extends CommonErrorArgs {
+export interface CameraContextSetZoomFailCallbackArgs extends CommonErrorArgs {
   errCode: number;
 }
-interface CameraContextSetZoomOptions extends Callbacks<CameraContextSetZoomSuccessCallbackArgs, CameraContextSetZoomFailCallbackArgs>{
+export interface CameraContextSetZoomOptions extends Callbacks<CameraContextSetZoomSuccessCallbackArgs, CameraContextSetZoomFailCallbackArgs>{
   zoom: number;
 }
-interface CameraContext {
+export interface CameraContext {
   onCameraFrame: (callback: (args: CameraContextOnCameraFrameCallbackArgs) => void) => CameraFrameListener;
   setZoom: (options: CameraContextSetZoomOptions) => void;
 }
 
-interface EffectCameraPaintToFailCallbackArgs extends CommonErrorArgs {
+export interface EffectCameraPaintToFailCallbackArgs extends CommonErrorArgs {
   errNo: number;
 }
-interface EffectCameraPaintToOptions extends Callbacks<CommonErrorArgs, EffectCameraPaintToFailCallbackArgs>{
+export interface EffectCameraPaintToOptions extends Callbacks<CommonErrorArgs, EffectCameraPaintToFailCallbackArgs>{
   canvas: any;
   dx?: number;
   dy?: number
@@ -371,12 +371,12 @@ interface EffectCameraPaintToOptions extends Callbacks<CommonErrorArgs, EffectCa
   sy?: number;
 }
 
-interface EffectCameraVideo {
+export interface EffectCameraVideo {
   width: number;
   height: number;
 }
 
-interface EffectCameraStream {
+export interface EffectCameraStream {
   request: (options: { orientation: 'back' | 'front' }) => void;
   play: () => void;
   stop: () => void;
@@ -392,45 +392,45 @@ interface EffectCameraStream {
   dispose: () => void;
 }
 
-interface Coordinates {
+export interface Coordinates {
   longtitude: number;
   latitude: number;
 }
 
 
-interface MapContextGetCenterLocationOptions extends Callbacks<Coordinates, CommonErrorArgs> {}
+export interface MapContextGetCenterLocationOptions extends Callbacks<Coordinates, CommonErrorArgs> {}
 
-interface MapContextGetRegionSuccessCallbackArgs {
+export interface MapContextGetRegionSuccessCallbackArgs {
   southwest: Coordinates;
   northeast: Coordinates;
 }
 
-interface MapContextGetRegionOptions extends Callbacks<MapContextGetRegionSuccessCallbackArgs, CommonErrorArgs> {}
+export interface MapContextGetRegionOptions extends Callbacks<MapContextGetRegionSuccessCallbackArgs, CommonErrorArgs> {}
 
-interface MapContextGetScaleSuccessCallbackArgs {
+export interface MapContextGetScaleSuccessCallbackArgs {
   scale: number;
 }
-interface MapContextGetScaleOptions extends Callbacks<MapContextGetScaleSuccessCallbackArgs, CommonErrorArgs> {}
+export interface MapContextGetScaleOptions extends Callbacks<MapContextGetScaleSuccessCallbackArgs, CommonErrorArgs> {}
 
-interface MapContextMoveToLocationOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs>, Coordinates {}
+export interface MapContextMoveToLocationOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs>, Coordinates {}
 
-interface MapContextGetRotateSuccessCallbackArgs {
+export interface MapContextGetRotateSuccessCallbackArgs {
   errMsg: string;
   rotate: number;
 }
-interface MapContextGetRotateOptions extends Callbacks<MapContextGetRotateSuccessCallbackArgs, CommonErrorArgs> {}
-interface MapContextIncludePointsOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
+export interface MapContextGetRotateOptions extends Callbacks<MapContextGetRotateSuccessCallbackArgs, CommonErrorArgs> {}
+export interface MapContextIncludePointsOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   points: Coordinates[];
   padding?: [number, number, number, number];
 }
 
-interface MapContextGetSkewSuccessCallbackArgs {
+export interface MapContextGetSkewSuccessCallbackArgs {
   errMsg: string;
   skew: number;
 }
-interface MapContextGetSkewOptions extends Callbacks<MapContextGetSkewSuccessCallbackArgs, CommonErrorArgs> {}
+export interface MapContextGetSkewOptions extends Callbacks<MapContextGetSkewSuccessCallbackArgs, CommonErrorArgs> {}
 
-interface MapContextTranslateMarkerOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
+export interface MapContextTranslateMarkerOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   markerId: number;
   destination: Coordinates;
   autoRotate?: boolean;
@@ -440,7 +440,7 @@ interface MapContextTranslateMarkerOptions extends Callbacks<CommonErrorArgs, Co
   animationEnd?: () => void;
 }
 
-interface MapContextMoveAlongOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
+export interface MapContextMoveAlongOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   markerId: number;
   path: Coordinates[];
   autoRotate?: boolean;
@@ -448,25 +448,25 @@ interface MapContextMoveAlongOptions extends Callbacks<CommonErrorArgs, CommonEr
   animationEnd?: () => void;
 }
 
-interface MapContextMapToScreenSuccessCallbackArgs {
+export interface MapContextMapToScreenSuccessCallbackArgs {
   errMsg: string;
   x: number;
   y: number;
 }
 
-interface MapContextMapToScreenOptions extends Callbacks<MapContextMapToScreenSuccessCallbackArgs, CommonErrorArgs>, Coordinates {}
+export interface MapContextMapToScreenOptions extends Callbacks<MapContextMapToScreenSuccessCallbackArgs, CommonErrorArgs>, Coordinates {}
 
-interface MapContextScreenToMapSuccessCallbackArgs {
+export interface MapContextScreenToMapSuccessCallbackArgs {
   errMsg: string;
   longtitude: number;
   latitude: number;
 }
-interface MapContextScreenToMapOptions extends Callbacks<MapContextScreenToMapSuccessCallbackArgs, CommonErrorArgs> {
+export interface MapContextScreenToMapOptions extends Callbacks<MapContextScreenToMapSuccessCallbackArgs, CommonErrorArgs> {
   x: number;
   y: number;
 }
 
-interface MapContext {
+export interface MapContext {
   getCenterLocation: (options: MapContextGetCenterLocationOptions) => void;
   getRegion: (options: MapContextGetRegionOptions) => void;
   getScale: (options: MapContextGetScaleOptions) => void;
@@ -480,41 +480,41 @@ interface MapContext {
   screenToMap: (options: MapContextScreenToMapOptions) => void;
 }
 
-interface SaveFileSuccessCallbackArgs {
+export interface SaveFileSuccessCallbackArgs {
   errMsg: string;
   savedFilePath: string;
 }
 
-interface SaveFileFailCallbackArgs extends CommonErrorArgs {
+export interface SaveFileFailCallbackArgs extends CommonErrorArgs {
   errNo: number;
 }
 
-interface SaveFileOptions extends Callbacks<SaveFileSuccessCallbackArgs, SaveFileFailCallbackArgs> {
+export interface SaveFileOptions extends Callbacks<SaveFileSuccessCallbackArgs, SaveFileFailCallbackArgs> {
   tempFilePath: string;
   filePath?: string;
 }
 
-interface GetFileInfoSuccessCallbackArgs {
+export interface GetFileInfoSuccessCallbackArgs {
   size: number;
 }
 
 type GetFileInfoFailCallbackArgs = SaveFileFailCallbackArgs;
-interface GetFileInfoOptions extends Callbacks<GetFileInfoSuccessCallbackArgs, GetFileInfoFailCallbackArgs> {
+export interface GetFileInfoOptions extends Callbacks<GetFileInfoSuccessCallbackArgs, GetFileInfoFailCallbackArgs> {
   filePath: string;
 }
 
-interface FileItem {
+export interface FileItem {
   filePath: string;
   size: number;
   createTime: number;
 }
 
-interface GetSavedFileListSuccessCallbackArgs {
+export interface GetSavedFileListSuccessCallbackArgs {
   fileList: FileItem[]
 }
-interface GetSavedFileListOptions extends Callbacks<GetSavedFileListSuccessCallbackArgs, CommonErrorArgs> {}
+export interface GetSavedFileListOptions extends Callbacks<GetSavedFileListSuccessCallbackArgs, CommonErrorArgs> {}
 
-interface OpenDocumentOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
+export interface OpenDocumentOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   filePath: string;
   fileType?: string;
   fileName?: string
@@ -522,20 +522,20 @@ interface OpenDocumentOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs
 
 type RemoveSavedFileFailCallbackArgs = SaveFileFailCallbackArgs;
 
-interface RemoveSavedFileOptions extends Callbacks<CommonErrorArgs, RemoveSavedFileFailCallbackArgs> {
+export interface RemoveSavedFileOptions extends Callbacks<CommonErrorArgs, RemoveSavedFileFailCallbackArgs> {
   filePath: string;
 }
 
 type FileSystemManagerAccessFailCallbackArgs =  SaveFileFailCallbackArgs;
 
-interface FileSystemManagerSaveFileSuccessCallbackArgs {
+export interface FileSystemManagerSaveFileSuccessCallbackArgs {
   errMsg: string;
   savedFilePath: string;
 }
 
 type FileSystemManagerSaveFileFailCallbackArgs =  SaveFileFailCallbackArgs;
 
-interface FileSystemManagerSaveFileOptions extends Callbacks<FileSystemManagerSaveFileSuccessCallbackArgs, FileSystemManagerSaveFileFailCallbackArgs> {
+export interface FileSystemManagerSaveFileOptions extends Callbacks<FileSystemManagerSaveFileSuccessCallbackArgs, FileSystemManagerSaveFileFailCallbackArgs> {
   tempFilePath: string;
   filePath?: string;
 }
@@ -544,44 +544,44 @@ type FileSystemManagerCopyFileFailCallbackArgs =  SaveFileFailCallbackArgs;
 
 type CommonExtendsErrorArgs = SaveFileFailCallbackArgs;
 
-interface FileSystemManagerCopyFileOptions extends Callbacks<CommonErrorArgs, FileSystemManagerCopyFileFailCallbackArgs> {
+export interface FileSystemManagerCopyFileOptions extends Callbacks<CommonErrorArgs, FileSystemManagerCopyFileFailCallbackArgs> {
   srcPath: string;
   destPath: string;
 }
 
-interface FileSystemManagerMakedirOptions extends Callbacks<CommonErrorArgs, CommonExtendsErrorArgs> {
+export interface FileSystemManagerMakedirOptions extends Callbacks<CommonErrorArgs, CommonExtendsErrorArgs> {
   dirPath: string;
 }
 
-interface FileSystemManagerSuccessCallbackArgs {
+export interface FileSystemManagerSuccessCallbackArgs {
   errMsg: string;
   files: string[];
 }
-interface FileSystemManagerReaddirOptions extends Callbacks<FileSystemManagerSuccessCallbackArgs, CommonExtendsErrorArgs> {
+export interface FileSystemManagerReaddirOptions extends Callbacks<FileSystemManagerSuccessCallbackArgs, CommonExtendsErrorArgs> {
   dirPath: string;
 }
 
 type Encoding = 'ascii' | 'base64' | 'binary' | 'hex' | 'ucs2' | 'ucs-2' | 'utf16le' | 'utf-16le' | 'utf-8' | 'utf8' | 'latin1';
 
-interface FileSystemManagerReadFileSuccessCallbackArgs {
+export interface FileSystemManagerReadFileSuccessCallbackArgs {
   data: string | ArrayBuffer;
 }
 
-interface FileSystemManagerReadFileOptions extends Callbacks<FileSystemManagerReadFileSuccessCallbackArgs, CommonExtendsErrorArgs> {
+export interface FileSystemManagerReadFileOptions extends Callbacks<FileSystemManagerReadFileSuccessCallbackArgs, CommonExtendsErrorArgs> {
   filePath: string;
   encoding?: Encoding;
 }
 
-interface FileSystemManagerRenameOptions extends Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>{
+export interface FileSystemManagerRenameOptions extends Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>{
   oldPath: string;
   newPath: string;
 }
 
-interface FileSystemManagerRmdirOptions extends Callbacks<CommonErrorArgs, CommonExtendsErrorArgs> {
+export interface FileSystemManagerRmdirOptions extends Callbacks<CommonErrorArgs, CommonExtendsErrorArgs> {
   dirPath: string;
 }
 
-interface Stats {
+export interface Stats {
   mode: string;
   size: number;
   lastAccessedTime: number;
@@ -590,29 +590,29 @@ interface Stats {
   isFile: () => boolean;
 }
 
-interface FileSystemManagerStatSuccessCallbackArgs {
+export interface FileSystemManagerStatSuccessCallbackArgs {
   errMsg: string;
   stat: Stats;
 }
-interface FileSystemManagerStatOptions extends Callbacks<FileSystemManagerStatSuccessCallbackArgs, CommonExtendsErrorArgs> {
+export interface FileSystemManagerStatOptions extends Callbacks<FileSystemManagerStatSuccessCallbackArgs, CommonExtendsErrorArgs> {
   path: string;
 }
 
-interface FileSystemManagerUnlinkOptions extends Callbacks<CommonErrorArgs, CommonExtendsErrorArgs> {
+export interface FileSystemManagerUnlinkOptions extends Callbacks<CommonErrorArgs, CommonExtendsErrorArgs> {
   filePath: string;
 }
 
-interface FileSystemManagerUnzipOptions extends Callbacks<CommonErrorArgs, CommonExtendsErrorArgs> {
+export interface FileSystemManagerUnzipOptions extends Callbacks<CommonErrorArgs, CommonExtendsErrorArgs> {
   zipFilePath: string;
   targetPath: string;
 }
 
-interface FileSystemManagerWriteFileOptions extends Callbacks<CommonErrorArgs, CommonExtendsErrorArgs> {
+export interface FileSystemManagerWriteFileOptions extends Callbacks<CommonErrorArgs, CommonExtendsErrorArgs> {
   filePath: string;
   data: string | ArrayBuffer;
   encoding?: Encoding
 }
-interface FileSystemManager {
+export interface FileSystemManager {
   accessSync: (path: string) => void;
   access: (options: Callbacks<CommonErrorArgs, FileSystemManagerAccessFailCallbackArgs>) => void;
   saveFileSync: (tempFilePath: string, filePath?: string) => string;
@@ -641,7 +641,7 @@ interface FileSystemManager {
   writeFile: (options: FileSystemManagerWriteFileOptions) => void;
 }
 
-interface EnvInfo {
+export interface EnvInfo {
   microapp: {
     mpVersion: string;
     envType: 'production' | 'development' | 'preview'
@@ -652,19 +652,19 @@ interface EnvInfo {
   }
 }
 
-interface LoginSuccessCallbackArgs {
+export interface LoginSuccessCallbackArgs {
   errMsg: string;
   code: string;
   anonymousCode: string;
   isLogin: boolean;
 }
-interface LoginOptions extends Callbacks<LoginSuccessCallbackArgs, CommonErrorArgs> {
+export interface LoginOptions extends Callbacks<LoginSuccessCallbackArgs, CommonErrorArgs> {
   force?: boolean;
 }
 
-interface CheckSessionOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {}
+export interface CheckSessionOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {}
 
-interface UserInfo {
+export interface UserInfo {
   avatarUrl: string;
   nickName: string;
   gender: 0 | 1 | 2;
@@ -674,7 +674,7 @@ interface UserInfo {
   language: string;
 }
 
-interface GetUserInfoSuccessCallbackArgs {
+export interface GetUserInfoSuccessCallbackArgs {
   errMsg: string;
   rawData: string
   userInfo: UserInfo;
@@ -683,19 +683,19 @@ interface GetUserInfoSuccessCallbackArgs {
   iv: string;
 }
 
-interface GetUserInfoOptions extends Callbacks<GetUserInfoSuccessCallbackArgs, CommonErrorArgs> {
+export interface GetUserInfoOptions extends Callbacks<GetUserInfoSuccessCallbackArgs, CommonErrorArgs> {
   withCredentials?: boolean;
 }
 
-interface GetUserInfoProfileOptions extends Callbacks<GetUserInfoSuccessCallbackArgs, CommonExtendsErrorArgs> {
+export interface GetUserInfoProfileOptions extends Callbacks<GetUserInfoSuccessCallbackArgs, CommonExtendsErrorArgs> {
 
 }
 
-interface CreateRewardedVideoAdOptions {
+export interface CreateRewardedVideoAdOptions {
   adUnitId: string;
 }
 
-interface RewardedVideoAd {
+export interface RewardedVideoAd {
   show: () => void;
   onLoad: (callback: (data: any) => void) => void;
   offLoad: (callback: (data: any) => void) => void;
@@ -706,11 +706,11 @@ interface RewardedVideoAd {
   offClose: (callback: (data: any) => void) => void;
 }
 
-interface InterstitialAd extends RewardedVideoAd {
+export interface InterstitialAd extends RewardedVideoAd {
   ddestroy: () => void;
 }
 
-interface PayOptions {
+export interface PayOptions {
   orderInfo: {
     order_id: string;
     order_token: string;
@@ -721,17 +721,17 @@ interface PayOptions {
   fail?: (args: { errMsg: string }) => void;
 }
 
-interface NavigateToMiniProgramOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
+export interface NavigateToMiniProgramOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   appId: string;
   path?: string;
   extraData?: object;
   envVersion?: string;
 }
-interface NavigateBackMiniProgramOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
+export interface NavigateBackMiniProgramOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   envVersion?: string;
 }
 
-interface ChooseAddressesSuccessCallbackArgs {
+export interface ChooseAddressesSuccessCallbackArgs {
   errMsg: string;
   userName: string;
   provinceName: string;
@@ -741,9 +741,9 @@ interface ChooseAddressesSuccessCallbackArgs {
   telNumber: string;
 }
 
-interface ChooseAddressesOptions extends Callbacks<ChooseAddressesSuccessCallbackArgs, CommonErrorArgs> {}
+export interface ChooseAddressesOptions extends Callbacks<ChooseAddressesSuccessCallbackArgs, CommonErrorArgs> {}
 
-interface GetSettingSuccessCallbackArgs {
+export interface GetSettingSuccessCallbackArgs {
   errMsg: string;
   authSetting: {
     'scope.userInfo'?: boolean;
@@ -754,100 +754,100 @@ interface GetSettingSuccessCallbackArgs {
     'scope.camera'?: boolean;
   }
 }
-interface GetSettingOptions extends Callbacks<GetSettingSuccessCallbackArgs, CommonErrorArgs> {}
+export interface GetSettingOptions extends Callbacks<GetSettingSuccessCallbackArgs, CommonErrorArgs> {}
 type OpenSettingsOptions = GetSettingOptions;
 
 type Scope = 'scope.userInfo' | 'scope.userLocation' | 'scope.address' | 'scope.record' | 'scope.album' | 'scope.camera';
 
-interface AuthorizeOptions extends Callbacks {
+export interface AuthorizeOptions extends Callbacks {
   scope: Scope
 }
 
-interface ShowDouyinOpenAuthSuccessCallbackArgs {
+export interface ShowDouyinOpenAuthSuccessCallbackArgs {
   errMsg: string;
   ticket: string;
   grantPermissions: string[];
 }
 
-interface ShowDouyinOpenAuthOptions extends Callbacks<ShowDouyinOpenAuthSuccessCallbackArgs, CommonExtendsErrorArgs> {
+export interface ShowDouyinOpenAuthOptions extends Callbacks<ShowDouyinOpenAuthSuccessCallbackArgs, CommonExtendsErrorArgs> {
   scopes: object;
 }
 
 
-interface CanRateAwemeOrdersOptions extends Callbacks<{ result: string[]; errMsg: string; }, CommonExtendsErrorArgs> {
+export interface CanRateAwemeOrdersOptions extends Callbacks<{ result: string[]; errMsg: string; }, CommonExtendsErrorArgs> {
   orderIds: string[]
 }
 
-interface RateAwemeOrderOptions extends Callbacks<{ result: boolean; errMsg: string; }> {
+export interface RateAwemeOrderOptions extends Callbacks<{ result: boolean; errMsg: string; }> {
   orderId: string
 }
 
-interface RequestSubscribeMessageSuccessCallbackArgs {
+export interface RequestSubscribeMessageSuccessCallbackArgs {
   errMsg: string;
   TEMPLATE_ID: 'accept' | 'reject' | 'ban' | 'fail'
 }
-interface RequestSubscribeMessageOptions extends Callbacks<RequestSubscribeMessageSuccessCallbackArgs, CommonExtendsErrorArgs> {
+export interface RequestSubscribeMessageOptions extends Callbacks<RequestSubscribeMessageSuccessCallbackArgs, CommonExtendsErrorArgs> {
   tmplIds: string[];
 }
 
-interface OpenEcGoodOptions extends Callbacks<CommonErrorArgs, CommonExtendsErrorArgs> {
+export interface OpenEcGoodOptions extends Callbacks<CommonErrorArgs, CommonExtendsErrorArgs> {
   promotionId: string;
 }
 
-interface OpenEcOrderDetailOptions extends Callbacks<CommonErrorArgs, CommonExtendsErrorArgs> {
+export interface OpenEcOrderDetailOptions extends Callbacks<CommonErrorArgs, CommonExtendsErrorArgs> {
   orderId: string;
   shopId: string;
 }
 
-interface OpenEcImOptions extends Callbacks<CommonErrorArgs, CommonExtendsErrorArgs> {
+export interface OpenEcImOptions extends Callbacks<CommonErrorArgs, CommonExtendsErrorArgs> {
   shopId: string;
   orderId?: string;
   promotionId?: string
 }
 
-interface OpenEcChatOptions extends Callbacks<CommonErrorArgs, CommonExtendsErrorArgs> {
+export interface OpenEcChatOptions extends Callbacks<CommonErrorArgs, CommonExtendsErrorArgs> {
   shopId: string;
 }
-interface OpenWebcastRoomOptions extends Callbacks<CommonErrorArgs, CommonExtendsErrorArgs> {
+export interface OpenWebcastRoomOptions extends Callbacks<CommonErrorArgs, CommonExtendsErrorArgs> {
   streamerId?: string;
 }
-interface OpenDouyinProfileOptions extends Callbacks<CommonErrorArgs, CommonExtendsErrorArgs> {
+export interface OpenDouyinProfileOptions extends Callbacks<CommonErrorArgs, CommonExtendsErrorArgs> {
   userId: string;
   shopId: string;
 }
-interface OpenEcCouponOptions extends Callbacks<CommonErrorArgs, CommonExtendsErrorArgs> {
+export interface OpenEcCouponOptions extends Callbacks<CommonErrorArgs, CommonExtendsErrorArgs> {
   couponId: string;
   shopId: string;
 }
 
-interface PerformanceEntry {
+export interface PerformanceEntry {
   name: string;
   entryType: string;
   startTime: number;
   duration: number;
 }
 
-interface GetStorageOptions extends Callbacks<{ data: any }, any> {
+export interface GetStorageOptions extends Callbacks<{ data: any }, any> {
   key: string;
 }
-interface SetStorageOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
+export interface SetStorageOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   key: string;
   data: any;
 }
-interface RemoveStorageOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
+export interface RemoveStorageOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   key: string;
 }
 
-interface StorageInfo {
+export interface StorageInfo {
   keys: string[];
   currentSize: number;
   limitSize: number;
 }
-interface GetStorageInfoOptions extends Callbacks<StorageInfo & CommonErrorArgs, CommonErrorArgs> {
+export interface GetStorageInfoOptions extends Callbacks<StorageInfo & CommonErrorArgs, CommonErrorArgs> {
 
 }
 
-interface GetLocationSuccessCallbackArgs {
+export interface GetLocationSuccessCallbackArgs {
   errMsg: string;
   latitude: number;
   longtitude: number;
@@ -858,11 +858,11 @@ interface GetLocationSuccessCallbackArgs {
   speed: number;
   city: string;
 }
-interface GetLocationOptions extends Callbacks<GetLocationSuccessCallbackArgs, CommonErrorArgs> {
+export interface GetLocationOptions extends Callbacks<GetLocationSuccessCallbackArgs, CommonErrorArgs> {
   type?: 'wgs84' | 'gcj02'
 }
 
-interface ChooseLocationSuccessCallbackArgs {
+export interface ChooseLocationSuccessCallbackArgs {
   errMsg: string;
   name: string;
   address: string;
@@ -870,12 +870,12 @@ interface ChooseLocationSuccessCallbackArgs {
   longtitude: number;
 }
 
-interface ChooseLocationOptions extends Callbacks<ChooseLocationSuccessCallbackArgs, CommonErrorArgs> {
+export interface ChooseLocationOptions extends Callbacks<ChooseLocationSuccessCallbackArgs, CommonErrorArgs> {
   latitude: number;
   longtitude: number;
 }
 
-interface OpenLocationOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
+export interface OpenLocationOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   latitude: number
   longtitude: number;
   scale: number;
@@ -891,7 +891,7 @@ type WifiInfo = {
   signalStrength: number;
 }
 
-interface SafeArea {
+export interface SafeArea {
   left: number;
   right: number;
   top: number;
@@ -899,7 +899,7 @@ interface SafeArea {
   width: number;
   height: number;
 }
-interface SystemInfo {
+export interface SystemInfo {
   system: string;
   platform: string;
   brand: string;
@@ -916,17 +916,17 @@ interface SystemInfo {
   safeArea: SafeArea;
 }
 
-interface GetSystemInfoOptions extends Callbacks<SystemInfo, CommonErrorArgs> {
+export interface GetSystemInfoOptions extends Callbacks<SystemInfo, CommonErrorArgs> {
 
 }
-interface MakePhoneCallOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
+export interface MakePhoneCallOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   phoneNumber: string;
 }
-interface SetClipboardDataOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
+export interface SetClipboardDataOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   data: string;
 }
 
-interface CanvasContext {
+export interface CanvasContext {
   beginPath(): void;
   clip(): void;
   draw(reserve?: boolean, callback?: () => void): void;
@@ -966,17 +966,17 @@ interface CanvasContext {
   closePath(): void;
 }
 
-interface OffscreenCanvas {
+export interface OffscreenCanvas {
   getContext(type: '2d' | 'webgl'): CanvasRenderingContext2D | WebGLRenderingContext;
 }
 
-interface ShowToastOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
+export interface ShowToastOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   title: string;
   icon?: 'success' | 'loading' | 'none' | 'fail';
   duration?: number;
 }
 
-interface ShowModalOptions extends Callbacks<{ confirm: boolean; cancel: boolean; } & CommonErrorArgs, CommonErrorArgs> {
+export interface ShowModalOptions extends Callbacks<{ confirm: boolean; cancel: boolean; } & CommonErrorArgs, CommonErrorArgs> {
   title?: string;
   content?: string;
   confirmText?: string;
@@ -984,9 +984,9 @@ interface ShowModalOptions extends Callbacks<{ confirm: boolean; cancel: boolean
   cancelText?: string;
 }
 
-interface ShowFavoriteGuideOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> { type?: string; content?: string; position?: string }
+export interface ShowFavoriteGuideOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> { type?: string; content?: string; position?: string }
 
-interface Animation {
+export interface Animation {
   opacity: number;
   backgroundColor: string;
   width: number;
@@ -997,28 +997,28 @@ interface Animation {
   right: number;
 }
 
-interface CreateAnimationOptions {
+export interface CreateAnimationOptions {
   duration?: number;
   timingFunction?: string;
   delay?: number;
   transformOrigin?: string;
 }
 
-interface SetTabBarStyleOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
+export interface SetTabBarStyleOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   color?: string;
   selectedColor?: string;
   backgroundColor?: string;
   borderStyle?: 'black' | 'white';
 }
 
-interface SetTabBarItemOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
+export interface SetTabBarItemOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   index: number;
   text?: string;
   iconPath?: string;
   selectedIconPath?: string;
 }
 
-interface AlgorithmManager {
+export interface AlgorithmManager {
   doExecute(options: {
     input: ArrayBuffer;
     width: number;
@@ -1028,23 +1028,23 @@ interface AlgorithmManager {
     fail?: (args: { errMsg: string }) => void
   }): void;
 }
-interface GetAlgorithmManagerOptions extends Callbacks<{ algorithmManager: AlgorithmManager } & CommonErrorArgs, CommonErrorArgs> {
+export interface GetAlgorithmManagerOptions extends Callbacks<{ algorithmManager: AlgorithmManager } & CommonErrorArgs, CommonErrorArgs> {
   width: number;
   height: number;
   useSyncMode: boolean;
   requirements: ['skeleton'] | ['face106'] | ['nail'] | ['foot'] | ['trackingAr'];
 }
 
-interface StickerProcessor {
+export interface StickerProcessor {
   paintToTexture(inputTexture: any, outputTexture: any): void;
 }
-interface StickerManager {
+export interface StickerManager {
   onLoad: (callback: (processor: StickerProcessor) => void) => void;
   onError: (callback: (res: { errMsg: string }) => void) => void;
   load(): void;
 }
 
-interface DataConfig {
+export interface DataConfig {
   data: ArrayBuffer;
   width: number;
   height: number;
@@ -1054,37 +1054,37 @@ interface DataConfig {
   dataFormat: 'NCHW' | 'NHWC';
 }
 
-interface InputConfig {
+export interface InputConfig {
   inputChannel: number;
   weight: number;
 }
-interface SingleChannelConvertConfig {
+export interface SingleChannelConvertConfig {
   outputChannel: number;
   normalizeFactor: number;
   offset: number;
   inputConfig: InputConfig[];
 }
-interface BytennEngineInferSyncOptions extends Callbacks {
+export interface BytennEngineInferSyncOptions extends Callbacks {
   dataConfig: DataConfig;
   converConfig: SingleChannelConvertConfig[];
 }
 
-interface BytennEngine {
+export interface BytennEngine {
   inferSync(options: BytennEngineInferSyncOptions): any;
 }
 
-interface BytennEngineContext {
+export interface BytennEngineContext {
   load(): void;
   onError(callback: () => void): void;
   onLoad(callback: (engine: BytennEngine) => void): void;
 }
 
-interface EngineConfig {
+export interface EngineConfig {
   numThread: number;
   backend: 'auto' | 'cup' | 'gpu';
 }
 
-interface NodesRefBoundingClientRectCallbackArgs {
+export interface NodesRefBoundingClientRectCallbackArgs {
   id: string;
   dataset: object;
   left: number;
@@ -1095,18 +1095,18 @@ interface NodesRefBoundingClientRectCallbackArgs {
   height: number;
 }
 
-interface NodesRefScrollOffsetCallbackArgs {
+export interface NodesRefScrollOffsetCallbackArgs {
   id: string;
   dataset: object;
   scrollLeft: number;
   scrollTop: number;
 }
-interface NodesRefFieldsCallbackArgs extends NodesRefBoundingClientRectCallbackArgs {
+export interface NodesRefFieldsCallbackArgs extends NodesRefBoundingClientRectCallbackArgs {
   scrollLeft: number;
   scrollTop: number;
 }
 
-interface NodesRefFields {
+export interface NodesRefFields {
   id?: boolean;
   dataset?: boolean;
   rect?: boolean;
@@ -1115,14 +1115,14 @@ interface NodesRefFields {
   node?: boolean;
 }
 
-interface NodesRef {
+export interface NodesRef {
   boundingClientRect(callback: (res: NodesRefBoundingClientRectCallbackArgs) => void): SelectorQuery;
   scrollOffset(callback: (res: NodesRefScrollOffsetCallbackArgs) => void): SelectorQuery;
   fields(fields: NodesRefFields, callback?: (res: NodesRefFieldsCallbackArgs) => void): SelectorQuery;
   node(callback: (res: { node: object }) => void): SelectorQuery;
 }
 
-interface SelectorQuery {
+export interface SelectorQuery {
   in(component: any): SelectorQuery;
   select(selector: string): NodesRef;
   selectAll(selector: string): NodesRef;
@@ -1130,20 +1130,20 @@ interface SelectorQuery {
   exec(callback: (arr: any[]) => void): NodesRef;
 }
 
-interface CreateIntersectionObserverOptions {
+export interface CreateIntersectionObserverOptions {
   thresholds?: number[];
   initialRatio?: number;
   observeAll?: boolean;
 }
 
-interface IntersectionObserverMargins {
+export interface IntersectionObserverMargins {
   left?: number;
   right?: number;
   top?: number;
   bottom?: number;
 }
 
-interface IntersectionObserverCallbackArgs {
+export interface IntersectionObserverCallbackArgs {
   id:	string;
   dataset:	object;
   intersectionRatio:	number;
@@ -1153,7 +1153,7 @@ interface IntersectionObserverCallbackArgs {
   time:	number;
 }
 
-interface IntersectionRect {
+export interface IntersectionRect {
   left: number;
   right: number;
   top: number;
@@ -1162,20 +1162,20 @@ interface IntersectionRect {
   height: number;
 }
 
-interface RelativeRect {
+export interface RelativeRect {
   left: number;
   right: number;
   top: number;
   bottom: number;
 }
-interface IntersectionObserver {
+export interface IntersectionObserver {
   relativeTo(selector: string, margins?: IntersectionObserverMargins): IntersectionObserver;
   relativeToViewport(margins?: IntersectionObserverMargins): IntersectionObserver;
   observer(targetSelector: string, callback: (res: IntersectionObserverCallbackArgs) => void): void;
   disconnect(): void;
 }
 
-interface LiveReportContextOrderConfirmPageShowOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
+export interface LiveReportContextOrderConfirmPageShowOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   productId: string;
   productName: string;
   shopId: string;
@@ -1187,22 +1187,22 @@ interface LiveReportContextOrderConfirmPageShowOptions extends Callbacks<CommonE
   remark: string;
 }
 
-interface LiveReportContextProductDetailsShowOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
+export interface LiveReportContextProductDetailsShowOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   productId: string;
   productName: string;
   shopId: string;
   shopName: string;
 }
 
-interface LiveUserInfo {
+export interface LiveUserInfo {
   openUID: string;
   secNickname: string;
   secAvatarURL: string;
   role: string;
 }
 
-interface GetLiveUserInfoOptions extends Callbacks<{ userInfo: LiveUserInfo } & CommonErrorArgs, CommonExtendsErrorArgs> {}
-interface LiveReportContext {
+export interface GetLiveUserInfoOptions extends Callbacks<{ userInfo: LiveUserInfo } & CommonErrorArgs, CommonExtendsErrorArgs> {}
+export interface LiveReportContext {
   orderConfirmPageShow(options: LiveReportContextOrderConfirmPageShowOptions): void;
   orderSubmit(options: LiveReportContextOrderConfirmPageShowOptions): void;
   productDetailsShow(options: LiveReportContextProductDetailsShowOptions): void;
@@ -1211,18 +1211,18 @@ interface LiveReportContext {
   shelfShow(options: { showFrom: number } & LiveReportContextProductDetailsShowOptions): void;
 }
 
-interface FollowInfo {
+export interface FollowInfo {
   openUID: string;
   secNickname: string;
   secAvatarURL: string;
   action: number;
   timestamp: number;
 }
-interface onReceiveAudiencesFollowActionCallbackArgs {
+export interface onReceiveAudiencesFollowActionCallbackArgs {
   followInfoList: FollowInfo[];
 }
 
-interface Comment {
+export interface Comment {
   openUID: string;
   secNickname: string;
   secAvatarURL: string;
@@ -1230,7 +1230,7 @@ interface Comment {
   timestamp: number;
 }
 
-interface OnReceiveSpecifiedCommentOptions {
+export interface OnReceiveSpecifiedCommentOptions {
   commnetList: Comment[];
 }
 
