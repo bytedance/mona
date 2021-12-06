@@ -11,7 +11,7 @@ const {
   unstable_now: now,
 } = scheduler;
 
-const emptyObject = {};
+// const emptyObject = {};
 // const emptyFunc = function () {};
 // TODO: android低版本兼容问题，尽量不要引入polyfill
 
