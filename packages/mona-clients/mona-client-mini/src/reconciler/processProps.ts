@@ -1,6 +1,6 @@
 import { CALLBACK_SYMBOL } from '../utils/constants';
 import { baseComponentPropsMap } from '../components/prop';
-import { isEventName, isObject, warn } from '../utils/utils';
+import { isFunction, isObject, warn } from '../utils/utils';
 import ServerElement from './ServerElement';
 import { plainStyle } from '../utils/transformStyle';
 
@@ -22,24 +22,26 @@ const filterPropsMap: Record<string, boolean> = {
 };
 
 export function processProps(props: Record<string, any>, node: ServerElement) {
-  let key: string;
+  let propKey: string;
   let cbKey: string;
   const newProps: Record<string, any> = {};
-  for (key in props) {
-    if (filterPropsMap[key]) {
-    } else if (isEventName(key)) {
-      cbKey = `${CALLBACK_SYMBOL}_${node.key}_${key}`;
-      node.taskController.addCallback(cbKey, props[key]);
-      newProps[key] = cbKey;
-    } else if (styleMap[key]) {
-      warn(`${key} 属性的值，对象数据量过大时，会影响渲染性能，请考虑使用其他方式`);
-      if (isObject(props[key])) {
-        newProps[key] = plainStyle(props[key]);
+  for (propKey in props) {
+    if (filterPropsMap[propKey]) {
+    } else if (isFunction(props[propKey])) {
+      cbKey = `${CALLBACK_SYMBOL}_${node.key}_${propKey}`;
+      node.taskController.addCallback(cbKey, props[propKey]);
+
+      // node.taskController.addCallback(`${CALLBACK_SYMBOL}_${node.key}`, cbKey, props[propKey]);
+      newProps[propKey] = cbKey;
+    } else if (styleMap[propKey]) {
+      warn(`${propKey} 属性的值，对象数据量过大时，会影响渲染性能，请考虑使用其他方式`);
+      if (isObject(props[propKey])) {
+        newProps[propKey] = plainStyle(props[propKey]);
       } else {
-        newProps[key] = props[key];
+        newProps[propKey] = props[propKey];
       }
     } else {
-      newProps[key] = props[key];
+      newProps[propKey] = props[propKey];
     }
   }
   console.log('updatePayload', node.key, newProps);
@@ -64,13 +66,13 @@ export function diffProperties(oldProps: Record<string, any>, newProps: Record<s
       newStyle = newProps[propKey] ?? {};
       if (isObject(oldStyle)) {
         for (styleKey in oldStyle) {
+          // 小程序中style 为 'color:white; font-size:16rpx;'的形式。所以有一个不同，style全更新
           if (!newStyle.hasOwnProperty(styleKey)) {
             propUpdateObj[propKey] = newProps[propKey];
             break;
           }
         }
       }
-      // TODO:区分string、object
     } else if (!newProps.hasOwnProperty(propKey)) {
       propUpdateObj[propKey] = null;
     }
@@ -103,7 +105,14 @@ export function diffProperties(oldProps: Record<string, any>, newProps: Record<s
           propUpdateObj[propKey] = newProp;
         }
       } else {
-        propUpdateObj[propKey] = newProp;
+        // - 旧有新有的，只addCallback
+        if (isFunction(newProp) && oldProps.hasOwnProperty(propKey)) {
+          // 函数为字符串，旧有新有，证明小程序中已有这条记录，只需将回调挂到page上即可
+          //
+          // 只addCallback
+        } else {
+          propUpdateObj[propKey] = newProp;
+        }
       }
     }
   }

@@ -11,10 +11,6 @@ const {
   unstable_now: now,
 } = scheduler;
 
-// const emptyObject = {};
-// const emptyFunc = function () {};
-// TODO: android低版本兼容问题，尽量不要引入polyfill
-
 const childHostContext = {};
 const rootHostContext = {};
 
@@ -22,8 +18,9 @@ const rootHostContext = {};
 export default function createHostConfig() {
   const hostConfig = {
     createInstance(type: string, props: any, taskController: TaskController) {
-      // console.log('createInstance', new ServerElement({ type, props, taskController }));
-      return new ServerElement({ type, props: props ?? {}, taskController });
+      const node = new ServerElement({ type, props: props ?? {}, taskController });
+      node.props = processProps(props, node);
+      return node;
     },
 
     createTextInstance(text: string, taskController: TaskController) {
@@ -62,9 +59,11 @@ export default function createHostConfig() {
     prepareForCommit() {
       return null;
     },
+
     resetAfterCommit: (taskController: TaskController) => {
       taskController.applyUpdate();
     },
+
     preparePortalMount: () => {},
     now,
 
@@ -105,34 +104,40 @@ export default function createHostConfig() {
     },
 
     commitMount() {},
-    commitUpdate(node: ServerElement, updatePayload: any, _type: any, _oldProps: any, newProps: any) {
-      node.props = newProps;
-      node.update('props', processProps(updatePayload, node));
+
+    commitUpdate(node: ServerElement, updatePayload: any, _type: any, _oldProps: any, _newProps: any) {
+      const updateProps = processProps(updatePayload, node);
+      let propKey: string;
+      node.props = node.props || {};
+      for (propKey in updateProps) {
+        node.props[propKey] = updateProps[propKey];
+      }
+      node.update('props', updateProps);
     },
 
     hideInstance(node: ServerElement) {
-      console.log('hideInstance', node);
+      // console.log('hideInstance', node);
       if (isObject(node.props?.style)) {
         node.props.style['display'] = 'none !important';
       } else {
         node.props.style = { display: 'none !important' };
       }
-      node.update('props', processProps({ style: node.props.style }, node));
+      node.props.style = 'display:none !important';
+      // node.update('props', processProps({ style: node.props.style }, node));
+      node.update('props', { style: 'display:none !important' });
     },
-    unhideInstance(node: ServerElement, props: any) {
-      console.log('unhideInstance', node, props);
 
-      node.props = props;
-      node.update('props', processProps({ style: props.hasOwnProperty('style') ? props.style : null }, node));
+    unhideInstance(node: ServerElement, props: any) {
+      node.update('props', processProps({ ...props, style: props.hasOwnProperty('style') ? props.style : null }, node));
     },
+
     hideTextInstance(node: ServerElement) {
-      console.log('hideTextInstance', node);
       node.text = '';
       node.update('', { text: '' });
     },
 
     unhideTextInstance(node: ServerElement, text: string) {
-      console.log('unhideTextInstance', node, text);
+      // console.log('unhideTextInstance', node, text);
       node.text = text;
       node.update('', { text });
     },

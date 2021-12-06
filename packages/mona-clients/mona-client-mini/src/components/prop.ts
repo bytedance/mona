@@ -1,3 +1,20 @@
+// 冒泡事件
+const bubbleEventsMap = {
+  onTap: 'bindtap',
+  onClick: 'bindtap',
+  onTouchStart: 'bindtouchstart',
+  onTouchMove: 'bindtouchmove',
+  onTouchEnd: 'bindtouchend',
+  onTouchCancel: 'bindtouchcancel',
+  onLongTap: 'bindlongtap',
+  onLongClick: 'bindlongtap',
+  onTransitionEnd: 'bindtransitionend',
+  onAnimationStart: 'bindanimationstart',
+  onAnimationIteration: 'bindanimationiteration',
+  onAnimationEnd: 'bindanimationend',
+  onTouchForcechange: 'bindtouchforcechange',
+};
+
 export const baseComponentPropsMap: Record<string, string> = {
   className: 'class',
   hoverClassName: 'hover-class',
@@ -121,18 +138,5 @@ export const baseComponentPropsMap: Record<string, string> = {
   defaultAvatar: 'default-avatar',
   useEmptyValue: 'use-empty-value',
 
-  // 冒泡事件
-  onTap: 'bindtap',
-  onClick: 'bindtap',
-  onTouchStart: 'bindtouchstart',
-  onTouchMove: 'bindtouchmove',
-  onTouchEnd: 'bindtouchend',
-  onTouchCancel: 'bindtouchcancel',
-  onLongTap: 'bindlongtap',
-  onLongClick: 'bindlongtap',
-  onTransitionEnd: 'bindtransitionend',
-  onAnimationStart: 'bindanimationstart',
-  onAnimationIteration: 'bindanimationiteration',
-  onAnimationEnd: 'bindanimationend',
-  onTouchforcechange: 'bindtouchforcechange',
+  ...bubbleEventsMap,
 };
