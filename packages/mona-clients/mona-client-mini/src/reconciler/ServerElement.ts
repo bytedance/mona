@@ -11,18 +11,15 @@ export const NodeType = {
   ROOT: 'monaRoot',
   VIEW: 'view',
   TEXT: 'text',
-  PTEXT: 'ptext',
   BUTTON: 'button',
+  IMAGE: 'image',
+  PTEXT: 'ptext',
 };
-
-const allTypes = new Set(Object.values(NodeType));
-function formatType(type: string): string {
-  if (allTypes.has(type)) {
-    return type;
-  }
-  return NodeType.VIEW;
-}
-
+const formatNodeType: Record<string, string> = {
+  span: NodeType.TEXT,
+  div: NodeType.VIEW,
+  img: NodeType.IMAGE,
+};
 export interface RenderNode {
   key: number;
   type: string;
@@ -46,7 +43,7 @@ export default class ServerElement {
   prevSiblingKey: number | null = null;
   nextSiblingKey: number | null = null;
   mounted: boolean;
-  // diff时复用节点
+
   deleted: boolean;
 
   constructor({
@@ -58,7 +55,7 @@ export default class ServerElement {
     taskController: TaskController;
     props?: Record<string, any>;
   }) {
-    this.type = formatType(type);
+    this.type = formatNodeType[type] ?? type;
     this.props = props;
     this.key = generateId();
     this.taskController = taskController;
@@ -96,7 +93,7 @@ export default class ServerElement {
         targetNode: child.serialize(),
         type: NodeTask.SPLICE,
         parentPath: this.path,
-        parentNode: this,
+        taskNode: this,
         children: this.orderedChildren,
         key: child.key,
       });
@@ -139,7 +136,7 @@ export default class ServerElement {
         children: this.orderedChildren,
         type: NodeTask.SPLICE,
         parentPath: this.path,
-        parentNode: this,
+        taskNode: this,
         key: child.key,
       });
     }
@@ -169,36 +166,29 @@ export default class ServerElement {
         targetNode: child.serialize(),
         type: NodeTask.SPLICE,
         parentPath: this.path,
-        parentNode: this,
+        taskNode: this,
         key: child.key,
         children: this.orderedChildren,
       });
     }
   }
 
-  updateProps(updatePropsMap: Record<string, any>) {
-    console.log('updatePayload', updatePropsMap);
+  update(propPath: string, updatePropsMap: Record<string, any>) {
+    
 
     let propKey: string;
+    const path = this.path;
+    propPath && path.push(propPath);
     for (propKey in updatePropsMap) {
       this.requestUpdate({
         type: NodeTask.UPDATE,
-        parentNode: this,
+        taskNode: this,
         key: this.key,
         propName: propKey,
         propValue: updatePropsMap[propKey],
-        path: this.path,
+        path,
       });
     }
-    // 处理text
-    //
-    // this.requestUpdate({
-    //   type: NodeTask.SPLICE,
-    //   targetNode: this.serialize(),
-    //   parentPath: this.path,
-    //   parentNode: this,
-    //   key: child.key,
-    // });
   }
 
   serialize(): RenderNode {

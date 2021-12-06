@@ -1,8 +1,16 @@
 // 参考自remax
 import React from 'react';
 
-const vendorPrefixes = ['webkit', 'moz', 'ms', 'o'];
+const isVendorPrefixes: Record<string, boolean> = {
+  webkit: true,
+  moz: true,
+  ms: true,
+  o: true,
+};
+
 const isPxToRpx = true;
+const RPX = 'rpx';
+
 const transformReactStyleKey = (key: string) => {
   // css3变量
   if (key.startsWith('--')) {
@@ -13,11 +21,10 @@ const transformReactStyleKey = (key: string) => {
     return '-' + y.toLowerCase();
   });
 
-  // vendor prefix
   if (styleValue.startsWith('-')) {
     const firstWord = styleValue.split('-').filter(s => s)[0];
     styleValue = styleValue.replace(/^-/, '');
-    if (vendorPrefixes.find(prefix => prefix === firstWord)) {
+    if (isVendorPrefixes[firstWord]) {
       styleValue = '-' + styleValue;
     }
   }
@@ -25,29 +32,28 @@ const transformReactStyleKey = (key: string) => {
   return styleValue;
 };
 
-const transformPx = (value: string) => {
+const setPxToRpx = (value: string) => {
   if (typeof value !== 'string') {
     return value;
   }
 
   return value.replace(/\b(\d+(\.\d+)?)px\b/g, function (_match, x) {
-    const targetUnit = 'rpx';
     const size = Number(x);
-    return size % 1 === 0 ? size + targetUnit : size.toFixed(2) + targetUnit;
+    return size % 1 === 0 ? size + RPX : size.toFixed(2) + RPX;
   });
 };
 
 // react style => miniapp style
 export const plainStyle = (style: React.CSSProperties) => {
   return Object.keys(style)
-    .reduce((acc: string[], key) => {
-      let value = (style as any)[key];
+    .reduce((res: string[], styleKey) => {
+      let value = (style as any)[styleKey];
 
-      if (!Number.isNaN(Number(value)) && !isUnitlessNumber[key]) {
-        value = `${value}rpx`;
+      if (!Number.isNaN(Number(value)) && !isUnitlessNumber[styleKey]) {
+        value = `${value}${RPX}`;
       }
 
-      return [...acc, `${transformReactStyleKey(key)}:${isPxToRpx ? transformPx(value) : value};`];
+      return [...res, `${transformReactStyleKey(styleKey)}:${isPxToRpx ? setPxToRpx(value) : value};`];
     }, [])
     .join('');
 };
@@ -87,7 +93,6 @@ export const isUnitlessNumber: { [key: string]: boolean } = {
   widows: true,
   zIndex: true,
   zoom: true,
-
   // SVG-related properties
   fillOpacity: true,
   floodOpacity: true,

@@ -8,7 +8,7 @@ interface SpliceTask {
   children?: number[];
   // children?: ServerElement;
   targetNode: RenderNode | null;
-  parentNode: ServerElement;
+  taskNode: ServerElement;
   parentPath: any[];
 }
 interface UpdateTask {
@@ -18,7 +18,7 @@ interface UpdateTask {
   propName: string;
   propValue: any;
   path: any[];
-  parentNode: ServerElement;
+  taskNode: ServerElement;
 }
 export type Task = SpliceTask | UpdateTask;
 
@@ -53,7 +53,7 @@ export default class TaskController {
     const res: Record<string, any> = {};
     this.tasks.forEach(task => {
       // requestUpdate时，不会立即执行applyUpdate，在这段延迟时间内，该节点可能被删除
-      if (task.parentNode.isDeleted()) {
+      if (task.taskNode.isDeleted()) {
         return;
       }
       // 更新children
@@ -62,14 +62,13 @@ export default class TaskController {
         if (task.children) {
           res[this.genUpdatePath([...task.parentPath, 'children'])] = task.children;
         }
-        if (task.parentNode.type === NodeType.ROOT) {
+        if (task.taskNode.type === NodeType.ROOT) {
           // res[this.genUpdatePath([...task.parentPath, 'nodes', task.key])] = task.targetNode;
           // res[this.genUpdatePath(['children'])] = [task.parentNode.key];
-          res[this.genUpdatePath([...task.parentPath, 'type'])] = task.parentNode.type;
+          res[this.genUpdatePath([...task.parentPath, 'type'])] = task.taskNode.type;
         }
       } else if (task.type === NodeTask.UPDATE) {
-        res[this.genUpdatePath([...task.path, 'props', task.propName])] = task.propValue;
-        // TODO: 更新属性
+        res[this.genUpdatePath([...task.path, task.propName])] = task.propValue;
       }
     });
     console.log('applyUpdate', res);

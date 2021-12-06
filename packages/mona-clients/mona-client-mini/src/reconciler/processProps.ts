@@ -1,6 +1,6 @@
 import { CALLBACK_SYMBOL } from '../utils/constants';
 import { baseComponentPropsMap } from '../components/prop';
-import { isEventName } from '../utils/utils';
+import { isEventName, isObject, warn } from '../utils/utils';
 import ServerElement from './ServerElement';
 import { plainStyle } from '../utils/transformStyle';
 
@@ -20,6 +20,7 @@ const filterPropsMap: Record<string, boolean> = {
   children: true,
   ref: true,
 };
+
 export function processProps(props: Record<string, any>, node: ServerElement) {
   let key: string;
   let cbKey: string;
@@ -31,11 +32,17 @@ export function processProps(props: Record<string, any>, node: ServerElement) {
       node.taskController.addCallback(cbKey, props[key]);
       newProps[key] = cbKey;
     } else if (styleMap[key]) {
-      newProps[key] = plainStyle(props[key]);
+      warn(`${key} 属性的值，对象数据量过大时，会影响渲染性能，请考虑使用其他方式`);
+      if (isObject(props[key])) {
+        newProps[key] = plainStyle(props[key]);
+      } else {
+        newProps[key] = props[key];
+      }
     } else {
       newProps[key] = props[key];
     }
   }
+  console.log('updatePayload', node.key, newProps);
   return newProps;
 }
 
@@ -55,13 +62,15 @@ export function diffProperties(oldProps: Record<string, any>, newProps: Record<s
     } else if (styleMap[propKey]) {
       oldStyle = oldProps[propKey] ?? {};
       newStyle = newProps[propKey] ?? {};
-      // TODO:区分string、object
-      for (styleKey in oldStyle) {
-        if (!newStyle.hasOwnProperty(styleKey)) {
-          propUpdateObj[propKey] = newProps[propKey];
-          break;
+      if (isObject(oldStyle)) {
+        for (styleKey in oldStyle) {
+          if (!newStyle.hasOwnProperty(styleKey)) {
+            propUpdateObj[propKey] = newProps[propKey];
+            break;
+          }
         }
       }
+      // TODO:区分string、object
     } else if (!newProps.hasOwnProperty(propKey)) {
       propUpdateObj[propKey] = null;
     }
@@ -83,11 +92,15 @@ export function diffProperties(oldProps: Record<string, any>, newProps: Record<s
       if (styleMap[propKey]) {
         newStyle = newProps[propKey] ?? {};
         oldStyle = oldProps[propKey] ?? {};
-        for (styleKey in newStyle) {
-          if (oldStyle[styleKey] !== newStyle[styleKey]) {
-            propUpdateObj[propKey] = newProp;
-            break;
+        if (isObject(newStyle)) {
+          for (styleKey in newStyle) {
+            if (oldStyle[styleKey] !== newStyle[styleKey]) {
+              propUpdateObj[propKey] = newProp;
+              break;
+            }
           }
+        } else {
+          propUpdateObj[propKey] = newProp;
         }
       } else {
         propUpdateObj[propKey] = newProp;
