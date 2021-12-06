@@ -2,6 +2,7 @@ import scheduler from 'scheduler';
 import TaskController from './TaskController';
 import ServerElement from './ServerElement';
 import { diffProperties, processProps } from './processProps';
+import { isObject } from '../utils/utils';
 
 const {
   unstable_scheduleCallback: scheduleDeferredCallback,
@@ -14,22 +15,15 @@ const emptyObject = {};
 // const emptyFunc = function () {};
 // TODO: android低版本兼容问题，尽量不要引入polyfill
 
-// function changedProps(oldObj: Record<string, any>, newObj: Record<string, any>) {
-//   // Return a diff between the new and the old object
-//   const uniqueProps = new Set([...Object.keys(oldObj), ...Object.keys(newObj)]);
-//   const props = Array.from(uniqueProps).filter(propName => oldObj[propName] !== newObj[propName]);
-
-//   // const finalChangedProps = dealEvent(changedProps);
-
-//   return props;
-// }
+const childHostContext = {};
+const rootHostContext = {};
 
 // eslint-disable-next-line max-lines-per-function
 export default function createHostConfig() {
   const hostConfig = {
     createInstance(type: string, props: any, taskController: TaskController) {
       // console.log('createInstance', new ServerElement({ type, props, taskController }));
-      return new ServerElement({ type, props, taskController });
+      return new ServerElement({ type, props: props ?? {}, taskController });
     },
 
     createTextInstance(text: string, taskController: TaskController) {
@@ -39,7 +33,6 @@ export default function createHostConfig() {
     },
 
     appendInitialChild(parent: ServerElement, child: ServerElement) {
-      // console.log('appendInitialChild', child);
       parent.appendChild(child);
     },
 
@@ -47,7 +40,6 @@ export default function createHostConfig() {
       return false;
     },
 
-    // 这里有必要diff吗
     prepareUpdate(_node: ServerElement, _type: string, oldProps: any, newProps: any) {
       return diffProperties(oldProps ?? {}, newProps ?? {});
     },
@@ -56,20 +48,18 @@ export default function createHostConfig() {
     },
 
     getRootHostContext() {
-      return emptyObject;
+      return rootHostContext;
     },
+
     getChildHostContext() {
-      return emptyObject;
+      return childHostContext;
     },
+
     getPublicInstance(inst: any) {
       return inst;
     },
-    clearContainer() {
-      console.log('clearContainer');
-    },
 
     prepareForCommit() {
-      // empty
       return null;
     },
     resetAfterCommit: (taskController: TaskController) => {
@@ -80,27 +70,13 @@ export default function createHostConfig() {
 
     // ========== Mutation Methods ===========
     appendChild(parent: ServerElement, child: ServerElement) {
-      // console.log('appendChild', child);
       parent.appendChild(child);
     },
     // appendAllChildren(children: ServerElement[]) {},
 
     appendChildToContainer(container: TaskController, child: ServerElement) {
-      // console.log('appendChildToContainer', container, child);
       container.appendChild(child);
-      // setTimeout(function () {
-      //   var t = new ServerElement({
-      //     type: 'ptext',
-      //     taskController: container,
-      //   });
-      //   t.text = 'dddd';
-      //   container.appendChild(t);
-      //   container.applyUpdate();
-      //   setTimeout(function () {
-      //     container.removeChild(t);
-      //     container.applyUpdate();
-      //   }, 1000);
-      // }, 1000);
+      // TODO
       child.mounted = true;
     },
 
@@ -119,28 +95,49 @@ export default function createHostConfig() {
       container.removeChild(child);
     },
 
-    resetTextContent() {
-      // empty
-    },
+    resetTextContent() {},
 
     commitTextUpdate(textInstance: ServerElement, oldText: string, newText: string) {
-      // WorkerElement.markSent(textInstance);
       if (oldText !== newText) {
         textInstance.text = newText;
+        textInstance.update('', { text: newText });
       }
     },
 
-    commitMount(_instance: any, updatePayload: any) {
-      if (updatePayload.length) {
-        throw new Error('not yet implemented');
-      }
-    },
-
+    commitMount() {},
     commitUpdate(node: ServerElement, updatePayload: any, _type: any, _oldProps: any, newProps: any) {
       node.props = newProps;
-      node.updateProps(processProps(updatePayload, node));
+      node.update('props', processProps(updatePayload, node));
     },
 
+    hideInstance(node: ServerElement) {
+      console.log('hideInstance', node);
+      if (isObject(node.props?.style)) {
+        node.props.style['display'] = 'none !important';
+      } else {
+        node.props.style = { display: 'none !important' };
+      }
+      node.update('props', processProps({ style: node.props.style }, node));
+    },
+    unhideInstance(node: ServerElement, props: any) {
+      console.log('unhideInstance', node, props);
+
+      node.props = props;
+      node.update('props', processProps({ style: props.hasOwnProperty('style') ? props.style : null }, node));
+    },
+    hideTextInstance(node: ServerElement) {
+      console.log('hideTextInstance', node);
+      node.text = '';
+      node.update('', { text: '' });
+    },
+
+    unhideTextInstance(node: ServerElement, text: string) {
+      console.log('unhideTextInstance', node, text);
+      node.text = text;
+      node.update('', { text });
+    },
+
+    clearContainer() {},
     schedulePassiveEffects: scheduleDeferredCallback,
     cancelPassiveEffects: cancelDeferredCallback,
     shouldYield,
