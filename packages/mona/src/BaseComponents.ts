@@ -1,6 +1,6 @@
 import React from 'react';
 // base
-interface BaseProps<T = Touch> {
+export interface BaseProps<T = Touch> {
   id?: string;
   className?: string;
   style?: React.CSSProperties;
@@ -20,27 +20,27 @@ interface BaseProps<T = Touch> {
   onTouchForceChange?: TouchEventHandler<T>;
 }
 
-interface HoverProps {
+export interface HoverProps {
   hoverClassName?: string;
   hoverStartTime?: number;
   hoverStayTime?: number;
   hoverStopPropagation?: boolean;
 }
 
-interface BaseTarget {
+export interface BaseTarget {
   id: string;
   tagName: string;
   dataset: Record<string, any>;
 }
 
-interface BaseEvent {
+export interface BaseEvent {
   type: string;
   timeStamp: number;
   target: BaseTarget
   currentTarget: BaseTarget;
 }
 
-interface Touch {
+export interface Touch {
   identifier: number;
   pageX: number;
   pageY: number;
@@ -48,22 +48,22 @@ interface Touch {
   clientY: number;
 }
 
-interface CanvasTouch {
+export interface CanvasTouch {
   identifier: number;
   x: number;
   y: number;
 }
 
-interface TouchEvent<T> extends BaseEvent {
+export interface TouchEvent<T> extends BaseEvent {
   touches: T[];
   changedTouches: T[];
 }
 
-interface EventHandler {
+export interface EventHandler {
   (event: BaseEvent): void
 }
 
-interface TouchEventHandler<T> {
+export interface TouchEventHandler<T> {
   (event: TouchEvent<T>): void
 }
 
@@ -74,19 +74,19 @@ export interface TextProps extends BaseProps {
   decode?: boolean;
 }
 
-interface RichTextNodeTypeNode {
+export interface RichTextNodeTypeNode {
   name: string;
   type?: string;
   attrs?: Record<string, any>;
   children?: Array<RichTextNode>
 }
 
-interface RichTextNodeTypeText {
+export interface RichTextNodeTypeText {
   text: string;
   type: string;
 }
 
-type RichTextNode = RichTextNodeTypeNode | RichTextNodeTypeText;
+export type RichTextNode = RichTextNodeTypeNode | RichTextNodeTypeText;
 
 export interface RichTextProps extends BaseProps {
   nodes: RichTextNode[] | string
