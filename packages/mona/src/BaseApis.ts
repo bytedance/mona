@@ -1348,7 +1348,7 @@ abstract class Api {
     getCurrentPageEntries(): PerformanceEntry[]
     getEntriesByPage(pagePath: string): PerformanceEntry[]
     mark(name: string): PerformanceEntry | undefined
-    clearnMarks(name: string): void
+    clearMarks(name: string): void
   }
   // 数据缓存
   abstract getStorage(options: GetStorageOptions): void;

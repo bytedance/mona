@@ -1,5 +1,5 @@
 import { BaseApis } from '@bytedance/mona'
-import formatPath from '../utils/formatPath';
+// import formatPath from '../utils/formatPath';
 
 const noImplementFactory = (api: string) => {
   return (): any => {
@@ -9,199 +9,190 @@ const noImplementFactory = (api: string) => {
 
 class WebApis extends BaseApis {
   canIUse = noImplementFactory('canIUse')
-  // base64ToArrayBuffer = tt.base64ToArrayBuffer
-  // arrayBufferToBase64 = tt.arrayBufferToBase64
-  // getEnterOptionsSync = tt.getEnterOptionsSync
-  // getLaunchOptionsSync = tt.getLaunchOptionsSync
-  // exitMiniProgram = tt.exitMiniProgram
-  // canIPutStuffOverComponent = tt.canIPutStuffOverComponent
-  // getUpdateManager = tt.getUpdateManager
-  // onAppShow = tt.onAppShow
-  // offAppShow = tt.offAppShow
-  // onAppHide = tt.onAppHide
-  // offAppHide = tt.offAppHide
-  // onError = tt.onError
-  // offError = tt.offError
-  // env = tt.env
-  // downloadFile = tt.downloadFile
-  // request = tt.request
-  // uploadFile = tt.uploadFile
-  // connectSocket = tt.connectSocket
-  // chooseImage = tt.chooseImage
-  // saveImageToPhotosAlbum = tt.saveImageToPhotosAlbum
-  // previewImage = tt.previewImage
-  // getImageInfo = tt.getImageInfo
-  // compressImage = tt.compressImage
-  // getRecorderManager = tt.getRecorderManager
-  // getBackgroundAudioManager = tt.getBackgroundAudioManager
-  // createInnerAudioContext = tt.createInnerAudioContext
-  // chooseVideo = tt.chooseVideo
-  // saveVideoToPhotoAlbum = tt.saveVideoToPhotoAlbum
-  // createVideoContext = tt.createVideoContext
-  // craeteLivePlayerContext = tt.craeteLivePlayerContext
-  // preloadVideo = tt.preloadVideo
-  // createCameraContext = tt.createCameraContext
-  // createEffectCameraStream = tt.createEffectCameraStream
-  // createMapContext = tt.createMapContext
-  // saveFile = tt.saveFile
-  // getFileInfo = tt.getFileInfo
-  // getSavedFileList = tt.getSavedFileList
-  // openDocument = tt.openDocument
-  // removeSavedFile = tt.removeSavedFile
-  // getFileSystemManager = tt.getFileSystemManager
-  // getEnvInfoSync = tt.getEnvInfoSync
-  // login = tt.login
-  // checkSession = tt.checkSession
-  // getUserInfo = tt.getUserInfo
-  // getUserInfoProfile = tt.getUserInfoProfile
-  // createRewardedVideoAd = tt.createRewardedVideoAd
-  // createInterstitialAd = tt.createInterstitialAd
-  // pay = tt.pay
-  // navigateToMiniProgram = tt.navigateToMiniProgram
-  // navigateBackMiniProgram = tt.navigateBackMiniProgram
-  // chooseAddresses = tt.chooseAddresses
-  // getSetting = tt.getSetting
-  // openSettings = tt.openSettings
-  // authorize = tt.authorize
-  // showDouyinOpenAuth = tt.showDouyinOpenAuth
-  // reportAnalytics = tt.reportAnalytics
-  // canRateAwemeOrders = tt.canRateAwemeOrders
-  // rateAwemeOrder = tt.rateAwemeOrder
-  // followOfficialAccount = tt.followOfficialAccount
-  // checkFollowState = tt.checkFollowState
-  // openAwemeUserProfile = tt.openAwemeUserProfile
-  // followAwemeUser = tt.followAwemeUser
-  // requestSubscribeMessage = tt.requestSubscribeMessage
-  // openDouyinOrderList = tt.openDouyinOrderList
-  // openEcGood = tt.openEcGood
-  // openEcOrderDetail = tt.openEcOrderDetail
-  // openEcIm = tt.openEcIm
-  // openEcChat = tt.openEcChat
-  // openWebcastRoom = tt.openWebcastRoom
-  // openDouyinProfile = tt.openDouyinProfile
-  // openEcCoupon = tt.openEcCoupon
-  // performance = tt.performance
-  // getStorage = tt.getStorage
-  // getStorageSync = tt.getStorageSync
-  // setStorage = tt.setStorage
-  // setStorageSync = tt.setStorageSync
-  // removeStorage = tt.removeStorage
-  // removeStorageSync = tt.removeStorageSync
-  // clearStorage = tt.clearStorage
-  // clearStorageSync = tt.clearStorageSync
-  // getStorageInfo = tt.getStorageInfo
-  // getStorageInfoSync = tt.getStorageInfoSync
-  // getLocation = tt.getLocation
-  // chooseLocation = tt.chooseLocation
-  // openLocation = tt.openLocation
-  // getNetworkType = tt.getNetworkType
-  // onNetworkStatusChange = tt.onNetworkStatusChange
-  // getWifiList = tt.getWifiList
-  // onGetWifiList = tt.onGetWifiList
-  // offGetWifiList = tt.offGetWifiList
-  // getSystemInfo = tt.getSystemInfo
-  // getSystemInfoSync = tt.getSystemInfoSync
-  // getConnectedWifi = tt.getConnectedWifi
-  // startAccelerometer = tt.startAccelerometer
-  // stopAccelerometer = tt.stopAccelerometer
-  // onAccelerometerChange = tt.onAccelerometerChange
-  // startCompass = tt.startCompass
-  // stopCompass = tt.stopCompass
-  // onCompassChange = tt.onCompassChange
-  // makePhoneCall = tt.makePhoneCall
-  // scanCode = tt.scanCode
-  // getClipboardData = tt.getClipboardData
-  // setClipboardData = tt.setClipboardData
-  // setKeepScreenOn = tt.setKeepScreenOn
-  // onUserCaptureScreen = tt.onUserCaptureScreen
-  // offUserCaptureScreen = tt.offUserCaptureScreen
-  // getScreenBrightness = tt.getScreenBrightness
-  // setScreenBrightness = tt.setScreenBrightness
-  // disableUserScreenRecord = tt.disableUserScreenRecord
-  // enableUserScreenRecord = tt.enableUserScreenRecord
-  // onUserScreenRecord = tt.onUserScreenRecord
-  // offUserScreenRecord = tt.offUserScreenRecord
-  // vibrateShort = tt.vibrateShort
-  // vibrateLong = tt.vibrateLong
-  // onMemoryWarning = tt.onMemoryWarning
-  // createCanvasContext = tt.createCanvasContext
-  // createOffscreenCanvas = tt.createOffscreenCanvas
-  // showToast = tt.showToast
-  // hideToast = tt.hideToast
-  // showLoading = tt.showLoading
-  // hideLoading = tt.hideLoading
-  // showModal = tt.showModal
-  // showActionSheet = tt.showActionSheet
-  // showFavoriteGuide = tt.showFavoriteGuide
-  // showInteractionBar = tt.showInteractionBar
-  // hideInteractionBar = tt.hideInteractionBar
-  // showNavigationBarLoading = tt.showNavigationBarLoading
-  // hideNavigationBarLoading = tt.hideNavigationBarLoading
-  // hideHomeButton = tt.hideHomeButton
-  // setNavigationBarTitle = tt.setNavigationBarTitle
-  // setNavigationBarColor = tt.setNavigationBarColor
-  // getMenuButtonBoundingClientRect = tt.getMenuButtonBoundingClientRect
-  // createAnimation = tt.createAnimation
-  // pageScrollTo = tt.pageScrollTo
-  // setSwipeBackMode = tt.setSwipeBackMode
-  // startPullDownRefresh = tt.startPullDownRefresh
-  // showTabBarRedDot = tt.showTabBarRedDot
-  // showTabBar = tt.showTabBar
-  // setTabBarStyle = tt.setTabBarStyle
-  // setTabBarItem = tt.setTabBarItem
-  // setTabBarBadge = tt.setTabBarBadge
-  // removeTabBarBadge = tt.removeTabBarBadge
-  // hideTabBarRedDot = tt.hideTabBarRedDot
-  // hideTabBar = tt.hideTabBar
-  // getAlgorithmManager = tt.getAlgorithmManager
-  // createStickerManager = tt.createStickerManager
-  // createBytennEngineContext = tt.createBytennEngineContext
-  // navigateTo = tt.navigateTo
-  // redirectTo = tt.redirectTo
-  // switchTab = tt.switchTab
-  // navigateBack = tt.navigateBack
-  // reLaunch = tt.reLaunch
-  // showShareMenu = tt.showShareMenu
-  // hideShareMenu = tt.hideShareMenu
-  // navigateToVideoView = tt.navigateToVideoView
-  // getExtConfig = tt.getExtConfig
-  // getExtConfigSync = tt.getExtConfigSync
-  // createSelectorQuery = tt.createSelectorQuery
-  // createIntersectionObserver = tt.createIntersectionObserver
-  // createLiveReportContext = tt.createLiveReportContext
-  // getRoomInfo = tt.getRoomInfo
-  // getLiveUserInfo = tt.getLiveUserInfo
-  // getSelfCommentCountDuringPluginRunning = tt.getSelfCommentCountDuringPluginRunning
-  // isFollowingAnchor = tt.isFollowingAnchor
-  // onReceiveAudiencesFollowAction = tt.onReceiveAudiencesFollowAction
-  // subscribeAudiencesFollowAction = tt.subscribeAudiencesFollowAction
-  // unsubscribeAudiencesFollowAction = tt.unsubscribeAudiencesFollowAction
-  // subscribeSpecifiedContentComment = tt.subscribeSpecifiedContentComment
-  // subscribeSpecifiedUserComment = tt.subscribeSpecifiedUserComment
-  // unsubscribeAllSpecifiedContentComment = tt.unsubscribeAllSpecifiedContentComment
-  // unsubscribeAllSpecifiedUserComment = tt.unsubscribeAllSpecifiedUserComment
-  // onReceiveSpecifiedComment = tt.onReceiveSpecifiedComment
-  open = () => { throw Error('not implemented in miniapp') }
-
-  // showToast(params: any) {
-  //   window.alert(params.title);
-  //   return Promise.resolve();
-  // }
-  // navigateTo(params: any) {
-  //   const url = typeof params === 'string' ? params : params.url;
-  //   history.pushState({}, '', formatPath(url));
-  //   return Promise.resolve();
-  // }
-  // redirectTo(params: any) {
-  //   const url = typeof params === 'string' ? params : params.url;
-  //   window.location.href = formatPath(url);
-  //   return Promise.resolve();
-  // }
-  // open(params: any) {
-  //   const url = typeof params === 'string' ? params : params.url;
-  //   window.open(formatPath(url));
-  //   return Promise.resolve();
-  // }
+  base64ToArrayBuffer = noImplementFactory('base64ToArrayBuffer')
+  arrayBufferToBase64 = noImplementFactory('arrayBufferToBase64')
+  getEnterOptionsSync = noImplementFactory('getEnterOptionsSync')
+  getLaunchOptionsSync = noImplementFactory('getLaunchOptionsSync')
+  exitMiniProgram = noImplementFactory('exitMiniProgram')
+  canIPutStuffOverComponent = noImplementFactory('canIPutStuffOverComponent')
+  getUpdateManager = noImplementFactory('getUpdateManager')
+  onAppShow = noImplementFactory('onAppShow')
+  offAppShow = noImplementFactory('offAppShow')
+  onAppHide = noImplementFactory('onAppHide')
+  offAppHide = noImplementFactory('offAppHide')
+  onError = noImplementFactory('onError')
+  offError = noImplementFactory('offError')
+  env = {
+    VERSION: '1',
+    USER_DATA_PATH: '/'
+  }
+  downloadFile = noImplementFactory('downloadFile')
+  request = noImplementFactory('request')
+  uploadFile = noImplementFactory('uploadFile')
+  connectSocket = noImplementFactory('connectSocket')
+  chooseImage = noImplementFactory('chooseImage')
+  saveImageToPhotosAlbum = noImplementFactory('saveImageToPhotosAlbum')
+  previewImage = noImplementFactory('previewImage')
+  getImageInfo = noImplementFactory('getImageInfo')
+  compressImage = noImplementFactory('compressImage')
+  getRecorderManager = noImplementFactory('getRecorderManager')
+  getBackgroundAudioManager = noImplementFactory('getBackgroundAudioManager')
+  createInnerAudioContext = noImplementFactory('createInnerAudioContext')
+  chooseVideo = noImplementFactory('chooseVideo')
+  saveVideoToPhotoAlbum = noImplementFactory('saveVideoToPhotoAlbum')
+  createVideoContext = noImplementFactory('createVideoContext')
+  craeteLivePlayerContext = noImplementFactory('craeteLivePlayerContext')
+  preloadVideo = noImplementFactory('preloadVideo')
+  createCameraContext = noImplementFactory('createCameraContext')
+  createEffectCameraStream = noImplementFactory('createEffectCameraStream')
+  createMapContext = noImplementFactory('createMapContext')
+  saveFile = noImplementFactory('saveFile')
+  getFileInfo = noImplementFactory('getFileInfo')
+  getSavedFileList = noImplementFactory('getSavedFileList')
+  openDocument = noImplementFactory('openDocument')
+  removeSavedFile = noImplementFactory('removeSavedFile')
+  getFileSystemManager = noImplementFactory('getFileSystemManager')
+  getEnvInfoSync = noImplementFactory('getEnvInfoSync')
+  login = noImplementFactory('login')
+  checkSession = noImplementFactory('checkSession')
+  getUserInfo = noImplementFactory('getUserInfo')
+  getUserInfoProfile = noImplementFactory('getUserInfoProfile')
+  createRewardedVideoAd = noImplementFactory('createRewardedVideoAd')
+  createInterstitialAd = noImplementFactory('createInterstitialAd')
+  pay = noImplementFactory('pay')
+  navigateToMiniProgram = noImplementFactory('navigateToMiniProgram')
+  navigateBackMiniProgram = noImplementFactory('navigateBackMiniProgram')
+  chooseAddresses = noImplementFactory('chooseAddresses')
+  getSetting = noImplementFactory('getSetting')
+  openSettings = noImplementFactory('openSettings')
+  authorize = noImplementFactory('authorize')
+  showDouyinOpenAuth = noImplementFactory('showDouyinOpenAuth')
+  reportAnalytics = noImplementFactory('reportAnalytics')
+  canRateAwemeOrders = noImplementFactory('canRateAwemeOrders')
+  rateAwemeOrder = noImplementFactory('rateAwemeOrder')
+  followOfficialAccount = noImplementFactory('followOfficialAccount')
+  checkFollowState = noImplementFactory('checkFollowState')
+  openAwemeUserProfile = noImplementFactory('openAwemeUserProfile')
+  followAwemeUser = noImplementFactory('followAwemeUser')
+  requestSubscribeMessage = noImplementFactory('requestSubscribeMessage')
+  openDouyinOrderList = noImplementFactory('openDouyinOrderList')
+  openEcGood = noImplementFactory('openEcGood')
+  openEcOrderDetail = noImplementFactory('openEcOrderDetail')
+  openEcIm = noImplementFactory('openEcIm')
+  openEcChat = noImplementFactory('openEcChat')
+  openWebcastRoom = noImplementFactory('openWebcastRoom')
+  openDouyinProfile = noImplementFactory('openDouyinProfile')
+  openEcCoupon = noImplementFactory('openEcCoupon')
+  performance = {
+    getEntries: noImplementFactory('getEntries'),
+    getEntriesByName: noImplementFactory('getEntriesByName'),
+    getEntriesByType: noImplementFactory('getEntriesByType'),
+    getCurrentPageEntries: noImplementFactory('getCurrentPageEntries'),
+    getEntriesByPage: noImplementFactory('getEntriesByPage'),
+    mark: noImplementFactory('mark'),
+    clearMarks: noImplementFactory('clearnMarks'),
+  }
+  getStorage = noImplementFactory('getStorage')
+  getStorageSync = noImplementFactory('getStorageSync')
+  setStorage = noImplementFactory('setStorage')
+  setStorageSync = noImplementFactory('setStorageSync')
+  removeStorage = noImplementFactory('removeStorage')
+  removeStorageSync = noImplementFactory('removeStorageSync')
+  clearStorage = noImplementFactory('clearStorage')
+  clearStorageSync = noImplementFactory('clearStorageSync')
+  getStorageInfo = noImplementFactory('getStorageInfo')
+  getStorageInfoSync = noImplementFactory('getStorageInfoSync')
+  getLocation = noImplementFactory('getLocation')
+  chooseLocation = noImplementFactory('chooseLocation')
+  openLocation = noImplementFactory('openLocation')
+  getNetworkType = noImplementFactory('getNetworkType')
+  onNetworkStatusChange = noImplementFactory('onNetworkStatusChange')
+  getWifiList = noImplementFactory('getWifiList')
+  onGetWifiList = noImplementFactory('onGetWifiList')
+  offGetWifiList = noImplementFactory('offGetWifiList')
+  getSystemInfo = noImplementFactory('getSystemInfo')
+  getSystemInfoSync = noImplementFactory('getSystemInfoSync')
+  getConnectedWifi = noImplementFactory('getConnectedWifi')
+  startAccelerometer = noImplementFactory('startAccelerometer')
+  stopAccelerometer = noImplementFactory('stopAccelerometer')
+  onAccelerometerChange = noImplementFactory('onAccelerometerChange')
+  startCompass = noImplementFactory('startCompass')
+  stopCompass = noImplementFactory('stopCompass')
+  onCompassChange = noImplementFactory('onCompassChange')
+  makePhoneCall = noImplementFactory('makePhoneCall')
+  scanCode = noImplementFactory('scanCode')
+  getClipboardData = noImplementFactory('getClipboardData')
+  setClipboardData = noImplementFactory('setClipboardData')
+  setKeepScreenOn = noImplementFactory('setKeepScreenOn')
+  onUserCaptureScreen = noImplementFactory('onUserCaptureScreen')
+  offUserCaptureScreen = noImplementFactory('offUserCaptureScreen')
+  getScreenBrightness = noImplementFactory('getScreenBrightness')
+  setScreenBrightness = noImplementFactory('setScreenBrightness')
+  disableUserScreenRecord = noImplementFactory('disableUserScreenRecord')
+  enableUserScreenRecord = noImplementFactory('enableUserScreenRecord')
+  onUserScreenRecord = noImplementFactory('onUserScreenRecord')
+  offUserScreenRecord = noImplementFactory('offUserScreenRecord')
+  vibrateShort = noImplementFactory('vibrateShort')
+  vibrateLong = noImplementFactory('vibrateLong')
+  onMemoryWarning = noImplementFactory('onMemoryWarning')
+  createCanvasContext = noImplementFactory('createCanvasContext')
+  createOffscreenCanvas = noImplementFactory('createOffscreenCanvas')
+  showToast = noImplementFactory('showToast')
+  hideToast = noImplementFactory('hideToast')
+  showLoading = noImplementFactory('showLoading')
+  hideLoading = noImplementFactory('hideLoading')
+  showModal = noImplementFactory('showModal')
+  showActionSheet = noImplementFactory('showActionSheet')
+  showFavoriteGuide = noImplementFactory('showFavoriteGuide')
+  showInteractionBar = noImplementFactory('showInteractionBar')
+  hideInteractionBar = noImplementFactory('hideInteractionBar')
+  showNavigationBarLoading = noImplementFactory('showNavigationBarLoading')
+  hideNavigationBarLoading = noImplementFactory('hideNavigationBarLoading')
+  hideHomeButton = noImplementFactory('hideHomeButton')
+  setNavigationBarTitle = noImplementFactory('setNavigationBarTitle')
+  setNavigationBarColor = noImplementFactory('setNavigationBarColor')
+  getMenuButtonBoundingClientRect = noImplementFactory('getMenuButtonBoundingClientRect')
+  createAnimation = noImplementFactory('createAnimation')
+  pageScrollTo = noImplementFactory('pageScrollTo')
+  setSwipeBackMode = noImplementFactory('setSwipeBackMode')
+  startPullDownRefresh = noImplementFactory('startPullDownRefresh')
+  showTabBarRedDot = noImplementFactory('showTabBarRedDot')
+  showTabBar = noImplementFactory('showTabBar')
+  setTabBarStyle = noImplementFactory('setTabBarStyle')
+  setTabBarItem = noImplementFactory('setTabBarItem')
+  setTabBarBadge = noImplementFactory('setTabBarBadge')
+  removeTabBarBadge = noImplementFactory('removeTabBarBadge')
+  hideTabBarRedDot = noImplementFactory('hideTabBarRedDot')
+  hideTabBar = noImplementFactory('hideTabBar')
+  getAlgorithmManager = noImplementFactory('getAlgorithmManager')
+  createStickerManager = noImplementFactory('createStickerManager')
+  createBytennEngineContext = noImplementFactory('createBytennEngineContext')
+  navigateTo = noImplementFactory('navigateTo')
+  redirectTo = noImplementFactory('redirectTo')
+  switchTab = noImplementFactory('switchTab')
+  navigateBack = noImplementFactory('navigateBack')
+  reLaunch = noImplementFactory('reLaunch')
+  showShareMenu = noImplementFactory('showShareMenu')
+  hideShareMenu = noImplementFactory('hideShareMenu')
+  navigateToVideoView = noImplementFactory('navigateToVideoView')
+  getExtConfig = noImplementFactory('getExtConfig')
+  getExtConfigSync = noImplementFactory('getExtConfigSync')
+  createSelectorQuery = noImplementFactory('createSelectorQuery')
+  createIntersectionObserver = noImplementFactory('createIntersectionObserver')
+  createLiveReportContext = noImplementFactory('createLiveReportContext')
+  getRoomInfo = noImplementFactory('getRoomInfo')
+  getLiveUserInfo = noImplementFactory('getLiveUserInfo')
+  getSelfCommentCountDuringPluginRunning = noImplementFactory('getSelfCommentCountDuringPluginRunning')
+  isFollowingAnchor = noImplementFactory('isFollowingAnchor')
+  onReceiveAudiencesFollowAction = noImplementFactory('onReceiveAudiencesFollowAction')
+  subscribeAudiencesFollowAction = noImplementFactory('subscribeAudiencesFollowAction')
+  unsubscribeAudiencesFollowAction = noImplementFactory('unsubscribeAudiencesFollowAction')
+  subscribeSpecifiedContentComment = noImplementFactory('subscribeSpecifiedContentComment')
+  subscribeSpecifiedUserComment = noImplementFactory('subscribeSpecifiedUserComment')
+  unsubscribeAllSpecifiedContentComment = noImplementFactory('unsubscribeAllSpecifiedContentComment')
+  unsubscribeAllSpecifiedUserComment = noImplementFactory('unsubscribeAllSpecifiedUserComment')
+  onReceiveSpecifiedComment = noImplementFactory('onReceiveSpecifiedComment')
+  open = noImplementFactory('open')
 }
 
 export default WebApis
