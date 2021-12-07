@@ -1,12 +1,12 @@
 import { FiberRoot } from 'react-reconciler';
 import ServerElement, { RenderNode, NodeType } from './ServerElement';
 import { NodeTask } from '../utils/constants';
+// import { isObject } from '../utils/utils';
 
 interface SpliceTask {
   type: NodeTask.SPLICE;
   key?: number;
   children?: number[];
-  // children?: ServerElement;
   targetNode: RenderNode | null;
   taskNode: ServerElement;
   parentPath: any[];
@@ -14,12 +14,12 @@ interface SpliceTask {
 interface UpdateTask {
   type: NodeTask.UPDATE;
   key?: number;
-  // children?: ServerElement;
   propName: string;
   propValue: any;
   path: any[];
   taskNode: ServerElement;
 }
+
 export type Task = SpliceTask | UpdateTask;
 
 export const ROOT_KEY = 'mona';
@@ -48,7 +48,6 @@ export default class TaskController {
     if (this._stopUpdate || this.tasks.length === 0) {
       return;
     }
-    // const data = this.tasks.map(t => ({ ...t, children: t.children?.serialize() }));
 
     const res: Record<string, any> = {};
     this.tasks.forEach(task => {
@@ -56,6 +55,7 @@ export default class TaskController {
       if (task.taskNode.isDeleted()) {
         return;
       }
+
       // 更新children
       if (task.type === NodeTask.SPLICE) {
         res[this.genUpdatePath([...task.parentPath, 'nodes', task.key])] = task.targetNode;
@@ -63,9 +63,9 @@ export default class TaskController {
           res[this.genUpdatePath([...task.parentPath, 'children'])] = task.children;
         }
         if (task.taskNode.type === NodeType.ROOT) {
-          // res[this.genUpdatePath([...task.parentPath, 'nodes', task.key])] = task.targetNode;
-          // res[this.genUpdatePath(['children'])] = [task.parentNode.key];
+          // TODO:props, 根节点不需要props
           res[this.genUpdatePath([...task.parentPath, 'type'])] = task.taskNode.type;
+          res[this.genUpdatePath([...task.parentPath, 'key'])] = task.taskNode.key;
         }
       } else if (task.type === NodeTask.UPDATE) {
         res[this.genUpdatePath([...task.path, task.propName])] = task.propValue;
@@ -82,10 +82,25 @@ export default class TaskController {
   stopUpdate() {
     this._stopUpdate = true;
   }
-
   addCallback(name: string, cb: (...args: any) => any) {
     this.context[name] = cb;
   }
+  // addCallback(nodeKey: string | number, eventName: string, cb: (...args: any) => any) {
+  //   if (isObject(this.context[nodeKey])) {
+  //     this.context[nodeKey][eventName] = cb;
+  //   } else {
+  //     this.context[nodeKey] = { [eventName]: cb };
+  //   }
+  // }
+
+  removeCallback(name: string | number) {
+    this.context[name] = undefined;
+  }
+  // if (eventName && isObject(this.context[nodeKey])) {
+  //   this.context[nodeKey][eventName] = undefined;
+  // } else {
+  //   this.context[nodeKey] = undefined;
+  // }
 
   appendChild(child: ServerElement) {
     console.log('taskController appendCHild', child);

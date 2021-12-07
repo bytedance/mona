@@ -1,5 +1,5 @@
 import { NodeTask } from '../utils/constants';
-import { processProps } from './processProps';
+// import { processProps } from './processProps';
 import TaskController, { Task } from './TaskController';
 
 let id = 1;
@@ -87,6 +87,7 @@ export default class ServerElement {
     }
     this.lastChildKey = child.key;
     child.deleted = false;
+    // console.log('&', 'appendChild', child);
 
     if (this.isMounted()) {
       this.requestUpdate({
@@ -125,10 +126,11 @@ export default class ServerElement {
 
     this.children.delete(child.key);
 
-    child.parent = null;
-    child.deleted = true;
-    child.nextSiblingKey = null;
-    child.prevSiblingKey = null;
+    child.reset();
+
+    // TODO:函数都去除引用
+    // 得更新到视图后再删除？
+    child.taskController.removeCallback(child.key);
 
     if (this.isMounted()) {
       this.requestUpdate({
@@ -148,9 +150,13 @@ export default class ServerElement {
     }
     this.children.set(child.key, child);
     const prevSibling = nextSibling.prevSiblingKey ? this.children.get(nextSibling.prevSiblingKey) : null;
+
+    child.parent = this;
+
     child.nextSiblingKey = nextSibling.key;
     nextSibling.prevSiblingKey = child.key;
     child.prevSiblingKey = prevSibling ? prevSibling.key : null;
+
     if (prevSibling) {
       // added as first child, prepended
       prevSibling.nextSiblingKey = child.key;
@@ -158,8 +164,8 @@ export default class ServerElement {
       // added in between
       this.firstChildKey = child.key;
     }
-    child.parent = this;
     child.deleted = false;
+    // console.log('&', 'insertBefore', child);
 
     if (this.isMounted()) {
       this.requestUpdate({
@@ -174,8 +180,6 @@ export default class ServerElement {
   }
 
   update(propPath: string, updatePropsMap: Record<string, any>) {
-    
-
     let propKey: string;
     const path = this.path;
     propPath && path.push(propPath);
@@ -208,12 +212,18 @@ export default class ServerElement {
       key: this.key,
       type: this.type,
       text: this.text!,
-      props: processProps(this.props, this),
+      props: this.props,
       children: children,
       [NODE_MAP_NAME]: nodes,
     };
   }
-
+  reset() {
+    this.parent = null;
+    this.deleted = true;
+    this.mounted = false;
+    this.nextSiblingKey = null;
+    this.prevSiblingKey = null;
+  }
   get orderedChildren() {
     const children = [];
     let currKey = this.firstChildKey;
@@ -251,6 +261,7 @@ export default class ServerElement {
   isMounted(): boolean {
     return this.parent ? this.parent.isMounted() : this.mounted;
   }
+
   isDeleted(): boolean {
     return this.deleted ? this.deleted : this.parent?.isDeleted() ?? false;
   }
