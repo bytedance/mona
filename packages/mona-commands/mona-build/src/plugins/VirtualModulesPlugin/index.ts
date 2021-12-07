@@ -298,4 +298,4 @@ class VirtualModulesPlugin {
   }
 }
 
-export = VirtualModulesPlugin;
+export default VirtualModulesPlugin;

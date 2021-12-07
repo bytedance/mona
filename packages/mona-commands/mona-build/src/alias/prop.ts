@@ -1,5 +1,3 @@
-import view from './View/alias';
-
 // 冒泡事件
 export const bubbleEventsAlias = {
   onTap: 'bindtap',
@@ -32,7 +30,7 @@ export const hoverPropAlias = {
   hoverStopPropagation: 'hover-stop-propagation',
 };
 
-export const baseComponentPropsMap = {
+const baseComponentPropsMap = {
   className: 'class',
   ...hoverPropAlias,
   formType: 'form-type',
@@ -151,8 +149,23 @@ export const baseComponentPropsMap = {
   defaultText: 'default-text',
   defaultAvatar: 'default-avatar',
   useEmptyValue: 'use-empty-value',
+  // size: 'size',
+  // loading: 'loading',
+  // disabled: 'disabled',
+  // type: 'type',
+  // value: 'value',
+  // color: 'color',
+  // checked: 'checked',
+  // name: 'name',
   ...bubbleEventsAlias,
 };
 
-export const aliasMap = new Map();
-aliasMap.set('view', view);
+type PropsAliasMap = typeof baseComponentPropsMap & {
+  [key: string]: string;
+};
+
+export const propAliasMap = new Proxy(baseComponentPropsMap, {
+  get(obj: any, prop) {
+    return prop in obj ? obj[prop] : prop;
+  },
+}) as PropsAliasMap;

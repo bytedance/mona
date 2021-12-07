@@ -32,6 +32,7 @@ import {
   AdProps,
   OpenDataProps,
   LinkProps,
+  TextProps
 } from '@bytedance/mona';
 
 type Alias = string;
@@ -69,3 +70,5 @@ export type WebviewAlias = AliasMap<WebviewProps>;
 export type AdAlias = AliasMap<AdProps>;
 export type OpenDataAlias = AliasMap<OpenDataProps>;
 export type LinkAlias = AliasMap<LinkProps>;
+export type TextAlias = AliasMap<TextProps>;
+
