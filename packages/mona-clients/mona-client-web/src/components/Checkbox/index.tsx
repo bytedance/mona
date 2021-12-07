@@ -4,6 +4,7 @@ import cs from 'classnames';
 import { CheckboxGroupContext } from '../CheckboxGroup';
 import styles from './index.module.less';
 import { useHandlers } from '../hooks';
+import { formatMouseEvent } from '../utils';
 
 const Checkbox: React.FC<CheckboxProps> = (props) => {
   const {
@@ -12,6 +13,7 @@ const Checkbox: React.FC<CheckboxProps> = (props) => {
     checked,
     color = '#F85959',
     children,
+    id,
     ...restProps
   } = props;
 
@@ -21,6 +23,15 @@ const Checkbox: React.FC<CheckboxProps> = (props) => {
   const { handleClassName, onClick, ...handlerProps } = useHandlers(restProps);
 
   const [isChecked, setIsChecked] = useState(checked);
+
+  const handleClick = (e: React.MouseEvent) => {
+    const newIsChecked = !isChecked;
+    setIsChecked(newIsChecked);
+    if (orderRef.current >= 0) {
+      group?.toggleChecked(orderRef.current, newIsChecked, formatMouseEvent({ event: e, type: 'change' }));
+    }
+    onClick(e);
+  }
   
   // don't change order of useEffects, the order is important
   useEffect(() => {
@@ -40,23 +51,15 @@ const Checkbox: React.FC<CheckboxProps> = (props) => {
     }
   }, [value])
 
-  const handleClick = (e: any) => {
-    const newIsChecked = !isChecked;
-    setIsChecked(newIsChecked);
-    if (orderRef.current >= 0) {
-      group?.toggleChecked(orderRef.current, newIsChecked);
-    }
-    onClick(e);
-  }
-
   return (
     <div
       className={handleClassName(styles.checkbox)}
       {...handlerProps}
-      onClick={handleClick}
     >
       <div className={styles.wrapper}>
-        <div className={cs(styles.input, {[styles.checked]: isChecked})} style={{ borderColor: color, backgroundColor: isChecked ? color: '' }}></div>
+        <div className={cs(styles.input, {[styles.checked]: isChecked})} style={{ borderColor: color, backgroundColor: isChecked ? color: '' }}>
+          <input id={id} onClick={handleClick} type="checkbox" className={styles.inner}></input>
+        </div>
         {children}
       </div>
     </div>
