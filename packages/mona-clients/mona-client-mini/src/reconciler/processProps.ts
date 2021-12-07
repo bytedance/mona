@@ -40,8 +40,8 @@ export function processProps(props: Record<string, any>, node: ServerElement) {
         newProps[propKey] = props[propKey];
       }
     } else if (styleMap[propKey]) {
-      warn(`${propKey} 属性的值，对象数据量过大时，会影响渲染性能，请考虑使用其他方式`);
       if (isObject(props[propKey])) {
+        warn(`${propKey} 属性的值，对象数据量过大时，会影响渲染性能，请考虑使用其他方式`);
         newProps[propKey] = plainStyle(props[propKey]);
       } else {
         newProps[propKey] = props[propKey];
@@ -67,12 +67,12 @@ export function diffProperties(oldProps: Record<string, any>, newProps: Record<s
     if (filterPropsMap[propKey]) {
       continue;
     } else if (styleMap[propKey]) {
-      oldStyle = oldProps[propKey] ?? {};
-      newStyle = newProps[propKey] ?? {};
+      oldStyle = oldProps[propKey];
+      newStyle = newProps[propKey];
       if (isObject(oldStyle)) {
         for (styleKey in oldStyle) {
           // 小程序中style 为 'color:white; font-size:16rpx;'的形式。所以有一个不同，style全更新
-          if (!newStyle.hasOwnProperty(styleKey)) {
+          if (!newStyle?.hasOwnProperty(styleKey)) {
             propUpdateObj[propKey] = newProps[propKey];
             break;
           }
@@ -82,8 +82,8 @@ export function diffProperties(oldProps: Record<string, any>, newProps: Record<s
       propUpdateObj[propKey] = null;
     }
   }
-  let newProp: string;
-  let oldProp: string;
+  let newProp: any;
+  let oldProp: any;
   for (propKey in newProps) {
     newProp = newProps[propKey];
     oldProp = oldProps ? oldProps[propKey] : null;
@@ -97,11 +97,10 @@ export function diffProperties(oldProps: Record<string, any>, newProps: Record<s
       continue;
     } else {
       if (styleMap[propKey]) {
-        newStyle = newProps[propKey] ?? {};
-        oldStyle = oldProps[propKey] ?? {};
-        if (isObject(newStyle)) {
-          for (styleKey in newStyle) {
-            if (oldStyle[styleKey] !== newStyle[styleKey]) {
+        oldStyle = oldProp ?? {};
+        if (isObject(newProp)) {
+          for (styleKey in newProp) {
+            if (oldStyle[styleKey] !== newProp[styleKey]) {
               propUpdateObj[propKey] = newProp;
               break;
             }
