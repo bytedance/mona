@@ -1,20 +1,20 @@
-import { bubbleEventsAlias, basePropAlias, baseComponentPropsMap as aliasMap } from '../prop';
+import { bubbleEventsAlias, basePropAlias, propAliasMap } from '../prop';
 import { ScrollViewAlias as Alias } from '../type';
 
 const alias: Alias = {
   ...basePropAlias,
   ...bubbleEventsAlias,
-  scrollX: aliasMap.scrollX,
-  scrollY: aliasMap.scrollY,
-  scrollIntoView: aliasMap.scrollIntoView,
-  scrollWithAnimation: aliasMap.scrollWithAnimation,
-  scrollLeft: aliasMap.scrollLeft,
-  scrollTop: aliasMap.scrollTop,
-  upperThreshold: aliasMap.upperThreshold,
-  lowerThreshold: aliasMap.lowerThreshold,
-  onScroll: aliasMap.onScroll,
-  onScrollToLower: aliasMap.onScrollToLower,
-  onScrollToUpper: aliasMap.onScrollToUpper,
+  scrollX: propAliasMap.scrollX,
+  scrollY: propAliasMap.scrollY,
+  scrollIntoView: propAliasMap.scrollIntoView,
+  scrollWithAnimation: propAliasMap.scrollWithAnimation,
+  scrollLeft: propAliasMap.scrollLeft,
+  scrollTop: propAliasMap.scrollTop,
+  upperThreshold: propAliasMap.upperThreshold,
+  lowerThreshold: propAliasMap.lowerThreshold,
+  onScroll: propAliasMap.onScroll,
+  onScrollToLower: propAliasMap.onScrollToLower,
+  onScrollToUpper: propAliasMap.onScrollToUpper,
 };
 
 export default alias;
