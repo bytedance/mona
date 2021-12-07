@@ -99,7 +99,7 @@ export function useHandlers(props: BaseProps & HoverProps) {
     !shouldEmitLongPressRef.current && isFunc(onTap) && onTap(e);
   }
 
-  const handleClassName = (name: string | string[]) => cs(name, className, { [hoverClassName]: hoverClassName && isHover })
+  const handleClassName = (name?: string | string[]) => cs(name, className, { [hoverClassName]: hoverClassName && isHover })
 
   return {
     onClick: handleTap,

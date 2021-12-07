@@ -194,7 +194,7 @@ export interface CheckboxProps extends BaseProps {
 }
 
 export interface CheckboxGroupProps extends BaseProps {
-  onChange?: EventHandler;
+  onChange?: (e: { detail: { value: any[] }}) => void;
   name?: string;
 }
 

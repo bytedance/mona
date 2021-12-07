@@ -1279,7 +1279,7 @@ abstract class Api {
   abstract chooseVideo(options: ChooseVideoOptions): void;
   abstract saveVideoToPhotoAlbum(options: SaveVideoOptions): void;
   abstract createVideoContext(id: string, component?: any): VideoContext;
-  abstract craeteLivePlayerContext(id: string, component?: any): LivePlayerContext;
+  abstract createLivePlayerContext(id: string, component?: any): LivePlayerContext;
   abstract preloadVideo(options: PreloadVideoOptions): PreloadVideoTask;
   // 相机
   abstract createCameraContext(): CameraContext;

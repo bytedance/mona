@@ -41,7 +41,7 @@ class WebApis extends BaseApis {
   chooseVideo = noImplementFactory('chooseVideo')
   saveVideoToPhotoAlbum = noImplementFactory('saveVideoToPhotoAlbum')
   createVideoContext = noImplementFactory('createVideoContext')
-  craeteLivePlayerContext = noImplementFactory('craeteLivePlayerContext')
+  createLivePlayerContext = noImplementFactory('createLivePlayerContext')
   preloadVideo = noImplementFactory('preloadVideo')
   createCameraContext = noImplementFactory('createCameraContext')
   createEffectCameraStream = noImplementFactory('createEffectCameraStream')
