@@ -127,10 +127,11 @@ export default class ServerElement {
     this.children.delete(child.key);
 
     child.reset();
-    child.taskController.removeCallback(child.key);
-    // console.log('&', 'removeChild', child);
 
     // TODO:函数都去除引用
+    // 得更新到视图后再删除？
+    child.taskController.removeCallback(child.key);
+
     if (this.isMounted()) {
       this.requestUpdate({
         targetNode: null,

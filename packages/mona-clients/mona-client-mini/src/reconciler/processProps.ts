@@ -1,6 +1,6 @@
 import { CALLBACK_SYMBOL } from '../utils/constants';
 import { baseComponentPropsMap } from '../components/prop';
-import { isFunction, isObject, warn } from '../utils/utils';
+import { isEventName, isFunction, isObject, warn } from '../utils/utils';
 import ServerElement from './ServerElement';
 import { plainStyle } from '../utils/transformStyle';
 
@@ -27,12 +27,18 @@ export function processProps(props: Record<string, any>, node: ServerElement) {
   const newProps: Record<string, any> = {};
   for (propKey in props) {
     if (filterPropsMap[propKey]) {
-    } else if (isFunction(props[propKey])) {
+    } else if (isEventName(propKey)) {
       cbKey = `${CALLBACK_SYMBOL}_${node.key}_${propKey}`;
-      node.taskController.addCallback(cbKey, props[propKey]);
-
-      // node.taskController.addCallback(`${CALLBACK_SYMBOL}_${node.key}`, cbKey, props[propKey]);
-      newProps[propKey] = cbKey;
+      if (isFunction(props[propKey])) {
+        node.taskController.addCallback(cbKey, props[propKey]);
+        // newProp有，oldProp无的加入更新队列
+        if (node.props?.[propKey] !== cbKey) {
+          newProps[propKey] = cbKey;
+        }
+      } else {
+        node.taskController.removeCallback(cbKey);
+        newProps[propKey] = props[propKey];
+      }
     } else if (styleMap[propKey]) {
       warn(`${propKey} 属性的值，对象数据量过大时，会影响渲染性能，请考虑使用其他方式`);
       if (isObject(props[propKey])) {
@@ -44,7 +50,6 @@ export function processProps(props: Record<string, any>, node: ServerElement) {
       newProps[propKey] = props[propKey];
     }
   }
-  console.log('updatePayload', node.key, newProps);
   return newProps;
 }
 
@@ -105,14 +110,7 @@ export function diffProperties(oldProps: Record<string, any>, newProps: Record<s
           propUpdateObj[propKey] = newProp;
         }
       } else {
-        // - 旧有新有的，只addCallback
-        if (isFunction(newProp) && oldProps.hasOwnProperty(propKey)) {
-          // 函数为字符串，旧有新有，证明小程序中已有这条记录，只需将回调挂到page上即可
-          //
-          // 只addCallback
-        } else {
-          propUpdateObj[propKey] = newProp;
-        }
+        propUpdateObj[propKey] = newProp;
       }
     }
   }

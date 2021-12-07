@@ -123,7 +123,6 @@ export default function createHostConfig() {
         node.props.style = { display: 'none !important' };
       }
       node.props.style = 'display:none !important';
-      // node.update('props', processProps({ style: node.props.style }, node));
       node.update('props', { style: 'display:none !important' });
     },
 
@@ -137,7 +136,6 @@ export default function createHostConfig() {
     },
 
     unhideTextInstance(node: ServerElement, text: string) {
-      // console.log('unhideTextInstance', node, text);
       node.text = text;
       node.update('', { text });
     },

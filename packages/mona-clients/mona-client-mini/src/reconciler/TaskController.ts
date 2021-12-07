@@ -1,7 +1,7 @@
 import { FiberRoot } from 'react-reconciler';
 import ServerElement, { RenderNode, NodeType } from './ServerElement';
 import { NodeTask } from '../utils/constants';
-import { isObject } from '../utils/utils';
+// import { isObject } from '../utils/utils';
 
 interface SpliceTask {
   type: NodeTask.SPLICE;
@@ -93,8 +93,8 @@ export default class TaskController {
   //   }
   // }
 
-  removeCallback(nodeKey: string | number, _eventName?: string) {
-    this.context[nodeKey] = undefined;
+  removeCallback(name: string | number) {
+    this.context[name] = undefined;
   }
   // if (eventName && isObject(this.context[nodeKey])) {
   //   this.context[nodeKey][eventName] = undefined;
