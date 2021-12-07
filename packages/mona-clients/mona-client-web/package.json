@@ -5,9 +5,9 @@
   "main": "./dist/index.js",
   "scripts": {
     "build": "yarn clean && yarn copy && tsc -b",
-    "start": "tsc -b -w",
+    "start": "yarn copy && tsc -b -w",
     "clean": "rm -rf dist",
-    "copy": "copyfiles -u 2 ./src/components/**/*.less ./dist/components"
+    "copy": "copyfiles -u 2 ./src/components/*.less ./src/components/**/*.less ./dist/components"
   },
   "keywords": [
     "web",

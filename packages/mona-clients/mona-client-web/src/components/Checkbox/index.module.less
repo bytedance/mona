@@ -1,0 +1,37 @@
+.checkbox {
+  -webkit-tap-highlight-color: transparent;
+  display: inline-block;
+
+  & .wrapper {
+    display: -webkit-inline-flex;
+    display: inline-flex;
+    -webkit-align-items: center;
+    align-items: center;
+    vertical-align: middle;
+  }
+
+  & .input {
+    margin-right: 5px;
+    -webkit-appearance: none;
+    appearance: none;
+    outline: 0;
+    background-color: #FFF;
+    border: 1px solid #E8E8E8;
+    border-radius: 100%;
+    width: 22px;
+    height: 22px;
+    position: relative;
+  }
+
+  & .input.checked:before {
+    font: normal normal normal 14px/1 "ttui";
+    content: "\e601";
+    font-size: 28px;
+    color: #FFFFFF;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -48%) scale(0.73);
+    -webkit-transform: translate(-50%, -48%) scale(0.73);
+  }
+}

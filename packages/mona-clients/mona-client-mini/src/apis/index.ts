@@ -30,7 +30,7 @@ class MiniApis extends BaseApis {
   chooseVideo = tt.chooseVideo
   saveVideoToPhotoAlbum = tt.saveVideoToPhotoAlbum
   createVideoContext = tt.createVideoContext
-  craeteLivePlayerContext = tt.craeteLivePlayerContext
+  createLivePlayerContext = tt.createLivePlayerContext
   preloadVideo = tt.preloadVideo
   createCameraContext = tt.createCameraContext
   createEffectCameraStream = tt.createEffectCameraStream
