@@ -129,7 +129,7 @@ export default function createHostConfig() {
       node.props.style = DISPLAY_NONE;
       node.update('props', { style: DISPLAY_NONE });
     },
-
+    // TODO: suspense fallback执行完之后，appendChild和unhideInstance会同时执行，这两个方法有重复，待优化
     unhideInstance(node: ServerElement, props: any = {}) {
       console.log('unhideInstance', { node, props });
 

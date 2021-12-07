@@ -1,5 +1,4 @@
 import { CALLBACK_SYMBOL } from '../utils/constants';
-import { baseComponentPropsMap } from '../components/prop';
 import { isEventName, isFunction, isObject, warn } from '../utils/utils';
 import ServerElement from './ServerElement';
 import { plainStyle } from '../utils/transformStyle';
@@ -117,30 +116,17 @@ export function diffProperties(oldProps: Record<string, any>, newProps: Record<s
   return propUpdateObj;
 }
 
-/**
- * TODO: 1. 支持支持stopPropagation
- * 2. 事件名称处理，编译时添加名称
- */
-export function processEvent(obj: Record<string, any>, event: string, cbKey: any) {
-  if (BUBBLE_EVENTS.includes(event)) {
-    //优化为编译时
-    obj[baseComponentPropsMap[event]] = cbKey;
-  } else {
-    obj[event] = cbKey;
-  }
-}
-
-export const BUBBLE_EVENTS = [
-  'onClick',
-  'onTap',
-  'onLongPress',
-  'onLongTap',
-  'onTouchStart',
-  'onTouchMove',
-  'onTouchEnd',
-  'onTouchcancel',
-  'onTransitionEnd',
-  'onAnimationStart',
-  'onAnimationIteration',
-  'onAnimationEnd',
-];
+// export const BUBBLE_EVENTS = [
+//   'onClick',
+//   'onTap',
+//   'onLongPress',
+//   'onLongTap',
+//   'onTouchStart',
+//   'onTouchMove',
+//   'onTouchEnd',
+//   'onTouchcancel',
+//   'onTransitionEnd',
+//   'onAnimationStart',
+//   'onAnimationIteration',
+//   'onAnimationEnd',
+// ];

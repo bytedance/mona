@@ -1,0 +1,8 @@
+<template name="mona-form">
+  <form <% for (let i in props) { %>
+    <%=props[i]%>="{{node.props['<%=i%>']}}" <% } %>
+          >
+          <template is="{{ 'mona-' + node.nodes[item].type }}" tt:for="{{ node.children }}" tt:key="{{ item.key }}"
+            data="{{ node: node.nodes[item] }}" />
+  </form>
+</template>

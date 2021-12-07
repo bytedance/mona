@@ -127,7 +127,7 @@ export default class ServerElement {
     this.children.delete(child.key);
 
     child.reset();
-
+    //TODO:removeCallback
     // child.taskController.removeCallback(child.key);
 
     if (this.isMounted()) {
