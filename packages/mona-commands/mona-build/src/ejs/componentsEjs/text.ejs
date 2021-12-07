@@ -1,0 +1,11 @@
+<template name="mona-text">
+  <text <% for (let i in props) { %>
+    <%=props[i]%>="{{node.props['<%=i%>']}}" <% } %>
+  >
+    <template 
+      is="{{ 'mona-' + node.nodes[item].type }}" 
+      tt:for="{{ node.children }}"
+      tt:key="{{ item.key }}"
+      data="{{ node: node.nodes[item] }}" />
+  </text>
+</template>

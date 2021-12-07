@@ -1,5 +1,7 @@
+import view from './View/alias';
+
 // 冒泡事件
-const bubbleEventsMap = {
+export const bubbleEventsAlias = {
   onTap: 'bindtap',
   onClick: 'bindtap',
   onTouchStart: 'bindtouchstart',
@@ -7,20 +9,32 @@ const bubbleEventsMap = {
   onTouchEnd: 'bindtouchend',
   onTouchCancel: 'bindtouchcancel',
   onLongTap: 'bindlongtap',
-  onLongClick: 'bindlongtap',
+  onLongPress: 'bindlongpress',
+  // onLongClick: 'bindlongtap',
   onTransitionEnd: 'bindtransitionend',
   onAnimationStart: 'bindanimationstart',
   onAnimationIteration: 'bindanimationiteration',
   onAnimationEnd: 'bindanimationend',
-  onTouchForcechange: 'bindtouchforcechange',
+  onTouchForceChange: 'bindtouchforcechange',
+};
+export const basePropAlias = {
+  id: 'id',
+  className: 'class',
+  style: 'style',
+  hidden: 'hidden',
 };
 
-export const baseComponentPropsMap: Record<string, string> = {
-  className: 'class',
+export const hoverPropAlias = {
+  hoverClass: 'hover-class',
   hoverClassName: 'hover-class',
   hoverStartTime: 'hover-start-time',
   hoverStayTime: 'hover-stay-time',
   hoverStopPropagation: 'hover-stop-propagation',
+};
+
+export const baseComponentPropsMap = {
+  className: 'class',
+  ...hoverPropAlias,
   formType: 'form-type',
   openType: 'open-type',
   onGetPhoneNumber: 'bindgetphonenumber',
@@ -137,6 +151,8 @@ export const baseComponentPropsMap: Record<string, string> = {
   defaultText: 'default-text',
   defaultAvatar: 'default-avatar',
   useEmptyValue: 'use-empty-value',
-
-  ...bubbleEventsMap,
+  ...bubbleEventsAlias,
 };
+
+export const aliasMap = new Map();
+aliasMap.set('view', view);

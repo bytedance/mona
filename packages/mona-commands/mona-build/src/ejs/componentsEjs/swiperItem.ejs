@@ -1,0 +1,11 @@
+<template name="mona-swiper-item">
+  <swiper-item <% for (let i in props) { %>
+    <%=props[i]%>="{{node.props['<%=i%>']}}" <% } %>
+  >
+    <template 
+      is="{{ 'mona-' + node.nodes[item].type }}" 
+      tt:for="{{ node.children }}"
+      tt:key="{{ item.key }}"
+      data="{{ node: node.nodes[item] }}" />
+  </swiper-item>
+</template>

@@ -1,0 +1,9 @@
+<template name="mona-picker">
+  <picker <% for (let i in props) { %>
+    <%=props[i]%>="{{node.props['<%=i%>']}}" <% } %>
+  >
+    <view>
+      <template is="mona-DEFAULT" data="{{root: node.children[0]}}" />
+    </view>
+  </picker>
+</template>

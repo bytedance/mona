@@ -1,0 +1,9 @@
+<template name="mona-block">
+  <block>
+    <template 
+      is="{{ 'mona-' + node.nodes[item].type }}" 
+      tt:for="{{ node.children }}"
+      tt:key="{{ item.key }}"
+      data="{{ node: node.nodes[item] }}" />
+  </block>
+</template>

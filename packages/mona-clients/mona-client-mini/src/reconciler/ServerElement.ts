@@ -127,10 +127,8 @@ export default class ServerElement {
     this.children.delete(child.key);
 
     child.reset();
-
-    // TODO:函数都去除引用
-    // 得更新到视图后再删除？
-    child.taskController.removeCallback(child.key);
+    //TODO:removeCallback
+    // child.taskController.removeCallback(child.key);
 
     if (this.isMounted()) {
       this.requestUpdate({
@@ -218,9 +216,9 @@ export default class ServerElement {
     };
   }
   reset() {
-    this.parent = null;
+    // this.parent = null;
     this.deleted = true;
-    this.mounted = false;
+    // this.mounted = false;
     this.nextSiblingKey = null;
     this.prevSiblingKey = null;
   }
