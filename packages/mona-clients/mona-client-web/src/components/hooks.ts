@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { BaseProps, HoverProps } from '@bytedance/mona';
 import cs from 'classnames';
+import { formatMouseEvent, formatTouchEvent } from './utils';
 
 const LONG_DURATION = 350;
 const HOVER_START_TIME = 20;
@@ -35,7 +36,7 @@ export function useHandlers(props: BaseProps & HoverProps) {
   const [isHover, setIsHover] = useState(false);
   const timersRef = useRef<ReturnType<typeof setTimeout>[]>([])
   const hoverRef = useRef(false);
-  const shouldEmitLongPressRef = useRef(false);
+  const shouldEmitLongEventRef = useRef(false);
 
   const delay = (callback: () => void, time: number) => {
     timersRef.current.push(
@@ -55,9 +56,9 @@ export function useHandlers(props: BaseProps & HoverProps) {
 
   useEffect(() => () => timersRef.current.forEach(t => clearTimeout(t)), [])
 
-  const handleTouchStart = (e: any) => {
+  const handleTouchStart = (e: React.TouchEvent) => {
     hoverRef.current = true;
-    shouldEmitLongPressRef.current = false;
+    shouldEmitLongEventRef.current = false;
 
     delay(() => {
       hoverClassName && hoverRef.current && setIsHover(true);
@@ -65,41 +66,49 @@ export function useHandlers(props: BaseProps & HoverProps) {
 
     delay(() => {
       // simulate long press
-      if (hoverRef.current && isFunc(onLongPress)) {
-        shouldEmitLongPressRef.current = true;
+      if (hoverRef.current) {
+        shouldEmitLongEventRef.current = true;
       }
-
-      hoverRef.current && isFunc(onLongTap) && onLongTap(e);
     }, LONG_DURATION)
 
-    isFunc(onTouchStart) && onTouchStart(e);
+    isFunc(onTouchStart) && onTouchStart(formatTouchEvent({ event: e }));
   }
 
-  const handleTouchMove = (e: any) => {
+  const handleTouchMove = (e: React.TouchEvent) => {
     stop();
 
-    isFunc(onTouchMove) && onTouchMove(e);
+    const event = formatTouchEvent({ event: e });
+    isFunc(onTouchMove) && onTouchMove(event);
   }
 
-  const handleTouchEnd = (e: any) => {
+  const handleTouchEnd = (e: React.TouchEvent) => {
     stop();
 
-    isFunc(onTouchEnd) && onTouchEnd(e);
-    isFunc(onLongPress) && shouldEmitLongPressRef.current && onLongPress(e);
+    const event = formatTouchEvent({ event: e });
+    isFunc(onTouchEnd) && onTouchEnd(event);
+    if (shouldEmitLongEventRef.current) {
+      isFunc(onLongTap) && onLongTap(formatTouchEvent({ event: e, type: 'longtap' }));
+      if (isFunc(onLongPress)) {
+        onLongPress(formatTouchEvent({ event: e, type: 'longpress' }));
+      }
+    }
   }
 
-  const handleTouchCancel = (e: any) => {
+  const handleTouchCancel = (e: React.TouchEvent) => {
     stop();
     
-    isFunc(onTouchCancel) && onTouchCancel(e);
+    const event = formatTouchEvent({ event: e });
+    isFunc(onTouchCancel) && onTouchCancel(event);
   }
 
-  const handleTap = (e: any) => {
+  const handleTap = (e: React.MouseEvent) => {
     // if longPressEvent already emited, this event will not emit
-    !shouldEmitLongPressRef.current && isFunc(onTap) && onTap(e);
+    if (!(shouldEmitLongEventRef.current && isFunc(onLongPress))) {
+      isFunc(onTap) && onTap(formatMouseEvent({ event: e, type: 'tap' }));
+    }
   }
 
-  const handleClassName = (name: string | string[]) => cs(name, className, { [hoverClassName]: hoverClassName && isHover })
+  const handleClassName = (name?: string | string[]) => cs(name, className, { [hoverClassName]: hoverClassName && isHover })
 
   return {
     onClick: handleTap,

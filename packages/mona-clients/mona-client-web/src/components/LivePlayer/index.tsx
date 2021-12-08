@@ -3,7 +3,7 @@ import { LivePlayerProps } from '@bytedance/mona';
 import NotImplemented from '../NotImplemented';
 
 const LivePlayer: React.FC<LivePlayerProps> = () => {
-  return <NotImplemented />
+  return <NotImplemented name="LivePlayer" />
 }
 
 export default LivePlayer;

@@ -1,8 +1,12 @@
 import React from 'react';
 import { CanvasProps } from '@bytedance/mona';
+import styles from './index.module.less';
 
-const Canvas: React.FC<CanvasProps> = ({ children }) => {
-  return <div>{children}</div>
+// TODO
+const Canvas: React.FC<CanvasProps> = ({ canvasId }) => {
+  return (
+    <canvas data-canvas-id={canvasId} className={styles.canvas}></canvas>
+  )
 }
 
 export default Canvas;

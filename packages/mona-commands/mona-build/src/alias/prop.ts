@@ -1,26 +1,38 @@
 // 冒泡事件
-const bubbleEventsMap = {
+export const bubbleEventsAlias = {
   onTap: 'bindtap',
-  onClick: 'bindtap',
+  // onClick: 'bindtap',
   onTouchStart: 'bindtouchstart',
   onTouchMove: 'bindtouchmove',
   onTouchEnd: 'bindtouchend',
   onTouchCancel: 'bindtouchcancel',
   onLongTap: 'bindlongtap',
-  onLongClick: 'bindlongtap',
+  onLongPress: 'bindlongpress',
+  // onLongClick: 'bindlongtap',
   onTransitionEnd: 'bindtransitionend',
   onAnimationStart: 'bindanimationstart',
   onAnimationIteration: 'bindanimationiteration',
   onAnimationEnd: 'bindanimationend',
-  onTouchForcechange: 'bindtouchforcechange',
+  onTouchForceChange: 'bindtouchforcechange',
+};
+export const basePropAlias = {
+  id: 'id',
+  className: 'class',
+  style: 'style',
+  hidden: 'hidden',
 };
 
-export const baseComponentPropsMap: Record<string, string> = {
-  className: 'class',
+export const hoverPropAlias = {
+  hoverClass: 'hover-class',
   hoverClassName: 'hover-class',
   hoverStartTime: 'hover-start-time',
   hoverStayTime: 'hover-stay-time',
   hoverStopPropagation: 'hover-stop-propagation',
+};
+
+const baseComponentPropsMap = {
+  className: 'class',
+  ...hoverPropAlias,
   formType: 'form-type',
   openType: 'open-type',
   onGetPhoneNumber: 'bindgetphonenumber',
@@ -137,6 +149,23 @@ export const baseComponentPropsMap: Record<string, string> = {
   defaultText: 'default-text',
   defaultAvatar: 'default-avatar',
   useEmptyValue: 'use-empty-value',
-
-  ...bubbleEventsMap,
+  // size: 'size',
+  // loading: 'loading',
+  // disabled: 'disabled',
+  // type: 'type',
+  // value: 'value',
+  // color: 'color',
+  // checked: 'checked',
+  // name: 'name',
+  ...bubbleEventsAlias,
 };
+
+type PropsAliasMap = typeof baseComponentPropsMap & {
+  [key: string]: string;
+};
+
+export const propAliasMap = new Proxy(baseComponentPropsMap, {
+  get(obj: any, prop) {
+    return prop in obj ? obj[prop] : prop;
+  },
+}) as PropsAliasMap;

@@ -1,6 +1,5 @@
 import { CALLBACK_SYMBOL } from '../utils/constants';
-import { baseComponentPropsMap } from '../components/prop';
-import { isFunction, isObject, warn } from '../utils/utils';
+import { isEventName, isFunction, isObject, warn } from '../utils/utils';
 import ServerElement from './ServerElement';
 import { plainStyle } from '../utils/transformStyle';
 
@@ -27,15 +26,24 @@ export function processProps(props: Record<string, any>, node: ServerElement) {
   const newProps: Record<string, any> = {};
   for (propKey in props) {
     if (filterPropsMap[propKey]) {
-    } else if (isFunction(props[propKey])) {
+    } else if (isEventName(propKey)) {
+      if (propKey === 'onClick') {
+        propKey = 'onTap';
+      }
       cbKey = `${CALLBACK_SYMBOL}_${node.key}_${propKey}`;
-      node.taskController.addCallback(cbKey, props[propKey]);
-
-      // node.taskController.addCallback(`${CALLBACK_SYMBOL}_${node.key}`, cbKey, props[propKey]);
-      newProps[propKey] = cbKey;
+      if (isFunction(props[propKey])) {
+        node.taskController.addCallback(cbKey, props[propKey]);
+        // newProp有，oldProp无的加入更新队列
+        if (node.props?.[propKey] !== cbKey) {
+          newProps[propKey] = cbKey;
+        }
+      } else {
+        node.taskController.removeCallback(cbKey);
+        newProps[propKey] = props[propKey];
+      }
     } else if (styleMap[propKey]) {
-      warn(`${propKey} 属性的值，对象数据量过大时，会影响渲染性能，请考虑使用其他方式`);
       if (isObject(props[propKey])) {
+        warn(`${propKey} 属性的值，对象数据量过大时，会影响渲染性能，请考虑使用其他方式`);
         newProps[propKey] = plainStyle(props[propKey]);
       } else {
         newProps[propKey] = props[propKey];
@@ -44,7 +52,6 @@ export function processProps(props: Record<string, any>, node: ServerElement) {
       newProps[propKey] = props[propKey];
     }
   }
-  console.log('updatePayload', node.key, newProps);
   return newProps;
 }
 
@@ -62,12 +69,12 @@ export function diffProperties(oldProps: Record<string, any>, newProps: Record<s
     if (filterPropsMap[propKey]) {
       continue;
     } else if (styleMap[propKey]) {
-      oldStyle = oldProps[propKey] ?? {};
-      newStyle = newProps[propKey] ?? {};
+      oldStyle = oldProps[propKey];
+      newStyle = newProps[propKey];
       if (isObject(oldStyle)) {
         for (styleKey in oldStyle) {
           // 小程序中style 为 'color:white; font-size:16rpx;'的形式。所以有一个不同，style全更新
-          if (!newStyle.hasOwnProperty(styleKey)) {
+          if (!newStyle?.hasOwnProperty(styleKey)) {
             propUpdateObj[propKey] = newProps[propKey];
             break;
           }
@@ -77,8 +84,8 @@ export function diffProperties(oldProps: Record<string, any>, newProps: Record<s
       propUpdateObj[propKey] = null;
     }
   }
-  let newProp: string;
-  let oldProp: string;
+  let newProp: any;
+  let oldProp: any;
   for (propKey in newProps) {
     newProp = newProps[propKey];
     oldProp = oldProps ? oldProps[propKey] : null;
@@ -92,11 +99,10 @@ export function diffProperties(oldProps: Record<string, any>, newProps: Record<s
       continue;
     } else {
       if (styleMap[propKey]) {
-        newStyle = newProps[propKey] ?? {};
-        oldStyle = oldProps[propKey] ?? {};
-        if (isObject(newStyle)) {
-          for (styleKey in newStyle) {
-            if (oldStyle[styleKey] !== newStyle[styleKey]) {
+        oldStyle = oldProp ?? {};
+        if (isObject(newProp)) {
+          for (styleKey in newProp) {
+            if (oldStyle[styleKey] !== newProp[styleKey]) {
               propUpdateObj[propKey] = newProp;
               break;
             }
@@ -105,14 +111,7 @@ export function diffProperties(oldProps: Record<string, any>, newProps: Record<s
           propUpdateObj[propKey] = newProp;
         }
       } else {
-        // - 旧有新有的，只addCallback
-        if (isFunction(newProp) && oldProps.hasOwnProperty(propKey)) {
-          // 函数为字符串，旧有新有，证明小程序中已有这条记录，只需将回调挂到page上即可
-          //
-          // 只addCallback
-        } else {
-          propUpdateObj[propKey] = newProp;
-        }
+        propUpdateObj[propKey] = newProp;
       }
     }
   }
@@ -120,30 +119,17 @@ export function diffProperties(oldProps: Record<string, any>, newProps: Record<s
   return propUpdateObj;
 }
 
-/**
- * TODO: 1. 支持支持stopPropagation
- * 2. 事件名称处理，编译时添加名称
- */
-export function processEvent(obj: Record<string, any>, event: string, cbKey: any) {
-  if (BUBBLE_EVENTS.includes(event)) {
-    //优化为编译时
-    obj[baseComponentPropsMap[event]] = cbKey;
-  } else {
-    obj[event] = cbKey;
-  }
-}
-
-export const BUBBLE_EVENTS = [
-  'onClick',
-  'onTap',
-  'onLongPress',
-  'onLongTap',
-  'onTouchStart',
-  'onTouchMove',
-  'onTouchEnd',
-  'onTouchcancel',
-  'onTransitionEnd',
-  'onAnimationStart',
-  'onAnimationIteration',
-  'onAnimationEnd',
-];
+// export const BUBBLE_EVENTS = [
+//   'onClick',
+//   'onTap',
+//   'onLongPress',
+//   'onLongTap',
+//   'onTouchStart',
+//   'onTouchMove',
+//   'onTouchEnd',
+//   'onTouchcancel',
+//   'onTransitionEnd',
+//   'onAnimationStart',
+//   'onAnimationIteration',
+//   'onAnimationEnd',
+// ];

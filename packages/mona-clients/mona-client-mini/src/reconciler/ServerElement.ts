@@ -127,10 +127,9 @@ export default class ServerElement {
     this.children.delete(child.key);
 
     child.reset();
-    child.taskController.removeCallback(child.key);
-    // console.log('&', 'removeChild', child);
+    //TODO:removeCallback
+    // child.taskController.removeCallback(child.key);
 
-    // TODO:函数都去除引用
     if (this.isMounted()) {
       this.requestUpdate({
         targetNode: null,
@@ -217,9 +216,9 @@ export default class ServerElement {
     };
   }
   reset() {
-    this.parent = null;
+    // this.parent = null;
     this.deleted = true;
-    this.mounted = false;
+    // this.mounted = false;
     this.nextSiblingKey = null;
     this.prevSiblingKey = null;
   }

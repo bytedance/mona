@@ -1,7 +1,9 @@
 import React from 'react';
 
-export default function createBaseComponent<P, T = any>(name: string) {
-  const Component = React.forwardRef<T, P>(({ children, ...props }, ref) => (React.createElement(name, { ...props, ref }, children)));
+export default function createBaseComponent<P>(name: string) {
+  const Component = React.forwardRef(({ children, ...props }, ref) =>
+    React.createElement(name, { ...props, ref }, children),
+  );
   Component.displayName = name;
-  return Component;
+  return Component as React.ComponentType<P>;
 }

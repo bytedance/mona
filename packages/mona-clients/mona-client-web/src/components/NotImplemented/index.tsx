@@ -1,5 +1,5 @@
 import React from 'react';
 
-const NotImplemented: React.FC = () => <div>not implement this component in web</div>
+const NotImplemented: React.FC<{ name: string }> = ({ name }) => <div>component {name} is not implemented in web</div>
 
 export default NotImplemented;
