@@ -54,7 +54,7 @@ export interface CanvasTouch {
   y: number;
 }
 
-export interface TouchEvent<T> extends BaseEvent {
+export interface TouchEvent<T = Touch> extends BaseEvent {
   touches: T[];
   changedTouches: T[];
 }
@@ -63,7 +63,7 @@ export interface EventHandler {
   (event: BaseEvent): void
 }
 
-export interface TouchEventHandler<T> {
+export interface TouchEventHandler<T = Touch> {
   (event: TouchEvent<T>): void
 }
 
@@ -194,7 +194,7 @@ export interface CheckboxProps extends BaseProps {
 }
 
 export interface CheckboxGroupProps extends BaseProps {
-  onChange?: (e: { detail: { value: any[] }}) => void;
+  onChange?: (event: TouchEvent & { detail: { value?: string[] }}) => void;
   name?: string;
 }
 
@@ -262,7 +262,7 @@ export interface RadioProps extends BaseProps {
 }
 
 export interface RadioGroupProps extends BaseProps {
-  onChange?: EventHandler;
+  onChange?: (event: TouchEvent & { detail: { value?: string }}) => void;
   name?: string;
 }
 

@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { CheckboxGroupProps } from '@bytedance/mona';
+import { CheckboxGroupProps, TouchEvent } from '@bytedance/mona';
 import { useHandlers } from '../hooks';
 
 export const EMPTY_ITEM = Symbol('checkboxEmpty');
@@ -7,7 +7,7 @@ export const EMPTY_ITEM = Symbol('checkboxEmpty');
 interface CheckboxGroupContextProps {
   initValue: (value?: string, checked?: boolean) => number;
   changeValue: (index: number, value?: string) => void
-  toggleChecked: (index: number, checked?: boolean) => void
+  toggleChecked: (index: number, checked?: boolean, e?: TouchEvent) => void
 }
 
 interface ValueItem {
@@ -37,14 +37,15 @@ const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ children, onChange, ...re
       newValues[index] = { ...newValues[index], value };
       valuesRef.current = newValues;
     },
-    toggleChecked: (index: number, checked?: boolean) => {
+    toggleChecked: (index: number, checked?: boolean, event?: TouchEvent) => {
       const newValues = [...valuesRef.current];
       newValues[index] = { ...newValues[index], checked }
       valuesRef.current = newValues;
       
       if (typeof onChange === 'function') {
         const result = newValues.filter(v => v.checked).map(v => v.value);
-        onChange({ detail: { value: result } })
+        const e = { ...event!, detail: { value: result as string[] } };
+        onChange(e)
       }
     }
   }
