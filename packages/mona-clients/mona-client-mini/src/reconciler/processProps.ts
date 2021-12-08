@@ -27,6 +27,9 @@ export function processProps(props: Record<string, any>, node: ServerElement) {
   for (propKey in props) {
     if (filterPropsMap[propKey]) {
     } else if (isEventName(propKey)) {
+      if (propKey === 'onClick') {
+        propKey = 'onTap';
+      }
       cbKey = `${CALLBACK_SYMBOL}_${node.key}_${propKey}`;
       if (isFunction(props[propKey])) {
         node.taskController.addCallback(cbKey, props[propKey]);

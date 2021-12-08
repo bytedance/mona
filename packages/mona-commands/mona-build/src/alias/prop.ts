@@ -1,7 +1,7 @@
 // 冒泡事件
 export const bubbleEventsAlias = {
   onTap: 'bindtap',
-  onClick: 'bindtap',
+  // onClick: 'bindtap',
   onTouchStart: 'bindtouchstart',
   onTouchMove: 'bindtouchmove',
   onTouchEnd: 'bindtouchend',

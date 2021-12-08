@@ -11,7 +11,7 @@ const alias: Alias = {
   maxLength: propAliasMap.maxLength,
   focus: propAliasMap.focus,
   cursorSpacing: propAliasMap.cursorSpacing,
-  cursor: propAliasMap.cursor,
+  // cursor: propAliasMap.cursor,
   selectionStart: propAliasMap.selectionStart,
   selectionEnd: propAliasMap.selectionEnd,
   onFocus: propAliasMap.onFocus,
