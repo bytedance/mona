@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchEvent, Touch, BaseTarget } from '@bytedance/mona';
+import { TouchEvent, Touch, BaseTarget, BaseEvent } from '@bytedance/mona';
 
 function mapTouch(t: React.Touch): Touch {
   return {
@@ -51,6 +51,23 @@ export function formatMouseEvent({
     changedTouches: [],
     type: type || originType,
     timeStamp,
+    target: mapTarget(target),
+    currentTarget: mapTarget(currentTarget)
+  }
+  return result;
+}
+
+export function formatSyntheticEvent({
+  event,
+  type,
+}: {
+  event: React.SyntheticEvent;
+  type?: string;
+}): BaseEvent {
+  const { type: originType, timeStamp, target, currentTarget } = event;
+  const result: BaseEvent = {
+    type: type || originType,
+    timeStamp: timeStamp,
     target: mapTarget(target),
     currentTarget: mapTarget(currentTarget)
   }
