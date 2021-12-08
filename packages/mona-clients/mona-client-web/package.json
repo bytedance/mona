@@ -8,7 +8,7 @@
     "start": "yarn copy && tsc -b -w",
     "clean": "rm -rf dist",
     "copy": "copyfiles -u 2 ./src/components/*.less ./src/components/**/*.less ./dist/components",
-    "api-copy": "copyfiles -u 3 ./src/apis/components/**/*.css ./dist/apis/components"
+    "api-copy": "copyfiles -u 3 ./src/apis/components/**/*.less ./dist/apis/components"
   },
   "keywords": [
     "web",

@@ -13,6 +13,13 @@
   padding: 5px 10px;
   box-sizing: border-box;
   z-index: 1000;
+
+  img {
+    width: 20px;
+    height: 20px;
+    display: block;
+    margin: 10px auto 0;
+  }
 }
 
 .mona-web-toast-text {
@@ -23,21 +30,16 @@
   margin: 0 auto;
 }
 
-.mona-web-toast-body img {
-  width: 20px;
-  height: 20px;
-  display: block;
-  margin: 10px auto 0;
-}
-
 .mona-web-toast-loading-img {
   animation: 1s linear infinite turnAround;
 }
 
 @keyframes turnAround {
+
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }

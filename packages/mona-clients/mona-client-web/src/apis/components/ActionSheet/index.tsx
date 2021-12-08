@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { ActionSheetProps } from '@bytedance/mona'
 import { Masking } from  '../Masking'
 import { hide } from '../util'
-import './index.css';
+import './index.module.less';
 
 const MONA_WEB_ACTION_SHEET = 'mona-web-action-sheet';
 

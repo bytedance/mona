@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { ShowModalOptions, CommonErrorArgs } from '@bytedance/mona';
 import { Masking } from '../Masking/index'
 import { hide } from '../util'
-import './index.css';
+import './index.module.less';
 
 const MONA_WEB_MODAL = 'mona-web-modal';
 
@@ -14,11 +14,11 @@ export function Modal(props: ShowModalOptions): JSX.Element {
       cancel = false,
       errMsg = '',
     }: { confirm?: boolean; cancel?: boolean } & Partial<CommonErrorArgs>) => {
-      hide(MONA_WEB_MODAL)
       props.success?.({ confirm, cancel, errMsg });
       props.complete?.({ confirm, cancel, errMsg });
+      hide(MONA_WEB_MODAL)
     },
-    []
+    [props]
   );
 
   return (
@@ -35,12 +35,14 @@ export function Modal(props: ShowModalOptions): JSX.Element {
           {props.content}
         </div>
         <div className="mona-web-modal-footer">
-          <div
-            className="mona-web-modal-button"
-            onClick={() => btnConfirm({ cancel: true })}
-          >
-            {props.confirmText || '取消'}
-          </div>
+          {
+            props.showCancel && <div
+              className="mona-web-modal-button"
+              onClick={() => btnConfirm({ cancel: true })}
+            >
+              {props.confirmText || '取消'}
+            </div>
+          }
           <div
             className="mona-web-modal-button"
             onClick={() =>
@@ -70,5 +72,9 @@ function confirm(props: ShowModalOptions) {
 }
 
 export function webShowModal(props: ShowModalOptions) {
-  confirm(props);
+  if(!props.title && !props.content) {
+    props.fail?.({ errMsg: 'showModal: error' })
+  } else {
+    confirm({showCancel: true,...props});
+  }
 }

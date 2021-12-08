@@ -3,7 +3,7 @@ import { Toastconfirm, ToastType } from '../Toast';
 
 export function webShowLoading(config: ShowToastOptions) {
   if (!config.title) {
-    config.fail?.({errMsg: 'showLoading调用失败'});
+    config.fail?.({errMsg: 'showLoading:fail'});
   } else {
     Toastconfirm(config, ToastType.loading);
   }

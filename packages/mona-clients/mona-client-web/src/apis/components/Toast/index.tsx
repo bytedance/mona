@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom';
 import { ShowToastOptions } from '@bytedance/mona'
-import './index.css';
+import './index.module.less';
 import { getToastIconConfig, ToastType } from './util';
 import { hide } from '../util'
 
