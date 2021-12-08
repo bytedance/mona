@@ -7,12 +7,9 @@
   </block>
 </template>
 
-
-
 <% for (let name of aliasMap.keys()) { %>
 <%-include(templatePath+'/'+name+'.ejs', {props: aliasMap.get(name)}); %>
 <% }; %>
-
 
 <template name="mona-ptext">
   <block>{{ node.text }}</block>

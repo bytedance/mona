@@ -1,42 +1,79 @@
 // @ts-nocheck
 import React from 'react';
-import { BaseComponents } from '@bytedance/mona';
 import createBaseComponent from '../createBaseComponent';
+import {
+  BaseComponents,
+  ButtonProps,
+  ViewProps,
+  ProgressProps,
+  IconProps,
+  ScrollViewProps,
+  SwiperProps,
+  SwiperItemProps,
+  MovableAreaProps,
+  MovableViewProps,
+  CheckboxProps,
+  CheckboxGroupProps,
+  FormProps,
+  InputProps,
+  LabelProps,
+  PickerProps,
+  PickerViewProps,
+  PickerViewColumnProps,
+  RadioProps,
+  RadioGroupProps,
+  SliderProps,
+  SwitchProps,
+  TextareaProps,
+  NavigatorProps,
+  ImageProps,
+  VideoProps,
+  LivePlayerProps,
+  CameraProps,
+  CanvasProps,
+  MapProps,
+  WebviewProps,
+  AdProps,
+  OpenDataProps,
+  LinkProps,
+  TextProps,
+  RichTextProps,
+} from '@bytedance/mona';
 class MiniComponents extends BaseComponents {
-  Text = createBaseComponent('text');
-  RichText = createBaseComponent('rich-text');
-  Progress = createBaseComponent('progress');
-  Icon = createBaseComponent('icon');
-  View = createBaseComponent('view');
-  ScrollView = createBaseComponent('scroll-view');
-  Swiper = createBaseComponent('swiper');
-  SwiperItem = createBaseComponent('swiper-item');
-  MovableArea = createBaseComponent('movable-area');
-  MovableView = createBaseComponent('movable-view');
-  Button = createBaseComponent('button');
-  Checkbox = createBaseComponent('checkbox');
-  CheckboxGroup = createBaseComponent('checkbox-group');
-  Form = createBaseComponent('form');
-  Input = createBaseComponent('input');
-  Label = createBaseComponent('label');
-  Picker = createBaseComponent('picker');
-  PickerView = createBaseComponent('picker-view');
-  PickerViewColumn = createBaseComponent('picker-view-column');
-  Radio = createBaseComponent('radio');
-  RadioGroup = createBaseComponent('radio-group');
-  Slider = createBaseComponent('slider');
-  Switch = createBaseComponent('switch');
-  Textarea = createBaseComponent('textarea');
-  Navigator = createBaseComponent('navigator');
-  Image = createBaseComponent('image');
-  Video = createBaseComponent('video');
-  LivePlayer = createBaseComponent('live-player');
-  Camera = createBaseComponent('camera');
-  Canvas = createBaseComponent('canvas');
-  Map = createBaseComponent('map');
-  Webview = createBaseComponent('web-view');
-  Ad = createBaseComponent('ad');
-  OpenData = createBaseComponent('open-data');
+  Text = createBaseComponent<TextProps>('text');
+  RichText = createBaseComponent<RichTextProps>('rich-text');
+  Progress = createBaseComponent<ProgressProps>('progress');
+  Icon = createBaseComponent<IconProps>('icon');
+  View = createBaseComponent<ViewProps>('view');
+  ScrollView = createBaseComponent<ScrollViewProps>('scroll-view');
+  Swiper = createBaseComponent<SwiperProps>('swiper');
+  SwiperItem = createBaseComponent<SwiperItemProps>('swiper-item');
+  MovableArea = createBaseComponent<MovableAreaProps>('movable-area');
+  MovableView = createBaseComponent<MovableViewProps>('movable-view');
+  Button = createBaseComponent<ButtonProps>('button');
+  Checkbox = createBaseComponent<CheckboxProps>('checkbox');
+  CheckboxGroup = createBaseComponent<CheckboxProps>('checkbox-group');
+  Form = createBaseComponent<FormProps>('form');
+  Input = createBaseComponent<InputProps>('input');
+  Label = createBaseComponent<LabelProps>('label');
+  Picker = createBaseComponent<PickerProps>('picker');
+  PickerView = createBaseComponent<PickerViewProps>('picker-view');
+  PickerViewColumn = createBaseComponent<PickerViewColumnProps>('picker-view-column');
+  Radio = createBaseComponent<RadioProps>('radio');
+  RadioGroup = createBaseComponent<RadioGroupProps>('radio-group');
+  Slider = createBaseComponent<SliderProps>('slider');
+  Switch = createBaseComponent<SwitchProps>('switch');
+  Textarea = createBaseComponent<TextareaProps>('textarea');
+  Navigator = createBaseComponent<NavigatorProps>('navigator');
+  Image = createBaseComponent<ImageProps>('image');
+  Video = createBaseComponent<VideoProps>('video');
+  LivePlayer = createBaseComponent<LivePlayerProps>('live-player');
+  Camera = createBaseComponent<CameraProps>('camera');
+  Canvas = createBaseComponent<CanvasProps>('canvas');
+  Map = createBaseComponent<MapProps>('map');
+  Webview = createBaseComponent<WebviewProps>('web-view');
+  Ad = createBaseComponent<AdProps>('ad');
+  OpenData = createBaseComponent<OpenDataProps>('open-data');
   // 自定义
   Link = (function createBaseComponent(name) {
     const Component = React.forwardRef(({ children, to }, ref) =>
@@ -44,8 +81,7 @@ class MiniComponents extends BaseComponents {
     );
     Component.displayName = name;
     return Component;
-  })('navigator');
+  })('navigator') as React.ComponentType<LinkProps>;
 }
-
 
 export default MiniComponents;
