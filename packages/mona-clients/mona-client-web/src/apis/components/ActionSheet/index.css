@@ -1,0 +1,57 @@
+.mona-web-action-sheet-body {
+  border-radius: 10px 10px 0 0;
+  background-color: #fff;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 1000;
+  width: 100%;
+  animation: enter 0.3s;
+}
+
+@keyframes enter {
+  from {
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+    visibility: visible;
+  }
+
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.mona-web-action-sheet-item {
+  position: relative;
+  padding: 10px;
+  line-height: 2;
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.mona-web-action-sheet-item:last-child:after {
+  border: none;
+}
+.mona-web-action-sheet-item::after {
+  content: '';
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 1;
+  border: 1px solid #e5e6eb;
+  transform: scale(1, 0.5);
+}
+
+.mona-web-masking {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  opacity: 0.2;
+  z-index: 999;
+}

@@ -1,0 +1,44 @@
+.mona-web-toast-body {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  background-color: #000;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  border-radius: 4px;
+  width: 130px;
+  text-align: center;
+  line-height: 40px;
+  font-size: 14px;
+  padding: 5px 10px;
+  box-sizing: border-box;
+  z-index: 1000;
+}
+
+.mona-web-toast-text {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 90%;
+  display: block;
+  margin: 0 auto;
+}
+
+.mona-web-toast-body img {
+  width: 20px;
+  height: 20px;
+  display: block;
+  margin: 10px auto 0;
+}
+
+.mona-web-toast-loading-img {
+  animation: 1s linear infinite turnAround;
+}
+
+@keyframes turnAround {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

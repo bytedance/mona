@@ -4,10 +4,11 @@
   "description": "web for mona",
   "main": "./dist/index.js",
   "scripts": {
-    "build": "yarn clean && yarn copy && tsc -b",
+    "build": "yarn clean && yarn copy && yarn api-copy && tsc -b",
     "start": "tsc -b -w",
     "clean": "rm -rf dist",
-    "copy": "copyfiles -u 2 ./src/components/**/*.less ./dist/components"
+    "copy": "copyfiles -u 2 ./src/components/**/*.less ./dist/components",
+    "api-copy": "copyfiles -u 3 ./src/apis/components/**/*.css ./dist/apis/components"
   },
   "keywords": [
     "web",

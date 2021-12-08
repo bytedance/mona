@@ -2,12 +2,12 @@ export interface EnterOrLaunchOptions {
   path: string;
   scene: string;
   query: object;
-  referrerInfo: { appId: string; extraData: object };
+  referrerInfo: { appId: string; extraData: object; };
   showFrom: number;
 }
 
 export interface UpdateManager {
-  onCheckForUpdate: (callback: (param: { hasUpdate: boolean }) => void) => void;
+  onCheckForUpdate: (callback: (param: { hasUpdate: boolean; }) => void) => void;
   onUpdateReady: (callback: () => void) => void;
   onUpdateFailed: (callback: (err: string) => void) => void;
   applyUpdate: (calllback: () => void) => void;
@@ -53,18 +53,18 @@ export interface RequestSuccesssCallbackArgs {
   statusCode: number;
   header: object;
   data: object | string | ArrayBuffer;
-  profile: ReqeustResponseProfile
+  profile: ReqeustResponseProfile;
 }
 
 export interface RequestFailCallbackArgs extends CommonErrorArgs {
   errNo: string;
-  profile?: ReqeustResponseProfile
+  profile?: ReqeustResponseProfile;
 }
 
 export interface RequestOptions extends Callbacks<RequestSuccesssCallbackArgs, RequestFailCallbackArgs> {
   url: string;
   header?: object;
-  method?: 'GET' | 'HEAD' | 'OPTIONS' | 'POST' | 'DELETE' | 'PUT' | 'TRACE'  | 'CONNECT'
+  method?: 'GET' | 'HEAD' | 'OPTIONS' | 'POST' | 'DELETE' | 'PUT' | 'TRACE' | 'CONNECT';
   data?: object | string | ArrayBuffer;
   dataType?: 'json' | 'string';
   timeout?: number;
@@ -81,7 +81,7 @@ export interface UploadFileOptions extends Callbacks<UploadFileSuccesssCallbackA
   filePath: string;
   name: string;
   header?: object;
-  formData?: object
+  formData?: object;
 }
 
 export interface ConnectSocketSuccessCallbackArgs {
@@ -96,7 +96,7 @@ export interface ConnectSocketOptions extends Callbacks<ConnectSocketSuccessCall
 
 export interface DownloadTask {
   abort: () => void;
-  onProgress: (callback: { progress: number; totalBytesWritten: number; totalBytesExpectedToWrite: number }) => void;
+  onProgress: (callback: { progress: number; totalBytesWritten: number; totalBytesExpectedToWrite: number; }) => void;
 }
 
 export interface RequestTask {
@@ -127,7 +127,7 @@ export interface SocketTask {
   onOpen: (callback: (params: {
     header: object;
     protocolType: string;
-    socketType: 'ttnet' | 'tradition'
+    socketType: 'ttnet' | 'tradition';
   }) => void) => void;
   onClose: (callback: (params: {
     protocolType: string;
@@ -135,20 +135,20 @@ export interface SocketTask {
     errMsg: string;
     reason: string;
     code: string;
-  }) => void) => void
+  }) => void) => void;
   onMessage: (callback: (params: {
     data: string | ArrayBuffer;
     protocolType: string;
     socketType: 'ttnet' | 'tradition',
-  }) => void) => void
+  }) => void) => void;
   onError: (callback: (params: {
     errMsg: string;
-  }) => void) => void
+  }) => void) => void;
 }
 
 export interface ChooseImageSuccessCallbackArgs {
   tempFilePaths: string[];
-  tempFiles: { path: string; size: number }[];
+  tempFiles: { path: string; size: number; }[];
 }
 export interface ChooseImageOptions extends Callbacks<ChooseImageSuccessCallbackArgs, CommonErrorArgs> {
   count?: number;
@@ -206,7 +206,7 @@ export interface RecorderManager {
   onStop: (callback: (data: any) => void) => void;
   onError: (callback: (err: CommonErrorArgs) => void) => void;
   onResume: (callback: (data: any) => void) => void;
-  onFrameRecorded: (callback: (data: { isLastFrame: boolean; frameBuffer: Buffer }) => void) => void;
+  onFrameRecorded: (callback: (data: { isLastFrame: boolean; frameBuffer: Buffer; }) => void) => void;
 }
 
 export interface BackgroundAudioManager {
@@ -218,7 +218,7 @@ export interface BackgroundAudioManager {
   coverImgUrl?: string;
   webUrl?: string;
   protocol?: string;
-  audioPage?: { path: string; query: { name: string } };
+  audioPage?: { path: string; query: { name: string; }; };
   duration?: number;
   currentTime?: number;
   paused?: boolean;
@@ -235,7 +235,7 @@ export interface BackgroundAudioManager {
   onStop: (callback: (data: any) => void) => void;
   onEnded: (callback: (data: any) => void) => void;
   onTimeUpdate: (callback: (data: any) => void) => void;
-  onError: (callback: (data: { errMsg: string; errCode: number }) => void) => void;
+  onError: (callback: (data: { errMsg: string; errCode: number; }) => void) => void;
   onWaiting: (callback: (data: any) => void) => void;
   onSeek: (callback: (data: any) => void) => void;
   onNext: (callback: (data: any) => void) => void;
@@ -247,7 +247,7 @@ export interface BackgroundAudioManager {
 export interface InnerAudioContext {
   src: string;
   startTime?: number;
-  autoplay?: boolean
+  autoplay?: boolean;
   loop?: boolean;
   obeyMuteSwitch?: boolean;
   duration?: boolean;
@@ -269,7 +269,7 @@ export interface InnerAudioContext {
   onStop: (callback: (data: any) => void) => void;
   onEnded: (callback: (data: any) => void) => void;
   onTimeUpdate: (callback: (data: any) => void) => void;
-  onError: (callback: (data: { errMsg: string; errCode: number }) => void) => void;
+  onError: (callback: (data: { errMsg: string; errCode: number; }) => void) => void;
   onWaiting: (callback: (data: any) => void) => void;
   onSeeking: (callback: (data: any) => void) => void;
   onSeeked: (callback: (data: any) => void) => void;
@@ -317,7 +317,7 @@ export interface LivePlayerContext {
   stop: () => void;
   mute: () => void;
   unmute: () => void;
-  requestFullScreen: (options: { direction: 0 | 90 | -90 }) => void;
+  requestFullScreen: (options: { direction: 0 | 90 | -90; }) => void;
   exitFullScreen: () => void;
 }
 
@@ -339,7 +339,7 @@ export interface CameraContextOnCameraFrameCallbackArgs {
   width: number;
   height: number;
   data: ArrayBuffer;
-  timestamp: number
+  timestamp: number;
 }
 
 export interface CameraContextSetZoomSuccessCallbackArgs {
@@ -352,7 +352,7 @@ export interface CameraContextSetZoomSuccessCallbackArgs {
 export interface CameraContextSetZoomFailCallbackArgs extends CommonErrorArgs {
   errCode: number;
 }
-export interface CameraContextSetZoomOptions extends Callbacks<CameraContextSetZoomSuccessCallbackArgs, CameraContextSetZoomFailCallbackArgs>{
+export interface CameraContextSetZoomOptions extends Callbacks<CameraContextSetZoomSuccessCallbackArgs, CameraContextSetZoomFailCallbackArgs> {
   zoom: number;
 }
 export interface CameraContext {
@@ -363,10 +363,10 @@ export interface CameraContext {
 export interface EffectCameraPaintToFailCallbackArgs extends CommonErrorArgs {
   errNo: number;
 }
-export interface EffectCameraPaintToOptions extends Callbacks<CommonErrorArgs, EffectCameraPaintToFailCallbackArgs>{
+export interface EffectCameraPaintToOptions extends Callbacks<CommonErrorArgs, EffectCameraPaintToFailCallbackArgs> {
   canvas: any;
   dx?: number;
-  dy?: number
+  dy?: number;
   sx?: number;
   sy?: number;
 }
@@ -377,7 +377,7 @@ export interface EffectCameraVideo {
 }
 
 export interface EffectCameraStream {
-  request: (options: { orientation: 'back' | 'front' }) => void;
+  request: (options: { orientation: 'back' | 'front'; }) => void;
   play: () => void;
   stop: () => void;
   paintTo: (options: EffectCameraPaintToOptions) => void;
@@ -387,7 +387,7 @@ export interface EffectCameraStream {
   offPlay: (callback: (data: any) => void) => void;
   onStop: (callback: (data: any) => void) => void;
   offStop: (callback: (data: any) => void) => void;
-  onError: (callback: (data: { type: string; errMsg: string }) => void) => void;
+  onError: (callback: (data: { type: string; errMsg: string; }) => void) => void;
   offError: (callback: (data: any) => void) => void;
   dispose: () => void;
 }
@@ -398,27 +398,27 @@ export interface Coordinates {
 }
 
 
-export interface MapContextGetCenterLocationOptions extends Callbacks<Coordinates, CommonErrorArgs> {}
+export interface MapContextGetCenterLocationOptions extends Callbacks<Coordinates, CommonErrorArgs> { }
 
 export interface MapContextGetRegionSuccessCallbackArgs {
   southwest: Coordinates;
   northeast: Coordinates;
 }
 
-export interface MapContextGetRegionOptions extends Callbacks<MapContextGetRegionSuccessCallbackArgs, CommonErrorArgs> {}
+export interface MapContextGetRegionOptions extends Callbacks<MapContextGetRegionSuccessCallbackArgs, CommonErrorArgs> { }
 
 export interface MapContextGetScaleSuccessCallbackArgs {
   scale: number;
 }
-export interface MapContextGetScaleOptions extends Callbacks<MapContextGetScaleSuccessCallbackArgs, CommonErrorArgs> {}
+export interface MapContextGetScaleOptions extends Callbacks<MapContextGetScaleSuccessCallbackArgs, CommonErrorArgs> { }
 
-export interface MapContextMoveToLocationOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs>, Coordinates {}
+export interface MapContextMoveToLocationOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs>, Coordinates { }
 
 export interface MapContextGetRotateSuccessCallbackArgs {
   errMsg: string;
   rotate: number;
 }
-export interface MapContextGetRotateOptions extends Callbacks<MapContextGetRotateSuccessCallbackArgs, CommonErrorArgs> {}
+export interface MapContextGetRotateOptions extends Callbacks<MapContextGetRotateSuccessCallbackArgs, CommonErrorArgs> { }
 export interface MapContextIncludePointsOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   points: Coordinates[];
   padding?: [number, number, number, number];
@@ -428,7 +428,7 @@ export interface MapContextGetSkewSuccessCallbackArgs {
   errMsg: string;
   skew: number;
 }
-export interface MapContextGetSkewOptions extends Callbacks<MapContextGetSkewSuccessCallbackArgs, CommonErrorArgs> {}
+export interface MapContextGetSkewOptions extends Callbacks<MapContextGetSkewSuccessCallbackArgs, CommonErrorArgs> { }
 
 export interface MapContextTranslateMarkerOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   markerId: number;
@@ -454,7 +454,7 @@ export interface MapContextMapToScreenSuccessCallbackArgs {
   y: number;
 }
 
-export interface MapContextMapToScreenOptions extends Callbacks<MapContextMapToScreenSuccessCallbackArgs, CommonErrorArgs>, Coordinates {}
+export interface MapContextMapToScreenOptions extends Callbacks<MapContextMapToScreenSuccessCallbackArgs, CommonErrorArgs>, Coordinates { }
 
 export interface MapContextScreenToMapSuccessCallbackArgs {
   errMsg: string;
@@ -510,14 +510,14 @@ export interface FileItem {
 }
 
 export interface GetSavedFileListSuccessCallbackArgs {
-  fileList: FileItem[]
+  fileList: FileItem[];
 }
-export interface GetSavedFileListOptions extends Callbacks<GetSavedFileListSuccessCallbackArgs, CommonErrorArgs> {}
+export interface GetSavedFileListOptions extends Callbacks<GetSavedFileListSuccessCallbackArgs, CommonErrorArgs> { }
 
 export interface OpenDocumentOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   filePath: string;
   fileType?: string;
-  fileName?: string
+  fileName?: string;
 }
 
 type RemoveSavedFileFailCallbackArgs = SaveFileFailCallbackArgs;
@@ -526,21 +526,21 @@ export interface RemoveSavedFileOptions extends Callbacks<CommonErrorArgs, Remov
   filePath: string;
 }
 
-type FileSystemManagerAccessFailCallbackArgs =  SaveFileFailCallbackArgs;
+type FileSystemManagerAccessFailCallbackArgs = SaveFileFailCallbackArgs;
 
 export interface FileSystemManagerSaveFileSuccessCallbackArgs {
   errMsg: string;
   savedFilePath: string;
 }
 
-type FileSystemManagerSaveFileFailCallbackArgs =  SaveFileFailCallbackArgs;
+type FileSystemManagerSaveFileFailCallbackArgs = SaveFileFailCallbackArgs;
 
 export interface FileSystemManagerSaveFileOptions extends Callbacks<FileSystemManagerSaveFileSuccessCallbackArgs, FileSystemManagerSaveFileFailCallbackArgs> {
   tempFilePath: string;
   filePath?: string;
 }
 
-type FileSystemManagerCopyFileFailCallbackArgs =  SaveFileFailCallbackArgs;
+type FileSystemManagerCopyFileFailCallbackArgs = SaveFileFailCallbackArgs;
 
 type CommonExtendsErrorArgs = SaveFileFailCallbackArgs;
 
@@ -572,7 +572,7 @@ export interface FileSystemManagerReadFileOptions extends Callbacks<FileSystemMa
   encoding?: Encoding;
 }
 
-export interface FileSystemManagerRenameOptions extends Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>{
+export interface FileSystemManagerRenameOptions extends Callbacks<CommonErrorArgs, CommonExtendsErrorArgs> {
   oldPath: string;
   newPath: string;
 }
@@ -610,7 +610,7 @@ export interface FileSystemManagerUnzipOptions extends Callbacks<CommonErrorArgs
 export interface FileSystemManagerWriteFileOptions extends Callbacks<CommonErrorArgs, CommonExtendsErrorArgs> {
   filePath: string;
   data: string | ArrayBuffer;
-  encoding?: Encoding
+  encoding?: Encoding;
 }
 export interface FileSystemManager {
   accessSync: (path: string) => void;
@@ -644,12 +644,12 @@ export interface FileSystemManager {
 export interface EnvInfo {
   microapp: {
     mpVersion: string;
-    envType: 'production' | 'development' | 'preview'
+    envType: 'production' | 'development' | 'preview';
     appId: string;
   },
   common: {
     USER_DATA_PATH: string;
-  }
+  };
 }
 
 export interface LoginSuccessCallbackArgs {
@@ -662,7 +662,7 @@ export interface LoginOptions extends Callbacks<LoginSuccessCallbackArgs, Common
   force?: boolean;
 }
 
-export interface CheckSessionOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {}
+export interface CheckSessionOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> { }
 
 export interface UserInfo {
   avatarUrl: string;
@@ -676,7 +676,7 @@ export interface UserInfo {
 
 export interface GetUserInfoSuccessCallbackArgs {
   errMsg: string;
-  rawData: string
+  rawData: string;
   userInfo: UserInfo;
   signature?: string;
   encryptedData: string;
@@ -699,7 +699,7 @@ export interface RewardedVideoAd {
   show: () => void;
   onLoad: (callback: (data: any) => void) => void;
   offLoad: (callback: (data: any) => void) => void;
-  load: () => Promise<any>
+  load: () => Promise<any>;
   onError: (callback: (data: any) => void) => void;
   offError: (callback: (data: any) => void) => void;
   onClose: (callback: (data: any) => void) => void;
@@ -716,9 +716,9 @@ export interface PayOptions {
     order_token: string;
   },
   service: number;
-  _debug?: number
-  success?: (args: { code: number }) => void;
-  fail?: (args: { errMsg: string }) => void;
+  _debug?: number;
+  success?: (args: { code: number; }) => void;
+  fail?: (args: { errMsg: string; }) => void;
 }
 
 export interface NavigateToMiniProgramOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
@@ -741,7 +741,7 @@ export interface ChooseAddressesSuccessCallbackArgs {
   telNumber: string;
 }
 
-export interface ChooseAddressesOptions extends Callbacks<ChooseAddressesSuccessCallbackArgs, CommonErrorArgs> {}
+export interface ChooseAddressesOptions extends Callbacks<ChooseAddressesSuccessCallbackArgs, CommonErrorArgs> { }
 
 export interface GetSettingSuccessCallbackArgs {
   errMsg: string;
@@ -752,15 +752,15 @@ export interface GetSettingSuccessCallbackArgs {
     'scope.record'?: boolean;
     'scope.album'?: boolean;
     'scope.camera'?: boolean;
-  }
+  };
 }
-export interface GetSettingOptions extends Callbacks<GetSettingSuccessCallbackArgs, CommonErrorArgs> {}
+export interface GetSettingOptions extends Callbacks<GetSettingSuccessCallbackArgs, CommonErrorArgs> { }
 type OpenSettingsOptions = GetSettingOptions;
 
 type Scope = 'scope.userInfo' | 'scope.userLocation' | 'scope.address' | 'scope.record' | 'scope.album' | 'scope.camera';
 
 export interface AuthorizeOptions extends Callbacks {
-  scope: Scope
+  scope: Scope;
 }
 
 export interface ShowDouyinOpenAuthSuccessCallbackArgs {
@@ -775,16 +775,16 @@ export interface ShowDouyinOpenAuthOptions extends Callbacks<ShowDouyinOpenAuthS
 
 
 export interface CanRateAwemeOrdersOptions extends Callbacks<{ result: string[]; errMsg: string; }, CommonExtendsErrorArgs> {
-  orderIds: string[]
+  orderIds: string[];
 }
 
 export interface RateAwemeOrderOptions extends Callbacks<{ result: boolean; errMsg: string; }> {
-  orderId: string
+  orderId: string;
 }
 
 export interface RequestSubscribeMessageSuccessCallbackArgs {
   errMsg: string;
-  TEMPLATE_ID: 'accept' | 'reject' | 'ban' | 'fail'
+  TEMPLATE_ID: 'accept' | 'reject' | 'ban' | 'fail';
 }
 export interface RequestSubscribeMessageOptions extends Callbacks<RequestSubscribeMessageSuccessCallbackArgs, CommonExtendsErrorArgs> {
   tmplIds: string[];
@@ -802,7 +802,7 @@ export interface OpenEcOrderDetailOptions extends Callbacks<CommonErrorArgs, Com
 export interface OpenEcImOptions extends Callbacks<CommonErrorArgs, CommonExtendsErrorArgs> {
   shopId: string;
   orderId?: string;
-  promotionId?: string
+  promotionId?: string;
 }
 
 export interface OpenEcChatOptions extends Callbacks<CommonErrorArgs, CommonExtendsErrorArgs> {
@@ -827,7 +827,7 @@ export interface PerformanceEntry {
   duration: number;
 }
 
-export interface GetStorageOptions extends Callbacks<{ data: any }, any> {
+export interface GetStorageOptions extends Callbacks<{ data: any; }, any> {
   key: string;
 }
 export interface SetStorageOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
@@ -859,7 +859,7 @@ export interface GetLocationSuccessCallbackArgs {
   city: string;
 }
 export interface GetLocationOptions extends Callbacks<GetLocationSuccessCallbackArgs, CommonErrorArgs> {
-  type?: 'wgs84' | 'gcj02'
+  type?: 'wgs84' | 'gcj02';
 }
 
 export interface ChooseLocationSuccessCallbackArgs {
@@ -876,20 +876,20 @@ export interface ChooseLocationOptions extends Callbacks<ChooseLocationSuccessCa
 }
 
 export interface OpenLocationOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
-  latitude: number
+  latitude: number;
   longtitude: number;
   scale: number;
   name: string;
   address: string;
 }
 
-type NetworkType = 'wifi' | '2g' | '3g' | '4g' | 'unknown' | 'none'
+export type NetworkType = 'wifi' | '2g' | '3g' | '4g' | 'unknown' | 'none';
 type WifiInfo = {
   SSID: string;
   BSSID: string;
   secure: boolean;
   signalStrength: number;
-}
+};
 
 export interface SafeArea {
   left: number;
@@ -943,7 +943,7 @@ export interface CanvasContext {
   fillRect(x: number, y: number, width: number, height: number): void;
   strokeRect(x: number, y: number, width: number, height: number): void;
   drawImage(imageResource: string, sx: number, sy: number, sw?: number, sh?: number, dx?: number, dy?: number, dw?: number, dh?: number): void;
-  measureText(text: string): { width: number };
+  measureText(text: string): { width: number; };
   scale(scaleWidth: number, scaleHeight: number): void;
   rotate(rotate: number): void;
   translate(x: number, y: number): void;
@@ -984,7 +984,7 @@ export interface ShowModalOptions extends Callbacks<{ confirm: boolean; cancel: 
   cancelText?: string;
 }
 
-export interface ShowFavoriteGuideOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> { type?: string; content?: string; position?: string }
+export interface ShowFavoriteGuideOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> { type?: string; content?: string; position?: string; }
 
 export interface Animation {
   opacity: number;
@@ -1025,10 +1025,10 @@ export interface AlgorithmManager {
     height: number;
     timeStamp: number;
     success?: (data: any) => void;
-    fail?: (args: { errMsg: string }) => void
+    fail?: (args: { errMsg: string; }) => void;
   }): void;
 }
-export interface GetAlgorithmManagerOptions extends Callbacks<{ algorithmManager: AlgorithmManager } & CommonErrorArgs, CommonErrorArgs> {
+export interface GetAlgorithmManagerOptions extends Callbacks<{ algorithmManager: AlgorithmManager; } & CommonErrorArgs, CommonErrorArgs> {
   width: number;
   height: number;
   useSyncMode: boolean;
@@ -1040,7 +1040,7 @@ export interface StickerProcessor {
 }
 export interface StickerManager {
   onLoad: (callback: (processor: StickerProcessor) => void) => void;
-  onError: (callback: (res: { errMsg: string }) => void) => void;
+  onError: (callback: (res: { errMsg: string; }) => void) => void;
   load(): void;
 }
 
@@ -1119,7 +1119,7 @@ export interface NodesRef {
   boundingClientRect(callback: (res: NodesRefBoundingClientRectCallbackArgs) => void): SelectorQuery;
   scrollOffset(callback: (res: NodesRefScrollOffsetCallbackArgs) => void): SelectorQuery;
   fields(fields: NodesRefFields, callback?: (res: NodesRefFieldsCallbackArgs) => void): SelectorQuery;
-  node(callback: (res: { node: object }) => void): SelectorQuery;
+  node(callback: (res: { node: object; }) => void): SelectorQuery;
 }
 
 export interface SelectorQuery {
@@ -1144,13 +1144,13 @@ export interface IntersectionObserverMargins {
 }
 
 export interface IntersectionObserverCallbackArgs {
-  id:	string;
-  dataset:	object;
-  intersectionRatio:	number;
-  intersectionRect:	IntersectionRect;
-  boundingClientRect:	IntersectionRect;
-  relativeRect:	RelativeRect;
-  time:	number;
+  id: string;
+  dataset: object;
+  intersectionRatio: number;
+  intersectionRect: IntersectionRect;
+  boundingClientRect: IntersectionRect;
+  relativeRect: RelativeRect;
+  time: number;
 }
 
 export interface IntersectionRect {
@@ -1201,14 +1201,14 @@ export interface LiveUserInfo {
   role: string;
 }
 
-export interface GetLiveUserInfoOptions extends Callbacks<{ userInfo: LiveUserInfo } & CommonErrorArgs, CommonExtendsErrorArgs> {}
+export interface GetLiveUserInfoOptions extends Callbacks<{ userInfo: LiveUserInfo; } & CommonErrorArgs, CommonExtendsErrorArgs> { }
 export interface LiveReportContext {
   orderConfirmPageShow(options: LiveReportContextOrderConfirmPageShowOptions): void;
   orderSubmit(options: LiveReportContextOrderConfirmPageShowOptions): void;
   productDetailsShow(options: LiveReportContextProductDetailsShowOptions): void;
   productSelect(options: LiveReportContextProductDetailsShowOptions): void;
   productShareClick(options: LiveReportContextProductDetailsShowOptions): void;
-  shelfShow(options: { showFrom: number } & LiveReportContextProductDetailsShowOptions): void;
+  shelfShow(options: { showFrom: number; } & LiveReportContextProductDetailsShowOptions): void;
 }
 
 export interface FollowInfo {
@@ -1234,16 +1234,18 @@ export interface OnReceiveSpecifiedCommentOptions {
   commnetList: Comment[];
 }
 
+export type ActionSheetProps = { itemList: string[]; } & Callbacks<CommonErrorArgs & { tapIndex: number; }, CommonErrorArgs>;
+
 abstract class Api {
   // 基础
-  abstract canIUse(schema: string): boolean
-  abstract base64ToArrayBuffer(str: string): ArrayBuffer
-  abstract arrayBufferToBase64(obj: ArrayBuffer): string
+  abstract canIUse(schema: string): boolean;
+  abstract base64ToArrayBuffer(str: string): string;
+  abstract arrayBufferToBase64(obj: string): string;
   // 生命周期
-  abstract getEnterOptionsSync(): EnterOrLaunchOptions
-  abstract getLaunchOptionsSync(): EnterOrLaunchOptions
-  abstract exitMiniProgram(callbacks: Callbacks): void
-  abstract canIPutStuffOverComponent(componentName: string): boolean
+  abstract getEnterOptionsSync(): EnterOrLaunchOptions;
+  abstract getLaunchOptionsSync(): EnterOrLaunchOptions;
+  abstract exitMiniProgram(callbacks: Callbacks): void;
+  abstract canIPutStuffOverComponent(componentName: string): boolean;
   // 更新
   abstract getUpdateManager(): UpdateManager;
   // 应用级事件
@@ -1256,8 +1258,8 @@ abstract class Api {
   // 环境变量
   abstract env: {
     VERSION: string;
-    USER_DATA_PATH: string
-  }
+    USER_DATA_PATH: string;
+  };
   // 网络
   abstract downloadFile(options: DownloadFileOptions): DownloadTask;
   abstract request(options: RequestOptions): RequestTask;
@@ -1279,7 +1281,7 @@ abstract class Api {
   abstract chooseVideo(options: ChooseVideoOptions): void;
   abstract saveVideoToPhotoAlbum(options: SaveVideoOptions): void;
   abstract createVideoContext(id: string, component?: any): VideoContext;
-  abstract craeteLivePlayerContext(id: string, component?: any): LivePlayerContext;
+  abstract createLivePlayerContext(id: string, component?: any): LivePlayerContext;
   abstract preloadVideo(options: PreloadVideoOptions): PreloadVideoTask;
   // 相机
   abstract createCameraContext(): CameraContext;
@@ -1320,15 +1322,15 @@ abstract class Api {
   abstract authorize(options: AuthorizeOptions): void;
   abstract showDouyinOpenAuth(options: ShowDouyinOpenAuthOptions): void;
   // 数据分析
-  abstract reportAnalytics(eventName: string, data: { key: string; value: string | number | boolean }): void;
+  abstract reportAnalytics(eventName: string, data: { key: string; value: string | number | boolean; }): void;
   // 评价能力
   abstract canRateAwemeOrders(options: CanRateAwemeOrdersOptions): void;
   abstract rateAwemeOrder(options: RateAwemeOrderOptions): void;
   // 引导关注             
   abstract followOfficialAccount(options: Callbacks<CommonExtendsErrorArgs, CommonErrorArgs>): void;
-  abstract checkFollowState(options: Callbacks<{ errMsg: string; result: boolean }, CommonErrorArgs>): void;
+  abstract checkFollowState(options: Callbacks<{ errMsg: string; result: boolean; }, CommonErrorArgs>): void;
   abstract openAwemeUserProfile(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract followAwemeUser(options: Callbacks<{ errMsg: string; followed: boolean }, CommonErrorArgs>): void;
+  abstract followAwemeUser(options: Callbacks<{ errMsg: string; followed: boolean; }, CommonErrorArgs>): void;
   // 订阅消息
   abstract requestSubscribeMessage(options: RequestSubscribeMessageOptions): void;
   // 电商融合方案
@@ -1342,14 +1344,14 @@ abstract class Api {
   abstract openEcCoupon(options: OpenEcCouponOptions): void;
   // 性能
   abstract performance: {
-    getEntries(): PerformanceEntry[]
-    getEntriesByName(name: string, entryType?: string): PerformanceEntry[]
-    getEntriesByType(entryType: string): PerformanceEntry[]
-    getCurrentPageEntries(): PerformanceEntry[]
-    getEntriesByPage(pagePath: string): PerformanceEntry[]
-    mark(name: string): PerformanceEntry | undefined
-    clearMarks(name: string): void
-  }
+    getEntries(): PerformanceEntry[];
+    getEntriesByName(name: string, entryType?: string): PerformanceEntry[];
+    getEntriesByType(entryType: string): PerformanceEntry[];
+    getCurrentPageEntries(): PerformanceEntry[];
+    getEntriesByPage(pagePath: string): PerformanceEntry[];
+    mark(name: string): PerformanceEntry | undefined;
+    clearMarks(name: string): void;
+  };
   // 数据缓存
   abstract getStorage(options: GetStorageOptions): void;
   abstract getStorageSync(key: string): any;
@@ -1367,10 +1369,10 @@ abstract class Api {
   abstract openLocation(options: OpenLocationOptions): void;
   // 设备
   // 网络状态
-  abstract getNetworkType(options: Callbacks<{ networkType: NetworkType }, CommonErrorArgs>): void;
-  abstract onNetworkStatusChange(callback: (args: { networkType: NetworkType, isConnected: boolean }) => void): void;
+  abstract getNetworkType(options: Callbacks<{ networkType: NetworkType; }, CommonErrorArgs>): void;
+  abstract onNetworkStatusChange(callback: (args: { networkType: NetworkType, isConnected: boolean; }) => void): void;
   abstract getWifiList(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract onGetWifiList(callback: (args: { wifiList: WifiInfo[] }) => void): void;
+  abstract onGetWifiList(callback: (args: { wifiList: WifiInfo[]; }) => void): void;
   abstract offGetWifiList(callback: () => void): void;
   // 系统信息
   abstract getSystemInfo(options: GetSystemInfoOptions): void;
@@ -1384,40 +1386,40 @@ abstract class Api {
   // 罗盘
   abstract startCompass(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   abstract stopCompass(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract onCompassChange(options: Callbacks<{ duration: number }, CommonErrorArgs>): void;
+  abstract onCompassChange(options: Callbacks<{ duration: number; }, CommonErrorArgs>): void;
   // 拨打电话
   abstract makePhoneCall(options: MakePhoneCallOptions): void;
   // 扫码
-  abstract scanCode(options: Callbacks<{ result: string }, CommonErrorArgs>): void;
+  abstract scanCode(options: Callbacks<{ result: string; }, CommonErrorArgs>): void;
   // 剪切板
-  abstract getClipboardData(options: Callbacks<{ data: string } & CommonErrorArgs, CommonErrorArgs>): void;
+  abstract getClipboardData(options: Callbacks<{ data: string; } & CommonErrorArgs, CommonErrorArgs>): void;
   abstract setClipboardData(options: SetClipboardDataOptions): void;
   // 屏幕
-  abstract setKeepScreenOn(options: { keepScreenOn: boolean } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract setKeepScreenOn(options: { keepScreenOn: boolean; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   abstract onUserCaptureScreen(callback: () => void): void;
   abstract offUserCaptureScreen(callback: () => void): void;
-  abstract getScreenBrightness(options: Callbacks<{ value: string } & CommonErrorArgs, CommonErrorArgs>): void;
-  abstract setScreenBrightness(options: { value: number } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract getScreenBrightness(options: Callbacks<{ value: string; } & CommonErrorArgs, CommonErrorArgs>): void;
+  abstract setScreenBrightness(options: { value: number; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   abstract disableUserScreenRecord(options: Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>): void;
   abstract enableUserScreenRecord(options: Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>): void;
-  abstract onUserScreenRecord(callback: (args: { state: 'start' | 'end' }) => void): void;
+  abstract onUserScreenRecord(callback: (args: { state: 'start' | 'end'; }) => void): void;
   abstract offUserScreenRecord(callback: () => void): void;
   // 震动
   abstract vibrateShort(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   abstract vibrateLong(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   // 性能
-  abstract onMemoryWarning(callback: (args: { level: 5 | 10 | 15 }) => void): void;
+  abstract onMemoryWarning(callback: (args: { level: 5 | 10 | 15; }) => void): void;
   // 画布
   abstract createCanvasContext(canvasId: string): CanvasContext;
   abstract createOffscreenCanvas(): OffscreenCanvas;
   // 界面
   // 交互反馈
   abstract showToast(options: ShowToastOptions): void;
-  abstract hideToast(options:  Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract showLoading(options: { title: string } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract hideLoading(options:  Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract hideToast(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract showLoading(options: { title: string; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract hideLoading(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   abstract showModal(options: ShowModalOptions): void;
-  abstract showActionSheet(options: { itemList: string[] } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract showActionSheet(options: ActionSheetProps): void;
   abstract showFavoriteGuide(options: ShowFavoriteGuideOptions): void;
   abstract showInteractionBar(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   abstract hideInteractionBar(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
@@ -1425,27 +1427,27 @@ abstract class Api {
   abstract showNavigationBarLoading(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   abstract hideNavigationBarLoading(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   abstract hideHomeButton(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract setNavigationBarTitle(options: { title: string } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract setNavigationBarColor(options: { frontColor: string; backgroundColor: string } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract setNavigationBarTitle(options: { title: string; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract setNavigationBarColor(options: { frontColor: string; backgroundColor: string; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   // 菜单
-  abstract getMenuButtonBoundingClientRect(): { errMsg: string; width: number; height: number; top: number; right: number; bottom: number; left: number };
+  abstract getMenuButtonBoundingClientRect(): { errMsg: string; width: number; height: number; top: number; right: number; bottom: number; left: number; };
   // 动画
   abstract createAnimation(options: CreateAnimationOptions): Animation;
   // 页面位置
-  abstract pageScrollTo(options: { scrollTop: number; duration?: number } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract pageScrollTo(options: { scrollTop: number; duration?: number; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   // 滑动返回
   abstract setSwipeBackMode(mode: 0 | 1 | 2): void;
   // 下拉刷新
   abstract startPullDownRefresh(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   // TabBar
-  abstract showTabBarRedDot(options: { index: number } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract showTabBar(options: { animation?: boolean } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract showTabBarRedDot(options: { index: number; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract showTabBar(options: { animation?: boolean; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   abstract setTabBarStyle(options: SetTabBarStyleOptions): void;
   abstract setTabBarItem(options: SetTabBarItemOptions): void;
-  abstract setTabBarBadge(options: { index: number; text: string } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract removeTabBarBadge(options: { index: number } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract hideTabBarRedDot(options: { index: number } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract hideTabBar(options: { animation?: boolean } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract setTabBarBadge(options: { index: number; text: string; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract removeTabBarBadge(options: { index: number; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract hideTabBarRedDot(options: { index: number; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract hideTabBar(options: { animation?: boolean; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   // AI/AR
   // TODO
   abstract getAlgorithmManager(options: GetAlgorithmManagerOptions): void;
@@ -1454,34 +1456,34 @@ abstract class Api {
   // 原生神经网络
   abstract createBytennEngineContext(modelName: string, engineConfig?: EngineConfig): BytennEngineContext;
   // 导航
-  abstract navigateTo(options: { url: string } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract redirectTo(options: { url: string } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract switchTab(options: { url: string } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract navigateBack(options: { delta?: number } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract reLaunch(options: { url: string } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract navigateTo(options: { url: string; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract redirectTo(options: { url: string; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract switchTab(options: { url: string; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract navigateBack(options: { delta?: number; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract reLaunch(options: { url: string; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   // 转发
   abstract showShareMenu(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   abstract hideShareMenu(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract navigateToVideoView(options: { videoId?: string; encryptedId?: string } & Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>): void;
+  abstract navigateToVideoView(options: { videoId?: string; encryptedId?: string; } & Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>): void;
   // 第三方平台
-  abstract getExtConfig(options: Callbacks<{ extConfig: object }>): void;
+  abstract getExtConfig(options: Callbacks<{ extConfig: object; }>): void;
   abstract getExtConfigSync(): object;
   // TTML
   abstract createSelectorQuery(): SelectorQuery;
   abstract createIntersectionObserver(instance: any, options?: CreateIntersectionObserverOptions): IntersectionObserver;
   // 直播能力
   abstract createLiveReportContext(): LiveReportContext;
-  abstract getRoomInfo(options: Callbacks<{ roomInfo: { roomId: string; liveDuraction: number } } & CommonErrorArgs, CommonExtendsErrorArgs>): void;
+  abstract getRoomInfo(options: Callbacks<{ roomInfo: { roomId: string; liveDuraction: number; }; } & CommonErrorArgs, CommonExtendsErrorArgs>): void;
   abstract getLiveUserInfo(options: GetLiveUserInfoOptions): void;
-  abstract getSelfCommentCountDuringPluginRunning(options: Callbacks<{ commentCount: number } & CommonErrorArgs, CommonExtendsErrorArgs>): void;
-  abstract isFollowingAnchor(options: Callbacks<{ isFollowing: boolean } & CommonErrorArgs, CommonExtendsErrorArgs>): void;
+  abstract getSelfCommentCountDuringPluginRunning(options: Callbacks<{ commentCount: number; } & CommonErrorArgs, CommonExtendsErrorArgs>): void;
+  abstract isFollowingAnchor(options: Callbacks<{ isFollowing: boolean; } & CommonErrorArgs, CommonExtendsErrorArgs>): void;
   // 直播间关注互动数据
   abstract onReceiveAudiencesFollowAction(callback: (res: onReceiveAudiencesFollowActionCallbackArgs) => void): void;
   abstract subscribeAudiencesFollowAction(options: Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>): void;
   abstract unsubscribeAudiencesFollowAction(options: Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>): void;
   // 直播间评论互动数据
-  abstract subscribeSpecifiedContentComment(options: { keyWordList: string [] } & Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>): void;
-  abstract subscribeSpecifiedUserComment(options: { openUIDList: string [] } & Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>): void;
+  abstract subscribeSpecifiedContentComment(options: { keyWordList: string[]; } & Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>): void;
+  abstract subscribeSpecifiedUserComment(options: { openUIDList: string[]; } & Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>): void;
   abstract unsubscribeAllSpecifiedContentComment(options: Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>): void;
   abstract unsubscribeAllSpecifiedUserComment(options: Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>): void;
   abstract onReceiveSpecifiedComment(callback: (res: OnReceiveSpecifiedCommentOptions) => void): void;
@@ -1489,4 +1491,4 @@ abstract class Api {
   abstract open(url: string): void;
 }
 
-export default Api
+export default Api;
