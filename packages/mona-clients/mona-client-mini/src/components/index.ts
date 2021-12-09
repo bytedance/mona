@@ -207,7 +207,7 @@ const componentsMap: Record<string, { node: any; defaultProps: any }> = {
     },
   },
   Navigator: {
-    node: createBaseComponent<NavigatorProps>('navigator'),
+    node: createBaseComponent<NavigatorProps>('ttnavigator'),
     defaultProps: {
       openType: 'navigate',
       hoverClassName: 'navigator-hover',
@@ -255,10 +255,9 @@ const componentsMap: Record<string, { node: any; defaultProps: any }> = {
       );
       Component.displayName = name;
       return Component;
-    })('navigator') as React.ComponentType<LinkProps>,
+    })('ttnavigator') as React.ComponentType<LinkProps>,
   },
 };
-
 
 class MiniComponents extends BaseComponents {
   constructor() {

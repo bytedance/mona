@@ -1,0 +1,6 @@
+<template name="mona-live-play">
+  <live-play  <% for (let i in props) { %>
+    <%=props[i]%>="{{node.props['<%=i%>']}}" <% } %>
+  >
+  </live-play>
+</template>

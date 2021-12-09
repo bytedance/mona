@@ -1,0 +1,6 @@
+<template name="mona-ad">
+  <ad <% for (let i in props) { %>
+    <%=props[i]%>="{{node.props['<%=i%>']}}" <% } %>
+  />
+
+</template>
