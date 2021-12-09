@@ -3,7 +3,11 @@
     <%=props[i]%>="{{node.props['<%=i%>']}}" <% } %>
   >
     <view>
-      <template is="mona-DEFAULT" data="{{root: node.children[0]}}" />
+      <template 
+      is="{{ 'mona-' + node.nodes[item].type }}" 
+      tt:for="{{ node.children }}"
+      tt:key="{{ item.key }}"
+      data="{{ node: node.nodes[item] }}" />
     </view>
   </picker>
 </template>
