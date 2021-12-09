@@ -10,6 +10,8 @@ const Button: React.FC<ButtonProps> = (props) => {
     formType,
     loading,
     size = "default",
+    hoverStartTime = 20,
+    hoverStayTime = 70,
     // not implemented
     openType,
     // not implemented
@@ -17,7 +19,7 @@ const Button: React.FC<ButtonProps> = (props) => {
     ...restProps
   } = props;
 
-  const { handleClassName, ...handlerProps } = useHandlers(restProps);
+  const { handleClassName, ...handlerProps } = useHandlers({ ...restProps, hoverStartTime, hoverStayTime });
 
   return (
     <button

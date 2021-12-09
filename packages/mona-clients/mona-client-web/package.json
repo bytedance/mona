@@ -20,7 +20,8 @@
     "copyfiles": "^2.4.1"
   },
   "peerDependencies": {
-    "react": "^17.0.2"
+    "react": "^17.0.2",
+    "react-router-dom": "^5.2.0"
   },
   "author": "zhangxiaowei.chris@bytedance.com",
   "license": "MIT"
