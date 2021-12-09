@@ -1,11 +1,26 @@
+<template name="mona-ttnavigator">
+  <navigator <% for (let i in props) { %>
+    <%=props[i]%>="{{node.props['<%=i%>']}}" <% } %>
+  >
+    <block  
+      tt:for="{{ node.children }}"
+      tt:key="{{ item.key }}"
+    >
+      <template is="{{ 'mona-' + node.nodes[item].type }}"   data="{{ node: node.nodes[item] }}" />
+    </block>
+  </navigator>
+</template>
+
+<!--字节小程序的bug mona-navigator 不会渲染  -->
 <template name="mona-navigator">
   <navigator <% for (let i in props) { %>
     <%=props[i]%>="{{node.props['<%=i%>']}}" <% } %>
   >
-    <template 
-      is="{{ 'mona-' + node.nodes[item].type }}" 
+    <block  
       tt:for="{{ node.children }}"
       tt:key="{{ item.key }}"
-      data="{{ node: node.nodes[item] }}" />
+    >
+      <template is="{{ 'mona-' + node.nodes[item].type }}"   data="{{ node: node.nodes[item] }}" />
+    </block>
   </navigator>
 </template>

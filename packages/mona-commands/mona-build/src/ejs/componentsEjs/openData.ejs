@@ -1,0 +1,5 @@
+<template name="mona-navigator">
+  <open-data <% for (let i in props) { %>
+    <%=props[i]%>="{{node.props['<%=i%>']}}" <% } %>
+  />
+</template>
