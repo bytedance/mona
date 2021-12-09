@@ -39,7 +39,7 @@ const setPxToRpx = (value: string) => {
 
   return value.replace(/\b(\d+(\.\d+)?)px\b/g, function (_match, x) {
     const size = Number(x);
-    return size % 1 === 0 ? size + RPX : size.toFixed(2) + RPX;
+    return size % 1 === 0 ? `${size}${RPX}` : `${size.toFixed(2)}${RPX}`;
   });
 };
 
@@ -58,7 +58,28 @@ export const plainStyle = (style: React.CSSProperties) => {
     .join('');
 };
 
-export const isUnitlessNumber: { [key: string]: boolean } = {
+export const isUnitlessNumber: Record<string, boolean> = {
+  lineClamp: true,
+  lineHeight: true,
+  fontWeight: true,
+  order: true,
+  opacity: true,
+  orphans: true,
+  tabSize: true,
+  widows: true,
+  zIndex: true,
+  zoom: true,
+  columns: true,
+  columnCount: true,
+  gridArea: true,
+  gridRow: true,
+  gridRowStart: true,
+  gridRowEnd: true,
+  gridRowSpan: true,
+  gridColumn: true,
+  gridColumnStart: true,
+  gridColumnEnd: true,
+  gridColumnSpan: true,
   animationIterationCount: true,
   borderImageOutset: true,
   borderImageSlice: true,
@@ -66,34 +87,12 @@ export const isUnitlessNumber: { [key: string]: boolean } = {
   boxFlex: true,
   boxFlexGroup: true,
   boxOrdinalGroup: true,
-  columnCount: true,
-  columns: true,
   flex: true,
   flexGrow: true,
   flexPositive: true,
   flexShrink: true,
   flexNegative: true,
   flexOrder: true,
-  gridArea: true,
-  gridRow: true,
-  gridRowEnd: true,
-  gridRowSpan: true,
-  gridRowStart: true,
-  gridColumn: true,
-  gridColumnEnd: true,
-  gridColumnSpan: true,
-  gridColumnStart: true,
-  fontWeight: true,
-  lineClamp: true,
-  lineHeight: true,
-  opacity: true,
-  order: true,
-  orphans: true,
-  tabSize: true,
-  widows: true,
-  zIndex: true,
-  zoom: true,
-  // SVG-related properties
   fillOpacity: true,
   floodOpacity: true,
   stopOpacity: true,
