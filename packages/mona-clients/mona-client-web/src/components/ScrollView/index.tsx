@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef } from 'react';
+import React, { useLayoutEffect, useMemo, useRef } from 'react';
 import { ScrollViewProps } from '@bytedance/mona';
 import styles from './index.module.less';
 import { useHandlers } from '../hooks';
@@ -37,6 +37,15 @@ function scrollToWithAnimation(element: HTMLDivElement, to: number, duration: nu
     animateScroll();
 }
 
+type onScrollCallback = (ele: Element) => void;
+
+interface ScrollViewContextProps {
+  registerScrollCallback: (callback: onScrollCallback) => void;
+  unregisterScrollCallback: (callback: onScrollCallback) => void;
+}
+
+export const ScrollViewContext = React.createContext<ScrollViewContextProps | null>(null)
+
 const ScrollView: React.FC<ScrollViewProps> = (props) => {
   const {
     children,
@@ -58,6 +67,17 @@ const ScrollView: React.FC<ScrollViewProps> = (props) => {
   const topPreRef = useRef(0);
   const leftPreRef = useRef(0);
 
+  const cbRefs = useRef<onScrollCallback[]>([]);
+  const context = useMemo(() => ({
+    registerScrollCallback: (callback: onScrollCallback) => {
+      cbRefs.current.push(callback)
+    },
+    unregisterScrollCallback: (callback: onScrollCallback) => {
+      const index = cbRefs.current.indexOf(callback);
+      cbRefs.current.splice(index, 1)
+    }
+  }), [])
+
   const overflow = `${scrollX ? 'auto' : 'hidden'} ${scrollY ? 'auto' : 'hidden'}`;
 
   const handleScroll = (e: React.SyntheticEvent) => {
@@ -65,7 +85,10 @@ const ScrollView: React.FC<ScrollViewProps> = (props) => {
       onScroll(formatSyntheticEvent({ event: e }))
     }
 
+    
     if (scrollRef.current) {
+      cbRefs.current.forEach(cb => cb(scrollRef.current!));
+
       const top = scrollRef.current.scrollTop;
       const left = scrollRef.current.scrollLeft;
       const currentUpperThreshold = upperThreshold || 0;
@@ -139,7 +162,9 @@ const ScrollView: React.FC<ScrollViewProps> = (props) => {
   return (
     <div {...handleProps} className={handleClassName(styles.container)}>
       <div ref={scrollRef} className={styles.container} onScroll={handleScroll} style={{ overflow }}>
-        {children}
+        <ScrollViewContext.Provider value={context}>
+          {children}
+        </ScrollViewContext.Provider>
       </div>
     </div>
   )
