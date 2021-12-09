@@ -1,0 +1,124 @@
+.switch {
+  display: inline-block;
+  -webkit-tap-highlight-color: transparent;
+
+  // switch
+  & .wrapper {
+    display: -webkit-inline-flex;
+    display: inline-flex;
+    -webkit-align-items: center;
+    align-items: center;
+    vertical-align: middle;
+  }
+
+  & .input {
+    -webkit-appearance: none;
+    appearance: none;
+    position: relative;
+    width: 52px;
+    height: 32px;
+    margin-right: 5px;
+    border: 1px solid #DFDFDF;
+    outline: 0;
+    border-radius: 16px;
+    box-sizing: border-box;
+    background-color: #DFDFDF;
+    transition: background-color 0.1s, border 0.1s;
+
+    &::after {
+      content: " ";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 30px;
+      height: 30px;
+      border-radius: 15px;
+      background-color: #FFFFFF;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+      transition: -webkit-transform .3s;
+      transition: transform .3s;
+      transition: transform .3s, -webkit-transform .3s;
+    }
+
+    & .before {
+      content: " ";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50px;
+      height: 30px;
+      border-radius: 15px;
+      background-color: #FDFDFD;
+      transition: -webkit-transform .3s;
+      transition: transform .3s;
+      transition: transform .3s, -webkit-transform .3s;
+    }
+
+     &.checked {
+      border-color: #F85959;
+      background-color: #F85959;
+
+      & .before {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+      }
+
+      &::after {
+        -webkit-transform: translateX(20px);
+        transform: translateX(20px);
+      }
+    }
+  }
+
+  .inner {
+    box-sizing: border-box;
+    padding: 0;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    opacity: 0;
+  }
+
+  // checkbox
+  .cinput {
+    position: relative;
+    margin-right: 5px;
+    -webkit-appearance: none;
+    appearance: none;
+    outline: 0;
+    border: 1px solid #D1D1D1;
+    background-color: #FFFFFF;
+    border-radius: 3px;
+    width: 22px;
+    height: 22px;
+    position: relative;
+    // color: #09BB07;
+    color: #F85959;
+
+    &.checked {
+      &::before {
+        font: normal normal normal 14px/1 "ttui";
+        content: "\e601";
+        color: inherit;
+        font-size: 28px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -48%) scale(0.73);
+        -webkit-transform: translate(-50%, -48%) scale(0.73);
+      }
+    }
+
+    &.disabled {
+      background-color: #E1E1E1;
+
+      &::before {
+        color: #ADADAD;
+      }
+    }
+    
+  }
+}
