@@ -4,7 +4,7 @@ import path from 'path';
 import VirtualModulesPlugin from '../VirtualModulesPlugin';
 
 export default class MiniEntryModule {
-  entries: Record<string, string> = {}
+  entries: Record<string, string> = {};
   module: VirtualModulesPlugin;
   configHelper: ConfigHelper;
 
@@ -22,25 +22,25 @@ export default class MiniEntryModule {
   static generateAppEntryCode(filename: string) {
     return `
       import { createApp } from '@bytedance/mona-runtime';
-      import App from './${path.basename(filename)}';
+      import AppComponent from './${path.basename(filename)}';
 
-      createApp(App);
+      App(createApp(AppComponent));
     `;
   }
 
   static generatePageEntryCode(filename: string, name: string) {
     return `
       import { createPage } from '@bytedance/mona-runtime';
-      import Page from './${path.basename(filename)}';
-
-      createPage(Page, '${name}');
+      import PageComponent  from './${path.basename(filename)}';
+      console.log('ni zai na')
+      Page(createPage(PageComponent, '${name}'));
     `;
   }
 
   createModule() {
     const { entryPath, appConfig, cwd } = this.configHelper;
     const pages = appConfig.pages;
-    const realPagePaths = pages.map(page => searchScriptFile(path.resolve(cwd, 'src', page)))
+    const realPagePaths = pages.map(page => searchScriptFile(path.resolve(cwd, 'src', page)));
     const names = ['app', ...pages];
     const realPaths = [entryPath, ...realPagePaths];
 

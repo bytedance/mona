@@ -68,6 +68,5 @@ class AppConfig {
 }
 
 export default function createApp(Component: React.ComponentType<any>) {
-  const appConfig = new AppConfig(Component);
-  return App(appConfig);
+  return new AppConfig(Component);
 }

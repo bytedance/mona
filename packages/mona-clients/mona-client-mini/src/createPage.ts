@@ -6,7 +6,6 @@ import { Portal } from 'react-is';
 
 export function createPortal(children: React.ReactNode, containerInfo: any, key?: string): any {
   return {
-    // This tag allow us to uniquely identify this as a React Portal
     $$typeof: Portal,
     key: key == null ? null : String(key),
     children,
@@ -64,7 +63,7 @@ function createConfig(Component: React.ComponentType<any>) {
       const wrapper = React.createElement(
         PageLifecycleGlobalContext.Provider,
         //@ts-ignore
-        { value: this._pageLifecycleContext, key: generatePageId(), containerInfo: this._controller },
+        { value: this._pageLifecycleContext, key: generatePageId() },
         [element],
       );
       console.log({ wrapper });
@@ -129,6 +128,5 @@ function createConfig(Component: React.ComponentType<any>) {
 }
 
 export default function createPage(Component: React.ComponentType<any>) {
-  const pageConfig = createConfig(Component);
-  return Page(pageConfig);
+  return createConfig(Component);
 }
