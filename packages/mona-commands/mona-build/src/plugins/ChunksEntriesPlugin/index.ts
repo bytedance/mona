@@ -1,15 +1,11 @@
 // 参考自remax
-import { Compiler, Compilation } from 'webpack';
 import { ConcatSource } from 'webpack-sources';
-import * as path from 'path';
+import { Compiler, Compilation } from 'webpack';
+import path from 'path';
+import { slash } from '@/utils/utils';
 
 const PLUGIN_NAME = 'OptimizeEntriesPlugin';
-export function slash(path: string) {
-  if (!path) {
-    return path;
-  }
-  return /^\\\\\?\\/.test(path) ? path : path.replace(/\\/g, `/`);
-}
+
 
 export default class OptimizeEntriesPlugin {
   constructor() {}
