@@ -31,7 +31,6 @@ export default class AppTaskController {
   applyUpdate() {
     this.context._pages.forEach((page: any) => {
       page._controller.applyUpdate();
-      // page.modalContainer.applyUpdate();
     });
   }
 
