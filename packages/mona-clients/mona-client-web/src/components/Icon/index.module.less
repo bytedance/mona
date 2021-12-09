@@ -1,0 +1,85 @@
+.container {
+  display: inline-block;
+  font-size: 0;
+
+  .icon {
+    font: normal normal normal 14px/1 "ttui";
+
+    &::before {
+      margin: 0;
+      box-sizing: border-box;
+    }
+
+    &.success {
+      color: #F95959;
+    }
+
+    &.success:before {
+      content: "\e613";
+    }
+
+    &.success_no_circle {
+      color: #F95959;
+    }
+
+    &.success_no_circle:before {
+      content: "\e610";
+    }
+
+    &.info {
+      color: #CACACA;
+    }
+
+    &.info:before {
+      content: "\e60d";
+    }
+
+    &.warn {
+      color: #F5A623;
+    }
+
+    &.warn:before {
+      content: "\e614";
+    }
+
+    &.waiting {
+      color: #50ABF9;
+    }
+
+    &.waiting:before {
+      content: "\e612";
+    }
+
+    &.clear {
+      color: #F95959;
+    }
+
+    &.clear:before {
+      content: "\e615";
+    }
+
+    &.cancel {
+      color: #222222;
+    }
+
+    &.cancel:before {
+      content: "\e611";
+    }
+
+    &.download {
+      color: #222222;
+    }
+
+    &.download:before {
+      content: "\e60f";
+    }
+
+    &.search {
+      color: #222222;
+    }
+
+    &.search:before {
+      content: "\e60e";
+    }
+  }
+}
