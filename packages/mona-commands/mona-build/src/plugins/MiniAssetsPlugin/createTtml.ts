@@ -2,7 +2,7 @@ import path from 'path';
 import ejs from 'ejs';
 import { Compilation, sources } from 'webpack';
 import { ConfigHelper } from '@/configHelper';
-import { aliasMap } from '@/alias';
+import { aliasMap, ejsParamsMap } from '@/alias';
 
 const RawSource = sources.RawSource;
 const templatePath = path.join(__dirname, '../../ejs/componentsEjs');
@@ -16,7 +16,8 @@ export default async function createTtml(compilation: Compilation, configHelper:
     const tplPath = path.join(__dirname, '../../ejs', './base.ttml.ejs');
     const content = await ejs.renderFile(tplPath, {
       templatePath: templatePath,
-      aliasMap: aliasMap,
+      aliasMap,
+      ejsParamsMap,
     });
     const source = new RawSource(content);
 
