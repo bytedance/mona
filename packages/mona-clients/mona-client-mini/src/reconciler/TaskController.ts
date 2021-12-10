@@ -114,4 +114,17 @@ export default class TaskController {
   insertBefore(child: ServerElement, beforeChild: ServerElement) {
     this._root.insertBefore(child, beforeChild);
   }
+  // setListener(nodeKey: string, eventName: string, cb: (...args: any) => any) {
+  //   const events = this.context.eventMap.get(nodeKey);
+  //   if (events) {
+  //     events[eventName] = cb;
+  //   } else {
+  //     this.context.eventMap.set(nodeKey, {
+  //       [eventName]: cb,
+  //     });
+  //   }
+  // }
+  // removeListener(nodeKey: string) {
+  //   this.context.eventMap.remove(nodeKey);
+  // }
 }

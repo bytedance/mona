@@ -1,6 +1,12 @@
 <template name="mona-ttnavigator">
-  <navigator <% for (let i in props) { %>
-    <%=props[i]%>="{{node.props['<%=i%>']}}" <% } %>
+  <navigator 
+    <%_ for (let i in props) { -%>
+    <%_ if(defaultProps[i] !== undefined)  {  -%>
+    <%=props[i]%>="{{node.props['<%=i%>'] === undefined ? <%=defaultProps[i]%> : node.props['<%=i%>']}}" 
+    <%_   } else {  -%>
+    <%=props[i]%>="{{node.props['<%=i%>']}}" 
+    <%_ }
+    } -%>
   >
     <block  
       tt:for="{{ node.children }}"
@@ -13,8 +19,14 @@
 
 <!--字节小程序的bug mona-navigator 不会渲染  -->
 <template name="mona-navigator">
-  <navigator <% for (let i in props) { %>
-    <%=props[i]%>="{{node.props['<%=i%>']}}" <% } %>
+  <navigator 
+    <%_ for (let i in props) { -%>
+    <%_ if(defaultProps[i] !== undefined)  {  -%>
+    <%=props[i]%>="{{node.props['<%=i%>'] === undefined ? <%=defaultProps[i]%> : node.props['<%=i%>']}}" 
+    <%_   } else {  -%>
+    <%=props[i]%>="{{node.props['<%=i%>']}}" 
+    <%_ }
+    } -%>
   >
     <block  
       tt:for="{{ node.children }}"

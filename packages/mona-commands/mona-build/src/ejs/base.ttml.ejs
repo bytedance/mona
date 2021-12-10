@@ -1,14 +1,12 @@
-<!-- <template name="mona-base">
-  <template is="{{ 'mona-' + root.type }}" data="{{ node: root }}"></template>
-</template> -->
 <template name="mona-base">
   <block tt:for="{{root.children}}" tt:key="*this">
     <template is="{{'mona-' + root.nodes[item].type}}" data="{{node: root.nodes[item]}}" />
   </block>
 </template>
 
-<% for (let name of aliasMap.keys()) { %>
-<%-include(templatePath+'/'+name+'.ejs', {props: aliasMap.get(name)}); %>
+
+<% for (let name of ejsParamsMap.keys()) { %>
+<%-include(templatePath+'/'+name+'.ejs', {props: ejsParamsMap.get(name).alias, defaultProps: ejsParamsMap.get(name).defaultProps || {} }); %>
 <% }; %>
 
 <template name="mona-ptext">

@@ -1,6 +1,12 @@
 <template name="mona-picker-view">
-  <picker-view <% for (let i in props) { %>
-    <%=props[i]%>="{{node.props['<%=i%>']}}" <% } %>
+  <picker-view 
+    <%_ for (let i in props) { -%>
+    <%_ if(defaultProps[i] !== undefined)  {  -%>
+    <%=props[i]%>="{{node.props['<%=i%>'] === undefined ? <%=defaultProps[i]%> : node.props['<%=i%>']}}" 
+    <%_   } else {  -%>
+    <%=props[i]%>="{{node.props['<%=i%>']}}" 
+    <%_ }
+    } -%>
   >
     <block a:for="{{node.children}}" key="{{item.id}}">
       <picker-view-column>
