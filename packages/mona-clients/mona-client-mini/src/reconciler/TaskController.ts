@@ -1,6 +1,7 @@
 import { FiberRoot } from 'react-reconciler';
 import ServerElement, { RenderNode, NodeType } from './ServerElement';
 import { NodeTask } from '../utils/constants';
+import createEventHandler from '../eventHandler';
 // import { isObject } from '../utils/utils';
 
 interface SpliceTask {
@@ -82,8 +83,10 @@ export default class TaskController {
   stopUpdate() {
     this._stopUpdate = true;
   }
-  addCallback(name: string, cb: (...args: any) => any) {
-    this.context[name] = cb;
+  addCallback(name: string, cb: (...args: any) => any, node: ServerElement) {
+    console.log('page addCallback', node);
+
+    this.context[name] = createEventHandler(node, cb);
   }
   // addCallback(nodeKey: string | number, eventName: string, cb: (...args: any) => any) {
   //   if (isObject(this.context[nodeKey])) {

@@ -32,7 +32,7 @@ export function processProps(props: Record<string, any>, node: ServerElement) {
       }
       cbKey = `${CALLBACK_SYMBOL}_${node.key}_${propKey}`;
       if (isFunction(props[propKey])) {
-        node.taskController.addCallback(cbKey, props[propKey]);
+        node.taskController.addCallback(cbKey, props[propKey], node);
         // newProp有，oldProp无的加入更新队列
         if (node.props?.[propKey] !== cbKey) {
           newProps[propKey] = cbKey;

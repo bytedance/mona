@@ -1,3 +1,4 @@
+import createEventHandler from '../eventHandler';
 import { FiberRoot } from 'react-reconciler';
 import ServerElement, { NodeType } from './ServerElement';
 import { ROOT_KEY } from './TaskController';
@@ -34,8 +35,9 @@ export default class AppTaskController {
     });
   }
 
-  addCallback(name: string, cb: (...args: any) => any) {
-    this.context[name] = cb;
+  addCallback(name: string, cb: (...args: any) => any, node: ServerElement) {
+    console.log('app addCallback', node);
+    this.context[name] = createEventHandler(node, cb);
   }
 
   removeCallback(name: string | number) {
