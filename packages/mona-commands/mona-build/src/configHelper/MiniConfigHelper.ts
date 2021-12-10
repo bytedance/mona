@@ -9,6 +9,9 @@ import { ConfigHelper } from '.';
 import MiniAssetsPlugin from '@/plugins/MiniAssetsPlugin';
 import OptimizeEntriesPlugin from '@/plugins/ChunksEntriesPlugin';
 
+const extensions = ['.js', '.mjs', '.jsx', '.ts', '.tsx', '.json'];
+const moduleMatcher = new RegExp(`(${extensions.filter(e => e !== '.json').join('|')})$`);
+
 class MiniConfigHelper extends BaseConfigHelper {
   generate() {
     const miniEntryPlugin = new MiniEntryPlugin(this as unknown as ConfigHelper);
@@ -29,52 +32,32 @@ class MiniConfigHelper extends BaseConfigHelper {
   }
 
   private _createOptimization() {
-    const extensions = ['.mjs', '.js', '.jsx', '.ts', '.tsx', '.json'];
-    const moduleMatcher = new RegExp(`(${extensions.filter(e => e !== '.json').join('|')})$`);
-
-    if (this.options.dev) {
-      return {
-        runtimeChunk: {
-          name: 'runtime',
-        },
-        splitChunks: {
-          cacheGroups: {
-            // 缓存组配置，默认有vendors和default
-            vendors: {
-              name: 'vendors',
-              test: moduleMatcher,
-              chunks: 'initial',
-              minChunks: 2,
-              minSize: 0,
-              priority: 2,
-            },
-          },
-        },
-      };
-    }
-
+    const isDev = this.options.dev;
+    const devOptimization = isDev
+      ? {}
+      : {
+          minimize: true,
+          minimizer: [new TerserWebpackPlugin({ parallel: true, extractComments: false }), new CssMiniminzerPlugin()],
+        };
     return {
-      minimize: true,
-      minimizer: [new TerserWebpackPlugin({ parallel: true, extractComments: false }), new CssMiniminzerPlugin()],
+      ...devOptimization,
+      // 所有page共享运行时文件，用于每个page初始化, 每个page入口引入runtimeChunk。初始化一次
+      // 不设置，每个入口 chunk 中直接嵌入 runtime。不会共享运行时，导致多react实例。初始化多次
+      // 理解为初始化一次与初始化多次的区别
+      runtimeChunk: {
+        name: 'runtimeChunk',
+      },
+
       splitChunks: {
-        chunks: 'async', // 仅提取按需载入的module
-        minSize: 30000, // 提取出的新chunk在两次压缩(打包压缩和服务器压缩)之前要大于30kb
-        maxSize: 0, // 提取出的新chunk在两次压缩之前要小于多少kb，默认为0，即不做限制
-        minChunks: 1, // 被提取的chunk最少需要被多少chunks共同引入
-        maxAsyncRequests: 5, // 最大按需载入chunks提取数
-        maxInitialRequests: 3, // 最大初始同步chunks提取数
-        automaticNameDelimiter: '~', // 默认的命名规则（使用~进行连接）
-        name: true,
         cacheGroups: {
           // 缓存组配置，默认有vendors和default
           vendors: {
-            test: /[\\/]node_modules[\\/]/,
-            priority: -10,
-          },
-          default: {
+            name: 'vendors',
+            test: moduleMatcher,
+            chunks: 'initial',
             minChunks: 2,
-            priority: -20,
-            reuseExistingChunk: true,
+            minSize: 0,
+            priority: 10,
           },
         },
       },

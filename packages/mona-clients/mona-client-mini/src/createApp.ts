@@ -27,7 +27,6 @@ class AppConfig {
   }
 
   private _render() {
-    console.log('**', this._Component, this._pages);
     return render(
       React.createElement(
         this._Component,

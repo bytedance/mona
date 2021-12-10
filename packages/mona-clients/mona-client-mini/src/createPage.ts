@@ -4,6 +4,7 @@ import { PageLifecycleGlobalContext, LifecycleContext, PageLifecycle } from './l
 import TaskController, { ROOT_KEY } from './reconciler/TaskController';
 import { Portal } from 'react-is';
 import { EventMap, genEventHandler } from './reconciler/eventHandler';
+import render from './reconciler';
 
 export function createPortal(children: React.ReactNode, containerInfo: any, key?: string): any {
   return {
@@ -35,9 +36,9 @@ interface PageConfig {
 }
 let pageId = 0;
 
-function generatePageId() {
+function generatePageId(pre?: string) {
   pageId++;
-  return `page_${pageId}`;
+  return `page_${pre ?? ''}${pageId}`;
 }
 function createConfig(Component: React.ComponentType<any>) {
   let app: any;
@@ -58,24 +59,24 @@ function createConfig(Component: React.ComponentType<any>) {
       this.data = {
         [ROOT_KEY]: {
           children: [],
-          // 设置初始值，防止将obj[number]序列化为数组
           nodes: {},
         },
       };
+
       this._controller = new TaskController(this);
 
-      const element = React.createElement(this._Component, null, []);
       const wrapper = React.createElement(
         PageLifecycleGlobalContext.Provider,
-        //@ts-ignore
         { value: this._pageLifecycleContext, key: generatePageId() },
-        [element],
+        [React.createElement(this._Component, { key: 'entry' }, [])],
       );
-      console.log({ wrapper });
       this.pageRoot = createPortal(wrapper, this._controller, generatePageId());
 
       if (app) {
         app.addPage(this);
+      } else {
+        // 独立分包时，getApp() === undefined
+        render(wrapper, this._controller);
       }
 
       this.$callLifecycle(PageLifecycle.load, options);

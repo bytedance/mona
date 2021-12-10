@@ -2,7 +2,7 @@
   <cover-image 
     <%_ for (let i in props) { -%>
     <%_ if(defaultProps[i] !== undefined)  {  -%>
-    <%=props[i]%>="{{node.props['<%=i%>'] === undefined ? <%=defaultProps[i]%> : node.props['<%=i%>']}}" 
+    <%=props[i]%>="{{node.props['<%=i%>'] === undefined ? <%-defaultProps[i]%> : node.props['<%=i%>']}}" 
     <%_   } else {  -%>
     <%=props[i]%>="{{node.props['<%=i%>']}}" 
     <%_ }

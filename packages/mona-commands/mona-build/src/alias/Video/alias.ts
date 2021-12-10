@@ -9,7 +9,7 @@ const alias: Alias = {
   poster: propAliasMap.poster,
   loop: propAliasMap.loop,
   showFullscreenBtn: propAliasMap.showFullscreenBtn,
-  showMuteBtn: propAliasMap.showPlayBtn,
+  showMuteBtn: propAliasMap.showMuteBtn,
   showPlayBtn: propAliasMap.showPlayBtn,
   showPlaybackRateBtn: propAliasMap.showPlaybackRateBtn,
   controls: propAliasMap.controls,

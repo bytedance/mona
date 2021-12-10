@@ -81,7 +81,8 @@ export function diffProperties(oldProps: Record<string, any>, newProps: Record<s
         }
       }
     } else if (!newProps.hasOwnProperty(propKey)) {
-      propUpdateObj[propKey] = null;
+      // undefined 代表读取默认属性，null代表设为空
+      propUpdateObj[propKey] = undefined;
     }
   }
   let newProp: any;
@@ -115,7 +116,6 @@ export function diffProperties(oldProps: Record<string, any>, newProps: Record<s
       }
     }
   }
-
   return propUpdateObj;
 }
 
