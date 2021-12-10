@@ -5,7 +5,6 @@ import AppTaskController from './AppTaskController';
 const renderInstance = Reconciler(createHostConfig() as any);
 
 export default function render(rootElement: React.ReactElement | null, controller: TaskController | AppTaskController) {
-  console.log('controller.rootContainer', controller.rootContainer);
   if (!controller.rootContainer) {
     controller.rootContainer = renderInstance.createContainer(controller, 0, false, null);
   }

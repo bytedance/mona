@@ -14,7 +14,7 @@ const {
 const childHostContext = {};
 const rootHostContext = {};
 const DISPLAY_NONE = 'display:none !important;';
-// eslint-disable-next-line max-lines-per-function
+
 export default function createHostConfig() {
   const hostConfig = {
     createInstance(type: string, props: any, taskController: TaskController) {
@@ -69,11 +69,10 @@ export default function createHostConfig() {
 
     // ========== Mutation Methods ===========
     appendChild(parent: ServerElement, child: ServerElement) {
-      console.log('appendChild', { child });
+      // console.log('appendChild', { child });
 
       parent.appendChild(child);
     },
-    // appendAllChildren(children: ServerElement[]) {},
 
     appendChildToContainer(container: TaskController, child: ServerElement) {
       container.appendChild(child);
@@ -81,8 +80,6 @@ export default function createHostConfig() {
     },
 
     insertBefore(parent: ServerElement, child: ServerElement, beforeChild: ServerElement) {
-      console.log('insertBefore', { child });
-
       parent.insertBefore(child, beforeChild);
     },
     insertInContainerBefore(parent: ServerElement, child: ServerElement, beforeChild: ServerElement) {
@@ -90,8 +87,6 @@ export default function createHostConfig() {
     },
 
     removeChild(parent: ServerElement, child: ServerElement) {
-      console.log('removeChild', { child });
-
       parent.removeChild(child);
     },
 
@@ -121,30 +116,24 @@ export default function createHostConfig() {
     },
 
     hideInstance(node: ServerElement) {
-      console.log('hideInstance', { node });
-
       if (!isObject(node.props)) {
         node.props = {};
       }
       node.props.style = DISPLAY_NONE;
       node.update('props', { style: DISPLAY_NONE });
     },
+
     // TODO: suspense fallback执行完之后，appendChild和unhideInstance会同时执行，这两个方法有重复，待优化
     unhideInstance(node: ServerElement, props: any = {}) {
-      console.log('unhideInstance', { node, props });
-
       node.update('props', processProps({ ...props, style: props.hasOwnProperty('style') ? props.style : null }, node));
     },
 
     hideTextInstance(node: ServerElement) {
-      console.log('hideTextInstance', { node });
-
       node.text = '';
       node.update('', { text: '' });
     },
 
     unhideTextInstance(node: ServerElement, text: string) {
-      console.log('unhideTextInstance', { node, text });
       node.text = text;
       node.update('', { text });
     },

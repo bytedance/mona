@@ -15,11 +15,13 @@ export const NodeType = {
   IMAGE: 'image',
   PTEXT: 'ptext',
 };
+
 const formatNodeType: Record<string, string> = {
   span: NodeType.TEXT,
   div: NodeType.VIEW,
   img: NodeType.IMAGE,
 };
+
 export interface RenderNode {
   key: number;
   type: string;
@@ -118,8 +120,6 @@ export default class ServerElement {
       this.firstChildKey = nextSibling.key;
       nextSibling.prevSiblingKey = null;
     } else {
-      // TODO
-      // only element
       this.firstChildKey = null;
       this.lastChildKey = null;
     }
@@ -127,7 +127,8 @@ export default class ServerElement {
     this.children.delete(child.key);
 
     child.reset();
-    //TODO:removeCallback
+
+    //TODO: eventHandle overflow
     // child.taskController.removeCallback(child.key);
 
     if (this.isMounted()) {

@@ -103,7 +103,6 @@ export default class TaskController {
   // }
 
   appendChild(child: ServerElement) {
-    console.log('taskController appendCHild', child);
     this._root.appendChild(child);
   }
 
