@@ -6,20 +6,20 @@ import { slash } from '@/utils/utils';
 
 const PLUGIN_NAME = 'OptimizeEntriesPlugin';
 
-
+// 用于将runtimeChunk 、vendor 引入每个page的入口
 export default class OptimizeEntriesPlugin {
   constructor() {}
 
   apply(compiler: Compiler) {
     compiler.hooks.thisCompilation.tap(PLUGIN_NAME, (compilation: Compilation) => {
-      compilation.hooks.processAssets.tapAsync(PLUGIN_NAME, (_chunks, callback) => {
-        this.requireChunks(compilation);
-        callback();
+      compilation.hooks.processAssets.tapAsync(PLUGIN_NAME, (_chunks, cb) => {
+        this.importChunks(compilation);
+        cb();
       });
     });
   }
 
-  requireChunks(compilation: Compilation) {
+  importChunks(compilation: Compilation) {
     compilation.chunkGroups.forEach(group => {
       group.chunks.reverse().forEach((chunk: any) => {
         // require 相关的 chunk
@@ -27,17 +27,11 @@ export default class OptimizeEntriesPlugin {
           const requires: string[] = [];
           chunk.files.forEach((file: string) => {
             if (file.endsWith('.js')) {
-              console.log('group.name', group.name);
-              console.log('file', file);
-
               const relativePath = slash(path.relative(path.dirname(group.name!), file));
-              console.log('relativePath', relativePath);
-              requires.push(`require('./${relativePath}');\n`);
+              requires.push(`import('./${relativePath}');\n`);
             }
           });
           const chunkPath = group.name + '.js';
-          console.log('chunkPath', chunkPath);
-
           //@ts-ignore
           compilation.assets[chunkPath] = new ConcatSource(...requires, compilation.assets[chunkPath] ?? '');
         }

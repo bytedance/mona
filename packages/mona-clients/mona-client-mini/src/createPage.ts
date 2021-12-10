@@ -4,6 +4,7 @@ import { PageLifecycleGlobalContext, LifecycleContext, PageLifecycle } from './l
 import TaskController, { ROOT_KEY } from './reconciler/TaskController';
 import { Portal } from 'react-is';
 import { EventMap, genEventHandler } from './reconciler/eventHandler';
+import render from './reconciler';
 
 export function createPortal(children: React.ReactNode, containerInfo: any, key?: string): any {
   return {
@@ -73,6 +74,9 @@ function createConfig(Component: React.ComponentType<any>) {
 
       if (app) {
         app.addPage(this);
+      } else {
+        // 独立分包时，getApp() === undefined
+        render(wrapper, this._controller);
       }
 
       this.$callLifecycle(PageLifecycle.load, options);
