@@ -1,4 +1,3 @@
-// 参考自remax
 import { ConcatSource } from 'webpack-sources';
 import { Compiler, Compilation } from 'webpack';
 import path from 'path';
@@ -22,18 +21,18 @@ export default class OptimizeEntriesPlugin {
   importChunks(compilation: Compilation) {
     compilation.chunkGroups.forEach(group => {
       group.chunks.reverse().forEach((chunk: any) => {
-        // require 相关的 chunk
+        // 导入文件
         if (chunk.name !== group.name) {
-          const requires: string[] = [];
+          const imports: string[] = [];
           chunk.files.forEach((file: string) => {
             if (file.endsWith('.js')) {
               const relativePath = slash(path.relative(path.dirname(group.name!), file));
-              requires.push(`import('./${relativePath}');\n`);
+              imports.push(`import('./${relativePath}');\n`);
             }
           });
           const chunkPath = group.name + '.js';
           //@ts-ignore
-          compilation.assets[chunkPath] = new ConcatSource(...requires, compilation.assets[chunkPath] ?? '');
+          compilation.assets[chunkPath] = new ConcatSource(...imports, compilation.assets[chunkPath] ?? '');
         }
       });
     });

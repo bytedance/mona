@@ -23,7 +23,7 @@ export const basePropAlias = {
 };
 
 export const hoverPropAlias = {
-  hoverClass: 'hover-class',
+  // hoverClass: 'hover-class',
   hoverClassName: 'hover-class',
   hoverStartTime: 'hover-start-time',
   hoverStayTime: 'hover-stay-time',
@@ -149,9 +149,9 @@ const baseComponentPropsMap = {
   defaultText: 'default-text',
   defaultAvatar: 'default-avatar',
   useEmptyValue: 'use-empty-value',
-  showCompass:'show-compass',
-  enableOverlooking:' enable-overlooking',
-  enableRotate:'enable-rotate',
+  showCompass: 'show-compass',
+  enableOverlooking: ' enable-overlooking',
+  enableRotate: 'enable-rotate',
   // size: 'size',
   // loading: 'loading',
   // disabled: 'disabled',
