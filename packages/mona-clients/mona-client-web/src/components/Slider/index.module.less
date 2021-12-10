@@ -1,0 +1,88 @@
+.slider {
+  margin: 10px 18px;
+  padding: 0;
+  display: block;
+  & * {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+  }
+
+  .wrapper {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    min-height: 16px;
+  }
+
+  .tapArea {
+    -webkit-flex: 1;
+    flex: 1;
+    padding: 8px 0;
+  }
+
+  .handleWrapper {
+    position: relative;
+    height: 2px;
+    border-radius: 5px;
+    background-color: #e9e9e9;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .sliderTrack {
+    height: 100%;
+    border-radius: 6px;
+    background-color: #1aad19;
+    transition: background-color 0.3s ease;
+  }
+
+  .sliderHandle, .sliderThumb {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: border-color 0.3s ease;
+  }
+
+  .sliderHandle {
+    width: 28px;
+    height: 28px;
+    margin-top: -14px;
+    margin-left: -14px;
+    background-color: transparent;
+    z-index: 3;
+    border: 0 solid rgba(0,0,0,0.04);
+  }
+
+  .sliderThumb {
+    z-index: 2;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .sliderStep {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: transparent;
+    z-index: 1;
+  }
+
+  .sliderValue {
+    color: #888;
+    font-size: 14px;
+    margin-left: 1em;
+  }
+
+  .sliderDisabled {
+    .sliderTrack {
+      background-color: #ccc;
+    }
+
+    .sliderThumb {
+      background-color: #FFF;
+      border-color: #ccc;
+    }
+  }
+}
