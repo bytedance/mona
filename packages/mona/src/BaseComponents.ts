@@ -99,7 +99,7 @@ export interface ProgressProps extends BaseProps {
   activeColor?: string;
   backgroundColor?: string;
   active?: boolean;
-  activeMode?: string;
+  activeMode?: 'backwards' | 'forwards';
 }
 
 export interface IconProps extends BaseProps {
