@@ -330,5 +330,15 @@ export const ejsParamsObj: Record<
 export const ejsParamsMap = new Map();
 
 for (let name in ejsParamsObj) {
+  const defaultProps = ejsParamsObj[name].defaultProps;
+
+  if (defaultProps) {
+    for (let prop in defaultProps) {
+      if (typeof defaultProps[prop] === 'string') {
+        defaultProps[prop] = `'${defaultProps[prop]}'`;
+      }
+    }
+  }
+
   ejsParamsMap.set(name, ejsParamsObj[name]);
 }
