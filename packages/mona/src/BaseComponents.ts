@@ -127,6 +127,9 @@ export interface ScrollViewProps extends BaseProps {
   onScrollToLower?: EventHandler;
 }
 
+export type SwiperChangeEvent = TouchEvent & { detail: { current: number, source: 'autoplay' | 'touch' }}
+export type SwiperAnimationFinishEvent = SwiperChangeEvent;
+export type SwiperTransitionEvent = TouchEvent & { detail: { dy: number, dx: number }};
 export interface SwiperProps extends BaseProps {
   indicatorDots?: boolean;
   indicatorColor?: string;
@@ -141,9 +144,9 @@ export interface SwiperProps extends BaseProps {
   duration?: number;
   circular?: boolean;
   vertical?: boolean;
-  onChange?: EventHandler;
-  onAnimationFinish?: EventHandler;
-  onTransition?: EventHandler;
+  onChange?: (event: SwiperChangeEvent) => void
+  onAnimationFinish?:(event: SwiperAnimationFinishEvent) => void
+  onTransition?: (event: SwiperTransitionEvent) => void;
 }
 
 export interface SwiperItemProps extends BaseProps {
