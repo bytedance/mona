@@ -89,7 +89,7 @@ export interface RichTextNodeTypeText {
 export type RichTextNode = RichTextNodeTypeNode | RichTextNodeTypeText;
 
 export interface RichTextProps extends BaseProps {
-  nodes: RichTextNode[] | string
+  nodes?: RichTextNode[] | string
 }
 
 export interface ProgressProps extends BaseProps {
