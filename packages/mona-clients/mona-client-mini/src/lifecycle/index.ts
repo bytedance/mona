@@ -1,2 +1,2 @@
 export { usePageEvent, useAppEvent } from './hooks';
-export { PageLifecycleGlobalContext } from './context';
+export { PageLifecycleGlobalContext, appLifecycleContext } from './context';

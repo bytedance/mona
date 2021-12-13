@@ -1,11 +1,14 @@
 import { useLayoutEffect, useContext } from 'react';
-import { LifecycleContext, Callback, PageLifecycleGlobalContext } from './context';
+import { appLifecycleContext, Callback, PageLifecycleGlobalContext } from './context';
 
 // for app
-export const appLifecycleContext = new LifecycleContext();
 export function useAppEvent(eventName: string, callback: Callback) {
+  const appLifecycle = useContext(appLifecycleContext);
+
   useLayoutEffect(() => {
-    appLifecycleContext.registerLifecycle(eventName, callback);
+    if (appLifecycle) {
+      appLifecycle.registerLifecycle(eventName, callback);
+    }
   });
 }
 

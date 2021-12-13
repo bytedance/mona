@@ -1,18 +1,22 @@
 import React from 'react';
-import { appLifecycleContext } from './lifecycle/hooks';
+import { LifecycleContext, appLifecycleContext } from './lifecycle/context';
 import { AppLifecycle } from './lifecycle/context';
-import render from './reconciler';
+import render, { batchedUpdates } from './reconciler';
 // import TaskController from './reconciler/TaskController';
 import AppTaskController from './reconciler/AppTaskController';
+// import { monaPrint } from './utils/utils';
 // import AppTaskController from './reconciler/AppTaskController';
 
 class AppConfig {
   private _controller: AppTaskController;
-  private _Component: React.ComponentType<any>;
+  private _Component: React.ElementType<any>;
   private _pages: any[];
-
+  private _appLifecycleContext: LifecycleContext;
   constructor(Component: React.ComponentType<any>) {
+    this._appLifecycleContext = new LifecycleContext();
+
     this._Component = Component;
+
     this._pages = [];
     this._controller = new AppTaskController(this);
   }
@@ -29,9 +33,15 @@ class AppConfig {
   private _render() {
     return render(
       React.createElement(
-        this._Component,
-        {},
-        this._pages.map((p: any) => p.pageRoot),
+        appLifecycleContext.Provider,
+        {
+          value: this._appLifecycleContext,
+        },
+        React.createElement(
+          this._Component,
+          {},
+          this._pages.map((p: any) => p.pageRoot),
+        ),
       ),
       this._controller,
     );
@@ -40,30 +50,28 @@ class AppConfig {
   onLaunch(options: any) {
     this._controller.context = this;
     this._render();
-    this._callLifecycle(AppLifecycle.lanuch, options);
+    this._callLifecycle(AppLifecycle.launch, options);
   }
 
   onShow(options: any) {
     this._callLifecycle(AppLifecycle.show, options);
   }
 
-  onHide() {
-    this._callLifecycle(AppLifecycle.hide);
+  onHide(...rest: any) {
+    this._callLifecycle(AppLifecycle.hide, ...rest);
   }
 
-  onError(msg: string) {
-    this._callLifecycle(AppLifecycle.error, msg);
+  onError(...rest: any) {
+    this._callLifecycle(AppLifecycle.error, ...rest);
   }
 
-  onPageNotFound(msg: string) {
-    this._callLifecycle(AppLifecycle.pageNodeFound, msg);
+  onPageNotFound(...rest: any[]) {
+    this._callLifecycle(AppLifecycle.pageNotFound, ...rest);
   }
 
-  private _callLifecycle(name: AppLifecycle, params?: any) {
-    const cbs = appLifecycleContext.lifecycles[name] || [];
-    cbs.forEach(cb => {
-      cb(params);
-    });
+  private _callLifecycle(name: AppLifecycle, ...params: any[]) {
+    const cbs = this._appLifecycleContext.lifecycles[name] || [];
+    cbs.forEach(cb => batchedUpdates(params => cb(...params), params));
   }
 }
 

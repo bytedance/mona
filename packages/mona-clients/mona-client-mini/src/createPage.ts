@@ -4,7 +4,7 @@ import { PageLifecycleGlobalContext, LifecycleContext, PageLifecycle } from './l
 import TaskController, { ROOT_KEY } from './reconciler/TaskController';
 import { Portal } from 'react-is';
 // import { EventMap, genEventHandler } from './reconciler/eventHandler';
-import render from './reconciler';
+import render, { batchedUpdates } from './reconciler';
 import { monaPrint } from './utils/utils';
 
 export function createPortal(children: React.ReactNode, containerInfo: any, key?: string): any {
@@ -74,6 +74,7 @@ function createConfig(Component: React.ComponentType<any>) {
         { value: this._pageLifecycleContext, key: generatePageId() },
         [React.createElement(this._Component, { key: 'entry' }, [])],
       );
+      
       this.pageRoot = createPortal(wrapper, this._controller, generatePageId());
 
       if (app) {
@@ -130,9 +131,7 @@ function createConfig(Component: React.ComponentType<any>) {
 
     $callLifecycle(name: PageLifecycle, ...params: any[]) {
       const cbs = this._pageLifecycleContext.lifecycles[name] || [];
-      cbs.forEach(cb => {
-        cb(...params);
-      });
+      cbs.forEach(cb => batchedUpdates(params => cb(...params), params));
     },
   };
 

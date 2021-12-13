@@ -2,11 +2,11 @@ import React from 'react';
 export type Callback = (...args: any[]) => any;
 
 export enum AppLifecycle {
-  lanuch = 'lanuch',
+  launch = 'launch',
   show = 'show',
   hide = 'hide',
   error = 'error',
-  pageNodeFound = 'pageNodeFound'
+  pageNotFound = 'pageNotFound',
 }
 
 export enum PageLifecycle {
@@ -19,9 +19,8 @@ export enum PageLifecycle {
   pullDownRefresh = 'pullDownRefresh',
   reachBottom = 'reachBottom',
   shareAppMessage = 'shareAppMessage',
-  pageScroll = 'pageScroll'
+  pageScroll = 'pageScroll',
 }
-
 
 export class LifecycleContext {
   lifecycles: { [key: string]: Callback[] };
@@ -42,3 +41,4 @@ export class LifecycleContext {
 }
 
 export const PageLifecycleGlobalContext = React.createContext<LifecycleContext | null>(null);
+export const appLifecycleContext = React.createContext<LifecycleContext | null>(null);
