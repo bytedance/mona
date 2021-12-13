@@ -2,6 +2,7 @@ import { FiberRoot } from 'react-reconciler';
 import ServerElement, { RenderNode, NodeType } from './ServerElement';
 import { NodeTask } from '../utils/constants';
 import createEventHandler from '../eventHandler';
+import { monaPrint } from '../utils/utils';
 // import { isObject } from '../utils/utils';
 
 interface SpliceTask {
@@ -72,8 +73,11 @@ export default class TaskController {
         res[this.genUpdatePath([...task.path, task.propName])] = task.propValue;
       }
     });
-    console.log('applyUpdate', res);
     this.context.setData(res);
+    monaPrint.debug('applyUpdate', {
+      data: res,
+      tasks: this.tasks,
+    });
     this.tasks = [];
   }
 

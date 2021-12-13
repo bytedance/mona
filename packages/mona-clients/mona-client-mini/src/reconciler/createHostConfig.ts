@@ -69,8 +69,6 @@ export default function createHostConfig() {
 
     // ========== Mutation Methods ===========
     appendChild(parent: ServerElement, child: ServerElement) {
-      // console.log('appendChild', { child });
-
       parent.appendChild(child);
     },
 

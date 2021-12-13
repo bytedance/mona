@@ -36,9 +36,11 @@ export const bubbleEventMap: Record<string, true> = {
   onAnimationIteration: true,
   onAnimationEnd: true,
 };
-// BUBBLE_EVENTS.forEach(item => {
-//   Object.keys(bubbleEventMap)[item.slice(2).toLowerCase()] = item;
+
+// Object.keys(bubbleEventMap).forEach(item => {
+//   eventReactAliasMap[item.slice(2).toLowerCase()] = item;
 // })
+
 export const eventReactAliasMap: Record<string, string> = {
   click: 'onClick',
   tap: 'onTap',
@@ -54,8 +56,8 @@ export const eventReactAliasMap: Record<string, string> = {
   animationend: 'onAnimationEnd',
 };
 
-// BUBBLE_EVENTS.forEach(item => {
-//   Object.keys(bubbleEventMap)[item.slice(2).toLowerCase()] = false;
+// Object.keys(bubbleEventMap).forEach(item => {
+//   isPropagationStop[item.slice(2).toLowerCase()] = false;
 // });
 export const isPropagationStop: Record<string, boolean> = {
   click: false,
