@@ -47,21 +47,21 @@ class AppConfig {
     );
   }
 
-  onLaunch(options: any) {
+  onLaunch(...rest: any[]) {
     this._controller.context = this;
     this._render();
-    this._callLifecycle(AppLifecycle.launch, options);
+    this._callLifecycle(AppLifecycle.launch, ...rest);
   }
 
-  onShow(options: any) {
-    this._callLifecycle(AppLifecycle.show, options);
+  onShow(...rest: any[]) {
+    this._callLifecycle(AppLifecycle.show, ...rest);
   }
 
-  onHide(...rest: any) {
+  onHide(...rest: any[]) {
     this._callLifecycle(AppLifecycle.hide, ...rest);
   }
 
-  onError(...rest: any) {
+  onError(...rest: any[]) {
     this._callLifecycle(AppLifecycle.error, ...rest);
   }
 

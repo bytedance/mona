@@ -140,6 +140,7 @@ export default function createHostConfig() {
     schedulePassiveEffects: scheduleDeferredCallback,
     cancelPassiveEffects: cancelDeferredCallback,
     shouldYield,
+    // 废弃
     scheduleDeferredCallback,
     cancelDeferredCallback,
     supportsMutation: true,
