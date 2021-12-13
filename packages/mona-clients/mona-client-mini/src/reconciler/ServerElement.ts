@@ -1,4 +1,4 @@
-import { NodeTask } from '../utils/constants';
+import { NodeTask } from '@/utils';
 // import { processProps } from './processProps';
 import TaskController, { Task } from './TaskController';
 

@@ -34,42 +34,6 @@ import webview from './Webview/alias';
 import map from './Map/alias';
 // import map from './Ca/alias';
 
-export const aliasMap = new Map();
-aliasMap.set('icon', icon);
-aliasMap.set('movableArea', movableArea);
-aliasMap.set('movableView', movableView);
-aliasMap.set('picker', picker);
-aliasMap.set('pickerView', pickerView);
-aliasMap.set('pickerViewColumn', pickerViewColumn);
-aliasMap.set('progress', progress);
-aliasMap.set('radio', radio);
-aliasMap.set('radioGroup', radioGroup);
-aliasMap.set('richText', richText);
-aliasMap.set('swiper', swiper);
-aliasMap.set('swiperItem', swiperItem);
-aliasMap.set('block', block);
-aliasMap.set('navigator', navigator);
-aliasMap.set('ad', ad);
-aliasMap.set('canvas', canvas);
-aliasMap.set('swiperItem', swiperItem);
-aliasMap.set('image', image);
-aliasMap.set('livePlayer', livePlayer);
-aliasMap.set('openData', openData);
-aliasMap.set('webview', webview);
-aliasMap.set('video', video);
-aliasMap.set('button', button);
-aliasMap.set('checkbox', checkbox);
-aliasMap.set('checkboxGroup', checkboxGroup);
-aliasMap.set('form', form);
-aliasMap.set('input', input);
-aliasMap.set('label', label);
-aliasMap.set('scrollView', scrollView);
-aliasMap.set('slider', slider);
-aliasMap.set('switch', switchComponent);
-aliasMap.set('textarea', textArea);
-aliasMap.set('text', text);
-aliasMap.set('view', view);
-
 export const ejsParamsObj: Record<
   string,
   {
@@ -86,7 +50,7 @@ export const ejsParamsObj: Record<
   },
   richText: { alias: richText },
   progress: {
-    alias: text,
+    alias: progress,
     defaultProps: {
       percent: 0,
       strokeWidth: 6,
@@ -299,10 +263,23 @@ export const ejsParamsObj: Record<
       controls: true,
       objectFit: 'contain',
       playBtnPosition: 'center',
+      vslideGesture: false,
+      vslideGestureInFullscreen: false,
+      muted: false,
+      showMuteBtn: false,
+      showPlayInBackground: false,
+      direction: -90,
+      enablePlayInBackground: false,
     },
   },
   livePlayer: {
     alias: livePlayer,
+    defaultProps: {
+      autoplay: false,
+      muted: false,
+      orientation: 'vertical',
+      objectFit: 'contain',
+    },
   },
   // camera: {
   //   alias: camera,

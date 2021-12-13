@@ -4,8 +4,8 @@
   "description": "miniapp for mona",
   "main": "./dist/index.js",
   "scripts": {
-    "build": "yarn clean && tsc -b",
-    "start": "tsc -b -w",
+    "build": "yarn clean && ttsc -b",
+    "start": "ttsc -b -w",
     "clean": "rm -rf dist"
   },
   "keywords": [
@@ -22,7 +22,9 @@
   },
   "devDependencies": {
     "@types/react-is": "^17.0.3",
-    "@types/react-reconciler": "^0.26.4"
+    "@types/react-reconciler": "^0.26.4",
+    "typescript-json-schema": "^0.43.0",
+    "typescript-transform-paths": "^2.2.4"
   },
   "peerDependencies": {
     "react": "^17.0.2"

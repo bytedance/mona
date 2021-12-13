@@ -1,11 +1,7 @@
 import React from 'react';
-import { LifecycleContext, appLifecycleContext } from './lifecycle/context';
-import { AppLifecycle } from './lifecycle/context';
-import render, { batchedUpdates } from './reconciler';
-// import TaskController from './reconciler/TaskController';
-import AppTaskController from './reconciler/AppTaskController';
-// import { monaPrint } from './utils/utils';
-// import AppTaskController from './reconciler/AppTaskController';
+import { LifecycleContext, appLifecycleContext, AppLifecycle } from './lifecycle/context';
+import render, { batchedUpdates } from '@/reconciler';
+import AppTaskController from '@/reconciler/AppTaskController';
 
 class AppConfig {
   private _controller: AppTaskController;

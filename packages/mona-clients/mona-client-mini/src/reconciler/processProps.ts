@@ -1,7 +1,5 @@
-import { CALLBACK_SYMBOL } from '../utils/constants';
-import { isEventName, isFunction, isObject, monaPrint } from '../utils/utils';
+import { CALLBACK_SYMBOL, isEventName, isFunction, isObject, monaPrint, plainStyle } from '@/utils';
 import ServerElement from './ServerElement';
-import { plainStyle } from '../utils/transformStyle';
 import createEventHandler from '../eventHandler';
 
 /**

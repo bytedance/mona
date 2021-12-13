@@ -36,7 +36,7 @@ export interface BaseTarget {
 export interface BaseEvent {
   type: string;
   timeStamp: number;
-  target: BaseTarget
+  target: BaseTarget;
   currentTarget: BaseTarget;
 }
 
@@ -60,11 +60,11 @@ export interface TouchEvent<T = Touch> extends BaseEvent {
 }
 
 export interface EventHandler {
-  (event: BaseEvent): void
+  (event: BaseEvent): void;
 }
 
 export interface TouchEventHandler<T = Touch> {
-  (event: TouchEvent<T>): void
+  (event: TouchEvent<T>): void;
 }
 
 // 基础内容
@@ -78,7 +78,7 @@ export interface RichTextNodeTypeNode {
   name: string;
   type?: string;
   attrs?: Record<string, any>;
-  children?: Array<RichTextNode>
+  children?: Array<RichTextNode>;
 }
 
 export interface RichTextNodeTypeText {
@@ -89,7 +89,7 @@ export interface RichTextNodeTypeText {
 export type RichTextNode = RichTextNodeTypeNode | RichTextNodeTypeText;
 
 export interface RichTextProps extends BaseProps {
-  nodes?: RichTextNode[] | string
+  nodes?: RichTextNode[] | string;
 }
 
 export interface ProgressProps extends BaseProps {
@@ -103,15 +103,13 @@ export interface ProgressProps extends BaseProps {
 }
 
 export interface IconProps extends BaseProps {
-  type: 'success' | 'success_no_circle' | 'info' | 'warn' | 'warning' | 'clear' | 'cancel' | 'download' | 'search'
+  type: 'success' | 'success_no_circle' | 'info' | 'warn' | 'warning' | 'clear' | 'cancel' | 'download' | 'search';
   size?: number;
   color?: string;
 }
 
 // 视图容器
-export interface ViewProps extends BaseProps, HoverProps {
-  
-}
+export interface ViewProps extends BaseProps, HoverProps {}
 
 export interface ScrollViewProps extends BaseProps {
   scrollX?: boolean;
@@ -127,9 +125,9 @@ export interface ScrollViewProps extends BaseProps {
   onScrollToLower?: EventHandler;
 }
 
-export type SwiperChangeEvent = TouchEvent & { detail: { current: number, source: 'autoplay' | 'touch' }}
+export type SwiperChangeEvent = TouchEvent & { detail: { current: number; source: 'autoplay' | 'touch' } };
 export type SwiperAnimationFinishEvent = SwiperChangeEvent;
-export type SwiperTransitionEvent = TouchEvent & { detail: { dy: number, dx: number }};
+export type SwiperTransitionEvent = TouchEvent & { detail: { dy: number; dx: number } };
 export interface SwiperProps extends BaseProps {
   indicatorDots?: boolean;
   indicatorColor?: string;
@@ -144,13 +142,13 @@ export interface SwiperProps extends BaseProps {
   duration?: number;
   circular?: boolean;
   vertical?: boolean;
-  onChange?: (event: SwiperChangeEvent) => void
-  onAnimationFinish?:(event: SwiperAnimationFinishEvent) => void
+  onChange?: (event: SwiperChangeEvent) => void;
+  onAnimationFinish?: (event: SwiperAnimationFinishEvent) => void;
   onTransition?: (event: SwiperTransitionEvent) => void;
 }
 
 export interface SwiperItemProps extends BaseProps {
-  itemId?: string
+  itemId?: string;
 }
 
 export interface MovableAreaProps extends BaseProps {
@@ -177,7 +175,6 @@ export interface MovableViewProps extends BaseProps {
   onVtouchMove?: EventHandler;
 }
 
-
 // 表单
 export interface ButtonProps extends BaseProps, HoverProps {
   size?: 'default' | 'mini';
@@ -190,14 +187,14 @@ export interface ButtonProps extends BaseProps, HoverProps {
 }
 
 export interface CheckboxProps extends BaseProps {
-  value?: string
+  value?: string;
   disabled?: boolean;
-  checked?: boolean
-  color?: string
+  checked?: boolean;
+  color?: string;
 }
 
 export interface CheckboxGroupProps extends BaseProps {
-  onChange?: (event: TouchEvent & { detail: { value?: string[] }}) => void;
+  onChange?: (event: TouchEvent & { detail: { value?: string[] } }) => void;
   name?: string;
 }
 
@@ -233,7 +230,7 @@ export interface LabelProps extends BaseProps {
 
 export interface PickerProps extends BaseProps {
   mode?: 'selector' | 'multiSelector' | 'time' | 'date' | 'region';
-  range?: (string | Record<string, any>)[][]
+  range?: (string | Record<string, any>)[][];
   rangeKey?: string;
   value?: number[] | string[] | string;
   start?: string;
@@ -250,12 +247,10 @@ export interface PickerViewProps extends BaseProps {
   value: number[];
   indicatorStyle?: string;
   maskStyle?: string;
-  onChange?: EventHandler
+  onChange?: EventHandler;
 }
 
-export interface PickerViewColumnProps extends BaseProps {
-  
-}
+export interface PickerViewColumnProps extends BaseProps {}
 
 export interface RadioProps extends BaseProps {
   value?: string;
@@ -265,7 +260,7 @@ export interface RadioProps extends BaseProps {
 }
 
 export interface RadioGroupProps extends BaseProps {
-  onChange?: (event: TouchEvent & { detail: { value?: string }}) => void;
+  onChange?: (event: TouchEvent & { detail: { value?: string } }) => void;
   name?: string;
 }
 
@@ -321,7 +316,20 @@ export interface NavigatorProps extends BaseProps, HoverProps {
 }
 
 // 媒体
-type ImageMode = 'scaleToFill' | 'aspectFit' | 'aspectFill' | 'widthFix' | 'heightFix' | 'top' | 'bottom' | 'left' | 'right' | 'top left' | 'top right' | 'bottom left' | 'bottom right'
+type ImageMode =
+  | 'scaleToFill'
+  | 'aspectFit'
+  | 'aspectFill'
+  | 'widthFix'
+  | 'heightFix'
+  | 'top'
+  | 'bottom'
+  | 'left'
+  | 'right'
+  | 'top left'
+  | 'top right'
+  | 'bottom left'
+  | 'bottom right';
 
 export interface ImageProps extends BaseProps {
   src?: string;
@@ -344,6 +352,7 @@ export interface VideoProps extends BaseProps {
   preRollUnitId?: string;
   postRollUnitId?: string;
   vslideGestureInFullscreen?: boolean;
+  vslideGesture?: boolean;
   enableProgressGesture?: boolean;
   enablePlayGesture?: boolean;
   muted?: boolean;
@@ -429,7 +438,7 @@ interface Callout {
   borderRadius?: number;
   padding?: number;
   display?: 'BYCLICK' | 'ALWAYS';
-  textAlign?: 'left' | 'center' | 'right'
+  textAlign?: 'left' | 'center' | 'right';
 }
 
 interface Marker {
@@ -493,49 +502,49 @@ export interface LinkProps extends BaseProps {
 
 abstract class BaseComponents {
   // 基础内容
-  abstract Text: React.ComponentType<TextProps>
-  abstract RichText: React.ComponentType<RichTextProps>
-  abstract Progress: React.ComponentType<ProgressProps>
-  abstract Icon: React.ComponentType<IconProps>
+  abstract Text: React.ComponentType<TextProps>;
+  abstract RichText: React.ComponentType<RichTextProps>;
+  abstract Progress: React.ComponentType<ProgressProps>;
+  abstract Icon: React.ComponentType<IconProps>;
   // 视图容器
-  abstract View: React.ComponentType<ViewProps>
-  abstract ScrollView: React.ComponentType<ScrollViewProps>
-  abstract Swiper: React.ComponentType<SwiperProps>
-  abstract SwiperItem: React.ComponentType<SwiperItemProps>
-  abstract MovableArea: React.ComponentType<MovableAreaProps>
-  abstract MovableView: React.ComponentType<MovableViewProps>
+  abstract View: React.ComponentType<ViewProps>;
+  abstract ScrollView: React.ComponentType<ScrollViewProps>;
+  abstract Swiper: React.ComponentType<SwiperProps>;
+  abstract SwiperItem: React.ComponentType<SwiperItemProps>;
+  abstract MovableArea: React.ComponentType<MovableAreaProps>;
+  abstract MovableView: React.ComponentType<MovableViewProps>;
   // 表单
-  abstract Button: React.ComponentType<ButtonProps>
-  abstract Checkbox: React.ComponentType<CheckboxProps>
-  abstract CheckboxGroup: React.ComponentType<CheckboxGroupProps>
-  abstract Form: React.ComponentType<FormProps>
-  abstract Input: React.ComponentType<InputProps>
-  abstract Label: React.ComponentType<LabelProps>
-  abstract Picker: React.ComponentType<PickerProps>
-  abstract PickerView: React.ComponentType<PickerViewProps>
-  abstract PickerViewColumn: React.ComponentType<PickerViewColumnProps>
-  abstract Radio: React.ComponentType<RadioProps>
-  abstract RadioGroup: React.ComponentType<RadioGroupProps>
-  abstract Slider: React.ComponentType<SliderProps>
-  abstract Switch: React.ComponentType<SwitchProps>
-  abstract Textarea: React.ComponentType<TextareaProps>
+  abstract Button: React.ComponentType<ButtonProps>;
+  abstract Checkbox: React.ComponentType<CheckboxProps>;
+  abstract CheckboxGroup: React.ComponentType<CheckboxGroupProps>;
+  abstract Form: React.ComponentType<FormProps>;
+  abstract Input: React.ComponentType<InputProps>;
+  abstract Label: React.ComponentType<LabelProps>;
+  abstract Picker: React.ComponentType<PickerProps>;
+  abstract PickerView: React.ComponentType<PickerViewProps>;
+  abstract PickerViewColumn: React.ComponentType<PickerViewColumnProps>;
+  abstract Radio: React.ComponentType<RadioProps>;
+  abstract RadioGroup: React.ComponentType<RadioGroupProps>;
+  abstract Slider: React.ComponentType<SliderProps>;
+  abstract Switch: React.ComponentType<SwitchProps>;
+  abstract Textarea: React.ComponentType<TextareaProps>;
   // 导航
-  abstract Navigator: React.ComponentType<NavigatorProps>
+  abstract Navigator: React.ComponentType<NavigatorProps>;
   // 媒体
-  abstract Image: React.ComponentType<ImageProps>
-  abstract Video: React.ComponentType<VideoProps>
-  abstract LivePlayer: React.ComponentType<LivePlayerProps>
-  abstract Camera: React.ComponentType<CameraProps>
+  abstract Image: React.ComponentType<ImageProps>;
+  abstract Video: React.ComponentType<VideoProps>;
+  abstract LivePlayer: React.ComponentType<LivePlayerProps>;
+  abstract Camera: React.ComponentType<CameraProps>;
   // 画布
-  abstract Canvas: React.ComponentType<CanvasProps>
+  abstract Canvas: React.ComponentType<CanvasProps>;
   // 地图
-  abstract Map: React.ComponentType<MapProps>
+  abstract Map: React.ComponentType<MapProps>;
   // 开放能力
-  abstract Webview: React.ComponentType<WebviewProps>
-  abstract Ad: React.ComponentType<AdProps>
-  abstract OpenData: React.ComponentType<OpenDataProps>
+  abstract Webview: React.ComponentType<WebviewProps>;
+  abstract Ad: React.ComponentType<AdProps>;
+  abstract OpenData: React.ComponentType<OpenDataProps>;
   // 自定义
-  abstract Link: React.ComponentType<LinkProps>
+  abstract Link: React.ComponentType<LinkProps>;
 }
 
 export default BaseComponents;

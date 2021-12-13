@@ -1,4 +1,4 @@
-import createEventHandler from '../eventHandler';
+import createEventHandler from '@/eventHandler';
 import { FiberRoot } from 'react-reconciler';
 import ServerElement, { NodeType } from './ServerElement';
 import { ROOT_KEY } from './TaskController';

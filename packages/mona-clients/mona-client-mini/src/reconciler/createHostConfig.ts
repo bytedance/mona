@@ -2,7 +2,7 @@ import scheduler from 'scheduler';
 import TaskController from './TaskController';
 import ServerElement from './ServerElement';
 import { diffProperties, processProps } from './processProps';
-import { isObject } from '../utils/utils';
+import { isObject } from '@/utils';
 
 const {
   unstable_scheduleCallback: scheduleDeferredCallback,

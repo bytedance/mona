@@ -1,11 +1,10 @@
 import React from 'react';
-import { PageLifecycleGlobalContext, LifecycleContext, PageLifecycle } from './lifecycle/context';
-// import render from './reconciler';
-import TaskController, { ROOT_KEY } from './reconciler/TaskController';
 import { Portal } from 'react-is';
-// import { EventMap, genEventHandler } from './reconciler/eventHandler';
-import render, { batchedUpdates } from './reconciler';
-import { monaPrint } from './utils/utils';
+
+import { PageLifecycleGlobalContext, LifecycleContext, PageLifecycle } from '@/lifecycle/context';
+import TaskController, { ROOT_KEY } from '@/reconciler/TaskController';
+import render, { batchedUpdates } from '@/reconciler';
+import { monaPrint } from '@/utils';
 
 export function createPortal(children: React.ReactNode, containerInfo: any, key?: string): any {
   return {
@@ -74,7 +73,7 @@ function createConfig(Component: React.ComponentType<any>) {
         { value: this._pageLifecycleContext, key: generatePageId() },
         [React.createElement(this._Component, { key: 'entry' }, [])],
       );
-      
+
       this.pageRoot = createPortal(wrapper, this._controller, generatePageId());
 
       if (app) {

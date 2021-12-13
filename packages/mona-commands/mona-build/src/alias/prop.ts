@@ -106,6 +106,7 @@ const baseComponentPropsMap = {
   preRollUnitId: 'pre-roll-unit-id',
   postRollUnitId: 'post-roll-unit-id',
   vslideGestureInFullscreen: 'vslide-gesture-in-fullscreen',
+  vslideGesture: 'vslide-gesture',
   enableProgressGesture: 'enable-progress-gesture',
   enablePlayGesture: 'enable-play-gesture',
   showMuteBtn: 'show-mute-btn',

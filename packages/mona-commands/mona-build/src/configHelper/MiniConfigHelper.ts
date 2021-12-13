@@ -39,6 +39,7 @@ class MiniConfigHelper extends BaseConfigHelper {
           minimize: true,
           minimizer: [new TerserWebpackPlugin({ parallel: true, extractComments: false }), new CssMiniminzerPlugin()],
         };
+
     return {
       ...devOptimization,
       // 所有page共享运行时文件，用于每个page初始化, 每个page入口引入runtimeChunk。初始化一次
@@ -50,7 +51,6 @@ class MiniConfigHelper extends BaseConfigHelper {
 
       splitChunks: {
         cacheGroups: {
-          // 缓存组配置，默认有vendors和default
           vendors: {
             name: 'vendors',
             test: moduleMatcher,

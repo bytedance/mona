@@ -1,10 +1,8 @@
 import { FiberRoot } from 'react-reconciler';
 import ServerElement, { RenderNode, NodeType } from './ServerElement';
-import { NodeTask } from '../utils/constants';
 // import createEventHandler from '../eventHandler';
-import { monaPrint } from '../utils/utils';
+import { monaPrint, NodeTask } from '@/utils';
 import { batchedUpdates } from '.';
-// import { isObject } from '../utils/utils';
 
 interface SpliceTask {
   type: NodeTask.SPLICE;
