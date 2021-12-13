@@ -7,25 +7,39 @@ export interface MonaEvent {
   detail: Record<string, unknown>;
   stopPropagation?: any;
 }
-export const BUBBLE_EVENTS = [
-  'onClick',
-  'onTap',
-  'onLongPress',
-  'onLongTap',
-  'onTouchStart',
-  'onTouchMove',
-  'onTouchEnd',
-  'onTouchcancel',
-  'onTransitionEnd',
-  'onAnimationStart',
-  'onAnimationIteration',
-  'onAnimationEnd',
-];
+// export const BUBBLE_EVENTS = [
+//   'onClick',
+//   'onTap',
+//   'onLongPress',
+//   'onLongTap',
+//   'onTouchStart',
+//   'onTouchMove',
+//   'onTouchEnd',
+//   'onTouchcancel',
+//   'onTransitionEnd',
+//   'onAnimationStart',
+//   'onAnimationIteration',
+//   'onAnimationEnd',
+// ];
 
+export const bubbleEventMap: Record<string, true> = {
+  onClick: true,
+  onTap: true,
+  onLongPress: true,
+  onLongTap: true,
+  onTouchStart: true,
+  onTouchMove: true,
+  onTouchEnd: true,
+  onTouchcancel: true,
+  onTransitionEnd: true,
+  onAnimationStart: true,
+  onAnimationIteration: true,
+  onAnimationEnd: true,
+};
 // BUBBLE_EVENTS.forEach(item => {
-//   eventMap[item.slice(2).toLowerCase()] = item;
+//   Object.keys(bubbleEventMap)[item.slice(2).toLowerCase()] = item;
 // })
-export const eventMap: Record<string, string> = {
+export const eventReactAliasMap: Record<string, string> = {
   click: 'onClick',
   tap: 'onTap',
   longpress: 'onLongPress',
@@ -41,7 +55,7 @@ export const eventMap: Record<string, string> = {
 };
 
 // BUBBLE_EVENTS.forEach(item => {
-//   isPropagationStop[item.slice(2).toLowerCase()] = false;
+//   Object.keys(bubbleEventMap)[item.slice(2).toLowerCase()] = false;
 // });
 export const isPropagationStop: Record<string, boolean> = {
   click: false,

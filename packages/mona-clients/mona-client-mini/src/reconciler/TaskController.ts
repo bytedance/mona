@@ -85,8 +85,8 @@ export default class TaskController {
     this._stopUpdate = true;
   }
 
-  addCallback(name: string, cb: (...args: any) => any, node: ServerElement) {
-    this.context[name] = createEventHandler(node, cb);
+  addCallback(cbKey: string, eventName: string, cb: (...args: any) => any, node: ServerElement) {
+    this.context[cbKey] = createEventHandler(node, eventName, cb);
   }
 
   // addCallback(nodeKey: string | number, eventName: string, cb: (...args: any) => any) {

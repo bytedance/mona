@@ -1,5 +1,5 @@
 import ServerElement from '../reconciler/ServerElement';
-import { isPropagationStop, eventMap, MonaEvent } from './contants';
+import { isPropagationStop, eventReactAliasMap, bubbleEventMap, MonaEvent } from './contants';
 
 function checkPropagation(eventName: string, node: ServerElement) {
   const parent = node.parent;
@@ -10,7 +10,7 @@ function checkPropagation(eventName: string, node: ServerElement) {
   }
 
   // 父元素没有绑定事件->继续向上
-  if (!parent.props?.[eventMap[eventName]]) {
+  if (!parent.props?.[eventReactAliasMap[eventName]]) {
     stopPropagation(eventName, parent);
   }
 
@@ -23,11 +23,16 @@ function stopPropagation(eventName: string, node: ServerElement) {
   checkPropagation(eventName, node);
 }
 
-export default function createEventHandler(node: ServerElement, cb: (...params: any) => void) {
+export default function createEventHandler(node: ServerElement, eventName: string, cb: (...params: any) => void) {
+  if (!bubbleEventMap[eventName]) {
+    return cb;
+  }
+
   return (e: MonaEvent, ...rest: any[]) => {
     e.stopPropagation = function () {
       stopPropagation(e.type, node);
     };
+
     // 为true，代表child调用了stopPropagation,
     if (isPropagationStop[e.type]) {
       checkPropagation(e.type, node);

@@ -35,9 +35,8 @@ export default class AppTaskController {
     });
   }
 
-  addCallback(name: string, cb: (...args: any) => any, node: ServerElement) {
-    console.log('app addCallback', node);
-    this.context[name] = createEventHandler(node, cb);
+  addCallback(cbKey: string, eventName: string, cb: (...args: any) => any, node: ServerElement) {
+    this.context[cbKey] = createEventHandler(node, eventName, cb);
   }
 
   removeCallback(name: string | number) {
