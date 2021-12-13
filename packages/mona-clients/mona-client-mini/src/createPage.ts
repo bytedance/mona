@@ -3,7 +3,7 @@ import { PageLifecycleGlobalContext, LifecycleContext, PageLifecycle } from './l
 // import render from './reconciler';
 import TaskController, { ROOT_KEY } from './reconciler/TaskController';
 import { Portal } from 'react-is';
-import { EventMap, genEventHandler } from './reconciler/eventHandler';
+// import { EventMap, genEventHandler } from './reconciler/eventHandler';
 import render from './reconciler';
 
 export function createPortal(children: React.ReactNode, containerInfo: any, key?: string): any {
@@ -31,8 +31,8 @@ interface PageConfig {
   onShareAppMessage: (options: { channel?: string }) => void;
   onPageScroll: () => void;
   $callLifecycle: (name: PageLifecycle, params?: any) => void;
-  eventHandler: ReturnType<typeof genEventHandler>;
-  eventMap: EventMap;
+  // eventHandler: ReturnType<typeof genEventHandler>;
+  // eventMap: EventMap;
 }
 let pageId = 0;
 
@@ -47,14 +47,14 @@ function createConfig(Component: React.ComponentType<any>) {
   } catch (e) {
     app = null;
   }
-  const eventMap = new Map();
+  // const eventMap = new Map();
   const config: PageConfig = {
     _pageLifecycleContext: new LifecycleContext(),
     _Component: Component,
     _controller: new TaskController({}),
 
-    eventHandler: genEventHandler(eventMap),
-    eventMap: eventMap,
+    // eventHandler: genEventHandler(eventMap),
+    // eventMap: eventMap,
     onLoad(this: any, options: any) {
       this.data = {
         [ROOT_KEY]: {

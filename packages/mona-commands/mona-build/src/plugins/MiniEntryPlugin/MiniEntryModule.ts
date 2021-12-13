@@ -32,7 +32,7 @@ export default class MiniEntryModule {
     return `
       import { createPage } from '@bytedance/mona-runtime';
       import PageComponent  from './${path.basename(filename)}';
-      console.log('ni zai na')
+      
       Page(createPage(PageComponent, '${name}'));
     `;
   }

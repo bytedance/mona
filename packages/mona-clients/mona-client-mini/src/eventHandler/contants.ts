@@ -22,7 +22,10 @@ export const BUBBLE_EVENTS = [
   'onAnimationEnd',
 ];
 
-export const eventMap = {
+// BUBBLE_EVENTS.forEach(item => {
+//   eventMap[item.slice(2).toLowerCase()] = item;
+// })
+export const eventMap: Record<string, string> = {
   click: 'onClick',
   tap: 'onTap',
   longpress: 'onLongPress',
@@ -36,4 +39,21 @@ export const eventMap = {
   animationiteration: 'onAnimationIteration',
   animationend: 'onAnimationEnd',
 };
-// export const isPropagationStop: Record<string, boolean> = {};
+
+// BUBBLE_EVENTS.forEach(item => {
+//   isPropagationStop[item.slice(2).toLowerCase()] = false;
+// });
+export const isPropagationStop: Record<string, boolean> = {
+  click: false,
+  tap: false,
+  longpress: false,
+  longtap: false,
+  touchstart: false,
+  touchmove: false,
+  touchend: false,
+  touchcancel: false,
+  transitionend: false,
+  animationstart: false,
+  animationiteration: false,
+  animationend: false,
+};

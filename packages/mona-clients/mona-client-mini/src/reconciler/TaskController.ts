@@ -80,14 +80,15 @@ export default class TaskController {
   genUpdatePath(paths: string[]) {
     return [this.rootKey, ...paths].join('.');
   }
+
   stopUpdate() {
     this._stopUpdate = true;
   }
-  addCallback(name: string, cb: (...args: any) => any, node: ServerElement) {
-    console.log('page addCallback', node);
 
+  addCallback(name: string, cb: (...args: any) => any, node: ServerElement) {
     this.context[name] = createEventHandler(node, cb);
   }
+
   // addCallback(nodeKey: string | number, eventName: string, cb: (...args: any) => any) {
   //   if (isObject(this.context[nodeKey])) {
   //     this.context[nodeKey][eventName] = cb;
@@ -99,11 +100,6 @@ export default class TaskController {
   removeCallback(name: string | number) {
     this.context[name] = undefined;
   }
-  // if (eventName && isObject(this.context[nodeKey])) {
-  //   this.context[nodeKey][eventName] = undefined;
-  // } else {
-  //   this.context[nodeKey] = undefined;
-  // }
 
   appendChild(child: ServerElement) {
     this._root.appendChild(child);
