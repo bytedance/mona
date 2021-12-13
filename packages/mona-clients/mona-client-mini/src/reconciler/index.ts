@@ -10,3 +10,8 @@ export default function render(rootElement: React.ReactElement | null, controlle
   }
   return renderInstance.updateContainer(rootElement, controller.rootContainer, null);
 }
+
+export const batchedUpdates = renderInstance.batchedUpdates;
+// https://github.com/facebook/react/commit/c96761c7b217989a6c377c9b12249a78b0be91f9
+// 已被删除
+// export const batchedEventUpdates = renderInstance.batchedEventUpdates;

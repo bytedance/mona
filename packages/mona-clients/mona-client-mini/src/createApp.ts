@@ -36,6 +36,7 @@ class AppConfig {
       this._controller,
     );
   }
+
   onLaunch(options: any) {
     this._controller.context = this;
     this._render();

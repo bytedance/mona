@@ -1,8 +1,9 @@
 import { FiberRoot } from 'react-reconciler';
 import ServerElement, { RenderNode, NodeType } from './ServerElement';
 import { NodeTask } from '../utils/constants';
-import createEventHandler from '../eventHandler';
+// import createEventHandler from '../eventHandler';
 import { monaPrint } from '../utils/utils';
+import { batchedUpdates } from '.';
 // import { isObject } from '../utils/utils';
 
 interface SpliceTask {
@@ -13,6 +14,7 @@ interface SpliceTask {
   taskNode: ServerElement;
   parentPath: any[];
 }
+
 interface UpdateTask {
   type: NodeTask.UPDATE;
   key?: number;
@@ -89,8 +91,8 @@ export default class TaskController {
     this._stopUpdate = true;
   }
 
-  addCallback(cbKey: string, eventName: string, cb: (...args: any) => any, node: ServerElement) {
-    this.context[cbKey] = createEventHandler(node, eventName, cb);
+  addCallback(cbKey: string, cb: (...args: any) => any) {
+    this.context[cbKey] = (...args: any[]) => batchedUpdates((args: any) => cb(...args), args);
   }
 
   // addCallback(nodeKey: string | number, eventName: string, cb: (...args: any) => any) {

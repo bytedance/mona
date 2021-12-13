@@ -2,6 +2,7 @@ import { CALLBACK_SYMBOL } from '../utils/constants';
 import { isEventName, isFunction, isObject, monaPrint } from '../utils/utils';
 import ServerElement from './ServerElement';
 import { plainStyle } from '../utils/transformStyle';
+import createEventHandler from '../eventHandler';
 
 /**
  * picker-view 组件： indicatorStyle,maskStyle
@@ -33,8 +34,9 @@ export function processProps(props: Record<string, any>, node: ServerElement) {
       }
 
       cbKey = `${CALLBACK_SYMBOL}_${node.key}_${propKey}`;
+
       if (isFunction(props[propKey])) {
-        node.taskController.addCallback(cbKey, propKey, props[propKey], node);
+        node.taskController.addCallback(cbKey, createEventHandler(node, propKey, props[propKey]));
         // newProp有，oldProp无的加入更新队列
         if (node.props?.[propKey] !== cbKey) {
           newProps[propKey] = cbKey;

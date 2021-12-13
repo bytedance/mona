@@ -5,6 +5,7 @@ import TaskController, { ROOT_KEY } from './reconciler/TaskController';
 import { Portal } from 'react-is';
 // import { EventMap, genEventHandler } from './reconciler/eventHandler';
 import render from './reconciler';
+import { monaPrint } from './utils/utils';
 
 export function createPortal(children: React.ReactNode, containerInfo: any, key?: string): any {
   return {
@@ -25,21 +26,23 @@ interface PageConfig {
   onReady: () => void;
   onShow: (options: any) => void;
   onHide: () => void;
-  onResize: () => void;
-  onPullDownRefresh: () => void;
+  onResize: (e: any) => void;
+  onPullDownRefresh: (e: any) => void;
   onReachBottom: () => void;
   onShareAppMessage: (options: { channel?: string }) => void;
-  onPageScroll: () => void;
+  onPageScroll: (e: any) => void;
   $callLifecycle: (name: PageLifecycle, params?: any) => void;
   // eventHandler: ReturnType<typeof genEventHandler>;
   // eventMap: EventMap;
 }
+
 let pageId = 0;
 
 function generatePageId(pre?: string) {
   pageId++;
   return `page_${pre ?? ''}${pageId}`;
 }
+
 function createConfig(Component: React.ComponentType<any>) {
   let app: any;
   try {
@@ -56,6 +59,7 @@ function createConfig(Component: React.ComponentType<any>) {
     // eventHandler: genEventHandler(eventMap),
     // eventMap: eventMap,
     onLoad(this: any, options: any) {
+      monaPrint.log('onLoad', this, options);
       this.data = {
         [ROOT_KEY]: {
           children: [],
@@ -82,7 +86,9 @@ function createConfig(Component: React.ComponentType<any>) {
       this.$callLifecycle(PageLifecycle.load, options);
     },
 
-    onUnload() {
+    onUnload(...rest) {
+      monaPrint.log('onUnload', ...rest);
+
       this._controller.stopUpdate();
       this.$callLifecycle(PageLifecycle.unload);
       if (app) {
@@ -102,12 +108,12 @@ function createConfig(Component: React.ComponentType<any>) {
       this.$callLifecycle(PageLifecycle.hide);
     },
 
-    onResize() {
-      this.$callLifecycle(PageLifecycle.resize);
+    onResize(e: any) {
+      this.$callLifecycle(PageLifecycle.resize, e);
     },
 
-    onPullDownRefresh() {
-      this.$callLifecycle(PageLifecycle.pullDownRefresh);
+    onPullDownRefresh(e: any) {
+      this.$callLifecycle(PageLifecycle.pullDownRefresh, e);
     },
 
     onReachBottom() {
@@ -118,14 +124,14 @@ function createConfig(Component: React.ComponentType<any>) {
       this.$callLifecycle(PageLifecycle.shareAppMessage, options);
     },
 
-    onPageScroll() {
-      this.$callLifecycle(PageLifecycle.pageScroll);
+    onPageScroll(e: any) {
+      this.$callLifecycle(PageLifecycle.pageScroll, e);
     },
 
-    $callLifecycle(name: PageLifecycle, params?: any) {
+    $callLifecycle(name: PageLifecycle, ...params: any[]) {
       const cbs = this._pageLifecycleContext.lifecycles[name] || [];
       cbs.forEach(cb => {
-        cb(params);
+        cb(...params);
       });
     },
   };
