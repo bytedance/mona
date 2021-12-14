@@ -40,6 +40,7 @@ export default function createHostConfig() {
     prepareUpdate(_node: ServerElement, _type: string, oldProps: any, newProps: any) {
       return diffProperties(oldProps ?? {}, newProps ?? {});
     },
+
     shouldSetTextContent() {
       return false;
     },
@@ -80,6 +81,7 @@ export default function createHostConfig() {
     insertBefore(parent: ServerElement, child: ServerElement, beforeChild: ServerElement) {
       parent.insertBefore(child, beforeChild);
     },
+
     insertInContainerBefore(parent: ServerElement, child: ServerElement, beforeChild: ServerElement) {
       parent.insertBefore(child, beforeChild);
     },
@@ -121,7 +123,6 @@ export default function createHostConfig() {
       node.update('props', { style: DISPLAY_NONE });
     },
 
-    // TODO: suspense fallback执行完之后，appendChild和unhideInstance会同时执行，这两个方法有重复，待优化
     unhideInstance(node: ServerElement, props: any = {}) {
       node.update('props', processProps({ ...props, style: props.hasOwnProperty('style') ? props.style : null }, node));
     },
