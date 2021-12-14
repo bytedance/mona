@@ -5,6 +5,7 @@ import { PageLifecycleGlobalContext, LifecycleContext, PageLifecycle } from '@/l
 import TaskController, { ROOT_KEY } from '@/reconciler/TaskController';
 import render, { batchedUpdates } from '@/reconciler';
 import { monaPrint } from '@/utils';
+import { generateId } from './reconciler/ServerElement';
 
 export function createPortal(children: React.ReactNode, containerInfo: any, key?: string): any {
   return {
@@ -58,7 +59,7 @@ function createConfig(Component: React.ComponentType<any>) {
     // eventHandler: genEventHandler(eventMap),
     // eventMap: eventMap,
     onLoad(this: any, options: any) {
-      monaPrint.log('onLoad', this, options);
+      // monaPrint.log('onLoad', this, options);
       this.data = {
         [ROOT_KEY]: {
           children: [],
@@ -68,11 +69,9 @@ function createConfig(Component: React.ComponentType<any>) {
 
       this._controller = new TaskController(this);
 
-      const wrapper = React.createElement(
-        PageLifecycleGlobalContext.Provider,
-        { value: this._pageLifecycleContext, key: generatePageId() },
-        [React.createElement(this._Component, { key: 'entry' }, [])],
-      );
+      const wrapper = React.createElement(PageLifecycleGlobalContext.Provider, { value: this._pageLifecycleContext }, [
+        React.createElement(this._Component, { key: generateId() }, []),
+      ]);
 
       this.pageRoot = createPortal(wrapper, this._controller, generatePageId());
 

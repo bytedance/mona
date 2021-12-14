@@ -8,7 +8,7 @@ import MiniEntryPlugin from '@/plugins/MiniEntryPlugin';
 import { ConfigHelper } from '.';
 import MiniAssetsPlugin from '@/plugins/MiniAssetsPlugin';
 import OptimizeEntriesPlugin from '@/plugins/ChunksEntriesPlugin';
-
+import getEnv from '@/utils/getEnv';
 const extensions = ['.js', '.mjs', '.jsx', '.ts', '.tsx', '.json'];
 const moduleMatcher = new RegExp(`(${extensions.filter(e => e !== '.json').join('|')})$`);
 
@@ -159,9 +159,7 @@ class MiniConfigHelper extends BaseConfigHelper {
       new MiniCssExtractPlugin({
         filename: '[name].ttss',
       }),
-      new DefinePlugin({
-        BUILD_TARGET: JSON.stringify('mini'),
-      }),
+      new DefinePlugin(getEnv(this.options, this.cwd)),
 
       new OptimizeEntriesPlugin(),
     ];
