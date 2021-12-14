@@ -11,6 +11,8 @@ import ConfigHMRPlugin from '../plugins/ConfigHMRPlugin';
 import { Options } from "..";
 import { HTML_HANDLE_TAG } from "@/constants";
 import { ConfigHelper } from ".";
+import getEnv from '@/utils/getEnv';
+
 class WebConfigHelper extends BaseConfigHelper {
   constructor(options: Required<Options>) {
     super(options);
@@ -206,9 +208,7 @@ class WebConfigHelper extends BaseConfigHelper {
           useShortDoctype: true
         }
       }),
-      new DefinePlugin({
-        BUILD_TARGET: JSON.stringify('web')
-      })
+      new DefinePlugin(getEnv(this.options, this.cwd)),
     ]
 
     if (this.options.dev) {

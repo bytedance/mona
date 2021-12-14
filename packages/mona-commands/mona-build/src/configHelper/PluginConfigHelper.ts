@@ -9,6 +9,8 @@ import CssMiniminzerPlugin from 'css-minimizer-webpack-plugin';
 import TerserWebpackPlugin from 'terser-webpack-plugin';
 import loaderUtils from 'loader-utils';
 import { hexMD5 } from '../utils/md5';
+import getEnv from '@/utils/getEnv';
+
 import ConfigHMRPlugin from '../plugins/ConfigHMRPlugin';
 import { Options } from "..";
 import { HTML_HANDLE_TAG } from "@/constants";
@@ -257,9 +259,7 @@ class PluginConfigHelper extends BaseConfigHelper {
           useShortDoctype: true
         }
       }),
-      new DefinePlugin({
-        BUILD_TARGET: JSON.stringify('plugin')
-      })
+      new DefinePlugin(getEnv(this.options, this.cwd)),
     ]
 
     if (this.options.dev) {
