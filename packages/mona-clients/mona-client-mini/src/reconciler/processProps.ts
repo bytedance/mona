@@ -19,17 +19,26 @@ const filterPropsMap: Record<string, boolean> = {
   ref: true,
 };
 
+// const webEvent2Mini: Record<string, string> = {
+//   onClick: 'onTap',
+//   // onMouseDown: 'onTouchstart',
+//   // onMouseMove: 'onTouchMove',
+//   // onMouseLeave: 'onTouchEnd',
+//   // onWheel: 'onScroll',
+// };
+
 export function processProps(props: Record<string, any>, node: ServerElement) {
   let propKey: string;
   let cbKey: string;
+
   const newProps: Record<string, any> = {};
   for (propKey in props) {
     if (filterPropsMap[propKey]) {
     } else if (isEventName(propKey)) {
-      // 临时
-      if (propKey === 'onClick') {
-        propKey = 'onTap';
-      }
+      // if (webEvent2Mini[propKey]) {
+      //   props[webEvent2Mini[propKey]] = props[propKey];
+      //   propKey = webEvent2Mini[propKey];
+      // }
 
       cbKey = `${CALLBACK_SYMBOL}_${node.key}_${propKey}`;
 
@@ -120,18 +129,3 @@ export function diffProperties(oldProps: Record<string, any>, newProps: Record<s
   }
   return propUpdateObj;
 }
-
-// export const BUBBLE_EVENTS = [
-//   'onClick',
-//   'onTap',
-//   'onLongPress',
-//   'onLongTap',
-//   'onTouchStart',
-//   'onTouchMove',
-//   'onTouchEnd',
-//   'onTouchcancel',
-//   'onTransitionEnd',
-//   'onAnimationStart',
-//   'onAnimationIteration',
-//   'onAnimationEnd',
-// ];

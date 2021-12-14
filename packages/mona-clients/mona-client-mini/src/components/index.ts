@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from 'react';
 import createBaseComponent from '../createBaseComponent';
 import {
@@ -53,7 +52,7 @@ class MiniComponents extends BaseComponents {
   MovableView = createBaseComponent<MovableViewProps>('movable-view');
   Button = createBaseComponent<ButtonProps>('button');
   Checkbox = createBaseComponent<CheckboxProps>('checkbox');
-  CheckboxGroup = createBaseComponent<CheckboxProps>('checkbox-group');
+  CheckboxGroup = createBaseComponent<CheckboxGroupProps>('checkbox-group');
   Form = createBaseComponent<FormProps>('form');
   Input = createBaseComponent<InputProps>('input');
   Label = createBaseComponent<LabelProps>('label');
@@ -65,7 +64,7 @@ class MiniComponents extends BaseComponents {
   Slider = createBaseComponent<SliderProps>('slider');
   Switch = createBaseComponent<SwitchProps>('switch');
   Textarea = createBaseComponent<TextareaProps>('textarea');
-  Navigator = createBaseComponent<NavigatorProps>('ttnavigator');
+  Navigator = createBaseComponent<NavigatorProps>('navigator');
   Image = createBaseComponent<ImageProps>('image');
   Video = createBaseComponent<VideoProps>('video');
   LivePlayer = createBaseComponent<LivePlayerProps>('live-player');
@@ -77,12 +76,12 @@ class MiniComponents extends BaseComponents {
   OpenData = createBaseComponent<OpenDataProps>('open-data');
   // 自定义
   Link = (function createBaseComponent(name) {
-    const Component = React.forwardRef(({ children, to }, ref) =>
+    const Component = React.forwardRef(({ children, to }: any, ref) =>
       React.createElement(name, { url: to, ref }, children),
     );
     Component.displayName = name;
     return Component;
-  })('ttnavigator') as React.ComponentType<LinkProps>;
+  })('navigator') as React.ComponentType<LinkProps>;
 }
 
 export default MiniComponents;

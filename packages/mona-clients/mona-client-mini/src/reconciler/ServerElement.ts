@@ -38,15 +38,14 @@ export default class ServerElement {
   props?: any;
   text?: string;
   key: number;
-  children: Map<number, ServerElement>;
-  parent: ServerElement | null;
+  children: Map<number, ServerElement> = new Map();
+  parent: ServerElement | null = null;
   firstChildKey: number | null = null;
   lastChildKey: number | null = null;
   prevSiblingKey: number | null = null;
   nextSiblingKey: number | null = null;
-  mounted: boolean;
-
-  deleted: boolean;
+  mounted: boolean = false;
+  deleted: boolean = false;
 
   constructor({
     type,
@@ -61,10 +60,10 @@ export default class ServerElement {
     this.props = props;
     this.key = generateId();
     this.taskController = taskController;
-    this.children = new Map();
-    this.parent = null;
-    this.deleted = false;
-    this.mounted = false;
+    // this.children = new Map();
+    // this.parent = null;
+    // this.deleted = false;
+    // this.mounted = false;
   }
 
   requestUpdate(task: Task) {
@@ -89,7 +88,6 @@ export default class ServerElement {
     }
     this.lastChildKey = child.key;
     child.deleted = false;
-    // console.log('&', 'appendChild', child);
 
     if (this.isMounted()) {
       this.requestUpdate({
@@ -240,19 +238,18 @@ export default class ServerElement {
   get path() {
     const nodePath = [];
     const res = [];
-
     let currNode: ServerElement | null = this;
 
     while (currNode) {
       if (currNode.type !== NodeType.ROOT) {
-        nodePath.unshift(currNode);
+        nodePath.push(currNode);
       }
       currNode = currNode.parent;
     }
-    for (let i = 0; i < nodePath.length; i++) {
-      const child = nodePath[i];
+
+    for (let i = nodePath.length - 1; i >= 0; i--) {
       res.push(NODE_MAP_NAME);
-      res.push(child.key);
+      res.push(nodePath[i].key);
     }
     return res;
   }
