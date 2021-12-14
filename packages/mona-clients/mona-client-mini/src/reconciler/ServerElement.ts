@@ -38,15 +38,14 @@ export default class ServerElement {
   props?: any;
   text?: string;
   key: number;
-  children: Map<number, ServerElement>;
-  parent: ServerElement | null;
+  children: Map<number, ServerElement> = new Map();
+  parent: ServerElement | null = null;
   firstChildKey: number | null = null;
   lastChildKey: number | null = null;
   prevSiblingKey: number | null = null;
   nextSiblingKey: number | null = null;
-  mounted: boolean;
-
-  deleted: boolean;
+  mounted: boolean = false;
+  deleted: boolean = false;
 
   constructor({
     type,
@@ -61,10 +60,10 @@ export default class ServerElement {
     this.props = props;
     this.key = generateId();
     this.taskController = taskController;
-    this.children = new Map();
-    this.parent = null;
-    this.deleted = false;
-    this.mounted = false;
+    // this.children = new Map();
+    // this.parent = null;
+    // this.deleted = false;
+    // this.mounted = false;
   }
 
   requestUpdate(task: Task) {

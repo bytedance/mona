@@ -65,7 +65,7 @@ class MiniComponents extends BaseComponents {
   Slider = createBaseComponent<SliderProps>('slider');
   Switch = createBaseComponent<SwitchProps>('switch');
   Textarea = createBaseComponent<TextareaProps>('textarea');
-  Navigator = createBaseComponent<NavigatorProps>('ttnavigator');
+  Navigator = createBaseComponent<NavigatorProps>('navigator');
   Image = createBaseComponent<ImageProps>('image');
   Video = createBaseComponent<VideoProps>('video');
   LivePlayer = createBaseComponent<LivePlayerProps>('live-player');
@@ -82,7 +82,7 @@ class MiniComponents extends BaseComponents {
     );
     Component.displayName = name;
     return Component;
-  })('ttnavigator') as React.ComponentType<LinkProps>;
+  })('navigator') as React.ComponentType<LinkProps>;
 }
 
 export default MiniComponents;
