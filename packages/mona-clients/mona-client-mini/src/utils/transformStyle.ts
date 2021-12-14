@@ -8,8 +8,9 @@ const isVendorPrefixes: Record<string, boolean> = {
   o: true,
 };
 
-const isPxToRpx = true;
+const isPxToRpx = false;
 const RPX = 'rpx';
+const PX = 'px';
 
 const transformReactStyleKey = (key: string) => {
   // css3变量
@@ -49,8 +50,8 @@ export const plainStyle = (style: React.CSSProperties) => {
     .reduce((res: string[], styleKey) => {
       let value = (style as any)[styleKey];
 
-      if (!Number.isNaN(Number(value)) && !isUnitlessNumber[styleKey]) {
-        value = `${value}${RPX}`;
+      if (!Number.isNaN(Number(value)) && !unitlessNumberMap[styleKey]) {
+        value = `${value}${PX}`;
       }
 
       return [...res, `${transformReactStyleKey(styleKey)}:${isPxToRpx ? setPxToRpx(value) : value};`];
@@ -58,7 +59,7 @@ export const plainStyle = (style: React.CSSProperties) => {
     .join('');
 };
 
-export const isUnitlessNumber: Record<string, boolean> = {
+export const unitlessNumberMap: Record<string, boolean> = {
   lineClamp: true,
   lineHeight: true,
   fontWeight: true,
