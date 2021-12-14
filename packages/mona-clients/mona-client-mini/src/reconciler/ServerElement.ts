@@ -3,7 +3,7 @@ import { NodeTask } from '@/utils';
 import TaskController, { Task } from './TaskController';
 
 let id = 1;
-function generateId() {
+export function generateId() {
   return id++;
 }
 

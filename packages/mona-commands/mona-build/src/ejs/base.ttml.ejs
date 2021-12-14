@@ -4,7 +4,6 @@
   </block>
 </template>
 
-
 <% for (let name of ejsParamsMap.keys()) { %>
 <%-include(templatePath+'/'+name+'.ejs', {props: ejsParamsMap.get(name).alias, defaultProps: ejsParamsMap.get(name).defaultProps || {} }); %>
 <% }; %>
