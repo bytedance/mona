@@ -4,6 +4,7 @@ import { Options } from '..';
 
 const dotenv = require('dotenv');
 const dotenvExpand = require('dotenv-expand');
+
 export default function getEnv(config: Options, dir: string) {
   const envPath = path.join(dir, '.env');
 
@@ -15,7 +16,7 @@ export default function getEnv(config: Options, dir: string) {
   });
 
   const injectEnv: Record<string, any> = {
-    NODE_ENV: process.env.NODE_ENV || 'development',
+    NODE_ENV: process.env.NODE_ENV || (config.dev ? 'development' : 'production'),
     PLAT_FORM: config.target,
     BUILD_TARGET: config.target,
   };
@@ -27,5 +28,6 @@ export default function getEnv(config: Options, dir: string) {
   Object.keys(injectEnv).forEach(envKey => {
     injectEnv[envKey] = JSON.stringify(injectEnv[envKey]);
   });
+
   return injectEnv;
 }
