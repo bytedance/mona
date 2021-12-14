@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { SliderProps } from '@bytedance/mona';
 import styles from './index.module.less';
 import { useHandlers } from '../hooks';
@@ -45,13 +45,13 @@ const Slider: React.FC<SliderProps> = (props) => {
     ...restProps
   } = props;
   const [v, setV] = useState(formatValue(value, min, max, step));
+  const thumbRef = useRef<HTMLDivElement | null>(null);
 
    useEffect(() => {
     setV(formatValue(value, min, max, step));
   }, [value, min, max, step])
 
 
-  console.log(v);
   const size = formatSize(blockSize);
 
   const { handleClassName, ...handlerProps } = useHandlers(restProps);
@@ -63,18 +63,65 @@ const Slider: React.FC<SliderProps> = (props) => {
     const gapWidth = e.clientX - left;
     const ratio = gapWidth / width;
     const newValue = (max - min) * ratio + min;
-    console.log('newValue', newValue);
     setV(formatValue(newValue, min, max, step));
   }
 
   const percent = getPercent(v, min, max);
+
+  const validTouchDistanceRef = useRef(30);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (wrapperRef.current) {
+      const width = wrapperRef.current.offsetWidth;
+      const result = width / (max - min) * step;
+      const d = validTouchDistanceRef.current;
+      validTouchDistanceRef.current = d < result ? d : result;
+    }
+  }, [wrapperRef.current, max, min, step])
+
+  const startThumbRef = useRef<{ x: number } | null>(null);
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (e.target === thumbRef.current)  {
+      const { changedTouches } = e;
+      startThumbRef.current = {
+        x: changedTouches[0].clientX,
+      }
+    }
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    // console.log('move');
+    if (!startThumbRef.current) {
+      return;
+    }
+
+    const { changedTouches } = e;
+    const moveX = changedTouches[0].pageX;
+    const { x } = startThumbRef.current;
+
+    const dx = moveX - x;
+    const abs = Math.abs(dx);
+    const dv = validTouchDistanceRef.current;
+    if (abs >= dv) {
+      startThumbRef.current = {
+        x: moveX
+      }
+      const pos = dx / abs;
+      const newValue = v + pos * step * (abs / dv);
+      setV(formatValue(newValue, min, max, step));
+    }
+  }
+
+  const handleTouchEnd = () => {
+    startThumbRef.current = null;
+  }
   
   return (
     <div className={handleClassName(styles.slider)} {...handlerProps}>
       <div className={styles.wrapper}>
         <div className={styles.tapArea}>
-          <div className={styles.handleWrapper} onClick={handleClick} style={{ backgroundColor: backgroundColor || color }}>
-            <div className={styles.sliderHandle} style={{ left: `${percent}%` }}></div>
+          <div className={styles.handleWrapper} ref={wrapperRef} onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd} onClick={handleClick} style={{ backgroundColor: backgroundColor || color }}>
+            <div className={styles.sliderHandle} ref={thumbRef} style={{ left: `${percent}%` }}></div>
             <div className={styles.sliderThumb} style={{ width: size, height: size, marginLeft: -size/2, marginTop: -size/2, left: `${percent}%`, backgroundColor: blockColor }}></div>
             <div className={styles.sliderTrack} style={{ width: `${percent}%`, backgroundColor: activeColor || selectedColor }}></div>
             <div className={styles.sliderStep}></div>

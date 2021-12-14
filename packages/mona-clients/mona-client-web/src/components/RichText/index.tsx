@@ -56,7 +56,6 @@ function recursiveParseNode(node: RichTextNode, container: Element) {
 }
 
 function renderAllNodes(container: HTMLDivElement, nodes?: string | RichTextNode[]) {
-  console.log('render', container, nodes);
   let currentNodes = nodes;
   if (typeof nodes == 'string') {
     const temp = document.createElement('div');
@@ -77,7 +76,9 @@ const RichText: React.FC<RichTextProps> = ({ nodes, children, ...restProps }) =>
 
   useEffect(() => {
     if (containerRef.current) {
-       renderAllNodes(containerRef.current, nodes);
+      // clear all nodes
+      containerRef.current.innerHTML = '';
+      renderAllNodes(containerRef.current, nodes);
     }
   }, [containerRef.current, nodes])
 
