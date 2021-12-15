@@ -209,7 +209,7 @@ export interface InputProps extends BaseProps {
   type?: 'text' | 'number' | 'digit';
   password?: string;
   placeholder?: string;
-  placeholderStyle?: string;
+  placeholderStyle?: React.CSSProperties;
   disabled?: boolean;
   maxLength?: number;
   focus?: boolean;
@@ -217,10 +217,10 @@ export interface InputProps extends BaseProps {
   cursor?: number;
   selectionStart?: number;
   selectionEnd?: number;
-  onInput?: EventHandler;
-  onFocus?: EventHandler;
-  onBlur?: EventHandler;
-  onConfirm?: EventHandler;
+  onInput?: (e: BaseEvent & { detail: { cursor: number; value: string }}) => void;
+  onFocus?: (e: BaseEvent & { detail: { value: string; height: number }}) => void;
+  onBlur?: (e: BaseEvent & { detail: { value: string }}) => void;
+  onConfirm?: (e: BaseEvent & { detail: { value: string }}) => void;
   adjustPosition?: boolean;
   confirmType?: 'send' | 'search' | 'next' | 'go' | 'done';
 }
@@ -246,8 +246,8 @@ export interface PickerProps extends BaseProps {
 
 export interface PickerViewProps extends BaseProps {
   value: number[];
-  indicatorStyle?: string;
-  maskStyle?: string;
+  indicatorStyle?: React.CSSProperties;
+  maskStyle?: React.CSSProperties;
   onChange?: EventHandler;
 }
 
@@ -303,7 +303,7 @@ export interface TextareaProps extends BaseProps {
   selectionStart?: number;
   selectionEnd?: number;
   disableDefaultPadding?: boolean;
-  onInput?: EventHandler;
+  onInput?: (e: BaseEvent & { detail: { cursor: number; value: string }}) => void;
   onFocus?: EventHandler;
   onBlur?: EventHandler;
   onConfirm?: EventHandler;
