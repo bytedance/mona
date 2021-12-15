@@ -30,7 +30,7 @@ export const hoverPropAlias = {
   hoverStopPropagation: 'hover-stop-propagation',
 };
 
-const baseComponentPropsMap = {
+const baseComponentPropsMap: Record<string, string> = {
   className: 'class',
   ...hoverPropAlias,
   formType: 'form-type',
@@ -173,3 +173,5 @@ export const propAliasMap = new Proxy(baseComponentPropsMap, {
     return prop in obj ? obj[prop] : prop;
   },
 }) as PropsAliasMap;
+
+

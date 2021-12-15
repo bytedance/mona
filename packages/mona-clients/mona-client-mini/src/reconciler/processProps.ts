@@ -34,6 +34,7 @@ export function processProps(props: Record<string, any>, node: ServerElement) {
   const newProps: Record<string, any> = {};
   for (propKey in props) {
     if (filterPropsMap[propKey]) {
+      // 这里可以直接isFunction(props[propKey])
     } else if (isEventName(propKey)) {
       // if (webEvent2Mini[propKey]) {
       //   props[webEvent2Mini[propKey]] = props[propKey];

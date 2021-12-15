@@ -36,6 +36,7 @@ import {
   RichTextProps,
 } from '@bytedance/mona';
 
+
 type Alias = string;
 type AliasMap<T> = Record<keyof T, Alias>;
 export type ViewAlias = AliasMap<ViewProps>;

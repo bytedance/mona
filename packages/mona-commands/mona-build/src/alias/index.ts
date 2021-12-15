@@ -33,23 +33,28 @@ import video from './Video/alias';
 import webview from './Webview/alias';
 import map from './Map/alias';
 // import map from './Ca/alias';
-
+import * as Components from '@bytedance/mona-components';
+type ComponentName = keyof typeof Components;
 export const ejsParamsObj: Record<
   string,
   {
+    reactComponentName: ComponentName | 'Block';
     alias: any;
     defaultProps?: Record<string, string | boolean | number>;
   }
 > = {
   text: {
+    reactComponentName: 'Text',
     alias: text,
     defaultProps: { selectable: false, space: false, decode: false },
   },
   block: {
+    reactComponentName: 'Block',
     alias: block,
   },
-  'rich-text': { alias: richText },
+  'rich-text': { reactComponentName: 'RichText', alias: richText },
   progress: {
+    reactComponentName: 'Progress',
     alias: progress,
     defaultProps: {
       percent: 0,
@@ -62,14 +67,15 @@ export const ejsParamsObj: Record<
     },
   },
   icon: {
+    reactComponentName: 'Icon',
     alias: icon,
     defaultProps: {
       size: 24,
     },
   },
   view: {
+    reactComponentName: 'View',
     alias: view,
-
     defaultProps: {
       hoverClassName: 'none',
       hoverStartTime: 50,
@@ -78,6 +84,7 @@ export const ejsParamsObj: Record<
     },
   },
   'scroll-view': {
+    reactComponentName: 'ScrollView',
     alias: scrollView,
     defaultProps: {
       scrollX: false,
@@ -88,6 +95,7 @@ export const ejsParamsObj: Record<
     },
   },
   swiper: {
+    reactComponentName: 'Swiper',
     alias: swiper,
     defaultProps: {
       indicatorDots: false,
@@ -106,15 +114,21 @@ export const ejsParamsObj: Record<
     },
   },
   'swiper-item': {
+    reactComponentName: 'SwiperItem',
     alias: swiperItem,
   },
   'movable-area': {
+    reactComponentName: 'MovableArea',
+
     alias: movableArea,
   },
   'movable-view': {
+    reactComponentName: 'MovableView',
     alias: movableView,
   },
   button: {
+    reactComponentName: 'Button',
+
     alias: button,
 
     defaultProps: {
@@ -129,6 +143,7 @@ export const ejsParamsObj: Record<
     },
   },
   checkbox: {
+    reactComponentName: 'Checkbox',
     alias: checkbox,
     defaultProps: {
       disabled: false,
@@ -136,9 +151,13 @@ export const ejsParamsObj: Record<
     },
   },
   'checkbox-group': {
+    reactComponentName: 'CheckboxGroup',
+
     alias: checkboxGroup,
   },
   form: {
+    reactComponentName: 'Form',
+
     alias: form,
 
     defaultProps: {
@@ -146,6 +165,8 @@ export const ejsParamsObj: Record<
     },
   },
   input: {
+    reactComponentName: 'Input',
+
     alias: input,
 
     defaultProps: {
@@ -162,25 +183,30 @@ export const ejsParamsObj: Record<
     },
   },
   label: {
+    reactComponentName: 'Label',
     alias: label,
   },
   picker: {
+    reactComponentName: 'Picker',
     alias: picker,
-
     defaultProps: {
       mode: 'selector',
       disabled: false,
     },
   },
   'picker-view': {
+    reactComponentName: 'PickerView',
+
     alias: pickerView,
   },
   'picker-view-column': {
+    reactComponentName: 'PickerViewColumn',
+
     alias: pickerViewColumn,
   },
   radio: {
+    reactComponentName: 'Radio',
     alias: radio,
-
     defaultProps: {
       checked: false,
       disabled: false,
@@ -188,9 +214,13 @@ export const ejsParamsObj: Record<
     },
   },
   'radio-group': {
+    reactComponentName: 'RadioGroup',
+
     alias: radioGroup,
   },
   slider: {
+    reactComponentName: 'Slider',
+
     alias: slider,
 
     defaultProps: {
@@ -209,8 +239,8 @@ export const ejsParamsObj: Record<
     },
   },
   switch: {
+    reactComponentName: 'Switch',
     alias: switchComponent,
-
     defaultProps: {
       checked: false,
       disabled: false,
@@ -219,6 +249,8 @@ export const ejsParamsObj: Record<
     },
   },
   textarea: {
+    reactComponentName: 'Textarea',
+
     alias: textArea,
 
     defaultProps: {
@@ -234,8 +266,8 @@ export const ejsParamsObj: Record<
     },
   },
   navigator: {
+    reactComponentName: 'Navigator',
     alias: navigator,
-
     defaultProps: {
       openType: 'navigate',
       hoverClassName: 'navigator-hover',
@@ -245,6 +277,8 @@ export const ejsParamsObj: Record<
     },
   },
   image: {
+    reactComponentName: 'Image',
+
     alias: image,
 
     defaultProps: {
@@ -254,6 +288,7 @@ export const ejsParamsObj: Record<
   },
   video: {
     alias: video,
+    reactComponentName: 'Video',
 
     defaultProps: {
       autoplay: false,
@@ -273,6 +308,8 @@ export const ejsParamsObj: Record<
     },
   },
   'live-player': {
+    reactComponentName: 'LivePlayer',
+
     alias: livePlayer,
     defaultProps: {
       autoplay: false,
@@ -285,12 +322,18 @@ export const ejsParamsObj: Record<
   //   alias: camera,
   // },
   canvas: {
+    reactComponentName: 'Canvas',
+
     alias: canvas,
   },
   map: {
+    reactComponentName: 'Map',
+
     alias: map,
   },
   'web-view': {
+    reactComponentName: 'Webview',
+
     alias: webview,
 
     defaultProps: {
@@ -298,9 +341,11 @@ export const ejsParamsObj: Record<
     },
   },
   ad: {
+    reactComponentName: 'Ad',
     alias: ad,
   },
   'open-data': {
+    reactComponentName: 'OpenData',
     alias: openData,
   },
 };

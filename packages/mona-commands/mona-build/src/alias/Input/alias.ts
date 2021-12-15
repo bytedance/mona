@@ -5,6 +5,7 @@ const alias: Alias = {
   ...basePropAlias,
   ...bubbleEventsAlias,
   // name: propAliasMap.name,
+  //@ts-ignore
   name: propAliasMap.name,
   value: propAliasMap.value,
   type: propAliasMap.type,

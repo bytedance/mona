@@ -9,6 +9,7 @@ import { ConfigHelper } from '.';
 import MiniAssetsPlugin from '@/plugins/MiniAssetsPlugin';
 import OptimizeEntriesPlugin from '@/plugins/ChunksEntriesPlugin';
 import getEnv from '@/utils/getEnv';
+import perfRuntimePlugins from '@/babelPlugins/perfRuntimePlugin';
 const extensions = ['.js', '.mjs', '.jsx', '.ts', '.tsx', '.json'];
 const moduleMatcher = new RegExp(`(${extensions.filter(e => e !== '.json').join('|')})$`);
 
@@ -104,6 +105,7 @@ class MiniConfigHelper extends BaseConfigHelper {
           loader: require.resolve('babel-loader'),
           options: {
             babelrc: false,
+            plugins: [perfRuntimePlugins()],
             presets: [
               [require.resolve('@babel/preset-env')],
               [require.resolve('@babel/preset-typescript')],
