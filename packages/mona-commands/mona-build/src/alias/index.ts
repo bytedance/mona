@@ -48,7 +48,7 @@ export const ejsParamsObj: Record<
   block: {
     alias: block,
   },
-  richText: { alias: richText },
+  'rich-text': { alias: richText },
   progress: {
     alias: progress,
     defaultProps: {
@@ -77,7 +77,7 @@ export const ejsParamsObj: Record<
       hoverStopPropagation: false,
     },
   },
-  scrollView: {
+  'scroll-view': {
     alias: scrollView,
     defaultProps: {
       scrollX: false,
@@ -105,13 +105,13 @@ export const ejsParamsObj: Record<
       vertical: false,
     },
   },
-  swiperItem: {
+  'swiper-item': {
     alias: swiperItem,
   },
-  movableArea: {
+  'movable-area': {
     alias: movableArea,
   },
-  movableView: {
+  'movable-view': {
     alias: movableView,
   },
   button: {
@@ -135,7 +135,7 @@ export const ejsParamsObj: Record<
       checked: false,
     },
   },
-  checkboxGroup: {
+  'checkbox-group': {
     alias: checkboxGroup,
   },
   form: {
@@ -172,10 +172,10 @@ export const ejsParamsObj: Record<
       disabled: false,
     },
   },
-  pickerView: {
+  'picker-view': {
     alias: pickerView,
   },
-  pickerViewColumn: {
+  'picker-view-column': {
     alias: pickerViewColumn,
   },
   radio: {
@@ -187,7 +187,7 @@ export const ejsParamsObj: Record<
       color: '#F85959',
     },
   },
-  radioGroup: {
+  'radio-group': {
     alias: radioGroup,
   },
   slider: {
@@ -272,7 +272,7 @@ export const ejsParamsObj: Record<
       enablePlayInBackground: false,
     },
   },
-  livePlayer: {
+  'live-player': {
     alias: livePlayer,
     defaultProps: {
       autoplay: false,
@@ -290,7 +290,7 @@ export const ejsParamsObj: Record<
   map: {
     alias: map,
   },
-  webview: {
+  'web-view': {
     alias: webview,
 
     defaultProps: {
@@ -300,7 +300,7 @@ export const ejsParamsObj: Record<
   ad: {
     alias: ad,
   },
-  openData: {
+  'open-data': {
     alias: openData,
   },
 };
@@ -315,6 +315,8 @@ for (let name in ejsParamsObj) {
         defaultProps[prop] = `'${defaultProps[prop]}'`;
       }
     }
+  } else {
+    ejsParamsObj[name].defaultProps = {};
   }
 
   ejsParamsMap.set(name, ejsParamsObj[name]);

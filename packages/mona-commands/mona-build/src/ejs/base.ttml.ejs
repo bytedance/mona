@@ -4,8 +4,25 @@
   </block>
 </template>
 
+
 <% for (let name of ejsParamsMap.keys()) { %>
-<%-include(templatePath+'/'+name+'.ejs', {props: ejsParamsMap.get(name).alias, defaultProps: ejsParamsMap.get(name).defaultProps || {} }); %>
+  <template name="mona-<%=name-%>">
+    <<%=name-%> 
+      <%_ for (let i in ejsParamsMap.get(name).alias) { -%>
+      <%_ if(ejsParamsMap.get(name).defaultProps[i] !== undefined)  {  -%>
+      <%=ejsParamsMap.get(name).alias[i]%>="{{node.props['<%=i%>'] === undefined ? <%-ejsParamsMap.get(name).defaultProps[i]%> : node.props['<%=i%>']}}" 
+      <%_   } else {  -%>
+      <%=ejsParamsMap.get(name).alias[i]%>="{{node.props['<%=i%>']}}" 
+      <%_ }
+      } -%>
+    >
+      <template 
+        is="{{ 'mona-' + node.nodes[item].type }}" 
+        tt:for="{{ node.children }}"
+        tt:key="{{ item.key }}"
+        data="{{ node: node.nodes[item] }}" />
+    </<%=name-%>>
+  </template>
 <% }; %>
 
 <template name="mona-ptext">

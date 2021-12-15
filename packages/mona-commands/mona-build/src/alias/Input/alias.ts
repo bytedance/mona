@@ -4,7 +4,7 @@ import { InputAlias as Alias } from '../type';
 const alias: Alias = {
   ...basePropAlias,
   ...bubbleEventsAlias,
-  name: propAliasMap.name,
+  // name: propAliasMap.name,
   value: propAliasMap.value,
   type: propAliasMap.type,
   password: propAliasMap.password,
