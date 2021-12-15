@@ -4,10 +4,9 @@
   </block>
 </template>
 
-
 <% for (let name of ejsParamsMap.keys()) { %>
-  <template name="mona-<%=name-%>">
-    <<%=name-%> 
+  <template name="mona-<%=name%>">
+    <<%=name%> 
       <%_ for (let i in ejsParamsMap.get(name).alias) { -%>
       <%_ if(ejsParamsMap.get(name).defaultProps[i] !== undefined)  {  -%>
       <%=ejsParamsMap.get(name).alias[i]%>="{{node.props['<%=i%>'] === undefined ? <%-ejsParamsMap.get(name).defaultProps[i]%> : node.props['<%=i%>']}}" 
@@ -21,7 +20,7 @@
         tt:for="{{ node.children }}"
         tt:key="{{ item.key }}"
         data="{{ node: node.nodes[item] }}" />
-    </<%=name-%>>
+    </<%=name%>>
   </template>
 <% }; %>
 

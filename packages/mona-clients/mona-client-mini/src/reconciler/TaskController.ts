@@ -65,7 +65,6 @@ export default class TaskController {
           res[this.genUpdatePath([...task.parentPath, 'children'])] = task.children;
         }
         if (task.taskNode.type === NodeType.ROOT) {
-          // TODO:props, 根节点不需要props
           res[this.genUpdatePath([...task.parentPath, 'type'])] = task.taskNode.type;
           res[this.genUpdatePath([...task.parentPath, 'key'])] = task.taskNode.key;
         }
