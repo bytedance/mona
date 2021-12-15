@@ -205,6 +205,7 @@ export interface FormProps extends BaseProps {
 
 export interface InputProps extends BaseProps {
   value?: string;
+  name?: string;
   type?: 'text' | 'number' | 'digit';
   password?: string;
   placeholder?: string;
