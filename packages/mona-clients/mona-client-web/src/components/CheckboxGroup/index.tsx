@@ -1,6 +1,7 @@
-import React, { useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { CheckboxGroupProps, TouchEvent } from '@bytedance/mona';
 import { useHandlers } from '../hooks';
+import { useFormContext } from '../Form/hooks';
 
 export const EMPTY_ITEM = Symbol('checkboxEmpty');
 
@@ -17,11 +18,19 @@ interface ValueItem {
 
 export const CheckboxGroupContext = React.createContext<CheckboxGroupContextProps | null>(null)
 
-const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ children, onChange, ...restProps }) => {
+const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ children, name = '', onChange, ...restProps }) => {
   const { handleClassName, ...handlerProps } = useHandlers(restProps);
   // const [values, setValues] = useState<ValueItem[]>([]);
   const valuesRef = useRef<ValueItem[]>([])
   const indexRef = useRef(0);
+
+  // TODO: implement reset
+  const reset = useCallback(() => {}, []);
+  const getValues = () => {
+    return valuesRef.current.filter(v => v.checked).map(v => v.value);
+  }
+  useFormContext(name, getValues, reset);
+
   
   const context = {
     initValue: (value?: string, checked?: boolean) => {

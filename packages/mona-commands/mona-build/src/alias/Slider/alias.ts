@@ -4,6 +4,7 @@ import { SliderAlias as Alias } from '../type';
 const alias: Alias = {
   ...basePropAlias,
   ...bubbleEventsAlias,
+  name: propAliasMap.name,
   min: propAliasMap.min,
   max: propAliasMap.max,
   step: propAliasMap.step,

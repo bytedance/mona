@@ -209,7 +209,7 @@ export interface InputProps extends BaseProps {
   type?: 'text' | 'number' | 'digit';
   password?: string;
   placeholder?: string;
-  placeholderStyle?: string;
+  placeholderStyle?: React.CSSProperties;
   disabled?: boolean;
   maxLength?: number;
   focus?: boolean;
@@ -217,10 +217,10 @@ export interface InputProps extends BaseProps {
   cursor?: number;
   selectionStart?: number;
   selectionEnd?: number;
-  onInput?: EventHandler;
-  onFocus?: EventHandler;
-  onBlur?: EventHandler;
-  onConfirm?: EventHandler;
+  onInput?: (e: BaseEvent & { detail: { cursor: number; value: string }}) => void;
+  onFocus?: (e: BaseEvent & { detail: { value: string; height: number }}) => void;
+  onBlur?: (e: BaseEvent & { detail: { value: string }}) => void;
+  onConfirm?: (e: BaseEvent & { detail: { value: string }}) => void;
   adjustPosition?: boolean;
   confirmType?: 'send' | 'search' | 'next' | 'go' | 'done';
 }
@@ -230,6 +230,7 @@ export interface LabelProps extends BaseProps {
 }
 
 export interface PickerProps extends BaseProps {
+  name?: string;
   mode?: 'selector' | 'multiSelector' | 'time' | 'date' | 'region';
   range?: (string | Record<string, any>)[][];
   rangeKey?: string;
@@ -246,8 +247,8 @@ export interface PickerProps extends BaseProps {
 
 export interface PickerViewProps extends BaseProps {
   value: number[];
-  indicatorStyle?: string;
-  maskStyle?: string;
+  indicatorStyle?: React.CSSProperties;
+  maskStyle?: React.CSSProperties;
   onChange?: EventHandler;
 }
 
@@ -266,6 +267,7 @@ export interface RadioGroupProps extends BaseProps {
 }
 
 export interface SliderProps extends BaseProps {
+  name?: string;
   min?: number;
   max?: number;
   step?: number;
@@ -283,6 +285,7 @@ export interface SliderProps extends BaseProps {
 }
 
 export interface SwitchProps extends BaseProps {
+  name?: string;
   checked?: boolean;
   disabled?: boolean;
   type?: 'switch' | 'checkbox';
@@ -291,22 +294,24 @@ export interface SwitchProps extends BaseProps {
 }
 
 export interface TextareaProps extends BaseProps {
+  name?: string;
   value?: string;
   placeholder?: string;
-  placeholderStyle?: string;
+  placeholderStyle?: React.CSSProperties;
   disabled?: boolean;
   maxLength?: number;
   focus?: boolean;
   autoHeight?: boolean;
   fixed?: boolean;
   cursorSpacing?: number;
+  cursor?: number;
   selectionStart?: number;
   selectionEnd?: number;
   disableDefaultPadding?: boolean;
-  onInput?: EventHandler;
-  onFocus?: EventHandler;
-  onBlur?: EventHandler;
-  onConfirm?: EventHandler;
+  onInput?: (e: BaseEvent & { detail: { cursor: number; value: string }}) => void;
+  onFocus?: (e: BaseEvent & { detail: { value: string; height: number }}) => void;
+  onBlur?: (e: BaseEvent & { detail: { value: string }}) => void;
+  onConfirm?: (e: BaseEvent & { detail: { value: string }}) => void;
 }
 
 // 导航

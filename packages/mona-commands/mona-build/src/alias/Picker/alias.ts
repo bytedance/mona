@@ -4,6 +4,7 @@ import { PickerAlias as Alias } from '../type';
 const alias: Alias = {
   ...basePropAlias,
   ...bubbleEventsAlias,
+  name: propAliasMap.name,
   mode: propAliasMap.mode,
   value: propAliasMap.value,
   disabled: propAliasMap.disabled,
