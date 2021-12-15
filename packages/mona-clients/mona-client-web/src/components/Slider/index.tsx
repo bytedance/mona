@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { SliderProps } from '@bytedance/mona';
 import styles from './index.module.less';
 import { useHandlers } from '../hooks';
+import { useFormContext } from '../Form/hooks';
 
 function formatValue(value: number, min: number, max: number, step: number) {
   let targetValue = value < min ? min : value > max ? max : value;
@@ -38,6 +39,7 @@ const Slider: React.FC<SliderProps> = (props) => {
     activeColor = '#1aad19',
     backgroundColor = '#e9e9e9',
     blockSize = 28,
+    name = '',
     blockColor = '#ffffff',
     showValue = false,
     onChange,
@@ -51,6 +53,8 @@ const Slider: React.FC<SliderProps> = (props) => {
     setV(formatValue(value, min, max, step));
   }, [value, min, max, step])
 
+  const reset = useCallback(() => setV(min), []);
+  useFormContext(name, value, reset);
 
   const size = formatSize(blockSize);
 

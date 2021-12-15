@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { InputProps } from '@bytedance/mona';
 import styles from './index.module.less';
-import { FormContext } from '../Form';
 import { useHandlers } from '../hooks';
 import { plainStyle } from './utils';
+import { useFormContext } from '../Form/hooks';
 
 const Input: React.FC<InputProps> = (props) => {
   const {
@@ -29,8 +29,6 @@ const Input: React.FC<InputProps> = (props) => {
   } = props;
 
   const { handleClassName, ...handlerProps} = useHandlers(restProps)
-  const context = useContext(FormContext);
-  const orderRef = useRef<number | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const [value, setValue] = useState(initValue);
@@ -39,21 +37,8 @@ const Input: React.FC<InputProps> = (props) => {
     setValue(value);
   }, [value])
 
-  useEffect(() => {
-    if (context) {
-      const index = orderRef.current;
-      orderRef.current = context.register(
-        () => ({ name, value }),
-        () => setValue(''),
-        index
-      )
-
-      return () => {
-        context.unregister(index);
-      }
-    }
-    return () => {}
-  }, [context, name, value])
+  const reset = useCallback(() => setValue(''), []);
+  useFormContext(name, value, reset);
 
   const handleInput: React.FormEventHandler<HTMLInputElement> = (e) => {
     const newValue = (e.target as HTMLInputElement).value;

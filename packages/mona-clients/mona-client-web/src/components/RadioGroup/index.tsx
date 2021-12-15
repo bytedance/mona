@@ -1,6 +1,7 @@
-import React, { useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { RadioGroupProps, TouchEvent } from '@bytedance/mona';
 import { useHandlers } from '../hooks';
+import { useFormContext } from '../Form/hooks';
 
 interface RadioGroupContextProps {
   initValue: (value?: string, checked?: boolean, clear?: () => void) => number;
@@ -15,12 +16,19 @@ interface ValueItem {
 
 export const RadioGroupContext = React.createContext<RadioGroupContextProps | null>(null)
 
-const RadioGroup: React.FC<RadioGroupProps> = ({ children, onChange, ...restProps }) => {
+const RadioGroup: React.FC<RadioGroupProps> = ({ children, name = '', onChange, ...restProps }) => {
   const { handleClassName, ...handlerProps } = useHandlers(restProps);
   // const [values, setValues] = useState<ValueItem[]>([]);
   const valuesRef = useRef<ValueItem[]>([])
   const indexRef = useRef(0);
   const clearsRef = useRef<((() => void) | undefined)[]>([]);
+
+   // TODO: implement reset
+  const reset = useCallback(() => {}, []);
+  const getValues = () => {
+    return valuesRef.current.filter(v => v.checked).map(v => v.value);
+  }
+  useFormContext(name, getValues, reset);
   
   const context = {
     initValue: (value?: string, checked?: boolean, clear?: () => void) => {

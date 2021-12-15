@@ -4,6 +4,8 @@ import { TextareaAlias as Alias } from '../type';
 const alias: Alias = {
   ...basePropAlias,
   ...bubbleEventsAlias,
+  cursor: propAliasMap.cursor,
+  name: propAliasMap.name,
   value: propAliasMap.value,
   placeholder: propAliasMap.placeholder,
   disabled: propAliasMap.disabled,
