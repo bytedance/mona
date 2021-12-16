@@ -63,18 +63,24 @@ export default class PerfTemplateRenderPlugin {
                   if (t.isProperty(prop) || prop.type === 'Property') {
                     if (t.isIdentifier(prop.key)) {
                       attribute.push(prop.key.name);
-                    } else if (t.isStringLiteral(prop.key)) {
+                      //@ts-ignore
+                    } else if (t.isStringLiteral(prop.key) || prop.key?.type === 'Literal') {
                       attribute.push(prop.key.value);
                     } else {
+                      // console.log('*1  ', prop.key);
                       renderMapAction.setAll(nodeType);
                       return;
                     }
                   } else {
+                    // console.log('*2  ', prop);
+
                     renderMapAction.setAll(nodeType);
                     return;
                   }
                 }
               } else if (t.isIdentifier(props)) {
+                // console.log('*3  ', props);
+
                 renderMapAction.setAll(nodeType);
                 return;
               }
