@@ -173,5 +173,3 @@ export const propAliasMap = new Proxy(baseComponentPropsMap, {
     return prop in obj ? obj[prop] : prop;
   },
 }) as PropsAliasMap;
-
-
