@@ -76,6 +76,7 @@ class WebConfigHelper extends BaseConfigHelper {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
       alias: {
         '@': path.resolve(this.cwd, './src'),
+        '@bytedance/mona-runtime': path.resolve(this.cwd, 'node_modules/@bytedance/mona-runtime/dist/index-web.js'),
       },
     };
   }
@@ -191,7 +192,7 @@ class WebConfigHelper extends BaseConfigHelper {
           <html>
             <head>
               <meta charset="utf-8">
-              <title>Mona Plugin</title>
+              <title>Mona Web</title>
               <meta name="viewport" content="width=device-width, initial-scale=1"></head>
             <body>
               <div id="root"></div>

@@ -42,6 +42,7 @@ class MiniConfigHelper extends BaseConfigHelper {
         };
 
     return {
+      usedExports: true,
       ...devOptimization,
       // 所有page共享运行时文件，用于每个page初始化, 每个page入口引入runtimeChunk。初始化一次
       // 不设置，每个入口 chunk 中直接嵌入 runtime。不会共享运行时，导致多react实例。初始化多次
@@ -70,6 +71,7 @@ class MiniConfigHelper extends BaseConfigHelper {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
       alias: {
         '@': path.resolve(this.cwd, './src'),
+        '@bytedance/mona-runtime': path.resolve(this.cwd, 'node_modules/@bytedance/mona-runtime/dist/index-mini.js'),
       },
     };
   }

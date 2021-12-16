@@ -33,8 +33,8 @@ import video from './Video/alias';
 import webview from './Webview/alias';
 import map from './Map/alias';
 // import map from './Ca/alias';
-import * as Components from '@bytedance/mona-components';
-type ComponentName = keyof typeof Components;
+// import * as Components from '@bytedance/mona-components';
+type ComponentName = any;
 export const ejsParamsObj: Record<
   string,
   {

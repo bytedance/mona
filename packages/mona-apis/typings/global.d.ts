@@ -1,1 +1,0 @@
-declare const BUILD_TARGET: 'web' | 'plugin' | 'mini'

@@ -17,6 +17,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
+  "sideEffects": false,
   "devDependencies": {
     "@rollup/plugin-commonjs": "^19.0.1",
     "@rollup/plugin-json": "^4.1.0",
@@ -35,11 +36,9 @@
     "typescript-transform-paths": "^2.2.4"
   },
   "dependencies": {
-    "@bytedance/mona-apis": "^0.0.1",
     "@bytedance/mona-client-mini": "^0.0.1",
     "@bytedance/mona-client-plugin": "^0.0.1",
     "@bytedance/mona-client-web": "^0.0.1",
-    "@bytedance/mona-components": "^0.0.1",
     "@bytedance/mona-plugin-events": "0.1.3",
     "@bytedance/mona-shared": "^0.1.3",
     "react-router": "^5.2.1",

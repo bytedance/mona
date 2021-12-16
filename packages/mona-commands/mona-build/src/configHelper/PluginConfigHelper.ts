@@ -97,6 +97,7 @@ class PluginConfigHelper extends BaseConfigHelper {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
       alias: {
         '@': path.resolve(this.cwd, './src'),
+        '@bytedance/mona-runtime': path.resolve(this.cwd, 'node_modules/@bytedance/mona-runtime/dist/index-plugin.js'),
       },
     };
   }
@@ -234,7 +235,7 @@ class PluginConfigHelper extends BaseConfigHelper {
 
   private _createPlugins() {
     let plugins: any[] = [
-      new ConfigHMRPlugin(this as unknown as ConfigHelper),
+      new ConfigHMRPlugin(this as unknown as ConfigHelper, true),
       new HtmlWebpackPlugin({
         templateContent: `
           <!-- ${HTML_HANDLE_TAG} -->

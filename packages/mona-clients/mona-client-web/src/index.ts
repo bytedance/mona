@@ -1,2 +1,3 @@
-export { default as WebApis } from './apis';
-export { default as WebComponents } from './components';
+export * from './apis';
+export * from './components';
+export * from './createWebApp';
