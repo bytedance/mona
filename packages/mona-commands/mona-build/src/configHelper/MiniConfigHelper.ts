@@ -8,8 +8,10 @@ import MiniEntryPlugin from '@/plugins/MiniEntryPlugin';
 import { ConfigHelper } from '.';
 import MiniAssetsPlugin from '@/plugins/MiniAssetsPlugin';
 import OptimizeEntriesPlugin from '@/plugins/ChunksEntriesPlugin';
+
+import PerfTemplateRenderPlugin from '@/plugins/PerfTemplateRenderPlugin';
+
 import getEnv from '@/utils/getEnv';
-import perfRuntimePlugins from '@/babelPlugins/perfRuntimePlugin';
 const extensions = ['.js', '.mjs', '.jsx', '.ts', '.tsx', '.json'];
 const moduleMatcher = new RegExp(`(${extensions.filter(e => e !== '.json').join('|')})$`);
 
@@ -105,7 +107,7 @@ class MiniConfigHelper extends BaseConfigHelper {
           loader: require.resolve('babel-loader'),
           options: {
             babelrc: false,
-            plugins: [perfRuntimePlugins()],
+            plugins: [],
             presets: [
               [require.resolve('@babel/preset-env')],
               [require.resolve('@babel/preset-typescript')],
@@ -155,8 +157,10 @@ class MiniConfigHelper extends BaseConfigHelper {
 
   // TODO: fix compressing css bug, when the extension is 'ttss'
   private _createPlugins(...extraPlugin: any[]) {
+    this.projectConfig.compilerOptimization;
     return [
       ...extraPlugin,
+
       new MiniAssetsPlugin(this as unknown as ConfigHelper),
       new MiniCssExtractPlugin({
         filename: '[name].ttss',
@@ -164,7 +168,8 @@ class MiniConfigHelper extends BaseConfigHelper {
       new DefinePlugin(getEnv(this.options, this.cwd)),
 
       new OptimizeEntriesPlugin(),
-    ];
+      this.projectConfig.compilerOptimization && new PerfTemplateRenderPlugin(),
+    ].filter(Boolean);
   }
 }
 

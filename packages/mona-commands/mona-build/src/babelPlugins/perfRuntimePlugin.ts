@@ -3,6 +3,7 @@ import { NodePath } from '@babel/traverse';
 // import { ConfigAPI } from '@babel/core';
 import * as t from '@babel/types';
 import { ejsParamsMap } from '@/alias';
+import { transformNodeName } from '@/utils/reactNode';
 // import { miniProp2rcPropMap } from '@/alias/prop';
 interface IRenderInfo {
   isAll?: boolean;
@@ -129,23 +130,7 @@ export default function perfRuntimePlugin() {
 
 // function collectPropsName() {}
 
-// 转为xx-xx的形式
-const transformNodeName = (key: string) => {
-  // webview 单独处理，或者写一个map
-  if (key === 'Webview') {
-    return 'web-view';
-  }
 
-  let styleValue = key.replace(/\.?([A-Z]+)/g, function (_x, y) {
-    return '-' + y.toLowerCase();
-  });
-
-  if (styleValue.startsWith('-')) {
-    styleValue = styleValue.replace(/^-/, '');
-  }
-
-  return styleValue;
-};
 
 // // 还是要搞一个map。对于bindtap、这种无法处理
 // // 转为驼峰
