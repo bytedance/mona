@@ -1,5 +1,5 @@
 import path from 'path';
-import fse from 'fs-extra';
+import fs from 'fs';
 import { Options } from '..';
 
 const dotenv = require('dotenv');
@@ -10,7 +10,7 @@ export default function getEnv(config: Options, dir: string) {
 
   const envFilesPath = [envPath, `${envPath}.${process.env.NODE_ENV}`];
   envFilesPath.forEach(envPath => {
-    if (fse.existsSync(envPath)) {
+    if (fs.existsSync(envPath)) {
       dotenvExpand(dotenv.config({ path: envPath }));
     }
   });
