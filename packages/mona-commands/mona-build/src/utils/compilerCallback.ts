@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 
-const compilerCallback = (error: any, stats: any) => {
+const compilerCallback = (shouldExit: boolean) => (error: any, stats: any) => {
   if (error) {
     throw error;
   }
@@ -26,7 +26,9 @@ const compilerCallback = (error: any, stats: any) => {
     console.log('')
   })
   console.log(chalk.green('打包完成'));
-  process.exit(0)
+  if (shouldExit) {
+    process.exit(0)
+  }
 }
 
 

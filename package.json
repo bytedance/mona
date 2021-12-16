@@ -6,6 +6,8 @@
   "main": "",
   "scripts": {
     "build": "lerna run build",
+    "b": "node ./build",
+    "s": "node ./build -s",
     "clean": "lerna run clean",
     "clean:dp": "learn clean",
     "bootstrap": "lerna bootstrap",

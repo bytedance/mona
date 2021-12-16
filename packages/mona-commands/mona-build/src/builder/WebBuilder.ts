@@ -31,7 +31,7 @@ class WebBuilder extends BaseBuilder {
 
   build() {
     console.log(chalk.cyan('开始打包'))
-    this.compiler.run(compilerCallback);
+    this.compiler.run(compilerCallback(true));
   }
 }
 
