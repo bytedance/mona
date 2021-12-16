@@ -2,15 +2,16 @@ import { ConfigHelper } from '@/configHelper';
 import { Compiler } from 'webpack';
 import chokidar from 'chokidar';
 import PluginEntryModule from './PluginEntryModule';
+import WebEntryModule from './WebEntryModule';
 
 class ConfigHMRPlugin {
   configHelper: ConfigHelper;
-  entryModule: PluginEntryModule;
+  entryModule: PluginEntryModule | WebEntryModule;
   pluginName = 'ConfigHMRPlugin'
 
-  constructor(configHelper: ConfigHelper) {
+  constructor(configHelper: ConfigHelper, isPlugin?: boolean) {
     this.configHelper = configHelper;
-    this.entryModule = new PluginEntryModule(configHelper);
+    this.entryModule = isPlugin ? new PluginEntryModule(configHelper) : new WebEntryModule(configHelper);
   }
   
   apply(compiler: Compiler) {

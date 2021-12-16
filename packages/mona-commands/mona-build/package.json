@@ -15,7 +15,7 @@
   "scripts": {
     "build": "yarn clean && yarn copy && ttsc -b ",
     "start": "ttsc -b -w",
-    "copy": "node ./copy.js",
+    "copy": "copyfiles -f ./src/ejs/*.ejs ./dist/ejs",
     "clean": "rm -rf dist"
   },
   "author": "zhangxiaowei.chris@bytedance.com",
@@ -26,7 +26,6 @@
     "@types/command-line-usage": "^5.0.2",
     "@types/css-minimizer-webpack-plugin": "^3.0.2",
     "@types/ejs": "^3.0.7",
-    "@types/fs-extra": "^9.0.13",
     "@types/inquirer": "^7.3.3",
     "@types/loader-utils": "^2.0.3",
     "@types/mini-css-extract-plugin": "^2.4.0",
@@ -35,7 +34,6 @@
     "@types/yargs": "^16.0.0",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
-    "fs-extra": "^10.0.0",
     "ttypescript": "^1.5.12",
     "typescript-json-schema": "^0.43.0",
     "typescript-transform-paths": "^2.2.4"

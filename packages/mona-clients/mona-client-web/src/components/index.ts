@@ -1,78 +1,36 @@
 import './index.less';
-import Link from './Link';
-import Text from './Text';
-import RichText from './RichText';
-import Progress from './Progress';
-import Icon from './Icon';
-import View from './View';
-import ScrollView from './ScrollView';
-import Swiper from './Swiper';
-import SwiperItem from './SwiperItem';
-import MovableArea from './MovableArea';
-import MovableView from './MovableView';
-import Button from './Button';
-import Checkbox from './Checkbox';
-import CheckboxGroup from './CheckboxGroup';
-import Form from './Form';
-import Input from './Input';
-import Label from './Label';
-import Picker from './Picker';
-import PickerView from './PickerView';
-import PickerViewColumn from './PickerViewColumn';
-import Radio from './Radio';
-import RadioGroup from './RadioGroup';
-import Slider from './Slider';
-import Switch from './Switch';
-import Textarea from './Textarea';
-import Navigator from './Navigator';
-import Image from './Image';
-import Video from './Video';
-import LivePlayer from './LivePlayer';
-import Camera from './Camera';
-import Canvas from './Canvas';
-import Map from './Map';
-import Webview from './Webview';
-import Ad from './Ad';
-import OpenData from './OpenData';
-import { BaseComponents } from '@bytedance/mona'
-
-class WebComponents extends BaseComponents {
-  Text = Text
-  RichText = RichText
-  Progress = Progress
-  Icon = Icon
-  View = View
-  ScrollView = ScrollView
-  Swiper = Swiper
-  SwiperItem = SwiperItem
-  MovableArea = MovableArea
-  MovableView = MovableView
-  Button = Button
-  Checkbox = Checkbox
-  CheckboxGroup = CheckboxGroup
-  Form = Form
-  Input = Input
-  Label = Label
-  Picker = Picker
-  PickerView = PickerView
-  PickerViewColumn = PickerViewColumn
-  Radio = Radio
-  RadioGroup = RadioGroup
-  Slider = Slider
-  Switch = Switch
-  Textarea = Textarea
-  Navigator = Navigator
-  Image = Image
-  Video = Video
-  LivePlayer = LivePlayer
-  Camera = Camera
-  Canvas = Canvas
-  Map = Map
-  Webview = Webview
-  Ad = Ad
-  OpenData = OpenData
-  // 自定义
-  Link = Link
-}
-
-export default WebComponents;
+export { default as Link} from './Link';
+export { default as Text } from './Text';
+export { default as RichText } from './RichText';
+export { default as Progress } from './Progress';
+export { default as Icon } from './Icon';
+export { default as View } from './View';
+export { default as ScrollView } from './ScrollView';
+export { default as Swiper } from './Swiper';
+export { default as SwiperItem } from './SwiperItem';
+export { default as MovableArea } from './MovableArea';
+export { default as MovableView } from './MovableView';
+export { default as Button } from './Button';
+export { default as Checkbox } from './Checkbox';
+export { default as CheckboxGroup } from './CheckboxGroup';
+export { default as Form } from './Form';
+export { default as Input } from './Input';
+export { default as Label } from './Label';
+export { default as Picker } from './Picker';
+export { default as PickerView } from './PickerView';
+export { default as PickerViewColumn } from './PickerViewColumn';
+export { default as Radio } from './Radio';
+export { default as RadioGroup } from './RadioGroup';
+export { default as Slider } from './Slider';
+export { default as Switch } from './Switch';
+export { default as Textarea } from './Textarea';
+export { default as Navigator } from './Navigator';
+export { default as Image } from './Image';
+export { default as Video } from './Video';
+export { default as LivePlayer } from './LivePlayer';
+export { default as Camera } from './Camera';
+export { default as Canvas } from './Canvas';
+export { default as Map } from './Map';
+export { default as Webview } from './Webview';
+export { default as Ad } from './Ad';
+export { default as OpenData } from './OpenData';

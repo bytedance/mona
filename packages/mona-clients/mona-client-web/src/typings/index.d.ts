@@ -7,3 +7,7 @@ declare module "xgplayer/dist/*" {
   const r: any;
   export = r;
 }
+
+declare interface Window {
+  __MARFISH__: boolean;
+}

@@ -24,7 +24,6 @@ export function mergeAliasMap() {
 }
 
 const RawSource = sources.RawSource;
-const templatePath = path.join(__dirname, '../../ejs/componentsEjs');
 export default async function createTtml(compilation: Compilation, configHelper: ConfigHelper) {
   const isDev = configHelper.options.dev;
   const { appConfig } = configHelper;
@@ -39,7 +38,6 @@ export default async function createTtml(compilation: Compilation, configHelper:
     let content = await ejs.renderFile(
       tplPath,
       {
-        templatePath: templatePath,
         ejsParamsMap,
       },
       {
