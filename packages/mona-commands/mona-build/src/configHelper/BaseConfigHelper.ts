@@ -11,13 +11,13 @@ const DEFAULT_PROJECT_CONFIG: ProjectConfig = {
   input: './src/app',
   output: 'dist',
   dev: {
-    port: DEFAULT_PORT
-  }
-}
+    port: DEFAULT_PORT,
+  },
+};
 
 const DEFAULT_APP_CONFIG: AppConfig = {
-  pages: []
-}
+  pages: [],
+};
 
 abstract class BaseConfigHelper {
   cwd: string;
@@ -49,9 +49,9 @@ abstract class BaseConfigHelper {
       const projectConfig = readConfig<T>(fullConfigPath);
       return projectConfig;
     } else {
-      throw new Error('无效的项目目录，请在mona项目根目录执行命令')
+      throw new Error('无效的项目目录，请在mona项目根目录执行命令');
     }
   }
 }
 
-export default BaseConfigHelper
+export default BaseConfigHelper;

@@ -3,6 +3,25 @@ import ejs from 'ejs';
 import { Compilation, sources } from 'webpack';
 import { ConfigHelper } from '@/configHelper';
 import { ejsParamsMap } from '@/alias';
+import { renderPropsMap } from '../PerfTemplateRenderPlugin/store';
+
+export function mergeAliasMap() {
+  for (const nodeType of ejsParamsMap.keys()) {
+    const allInfo = ejsParamsMap.get(nodeType);
+    const codeUseInfo = renderPropsMap.get(nodeType);
+    if (!codeUseInfo?.isUse) {
+      ejsParamsMap.delete(nodeType);
+    } else if (codeUseInfo.isRenderAllProps) {
+    } else {
+      const allPropAlias = allInfo.alias;
+      const newPropAlias: Record<string, string> = {};
+      for (const prop of Object.keys(codeUseInfo.renderProps)) {
+        newPropAlias[prop] = allPropAlias[prop];
+      }
+      allInfo.alias = newPropAlias;
+    }
+  }
+}
 
 const RawSource = sources.RawSource;
 const templatePath = path.join(__dirname, '../../ejs/componentsEjs');
@@ -10,8 +29,10 @@ export default async function createTtml(compilation: Compilation, configHelper:
   const isDev = configHelper.options.dev;
   const { appConfig } = configHelper;
   const pages = appConfig.pages ?? [];
+  if (configHelper.projectConfig.compilerOptimization) {
+    mergeAliasMap();
+  }
 
-  // base ttml
   const file = `base.ttml`;
   if (!compilation.getAsset(file)) {
     const tplPath = path.join(__dirname, '../../ejs', './base.ttml.ejs');
