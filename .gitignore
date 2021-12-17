@@ -6,3 +6,10 @@ tsconfig.tsbuildinfo
 *.log
 /coverage
 /monaJest*
+local-test-fb
+mona
+mona-apis
+mona-clients
+mona-commands
+mona-runtime
+mona-components
