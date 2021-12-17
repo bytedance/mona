@@ -24,15 +24,15 @@
   "author": "zhangxiaowei.chris@bytedance.com",
   "license": "MIT",
   "workspaces": [
-    "packages/*",
+    "packages/mona*",
     "packages/mona-commands/*",
     "packages/mona-clients/*"
   ],
   "packageManager": "yarn@1.22.4",
   "devDependencies": {
-    "@babel/core": "^7.16.0",
-    "@babel/preset-env": "^7.16.4",
-    "@babel/preset-typescript": "^7.16.0",
+    "@babel/core": "^7.16.5",
+    "@babel/preset-env": "^7.16.5",
+    "@babel/preset-typescript": "^7.16.5",
     "@types/fs-extra": "^9.0.13",
     "@types/jest": "^27.0.2",
     "@types/semver": "^7.3.9",
