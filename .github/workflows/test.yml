@@ -29,13 +29,13 @@ jobs:
           sudo apt update
       - name: add node
         run: |
-          sudo apt install nodejs
+          DEBIAN_FRONTEND=noninteractive sudo apt install nodejs
       - name: add npm
         run: |
-          sudo apt install npm
+          DEBIAN_FRONTEND=noninteractive sudo apt install npm
       - name: add yarn
         run: |
-          sudo apt install yarn
+          DEBIAN_FRONTEND=noninteractive sudo apt install yarn
       - name: npm install and npm test
         run: |
           yarn config set registry http://registry.npmjs.org
