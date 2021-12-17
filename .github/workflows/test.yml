@@ -26,5 +26,4 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: npm install and npm test
         run: |
-          brew install yarn
-         
+          sudo port install yarn
