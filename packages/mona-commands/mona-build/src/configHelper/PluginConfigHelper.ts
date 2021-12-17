@@ -16,7 +16,7 @@ import { Options } from "..";
 import { HTML_HANDLE_TAG } from "@/constants";
 import { ConfigHelper } from ".";
 
-function createUniqueId() {
+export function createUniqueId() {
   const random = () => Number(Math.random().toString().substr(2)).toString(36)
   const arr = [String(Date.now())];
   function createId() {

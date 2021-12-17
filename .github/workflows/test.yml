@@ -1,0 +1,31 @@
+name: Mona Test
+on:
+  push:
+    branches:
+      - feat/tests
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.22.0]
+    steps:
+      # prepare env
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: npm install and npm test
+        run: |
+          yarn config set registry http://registry.npmjs.org
+          yarn install
+          yarn global add @bytedance/mona-cli
+          yarn test

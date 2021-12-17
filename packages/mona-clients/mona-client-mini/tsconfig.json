@@ -16,5 +16,5 @@
     "src/**/*",
     "typings/**/*"
   ],
-  "exclude": ["dist"]
+  "exclude": ["dist","**/*.test.ts"],
 }
