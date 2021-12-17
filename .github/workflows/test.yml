@@ -27,8 +27,4 @@ jobs:
       - name: npm install and npm test
         run: |
           yarn config set registry http://registry.npmjs.org
-          yarn install
-          yarn global add @bytedance/mona-cli
-          yarn global add lerna
-          lerna run build
-          yarn test
+       
