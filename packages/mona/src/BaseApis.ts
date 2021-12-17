@@ -960,7 +960,7 @@ export interface CanvasContext {
   setTransform(scaleX: number, skewX: number, skewY: number, scaleY: number, translateX: number, translateY: number): void;
   moveTo(x: number, y: number): void;
   rect(x: number, y: number, width: number, height: number): void;
-  arc(x: number, y: number, r: number, sAngle: number, eAngle: number, anticlockwise: string): void;
+  arc(x: number, y: number, r: number, sAngle: number, eAngle: number, anticlockwise: boolean): void;
   quadraticCurveTo(cpx: number, cpy: number, x: number, y: number): void;
   bezierCurveTo(cp1x: number, cp1y: number, cp2x: number, cp2y: number, x: number, y: number): void;
   closePath(): void;
@@ -1236,6 +1236,16 @@ export interface OnReceiveSpecifiedCommentOptions {
 
 export type ActionSheetProps = { itemList: string[]; } & Callbacks<CommonErrorArgs & { tapIndex: number; }, CommonErrorArgs>;
 
+export interface CanvasToTempFilePathOptions extends Callbacks<CommonErrorArgs & { tempFilePath: string }, CommonErrorArgs> {
+  canvasId: string;
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  destWidth?: number;
+  destHeight?: number;
+}
+
 abstract class Api {
   // 基础
   abstract canIUse(schema: string): boolean;
@@ -1411,6 +1421,7 @@ abstract class Api {
   abstract onMemoryWarning(callback: (args: { level: 5 | 10 | 15; }) => void): void;
   // 画布
   abstract createCanvasContext(canvasId: string): CanvasContext;
+  abstract canvasToTempFilePath(options: CanvasToTempFilePathOptions): void;
   abstract createOffscreenCanvas(): OffscreenCanvas;
   // 界面
   // 交互反馈

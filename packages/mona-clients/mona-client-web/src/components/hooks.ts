@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { BaseProps, HoverProps } from '@bytedance/mona';
+import { BaseProps, HoverProps, Touch } from '@bytedance/mona';
 import cs from 'classnames';
 import { formatMouseEvent, formatTouchEvent } from './utils';
 
@@ -11,7 +11,7 @@ function isFunc(val: any): val is Function {
   return typeof val === 'function';
 }
 
-export function useHandlers(props: BaseProps & HoverProps) {
+export function useHandlers(props: BaseProps<Touch> & HoverProps) {
   const {
     onTouchStart,
     onTouchMove,
