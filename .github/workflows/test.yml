@@ -2,9 +2,7 @@ name: Mona Test
 on:
   push:
     branches:
-      - feat/tests
       - main
-      - feat/overseaTest
   pull_request:
     branches:
       - main
