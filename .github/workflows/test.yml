@@ -4,6 +4,7 @@ on:
     branches:
       - feat/tests
       - main
+      - feat/miniapp
   pull_request:
     branches:
       - main
@@ -28,4 +29,6 @@ jobs:
           yarn config set registry http://registry.npmjs.org
           yarn install
           yarn global add @bytedance/mona-cli
+          yarn global add lerna
+          lerna run build
           yarn test
