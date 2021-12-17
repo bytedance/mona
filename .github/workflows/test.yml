@@ -24,13 +24,18 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-
-      - name: add yarn
+      - name: update
         run: |
           sudo apt update
-          sudo apt install nodejs npm
+      - name: add node
+        run: |
+          sudo apt install nodejs
+      - name: add npm
+        run: |
+          sudo apt install npm
+      - name: add yarn
+        run: |
           sudo apt install yarn
-
       - name: npm install and npm test
         run: |
           yarn config set registry http://registry.npmjs.org
