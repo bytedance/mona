@@ -8,11 +8,10 @@ const isVendorPrefixes: Record<string, boolean> = {
   o: true,
 };
 
-const isPxToRpx = false;
 const RPX = 'rpx';
 const PX = 'px';
 
-const transformReactStyleKey = (key: string) => {
+export const transformReactStyleKey = (key: string) => {
   // css3变量
   if (key.startsWith('--')) {
     return key;
@@ -33,7 +32,7 @@ const transformReactStyleKey = (key: string) => {
   return styleValue;
 };
 
-const setPxToRpx = (value: string) => {
+export const setPxToRpx = (value: string) => {
   if (typeof value !== 'string') {
     return value;
   }
@@ -45,7 +44,7 @@ const setPxToRpx = (value: string) => {
 };
 
 // react style => miniapp style
-export const plainStyle = (style: React.CSSProperties) => {
+export const plainStyle = (style: React.CSSProperties, isPxToRpx: boolean = false) => {
   return Object.keys(style)
     .reduce((res: string[], styleKey) => {
       let value = (style as any)[styleKey];
