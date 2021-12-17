@@ -11,7 +11,7 @@ on:
 
 jobs:
   publish:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     strategy:
       matrix:
@@ -21,6 +21,19 @@ jobs:
       # prepare env
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: update
+        run: |
+          sudo apt update
+      - name: add node
+        run: |
+          DEBIAN_FRONTEND=noninteractive sudo apt install -y nodejs
+      - name: add npm
+        run: |
+          DEBIAN_FRONTEND=noninteractive sudo apt install -y npm
+      - name: add yarn
+        run: |
+          DEBIAN_FRONTEND=noninteractive sudo apt install -y yarn
 
       - name: Git Identity
         run: |
