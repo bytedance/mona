@@ -16,10 +16,9 @@ describe('mona-shared readConfig', () => {
     readTypescriptFile(tsFilePath);
   });
 
-  //TODO
-  // test('readJavascriptFile', async () => {
-  //   readJavascriptFile(jsFilePath);
-  // });
+  test('readJavascriptFile', async () => {
+    readJavascriptFile(jsFilePath);
+  });
 
   test('readTsFile empty', async () => {
     expect(() => readTypescriptFile(emptyFilePath)).toThrow();
@@ -42,4 +41,3 @@ describe('mona-shared readConfig', () => {
     expect(readConfig(emptyFilePath)).toEqual({});
   });
 });
-
