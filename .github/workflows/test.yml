@@ -30,9 +30,7 @@ jobs:
       - name: add node
         run: |
           DEBIAN_FRONTEND=noninteractive sudo apt install -y nodejs
-      - name: add npm
-        run: |
-          DEBIAN_FRONTEND=noninteractive sudo apt install -y npm
+
       - name: add yarn
         run: |
           DEBIAN_FRONTEND=noninteractive sudo apt install -y yarn
