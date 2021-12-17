@@ -6,7 +6,7 @@ import { commandUsage, dispatchCommand, joinCmdPath } from './utils/command';
 import PackageUpdater from './PackageUpdater';
 function mona() {
   yargs.help(false).version(false).alias('h', 'help').alias('v', 'version');
-  
+
   // 注册子命令，并匹配当前命令进行调用
   const currentCmd = yargs.argv._.slice(0)[0] as string;
   const currentCmdInfo = cmds.find(cmd => cmd.name === currentCmd);

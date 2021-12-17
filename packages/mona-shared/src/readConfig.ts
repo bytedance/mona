@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-function readTypescriptFile(filename: string): Record<string, any> {
+export function readTypescriptFile(filename: string): Record<string, any> {
   require('@babel/register')({
     presets: [
       [require.resolve('@babel/preset-env'), { modules: 'commonjs' }],
@@ -15,7 +15,7 @@ function readTypescriptFile(filename: string): Record<string, any> {
   return config;
 }
 
-function readJavascriptFile(filename: string) {
+export function readJavascriptFile(filename: string) {
   require('@babel/register')({
     presets: [
       [require.resolve('@babel/preset-env'), { modules: 'commonjs' }],

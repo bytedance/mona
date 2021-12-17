@@ -5,5 +5,7 @@ tsconfig.tsbuildinfo
 .DS_Store
 *.log
 coverage
+/monaJest*
 dist
 local-test-fb
+

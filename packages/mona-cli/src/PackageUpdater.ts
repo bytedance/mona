@@ -1,10 +1,10 @@
-import ora from "ora";
+import ora from 'ora';
 import compareVersion from 'compare-version';
 import { execSync } from 'child_process';
 import chalk from 'chalk';
-import { getGlobalInstallPkgMan } from "./utils/command";
-import { getPkgPublicName } from "./utils/package";
-import { getCurrentVersion, getNewestVersion } from "./utils/version";
+import { getGlobalInstallPkgMan } from './utils/command';
+import { getPkgPublicName } from './utils/package';
+import { getCurrentVersion, getNewestVersion } from './utils/version';
 
 export default class PackageUpdater {
   private _incompatible: boolean = false;
@@ -31,14 +31,18 @@ export default class PackageUpdater {
     if (this._incompatible) {
       const spinner = ora(`升级到 v${this._newestVersion}...`).start();
       const installCmd = this.generateUpdateCmd();
-      
+
       try {
         execSync(installCmd, { stdio: 'ignore' }).toString();
         spinner.color = 'green';
         spinner.succeed(chalk.green(`${getPkgPublicName()} v${this._newestVersion} 更新成功`));
       } catch (e) {
         spinner.color = 'red';
-        spinner.fail(chalk.red(`${getPkgPublicName()} v${this._newestVersion} 更新失败\n可手动执行 ${chalk.cyan(installCmd)} 进行更新`));
+        spinner.fail(
+          chalk.red(
+            `${getPkgPublicName()} v${this._newestVersion} 更新失败\n可手动执行 ${chalk.cyan(installCmd)} 进行更新`
+          )
+        );
       }
     }
   }
@@ -46,13 +50,13 @@ export default class PackageUpdater {
   render() {
     return `
       版本检查: ${this._currentVersion} -> ${this._newestVersion}
-      ${(this._incompatible ? chalk.yellow('有新的版本可用！') : chalk.green('已是最新版本！'))}
-    `
+      ${this._incompatible ? chalk.yellow('有新的版本可用！') : chalk.green('已是最新版本！')}
+    `;
   }
 
   generateUpdateCmd() {
     const pkgMan = getGlobalInstallPkgMan();
-    const cmd = pkgMan === 'yarn' ? `yarn global add` : 'npm install -g'
-    return `${cmd} ${getPkgPublicName()}@${this._newestVersion}`
+    const cmd = pkgMan === 'yarn' ? `yarn global add` : 'npm install -g';
+    return `${cmd} ${getPkgPublicName()}@${this._newestVersion}`;
   }
 }

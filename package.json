@@ -11,7 +11,8 @@
     "clean": "lerna run clean",
     "clean:dp": "learn clean",
     "bootstrap": "lerna bootstrap",
-    "test": "echo 'test'",
+    "test": "jest",
+    "test:c": "jest --coverage",
     "v": "yarn v:lerna && yarn v:git",
     "v:lerna": "lerna version ${npm_config_lerna_version} --exact --no-git-tag-version --force-publish --yes",
     "v:git": "git add . && git commit -m \"chore(release): publish ${npm_config_lerna_version}\""
@@ -26,5 +27,19 @@
     "packages/*",
     "packages/mona-commands/*",
     "packages/mona-clients/*"
-  ]
+  ],
+  "packageManager": "yarn@1.22.4",
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
+    "@babel/preset-typescript": "^7.16.0",
+    "@types/fs-extra": "^9.0.13",
+    "@types/jest": "^27.0.2",
+    "@types/semver": "^7.3.9",
+    "babel-jest": "^27.3.1",
+    "coffee": "^5.4.0",
+    "fs-extra": "^10.0.0",
+    "jest": "^27.3.1",
+    "semver": "^7.3.5"
+  }
 }

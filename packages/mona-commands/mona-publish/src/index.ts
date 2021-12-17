@@ -12,9 +12,9 @@ function readDest(): string {
   const fullConfigPath = searchScriptFile(projectConfigPath);
   if (fs.existsSync(fullConfigPath)) {
     const projectConfig = readConfig<ProjectConfig>(fullConfigPath);
-    return path.join(process.cwd(), `./${projectConfig.output || 'dist'}`)
+    return path.join(process.cwd(), `./${projectConfig.output || 'dist'}`);
   } else {
-    throw new Error('无效的项目目录，请在mona项目根目录执行命令')
+    throw new Error('无效的项目目录，请在mona项目根目录执行命令');
   }
 }
 
@@ -35,7 +35,7 @@ function publish() {
       const zipPath = await compressToZipFromDir(destPath);
       console.log(chalk.green(`请在开放平台 应用后台-插件管理-新增版本 中，上传 ${chalk.cyan(zipPath)} 压缩包`));
     } catch (err: any) {
-      console.log(chalk.red(err.message))
+      console.log(chalk.red(err.message));
     }
   }).argv;
 }

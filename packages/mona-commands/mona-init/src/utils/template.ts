@@ -7,12 +7,9 @@ import { execSync } from 'child_process';
 import download from 'download-git-repo';
 import { makeDir, readAllFiles, removeEmptyDirs } from './file';
 
-const TEMPLATE_SOURCE = 'github:bytedance/mona-templates#main'
+const TEMPLATE_SOURCE = 'github:bytedance/mona-templates#main';
 const TEMPLATE_DIR = '.tpl';
-export const fetchTemplate = function (
-  projectRoot: string,
-  templateName: string
-) {
+export const fetchTemplate = function (projectRoot: string, templateName: string) {
   return new Promise((resolve, reject) => {
     makeDir(projectRoot);
     const tplDest = path.join(projectRoot, TEMPLATE_DIR);
@@ -21,23 +18,23 @@ export const fetchTemplate = function (
     download(TEMPLATE_SOURCE, tplDest, {}, error => {
       if (error) {
         spinner.fail(chalk.red(`模板拉取失败, ${error.message}`));
-        return reject(error)
+        return reject(error);
       } else {
         try {
-          const moveCmd = `mv ${tplDest}/${templateName}/* ${projectRoot} && rm -rf ${tplDest}`
+          const moveCmd = `mv ${tplDest}/${templateName}/* ${projectRoot} && rm -rf ${tplDest}`;
           execSync(moveCmd, { stdio: 'ignore' });
         } catch (err) {
-           return reject(error)
+          return reject(error);
         }
         spinner.color = 'green';
         spinner.succeed(chalk.grey('模板拉取成功！'));
         return resolve('success');
       }
-    })
+    });
   });
 };
 
-function renameFile(filePath: string, { typescript, cssExt }: { typescript: boolean; cssExt: string }) {
+export function renameFile(filePath: string, { typescript, cssExt }: { typescript: boolean; cssExt: string }) {
   const ext = path.extname(filePath);
   let newPath = filePath;
   if (/^\.[jt]sx$/.test(ext)) {
@@ -67,23 +64,26 @@ export async function processTemplate(filePath: string, templateData: Record<str
     const fileContent = await ejs.renderFile(
       filePath,
       {
-        data: templateData,
+        data: templateData
       },
       {
-        async: true,
+        async: true
       }
     );
     fs.writeFileSync(filePath, fileContent);
     // 修改后缀
     newFilePath = renameFile(filePath, {
       typescript: templateData.typescript,
-      cssExt: templateData.cssExt,
+      cssExt: templateData.cssExt
     });
   }
   // 打印出来文件成功
   spinner.succeed(chalk.grey(`文件 ${newFilePath} 创建成功`));
 }
 
+/**
+ * ! 此函数更新时，注意更新mona-template的测试文件。路径__test__/plugin.test.ts
+ */
 export async function processTemplates(dirPath: string, templateData: Record<string, any>) {
   const files = readAllFiles(dirPath);
   // 遍历文件 处理问题
