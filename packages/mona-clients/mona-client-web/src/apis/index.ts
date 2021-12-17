@@ -11,6 +11,7 @@ import {
   webShowModal,
   webShowActionSheet
 } from './components/';
+import { createCanvasContext as originCreateCanvasContext, canvasToTempFilePath as originCanvasToTempFilePath } from './Canvas';
 
 const noImplementFactory = (api: string) => (): any => {
   console.error(`no implement${api} in web`);
@@ -191,7 +192,8 @@ export const offUserScreenRecord: BaseApis["offUserScreenRecord"] = noImplementF
 export const vibrateShort: BaseApis["vibrateShort"] = noImplementFactory('vibrateShort');
 export const vibrateLong: BaseApis["vibrateLong"] = noImplementFactory('vibrateLong');
 export const onMemoryWarning: BaseApis["onMemoryWarning"] = noImplementFactory('onMemoryWarning');
-export const createCanvasContext: BaseApis["createCanvasContext"] = noImplementFactory('createCanvasContext');
+export const createCanvasContext: BaseApis["createCanvasContext"] = originCreateCanvasContext;
+export const canvasToTempFilePath: BaseApis["canvasToTempFilePath"] = originCanvasToTempFilePath;
 export const createOffscreenCanvas: BaseApis["createOffscreenCanvas"] = noImplementFactory('createOffscreenCanvas');
 export const showToast: BaseApis["showToast"] = function(config) {
   webShowToast(config);
