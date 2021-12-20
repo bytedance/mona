@@ -40,7 +40,6 @@ export function processProps(props: Record<string, any>, node: ServerElement) {
       //   props[webEvent2Mini[propKey]] = props[propKey];
       //   propKey = webEvent2Mini[propKey];
       // }
-
       cbKey = `${CALLBACK_SYMBOL}_${node.key}_${propKey}`;
 
       if (isFunction(props[propKey])) {
