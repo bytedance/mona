@@ -2,7 +2,6 @@ import { readTypescriptFile, readJavascriptFile } from '../readConfig';
 import { readConfig } from '../index';
 
 import { join } from 'path';
-import { execSync } from 'child_process';
 
 const tsRelativePath = '../index';
 const tsFilePath = join(__dirname, tsRelativePath + '.ts');
