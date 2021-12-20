@@ -2,15 +2,15 @@ name: Mona Test
 on:
   push:
     branches:
-      - feat/tests
       - main
+      - feat/overseaTest
   pull_request:
     branches:
       - main
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     strategy:
       matrix:
@@ -23,9 +23,21 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+      - name: update
+        run: |
+          sudo apt update
+      - name: add node
+        run: |
+          DEBIAN_FRONTEND=noninteractive sudo apt install -y nodejs
+
+      - name: add yarn
+        run: |
+          DEBIAN_FRONTEND=noninteractive sudo apt install -y yarn
       - name: npm install and npm test
         run: |
           yarn config set registry http://registry.npmjs.org
           yarn install
           yarn global add @bytedance/mona-cli
+          yarn global add lerna
+          lerna run build
           yarn test
