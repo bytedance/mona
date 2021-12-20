@@ -1,5 +1,9 @@
 node_modules
 dist
 packages/**/*.ejs
+yarn-error.log
+.yarn 
+yarn.lock
+
 
 
