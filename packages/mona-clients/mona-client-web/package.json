@@ -7,6 +7,7 @@
     "build": "yarn clean && yarn copy && yarn api-copy && tsc -b",
     "start": "yarn copy && tsc -b -w",
     "clean": "rm -rf dist",
+    "test": "jest",
     "copy": "copyfiles -u 2 ./src/components/*.less ./src/components/**/*.less ./dist/components",
     "api-copy": "copyfiles -u 3 ./src/apis/components/**/*.less ./dist/apis/components"
   },
