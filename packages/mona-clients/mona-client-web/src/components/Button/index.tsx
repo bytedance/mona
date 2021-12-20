@@ -21,9 +21,11 @@ const Button: React.FC<ButtonProps> = (props) => {
 
   const { handleClassName, ...handlerProps } = useHandlers({ ...restProps, hoverStartTime, hoverStayTime });
 
+  const className = handleClassName(styles.button);
+
   return (
     <button
-      className={handleClassName(styles.button)}
+      className={className}
       type={formType}
       data-mona-type={type}
       data-mona-size={size}
