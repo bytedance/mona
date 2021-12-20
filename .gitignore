@@ -1,5 +1,7 @@
 node_modules
 yarn.lock
+yarn-error.log
+.yarn
 .yalc
 tsconfig.tsbuildinfo
 .DS_Store
@@ -8,4 +10,5 @@ coverage
 /monaJest*
 dist
 local-test-fb
+
 

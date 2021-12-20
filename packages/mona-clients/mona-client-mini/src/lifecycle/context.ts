@@ -21,7 +21,13 @@ export enum PageLifecycle {
   shareAppMessage = 'shareAppMessage',
   pageScroll = 'pageScroll',
 }
-
+export enum ComponentLifecycle {
+  created = 'created',
+  attached = 'attached',
+  ready = 'ready',
+  moved = 'moved',
+  detached = 'detached',
+}
 export class LifecycleContext {
   lifecycles: { [key: string]: Callback[] };
 
@@ -42,3 +48,4 @@ export class LifecycleContext {
 
 export const PageLifecycleGlobalContext = React.createContext<LifecycleContext | null>(null);
 export const appLifecycleContext = React.createContext<LifecycleContext | null>(null);
+export const componentLifecycleContext = React.createContext<LifecycleContext | null>(null);
