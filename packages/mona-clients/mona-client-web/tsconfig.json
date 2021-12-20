@@ -6,6 +6,7 @@
   },
   "include": ["src"],
   "exclude": [
-    "**/*.test.ts"
+    "**/*.spec.ts",
+    "**/*.spec.tsx"
    ]
 }
