@@ -3,6 +3,8 @@ import ejs from 'ejs';
 import { Compilation, sources } from 'webpack';
 import { ConfigHelper } from '@/configHelper';
 import { ejsParamsMap } from '@/alias';
+import { noChildElements } from '@/alias/constants';
+
 import { renderPropsMap } from '../PerfTemplateRenderPlugin/store';
 
 export function mergeAliasMap() {
@@ -39,6 +41,7 @@ export default async function createTtml(compilation: Compilation, configHelper:
       tplPath,
       {
         ejsParamsMap,
+        noChildElements,
       },
       {
         rmWhitespace: !isDev,

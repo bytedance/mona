@@ -13,7 +13,6 @@ describe('file', () => {
   afterEach(() => {
     return fse.remove(tempDir);
   });
-  afterEach(async () => {});
 
   test('makeDir error', async () => {
     expect(() => makeDir(__dirname)).toThrow();
