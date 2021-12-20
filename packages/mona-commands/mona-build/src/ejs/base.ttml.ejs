@@ -7,10 +7,9 @@
     <%_for(let i in ejsParamsMap.get(name).alias){-%>
     <%_if(ejsParamsMap.get(name).defaultProps[i] !== undefined){-%>
     <%=ejsParamsMap.get(name).alias[i]%>="{{node.props['<%=i%>'] === undefined ? <%-ejsParamsMap.get(name).defaultProps[i]%> : node.props['<%=i%>']}}" 
-    <%_} else if(i !== 'id'){-%>
+    <%_} else{-%>
     <%=ejsParamsMap.get(name).alias[i]%>="{{node.props['<%=i%>']}}" 
     <%_}}-%>
-    id="{{node.key}}" 
   >
   <% if(!noChildElements.has(name)) { -%>
     <template 
