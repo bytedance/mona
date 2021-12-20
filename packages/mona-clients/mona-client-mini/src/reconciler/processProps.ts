@@ -1,4 +1,4 @@
-import { CALLBACK_SYMBOL, isEventName, isFunction, isObject, monaPrint, plainStyle } from '@/utils';
+import { CALLBACK_SYMBOL, isEventName, isFunction, isObject, monaPrint, plainStyle } from '../utils';
 import ServerElement from './ServerElement';
 import createEventHandler from '../eventHandler';
 
@@ -18,14 +18,6 @@ const filterPropsMap: Record<string, boolean> = {
   children: true,
   ref: true,
 };
-
-// const webEvent2Mini: Record<string, string> = {
-//   onClick: 'onTap',
-//   // onMouseDown: 'onTouchstart',
-//   // onMouseMove: 'onTouchMove',
-//   // onMouseLeave: 'onTouchEnd',
-//   // onWheel: 'onScroll',
-// };
 
 export function processProps(props: Record<string, any>, node: ServerElement) {
   let propKey: string;

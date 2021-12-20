@@ -1,4 +1,4 @@
-import ServerElement from '@/reconciler/ServerElement';
+import ServerElement from '../reconciler/ServerElement';
 import { isPropagationStop, eventReactAliasMap, bubbleEventMap, MonaEvent } from './constants';
 
 function checkPropagation(eventName: string, node: ServerElement) {

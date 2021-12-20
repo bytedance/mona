@@ -4,6 +4,7 @@ import { componentLifecycleContext } from '@/lifecycle/context';
 import TaskController, { ROOT_KEY } from '@/reconciler/TaskController';
 import render from '@/reconciler';
 
+
 function createConfig(Component: React.ComponentType<any>) {
   // const eventMap = new Map();
   const config: any = {
