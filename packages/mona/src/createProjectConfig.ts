@@ -5,12 +5,14 @@ interface PxtransformConfig {
   selectorBlackList: (string | RegExp)[],
   replace: boolean,
   mediaQuery: boolean,
-  minPixelValue: number
+  minPixelValue: number,
+  exclude: RegExp | null | ((name: string) => boolean)
 }
 
 interface PostcssPxtransformProps {
   enable: boolean;
-  designWidth?: 750 | 640 | 828,
+  designWidth?: 750 | 640 | 828;
+  deviceRatio?: { [key: string]: number }
   config?: Partial<PxtransformConfig>;
 }
 

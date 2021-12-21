@@ -130,7 +130,7 @@ class WebConfigHelper extends BaseConfigHelper {
       ],
     });
 
-    const pxtOptions = createPxtransformConfig('h5', this.projectConfig);
+    const pxtOptions = createPxtransformConfig('web', this.projectConfig);
 
     const styleLoader = [
       {
@@ -148,7 +148,7 @@ class WebConfigHelper extends BaseConfigHelper {
           postcssOptions: {
             plugins: [
               require.resolve('postcss-import'),
-              pxtOptions.enabled ? [require.resolve('postcss-pxtransform'), pxtOptions] : null
+              pxtOptions.enabled ? [path.join(__dirname, '..', './plugins/postcss/PostcssPxtransformer/index.js'), pxtOptions] : null
             ].filter(p => !!p)
           }
         }
@@ -189,12 +189,12 @@ class WebConfigHelper extends BaseConfigHelper {
   private _createPlugins() {
     let plugins: any[] = [
       new ConfigHMRPlugin(this as unknown as ConfigHelper),
-      // 46.875 / 750 * 100 = 6.25
+      // 75 / 750 * 100 = 10
       new HtmlWebpackPlugin({
         templateContent: `
           <!-- ${HTML_HANDLE_TAG} -->
           <!DOCTYPE html>
-          <html style="font-size: 6.25vw">
+          <html style="font-size: 10vw">
             <head>
               <meta charset="utf-8">
               <title>Mona Web</title>
