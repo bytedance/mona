@@ -47,6 +47,8 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.3.1",
     "jest-dom": "^4.0.0",
+    "jsdom": "^19.0.0",
+    "jsdom-global": "^3.0.2",
     "semver": "^7.3.5"
   }
 }
