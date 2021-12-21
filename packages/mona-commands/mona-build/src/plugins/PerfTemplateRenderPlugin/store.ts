@@ -1,11 +1,12 @@
-import { ejsParamsMap } from '@/alias';
 // import { miniProp2rcPropMap } from '@/alias/prop';
-interface IRenderInfo {
+import monaStore from '../../store';
+
+interface ITemplateRenderInfo {
   isRenderAllProps?: boolean;
   isUse?: boolean;
   renderProps: Record<string, any>;
 }
-export const renderPropsMap = new Map<string, IRenderInfo>();
+
 const genAliasMap = (allPropsMap: any) => {
   if (!allPropsMap) {
     return {};
@@ -20,31 +21,31 @@ const genAliasMap = (allPropsMap: any) => {
 
 // xx-xx形式 -> 驼峰。 bindtap-> onTap
 export const miniPro2rcPropMap = new Map();
-Array.from(ejsParamsMap.keys()).forEach((nodeType: string) => {
-  miniPro2rcPropMap.set(nodeType, genAliasMap(ejsParamsMap.get(nodeType).alias));
+Array.from(monaStore.ejsParamsMap.keys()).forEach((nodeType: string) => {
+  miniPro2rcPropMap.set(nodeType, genAliasMap(monaStore.ejsParamsMap.get(nodeType).alias));
 });
 
 const getRenderInit = (
   renderProps: Record<string, true> = {},
   isRenderAllProps: boolean = false,
   isUse: boolean = false,
-): IRenderInfo => ({
+): ITemplateRenderInfo => ({
   renderProps: renderProps || {},
   isRenderAllProps,
   isUse,
 });
 
 const addProp = (nodeType: string, prop: string) => {
-  const renderInfo = renderPropsMap.get(nodeType);
+  const renderInfo = monaStore.templateRenderMap.get(nodeType);
   if (renderInfo) {
     renderInfo.renderProps[prop] = true;
   } else {
-    renderPropsMap.set(nodeType, getRenderInit({ [prop]: true }));
+    monaStore.templateRenderMap.set(nodeType, getRenderInit({ [prop]: true }));
   }
 };
 
 const renderAll = (nodeType: string) => {
-  const renderInfo = renderPropsMap.get(nodeType);
+  const renderInfo = monaStore.templateRenderMap.get(nodeType);
   if (renderInfo) {
     return Boolean(renderInfo.isRenderAllProps);
   } else {
@@ -52,19 +53,19 @@ const renderAll = (nodeType: string) => {
   }
 };
 const setComponentUse = (nodeType: string) => {
-  const renderInfo = renderPropsMap.get(nodeType);
+  const renderInfo = monaStore.templateRenderMap.get(nodeType);
   if (renderInfo) {
     renderInfo.isUse = true;
   } else {
-    renderPropsMap.set(nodeType, getRenderInit({}, false, true));
+    monaStore.templateRenderMap.set(nodeType, getRenderInit({}, false, true));
   }
 };
 const setAll = (nodeType: string) => {
-  const renderInfo = renderPropsMap.get(nodeType);
+  const renderInfo = monaStore.templateRenderMap.get(nodeType);
   if (renderInfo) {
     renderInfo.isRenderAllProps = true;
   } else {
-    renderPropsMap.set(nodeType, getRenderInit({}, true));
+    monaStore.templateRenderMap.set(nodeType, getRenderInit({}, true));
   }
 };
 export const renderMapAction = {

@@ -34,6 +34,7 @@ import webview from './Webview/alias';
 import map from './Map/alias';
 // import map from './Ca/alias';
 // import * as Components from '@bytedance/mona-components';
+
 type ComponentName = any;
 export const ejsParamsObj: Record<
   string,
@@ -349,20 +350,23 @@ export const ejsParamsObj: Record<
     alias: openData,
   },
 };
-export const ejsParamsMap = new Map();
 
-for (let name in ejsParamsObj) {
-  const defaultProps = ejsParamsObj[name].defaultProps;
+export const genEjsParamsMap = () => {
+  const ejsParamsMap = new Map();
+  for (let name in ejsParamsObj) {
+    const defaultProps = ejsParamsObj[name].defaultProps;
 
-  if (defaultProps) {
-    for (let prop in defaultProps) {
-      if (typeof defaultProps[prop] === 'string') {
-        defaultProps[prop] = `'${defaultProps[prop]}'`;
+    if (defaultProps) {
+      for (let prop in defaultProps) {
+        if (typeof defaultProps[prop] === 'string') {
+          defaultProps[prop] = `'${defaultProps[prop]}'`;
+        }
       }
+    } else {
+      ejsParamsObj[name].defaultProps = {};
     }
-  } else {
-    ejsParamsObj[name].defaultProps = {};
-  }
 
-  ejsParamsMap.set(name, ejsParamsObj[name]);
-}
+    ejsParamsMap.set(name, ejsParamsObj[name]);
+  }
+  return ejsParamsMap;
+};

@@ -2,135 +2,63 @@
 import { NodePath } from '@babel/traverse';
 // import { ConfigAPI } from '@babel/core';
 import * as t from '@babel/types';
-import { ejsParamsMap } from '@/alias';
-import { transformNodeName } from '@/utils/reactNode';
-// import { miniProp2rcPropMap } from '@/alias/prop';
-interface IRenderInfo {
-  isAll?: boolean;
-  renderProps: Record<string, any>;
-}
-const renderPropsMap = new Map<string, IRenderInfo>();
-const genAliasMap = (allPropsMap: any) => {
-  if (!allPropsMap) {
-    return {};
-  }
-  const miniProp2rcPropMap = Object.keys(allPropsMap).reduce<Record<string, string>>((obj, prop: string) => {
-    obj[allPropsMap[prop]] = prop;
-    return obj;
-  }, {});
 
-  return miniProp2rcPropMap;
-};
-// xx-xx形式 -> 驼峰。 bindtap-> onTap
-const miniPro2rcPropMap = new Map();
-Array.from(ejsParamsMap.keys()).forEach((nodeType: string) => {
-  miniPro2rcPropMap.set(nodeType, genAliasMap(ejsParamsMap.get(nodeType).alias));
-});
-
-const getRenderInit = (renderProps: Record<string, true> = {}, isAll: boolean = false): IRenderInfo => ({
-  renderProps: renderProps || {},
-  isAll,
-});
-
-const addProp = (nodeType: string, prop: string) => {
-  const renderInfo = renderPropsMap.get(nodeType);
-  if (renderInfo) {
-    renderInfo.renderProps[prop] = true;
-  } else {
-    renderPropsMap.set(nodeType, getRenderInit({ [prop]: true }));
-  }
-};
-
-const renderAll = (nodeType: string) => {
-  const renderInfo = renderPropsMap.get(nodeType);
-  if (renderInfo) {
-    return Boolean(renderInfo.isAll);
-  } else {
-    return false;
-  }
-};
-const setAll = (nodeType: string) => {
-  const renderInfo = renderPropsMap.get(nodeType);
-  if (renderInfo) {
-    renderInfo.isAll = true;
-  } else {
-    renderPropsMap.set(nodeType, getRenderInit({}, true));
-  }
-};
-const renderMapAction = {
-  renderAll,
-  addProp,
-  setAll,
-};
-
-export default function perfRuntimePlugin() {
+export default function collectNativeComponent() {
   return {
     visitor: {
-      JSXElement(path: NodePath<t.JSXElement>, _state: any) {
-        const openingElement = path.node.openingElement;
+      JSXElement(path: NodePath<t.JSXElement>, state: any) {
+        const node = path.node;
+        const openingElement = node.openingElement;
+        console.log('state.file.opts.filename', state.file.opts.filename);
 
         if (!t.isJSXIdentifier(openingElement.name)) {
-          return;
+          return false;
         }
 
-        const nodeType = transformNodeName(openingElement.name.name);
-        if (!miniPro2rcPropMap.has(nodeType)) {
-          return;
+        // Badge
+        const name = openingElement.name.name;
+        const binding = path.scope.getBinding(name);
+        // console.log('path.scope', path.scope);
+        if (!binding) {
+          return false;
         }
 
-        if (renderMapAction.renderAll(nodeType)) {
-          return;
+        const bindingPath = binding.path;
+
+        // binding
+        if (!bindingPath) {
+          return false;
         }
 
-        const miniPropMap = miniPro2rcPropMap.get(nodeType);
-        const rcPropMap = ejsParamsMap.get(nodeType).alias;
+        const importPath = bindingPath.parentPath;
+        // console.log('importPath', importPath);
 
-        const attribute = openingElement.attributes;
+        if (t.isImportDeclaration(importPath)) {
+          const importNode = importPath.node as t.ImportDeclaration;
+          const source = importNode.source.value;
+          console.log('source', source);
+          console.log('importNode', importNode);
 
-        for (const item of attribute) {
-          if (t.isJSXAttribute(item)) {
-            let propName;
-            if (t.isJSXIdentifier(item.name)) {
-              propName = item.name.name;
-            } else {
-              propName = item.name.name.name;
-            }
+          // const props = getProps('', node, true) || [];
 
-            let rcPropName = miniPropMap[propName];
-            const miniPropName = rcPropMap[propName];
-
-            rcPropName = rcPropName ? rcPropName : miniPropName ? propName : undefined;
-            if (rcPropName) {
-              renderMapAction.addProp(nodeType, rcPropName);
-              // 标志渲染
-            }
-          } else if (t.isJSXSpreadAttribute(item)) {
-            renderMapAction.setAll(nodeType);
-            break;
-          }
+          // const modules = Store.compositionComponents.get(importer) || new Map();
+          // const component: { import: string; props: Set<string> } = modules.get(source) || {
+          //   import: source,
+          //   props: new Set(props),
+          // };
+          // modules.set(source, {
+          //   import: source,
+          //   props: new Set([...component.props, ...props]),
+          // });
+          // Store.compositionComponents.set(importer, modules);
         }
-        // console.log('renderPropsMap', renderPropsMap);
-        // // 将name转为驼峰式
-        // console.log('nodeName', {
-        //   name: openingElement.name.name,
-        // });
+        return;
       },
-      // JSXAttribute(path: NodePath<t.JSXAttribute>) {
-      //   const propsName = path.node.name.name;
-
-      //   // 将name转为驼峰式
-      //   console.log('propsName ', propsName);
-      // },
-      // collectCustomComponent
-      // collectUseProps
-      // collectUseComponent
     },
   };
 }
 
 // function collectPropsName() {}
-
-
 
 // // 还是要搞一个map。对于bindtap、这种无法处理
 // // 转为驼峰
@@ -140,4 +68,10 @@ export default function perfRuntimePlugin() {
 //   // });
 
 //   return genAliasMap(allPropsMap)[key];
+// }
+// function slash(path: string) {
+//   if (!path) {
+//     return path;
+//   }
+//   return /^\\\\\?\\/.test(path) ? path : path.replace(/\\/g, `/`);
 // }
