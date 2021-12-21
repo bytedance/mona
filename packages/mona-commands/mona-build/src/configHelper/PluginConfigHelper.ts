@@ -11,7 +11,7 @@ import loaderUtils from 'loader-utils';
 import { hexMD5 } from '../utils/md5';
 import getEnv from '@/utils/getEnv';
 
-import ConfigHMRPlugin from '../plugins/webpackPlugins/ConfigHMRPlugin';
+import ConfigHMRPlugin from '../plugins/webpack/ConfigHMRPlugin';
 import { Options } from '..';
 import { HTML_HANDLE_TAG } from '@/constants';
 import { ConfigHelper } from '.';
