@@ -13,6 +13,7 @@ import PerfTemplateRenderPlugin from '@/plugins/webpack/PerfTemplateRenderPlugin
 
 import getEnv from '@/utils/getEnv';
 import createPxtransformConfig from '@/utils/createPxtransformConfig';
+import collectNativeComponent from '@/babelPlugins/perfRuntimePlugin';
 const extensions = ['.js', '.mjs', '.jsx', '.ts', '.tsx', '.json'];
 const moduleMatcher = new RegExp(`(${extensions.filter(e => e !== '.json').join('|')})$`);
 
@@ -110,7 +111,7 @@ class MiniConfigHelper extends BaseConfigHelper {
           loader: require.resolve('babel-loader'),
           options: {
             babelrc: false,
-            plugins: [],
+            plugins: [collectNativeComponent],
             presets: [
               [require.resolve('@babel/preset-env')],
               [require.resolve('@babel/preset-typescript')],

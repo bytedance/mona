@@ -2,27 +2,31 @@ import path from 'path';
 import ejs from 'ejs';
 import { Compilation, sources } from 'webpack';
 import { ConfigHelper } from '@/configHelper';
-import { ejsParamsMap } from '@/alias';
 import { noChildElements } from '@/alias/constants';
 
-import { renderPropsMap } from '../PerfTemplateRenderPlugin/store';
+import monaStore from '../../../store';
 
-export function mergeAliasMap() {
+export function getAliasMap(ejsParamsMap: Map<string, any>) {
+  const result = new Map();
   for (const nodeType of ejsParamsMap.keys()) {
-    const allInfo = ejsParamsMap.get(nodeType);
-    const codeUseInfo = renderPropsMap.get(nodeType);
+    const allInfo = JSON.parse(JSON.stringify(ejsParamsMap.get(nodeType)));
+    const codeUseInfo = monaStore.templateRenderMap.get(nodeType);
     if (!codeUseInfo?.isUse) {
-      ejsParamsMap.delete(nodeType);
     } else if (codeUseInfo.isRenderAllProps) {
+      result.set(nodeType, allInfo);
     } else {
       const allPropAlias = allInfo.alias;
       const newPropAlias: Record<string, string> = {};
       for (const prop of Object.keys(codeUseInfo.renderProps)) {
         newPropAlias[prop] = allPropAlias[prop];
       }
-      allInfo.alias = newPropAlias;
+      result.set(nodeType, {
+        ...allInfo,
+        alias: newPropAlias,
+      });
     }
   }
+  return result;
 }
 
 const RawSource = sources.RawSource;
@@ -30,17 +34,18 @@ export default async function createTtml(compilation: Compilation, configHelper:
   const isDev = configHelper.options.dev;
   const { appConfig } = configHelper;
   const pages = appConfig.pages ?? [];
+  let renderTemplateAliasMap = monaStore.ejsParamsMap;
   if (configHelper.projectConfig.compilerOptimization) {
-    mergeAliasMap();
+    renderTemplateAliasMap = getAliasMap(renderTemplateAliasMap);
   }
 
   const file = `base.ttml`;
   if (!compilation.getAsset(file)) {
-    const tplPath = path.join(__dirname, '../../ejs', './base.ttml.ejs');
+    const tplPath = path.join(__dirname, '../../../ejs', './base.ttml.ejs');
     let content = await ejs.renderFile(
       tplPath,
       {
-        ejsParamsMap,
+        ejsParamsMap: renderTemplateAliasMap,
         noChildElements,
       },
       {

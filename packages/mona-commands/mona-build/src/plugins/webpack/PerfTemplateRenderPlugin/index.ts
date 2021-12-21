@@ -4,7 +4,8 @@ import { Compiler } from 'webpack';
 import * as t from '@babel/types';
 import { transformNodeName } from '@/utils/reactNode';
 import { miniPro2rcPropMap, renderMapAction } from './store';
-import { ejsParamsMap } from '@/alias';
+// import { ejsParamsMap } from '@/alias';
+import monaStore from '../../../store';
 const PLUGIN_NAME = 'PerfTemplateRenderPlugin';
 const walk = require('acorn-walk');
 
@@ -53,7 +54,7 @@ export default class PerfTemplateRenderPlugin {
               renderMapAction.setComponentUse(nodeType);
 
               const miniPropMap = miniPro2rcPropMap.get(nodeType);
-              const rcPropMap = ejsParamsMap.get(nodeType).alias;
+              const rcPropMap = monaStore.ejsParamsMap.get(nodeType).alias;
 
               const attribute = [];
 

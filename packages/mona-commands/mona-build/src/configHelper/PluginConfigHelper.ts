@@ -1,4 +1,4 @@
-import BaseConfigHelper from "./BaseConfigHelper";
+import BaseConfigHelper from './BaseConfigHelper';
 
 import webpack, { RuleSetRule, Configuration, DefinePlugin } from 'webpack';
 import path from 'path';
@@ -12,33 +12,32 @@ import { hexMD5 } from '../utils/md5';
 import getEnv from '@/utils/getEnv';
 
 import ConfigHMRPlugin from '../plugins/webpack/ConfigHMRPlugin';
-import { Options } from "..";
-import { HTML_HANDLE_TAG } from "@/constants";
-import { ConfigHelper } from ".";
+import { Options } from '..';
+import { HTML_HANDLE_TAG } from '@/constants';
+import { ConfigHelper } from '.';
 
 export function createUniqueId() {
-  const random = () => Number(Math.random().toString().substr(2)).toString(36)
+  const random = () => Number(Math.random().toString().substr(2)).toString(36);
   const arr = [String(Date.now())];
   function createId() {
-      var num = random();
-      arr.push(num)
+    var num = random();
+    arr.push(num);
   }
   var i = 0;
-  while(i < 4) {
-      createId();
-      i++;
+  while (i < 4) {
+    createId();
+    i++;
   }
   return hexMD5(arr.join(','));
 }
 
 class PluginConfigHelper extends BaseConfigHelper {
-  buildId: string
+  buildId: string;
 
   constructor(options: Required<Options>) {
     super(options);
     this.buildId = `_${createUniqueId()}`;
   }
-
 
   generate() {
     const config: Configuration = {
@@ -85,11 +84,11 @@ class PluginConfigHelper extends BaseConfigHelper {
           default: {
             minChunks: 2,
             priority: -20,
-            reuseExistingChunk: true
-          }
-        }
-      }
-    }
+            reuseExistingChunk: true,
+          },
+        },
+      },
+    };
   }
 
   private _createResolve() {
@@ -103,7 +102,7 @@ class PluginConfigHelper extends BaseConfigHelper {
   }
 
   private _createEntry() {
-     return path.join(this.entryPath, '..', 'app.entry.js')
+    return path.join(this.entryPath, '..', 'app.entry.js');
   }
 
   private _createMode() {
@@ -145,9 +144,7 @@ class PluginConfigHelper extends BaseConfigHelper {
               [require.resolve('@babel/preset-typescript')],
               [require.resolve('@babel/preset-react')],
             ],
-            plugins: [
-              this.options.dev && require.resolve('react-refresh/babel')
-            ].filter(Boolean)
+            plugins: [this.options.dev && require.resolve('react-refresh/babel')].filter(Boolean),
           },
         },
       ],
@@ -170,22 +167,16 @@ class PluginConfigHelper extends BaseConfigHelper {
                 options.context = loaderContext.rootContext;
               }
 
-              const request = path
-                .relative(options.context, loaderContext.resourcePath)
-                .replace(/\\/g, '/');
+              const request = path.relative(options.context, loaderContext.resourcePath).replace(/\\/g, '/');
 
               options.content = `${options.hashPrefix + request}+${localName}`;
 
               localIdentName = localIdentName.replace(/\[local\]/gi, localName);
 
-              const hash = loaderUtils.interpolateName(
-                loaderContext,
-                localIdentName,
-                options
-              );
+              const hash = loaderUtils.interpolateName(loaderContext, localIdentName, options);
 
-              return hash
-            }
+              return hash;
+            },
           },
         },
       },
@@ -195,17 +186,17 @@ class PluginConfigHelper extends BaseConfigHelper {
           postcssOptions: {
             plugins: [
               require.resolve('postcss-import'),
-              [path.join(__dirname, '..', './plugins/postcss/PostcssPreSelector.js'), { selector: `#${this.buildId}` }]
-            ]
-          }
-        }
+              [path.join(__dirname, '..', './plugins/postcss/PostcssPreSelector.js'), { selector: `#${this.buildId}` }],
+            ],
+          },
+        },
       },
       require.resolve('less-loader'),
-    ]
+    ];
     if (!this.options.dev) {
-      styleLoader.unshift(MiniCssExtractPlugin.loader)
+      styleLoader.unshift(MiniCssExtractPlugin.loader);
     } else {
-      styleLoader.unshift(require.resolve('style-loader'))
+      styleLoader.unshift(require.resolve('style-loader'));
     }
 
     // handle style
@@ -221,9 +212,7 @@ class PluginConfigHelper extends BaseConfigHelper {
     });
     rules.push({
       test: /\.svg$/i,
-      use: [
-        { loader: require.resolve('@svgr/webpack') },
-      ]
+      use: [{ loader: require.resolve('@svgr/webpack') }],
     });
     rules.push({
       test: /\.(ttf|eot|woff|woff2)$/i,
@@ -257,24 +246,21 @@ class PluginConfigHelper extends BaseConfigHelper {
           removeRedundantAttributes: true,
           removeScriptTypeAttributes: true,
           removeStyleLinkTypeAttributes: true,
-          useShortDoctype: true
-        }
+          useShortDoctype: true,
+        },
       }),
       new DefinePlugin(getEnv(this.options, this.cwd)),
-    ]
+    ];
 
     if (this.options.dev) {
-      plugins = [
-        new ReactRefreshWebpackPlugin(),
-        ...plugins
-      ]
+      plugins = [new ReactRefreshWebpackPlugin(), ...plugins];
     } else {
       plugins = [
         new MiniCssExtractPlugin({
-          filename: '[name].[contenthash:7].css'
+          filename: '[name].[contenthash:7].css',
         }),
-        ...plugins
-      ]
+        ...plugins,
+      ];
     }
     return plugins;
   }
