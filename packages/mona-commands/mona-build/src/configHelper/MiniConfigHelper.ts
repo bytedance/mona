@@ -12,6 +12,7 @@ import OptimizeEntriesPlugin from '@/plugins/webpack/ChunksEntriesPlugin';
 import PerfTemplateRenderPlugin from '@/plugins/webpack/PerfTemplateRenderPlugin';
 
 import getEnv from '@/utils/getEnv';
+import createPxtransformConfig from '@/utils/createPxtransformConfig';
 const extensions = ['.js', '.mjs', '.jsx', '.ts', '.tsx', '.json'];
 const moduleMatcher = new RegExp(`(${extensions.filter(e => e !== '.json').join('|')})$`);
 
@@ -120,6 +121,8 @@ class MiniConfigHelper extends BaseConfigHelper {
       ],
     });
 
+    const pxtOptions = createPxtransformConfig('weapp', this.projectConfig);
+
     const styleLoader = [
       MiniCssExtractPlugin.loader,
       {
@@ -130,6 +133,17 @@ class MiniConfigHelper extends BaseConfigHelper {
             localIdentName: '[local]___[hash:base64:5]',
           },
         },
+      },
+      {
+        loader: require.resolve('postcss-loader'),
+        options: {
+          postcssOptions: {
+            plugins: [
+              require.resolve('postcss-import'),
+              pxtOptions.enabled ? [require.resolve('postcss-pxtransform'), pxtOptions] : null
+            ].filter(p => !!p)
+          }
+        }
       },
       require.resolve('less-loader'),
     ];
