@@ -35,7 +35,7 @@ export default function collectNativeComponent() {
         if (t.isImportDeclaration(importPath)) {
           const importNode = importPath.node as t.ImportDeclaration;
           const source = importNode.source.value;
-          const props = getJsxProps(source, node) || [];
+          getJsxProps(source, node);
         }
         return;
       },
