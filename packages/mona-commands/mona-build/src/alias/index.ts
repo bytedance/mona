@@ -351,22 +351,24 @@ export const ejsParamsObj: Record<
   },
 };
 
+const baseDefaultProps: Record<string, string | number | boolean> = {
+  className: '',
+};
+
 export const genEjsParamsMap = () => {
   const ejsParamsMap = new Map();
   for (let name in ejsParamsObj) {
-    const defaultProps = ejsParamsObj[name].defaultProps;
+    let defaultProps = ejsParamsObj[name].defaultProps || {};
 
-    if (defaultProps) {
-      for (let prop in defaultProps) {
-        if (typeof defaultProps[prop] === 'string') {
-          defaultProps[prop] = `'${defaultProps[prop]}'`;
-        }
+    defaultProps = { ...baseDefaultProps, ...defaultProps };
+    for (let prop in defaultProps) {
+      if (typeof defaultProps[prop] === 'string') {
+        defaultProps[prop] = `'${defaultProps[prop]}'`;
       }
-    } else {
-      ejsParamsObj[name].defaultProps = {};
     }
 
-    ejsParamsMap.set(name, ejsParamsObj[name]);
+    ejsParamsMap.set(name, { ...ejsParamsObj[name], defaultProps });
   }
+
   return ejsParamsMap;
 };

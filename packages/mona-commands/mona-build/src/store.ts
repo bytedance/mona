@@ -1,15 +1,15 @@
 import { genEjsParamsMap } from './alias';
 
-// interface ComponentImportInfo {
-//   // 组件目录绝对路径
-//   path: string;
+interface ComponentImportInfo {
+  // 组件目录绝对路径
+  path: string;
 
-//   // 包名称，例如: @bytedance/mona-runtime
-//   pkgName: string;
+  // 包名称，例如: @bytedance/mona-runtime
+  pkgName: string;
 
-//   // jsx中使用的prop, 自定义组件的jsx上不能 写spread attribute {...props} 的形式
-//   props: Set<string>;
-// }
+  // jsx中使用的prop, 自定义组件的jsx上不能 写spread attribute {...props} 的形式
+  props: Set<string>;
+}
 
 // 模板生成信息
 interface ITemplateRenderInfo {
@@ -22,7 +22,7 @@ interface ITemplateRenderInfo {
 }
 
 const monaStore = {
-  componentImportMap: new Map(),
+  componentImportMap: new Map<string, ComponentImportInfo>(),
   templateRenderMap: new Map<string, ITemplateRenderInfo>(),
   ejsParamsMap: genEjsParamsMap(),
 };
