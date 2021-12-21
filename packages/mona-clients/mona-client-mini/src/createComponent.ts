@@ -4,40 +4,6 @@ import { componentLifecycleContext } from '@/lifecycle/context';
 import TaskController, { ROOT_KEY } from '@/reconciler/TaskController';
 import render from '@/reconciler';
 
-// export interface OtherOption {
-//   behaviors?: string[];
-//   relations?: Record<string, any>;
-//   options?: Record<string, any>;
-//   definitionFilter?: Function;
-// }
-// export interface Lifetimes {
-//   created?: () => void;
-
-//   attached?: () => void;
-
-//   ready?: () => void;
-//   moved?: () => void;
-//   detached?: () => void;
-// }
-// interface FullProperty {
-//   /** 属性类型 */
-//   type: any;
-//   /** 属性初始值 */
-//   value?: any;
-//   /** 属性值被更改时的响应函数 */
-//   observer?: string | ((newVal: any, oldVal: any, changedPath: (string | number)[]) => void);
-//   /** 属性的类型（可以指定多个） */
-//   optionalTypes?: any[];
-// }
-// type ComponentConfig = {
-//   _controller: TaskController;
-//   _component: React.ComponentType<any>;
-
-//   methods: Record<string, any>;
-//   properties: FullProperty;
-//   render: any;
-// } & Partial<Lifetimes> &
-//   Partial<OtherOption>;
 
 function createConfig(Component: React.ComponentType<any>) {
   // const eventMap = new Map();

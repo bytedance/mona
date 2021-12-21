@@ -1,4 +1,4 @@
-import { CALLBACK_SYMBOL, isEventName, isFunction, isObject, monaPrint, plainStyle } from '@/utils';
+import { CALLBACK_SYMBOL, isEventName, isFunction, isObject, monaPrint, plainStyle } from '../utils';
 import ServerElement from './ServerElement';
 import createEventHandler from '../eventHandler';
 
@@ -16,16 +16,8 @@ const styleMap: Record<string, boolean> = {
 const filterPropsMap: Record<string, boolean> = {
   key: true,
   children: true,
-  ref: true,
+  // ref: true,
 };
-
-// const webEvent2Mini: Record<string, string> = {
-//   onClick: 'onTap',
-//   // onMouseDown: 'onTouchstart',
-//   // onMouseMove: 'onTouchMove',
-//   // onMouseLeave: 'onTouchEnd',
-//   // onWheel: 'onScroll',
-// };
 
 export function processProps(props: Record<string, any>, node: ServerElement) {
   let propKey: string;
@@ -40,8 +32,7 @@ export function processProps(props: Record<string, any>, node: ServerElement) {
       //   props[webEvent2Mini[propKey]] = props[propKey];
       //   propKey = webEvent2Mini[propKey];
       // }
-
-      cbKey = `${CALLBACK_SYMBOL}_${node.key}_${propKey}`;
+      cbKey = `${CALLBACK_SYMBOL}${node.key}${propKey}`;
 
       if (isFunction(props[propKey])) {
         node.taskController.addCallback(cbKey, createEventHandler(node, propKey, props[propKey]));

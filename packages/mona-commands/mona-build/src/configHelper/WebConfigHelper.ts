@@ -7,11 +7,12 @@ import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CssMiniminzerPlugin from 'css-minimizer-webpack-plugin';
 import TerserWebpackPlugin from 'terser-webpack-plugin';
-import ConfigHMRPlugin from '../plugins/ConfigHMRPlugin';
+import ConfigHMRPlugin from '../plugins/webpack/ConfigHMRPlugin';
 import { Options } from "..";
 import { HTML_HANDLE_TAG } from "@/constants";
 import { ConfigHelper } from ".";
 import getEnv from '@/utils/getEnv';
+import createPxtransformConfig from "@/utils/createPxtransformConfig";
 
 class WebConfigHelper extends BaseConfigHelper {
   constructor(options: Required<Options>) {
@@ -129,6 +130,8 @@ class WebConfigHelper extends BaseConfigHelper {
       ],
     });
 
+    const pxtOptions = createPxtransformConfig('web', this.projectConfig);
+
     const styleLoader = [
       {
         loader: require.resolve('css-loader'),
@@ -145,7 +148,8 @@ class WebConfigHelper extends BaseConfigHelper {
           postcssOptions: {
             plugins: [
               require.resolve('postcss-import'),
-            ]
+              pxtOptions.enabled ? [path.join(__dirname, '..', './plugins/postcss/PostcssPxtransformer/index.js'), pxtOptions] : null
+            ].filter(p => !!p)
           }
         }
       },
@@ -185,16 +189,17 @@ class WebConfigHelper extends BaseConfigHelper {
   private _createPlugins() {
     let plugins: any[] = [
       new ConfigHMRPlugin(this as unknown as ConfigHelper),
+      // 75 / 750 * 100 = 10
       new HtmlWebpackPlugin({
         templateContent: `
           <!-- ${HTML_HANDLE_TAG} -->
           <!DOCTYPE html>
-          <html>
+          <html style="font-size: 10vw">
             <head>
               <meta charset="utf-8">
               <title>Mona Web</title>
               <meta name="viewport" content="width=device-width, initial-scale=1"></head>
-            <body>
+            <body style="padding: 0; margin: 0;">
               <div id="root"></div>
             </body>
           </html>

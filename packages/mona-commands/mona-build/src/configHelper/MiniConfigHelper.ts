@@ -4,14 +4,16 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import CssMiniminzerPlugin from 'css-minimizer-webpack-plugin';
 import TerserWebpackPlugin from 'terser-webpack-plugin';
 import BaseConfigHelper from './BaseConfigHelper';
-import MiniEntryPlugin from '@/plugins/MiniEntryPlugin';
+import MiniEntryPlugin from '@/plugins/webpack/MiniEntryPlugin';
 import { ConfigHelper } from '.';
-import MiniAssetsPlugin from '@/plugins/MiniAssetsPlugin';
-import OptimizeEntriesPlugin from '@/plugins/ChunksEntriesPlugin';
+import MiniAssetsPlugin from '@/plugins/webpack/MiniAssetsPlugin';
+import OptimizeEntriesPlugin from '@/plugins/webpack/ChunksEntriesPlugin';
 
-import PerfTemplateRenderPlugin from '@/plugins/PerfTemplateRenderPlugin';
+import PerfTemplateRenderPlugin from '@/plugins/webpack/PerfTemplateRenderPlugin';
 
 import getEnv from '@/utils/getEnv';
+import createPxtransformConfig from '@/utils/createPxtransformConfig';
+import collectNativeComponent from '@/plugins/babel/CollectImportComponent';
 const extensions = ['.js', '.mjs', '.jsx', '.ts', '.tsx', '.json'];
 const moduleMatcher = new RegExp(`(${extensions.filter(e => e !== '.json').join('|')})$`);
 
@@ -100,7 +102,15 @@ class MiniConfigHelper extends BaseConfigHelper {
 
   private _createModuleRules() {
     const rules: RuleSetRule[] = [];
-
+    rules.push({
+      test: /\.((j|t)sx?)$/i,
+      use: [
+        {
+          loader: path.resolve(__dirname, '../loaders/ImportCustomComponentLoader'),
+          options: {},
+        },
+      ],
+    });
     // handle script
     rules.push({
       test: /\.((j|t)sx?)$/i,
@@ -109,7 +119,7 @@ class MiniConfigHelper extends BaseConfigHelper {
           loader: require.resolve('babel-loader'),
           options: {
             babelrc: false,
-            plugins: [],
+            plugins: [collectNativeComponent],
             presets: [
               [require.resolve('@babel/preset-env')],
               [require.resolve('@babel/preset-typescript')],
@@ -119,6 +129,8 @@ class MiniConfigHelper extends BaseConfigHelper {
         },
       ],
     });
+
+    const pxtOptions = createPxtransformConfig('mini', this.projectConfig);
 
     const styleLoader = [
       MiniCssExtractPlugin.loader,
@@ -130,6 +142,17 @@ class MiniConfigHelper extends BaseConfigHelper {
             localIdentName: '[local]___[hash:base64:5]',
           },
         },
+      },
+      {
+        loader: require.resolve('postcss-loader'),
+        options: {
+          postcssOptions: {
+            plugins: [
+              require.resolve('postcss-import'),
+              pxtOptions.enabled ? [path.join(__dirname, '..', './plugins/postcss/PostcssPxtransformer/index.js'), pxtOptions] : null
+            ].filter(p => !!p)
+          }
+        }
       },
       require.resolve('less-loader'),
     ];

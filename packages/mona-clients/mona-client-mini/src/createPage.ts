@@ -56,8 +56,6 @@ function createConfig(Component: React.ComponentType<any>) {
     _Component: Component,
     _controller: new TaskController({}),
 
-    // eventHandler: genEventHandler(eventMap),
-    // eventMap: eventMap,
     onLoad(this: any, options: any) {
       // monaPrint.log('onLoad', this, options);
       this.data = {

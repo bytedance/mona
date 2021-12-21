@@ -15,7 +15,7 @@ export default async function createJson(compilation: Compilation, configHelper:
   // project.config.json
   const projectFile = 'project.config.json';
   if (!compilation.getAsset(projectFile)) {
-    const tplPath = path.join(__dirname, '../../ejs', './project.config.js.ejs');
+    const tplPath = path.join(__dirname, '../../../ejs', './project.config.js.ejs');
     const raw = await ejs.renderFile(tplPath, { appid: projectConfig.appId || DEFAULT_APPID, name: projectConfig.projectName })
     const source = new RawSource(raw);
     compilation.emitAsset(projectFile, source);

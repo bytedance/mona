@@ -13,11 +13,24 @@ export interface BaseProps<T = Touch> {
   onTap?: TouchEventHandler<T>;
   onLongPress?: TouchEventHandler<T>;
   onLongTap?: TouchEventHandler<T>;
-  onTransitionEnd?: TouchEventHandler<T>;
+  onTransitionEnd?: TouchEventHandler<T, { elapsedTime: number }>;
   onAnimationStart?: TouchEventHandler<T>;
   onAnimationIteration?: TouchEventHandler<T>;
   onAnimationEnd?: TouchEventHandler<T>;
   onTouchForceChange?: TouchEventHandler<T>;
+  // 非冒泡事件
+  catchTouchStart?: TouchEventHandler<T>;
+  catchTouchMove?: TouchEventHandler<T>;
+  catchTouchCancel?: TouchEventHandler<T>;
+  catchTouchEnd?: TouchEventHandler<T>;
+  catchTap?: TouchEventHandler<T>;
+  catchLongPress?: TouchEventHandler<T>;
+  catchLongTap?: TouchEventHandler<T>;
+  catchTransitionEnd?: TouchEventHandler<T>;
+  catchAnimationStart?: TouchEventHandler<T>;
+  catchAnimationIteration?: TouchEventHandler<T>;
+  catchAnimationEnd?: TouchEventHandler<T>;
+  catchTouchForceChange?: TouchEventHandler<T>;
 }
 
 export interface HoverProps {
@@ -33,11 +46,12 @@ export interface BaseTarget {
   dataset: Record<string, any>;
 }
 
-export interface BaseEvent {
+export interface BaseEvent<D = any> {
   type: string;
   timeStamp: number;
   target: BaseTarget;
   currentTarget: BaseTarget;
+  detail?: D
 }
 
 export interface Touch {
@@ -54,7 +68,7 @@ export interface CanvasTouch {
   y: number;
 }
 
-export interface TouchEvent<T = Touch> extends BaseEvent {
+export interface TouchEvent<T = Touch, D = any> extends BaseEvent<D> {
   touches: T[];
   changedTouches: T[];
 }
@@ -63,8 +77,8 @@ export interface EventHandler {
   (event: BaseEvent): void;
 }
 
-export interface TouchEventHandler<T = Touch> {
-  (event: TouchEvent<T>): void;
+export interface TouchEventHandler<T = Touch, D = any> {
+  (event: TouchEvent<T, D>): void;
 }
 
 // 基础内容
@@ -125,9 +139,9 @@ export interface ScrollViewProps extends BaseProps {
   onScrollToLower?: EventHandler;
 }
 
-export type SwiperChangeEvent = TouchEvent & { detail: { current: number; source: 'autoplay' | 'touch' } };
+export type SwiperChangeEvent = TouchEvent<Touch, { current: number; source: 'autoplay' | 'touch' }>
 export type SwiperAnimationFinishEvent = SwiperChangeEvent;
-export type SwiperTransitionEvent = TouchEvent & { detail: { dy: number; dx: number } };
+export type SwiperTransitionEvent = TouchEvent<Touch, { dy: number; dx: number }>;
 export interface SwiperProps extends BaseProps {
   indicatorDots?: boolean;
   indicatorColor?: string;
@@ -194,7 +208,7 @@ export interface CheckboxProps extends BaseProps {
 }
 
 export interface CheckboxGroupProps extends BaseProps {
-  onChange?: (event: TouchEvent & { detail: { value?: string[] } }) => void;
+  onChange?: (event: TouchEvent<Touch, { value?: string[] }>) => void;
   name?: string;
 }
 
@@ -202,6 +216,11 @@ export interface FormProps extends BaseProps {
   onSubmit?: EventHandler;
   onReset?: EventHandler;
 }
+
+type InputEventHandler = (e: BaseEvent<{ cursor: number; value: string }>) => void
+type FocusEventHandler = (e: BaseEvent<{ value: string; height: number }>) => void
+type BlurEventHandler = (e: BaseEvent<{ value: string }>) => void;
+type ConfirmEventHandler = BlurEventHandler
 
 export interface InputProps extends BaseProps {
   value?: string;
@@ -217,10 +236,10 @@ export interface InputProps extends BaseProps {
   cursor?: number;
   selectionStart?: number;
   selectionEnd?: number;
-  onInput?: (e: BaseEvent & { detail: { cursor: number; value: string }}) => void;
-  onFocus?: (e: BaseEvent & { detail: { value: string; height: number }}) => void;
-  onBlur?: (e: BaseEvent & { detail: { value: string }}) => void;
-  onConfirm?: (e: BaseEvent & { detail: { value: string }}) => void;
+  onInput?: InputEventHandler;
+  onFocus?: FocusEventHandler;
+  onBlur?: BlurEventHandler;
+  onConfirm?: ConfirmEventHandler;
   adjustPosition?: boolean;
   confirmType?: 'send' | 'search' | 'next' | 'go' | 'done';
 }
@@ -262,7 +281,7 @@ export interface RadioProps extends BaseProps {
 }
 
 export interface RadioGroupProps extends BaseProps {
-  onChange?: (event: TouchEvent & { detail: { value?: string } }) => void;
+  onChange?: (event: TouchEvent<Touch, { value?: string }>) => void;
   name?: string;
 }
 
@@ -308,10 +327,10 @@ export interface TextareaProps extends BaseProps {
   selectionStart?: number;
   selectionEnd?: number;
   disableDefaultPadding?: boolean;
-  onInput?: (e: BaseEvent & { detail: { cursor: number; value: string }}) => void;
-  onFocus?: (e: BaseEvent & { detail: { value: string; height: number }}) => void;
-  onBlur?: (e: BaseEvent & { detail: { value: string }}) => void;
-  onConfirm?: (e: BaseEvent & { detail: { value: string }}) => void;
+  onInput?: InputEventHandler;
+  onFocus?: FocusEventHandler;
+  onBlur?: BlurEventHandler;
+  onConfirm?: ConfirmEventHandler;
 }
 
 // 导航

@@ -1,6 +1,7 @@
 // import { declare } from '@babel/helper-plugin-utils';
 import { NodePath } from '@babel/traverse';
 // import { ConfigAPI } from '@babel/core';
+import monaStore from '../../store';
 import * as t from '@babel/types';
 
 export default function collectNativeComponent() {
@@ -18,42 +19,56 @@ export default function collectNativeComponent() {
         // Badge
         const name = openingElement.name.name;
         const binding = path.scope.getBinding(name);
-        // console.log('path.scope', path.scope);
+
         if (!binding) {
           return false;
         }
 
         const bindingPath = binding.path;
 
-        // binding
         if (!bindingPath) {
           return false;
         }
 
         const importPath = bindingPath.parentPath;
-        // console.log('importPath', importPath);
 
         if (t.isImportDeclaration(importPath)) {
-          // const importNode = importPath.node as t.ImportDeclaration;
-          // const source = importNode.source.value;
-          // console.log('source', source);
-          // console.log('importNode', importNode);
-          // const props = getProps('', node, true) || [];
-          // const modules = Store.compositionComponents.get(importer) || new Map();
-          // const component: { import: string; props: Set<string> } = modules.get(source) || {
-          //   import: source,
-          //   props: new Set(props),
-          // };
-          // modules.set(source, {
-          //   import: source,
-          //   props: new Set([...component.props, ...props]),
-          // });
-          // Store.compositionComponents.set(importer, modules);
+          const importNode = importPath.node as t.ImportDeclaration;
+          const source = importNode.source.value;
+          getJsxProps(source, node);
         }
         return;
       },
     },
   };
+}
+
+function getJsxProps(name: string, node: t.JSXElement) {
+  const component = monaStore.importComponentMap.get(name) || {
+    path: name,
+    props: new Set(),
+  };
+  const props: string[] = [];
+  node.openingElement.attributes.forEach(prop => {
+    if (t.isJSXSpreadAttribute(prop)) {
+      return;
+    }
+    let propName: string;
+    if (t.isJSXIdentifier(prop.name)) {
+      propName = prop.name.name;
+    } else if (t.isJSXNamespacedName(prop.name)) {
+      propName = prop.name.namespace.name + ':' + prop.name.name.name;
+    } else {
+      return;
+    }
+
+    component.props.add(propName);
+    props.push(propName);
+  });
+  monaStore.importComponentMap.set(name, component);
+  return props;
+  // component
+  // component.get
 }
 
 // function collectPropsName() {}

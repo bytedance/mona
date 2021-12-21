@@ -1,4 +1,4 @@
-import { NodeTask } from '@/utils';
+import { NodeTask } from '../utils';
 // import { processProps } from './processProps';
 import TaskController, { Task } from './TaskController';
 
@@ -13,6 +13,7 @@ export const NodeType = {
   TEXT: 'text',
   BUTTON: 'button',
   IMAGE: 'image',
+  WEBVIEW: 'web-view',
   PTEXT: 'ptext',
 };
 
@@ -20,6 +21,7 @@ const formatNodeType: Record<string, string> = {
   span: NodeType.TEXT,
   div: NodeType.VIEW,
   img: NodeType.IMAGE,
+  iframe: NodeType.IMAGE,
 };
 
 export interface RenderNode {
@@ -56,6 +58,7 @@ export default class ServerElement {
     taskController: TaskController;
     props?: Record<string, any>;
   }) {
+    //*perf:  formatNodeType 运行时 -> 编译时
     this.type = formatNodeType[type] ?? type;
     this.props = props;
     this.key = generateId();
@@ -126,7 +129,7 @@ export default class ServerElement {
 
     child.reset();
 
-    //TODO: eventHandle overflow
+    //!perf: eventHandler overflow
     // child.taskController.removeCallback(child.key);
 
     if (this.isMounted()) {
@@ -155,14 +158,11 @@ export default class ServerElement {
     child.prevSiblingKey = prevSibling ? prevSibling.key : null;
 
     if (prevSibling) {
-      // added as first child, prepended
       prevSibling.nextSiblingKey = child.key;
     } else {
-      // added in between
       this.firstChildKey = child.key;
     }
     child.deleted = false;
-    // console.log('&', 'insertBefore', child);
 
     if (this.isMounted()) {
       this.requestUpdate({
@@ -215,9 +215,7 @@ export default class ServerElement {
     };
   }
   reset() {
-    // this.parent = null;
     this.deleted = true;
-    // this.mounted = false;
     this.nextSiblingKey = null;
     this.prevSiblingKey = null;
   }

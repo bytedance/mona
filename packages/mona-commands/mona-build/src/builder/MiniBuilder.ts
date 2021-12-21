@@ -14,7 +14,25 @@ class MiniBuilder extends BaseBuilder {
     console.log(chalk.cyan('开始打包'))
     this.compiler.watch({
        aggregateTimeout: 200,
-    }, compilerCallback(false));
+    }, (error: any, stats: any) => {
+      if (error) {
+        throw error;
+      }
+
+      const info = stats?.toJson();
+      if (stats?.hasErrors()) {
+        info?.errors?.forEach((err: Error) => {
+          console.log(chalk.red(err.message));
+        });
+        process.exit(1);
+      }
+      if (stats?.hasWarnings()) {
+        info?.warnings?.forEach((w: Error) => {
+          console.log(chalk.yellow(w.message));
+        });
+      }
+      console.log('文件监听中...');
+    });
   }
 }
 
