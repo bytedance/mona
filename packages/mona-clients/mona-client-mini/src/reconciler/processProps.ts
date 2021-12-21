@@ -16,7 +16,7 @@ const styleMap: Record<string, boolean> = {
 const filterPropsMap: Record<string, boolean> = {
   key: true,
   children: true,
-  ref: true,
+  // ref: true,
 };
 
 export function processProps(props: Record<string, any>, node: ServerElement) {

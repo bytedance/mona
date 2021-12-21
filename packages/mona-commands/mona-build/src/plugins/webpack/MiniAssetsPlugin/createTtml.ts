@@ -70,7 +70,7 @@ export default async function createTtml(compilation: Compilation, configHelper:
       return;
     }
 
-    const tplPath = path.join(__dirname, '../../ejs', './page.ttml.ejs');
+    const tplPath = path.join(__dirname, '../../../ejs', './page.ttml.ejs');
     const content = await ejs.renderFile(tplPath, { pageId: pageDistPath });
     const source = new RawSource(content);
     compilation.emitAsset(file, source);

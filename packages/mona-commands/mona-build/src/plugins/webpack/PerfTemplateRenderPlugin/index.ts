@@ -104,3 +104,5 @@ export default class PerfTemplateRenderPlugin {
     // });
   }
 }
+
+

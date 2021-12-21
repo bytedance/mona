@@ -12,7 +12,7 @@ import OptimizeEntriesPlugin from '@/plugins/webpack/ChunksEntriesPlugin';
 import PerfTemplateRenderPlugin from '@/plugins/webpack/PerfTemplateRenderPlugin';
 
 import getEnv from '@/utils/getEnv';
-import collectNativeComponent from '@/babelPlugins/perfRuntimePlugin';
+import collectNativeComponent from '@/plugins/babel/CollectImportComponent';
 const extensions = ['.js', '.mjs', '.jsx', '.ts', '.tsx', '.json'];
 const moduleMatcher = new RegExp(`(${extensions.filter(e => e !== '.json').join('|')})$`);
 
@@ -101,7 +101,15 @@ class MiniConfigHelper extends BaseConfigHelper {
 
   private _createModuleRules() {
     const rules: RuleSetRule[] = [];
-
+    rules.push({
+      test: /\.((j|t)sx?)$/i,
+      use: [
+        {
+          loader: path.resolve(__dirname, '../loaders/ImportCustomComponentLoader'),
+          options: {},
+        },
+      ],
+    });
     // handle script
     rules.push({
       test: /\.((j|t)sx?)$/i,

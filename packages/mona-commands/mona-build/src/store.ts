@@ -1,11 +1,12 @@
 import { genEjsParamsMap } from './alias';
-
+// import { nanoid } from 'nanoid';
+type Path = string;
 interface ComponentImportInfo {
   // 组件目录绝对路径
-  path: string;
+  path: Path;
 
   // 包名称，例如: @bytedance/mona-runtime
-  pkgName: string;
+  // pkgName: string;
 
   // jsx中使用的prop, 自定义组件的jsx上不能 写spread attribute {...props} 的形式
   props: Set<string>;
@@ -22,9 +23,12 @@ interface ITemplateRenderInfo {
 }
 
 const monaStore = {
-  componentImportMap: new Map<string, ComponentImportInfo>(),
+  importComponentMap: new Map<Path, ComponentImportInfo>(),
   templateRenderMap: new Map<string, ITemplateRenderInfo>(),
   ejsParamsMap: genEjsParamsMap(),
+  nativeComponents: new Map<string, { id: string }>(),
+
+  // registerNativeComponent(path: string) {},
 };
 
 export default Object.freeze(monaStore);
