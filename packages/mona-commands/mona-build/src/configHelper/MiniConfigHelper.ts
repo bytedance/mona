@@ -4,12 +4,12 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import CssMiniminzerPlugin from 'css-minimizer-webpack-plugin';
 import TerserWebpackPlugin from 'terser-webpack-plugin';
 import BaseConfigHelper from './BaseConfigHelper';
-import MiniEntryPlugin from '@/plugins/MiniEntryPlugin';
+import MiniEntryPlugin from '@/plugins/webpack/MiniEntryPlugin';
 import { ConfigHelper } from '.';
-import MiniAssetsPlugin from '@/plugins/MiniAssetsPlugin';
-import OptimizeEntriesPlugin from '@/plugins/ChunksEntriesPlugin';
+import MiniAssetsPlugin from '@/plugins/webpack/MiniAssetsPlugin';
+import OptimizeEntriesPlugin from '@/plugins/webpack/ChunksEntriesPlugin';
 
-import PerfTemplateRenderPlugin from '@/plugins/PerfTemplateRenderPlugin';
+import PerfTemplateRenderPlugin from '@/plugins/webpack/PerfTemplateRenderPlugin';
 
 import getEnv from '@/utils/getEnv';
 const extensions = ['.js', '.mjs', '.jsx', '.ts', '.tsx', '.json'];
