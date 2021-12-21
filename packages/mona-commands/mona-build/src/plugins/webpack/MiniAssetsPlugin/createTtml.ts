@@ -4,7 +4,7 @@ import { Compilation, sources } from 'webpack';
 import { ConfigHelper } from '@/configHelper';
 import { noChildElements } from '@/alias/constants';
 
-import monaStore from '../../store';
+import monaStore from '../../../store';
 
 export function getAliasMap(ejsParamsMap: Map<string, any>) {
   const result = new Map();
@@ -41,7 +41,7 @@ export default async function createTtml(compilation: Compilation, configHelper:
 
   const file = `base.ttml`;
   if (!compilation.getAsset(file)) {
-    const tplPath = path.join(__dirname, '../../ejs', './base.ttml.ejs');
+    const tplPath = path.join(__dirname, '../../../ejs', './base.ttml.ejs');
     let content = await ejs.renderFile(
       tplPath,
       {

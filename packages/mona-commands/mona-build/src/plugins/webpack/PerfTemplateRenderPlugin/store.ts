@@ -1,5 +1,5 @@
 // import { miniProp2rcPropMap } from '@/alias/prop';
-import monaStore from '../../store';
+import monaStore from '../../../store';
 
 interface ITemplateRenderInfo {
   isRenderAllProps?: boolean;

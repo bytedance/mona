@@ -6,10 +6,10 @@ import * as t from '@babel/types';
 export default function collectNativeComponent() {
   return {
     visitor: {
-      JSXElement(path: NodePath<t.JSXElement>, state: any) {
+      JSXElement(path: NodePath<t.JSXElement>, _state: any) {
         const node = path.node;
         const openingElement = node.openingElement;
-        console.log('state.file.opts.filename', state.file.opts.filename);
+        // console.log('state.file.opts.filename', state.file.opts.filename);
 
         if (!t.isJSXIdentifier(openingElement.name)) {
           return false;
@@ -34,13 +34,11 @@ export default function collectNativeComponent() {
         // console.log('importPath', importPath);
 
         if (t.isImportDeclaration(importPath)) {
-          const importNode = importPath.node as t.ImportDeclaration;
-          const source = importNode.source.value;
-          console.log('source', source);
-          console.log('importNode', importNode);
-
+          // const importNode = importPath.node as t.ImportDeclaration;
+          // const source = importNode.source.value;
+          // console.log('source', source);
+          // console.log('importNode', importNode);
           // const props = getProps('', node, true) || [];
-
           // const modules = Store.compositionComponents.get(importer) || new Map();
           // const component: { import: string; props: Set<string> } = modules.get(source) || {
           //   import: source,
