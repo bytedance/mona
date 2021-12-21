@@ -122,7 +122,7 @@ class MiniConfigHelper extends BaseConfigHelper {
       ],
     });
 
-    const pxtOptions = createPxtransformConfig('weapp', this.projectConfig);
+    const pxtOptions = createPxtransformConfig('mini', this.projectConfig);
 
     const styleLoader = [
       MiniCssExtractPlugin.loader,
@@ -141,7 +141,7 @@ class MiniConfigHelper extends BaseConfigHelper {
           postcssOptions: {
             plugins: [
               require.resolve('postcss-import'),
-              pxtOptions.enabled ? [require.resolve('postcss-pxtransform'), pxtOptions] : null
+              pxtOptions.enabled ? [path.join(__dirname, '..', './plugins/postcss/PostcssPxtransformer/index.js'), pxtOptions] : null
             ].filter(p => !!p)
           }
         }
