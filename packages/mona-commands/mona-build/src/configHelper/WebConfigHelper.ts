@@ -123,7 +123,8 @@ class WebConfigHelper extends BaseConfigHelper {
               [require.resolve('@babel/preset-react')],
             ],
             plugins: [
-              this.options.dev && require.resolve('react-refresh/babel')
+              this.options.dev && require.resolve('react-refresh/babel'),
+              this.projectConfig.enableMultiBuild && [path.join(__dirname, '../plugins/babel/BabelPluginMultiTarget.js'), { target: 'web', context: this.cwd, alias: this._createResolve().alias }]
             ].filter(Boolean)
           },
         },

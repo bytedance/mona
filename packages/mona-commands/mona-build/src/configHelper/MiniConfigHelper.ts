@@ -111,7 +111,10 @@ class MiniConfigHelper extends BaseConfigHelper {
           loader: require.resolve('babel-loader'),
           options: {
             babelrc: false,
-            plugins: [collectNativeComponent],
+            plugins: [
+              collectNativeComponent,
+              this.projectConfig.enableMultiBuild && [path.join(__dirname, '../plugins/babel/BabelPluginMultiTarget.js'), { target: 'mini', context: this.cwd, alias: this._createResolve().alias }]
+            ].filter(Boolean),
             presets: [
               [require.resolve('@babel/preset-env')],
               [require.resolve('@babel/preset-typescript')],

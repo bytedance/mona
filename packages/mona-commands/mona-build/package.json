@@ -15,6 +15,7 @@
   "scripts": {
     "build": "yarn clean && yarn copy && ttsc -b ",
     "start": "ttsc -b -w",
+    "test": "jest",
     "copy": "copyfiles -f ./src/ejs/*.ejs ./dist/ejs",
     "clean": "rm -rf dist"
   },
