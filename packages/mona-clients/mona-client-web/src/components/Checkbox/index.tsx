@@ -42,7 +42,7 @@ const Checkbox: React.FC<CheckboxProps> = (props) => {
   }, [checked])
 
   useEffect(() => {
-    orderRef.current = group ? group?.initValue(value, checked) : -1;
+    orderRef.current = group ? group?.initValue(value, checked, () => setIsChecked(false)) : -1;
   }, [])
 
   useEffect(() => {

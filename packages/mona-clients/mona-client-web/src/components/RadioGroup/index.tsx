@@ -18,15 +18,23 @@ export const RadioGroupContext = React.createContext<RadioGroupContextProps | nu
 
 const RadioGroup: React.FC<RadioGroupProps> = ({ children, name = '', onChange, ...restProps }) => {
   const { handleClassName, ...handlerProps } = useHandlers(restProps);
-  // const [values, setValues] = useState<ValueItem[]>([]);
   const valuesRef = useRef<ValueItem[]>([])
   const indexRef = useRef(0);
   const clearsRef = useRef<((() => void) | undefined)[]>([]);
 
-   // TODO: implement reset
-  const reset = useCallback(() => {}, []);
+  const reset = useCallback(() => {
+    const newValues = valuesRef.current;
+    const cbs = clearsRef.current;
+    for (let i = 0; i < newValues.length; i++) {
+      newValues[i] = { ...newValues[i], checked: false }
+      const cb = cbs[i];
+      if (typeof cb === 'function') {
+        cb();
+      }
+    }
+  }, [clearsRef, valuesRef]);
   const getValues = () => {
-    return valuesRef.current.filter(v => v.checked).map(v => v.value);
+    return valuesRef.current.filter(v => v.checked).map(v => v.value)[0] || '';
   }
   useFormContext(name, getValues, reset);
   
