@@ -1,4 +1,4 @@
-import formatPath from '@/utils/formatPath';
+import formatPath from '../utils/formatPath';
 import {
   GetImageInfoSuccessCallbackArgs,
   RequestTask,
@@ -13,21 +13,16 @@ import { showPreviewImage } from './components/';
 
 export const webRequest: BaseApis['request'] = (data): RequestTask => {
   const controller = new AbortController();
-  const promise = fetch(
-    {
-      url: data.url,
-      // @ts-ignore ignore
-      headers: data.header ?
-        data.header :
-        {
-          'Content-Type': 'application/json',
-        },
-      method: data.method || 'GET',
-    },
-    {
-      signal: controller.signal,
-    }
-  );
+  const promise = fetch(data.url, {
+    headers: data.header ?
+      data.header :
+      {
+        'Content-Type': 'application/json',
+      },
+    method: data.method || 'GET',
+    body: data.data ? JSON.stringify(data.data) : '',
+    signal: controller.signal,
+  });
 
   promise
     .then(r => {

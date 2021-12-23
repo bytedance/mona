@@ -1,5 +1,14 @@
 import { BaseApis } from '@bytedance/mona';
-import { webShowToast, webHideToast, webShowLoading, webShowModal, webShowActionSheet } from './components/';
+import {
+  webShowToast,
+  webHideToast,
+  webShowLoading,
+  webShowModal,
+  webShowActionSheet,
+  webShowTabBar,
+  webHideTabBar,
+  MONA_WEB_TAB_BAR_HANDLE
+} from './components/';
 import {
   createCanvasContext as originCreateCanvasContext,
   canvasToTempFilePath as originCanvasToTempFilePath
@@ -37,6 +46,8 @@ import {
   webSetStorage,
   webSetStorageSync
 } from './util';
+
+window.__MONA_WEB_TAB_BAR_HANDLE = {} as unknown as MONA_WEB_TAB_BAR_HANDLE;
 
 const noImplementFactory = (api: string) => (): any => {
   console.error(`no implement${api} in web`);
@@ -183,13 +194,11 @@ export const createCanvasContext: BaseApis['createCanvasContext'] = originCreate
 export const canvasToTempFilePath: BaseApis['canvasToTempFilePath'] = originCanvasToTempFilePath;
 export const createOffscreenCanvas: BaseApis['createOffscreenCanvas'] = noImplementFactory('createOffscreenCanvas');
 export const showToast: BaseApis['showToast'] = config => webShowToast(config);
-
 export const hideToast: BaseApis['hideToast'] = webHideToast;
 export const showLoading: BaseApis['showLoading'] = options => webShowLoading(options);
 export const hideLoading: BaseApis['hideLoading'] = webHideToast;
 export const showModal: BaseApis['showModal'] = options => webShowModal(options);
 export const showActionSheet: BaseApis['showActionSheet'] = options => webShowActionSheet(options);
-
 export const showFavoriteGuide: BaseApis['showFavoriteGuide'] = noImplementFactory('showFavoriteGuide');
 export const showInteractionBar: BaseApis['showInteractionBar'] = noImplementFactory('showInteractionBar');
 export const hideInteractionBar: BaseApis['hideInteractionBar'] = noImplementFactory('hideInteractionBar');
@@ -206,17 +215,16 @@ export const getMenuButtonBoundingClientRect: BaseApis['getMenuButtonBoundingCli
 export const createAnimation: BaseApis['createAnimation'] = noImplementFactory('createAnimation');
 export const pageScrollTo: BaseApis['pageScrollTo'] = webPageScrollTo;
 export const setSwipeBackMode: BaseApis['setSwipeBackMode'] = noImplementFactory('setSwipeBackMode');
-// TODO
 export const startPullDownRefresh: BaseApis['startPullDownRefresh'] = noImplementFactory('startPullDownRefresh');
-export const showTabBarRedDot: BaseApis['showTabBarRedDot'] = noImplementFactory('showTabBarRedDot');
-// TODO TabBar
-export const showTabBar: BaseApis['showTabBar'] = noImplementFactory('showTabBar');
-export const setTabBarStyle: BaseApis['setTabBarStyle'] = noImplementFactory('setTabBarStyle');
-export const setTabBarItem: BaseApis['setTabBarItem'] = noImplementFactory('setTabBarItem');
-export const setTabBarBadge: BaseApis['setTabBarBadge'] = noImplementFactory('setTabBarBadge');
-export const removeTabBarBadge: BaseApis['removeTabBarBadge'] = noImplementFactory('removeTabBarBadge');
-export const hideTabBarRedDot: BaseApis['hideTabBarRedDot'] = noImplementFactory('hideTabBarRedDot');
-export const hideTabBar: BaseApis['hideTabBar'] = noImplementFactory('hideTabBar');
+export const { showTabBarRedDot } = window.__MONA_WEB_TAB_BAR_HANDLE;
+// @ts-ignore ignore
+export const showTabBar: BaseApis['showTabBar'] = webShowTabBar;
+export const { setTabBarStyle } = window.__MONA_WEB_TAB_BAR_HANDLE;
+export const { setTabBarItem } = window.__MONA_WEB_TAB_BAR_HANDLE;
+export const { setTabBarBadge } = window.__MONA_WEB_TAB_BAR_HANDLE;
+export const { removeTabBarBadge } = window.__MONA_WEB_TAB_BAR_HANDLE;
+export const { hideTabBarRedDot } = window.__MONA_WEB_TAB_BAR_HANDLE;
+export const hideTabBar: BaseApis['hideTabBar'] = webHideTabBar;
 export const getAlgorithmManager: BaseApis['getAlgorithmManager'] = noImplementFactory('getAlgorithmManager');
 export const createStickerManager: BaseApis['createStickerManager'] = noImplementFactory('createStickerManager');
 export const createBytennEngineContext: BaseApis['createBytennEngineContext'] =

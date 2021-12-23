@@ -1,12 +1,13 @@
 import React, { FC, useState, useEffect, useCallback } from 'react';
 import ReactDOM from 'react-dom';
 import { PreviewImageOptions } from '@bytedance/mona';
+import { Masking } from '../Masking';
 import { hide } from '../util';
 import './index.module.less';
 
 const MONA_WEB_PREVIEW_IMAGE = 'mona-web-preview-image';
 
-export const PreviewImage: FC<PreviewImageOptions> = ({ urls, current, fail, complete, success }) => {
+export const PreviewImage: FC<PreviewImageOptions> = ({ urls, current }) => {
   const [pos, setPos] = useState(0);
   const [src, setSrc] = useState(urls[0]);
 
@@ -59,7 +60,7 @@ export const PreviewImage: FC<PreviewImageOptions> = ({ urls, current, fail, com
         </>
       )}
 
-      <div className="mask" />
+      <Masking onHandle={() => {}} className="mona-web-preview-image-mask" />
     </>
   );
 };
