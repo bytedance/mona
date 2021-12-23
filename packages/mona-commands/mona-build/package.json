@@ -67,6 +67,7 @@
     "less": "^4.1.2",
     "less-loader": "^10.2.0",
     "mini-css-extract-plugin": "^2.4.2",
+    "nanoid": "^3.1.30",
     "ora": "^5.4.1",
     "postcss": "^8.3.11",
     "postcss-import": "^14.0.2",

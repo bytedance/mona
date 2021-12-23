@@ -287,7 +287,7 @@ export interface InnerAudioContext {
 export interface ChooseVideoSuccessCallbackArgs {
   errMsg: string;
   tempFilePath: string;
-  duraction: number;
+  duration: number;
   size: number;
   width: number;
   height: number;
