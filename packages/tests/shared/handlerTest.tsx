@@ -7,7 +7,17 @@ import { configure } from 'enzyme';
 
 configure({ adapter: new Adapter() });
 
-export default function handlerTest(Component: React.ComponentType<BaseProps & Partial<HoverProps>>, hasHover?: boolean) {
+export default function handlerTest({
+  Component,
+  hasHover = false,
+  firstTag = 'div',
+  clickTag,
+}: {
+  Component: React.ComponentType<BaseProps & Partial<HoverProps>>;
+  hasHover?: boolean;
+  firstTag?: string;
+  clickTag?: string;
+}) {
   describe('common events handle', () => {
     it('should act normally when trigger tap event', () => {
       const props = {
@@ -16,7 +26,7 @@ export default function handlerTest(Component: React.ComponentType<BaseProps & P
       }
 
       const wrapper = mount(<Component {...props} />);
-      wrapper.simulate('click');
+      wrapper.find(clickTag || firstTag).first().simulate('click');
       expect(props.onTap).toHaveBeenCalled();
     })
 
@@ -82,7 +92,7 @@ export default function handlerTest(Component: React.ComponentType<BaseProps & P
           jest.advanceTimersByTime(hoverProps.hoverStartTime)
         })
         wrapper.update()
-        expect(wrapper.find('button').prop('className').includes(hoverProps.hoverClassName)).toBeTruthy();
+        expect(wrapper.find(firstTag).first().prop('className').includes(hoverProps.hoverClassName)).toBeTruthy();
 
         wrapper.simulate('touchmove');
         expect(hoverProps.onTouchMove).toHaveBeenCalled();
@@ -94,7 +104,7 @@ export default function handlerTest(Component: React.ComponentType<BaseProps & P
           jest.advanceTimersByTime(hoverProps.hoverStayTime)
         })
         wrapper.update();
-        expect(wrapper.find('button').prop('className').includes(hoverProps.hoverClassName)).toBeFalsy();
+        expect(wrapper.find(firstTag).first().prop('className').includes(hoverProps.hoverClassName)).toBeFalsy();
         
         jest.useRealTimers();
       })

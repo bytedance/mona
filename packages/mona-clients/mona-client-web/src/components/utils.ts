@@ -112,3 +112,22 @@ export function formatAnimationEvent({
   }
   return result;
 }
+
+export function formatFormEvent({
+  event,
+  type,
+}: {
+  event: React.FormEvent;
+  type?: string;
+}): BaseEvent {
+  const { type: originType, timeStamp, target, currentTarget } = event;
+  const result: TouchEvent = {
+    type: type || originType,
+    timeStamp: timeStamp,
+    target: mapTarget(target),
+    currentTarget: mapTarget(currentTarget),
+    touches: [],
+    changedTouches: [],
+  }
+  return result;
+}

@@ -1,16 +1,13 @@
-import React, { useState } from 'react';
-import { shallow, mount } from 'enzyme';
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+import React from 'react';
+import { mount } from 'enzyme';
 import Button from '../../components/Button';
 import mountTest from '../../../../../tests/shared/mountTest';
 import handlerTest from '../../../../../tests/shared/handlerTest';
 import { ButtonProps } from '@bytedance/mona';
 
-// configure({ adapter: new Adapter() });
-
 describe('web component: Button', () => {
   mountTest(Button)
-  handlerTest(Button, true);
+  handlerTest({ Component: Button, hasHover: true, firstTag: 'button' });
 
   it('should render correctly', () => {
     expect(mount(<Button>Hello world</Button>).render()).toMatchSnapshot();

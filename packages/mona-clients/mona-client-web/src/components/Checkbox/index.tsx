@@ -58,7 +58,7 @@ const Checkbox: React.FC<CheckboxProps> = (props) => {
     >
       <div className={styles.wrapper}>
         <div className={cs(styles.input, {[styles.checked]: isChecked})} style={{ borderColor: color, backgroundColor: isChecked ? color: '' }}>
-          <input id={id} onClick={handleClick} type="checkbox" className={styles.inner}></input>
+          <input value={value} id={id} onClick={handleClick} type="checkbox" className={styles.inner}></input>
         </div>
         {children}
       </div>
