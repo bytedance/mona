@@ -144,7 +144,10 @@ class PluginConfigHelper extends BaseConfigHelper {
               [require.resolve('@babel/preset-typescript')],
               [require.resolve('@babel/preset-react')],
             ],
-            plugins: [this.options.dev && require.resolve('react-refresh/babel')].filter(Boolean),
+            plugins: [
+              this.options.dev && require.resolve('react-refresh/babel'),
+              this.projectConfig.enableMultiBuild && [path.join(__dirname, '../plugins/babel/BabelPluginMultiTarget.js'), { target: 'plugin', context: this.cwd, alias: this._createResolve().alias }]
+            ].filter(Boolean),
           },
         },
       ],

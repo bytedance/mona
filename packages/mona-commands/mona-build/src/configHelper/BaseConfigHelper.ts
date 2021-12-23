@@ -12,7 +12,7 @@ const DEFAULT_PROJECT_CONFIG: ProjectConfig = {
   output: 'dist',
   dev: {
     port: DEFAULT_PORT,
-  },
+  }
 };
 
 const DEFAULT_APP_CONFIG: AppConfig = {

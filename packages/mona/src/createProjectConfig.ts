@@ -21,6 +21,7 @@ export interface ProjectConfig {
   appId?: string;
   input: string;
   output: string;
+  enableMultiBuild?: boolean;
   compilerOptimization?: boolean;
   raw?: (options: any) => any;
   dev?: {
