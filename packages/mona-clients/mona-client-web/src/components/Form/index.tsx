@@ -1,6 +1,7 @@
 import React, { createContext, useRef } from 'react';
 import { FormProps } from '@bytedance/mona';
 import { useHandlers } from '../hooks';
+import { formatFormEvent } from '../utils';
 
 interface FormContextProps {
   register: (submit: () => { name: string; value: any }, reset: () => void, order?: number | null) => number;
@@ -32,17 +33,26 @@ const Form: React.FC<FormProps> = (props) => {
     })
 
     const event = {
-      value: result
+      ...formatFormEvent({ event: e }),
+      detail: { value: result }
     }
-    console.log(event);
+    if (typeof onSubmit === 'function') {
+      onSubmit(event)
+    }
   }
 
-  const handleReset = () => {
+  const handleReset: React.FormEventHandler<HTMLFormElement> = (e) => {
     const cbs = cbsRef.current;
     cbs.forEach(cb => {
       const { reset } = cb;
-     reset();
+      reset();
     })
+    const event = {
+      ...formatFormEvent({ event: e }),
+    }
+    if (typeof onReset === 'function') {
+      onReset(event)
+    }
   }
 
   const indexRef = useRef(0);

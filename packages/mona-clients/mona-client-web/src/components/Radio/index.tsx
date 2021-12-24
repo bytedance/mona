@@ -58,7 +58,7 @@ const Radio: React.FC<RadioProps> = (props) => {
     >
       <div className={styles.wrapper}>
         <div className={cs(styles.input, {[styles.checked]: isChecked})} style={{ borderColor: color, backgroundColor: isChecked ? color: '' }}>
-          <input id={id} onClick={handleClick} type="radio" className={styles.inner}></input>
+          <input id={id} value={value} onClick={handleClick} type="radio" className={styles.inner}></input>
         </div>
         {children}
       </div>

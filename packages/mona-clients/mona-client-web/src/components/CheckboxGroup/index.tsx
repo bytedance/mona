@@ -6,7 +6,7 @@ import { useFormContext } from '../Form/hooks';
 export const EMPTY_ITEM = Symbol('checkboxEmpty');
 
 interface CheckboxGroupContextProps {
-  initValue: (value?: string, checked?: boolean) => number;
+  initValue: (value?: string, checked?: boolean, clear?: () => void) => number;
   changeValue: (index: number, value?: string) => void
   toggleChecked: (index: number, checked?: boolean, e?: TouchEvent) => void
 }
@@ -20,12 +20,22 @@ export const CheckboxGroupContext = React.createContext<CheckboxGroupContextProp
 
 const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ children, name = '', onChange, ...restProps }) => {
   const { handleClassName, ...handlerProps } = useHandlers(restProps);
-  // const [values, setValues] = useState<ValueItem[]>([]);
   const valuesRef = useRef<ValueItem[]>([])
   const indexRef = useRef(0);
+  const clearsRef = useRef<((() => void) | undefined)[]>([]);
 
-  // TODO: implement reset
-  const reset = useCallback(() => {}, []);
+  const reset = useCallback(() => {
+    const newValues = valuesRef.current;
+    const cbs = clearsRef.current;
+    for (let i = 0; i < newValues.length; i++) {
+      newValues[i] = { ...newValues[i], checked: false }
+      const cb = cbs[i];
+      if (typeof cb === 'function') {
+        cb();
+      }
+    }
+  }, [clearsRef, valuesRef]);
+
   const getValues = () => {
     return valuesRef.current.filter(v => v.checked).map(v => v.value);
   }
@@ -33,12 +43,13 @@ const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ children, name = '', onCh
 
   
   const context = {
-    initValue: (value?: string, checked?: boolean) => {
+    initValue: (value?: string, checked?: boolean, clear?: () => void) => {
       const index = indexRef.current++;
       const newValues = [...valuesRef.current];
       // record order
       newValues[index] = { value, checked };
       valuesRef.current = newValues;
+      clearsRef.current[index] = clear;
       return index;
     },
     changeValue: (index: number, value?: string) => {

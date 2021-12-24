@@ -100,3 +100,21 @@ export function genEvent({ detail, type }: { detail: any; type?: string }): Touc
     detail: detail ?? {},
   };
 }
+export function formatFormEvent({
+  event,
+  type,
+}: {
+  event: React.FormEvent;
+  type?: string;
+}): BaseEvent {
+  const { type: originType, timeStamp, target, currentTarget } = event;
+  const result: TouchEvent = {
+    type: type || originType,
+    timeStamp: timeStamp,
+    target: mapTarget(target),
+    currentTarget: mapTarget(currentTarget),
+    touches: [],
+    changedTouches: [],
+  }
+  return result;
+}

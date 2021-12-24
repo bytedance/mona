@@ -212,8 +212,9 @@ export interface CheckboxGroupProps extends BaseProps {
   name?: string;
 }
 
+type FormSumbitEventHandler = (e: BaseEvent<{ value: Record<string, any> }>) => void
 export interface FormProps extends BaseProps {
-  onSubmit?: EventHandler;
+  onSubmit?: FormSumbitEventHandler;
   onReset?: EventHandler;
 }
 
