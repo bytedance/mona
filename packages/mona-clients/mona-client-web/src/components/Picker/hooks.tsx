@@ -2,7 +2,7 @@ import { PickerProps, TouchEvent } from '@bytedance/mona';
 
 import { PickerData } from './type';
 import { genEvent } from '../utils';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 export const useProps = (props: PickerProps) => {
   const { mode } = props;
