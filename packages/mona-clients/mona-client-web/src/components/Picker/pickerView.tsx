@@ -1,33 +1,29 @@
 import React, { useRef, useState, useEffect, forwardRef, Ref, useImperativeHandle } from 'react';
-import Cascader from './components/cascader';
+import FormatWrapper from './components/formatWrapper';
 import { PickerViewProps, ValueType, PickerData } from './type';
 import styles from './index.module.less';
-// 引入less失败
-console.log('style', styles);
-
-// disabled value
-const prefixCls = 'mona';
-const hideEmptyCols = false;
 
 const PickerView = forwardRef((props: PickerViewProps, ref: Ref<{ getData: () => ValueType[] }>) => {
-  const { cols = 5, rows = 5, data, disabled = false, value, onColumnChange } = props;
-  const [scrollValue, setScrollValue] = useState(value);
+  const { cols = 5, rows = 5, data, value, onColumnChange } = props;
+  const [innerValue, setInnerValue] = useState(value);
 
   const [itemHeight, setItemHeight] = useState(0);
   const [wrapperHeight, setWrapperHeight] = useState(0);
 
   const wrapperRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement | null>(null);
-  const scrollValueRef = useRef(value);
 
-  scrollValueRef.current = scrollValue;
+  const innerValueRef = useRef(value);
+  innerValueRef.current = innerValue;
+
   useImperativeHandle(ref, () => ({
     getData() {
-      return scrollValueRef.current;
+      return innerValueRef.current;
     },
   }));
+
   function _onColumnChange(value: ValueType[], index: number) {
-    setScrollValue(value);
+    setInnerValue(value);
     onColumnChange?.(value, index);
   }
 
@@ -40,31 +36,18 @@ const PickerView = forwardRef((props: PickerViewProps, ref: Ref<{ getData: () =>
     }
   }, []);
 
-  const newItemStyle = {
-    height: `${itemHeight}px`,
-  };
-
   return (
     <>
-      <div
-        className={`${styles.pickerView} all-border-box `}
-        style={{ height: `${itemHeight * rows}px` }}
-        ref={wrapperRef}
-      >
-        <Cascader
-          prefixCls={prefixCls || ''}
+      <div className={styles.pickerView} style={{ height: `${itemHeight * rows}px` }} ref={wrapperRef}>
+        <FormatWrapper
           cols={cols}
-          itemStyle={newItemStyle}
           data={data as PickerData[]}
-          selectedValue={scrollValue}
+          selectedValue={innerValue}
           onColumnChange={_onColumnChange}
           itemHeight={itemHeight}
           wrapperHeight={wrapperHeight}
-          disabled={disabled}
           rows={rows}
-          hideEmptyCols={hideEmptyCols}
         />
-
         <div className={styles.pickerViewSelection}>
           <div className={styles.pickerViewSelectionMaskTop} />
           <div ref={barRef} className={styles.pickerViewSelectionBar} />

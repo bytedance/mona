@@ -2,8 +2,7 @@ import React from 'react';
 import { PickerData, ValueType } from '../type';
 import styles from '../index.module.less';
 
-export interface MultiPickerProps {
-  prefixCls: string;
+interface MultiPickerProps {
   data: PickerData[][];
   selectedValue: ValueType[];
   children: any;
@@ -12,23 +11,23 @@ export interface MultiPickerProps {
 }
 
 export default function MultiPicker(props: MultiPickerProps) {
-  const {  onValueChange, children, itemHeight } = props;
+  const { onValueChange, children, itemHeight } = props;
 
   function getValue() {
     const { children, selectedValue, data } = props;
 
-    if (selectedValue && selectedValue.length) {
+    if (selectedValue?.length) {
       return selectedValue;
     }
     if (data) {
-      return data.map((item: PickerData[]) => item[0] && item[0].value);
+      return data.map((item: PickerData[]) => item[0]?.value);
     }
     if (!children) {
       return [];
     }
     return React.Children.map(children, (child: any) => {
       const childrenArray: any = React.Children.toArray(child.children || child.props.children);
-      return childrenArray && childrenArray[0] && childrenArray[0].props.value;
+      return childrenArray?.[0]?.props.value;
     });
   }
 
@@ -40,11 +39,10 @@ export default function MultiPicker(props: MultiPickerProps) {
   }
 
   function renderChild() {
-    const value = getValue();
     return React.Children.map(children, (col: any, index) =>
       React.cloneElement(col, {
         onValueChange: (value: ValueType) => _onValueChange(value, index),
-        selectedValue: value[index],
+        selectedValue: getValue()[index],
       }),
     );
   }

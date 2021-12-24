@@ -14,6 +14,7 @@ import { showPreviewImage } from './components/';
 export const webRequest: BaseApis['request'] = (data): RequestTask => {
   const controller = new AbortController();
   const promise = fetch(data.url, {
+    //@ts-ignore
     headers: data.header ?
       data.header :
       {
@@ -128,6 +129,7 @@ export const webChooseVideo: BaseApis['chooseVideo'] = options => {
             width: video.videoWidth,
             height: video.videoHeight,
             errMsg: 'chooseVideo: ok',
+            //@ts-ignore
             duration: video.duration,
             size: content?.size,
             tempFilePath: video.src,

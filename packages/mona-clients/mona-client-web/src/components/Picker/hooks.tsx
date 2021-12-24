@@ -2,7 +2,7 @@ import { PickerProps, TouchEvent } from '@bytedance/mona';
 
 import { PickerData } from './type';
 import { genEvent } from '../utils';
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 export const useProps = (props: PickerProps) => {
   const { mode } = props;
@@ -115,6 +115,15 @@ export const useProps = (props: PickerProps) => {
     ...finalData,
   };
 };
+
+export function useRefState<T>(
+  initialValue: T | (() => T),
+): [T, React.MutableRefObject<T>, React.Dispatch<React.SetStateAction<T>>] {
+  const [state, setState] = useState<T>(initialValue);
+  const stateRef = useRef<T>(state);
+  stateRef.current = state;
+  return [state, stateRef, setState];
+}
 
 const genArr = (start: string, end: string) => {
   return Array.from({ length: +end + 1 - +start }, (_, idx) => {

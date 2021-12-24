@@ -7,7 +7,6 @@ import { TouchEvent } from '@bytedance/mona';
 
 const Picker: React.FC<PickerProps> = props => {
   const [visible, setVisible] = useState(false);
-  const { disabled } = props;
   const newProps = useProps(props);
   const pickerRef = useRef(newProps.value);
   const propsRef = useRef(newProps);
@@ -28,11 +27,7 @@ const Picker: React.FC<PickerProps> = props => {
   }, []);
   return (
     <div>
-      <div
-        onTouchStart={() => {
-          !disabled && setVisible(true);
-        }}
-      >
+      <div onTouchStart={() => !props.disabled && setVisible(true)}>
         {props.children}
         <PickerMask visible={visible} onCancel={handleCancel} onConfirm={handleConfirm}>
           <PickerView ref={pickerRef} {...newProps}></PickerView>

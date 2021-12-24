@@ -12,15 +12,19 @@ const maskStyle: React.CSSProperties = {
   right: 0,
   background: 'white',
 };
-//@ts-ignore
-export default function PickerMask({ visible, children, onConfirm, onCancel }) {
+interface IProps {
+  visible: boolean;
+  onConfirm: (e: any) => any;
+  onCancel: (e: any) => any;
+}
+const PickerMask: React.FC<IProps> = ({ visible, children, onConfirm, onCancel }) => {
   if (visible) {
     return (
       <div
         className={styles.monaPickerModal}
         onTouchStart={e => {
           stopPropagation(e);
-          onCancel?.();
+          onCancel?.(formatTouchEvent({ event: e, type: 'change' }));
         }}
         onClick={stopPropagation}
         onMouseDown={stopPropagation}
@@ -53,4 +57,6 @@ export default function PickerMask({ visible, children, onConfirm, onCancel }) {
   }
 
   return null;
-}
+};
+
+export default PickerMask;

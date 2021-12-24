@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { PickerData, ValueType, PickerCellMovingStatus } from '../type';
+import { PickerData, ValueType } from '../type';
 import MultiPicker from './multiPicker';
 import PickerCell from './pickerCell';
 export function arrayTreeFilter<T>(data: T[], filterFn: (item: T, level: number) => boolean) {
@@ -19,37 +19,18 @@ export function arrayTreeFilter<T>(data: T[], filterFn: (item: T, level: number)
   } while (children.length > 0);
   return result;
 }
-export interface CascaderProps {
-  prefixCls: string;
+export interface IPickerFormatProps {
   cols: number;
-  itemStyle?: React.CSSProperties;
   data: PickerData[];
-  disabled: boolean;
   itemHeight: number;
   wrapperHeight: number;
   selectedValue: ValueType[];
   rows?: number;
-  hideEmptyCols?: boolean;
   onColumnChange?: (value: ValueType[], index: number) => void;
 }
-export interface CascaderRef {
-  getCellMovingStatus: () => PickerCellMovingStatus[];
-}
 
-const Cascader = (props: CascaderProps) => {
-  const {
-    prefixCls,
-    itemStyle,
-    cols,
-    data,
-    disabled,
-    itemHeight,
-    wrapperHeight,
-    rows,
-    hideEmptyCols,
-    onColumnChange,
-    selectedValue = [],
-  } = props;
+const FormatWrapper: React.FC<IPickerFormatProps> = props => {
+  const { cols, data, itemHeight, wrapperHeight, rows, onColumnChange, selectedValue = [] } = props;
 
   function _onValueChange(value: ValueType[], index: number) {
     const children: PickerData[] = arrayTreeFilter(
@@ -93,28 +74,18 @@ const Cascader = (props: CascaderProps) => {
   const formatData = useMemo<PickerData[][]>(() => _formatData(), [data, selectedValue]);
 
   return (
-    <MultiPicker
-      prefixCls={`${prefixCls}-picker`}
-      data={formatData}
-      selectedValue={selectedValue}
-      itemHeight={itemHeight}
-      onValueChange={_onValueChange}
-    >
+    <MultiPicker data={formatData} selectedValue={selectedValue} itemHeight={itemHeight} onValueChange={_onValueChange}>
       {formatData.map((item, index) => (
         <PickerCell
           key={`${index}_picker_cell_normal`}
           data={item || []}
-          style={itemStyle}
-          prefixCls={`${prefixCls}-picker`}
           itemHeight={itemHeight}
           wrapperHeight={wrapperHeight}
-          disabled={disabled}
           rows={rows}
-          hideEmptyCols={hideEmptyCols}
         />
       ))}
     </MultiPicker>
   );
 };
 
-export default Cascader;
+export default FormatWrapper;

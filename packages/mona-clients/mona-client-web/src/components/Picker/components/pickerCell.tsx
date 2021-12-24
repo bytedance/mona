@@ -1,17 +1,8 @@
-import React, { CSSProperties, useState, useLayoutEffect, useMemo, useRef, useCallback, useEffect } from 'react';
-import cls from 'classnames';
-import { ValueType, PickerData, PickerCellMovingStatus } from '../type';
+import React, { useCallback, useEffect, useMemo, useRef, CSSProperties, useState, useLayoutEffect } from 'react';
+import { PickerData, ValueType, PickerCellMovingStatus } from '../type';
 import styles from '../index.module.less';
-export function useRefState<T>(
-  initialValue: T | (() => T),
-): [T, React.MutableRefObject<T>, React.Dispatch<React.SetStateAction<T>>] {
-  const [state, setState] = useState<T>(initialValue);
-  const stateRef = useRef<T>(state);
-  useEffect(() => {
-    stateRef.current = state;
-  }, [state]);
-  return [state, stateRef, setState];
-}
+import { useRefState } from '../hooks';
+
 export function getStyleWithVendor(style: any): CSSProperties {
   const allowReg = /(transform|transition|animation)/i;
   const newStyle = Object.keys(style).reduce<any>((acc, key) => {
@@ -29,37 +20,33 @@ export function getStyleWithVendor(style: any): CSSProperties {
   return newStyle;
 }
 
-export interface PickerCellProps {
-  prefixCls: string;
-  style?: React.CSSProperties;
+interface PickerCellProps {
   data: PickerData[];
   itemHeight: number;
   wrapperHeight: number;
   selectedValue?: ValueType;
-  onValueChange?: (value: ValueType) => void;
-  onScrollChange?: (value: ValueType) => void;
-  disabled: boolean;
-  hideEmptyCols?: boolean;
+  onValueChange?: (value: ValueType) => any;
+  onScrollChange?: (value: ValueType) => any;
   rows?: number;
 }
-export interface PickerCellRef {
-  movingStatus: PickerCellMovingStatus;
-}
 
-const PickerCell = (props: PickerCellProps) => {
-  const { prefixCls, style, data, itemHeight, wrapperHeight, selectedValue, onValueChange, disabled, rows = 5 } = props;
+const PickerCell: React.FC<PickerCellProps> = props => {
+  const { data, itemHeight, wrapperHeight, selectedValue, onValueChange, rows = 5 } = props;
+
   const [transitionDuration, setTransitionDuration] = useState('');
   const [bezier, setBezier] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentValue, setCurrentValue] = useState(selectedValue);
   const [transformY, transformYRef, setTransformY] = useRefState(0);
+
   const lastTransformYRef = useRef(0);
   const touchStartTimeRef = useRef(0);
   const latestCallbackTimer = useRef(0);
   const touchStartYRef = useRef(0);
   const touchingRef = useRef(false);
   const wrapRef = useRef<HTMLDivElement | null>(null);
-  const movingStatusRef = useRef<PickerCellMovingStatus>('normal');
+  const movingStatusRef = useRef<PickerCellMovingStatus>(PickerCellMovingStatus.normal);
+
   const rowCount = Math.max(rows % 2 === 0 ? rows + 1 : rows, 3);
 
   const colStyle = useMemo(
@@ -74,8 +61,7 @@ const PickerCell = (props: PickerCellProps) => {
     [transitionDuration, transformY, bezier, itemHeight, rowCount],
   );
 
-  function _scrollingComplete(nowItemIndex: number) {
-    // index有改变时再抛出
+  function scrollingComplete(nowItemIndex: number) {
     if (currentIndex !== nowItemIndex) {
       setCurrentIndex(nowItemIndex);
       const newValue = data[nowItemIndex] && data[nowItemIndex].value;
@@ -89,50 +75,43 @@ const PickerCell = (props: PickerCellProps) => {
     }
   }
 
-  function _scrollTo(transY: number, transDuration = 0, callback = () => {}) {
+  function scrollTo(transY: number, transDuration = 0, callback = () => {}) {
     setTransitionDuration(transDuration ? `${transDuration}ms` : '');
     setTransformY(transY);
-    // 处理连续滑动的情况：
-    // 如果上一次callback还未执行，先cancel掉上一次回调，只执行最近的一次回调
+
     if (latestCallbackTimer.current) {
       clearTimeout(latestCallbackTimer.current);
     }
 
     latestCallbackTimer.current = window.setTimeout(() => {
-      movingStatusRef.current = 'normal';
+      movingStatusRef.current = PickerCellMovingStatus.normal;
       setTransitionDuration('');
       callback();
     }, transDuration);
   }
 
-  function _scrollToIndex(itemIndex: number, transDuration = 0, callback = () => {}) {
-    _scrollTo(-1 * itemIndex * itemHeight, transDuration, callback);
+  function scrollToIndex(itemIndex: number, transDuration = 0, callback = () => {}) {
+    scrollTo(-1 * itemIndex * itemHeight, transDuration, callback);
   }
 
-  function _scrollToIndexWithChange(itemIndex: number, transDuration = 0) {
-    _scrollToIndex(itemIndex, transDuration, () => {
-      _scrollingComplete(itemIndex);
+  function scrollToIndexWithChange(itemIndex: number, transDuration = 0) {
+    scrollToIndex(itemIndex, transDuration, () => {
+      scrollingComplete(itemIndex);
     });
   }
 
-  const _handleColumnTouchStart = useCallback(
-    (e: TouchEvent) => {
-      if (disabled) {
-        return;
-      }
-      movingStatusRef.current = 'moving';
-      const y = e.touches[0].screenY;
-      touchStartTimeRef.current = Number(new Date());
-      touchingRef.current = true;
-      touchStartYRef.current = y;
-      lastTransformYRef.current = transformYRef.current;
-    },
-    [disabled],
-  );
+  const handleColumnTouchStart = useCallback((e: TouchEvent) => {
+    movingStatusRef.current = PickerCellMovingStatus.moving;
+    const y = e.touches[0].screenY;
+    touchStartTimeRef.current = Number(new Date());
+    touchingRef.current = true;
+    touchStartYRef.current = y;
+    lastTransformYRef.current = transformYRef.current;
+  }, []);
 
-  const _handleColumnTouchMove = useCallback(
+  const handleColumnTouchMove = useCallback(
     (e: TouchEvent) => {
-      if (disabled || !touchingRef.current) {
+      if (!touchingRef.current) {
         return;
       }
       e.cancelable && e.preventDefault();
@@ -141,34 +120,28 @@ const PickerCell = (props: PickerCellProps) => {
       const distance = touchMoveY - touchStartYRef.current;
       const newPos = lastTransformY + distance;
       const maxPos = -1 * (data.length - 1) * itemHeight;
-      // 当滚动到上边界或下边界时增加阻尼效果
       setTransformY(
         (lastTransformY >= 0 && distance > 0) || (lastTransformY <= maxPos && distance < 0)
           ? lastTransformY + distance / 4
           : newPos,
       );
     },
-    [data.length, disabled, itemHeight],
+    [data.length, itemHeight],
   );
 
   useEffect(() => {
-    if (wrapRef.current) {
-      wrapRef.current.addEventListener('touchstart', _handleColumnTouchStart);
-      wrapRef.current.addEventListener('touchmove', _handleColumnTouchMove);
-    }
+    wrapRef.current?.addEventListener('touchstart', handleColumnTouchStart);
+    wrapRef.current?.addEventListener('touchmove', handleColumnTouchMove);
     return () => {
-      if (wrapRef.current) {
-        wrapRef.current.removeEventListener('touchstart', _handleColumnTouchStart);
-        wrapRef.current.removeEventListener('touchmove', _handleColumnTouchMove);
-      }
+      wrapRef.current?.removeEventListener('touchstart', handleColumnTouchStart);
+      wrapRef.current?.removeEventListener('touchmove', handleColumnTouchMove);
     };
-  }, [_handleColumnTouchStart, _handleColumnTouchMove]);
+  }, [handleColumnTouchStart, handleColumnTouchMove]);
 
-  function _handleScrollEnd() {
+  function handleScrollEnd() {
     const maxIndex = data.length - 1;
     const nowIndex = Math.max(0, Math.min(maxIndex, Math.round((-1 * transformY) / itemHeight)));
-    // 滚动（包括加动量的滚动）完成之后定位到最近的一个index上
-    _scrollToIndexWithChange(nowIndex, 100);
+    scrollToIndexWithChange(nowIndex, 100);
   }
 
   // 参考：https://juejin.im/post/6844904185121488910
@@ -211,8 +184,8 @@ const PickerCell = (props: PickerCellProps) => {
     };
   }
 
-  function _handleColumnTouchEnd() {
-    movingStatusRef.current = 'normal';
+  function handleColumnTouchEnd() {
+    movingStatusRef.current = PickerCellMovingStatus.normal;
     const lastTransformY = lastTransformYRef.current;
     if (transformY === lastTransformY) {
       return;
@@ -232,54 +205,43 @@ const PickerCell = (props: PickerCellProps) => {
 
       setBezier(momentumY.bezier);
 
-      movingStatusRef.current = 'scrolling';
-      _scrollToIndex(newItemIndex, momentumY.duration, () => {
-        _scrollingComplete(newItemIndex);
+      movingStatusRef.current = PickerCellMovingStatus.scrolling;
+      scrollToIndex(newItemIndex, momentumY.duration, () => {
+        scrollingComplete(newItemIndex);
       });
     } else {
-      _handleScrollEnd();
+      handleScrollEnd();
     }
   }
 
-  function _handleItemClick(itemIndex: number) {
-    if (disabled) {
-      return;
-    }
-    _scrollToIndexWithChange(itemIndex, 100);
+  function handleItemClick(itemIndex: number) {
+    scrollToIndexWithChange(itemIndex, 100);
   }
+
   useLayoutEffect(() => {
     if ('selectedValue' in props) {
       const curIndex = data.findIndex((item: PickerData) => item.value === selectedValue);
       setCurrentIndex(curIndex);
 
       if (curIndex >= 0) {
-        _scrollToIndexWithChange(curIndex);
+        scrollToIndexWithChange(curIndex);
       }
     }
     //@ts-ignore
   }, [selectedValue, itemHeight]);
 
-  return data && data.length ? (
+  return data?.length ? (
     <div className={styles.pickerViewColumn}>
       <div
         className={styles.pickerViewColumnItemWrap}
         style={colStyle}
         ref={wrapRef}
-        onTouchEnd={_handleColumnTouchEnd}
-        onTouchCancel={_handleColumnTouchEnd}
+        onTouchEnd={handleColumnTouchEnd}
+        onTouchCancel={handleColumnTouchEnd}
       >
         {data.map((item, index) => {
-          const dis = Math.abs(index - currentIndex);
           return (
-            <div
-              key={`${index}_${item.value}`}
-              className={cls(`${prefixCls}-column-item`, {
-                selected: index === currentIndex,
-                [`selected-neighbor-${dis}`]: dis && dis <= Math.floor(rowCount / 2),
-              })}
-              style={style}
-              onClick={() => _handleItemClick(index)}
-            >
+            <div key={`${item.value}${index}`} style={{ height: itemHeight }} onClick={() => handleItemClick(index)}>
               {item.label}
             </div>
           );
