@@ -1,8 +1,8 @@
 import React, { useRef, useEffect, useState, useCallback, TouchEventHandler } from 'react';
 import { MovableViewProps } from '@bytedance/mona';
 import { formatTouchEvent, genEvent } from '../utils';
-import cs from 'classnames';
 import styles from './index.module.less';
+import { useHandlers } from '../hooks';
 
 type Position = { x: number; y: number };
 const getDistance = (start: Position, stop: Position) => {
@@ -80,6 +80,13 @@ const MovableView: React.FC<MovableViewProps> = props => {
 
     scaleArea,
     className,
+    onHtouchMove,
+    onVtouchMove,
+    inertia,
+    outOfBounds,
+    scale,
+    animation,
+    ...restProps
   } = props;
   // const ref = useRef<HTMLDivElement>(null);
   const domRef = useRef<HTMLSpanElement>(null);
@@ -92,6 +99,8 @@ const MovableView: React.FC<MovableViewProps> = props => {
   const [executing, setExecuting] = useState(false);
 
   const [innerScale, setScale] = useState(scaleValue);
+
+  const { handleClassName, ...handlerProps } = useHandlers(restProps);
 
   useEffect(() => {
     const sValue = scaleValue < scaleMax ? (scaleValue > scaleMin ? scaleValue : scaleMin) : scaleMax;
@@ -152,6 +161,8 @@ const MovableView: React.FC<MovableViewProps> = props => {
   }, [x, y, setPositionWithCheck]);
 
   const handleTouchStart = useCallback<TouchEventHandler<HTMLSpanElement>>(e => {
+    console.log('e');
+
     setExecuting(false);
     const { clientX, clientY } = e.targetTouches[0];
     const posInfo = domRef.current!.getBoundingClientRect();
@@ -265,11 +276,11 @@ const MovableView: React.FC<MovableViewProps> = props => {
       scaleArea && wrapperDom.removeEventListener('touchmove', handleScale as any);
     };
   }, [handleScale, scaleArea]);
-
   return (
     //@ts-ignore
     <span
       ref={domRef}
+      {...handlerProps}
       //@ts-ignore
       onTransitionEnd={() => setExecuting(false)}
       //@ts-ignore
@@ -282,7 +293,7 @@ const MovableView: React.FC<MovableViewProps> = props => {
         transform: `translate(${innerX}px, ${innerY}px) scale(${innerScale})`,
         ...transitionStyle,
       }}
-      className={cs(className, styles.touch)}
+      className={handleClassName([className, styles.touch])}
     >
       {children}
     </span>

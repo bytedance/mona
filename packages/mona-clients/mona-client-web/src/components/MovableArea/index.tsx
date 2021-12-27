@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { MovableAreaProps } from '@bytedance/mona';
-import cs from 'classnames';
 import { isElement } from 'react-is';
 import styles from './index.module.less';
-const MovableArea: React.FC<MovableAreaProps> = ({ scaleArea = false, children, className, style }) => {
+import { useHandlers } from '../hooks';
+const MovableArea: React.FC<MovableAreaProps> = ({ scaleArea = false, children, className, style, ...restProps }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [{ wrapperWidth, wrapperHeight }, setWrapper] = useState({ wrapperWidth: 0, wrapperHeight: 0 });
   useEffect(() => {
@@ -12,10 +12,11 @@ const MovableArea: React.FC<MovableAreaProps> = ({ scaleArea = false, children, 
       wrapperHeight: wrapperRef.current!.clientHeight,
     });
   }, []);
+  const { handleClassName, ...handlerProps } = useHandlers(restProps);
 
   if (isElement(children) && children?.props) {
     return (
-      <div ref={wrapperRef} className={cs(className, styles.wrapper)} style={style}>
+      <div ref={wrapperRef} className={handleClassName([className, styles.wrapper])} style={style} {...handlerProps}>
         {React.cloneElement(children, { scaleArea, wrapperRef, wrapperWidth, wrapperHeight })}
       </div>
     );

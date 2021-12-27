@@ -30,18 +30,7 @@ export const usePlayer = ({
   showPlayBtn = true,
   controls = true,
   objectFit = 'contain',
-  playBtnPosition = 'center',
-  preRollUnitId,
-  postRollUnitId,
-  vslideGesture = false,
-  vslideGestureInFullscreen = true,
-  enableProgressGesture = false,
-  enablePlayGesture = false,
-  muted = false,
-  showMuteBtn = false,
-  showPlaybackRateBtn = false,
   direction = -90,
-  enablePlayInBackground = false,
   onPlay,
   onPause,
   onEnded,
@@ -49,19 +38,8 @@ export const usePlayer = ({
   onTimeUpdate,
   onFullscreenChange,
   onWaiting,
-  onAdStart,
-  onAdEnded,
-  onAdLoad,
-  onAdClose,
-  onAdError,
-  onLoadedMetaData,
+
   onSeekComplete,
-  onPlayBackRateChange,
-  onMuteChange,
-  onControlTap,
-  onEnterBackground,
-  onCloseBackground,
-  onLeaveBackground,
 }: Partial<VideoProps>) => {
   const videoRef = useRef<HTMLDivElement | null>(null);
   const [player, setPlayer] = useState<Player>();
@@ -79,11 +57,11 @@ export const usePlayer = ({
       setPlayer(
         new Player({
           el: videoRef.current,
-          url: src,
+          url: src ?? '',
           poster,
           width: '100%',
           height: '100%',
-          controlsList: ['nodownload', 'nofullscreen', 'noremoteplayback'],
+          // controlsList: ['nodownload', 'nofullscreen', 'noremoteplayback'],
           //@ts-ignore
           ignores: ['volume', ...Object.values(buttonIgnores).filter(item => item)],
           // controlPlugins,
@@ -114,12 +92,12 @@ export const usePlayer = ({
       completeRef.current = true;
       if (rotateRef.current === 90) {
         setTimeout(() => {
-          player.rotate(true, true, 1);
+          player?.rotate(true, true, 1);
         }, 100);
         rotateRef.current = 90;
       } else if (rotateRef.current === -90) {
         setTimeout(() => {
-          player.rotate(false, true, 1);
+          player?.rotate(false, true, 1);
         }, 100);
         rotateRef.current = -90;
       } else {
