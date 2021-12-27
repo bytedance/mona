@@ -13,7 +13,7 @@ export default function handlerTest({
   firstTag = 'div',
   clickTag,
 }: {
-  Component: React.ComponentType<BaseProps & Partial<HoverProps>>;
+  Component: React.ComponentType<BaseProps & Partial<HoverProps> & any>;
   hasHover?: boolean;
   firstTag?: string;
   clickTag?: string;

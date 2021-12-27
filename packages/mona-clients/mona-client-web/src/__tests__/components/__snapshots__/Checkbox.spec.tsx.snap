@@ -23,6 +23,7 @@ LoadedCheerio {
                 "attribs": Object {
                   "class": "inner",
                   "type": "checkbox",
+                  "value": "apple",
                 },
                 "children": Array [],
                 "name": "input",
@@ -34,10 +35,12 @@ LoadedCheerio {
                 "x-attribsNamespace": Object {
                   "class": undefined,
                   "type": undefined,
+                  "value": undefined,
                 },
                 "x-attribsPrefix": Object {
                   "class": undefined,
                   "type": undefined,
+                  "value": undefined,
                 },
               },
             ],
@@ -76,6 +79,7 @@ LoadedCheerio {
                   "attribs": Object {
                     "class": "inner",
                     "type": "checkbox",
+                    "value": "apple",
                   },
                   "children": Array [],
                   "name": "input",
@@ -87,10 +91,12 @@ LoadedCheerio {
                   "x-attribsNamespace": Object {
                     "class": undefined,
                     "type": undefined,
+                    "value": undefined,
                   },
                   "x-attribsPrefix": Object {
                     "class": undefined,
                     "type": undefined,
+                    "value": undefined,
                   },
                 },
               ],
@@ -257,6 +263,7 @@ LoadedCheerio {
                 "attribs": Object {
                   "class": "inner",
                   "type": "checkbox",
+                  "value": "",
                 },
                 "children": Array [],
                 "name": "input",
@@ -268,10 +275,12 @@ LoadedCheerio {
                 "x-attribsNamespace": Object {
                   "class": undefined,
                   "type": undefined,
+                  "value": undefined,
                 },
                 "x-attribsPrefix": Object {
                   "class": undefined,
                   "type": undefined,
+                  "value": undefined,
                 },
               },
             ],
@@ -310,6 +319,7 @@ LoadedCheerio {
                   "attribs": Object {
                     "class": "inner",
                     "type": "checkbox",
+                    "value": "",
                   },
                   "children": Array [],
                   "name": "input",
@@ -321,10 +331,12 @@ LoadedCheerio {
                   "x-attribsNamespace": Object {
                     "class": undefined,
                     "type": undefined,
+                    "value": undefined,
                   },
                   "x-attribsPrefix": Object {
                     "class": undefined,
                     "type": undefined,
+                    "value": undefined,
                   },
                 },
               ],

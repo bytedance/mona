@@ -227,7 +227,7 @@ export interface InputProps extends BaseProps {
   value?: string;
   name?: string;
   type?: 'text' | 'number' | 'digit';
-  password?: string;
+  password?: boolean;
   placeholder?: string;
   placeholderStyle?: React.CSSProperties;
   disabled?: boolean;
