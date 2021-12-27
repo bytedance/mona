@@ -139,7 +139,8 @@ module.exports = {
   // testEnvironment: "jest-environment-node",
 
   // Options that will be passed to the testEnvironment
-  // testEnvironmentOptions: {},
+  // this can make image onload successful
+  testEnvironmentOptions: { "resources": "usable" },
 
   // Adds a location field to test results
   // testLocationInResults: false,

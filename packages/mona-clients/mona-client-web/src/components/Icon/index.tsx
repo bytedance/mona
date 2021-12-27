@@ -4,7 +4,8 @@ import cs from 'classnames';
 import styles from './index.module.less';
 import { useHandlers } from '../hooks';
 
-const Icon: React.FC<IconProps> = ({ children, type, size = 24, color, ...restProps }) => {
+const Icon: React.FC<IconProps> = (props) => {
+  const { children, type, size = 24, color, ...restProps } = props;
   const { handleClassName, ...handleProps } = useHandlers(restProps);
 
   return (

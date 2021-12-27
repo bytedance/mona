@@ -11,13 +11,12 @@ const ImageComponent: React.FC<ImageProps> = ({ children, src, mode = 'scaleToFi
   const [url, setUrl] = useState('');
   const [load, setLoad] = useState(!lazyLoad);
   const ref = useRef<HTMLDivElement | null>(null);
-  const loadedRef = useRef(false);
+  const loadedRef = useRef(!lazyLoad);
 
   const context = useContext(ScrollViewContext);
 
   const handleLoad = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     setUrl(src || '');
-    console.log('load', src);
     if (typeof onLoad === 'function') {
       onLoad(formatSyntheticEvent({ event: e }));
     }
