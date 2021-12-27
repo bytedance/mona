@@ -13,7 +13,7 @@ import {
   FormProps,
   InputProps,
   LabelProps,
-  PickerProps,
+  AllPickerProps,
   PickerViewProps,
   PickerViewColumnProps,
   RadioProps,
@@ -36,9 +36,8 @@ import {
   RichTextProps,
 } from '@bytedance/mona';
 
-
 type Alias = string;
-type AliasMap<T> = Record<keyof T, Alias>;
+type AliasMap<T, V = Alias> = Record<keyof T, V>;
 export type ViewAlias = AliasMap<ViewProps>;
 export type ButtonAlias = AliasMap<ButtonProps>;
 export type ProgressAlias = AliasMap<ProgressProps>;
@@ -53,7 +52,7 @@ export type CheckboxGroupAlias = AliasMap<CheckboxGroupProps>;
 export type FormAlias = AliasMap<FormProps>;
 export type InputAlias = AliasMap<InputProps>;
 export type LabelAlias = AliasMap<LabelProps>;
-export type PickerAlias = AliasMap<PickerProps>;
+export type PickerAlias = AliasMap<AllPickerProps>;
 export type PickerViewAlias = AliasMap<PickerViewProps>;
 export type PickerViewColumnAlias = AliasMap<PickerViewColumnProps>;
 export type RadioAlias = AliasMap<RadioProps>;

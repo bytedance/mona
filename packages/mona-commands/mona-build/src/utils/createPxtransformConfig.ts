@@ -6,6 +6,7 @@ export default function createPxtransformConfig(platform: 'web' | 'mini', projec
     const pxtransformConfig = postcss?.pxtransform;
     const enabled = typeof pxtransformConfig?.enable === 'boolean' ? pxtransformConfig.enable : true;
     const designWidth = pxtransformConfig?.designWidth || 750;
+    //@ts-ignore
     const deviceRatio = pxtransformConfig?.deviceRatio || {
       640: 2.34 / 2,
       750: 1,

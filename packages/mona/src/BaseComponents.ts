@@ -51,7 +51,7 @@ export interface BaseEvent<D = any> {
   timeStamp: number;
   target: BaseTarget;
   currentTarget: BaseTarget;
-  detail?: D
+  detail?: D;
 }
 
 export interface Touch {
@@ -139,7 +139,7 @@ export interface ScrollViewProps extends BaseProps {
   onScrollToLower?: EventHandler;
 }
 
-export type SwiperChangeEvent = TouchEvent<Touch, { current: number; source: 'autoplay' | 'touch' }>
+export type SwiperChangeEvent = TouchEvent<Touch, { current: number; source: 'autoplay' | 'touch' }>;
 export type SwiperAnimationFinishEvent = SwiperChangeEvent;
 export type SwiperTransitionEvent = TouchEvent<Touch, { dy: number; dx: number }>;
 export interface SwiperProps extends BaseProps {
@@ -218,10 +218,10 @@ export interface FormProps extends BaseProps {
   onReset?: EventHandler;
 }
 
-type InputEventHandler = (e: BaseEvent<{ cursor: number; value: string }>) => void
-type FocusEventHandler = (e: BaseEvent<{ value: string; height: number }>) => void
+type InputEventHandler = (e: BaseEvent<{ cursor: number; value: string }>) => void;
+type FocusEventHandler = (e: BaseEvent<{ value: string; height: number }>) => void;
 type BlurEventHandler = (e: BaseEvent<{ value: string }>) => void;
-type ConfirmEventHandler = BlurEventHandler
+type ConfirmEventHandler = BlurEventHandler;
 
 export interface InputProps extends BaseProps {
   value?: string;
@@ -248,23 +248,67 @@ export interface InputProps extends BaseProps {
 export interface LabelProps extends BaseProps {
   for?: string;
 }
+// ===== Picker =======
+type PickerMode = 'selector' | 'multiSelector' | 'time' | 'date' | 'region';
 
-export interface PickerProps extends BaseProps {
-  name?: string;
-  mode?: 'selector' | 'multiSelector' | 'time' | 'date' | 'region';
-  range?: (string | Record<string, any>)[][];
-  rangeKey?: string;
-  value?: number[] | string[] | string;
-  start?: string;
-  end?: string;
-  fields?: 'year' | 'month' | 'day';
-  disabled?: boolean;
-  customItem?: string;
-  onCancel?: EventHandler;
-  onChange?: EventHandler;
-  onColumnChange?: EventHandler;
+interface PickerPropsMap extends BaseProps {
+  selector: SelectorPickerProps;
+  multiSelector: MultipleSelectorPickerProps;
+  time: TimePickerProps;
+  date: DatePickerProps;
+  region: RegionPickerProps;
 }
 
+interface SelectorPickerProps {
+  range?: string[] | any[];
+  rangeKey?: string;
+  value?: number;
+  onChange?: EventHandler;
+  disabled?: boolean;
+  onCancel?: EventHandler;
+  name?: string;
+}
+
+type MultipleSelectorPickerProps = SelectorPickerProps & {
+  range?: string[] | any[];
+  rangeKey?: string;
+  value?: number[];
+  onChange?: EventHandler;
+  onColumnChange?: EventHandler;
+
+  disabled?: boolean;
+  onCancel?: EventHandler;
+  name?: string;
+};
+
+interface TimePickerProps {
+  value?: string;
+  start?: string;
+  end?: string;
+  onChange?: EventHandler;
+  disabled?: boolean;
+  onCancel?: EventHandler;
+  name?: string;
+}
+
+type DatePickerProps = TimePickerProps & { fields?: string };
+
+interface RegionPickerProps {
+  name?: string;
+  value?: any[];
+  customItem?: string;
+  onChange?: EventHandler;
+  disabled?: boolean;
+  onCancel?: EventHandler;
+}
+
+export type PickerPropsSelect<T> = T extends PickerMode ? { mode: T } & PickerPropsMap[T] : never;
+export type PickerProps = PickerPropsSelect<PickerMode>;
+export type AllPickerProps = MultipleSelectorPickerProps &
+  SelectorPickerProps &
+  DatePickerProps &
+  TimePickerProps &
+  RegionPickerProps & { mode: PickerMode };
 export interface PickerViewProps extends BaseProps {
   value: number[];
   indicatorStyle?: React.CSSProperties;

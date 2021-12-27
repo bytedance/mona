@@ -1,5 +1,5 @@
 import './index.less';
-export { default as Link} from './Link';
+export { default as Link } from './Link';
 export { default as Text } from './Text';
 export { default as RichText } from './RichText';
 export { default as Progress } from './Progress';
