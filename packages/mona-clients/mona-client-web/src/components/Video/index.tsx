@@ -3,12 +3,12 @@ import { VideoProps } from '@bytedance/mona';
 // import Mp4Player from 'xgplayer-mp4';
 import styles from './index.module.less';
 import { useHandlers } from '../hooks';
-// import { usePlayer } from './hooks';
+import { usePlayer } from './hooks';
 // import NotImplemented from '../NotImplemented';
 
 // TODO: implement with xgplayer
 // https://v2.h5player.bytedance.com/
-const Video: React.FC<VideoProps> = (props) => {
+const Video: React.FC<VideoProps> = props => {
   const {
     children,
     src,
@@ -53,20 +53,35 @@ const Video: React.FC<VideoProps> = (props) => {
     onLeaveBackground,
     ...restProps
   } = props;
-  
+
   const { handleClassName, ...handlerProps } = useHandlers(restProps);
 
-  // const { videoRef } = usePlayer({ src, autoplay, poster, loop, showFullscreenBtn });
+  const { videoRef, ObjectFitClass } = usePlayer(props);
 
   return (
-    <div className={handleClassName(styles.video)} {...handlerProps}>
-      <div className={styles.main}>
-        <div className={styles.container}>
-          {/* <div ref={videoRef}></div> */}
-        </div>
-      </div>
+    <div className={handleClassName([ObjectFitClass, styles.video])} {...handlerProps}>
+      <div ref={videoRef}></div>
     </div>
-  )
-}
+  );
+};
 
 export default Video;
+
+Video.defaultProps = {
+  autoplay: false,
+  loop: false,
+  showFullscreenBtn: true,
+  showPlayBtn: true,
+  controls: true,
+  objectFit: 'contain',
+  playBtnPosition: 'center',
+  vslideGesture: false,
+  vslideGestureInFullscreen: true,
+  enableProgressGesture: false,
+  enablePlayGesture: false,
+  muted: false,
+  showMuteBtn: false,
+  showPlaybackRateBtn: false,
+  direction: -90,
+  enablePlayInBackground: false,
+};

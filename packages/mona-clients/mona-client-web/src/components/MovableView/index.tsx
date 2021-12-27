@@ -265,6 +265,7 @@ const MovableView: React.FC<MovableViewProps> = props => {
       scaleArea && wrapperDom.removeEventListener('touchmove', handleScale as any);
     };
   }, [handleScale, scaleArea]);
+
   return (
     //@ts-ignore
     <span
