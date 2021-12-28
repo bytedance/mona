@@ -1,10 +1,9 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { PickerViewProps } from '@bytedance/mona';
 import { isElement } from 'react-is';
 import { useHandlers } from '../hooks';
-
-import styles from './index.module.less';
 import { genEvent } from '../utils';
+import styles from '../Picker/index.module.less';
 
 const PickerView: React.FC<PickerViewProps> = ({
   children,
@@ -49,6 +48,7 @@ const PickerView: React.FC<PickerViewProps> = ({
               onValueChange: _onValueChange.bind(null, idx),
             });
           }
+          return;
         })?.filter(item => item !== null && item !== undefined)}
       </div>
 

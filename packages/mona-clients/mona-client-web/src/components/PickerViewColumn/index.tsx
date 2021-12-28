@@ -1,18 +1,12 @@
-//@ts-nocheck
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo } from 'react';
 import { PickerViewColumnProps } from '@bytedance/mona';
 
-import PickerCell from './pickerCell';
+import PickerCell from '../Picker/components/pickerCell';
 import { useHandlers } from '../hooks';
 
-const PickerViewColumn: React.FC<PickerViewColumnProps> = ({
-  children,
-  itemHeight,
-  wrapperHeight,
-  selectedValue,
-  onValueChange,
-  ...restProps
-}) => {
+const PickerViewColumn: React.FC<PickerViewColumnProps> = props => {
+  const { children, itemHeight, wrapperHeight, selectedValue, onValueChange, ...restProps } =
+    props as PickerViewColumnProps & Record<string, any>;
   const { handleClassName, ...handleProps } = useHandlers(restProps);
 
   return (
