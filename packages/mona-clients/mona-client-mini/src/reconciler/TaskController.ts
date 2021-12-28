@@ -73,10 +73,7 @@ export default class TaskController {
       }
     });
 
-    console.time('setData');
-    this.context.setData(res, () => {
-      console.timeEnd('setData');
-    });
+    this.context.setData(res);
     monaPrint.debug('applyUpdate', {
       data: res,
       tasks: this.tasks,

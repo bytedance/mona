@@ -10,9 +10,10 @@ const DEFAULT_PROJECT_CONFIG: ProjectConfig = {
   projectName: 'mona-app',
   input: './src/app',
   output: 'dist',
+  compilerOptimization: true,
   dev: {
     port: DEFAULT_PORT,
-  }
+  },
 };
 
 const DEFAULT_APP_CONFIG: AppConfig = {
