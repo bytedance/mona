@@ -1,8 +1,8 @@
 // 参考arco Mobile
 import React, { useCallback, useEffect, useMemo, useRef, CSSProperties, useState, useLayoutEffect } from 'react';
-import { PickerData, ValueType, PickerCellMovingStatus } from '../type';
-import styles from '../index.module.less';
-import { useRefState } from '../hooks';
+import { PickerData, ValueType, PickerCellMovingStatus } from '../Picker/type';
+import styles from '../PickerView/index.module.less';
+import { useRefState } from '../Picker/hooks';
 
 export function getStyleWithVendor(style: any): CSSProperties {
   const allowReg = /(transform|transition|animation)/i;
@@ -32,7 +32,7 @@ interface PickerCellProps {
 }
 
 const PickerCell: React.FC<PickerCellProps> = props => {
-  const { data, itemHeight, wrapperHeight, selectedValue, onValueChange, rows = 5 } = props;
+  const { data, itemHeight, wrapperHeight, selectedValue, onValueChange, rows = 5, ...restProps } = props;
 
   const [transitionDuration, setTransitionDuration] = useState('');
   const [bezier, setBezier] = useState('');
@@ -225,7 +225,7 @@ const PickerCell: React.FC<PickerCellProps> = props => {
   }, [selectedValue, itemHeight]);
 
   return data?.length ? (
-    <div className={styles.pickerViewColumn}>
+    <div className={styles.pickerViewColumn} {...restProps}>
       <div
         className={styles.pickerViewColumnItemWrap}
         style={colStyle}

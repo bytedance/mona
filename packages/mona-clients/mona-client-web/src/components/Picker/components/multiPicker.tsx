@@ -1,3 +1,4 @@
+// 参考arco Mobile
 import React from 'react';
 import { PickerData, ValueType } from '../type';
 import styles from '../index.module.less';

@@ -1,86 +1,61 @@
-.picker-container {
-  z-index: 10001;
-
+.pickerView {
+  position: relative;
   width: 100%;
+  z-index: 2;
+  margin: 0.5em 0;
 
-  &, *, *:before, *:after {
-    box-sizing: border-box;;
+  &Multi {
+    color: #1d2129;
+    font-size: 0.5em;
   }
 
-  .picker-inner {
-    position: relative;
-
+  &Multi,
+  &Selection {
     display: flex;
-    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
     height: 100%;
-    padding: 0 20px;
-
-    font-size: 1.2em;
-    -webkit-mask-box-image: linear-gradient(to top, transparent, transparent 5%, white 20%, white 80%, transparent 95%, transparent);
   }
 
-  .picker-column {
-    flex: 1 1;
-
-    position: relative;
-
-    max-height: 100%;
-
+  &Column {
+    flex: 1;
+    height: 100%;
     overflow: hidden;
     text-align: center;
 
-    .picker-scroller {
-      transition: 300ms;
-      transition-timing-function: ease-out;
-    }
-
-    .picker-item {
-      position: relative;
-
-      padding: 0 10px;
-
-      white-space: nowrap;
-      color: #999999;
-      overflow: hidden;
-      text-overflow: ellipsis;
-
-      &.picker-item-selected {
-        color: #222;
-      }
+    &ItemWrap {
+      box-sizing: content-box;
+      will-change: transform;
     }
   }
 
-  .picker-highlight {
-    position: absolute;
-    top: 50%;
-    left: 0;
-
-    width: 100%;
-
+  &Selection {
+    will-change: transform;
+    flex-direction: column;
     pointer-events: none;
 
-    &:before, &:after {
-      content: ' ';
-      position: absolute;
-      left: 0;
-      right: auto;
-
-      display: block;
+    &MaskTop {
       width: 100%;
-      height: 1px;
-
-      background-color: #d9d9d9;
-      transform: scaleY(0.5);
+      flex: 1;
+      background: rgba(255, 255, 255, 0.404);
     }
 
-    &:before {
-      top: 0;
-      bottom: auto;
+    &MaskBottom {
+      width: 100%;
+      flex: 1;
+      background: rgba(255, 255, 255, 0.404);
     }
 
-    &:after {
-      bottom: 0;
-      top: auto;
+    &Bar {
+      width: 100%;
+      height: 1em;
+      flex: 0 0 auto;
+      top: 1px solid #e5e6eb;
+      bottom: 1px solid #e5e6eb;
+      border: 1px solid #e5e6eb;
     }
   }
 }

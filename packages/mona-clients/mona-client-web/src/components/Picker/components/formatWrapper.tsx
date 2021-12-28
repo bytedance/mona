@@ -1,3 +1,4 @@
+// 参考arco Mobile
 import React, { useMemo } from 'react';
 import { PickerData, ValueType } from '../type';
 import MultiPicker from './multiPicker';
