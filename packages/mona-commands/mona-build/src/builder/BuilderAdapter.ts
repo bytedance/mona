@@ -6,7 +6,7 @@ import WebBuilder from './WebBuilder';
 import PluginBuilder from './PluginBuilder';
 import { DEFAULT_PORT } from '@/constants';
 import BaseBuilder from './BaseBuilder';
-import chalk from 'chalk';
+import log from '@/log';
 
 class BuilderAdapter implements BaseBuilder {
   configHelper: ConfigHelper;
@@ -16,7 +16,7 @@ class BuilderAdapter implements BaseBuilder {
   constructor(options: Options) {
     const requiredOptions = { target: options.target || 'web', port: options.port || DEFAULT_PORT, dev: options.dev || false };
     const configHelper = new ConfigHelper(requiredOptions)
-    console.log(chalk.cyan(`当前打包目标端：${requiredOptions.target}`))
+    log(['启动', '目标端', options.target as string])
 
     const target = options.target || 'web';
     let builder: BaseBuilder;

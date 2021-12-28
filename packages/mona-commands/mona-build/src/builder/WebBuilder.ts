@@ -1,12 +1,25 @@
+import log from '@/log';
 import path from 'path';
-import chalk from 'chalk';
 import WebpackDevServer from 'webpack-dev-server';
 import BaseBuilder from "@/builder/BaseBuilder";
 import { DEAULT_HOST, DEFAULT_PORT } from '@/constants';
-import compilerCallback from '@/utils/compilerCallback';
+import runBuild from '@/utils/runBuild';
+import chalk from 'chalk';
 
 class WebBuilder extends BaseBuilder {
+  welcome() {
+    const { configHelper } = this;
+    const { projectConfig } = configHelper;
+    console.log('')
+    log(['配置', '产物目录', path.join(configHelper.cwd, projectConfig.output)])
+    log(['配置', '打包入口', path.join(configHelper.cwd, projectConfig.input)])
+    console.log('')
+    console.log('')
+  }
+
   start() {
+    this.welcome();
+
     const { cwd, projectConfig } = this.configHelper;
     const staticDir = path.join(cwd, projectConfig.output);
     const port = projectConfig.dev?.port || DEFAULT_PORT;
@@ -25,13 +38,14 @@ class WebBuilder extends BaseBuilder {
     }, this.compiler);
 
     devServer.startCallback(() => {
-      console.log(`starting server on http://${DEAULT_HOST}:${port}`);
+      console.log(chalk.green(`服务启动成功： http://${DEAULT_HOST}:${port}`));
     });
   }
 
   build() {
-    console.log(chalk.cyan('开始打包'))
-    this.compiler.run(compilerCallback(true));
+    this.welcome();
+
+    runBuild(this.compiler);
   }
 }
 

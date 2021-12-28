@@ -6,9 +6,15 @@ import fs from 'fs';
 type Babel = typeof BabelCoreNamespace;
 
 const aliasReg = /([^/]*)/;
-
+const suffixs = ['', '.js', '.jsx', '.ts', '.tsx', '.json'];
 function exist(filename: string) {
-  return fs.existsSync(filename) || fs.existsSync(`${filename}.js`) || fs.existsSync(`${filename}.ts`) || fs.existsSync(`${filename}.jsx`) || fs.existsSync(`${filename}.tsx`) || fs.existsSync(`${filename}.json`)
+  for (let i = 0; i < suffixs.length; i++) {
+    const fn = `${filename}${suffixs[i]}`;
+    if (fs.existsSync(fn)) {
+      return fn;
+    }
+  }
+  return null
 }
 
 function isDir(rawFilename: string) {
@@ -23,10 +29,11 @@ export function getRawFileName(context: string, sourceFilename: string, alias: {
   }
 
   let rawFilename = path.isAbsolute(sourceFilename) ? sourceFilename : path.join(context, '..', sourceFilename);
-  if (!exist(rawFilename)) {
+  const cookedFileName = exist(rawFilename)
+  if (!cookedFileName) {
     return null
   }
-  if (isDir(rawFilename)) {
+  if (isDir(cookedFileName)) {
     rawFilename += '/index';
   }
   return rawFilename
@@ -45,7 +52,7 @@ export function generateNewFileName(context: string, sourceFilename: string, tar
   if(rawFilename) {
     let filename = appendTargetSuffix(rawFilename, target);
 
-    if (exist(filename)) {
+    if (!!exist(filename)) {
       const relativePath = path.relative(path.join(context, '..'), filename);
       return /^\./.test(relativePath) ? relativePath : `./${relativePath}`
     }

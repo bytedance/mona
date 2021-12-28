@@ -1,17 +1,29 @@
 
 import BaseBuilder from '@/builder/BaseBuilder';
-import compilerCallback from '@/utils/compilerCallback';
+import log from '@/log';
+import runBuild from '@/utils/runBuild';
+import path from 'path';
 import chalk from 'chalk';
-
 class MiniBuilder extends BaseBuilder {
+  welcome() {
+    const { configHelper } = this;
+    const { projectConfig } = configHelper;
+    console.log('')
+    log(['配置', '产物目录', path.join(configHelper.cwd, projectConfig.output)])
+    log(['配置', '打包入口', path.join(configHelper.cwd, projectConfig.input)])
+    console.log('')
+    console.log('')
+  }
 
   build() {
-    console.log(chalk.cyan('开始打包'))
-    this.compiler.run(compilerCallback(true));
+    this.welcome();
+    
+    runBuild(this.compiler);
   }
   
   start() {
-    console.log(chalk.cyan('开始打包'))
+    this.welcome();
+
     this.compiler.watch({
        aggregateTimeout: 200,
     }, (error: any, stats: any) => {
@@ -31,7 +43,8 @@ class MiniBuilder extends BaseBuilder {
           console.log(chalk.yellow(w.message));
         });
       }
-      console.log('文件监听中...');
+      console.log(chalk.green(`✅  编译成功 ${new Date().toLocaleString()}`))
+      console.log(chalk.gray('文件修改监听中...'));
     });
   }
 }

@@ -19,6 +19,11 @@ function build({ dev }: { dev: boolean }) {
       return;
     }
 
+    if (!['mini', 'plugin', 'web'].includes(argv.target as string)) {
+      console.log(chalk.red(`无效的目标端：${argv.target}`))
+      console.log(chalk.cyan(`有效值：mini | web | plugin`))
+      return;
+    }
     try {
       // 分析参数
       const builder = new Builder({ ...argv, dev })
