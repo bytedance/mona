@@ -25,14 +25,14 @@ const formatNodeType: Record<string, string> = {
 };
 
 export interface RenderNode {
-  key: number;
-  type: string;
-  props: Record<string, any>;
-  nodes: Record<number, RenderNode>;
-  children: number[];
-  text: string;
+  COMPLIER_KEY: number;
+  COMPLIER_TYPE: string;
+  COMPLIER_PROPS: Record<string, any>;
+  COMPLIER_NODES: Record<number, RenderNode>;
+  COMPLIER_CHILDREN: number[];
+  COMPLIER_TEXT: string;
 }
-export const NODE_MAP_NAME = 'nodes';
+export const NODE_MAP_NAME = 'n';
 
 export default class ServerElement {
   type: string;
@@ -194,7 +194,7 @@ export default class ServerElement {
 
   serialize(): RenderNode {
     const children = [];
-    const nodes: RenderNode['nodes'] = {};
+    const nodes: RenderNode['COMPLIER_NODES'] = {};
     let currKey = this.firstChildKey;
     let currItem: ServerElement | null = currKey ? this.children.get(currKey)! : null;
     while (currItem) {
@@ -206,12 +206,12 @@ export default class ServerElement {
     }
 
     return {
-      key: this.key,
-      type: this.type,
-      text: this.text!,
-      props: this.props,
-      children: children,
-      [NODE_MAP_NAME]: nodes,
+      COMPLIER_KEY: this.key,
+      COMPLIER_TYPE: this.type,
+      COMPLIER_TEXT: this.text!,
+      COMPLIER_PROPS: this.props,
+      COMPLIER_CHILDREN: children,
+      COMPLIER_NODES: nodes,
     };
   }
   reset() {

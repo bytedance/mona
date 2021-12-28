@@ -10,11 +10,12 @@ const pkg = require('./package.json');
 
 // 不要JSON.stringify
 const RENDER_NODE = {
-  COMPLIER_KEY: 'a',
-  COMPLIER_TYPE: 'b',
-  COMPLIER_NODES: 'c',
-  COMPLIER_CHILDREN: 'd',
-  COMPLIER_TEXT: 'e',
+  COMPLIER_KEY: 'k',
+  COMPLIER_TYPE: 't',
+  COMPLIER_NODES: 'n',
+  COMPLIER_CHILDREN: 'c',
+  COMPLIER_TEXT: 'te',
+  COMPLIER_PROPS: 'p',
 };
 
 export default [
@@ -55,10 +56,12 @@ export default [
       postcss(),
       terser(),
       replace(
-        Object.keys(RENDER_NODE).reduce((pre, item) => {
-          pre[`RENDER_NODE.${item}`] = RENDER_NODE[item];
-          return pre;
-        }, {}),
+        // Object.keys(RENDER_NODE).reduce((pre, item) => {
+        //   pre[`RENDER_NODE.${item}`] = RENDER_NODE[item];
+        //   return pre;
+        // }, {}),
+
+        RENDER_NODE,
       ),
     ],
   },

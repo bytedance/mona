@@ -13,13 +13,15 @@
   >
   <% if(!noChildElements.has(name)) { -%>
     <template 
-      is="{{ 'mona-' + node.nodes[item].type }}" 
-      tt:for="{{ node.children }}"
-      tt:key="{{ item.key }}"
-      data="{{ node: node.nodes[item] }}" 
+      is="{{ 'mona-' + node.n[item].t }}" 
+      tt:for="{{ node.c }}"
+      tt:key="{{ item.k }}"
+      data="{{ node: node.n[item] }}" 
     />
   <%_}-%></<%=name%>>
 </template><%};-%>
 <template name="mona-ptext">
-  <block>{{ node.text }}</block>
+  <block>{{ node.te }}</block>
 </template>
+
+
