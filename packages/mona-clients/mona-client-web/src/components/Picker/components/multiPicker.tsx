@@ -1,7 +1,7 @@
 // 参考arco Mobile
 import React from 'react';
 import { PickerData, ValueType } from '../type';
-import styles from '../index.module.less';
+import styles from '../../PickerView/index.module.less';
 
 interface MultiPickerProps {
   data: PickerData[][];
@@ -39,18 +39,14 @@ export default function MultiPicker(props: MultiPickerProps) {
     onValueChange?.(newValue, index);
   }
 
-  function renderChild() {
-    return React.Children.map(children, (col: any, index) =>
-      React.cloneElement(col, {
-        onValueChange: (value: ValueType) => _onValueChange(value, index),
-        selectedValue: getValue()[index],
-      }),
-    );
-  }
-
   return (
     <div className={styles.pickerViewMulti} style={{ lineHeight: `${itemHeight}px` }}>
-      {renderChild()}
+      {React.Children.map(children, (col: any, index) =>
+        React.cloneElement(col, {
+          onValueChange: (value: ValueType) => _onValueChange(value, index),
+          selectedValue: getValue()[index],
+        }),
+      )}
     </div>
   );
 }

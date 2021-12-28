@@ -2,7 +2,8 @@
 import React, { useMemo } from 'react';
 import { PickerData, ValueType } from '../type';
 import MultiPicker from './multiPicker';
-import PickerCell from './pickerCell';
+import PickerCell from '../../PickerViewColumn/pickerCell';
+
 export function arrayTreeFilter<T>(data: T[], filterFn: (item: T, level: number) => boolean) {
   const childrenKeyName = 'children';
   let children = data || [];

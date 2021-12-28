@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect, forwardRef, Ref, useImperativeHandle } from 'react';
 import FormatWrapper from './components/formatWrapper';
 import { PickerViewProps, ValueType, PickerData } from './type';
-import styles from './index.module.less';
+import styles from '../PickerView/index.module.less';
 
 const PickerView = forwardRef((props: PickerViewProps, ref: Ref<{ getData: () => ValueType[] }>) => {
   const { cols = 5, rows = 5, data, value, onColumnChange } = props;

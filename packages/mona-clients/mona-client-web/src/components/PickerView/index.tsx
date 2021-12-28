@@ -3,7 +3,7 @@ import { PickerViewProps } from '@bytedance/mona';
 import { isElement } from 'react-is';
 import { useHandlers } from '../hooks';
 import { genEvent } from '../utils';
-import styles from '../Picker/index.module.less';
+import styles from './index.module.less';
 
 const PickerView: React.FC<PickerViewProps> = ({
   children,

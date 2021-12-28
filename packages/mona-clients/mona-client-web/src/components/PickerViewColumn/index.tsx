@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { PickerViewColumnProps } from '@bytedance/mona';
 
-import PickerCell from '../Picker/components/pickerCell';
+import PickerCell from './pickerCell';
 import { useHandlers } from '../hooks';
 
 const PickerViewColumn: React.FC<PickerViewColumnProps> = props => {

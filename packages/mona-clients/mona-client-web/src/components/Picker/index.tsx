@@ -18,6 +18,7 @@ const Picker: React.FC<PickerProps> = props => {
       detail: { value: pickerRef.current.getData() },
     });
   }, []);
+
   const handleConfirm = useCallback((e: TouchEvent) => {
     setVisible(false);
     propsRef.current?.onConfirm?.({
@@ -25,6 +26,7 @@ const Picker: React.FC<PickerProps> = props => {
       detail: { value: pickerRef.current.getData() },
     });
   }, []);
+
   return (
     <div>
       <div onTouchStart={() => !props.disabled && setVisible(true)}>

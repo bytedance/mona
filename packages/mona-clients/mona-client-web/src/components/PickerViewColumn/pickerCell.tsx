@@ -1,9 +1,9 @@
 // 参考arco Mobile
 import React, { useCallback, useEffect, useMemo, useRef, useState, useLayoutEffect } from 'react';
-import { PickerData, ValueType, PickerCellMovingStatus } from '../type';
-import { useRefState } from '../hooks';
-import { getStyleWithVendor } from '../../../utils/style';
-import styles from '../index.module.less';
+import { PickerData, ValueType, PickerCellMovingStatus } from '../Picker/type';
+import { useRefState } from '../Picker/hooks';
+import { getStyleWithVendor } from '../../utils/style';
+import styles from '../PickerView/index.module.less';
 
 interface PickerCellProps {
   data: PickerData[];
