@@ -15,7 +15,7 @@
     <template 
       is="{{ 'mona-' + node.n[item].t }}" 
       tt:for="{{ node.c }}"
-      tt:key="{{ item }}"
+      tt:key="{{ item.k }}"
       data="{{ node: node.n[item] }}" 
     />
   <%_}-%></<%=name%>>
