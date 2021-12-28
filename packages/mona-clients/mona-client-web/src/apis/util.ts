@@ -53,7 +53,7 @@ export const webRequest: BaseApis['request'] = (data): RequestTask => {
   };
 };
 
-export const webChooseImage: BaseApis['chooseImage'] = options => {
+export const webChooseImage: BaseApis['chooseImage'] = (options = {}) => {
   try {
     const input = document.createElement('input');
     input.type = 'file';
@@ -103,7 +103,7 @@ export const webGetImageInfo: BaseApis['getImageInfo'] = options => {
   };
 };
 
-export const webChooseVideo: BaseApis['chooseVideo'] = options => {
+export const webChooseVideo: BaseApis['chooseVideo'] = (options = {}) => {
   try {
     const input = document.createElement('input');
     input.type = 'file';
@@ -236,7 +236,7 @@ export const webRemoveStorageSync: BaseApis['removeStorageSync'] = key => {
   window.localStorage.removeItem(key);
 };
 
-export const webClearStorage: BaseApis['clearStorage'] = options => {
+export const webClearStorage: BaseApis['clearStorage'] = (options = {}) => {
   let errMsg = 'clearStorage:fail';
   try {
     errMsg = 'clearStorage:ok';
@@ -289,7 +289,7 @@ export const webGetLocation: BaseApis['getLocation'] = options => {
   }
 };
 
-export const webGetNetworkType: BaseApis['getNetworkType'] = options => {
+export const webGetNetworkType: BaseApis['getNetworkType'] = (options = {}) => {
   let errMsg: NetworkType | string;
   if (navigator.connection) {
     // @ts-ignore ignore
@@ -359,7 +359,7 @@ export const webRedirectTo: BaseApis['redirectTo'] = options => {
   options.complete?.({ errMsg });
 };
 
-export const webNavigateBack: BaseApis['navigateBack'] = options => {
+export const webNavigateBack: BaseApis['navigateBack'] = (options = {}) => {
   let errMsg: string;
   try {
     errMsg = 'navigateBack:ok';
@@ -388,7 +388,7 @@ export const webReLaunch: BaseApis['reLaunch'] = options => {
   options.complete?.({ errMsg });
 };
 
-export const webGetClipboardData: BaseApis['getClipboardData'] = options => {
+export const webGetClipboardData: BaseApis['getClipboardData'] = (options = {}) => {
   const errMsg = 'setClipboardData:fail';
 
   try {

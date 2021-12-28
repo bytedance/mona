@@ -71,7 +71,7 @@ function confirm(props: ShowModalOptions) {
   render();
 }
 
-export function webShowModal(props: ShowModalOptions) {
+export function webShowModal(props: ShowModalOptions = {}) {
   if(!props.title && !props.content) {
     props.fail?.({ errMsg: 'showModal: error' })
   } else {
