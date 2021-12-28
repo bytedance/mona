@@ -1,27 +1,27 @@
 <template name="mona-base">
-  <template tt:for="{{root.children}}" tt:key="*this" is="{{'mona-' + root.nodes[item].t}}" data="{{node: root.nodes[item]}}" />
+  <template tt:for="{{root.children}}" tt:key="*this" is="{{'mona-' + root.nodes[item].<%=RENDER_NODE.COMPLIER_TYPE%>}}" data="{{node: root.nodes[item]}}" />
 </template>
 <%for (let name of ejsParamsMap.keys()) {%>
 <template name="mona-<%=name%>">
   <<%=name%> 
     <%_for(let i in ejsParamsMap.get(name).alias){-%>
     <%_if(ejsParamsMap.get(name).defaultProps[i] !== undefined){-%>
-    <%=ejsParamsMap.get(name).alias[i]%>="{{node.p['<%=i%>'] === undefined ? <%-ejsParamsMap.get(name).defaultProps[i]%> : node.p['<%=i%>']}}" 
+    <%=ejsParamsMap.get(name).alias[i]%>="{{node.<%=RENDER_NODE.COMPLIER_PROPS%>['<%=i%>'] === undefined ? <%-ejsParamsMap.get(name).defaultProps[i]%> : node.<%=RENDER_NODE.COMPLIER_PROPS%>['<%=i%>']}}" 
     <%_} else{-%>
-    <%=ejsParamsMap.get(name).alias[i]%>="{{node.p['<%=i%>']}}" 
+    <%=ejsParamsMap.get(name).alias[i]%>="{{node.<%=RENDER_NODE.COMPLIER_PROPS%>['<%=i%>']}}" 
     <%_}}-%>
   >
   <% if(!noChildElements.has(name)) { -%>
     <template 
-      is="{{ 'mona-' + node.n[item].t }}" 
-      tt:for="{{ node.c }}"
-      tt:key="{{ item.k }}"
-      data="{{ node: node.n[item] }}" 
+      is="{{ 'mona-' + node.<%=RENDER_NODE.COMPLIER_NODES%>[item].<%=RENDER_NODE.COMPLIER_TYPE%> }}" 
+      tt:for="{{ node.<%=RENDER_NODE.COMPLIER_CHILDREN%> }}"
+      tt:key="{{ item.<%=RENDER_NODE.COMPLIER_KEY%> }}"
+      data="{{ node: node.<%=RENDER_NODE.COMPLIER_NODES%>[item] }}" 
     />
   <%_}-%></<%=name%>>
 </template><%};-%>
 <template name="mona-ptext">
-  <block>{{ node.te }}</block>
+  <block>{{ node.<%=RENDER_NODE.COMPLIER_TEXT%> }}</block>
 </template>
 
 

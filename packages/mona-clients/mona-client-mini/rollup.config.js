@@ -5,18 +5,10 @@ import typescript from 'rollup-plugin-typescript2';
 import postcss from 'rollup-plugin-postcss';
 import { terser } from 'rollup-plugin-terser';
 import replace from '@rollup/plugin-replace';
+import { RENDER_NODE } from '@bytedance/mona-shared/dist/constants';
+import json from '@rollup/plugin-json';
 
 const pkg = require('./package.json');
-
-// 不要JSON.stringify
-const RENDER_NODE = {
-  COMPLIER_KEY: 'k',
-  COMPLIER_TYPE: 't',
-  COMPLIER_NODES: 'n',
-  COMPLIER_CHILDREN: 'c',
-  COMPLIER_TEXT: 'te',
-  COMPLIER_PROPS: 'p',
-};
 
 export default [
   // {
@@ -55,14 +47,8 @@ export default [
       typescript({ useTsconfigDeclarationDir: false }),
       postcss(),
       terser(),
-      replace(
-        // Object.keys(RENDER_NODE).reduce((pre, item) => {
-        //   pre[`RENDER_NODE.${item}`] = RENDER_NODE[item];
-        //   return pre;
-        // }, {}),
-
-        RENDER_NODE,
-      ),
+      replace(RENDER_NODE),
+      json(),
     ],
   },
 ];

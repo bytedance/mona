@@ -1,6 +1,7 @@
 import { NodeTask } from '../utils';
 // import { processProps } from './processProps';
 import TaskController, { Task } from './TaskController';
+import { RENDER_NODE } from '@bytedance/mona-shared/dist/constants';
 
 let id = 1;
 export function generateId() {
@@ -32,7 +33,8 @@ export interface RenderNode {
   COMPLIER_CHILDREN: number[];
   COMPLIER_TEXT: string;
 }
-export const NODE_MAP_NAME = 'n';
+
+export const NODE_MAP_NAME = RENDER_NODE.COMPLIER_NODES;
 
 export default class ServerElement {
   type: string;

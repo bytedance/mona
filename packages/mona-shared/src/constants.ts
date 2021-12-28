@@ -1,0 +1,8 @@
+export const RENDER_NODE = {
+  COMPLIER_KEY: 'k',
+  COMPLIER_TYPE: 't',
+  COMPLIER_NODES: 'n',
+  COMPLIER_CHILDREN: 'c',
+  COMPLIER_TEXT: 'x',
+  COMPLIER_PROPS: 'p',
+};
