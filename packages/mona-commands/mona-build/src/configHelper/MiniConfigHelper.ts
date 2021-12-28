@@ -183,7 +183,6 @@ class MiniConfigHelper extends BaseConfigHelper {
   }
 
   private _createPlugins(...extraPlugin: any[]) {
-    this.projectConfig.compilerOptimization;
     return [
       ...extraPlugin,
 
