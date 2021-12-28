@@ -17,9 +17,9 @@ export const monaPrint = {
       console.log('%cmona log:', 'color: #01530f; background: #d6ffdf;', ...rest);
     }
   },
-  warn(msg: string) {
+  warn(_msg: string) {
     if (process.env.NODE_ENV !== 'production') {
-      console.warn(`mona warn: ${msg}`);
+      // console.warn(`mona warn: ${msg}`);
     }
   },
   debug(...rest: any[]) {

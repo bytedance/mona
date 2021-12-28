@@ -1,5 +1,5 @@
 <template name="mona-base">
-  <template tt:for="{{root.children}}" tt:key="*this" is="{{'mona-' + root.nodes[item].type}}" data="{{node: root.nodes[item]}}" />
+  <template tt:for="{{root.children}}" tt:key="*this" is="{{'mona-' + root.nodes[item].t}}" data="{{node: root.nodes[item]}}" />
 </template>
 <%for (let name of ejsParamsMap.keys()) {%>
 <template name="mona-<%=name%>">
