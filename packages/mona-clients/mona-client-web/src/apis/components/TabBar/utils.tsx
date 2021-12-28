@@ -61,7 +61,7 @@ export const useTabBarHandle = (props: { tab: TabBarProps }) => {
         params.complete?.({ errMsg });
       }
     },
-    setTabBarStyle: params => {
+    setTabBarStyle: (params = {}) => {
       let errMsg = 'setTabBarStyle:fail';
 
       if (!params.backgroundColor && !params.borderStyle && !params.selectedColor && !params.color) {

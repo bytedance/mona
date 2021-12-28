@@ -2,27 +2,17 @@ import fs from 'fs';
 import inquirer, { DistinctQuestion } from 'inquirer';
 
 const templates = [
-  // {
-  //   name: 'pc（适用于桌面端应用和Web应用）',
-  //   value: 'pc',
-  // },
+  {
+    name: 'app（适用于商家应用开发支持小程序和h5）',
+    value: 'app',
+  },
   {
     name: 'plugin（适用于商家应用插件开发）',
     value: 'plugin'
   }
-  // {
-  //   name: 'mobile（适用于小程序和移动端web应用）',
-  //   value: 'mobile',
-  //   disabled: true,
-  // },
-  // {
-  //   name: 'monorepo（同时包含以上三种方式，使用monorepo方式进行管理）',
-  //   value: 'monorepo',
-  //   disabled: true,
-  // },
 ];
 
-export type TemplateType = 'pc' | 'mobile' | 'plugin' | 'monorepo';
+export type TemplateType = 'app' | 'plugin';
 
 export interface Answer {
   projectName: string;

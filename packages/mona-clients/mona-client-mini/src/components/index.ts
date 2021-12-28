@@ -1,6 +1,7 @@
 import React from 'react';
 import createBaseComponent from '../createBaseComponent';
 import { ComponentType } from '@bytedance/mona-shared/dist/constants';
+import formatPath from '../utils/formatPath';
 
 import {
   ButtonProps,
@@ -77,7 +78,7 @@ export const OpenData = createBaseComponent<OpenDataProps>(ComponentType['open-d
 // 自定义
 export const Link = (function createBaseComponent(name) {
   const Component = React.forwardRef(({ children, to }: any, ref) =>
-    React.createElement(name, { url: to, ref }, children),
+    React.createElement(name, { url: formatPath(to), ref }, children),
   );
   Component.displayName = name;
   return Component;
