@@ -72,7 +72,11 @@ export default class TaskController {
         res[this.genUpdatePath([...task.path, task.propName])] = task.propValue;
       }
     });
-    this.context.setData(res);
+
+    console.time('setData');
+    this.context.setData(res, () => {
+      console.timeEnd('setData');
+    });
     monaPrint.debug('applyUpdate', {
       data: res,
       tasks: this.tasks,
