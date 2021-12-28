@@ -51,7 +51,7 @@ export default [
       peerDepsExternal(),
       resolve({ browser: true, preferBuiltins: true }),
       commonjs(),
-      typescript({ useTsconfigDeclarationDir: true }),
+      typescript({ useTsconfigDeclarationDir: false }),
       postcss(),
       terser(),
       replace(
