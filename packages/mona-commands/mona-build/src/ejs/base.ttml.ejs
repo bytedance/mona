@@ -3,7 +3,7 @@
 </template>
 <%for (let name of ejsParamsMap.keys()) {%>
 <template name="mona-<%=name%>">
-  <<%=name%> 
+  <<%=ComponentAliasMap[name]%> 
     <%_for(let i in ejsParamsMap.get(name).alias){-%>
     <%_if(ejsParamsMap.get(name).defaultProps[i] !== undefined){-%>
     <%=ejsParamsMap.get(name).alias[i]%>="{{node.<%=RENDER_NODE.COMPLIER_PROPS%>['<%=i%>'] === undefined ? <%-ejsParamsMap.get(name).defaultProps[i]%> : node.<%=RENDER_NODE.COMPLIER_PROPS%>['<%=i%>']}}" 
@@ -18,9 +18,9 @@
       tt:key="{{ item.<%=RENDER_NODE.COMPLIER_KEY%> }}"
       data="{{ node: node.<%=RENDER_NODE.COMPLIER_NODES%>[item] }}" 
     />
-  <%_}-%></<%=name%>>
+  <%_}-%></<%=ComponentAliasMap[name]%>>
 </template><%};-%>
-<template name="mona-ptext">
+<template name="mona-36">
   <block>{{ node.<%=RENDER_NODE.COMPLIER_TEXT%> }}</block>
 </template>
 

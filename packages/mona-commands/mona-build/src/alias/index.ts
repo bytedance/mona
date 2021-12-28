@@ -34,7 +34,7 @@ import webview from './Webview/alias';
 import map from './Map/alias';
 // import map from './Ca/alias';
 // import * as Components from '@bytedance/mona-components';
-
+import { ComponentType } from '@bytedance/mona-shared';
 type ComponentName = any;
 export const ejsParamsObj: Record<
   string,
@@ -44,17 +44,17 @@ export const ejsParamsObj: Record<
     defaultProps?: Record<string, string | boolean | number>;
   }
 > = {
-  text: {
+  [ComponentType.text]: {
     reactComponentName: 'Text',
     alias: text,
     defaultProps: { selectable: false, space: false, decode: false },
   },
-  block: {
+  [ComponentType.block]: {
     reactComponentName: 'Block',
     alias: block,
   },
-  'rich-text': { reactComponentName: 'RichText', alias: richText },
-  progress: {
+  [ComponentType['rich-text']]: { reactComponentName: 'RichText', alias: richText },
+  [ComponentType.progress]: {
     reactComponentName: 'Progress',
     alias: progress,
     defaultProps: {
@@ -67,14 +67,14 @@ export const ejsParamsObj: Record<
       activeMode: 'backwards',
     },
   },
-  icon: {
+  [ComponentType.icon]: {
     reactComponentName: 'Icon',
     alias: icon,
     defaultProps: {
       size: 24,
     },
   },
-  view: {
+  [ComponentType.view]: {
     reactComponentName: 'View',
     alias: view,
     defaultProps: {
@@ -84,7 +84,7 @@ export const ejsParamsObj: Record<
       hoverStopPropagation: false,
     },
   },
-  'scroll-view': {
+  [ComponentType['scroll-view']]: {
     reactComponentName: 'ScrollView',
     alias: scrollView,
     defaultProps: {
@@ -95,7 +95,7 @@ export const ejsParamsObj: Record<
       scrollWithAnimation: false,
     },
   },
-  swiper: {
+  [ComponentType.swiper]: {
     reactComponentName: 'Swiper',
     alias: swiper,
     defaultProps: {
@@ -114,7 +114,7 @@ export const ejsParamsObj: Record<
       vertical: false,
     },
   },
-  'swiper-item': {
+  [ComponentType['swiper-item']]: {
     reactComponentName: 'SwiperItem',
     alias: swiperItem,
   },
@@ -123,11 +123,11 @@ export const ejsParamsObj: Record<
 
     alias: movableArea,
   },
-  'movable-view': {
+  [ComponentType['movable-view']]: {
     reactComponentName: 'MovableView',
     alias: movableView,
   },
-  button: {
+  [ComponentType.button]: {
     reactComponentName: 'Button',
 
     alias: button,
@@ -143,7 +143,7 @@ export const ejsParamsObj: Record<
       hoverStopPropagation: false,
     },
   },
-  checkbox: {
+  [ComponentType.checkbox]: {
     reactComponentName: 'Checkbox',
     alias: checkbox,
     defaultProps: {
@@ -151,12 +151,12 @@ export const ejsParamsObj: Record<
       checked: false,
     },
   },
-  'checkbox-group': {
+  [ComponentType['checkbox-group']]: {
     reactComponentName: 'CheckboxGroup',
 
     alias: checkboxGroup,
   },
-  form: {
+  [ComponentType.form]: {
     reactComponentName: 'Form',
 
     alias: form,
@@ -165,7 +165,7 @@ export const ejsParamsObj: Record<
       reportSubmit: false,
     },
   },
-  input: {
+  [ComponentType.input]: {
     reactComponentName: 'Input',
 
     alias: input,
@@ -183,11 +183,11 @@ export const ejsParamsObj: Record<
       cursor: -1,
     },
   },
-  label: {
+  [ComponentType.label]: {
     reactComponentName: 'Label',
     alias: label,
   },
-  picker: {
+  [ComponentType.picker]: {
     reactComponentName: 'Picker',
     alias: picker,
     defaultProps: {
@@ -195,17 +195,17 @@ export const ejsParamsObj: Record<
       disabled: false,
     },
   },
-  'picker-view': {
+  [ComponentType['picker-view']]: {
     reactComponentName: 'PickerView',
 
     alias: pickerView,
   },
-  'picker-view-column': {
+  [ComponentType['picker-view-column']]: {
     reactComponentName: 'PickerViewColumn',
 
     alias: pickerViewColumn,
   },
-  radio: {
+  [ComponentType.radio]: {
     reactComponentName: 'Radio',
     alias: radio,
     defaultProps: {
@@ -214,12 +214,12 @@ export const ejsParamsObj: Record<
       color: '#F85959',
     },
   },
-  'radio-group': {
+  [ComponentType['radio-group']]: {
     reactComponentName: 'RadioGroup',
 
     alias: radioGroup,
   },
-  slider: {
+  [ComponentType.slider]: {
     reactComponentName: 'Slider',
 
     alias: slider,
@@ -239,7 +239,7 @@ export const ejsParamsObj: Record<
       showValue: false,
     },
   },
-  switch: {
+  [ComponentType.switch]: {
     reactComponentName: 'Switch',
     alias: switchComponent,
     defaultProps: {
@@ -249,7 +249,7 @@ export const ejsParamsObj: Record<
       color: '#F85959',
     },
   },
-  textarea: {
+  [ComponentType.textarea]: {
     reactComponentName: 'Textarea',
 
     alias: textArea,
@@ -266,7 +266,7 @@ export const ejsParamsObj: Record<
       selectionEnd: -1,
     },
   },
-  navigator: {
+  [ComponentType.navigator]: {
     reactComponentName: 'Navigator',
     alias: navigator,
     defaultProps: {
@@ -277,7 +277,7 @@ export const ejsParamsObj: Record<
       hoverStopPropagation: false,
     },
   },
-  image: {
+  [ComponentType.image]: {
     reactComponentName: 'Image',
 
     alias: image,
@@ -287,7 +287,7 @@ export const ejsParamsObj: Record<
       lazyLoad: false,
     },
   },
-  video: {
+  [ComponentType.video]: {
     alias: video,
     reactComponentName: 'Video',
 
@@ -308,7 +308,7 @@ export const ejsParamsObj: Record<
       enablePlayInBackground: false,
     },
   },
-  'live-player': {
+  [ComponentType['live-player']]: {
     reactComponentName: 'LivePlayer',
 
     alias: livePlayer,
@@ -322,17 +322,17 @@ export const ejsParamsObj: Record<
   // camera: {
   //   alias: camera,
   // },
-  canvas: {
+  [ComponentType.canvas]: {
     reactComponentName: 'Canvas',
 
     alias: canvas,
   },
-  map: {
+  [ComponentType.map]: {
     reactComponentName: 'Map',
 
     alias: map,
   },
-  'web-view': {
+  [ComponentType['web-view']]: {
     reactComponentName: 'Webview',
 
     alias: webview,
@@ -341,11 +341,11 @@ export const ejsParamsObj: Record<
       progressBarColor: '#51a0d8',
     },
   },
-  ad: {
+  [ComponentType.ad]: {
     reactComponentName: 'Ad',
     alias: ad,
   },
-  'open-data': {
+  [ComponentType['open-data']]: {
     reactComponentName: 'OpenData',
     alias: openData,
   },

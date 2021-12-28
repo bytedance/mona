@@ -1,5 +1,7 @@
 import React from 'react';
 import createBaseComponent from '../createBaseComponent';
+import { ComponentType } from '@bytedance/mona-shared/dist/constants';
+
 import {
   ButtonProps,
   ViewProps,
@@ -38,45 +40,45 @@ import {
   RichTextProps,
 } from '@bytedance/mona';
 
-export const Text = createBaseComponent<TextProps>('text');
-export const RichText = createBaseComponent<RichTextProps>('rich-text');
-export const Progress = createBaseComponent<ProgressProps>('progress');
-export const Icon = createBaseComponent<IconProps>('icon');
-export const View = createBaseComponent<ViewProps>('view');
-export const ScrollView = createBaseComponent<ScrollViewProps>('scroll-view');
-export const Swiper = createBaseComponent<SwiperProps>('swiper');
-export const SwiperItem = createBaseComponent<SwiperItemProps>('swiper-item');
-export const MovableArea = createBaseComponent<MovableAreaProps>('movable-area');
-export const MovableView = createBaseComponent<MovableViewProps>('movable-view');
-export const Button = createBaseComponent<ButtonProps>('button');
-export const Checkbox = createBaseComponent<CheckboxProps>('checkbox');
-export const CheckboxGroup = createBaseComponent<CheckboxGroupProps>('checkbox-group');
-export const Form = createBaseComponent<FormProps>('form');
-export const Input = createBaseComponent<InputProps>('input');
-export const Label = createBaseComponent<LabelProps>('label');
-export const Picker = createBaseComponent<PickerProps>('picker');
-export const PickerView = createBaseComponent<PickerViewProps>('picker-view');
-export const PickerViewColumn = createBaseComponent<PickerViewColumnProps>('picker-view-column');
-export const Radio = createBaseComponent<RadioProps>('radio');
-export const RadioGroup = createBaseComponent<RadioGroupProps>('radio-group');
-export const Slider = createBaseComponent<SliderProps>('slider');
-export const Switch = createBaseComponent<SwitchProps>('switch');
-export const Textarea = createBaseComponent<TextareaProps>('textarea');
-export const Navigator = createBaseComponent<NavigatorProps>('navigator');
-export const Image = createBaseComponent<ImageProps>('image');
-export const Video = createBaseComponent<VideoProps>('video');
-export const LivePlayer = createBaseComponent<LivePlayerProps>('live-player');
-export const Camera = createBaseComponent<CameraProps>('camera');
-export const Canvas = createBaseComponent<CanvasProps>('canvas');
-export const Map = createBaseComponent<MapProps>('map');
-export const Webview = createBaseComponent<WebviewProps>('web-view');
-export const Ad = createBaseComponent<AdProps>('ad');
-export const OpenData = createBaseComponent<OpenDataProps>('open-data');
-  // 自定义
+export const Text = createBaseComponent<TextProps>(ComponentType['text']);
+export const RichText = createBaseComponent<RichTextProps>(ComponentType['rich-text']);
+export const Progress = createBaseComponent<ProgressProps>(ComponentType['progress']);
+export const Icon = createBaseComponent<IconProps>(ComponentType['icon']);
+export const View = createBaseComponent<ViewProps>(ComponentType['view']);
+export const ScrollView = createBaseComponent<ScrollViewProps>(ComponentType['scroll-view']);
+export const Swiper = createBaseComponent<SwiperProps>(ComponentType['swiper']);
+export const SwiperItem = createBaseComponent<SwiperItemProps>(ComponentType['swiper-item']);
+export const MovableArea = createBaseComponent<MovableAreaProps>(ComponentType['movable-area']);
+export const MovableView = createBaseComponent<MovableViewProps>(ComponentType['movable-view']);
+export const Button = createBaseComponent<ButtonProps>(ComponentType['button']);
+export const Checkbox = createBaseComponent<CheckboxProps>(ComponentType['checkbox']);
+export const CheckboxGroup = createBaseComponent<CheckboxGroupProps>(ComponentType['checkbox-group']);
+export const Form = createBaseComponent<FormProps>(ComponentType['form']);
+export const Input = createBaseComponent<InputProps>(ComponentType['input']);
+export const Label = createBaseComponent<LabelProps>(ComponentType['label']);
+export const Picker = createBaseComponent<PickerProps>(ComponentType['picker']);
+export const PickerView = createBaseComponent<PickerViewProps>(ComponentType['picker-view']);
+export const PickerViewColumn = createBaseComponent<PickerViewColumnProps>(ComponentType['picker-view-column']);
+export const Radio = createBaseComponent<RadioProps>(ComponentType['radio']);
+export const RadioGroup = createBaseComponent<RadioGroupProps>(ComponentType['radio-group']);
+export const Slider = createBaseComponent<SliderProps>(ComponentType['slider']);
+export const Switch = createBaseComponent<SwitchProps>(ComponentType['switch']);
+export const Textarea = createBaseComponent<TextareaProps>(ComponentType['textarea']);
+export const Navigator = createBaseComponent<NavigatorProps>(ComponentType['navigator']);
+export const Image = createBaseComponent<ImageProps>(ComponentType['image']);
+export const Video = createBaseComponent<VideoProps>(ComponentType['video']);
+export const LivePlayer = createBaseComponent<LivePlayerProps>(ComponentType['live-player']);
+export const Camera = createBaseComponent<CameraProps>(ComponentType['camera']);
+export const Canvas = createBaseComponent<CanvasProps>(ComponentType['canvas']);
+export const Map = createBaseComponent<MapProps>(ComponentType['map']);
+export const Webview = createBaseComponent<WebviewProps>(ComponentType['web-view']);
+export const Ad = createBaseComponent<AdProps>(ComponentType['ad']);
+export const OpenData = createBaseComponent<OpenDataProps>(ComponentType['open-data']);
+// 自定义
 export const Link = (function createBaseComponent(name) {
   const Component = React.forwardRef(({ children, to }: any, ref) =>
     React.createElement(name, { url: to, ref }, children),
   );
   Component.displayName = name;
   return Component;
-})('navigator') as React.ComponentType<LinkProps>;
+})(ComponentType['navigator']) as React.ComponentType<LinkProps>;

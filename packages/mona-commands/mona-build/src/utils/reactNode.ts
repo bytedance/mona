@@ -1,8 +1,9 @@
+import { ComponentType } from '@bytedance/mona-shared';
 // 转为xx-xx的形式
 export const transformNodeName = (key: string) => {
   // webview 单独处理，或者写一个map
   if (key === 'Webview') {
-    return 'web-view';
+    return ComponentType['web-view'];
   }
 
   let styleValue = key.replace(/\.?([A-Z]+)/g, function (_x, y) {
@@ -13,5 +14,6 @@ export const transformNodeName = (key: string) => {
     styleValue = styleValue.replace(/^-/, '');
   }
 
-  return styleValue;
+  //@ts-ignore
+  return ComponentType[styleValue];
 };
