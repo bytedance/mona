@@ -617,7 +617,7 @@ export interface FileSystemManager {
   access: (options: Callbacks<CommonErrorArgs, FileSystemManagerAccessFailCallbackArgs>) => void;
   saveFileSync: (tempFilePath: string, filePath?: string) => string;
   saveFile: (options: FileSystemManagerSaveFileOptions) => void;
-  getSavedFileList: (options: GetSavedFileListOptions) => void;
+  getSavedFileList: (options?: GetSavedFileListOptions) => void;
   removeSavedFile: (options: RemoveSavedFileOptions) => void;
   copyFileSync: (srcPath: string, destPath: string) => void;
   copyFile: (options: FileSystemManagerCopyFileOptions) => void;
@@ -1254,7 +1254,7 @@ abstract class Api {
   // 生命周期
   abstract getEnterOptionsSync(): EnterOrLaunchOptions;
   abstract getLaunchOptionsSync(): EnterOrLaunchOptions;
-  abstract exitMiniProgram(callbacks: Callbacks): void;
+  abstract exitMiniProgram(callbacks?: Callbacks): void;
   abstract canIPutStuffOverComponent(componentName: string): boolean;
   // 更新
   abstract getUpdateManager(): UpdateManager;
@@ -1277,7 +1277,7 @@ abstract class Api {
   abstract connectSocket(options: ConnectSocketOptions): SocketTask;
   // 媒体
   // 图片
-  abstract chooseImage(options: ChooseImageOptions): void;
+  abstract chooseImage(options?: ChooseImageOptions): void;
   abstract saveImageToPhotosAlbum(options: SaveImageOptions): void;
   abstract previewImage(options: PreviewImageOptions): void;
   abstract getImageInfo(options: GetImageInfoOptions): void;
@@ -1288,7 +1288,7 @@ abstract class Api {
   abstract getBackgroundAudioManager(): BackgroundAudioManager;
   abstract createInnerAudioContext(): InnerAudioContext;
   // 视频
-  abstract chooseVideo(options: ChooseVideoOptions): void;
+  abstract chooseVideo(options?: ChooseVideoOptions): void;
   abstract saveVideoToPhotoAlbum(options: SaveVideoOptions): void;
   abstract createVideoContext(id: string, component?: any): VideoContext;
   abstract createLivePlayerContext(id: string, component?: any): LivePlayerContext;
@@ -1310,11 +1310,11 @@ abstract class Api {
   // 环境信息
   abstract getEnvInfoSync(): EnvInfo;
   // 登录
-  abstract login(options: LoginOptions): void;
-  abstract checkSession(options: CheckSessionOptions): void;
+  abstract login(options?: LoginOptions): void;
+  abstract checkSession(options?: CheckSessionOptions): void;
   // 用户信息
-  abstract getUserInfo(options: GetUserInfoOptions): void;
-  abstract getUserInfoProfile(options: GetUserInfoProfileOptions): void;
+  abstract getUserInfo(options?: GetUserInfoOptions): void;
+  abstract getUserInfoProfile(options?: GetUserInfoProfileOptions): void;
   // 广告
   abstract createRewardedVideoAd(options: CreateRewardedVideoAdOptions): RewardedVideoAd;
   abstract createInterstitialAd(options: CreateRewardedVideoAdOptions): InterstitialAd;
@@ -1322,12 +1322,12 @@ abstract class Api {
   abstract pay(options: PayOptions): void;
   // 小程序跳转
   abstract navigateToMiniProgram(options: NavigateToMiniProgramOptions): void;
-  abstract navigateBackMiniProgram(options: NavigateBackMiniProgramOptions): void;
+  abstract navigateBackMiniProgram(options?: NavigateBackMiniProgramOptions): void;
   // 收获地址
-  abstract chooseAddresses(options: ChooseAddressesOptions): void;
+  abstract chooseAddresses(options?: ChooseAddressesOptions): void;
   // 设置
-  abstract getSetting(options: GetSettingOptions): void;
-  abstract openSettings(options: OpenSettingsOptions): void;
+  abstract getSetting(options?: GetSettingOptions): void;
+  abstract openSettings(options?: OpenSettingsOptions): void;
   // 授权
   abstract authorize(options: AuthorizeOptions): void;
   abstract showDouyinOpenAuth(options: ShowDouyinOpenAuthOptions): void;
@@ -1337,14 +1337,14 @@ abstract class Api {
   abstract canRateAwemeOrders(options: CanRateAwemeOrdersOptions): void;
   abstract rateAwemeOrder(options: RateAwemeOrderOptions): void;
   // 引导关注             
-  abstract followOfficialAccount(options: Callbacks<CommonExtendsErrorArgs, CommonErrorArgs>): void;
-  abstract checkFollowState(options: Callbacks<{ errMsg: string; result: boolean; }, CommonErrorArgs>): void;
-  abstract openAwemeUserProfile(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract followAwemeUser(options: Callbacks<{ errMsg: string; followed: boolean; }, CommonErrorArgs>): void;
+  abstract followOfficialAccount(options?: Callbacks<CommonExtendsErrorArgs, CommonErrorArgs>): void;
+  abstract checkFollowState(options?: Callbacks<{ errMsg: string; result: boolean; }, CommonErrorArgs>): void;
+  abstract openAwemeUserProfile(options?: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract followAwemeUser(options?: Callbacks<{ errMsg: string; followed: boolean; }, CommonErrorArgs>): void;
   // 订阅消息
   abstract requestSubscribeMessage(options: RequestSubscribeMessageOptions): void;
   // 电商融合方案
-  abstract openDouyinOrderList(options: Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>): void;
+  abstract openDouyinOrderList(options?: Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>): void;
   abstract openEcGood(options: OpenEcGoodOptions): void;
   abstract openEcOrderDetail(options: OpenEcOrderDetailOptions): void;
   abstract openEcIm(options: OpenEcImOptions): void;
@@ -1369,7 +1369,7 @@ abstract class Api {
   abstract setStorageSync(key: string, data: any): void;
   abstract removeStorage(options: RemoveStorageOptions): void;
   abstract removeStorageSync(key: string): void;
-  abstract clearStorage(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract clearStorage(options?: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   abstract clearStorageSync(): void;
   abstract getStorageInfo(options: GetStorageInfoOptions): void;
   abstract getStorageInfoSync(): StorageInfo;
@@ -1379,30 +1379,30 @@ abstract class Api {
   abstract openLocation(options: OpenLocationOptions): void;
   // 设备
   // 网络状态
-  abstract getNetworkType(options: Callbacks<{ networkType: NetworkType; }, CommonErrorArgs>): void;
+  abstract getNetworkType(options?: Callbacks<{ networkType: NetworkType; }, CommonErrorArgs>): void;
   abstract onNetworkStatusChange(callback: (args: { networkType: NetworkType, isConnected: boolean; }) => void): void;
-  abstract getWifiList(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract getWifiList(options?: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   abstract onGetWifiList(callback: (args: { wifiList: WifiInfo[]; }) => void): void;
   abstract offGetWifiList(callback: () => void): void;
   // 系统信息
   abstract getSystemInfo(options: GetSystemInfoOptions): void;
   abstract getSystemInfoSync(): SystemInfo;
   // WIFI
-  abstract getConnectedWifi(options: Callbacks<WifiInfo, CommonErrorArgs>): void;
+  abstract getConnectedWifi(options?: Callbacks<WifiInfo, CommonErrorArgs>): void;
   // 加速度计
-  abstract startAccelerometer(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract stopAccelerometer(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract startAccelerometer(options?: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract stopAccelerometer(options?: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   abstract onAccelerometerChange(callback: (args: { x: number; y: number; z: number; }) => void): void;
   // 罗盘
-  abstract startCompass(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract stopCompass(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract onCompassChange(options: Callbacks<{ duration: number; }, CommonErrorArgs>): void;
+  abstract startCompass(options?: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract stopCompass(options?: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract onCompassChange(options?: Callbacks<{ duration: number; }, CommonErrorArgs>): void;
   // 拨打电话
   abstract makePhoneCall(options: MakePhoneCallOptions): void;
   // 扫码
-  abstract scanCode(options: Callbacks<{ result: string; }, CommonErrorArgs>): void;
+  abstract scanCode(options?: Callbacks<{ result: string; }, CommonErrorArgs>): void;
   // 剪切板
-  abstract getClipboardData(options: Callbacks<{ data: string; } & CommonErrorArgs, CommonErrorArgs>): void;
+  abstract getClipboardData(options?: Callbacks<{ data: string; } & CommonErrorArgs, CommonErrorArgs>): void;
   abstract setClipboardData(options: SetClipboardDataOptions): void;
   // 屏幕
   abstract setKeepScreenOn(options: { keepScreenOn: boolean; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
@@ -1410,13 +1410,13 @@ abstract class Api {
   abstract offUserCaptureScreen(callback: () => void): void;
   abstract getScreenBrightness(options: Callbacks<{ value: string; } & CommonErrorArgs, CommonErrorArgs>): void;
   abstract setScreenBrightness(options: { value: number; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract disableUserScreenRecord(options: Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>): void;
-  abstract enableUserScreenRecord(options: Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>): void;
+  abstract disableUserScreenRecord(options?: Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>): void;
+  abstract enableUserScreenRecord(options?: Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>): void;
   abstract onUserScreenRecord(callback: (args: { state: 'start' | 'end'; }) => void): void;
-  abstract offUserScreenRecord(callback: () => void): void;
+  abstract offUserScreenRecord(callback?: () => void): void;
   // 震动
-  abstract vibrateShort(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract vibrateLong(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract vibrateShort(options?: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract vibrateLong(options?: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   // 性能
   abstract onMemoryWarning(callback: (args: { level: 5 | 10 | 15; }) => void): void;
   // 画布
@@ -1426,39 +1426,39 @@ abstract class Api {
   // 界面
   // 交互反馈
   abstract showToast(options: ShowToastOptions): void;
-  abstract hideToast(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract hideToast(options?: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   abstract showLoading(options: { title: string; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract hideLoading(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract showModal(options: ShowModalOptions): void;
+  abstract hideLoading(options?: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract showModal(options?: ShowModalOptions): void;
   abstract showActionSheet(options: ActionSheetProps): void;
-  abstract showFavoriteGuide(options: ShowFavoriteGuideOptions): void;
-  abstract showInteractionBar(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract hideInteractionBar(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract showFavoriteGuide(options?: ShowFavoriteGuideOptions): void;
+  abstract showInteractionBar(options?: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract hideInteractionBar(options?: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   // 导航栏
-  abstract showNavigationBarLoading(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract hideNavigationBarLoading(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract hideHomeButton(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract showNavigationBarLoading(options?: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract hideNavigationBarLoading(options?: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract hideHomeButton(options?: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   abstract setNavigationBarTitle(options: { title: string; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   abstract setNavigationBarColor(options: { frontColor: string; backgroundColor: string; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   // 菜单
   abstract getMenuButtonBoundingClientRect(): { errMsg: string; width: number; height: number; top: number; right: number; bottom: number; left: number; };
   // 动画
-  abstract createAnimation(options: CreateAnimationOptions): Animation;
+  abstract createAnimation(options?: CreateAnimationOptions): Animation;
   // 页面位置
   abstract pageScrollTo(options: { scrollTop: number; duration?: number; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   // 滑动返回
   abstract setSwipeBackMode(mode: 0 | 1 | 2): void;
   // 下拉刷新
-  abstract startPullDownRefresh(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract startPullDownRefresh(options?: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   // TabBar
   abstract showTabBarRedDot(options: { index: number; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract showTabBar(options: { animation?: boolean; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract setTabBarStyle(options: SetTabBarStyleOptions): void;
+  abstract showTabBar(options?: { animation?: boolean; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract setTabBarStyle(options?: SetTabBarStyleOptions): void;
   abstract setTabBarItem(options: SetTabBarItemOptions): void;
   abstract setTabBarBadge(options: { index: number; text: string; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   abstract removeTabBarBadge(options: { index: number; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   abstract hideTabBarRedDot(options: { index: number; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract hideTabBar(options: { animation?: boolean; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract hideTabBar(options?: { animation?: boolean; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   // AI/AR
   // TODO
   abstract getAlgorithmManager(options: GetAlgorithmManagerOptions): void;
@@ -1470,33 +1470,33 @@ abstract class Api {
   abstract navigateTo(options: { url: string; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   abstract redirectTo(options: { url: string; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   abstract switchTab(options: { url: string; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract navigateBack(options: { delta?: number; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract navigateBack(options?: { delta?: number; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   abstract reLaunch(options: { url: string; } & Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
   // 转发
-  abstract showShareMenu(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract hideShareMenu(options: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
-  abstract navigateToVideoView(options: { videoId?: string; encryptedId?: string; } & Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>): void;
+  abstract showShareMenu(options?: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract hideShareMenu(options?: Callbacks<CommonErrorArgs, CommonErrorArgs>): void;
+  abstract navigateToVideoView(options?: { videoId?: string; encryptedId?: string; } & Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>): void;
   // 第三方平台
-  abstract getExtConfig(options: Callbacks<{ extConfig: object; }>): void;
+  abstract getExtConfig(options?: Callbacks<{ extConfig: object; }>): void;
   abstract getExtConfigSync(): object;
   // TTML
   abstract createSelectorQuery(): SelectorQuery;
   abstract createIntersectionObserver(instance: any, options?: CreateIntersectionObserverOptions): IntersectionObserver;
   // 直播能力
   abstract createLiveReportContext(): LiveReportContext;
-  abstract getRoomInfo(options: Callbacks<{ roomInfo: { roomId: string; liveDuraction: number; }; } & CommonErrorArgs, CommonExtendsErrorArgs>): void;
-  abstract getLiveUserInfo(options: GetLiveUserInfoOptions): void;
-  abstract getSelfCommentCountDuringPluginRunning(options: Callbacks<{ commentCount: number; } & CommonErrorArgs, CommonExtendsErrorArgs>): void;
-  abstract isFollowingAnchor(options: Callbacks<{ isFollowing: boolean; } & CommonErrorArgs, CommonExtendsErrorArgs>): void;
+  abstract getRoomInfo(options?: Callbacks<{ roomInfo: { roomId: string; liveDuraction: number; }; } & CommonErrorArgs, CommonExtendsErrorArgs>): void;
+  abstract getLiveUserInfo(options?: GetLiveUserInfoOptions): void;
+  abstract getSelfCommentCountDuringPluginRunning(options?: Callbacks<{ commentCount: number; } & CommonErrorArgs, CommonExtendsErrorArgs>): void;
+  abstract isFollowingAnchor(options?: Callbacks<{ isFollowing: boolean; } & CommonErrorArgs, CommonExtendsErrorArgs>): void;
   // 直播间关注互动数据
   abstract onReceiveAudiencesFollowAction(callback: (res: onReceiveAudiencesFollowActionCallbackArgs) => void): void;
-  abstract subscribeAudiencesFollowAction(options: Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>): void;
-  abstract unsubscribeAudiencesFollowAction(options: Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>): void;
+  abstract subscribeAudiencesFollowAction(options?: Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>): void;
+  abstract unsubscribeAudiencesFollowAction(options?: Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>): void;
   // 直播间评论互动数据
   abstract subscribeSpecifiedContentComment(options: { keyWordList: string[]; } & Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>): void;
   abstract subscribeSpecifiedUserComment(options: { openUIDList: string[]; } & Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>): void;
-  abstract unsubscribeAllSpecifiedContentComment(options: Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>): void;
-  abstract unsubscribeAllSpecifiedUserComment(options: Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>): void;
+  abstract unsubscribeAllSpecifiedContentComment(options?: Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>): void;
+  abstract unsubscribeAllSpecifiedUserComment(options?: Callbacks<CommonErrorArgs, CommonExtendsErrorArgs>): void;
   abstract onReceiveSpecifiedComment(callback: (res: OnReceiveSpecifiedCommentOptions) => void): void;
   // 自定义
   abstract open(url: string): void;

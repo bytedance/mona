@@ -1,5 +1,7 @@
 import React from 'react';
 import createBaseComponent from '../createBaseComponent';
+import formatPath from '../utils/formatPath';
+
 import {
   ButtonProps,
   ViewProps,
@@ -75,7 +77,7 @@ export const OpenData = createBaseComponent<OpenDataProps>('open-data');
   // 自定义
 export const Link = (function createBaseComponent(name) {
   const Component = React.forwardRef(({ children, to }: any, ref) =>
-    React.createElement(name, { url: to, ref }, children),
+    React.createElement(name, { url: formatPath(to), ref }, children),
   );
   Component.displayName = name;
   return Component;
