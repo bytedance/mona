@@ -22,7 +22,7 @@ const formatNodeType: Record<string, string> = {
   span: NodeType.TEXT,
   div: NodeType.VIEW,
   img: NodeType.IMAGE,
-  iframe: NodeType.IMAGE,
+  iframe: NodeType.WEBVIEW,
 };
 
 export interface RenderNode {
