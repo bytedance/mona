@@ -42,9 +42,8 @@ class MiniConfigHelper extends BaseConfigHelper {
       ? {}
       : {
           minimize: true,
-          minimizer: [new TerserWebpackPlugin({ parallel: true, extractComments: false }), new CssMiniminzerPlugin()],
+          minimizer: [new TerserWebpackPlugin({ parallel: true, extractComments: false }), new CssMiniminzerPlugin({ test: /\.ttss(\?.*)?$/i })],
         };
-
     return {
       usedExports: true,
       ...devOptimization,
@@ -183,7 +182,6 @@ class MiniConfigHelper extends BaseConfigHelper {
     return rules;
   }
 
-  // TODO: fix compressing css bug, when the extension is 'ttss'
   private _createPlugins(...extraPlugin: any[]) {
     this.projectConfig.compilerOptimization;
     return [
