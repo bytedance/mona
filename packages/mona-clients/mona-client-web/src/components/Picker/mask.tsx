@@ -5,6 +5,7 @@ import styles from './index.module.less';
 const stopPropagation = (e: any) => {
   e.stopPropagation();
 };
+
 const maskStyle: React.CSSProperties = {
   bottom: 0,
   position: 'absolute',

@@ -8,71 +8,11 @@
   background-color: rgba(0, 0, 0, 0.8);
 }
 
+
 .pickerWrapper {
   font-size: 36px;
   background-color: white;
 
-  .pickerView {
-    position: relative;
-    width: 100%;
-    z-index: 2;
-    margin: 0.5em 0;
-
-    &Multi {
-      color: #1d2129;
-      font-size: 1em;
-    }
-
-    &Multi,
-    &Selection {
-      display: flex;
-      align-items: center;
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-    }
-
-    &Column {
-      flex: 1;
-      height: 100%;
-      overflow: hidden;
-      text-align: center;
-
-      &ItemWrap {
-        box-sizing: content-box;
-        will-change: transform;
-      }
-    }
-
-    &Selection {
-      will-change: transform;
-      flex-direction: column;
-      pointer-events: none;
-
-      &MaskTop {
-        width: 100%;
-        flex: 1;
-        background: rgba(255, 255, 255, 0.404);
-      }
-
-      &MaskBottom {
-        width: 100%;
-        flex: 1;
-        background: rgba(255, 255, 255, 0.404);
-      }
-
-      &Bar {
-        width: 100%;
-        height: 2em;
-        flex: 0 0 auto;
-        top: 1px solid #e5e6eb;
-        bottom: 1px solid #e5e6eb;
-        border: 1px solid #e5e6eb;
-      }
-    }
-  }
   &Header {
     padding: 0 30px;
     height: 2.3em;

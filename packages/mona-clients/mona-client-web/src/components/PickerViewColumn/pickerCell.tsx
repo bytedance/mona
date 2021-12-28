@@ -1,24 +1,9 @@
-import React, { useCallback, useEffect, useMemo, useRef, CSSProperties, useState, useLayoutEffect } from 'react';
-import { PickerData, ValueType, PickerCellMovingStatus } from '../type';
-import styles from '../index.module.less';
-import { useRefState } from '../hooks';
-
-export function getStyleWithVendor(style: any): CSSProperties {
-  const allowReg = /(transform|transition|animation)/i;
-  const newStyle = Object.keys(style).reduce<any>((acc, key) => {
-    const webkitStyle = allowReg.test(key)
-      ? {
-          [`Webkit${key.replace(/^(.)/, (_, p1) => p1.toUpperCase())}`]: style[key],
-        }
-      : {};
-    return {
-      ...acc,
-      [key]: style[key],
-      ...webkitStyle,
-    };
-  }, {});
-  return newStyle;
-}
+// 参考arco Mobile
+import React, { useCallback, useEffect, useMemo, useRef, useState, useLayoutEffect } from 'react';
+import { PickerData, ValueType, PickerCellMovingStatus } from '../Picker/type';
+import { useRefState } from '../Picker/hooks';
+import { getStyleWithVendor } from '../../utils/style';
+import styles from '../PickerView/index.module.less';
 
 interface PickerCellProps {
   data: PickerData[];
@@ -31,7 +16,7 @@ interface PickerCellProps {
 }
 
 const PickerCell: React.FC<PickerCellProps> = props => {
-  const { data, itemHeight, wrapperHeight, selectedValue, onValueChange, rows = 5 } = props;
+  const { data, itemHeight, wrapperHeight, selectedValue, onValueChange, rows = 5, ...restProps } = props;
 
   const [transitionDuration, setTransitionDuration] = useState('');
   const [bezier, setBezier] = useState('');
@@ -45,6 +30,7 @@ const PickerCell: React.FC<PickerCellProps> = props => {
   const touchStartYRef = useRef(0);
   const touchingRef = useRef(false);
   const wrapRef = useRef<HTMLDivElement | null>(null);
+
   const movingStatusRef = useRef<PickerCellMovingStatus>(PickerCellMovingStatus.normal);
 
   const rowCount = Math.max(rows % 2 === 0 ? rows + 1 : rows, 3);
@@ -64,18 +50,16 @@ const PickerCell: React.FC<PickerCellProps> = props => {
   function scrollingComplete(nowItemIndex: number) {
     if (currentIndex !== nowItemIndex) {
       setCurrentIndex(nowItemIndex);
-      const newValue = data[nowItemIndex] && data[nowItemIndex].value;
+      const newValue = data[nowItemIndex]?.value;
 
       if (newValue !== currentValue) {
         setCurrentValue(newValue);
-        if (onValueChange) {
-          onValueChange(newValue);
-        }
+        onValueChange?.(newValue);
       }
     }
   }
 
-  function scrollTo(transY: number, transDuration = 0, callback = () => {}) {
+  const scrollTo = useCallback((transY: number, transDuration = 0, cb = () => {}) => {
     setTransitionDuration(transDuration ? `${transDuration}ms` : '');
     setTransformY(transY);
 
@@ -86,16 +70,12 @@ const PickerCell: React.FC<PickerCellProps> = props => {
     latestCallbackTimer.current = window.setTimeout(() => {
       movingStatusRef.current = PickerCellMovingStatus.normal;
       setTransitionDuration('');
-      callback();
+      cb();
     }, transDuration);
-  }
+  }, []);
 
-  function scrollToIndex(itemIndex: number, transDuration = 0, callback = () => {}) {
-    scrollTo(-1 * itemIndex * itemHeight, transDuration, callback);
-  }
-
-  function scrollToIndexWithChange(itemIndex: number, transDuration = 0) {
-    scrollToIndex(itemIndex, transDuration, () => {
+  function scrollToIndex(itemIndex: number, transDuration = 0) {
+    scrollTo(-1 * itemIndex * itemHeight, transDuration, () => {
       scrollingComplete(itemIndex);
     });
   }
@@ -141,7 +121,7 @@ const PickerCell: React.FC<PickerCellProps> = props => {
   function handleScrollEnd() {
     const maxIndex = data.length - 1;
     const nowIndex = Math.max(0, Math.min(maxIndex, Math.round((-1 * transformY) / itemHeight)));
-    scrollToIndexWithChange(nowIndex, 100);
+    scrollToIndex(nowIndex, 100);
   }
 
   // 参考：https://juejin.im/post/6844904185121488910
@@ -206,16 +186,14 @@ const PickerCell: React.FC<PickerCellProps> = props => {
       setBezier(momentumY.bezier);
 
       movingStatusRef.current = PickerCellMovingStatus.scrolling;
-      scrollToIndex(newItemIndex, momentumY.duration, () => {
-        scrollingComplete(newItemIndex);
-      });
+      scrollToIndex(newItemIndex, momentumY.duration);
     } else {
       handleScrollEnd();
     }
   }
 
   function handleItemClick(itemIndex: number) {
-    scrollToIndexWithChange(itemIndex, 100);
+    scrollToIndex(itemIndex, 100);
   }
 
   useLayoutEffect(() => {
@@ -224,14 +202,14 @@ const PickerCell: React.FC<PickerCellProps> = props => {
       setCurrentIndex(curIndex);
 
       if (curIndex >= 0) {
-        scrollToIndexWithChange(curIndex);
+        scrollToIndex(curIndex, 0);
       }
     }
     //@ts-ignore
   }, [selectedValue, itemHeight]);
 
   return data?.length ? (
-    <div className={styles.pickerViewColumn}>
+    <div className={styles.pickerViewColumn} {...restProps}>
       <div
         className={styles.pickerViewColumnItemWrap}
         style={colStyle}
