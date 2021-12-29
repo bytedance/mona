@@ -10,11 +10,6 @@ export function generateId() {
 
 export const NodeType = {
   ROOT: 'monaRoot',
-  VIEW: ComponentType.view,
-  TEXT: ComponentType.text,
-  BUTTON: ComponentType.button,
-  IMAGE: ComponentType.image,
-  WEBVIEW: ComponentType['web-view'],
   PTEXT: ComponentType.ptext,
 };
 

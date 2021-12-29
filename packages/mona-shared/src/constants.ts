@@ -47,7 +47,7 @@ const MiniComponentType = {
   ptext: '36',
 };
 
-export const webComponentType: Record<string, string> = {
+export const webComponentType = {
   span: MiniComponentType.text,
   div: MiniComponentType.view,
   img: MiniComponentType.image,
