@@ -65,7 +65,13 @@ export const RadioGroup = createBaseComponent<RadioGroupProps>(ComponentType['ra
 export const Slider = createBaseComponent<SliderProps>(ComponentType['slider']);
 export const Switch = createBaseComponent<SwitchProps>(ComponentType['switch']);
 export const Textarea = createBaseComponent<TextareaProps>(ComponentType['textarea']);
-export const Navigator = createBaseComponent<NavigatorProps>(ComponentType['navigator']);
+export const Navigator = (function createBaseComponent(name) {
+  const Component = React.forwardRef(({ children, url, ...props }: any, ref) =>
+    React.createElement(name, { url: formatPath(url), ...props, ref }, children),
+  );
+  Component.displayName = name;
+  return Component;
+})(ComponentType['navigator']) as React.ComponentType<NavigatorProps>;
 export const Image = createBaseComponent<ImageProps>(ComponentType['image']);
 export const Video = createBaseComponent<VideoProps>(ComponentType['video']);
 export const LivePlayer = createBaseComponent<LivePlayerProps>(ComponentType['live-player']);
