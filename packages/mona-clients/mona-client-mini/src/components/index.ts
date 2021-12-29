@@ -64,7 +64,13 @@ export const RadioGroup = createBaseComponent<RadioGroupProps>('radio-group');
 export const Slider = createBaseComponent<SliderProps>('slider');
 export const Switch = createBaseComponent<SwitchProps>('switch');
 export const Textarea = createBaseComponent<TextareaProps>('textarea');
-export const Navigator = createBaseComponent<NavigatorProps>('navigator');
+export const Navigator = (function createBaseComponent(name) {
+  const Component = React.forwardRef(({ children, url, ...props }: any, ref) =>
+    React.createElement(name, { url: formatPath(url), ...props, ref }, children),
+  );
+  Component.displayName = name;
+  return Component;
+})('navigator') as React.ComponentType<NavigatorProps>;
 export const Image = createBaseComponent<ImageProps>('image');
 export const Video = createBaseComponent<VideoProps>('video');
 export const LivePlayer = createBaseComponent<LivePlayerProps>('live-player');
@@ -75,9 +81,9 @@ export const Webview = createBaseComponent<WebviewProps>('web-view');
 export const Ad = createBaseComponent<AdProps>('ad');
 export const OpenData = createBaseComponent<OpenDataProps>('open-data');
   // 自定义
-export const Link = (function createBaseComponent(name) {
-  const Component = React.forwardRef(({ children, to }: any, ref) =>
-    React.createElement(name, { url: formatPath(to), ref }, children),
+  export const Link = (function createBaseComponent(name) {
+  const Component = React.forwardRef(({ children, to, ...props }: any, ref) =>
+    React.createElement(name, { url: formatPath(to), ...props, ref }, children),
   );
   Component.displayName = name;
   return Component;
