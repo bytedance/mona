@@ -1,6 +1,6 @@
 import scheduler from 'scheduler';
 import TaskController from './TaskController';
-import ServerElement from './ServerElement';
+import ServerElement, { NodeType } from './ServerElement';
 import { diffProperties, processProps } from './processProps';
 import { isObject } from '@/utils';
 
@@ -24,7 +24,7 @@ export default function createHostConfig() {
     },
 
     createTextInstance(text: string, taskController: TaskController) {
-      const element = new ServerElement({ type: 'ptext', taskController });
+      const element = new ServerElement({ type: NodeType.PTEXT, taskController });
       element.text = text;
       return element;
     },

@@ -1,7 +1,7 @@
 import { NodeTask } from '../utils';
 // import { processProps } from './processProps';
 import TaskController, { Task } from './TaskController';
-import { RENDER_NODE } from '@bytedance/mona-shared/dist/constants';
+import { RENDER_NODE, ComponentType } from '@bytedance/mona-shared/dist/constants';
 
 let id = 1;
 export function generateId() {
@@ -10,12 +10,12 @@ export function generateId() {
 
 export const NodeType = {
   ROOT: 'monaRoot',
-  VIEW: 'view',
-  TEXT: 'text',
-  BUTTON: 'button',
-  IMAGE: 'image',
-  WEBVIEW: 'web-view',
-  PTEXT: 'ptext',
+  VIEW: ComponentType.view,
+  TEXT: ComponentType.text,
+  BUTTON: ComponentType.button,
+  IMAGE: ComponentType.image,
+  WEBVIEW: ComponentType['web-view'],
+  PTEXT: ComponentType.ptext,
 };
 
 const formatNodeType: Record<string, string> = {
