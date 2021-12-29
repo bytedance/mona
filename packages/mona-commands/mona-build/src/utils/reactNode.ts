@@ -1,8 +1,14 @@
-import { ComponentType } from '@bytedance/mona-shared';
-// 转为xx-xx的形式
+import { ComponentType, ComponentAliasMap } from '@bytedance/mona-shared';
+
+// PickerView->picker-view->ComponentType压缩后的形式
 export const transformNodeName = (key: string) => {
-  // webview 单独处理，或者写一个map
+  // CompressNodeType babel插件会压缩jsxName,此时key为压缩后的key
+  if (ComponentAliasMap[key]) {
+    return String(key);
+  }
+
   if (key === 'Webview') {
+    // webview 单独处理，或者写一个map
     return ComponentType['web-view'];
   }
 

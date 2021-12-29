@@ -11,5 +11,10 @@
     "src/**/*",
     "typings/**/*"
   ],
-  "exclude": ["dist","**/*.test.ts"],
+  "exclude": [
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "**/*.test.tsx",
+    "**/*.spec.tsx"
+  ]
 }

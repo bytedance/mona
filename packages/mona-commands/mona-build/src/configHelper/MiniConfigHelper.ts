@@ -14,6 +14,7 @@ import PerfTemplateRenderPlugin from '@/plugins/webpack/PerfTemplateRenderPlugin
 import getEnv from '@/utils/getEnv';
 import createPxtransformConfig from '@/utils/createPxtransformConfig';
 import collectNativeComponent from '@/plugins/babel/CollectImportComponent';
+import compressNodeTypePlugin from '@/plugins/babel/CompressNodeType';
 const extensions = ['.js', '.mjs', '.jsx', '.ts', '.tsx', '.json'];
 const moduleMatcher = new RegExp(`(${extensions.filter(e => e !== '.json').join('|')})$`);
 
@@ -42,7 +43,10 @@ class MiniConfigHelper extends BaseConfigHelper {
       ? {}
       : {
           minimize: true,
-          minimizer: [new TerserWebpackPlugin({ parallel: true, extractComments: false }), new CssMiniminzerPlugin({ test: /\.ttss(\?.*)?$/i })],
+          minimizer: [
+            new TerserWebpackPlugin({ parallel: true, extractComments: false }),
+            new CssMiniminzerPlugin({ test: /\.ttss(\?.*)?$/i }),
+          ],
         };
     return {
       usedExports: true,
@@ -101,15 +105,16 @@ class MiniConfigHelper extends BaseConfigHelper {
 
   private _createModuleRules() {
     const rules: RuleSetRule[] = [];
-    rules.push({
-      test: /\.((j|t)sx?)$/i,
-      use: [
-        {
-          loader: path.resolve(__dirname, '../loaders/ImportCustomComponentLoader'),
-          options: {},
-        },
-      ],
-    });
+    // rules.push({
+    //   test: /\.((j|t)sx?)$/i,
+    //   use: [
+    //     {
+    //       loader: path.resolve(__dirname, '../loaders/ImportCustomComponentLoader'),
+    //       options: {},
+    //     },
+    //   ],
+    // });
+
     // handle script
     rules.push({
       test: /\.((j|t)sx?)$/i,
@@ -118,9 +123,19 @@ class MiniConfigHelper extends BaseConfigHelper {
           loader: require.resolve('babel-loader'),
           options: {
             babelrc: false,
+            plugins: [compressNodeTypePlugin],
+          },
+        },
+        {
+          loader: require.resolve('babel-loader'),
+          options: {
+            babelrc: false,
             plugins: [
               collectNativeComponent,
-              this.projectConfig.enableMultiBuild && [path.join(__dirname, '../plugins/babel/BabelPluginMultiTarget.js'), { target: 'mini', context: this.cwd, alias: this._createResolve().alias }]
+              this.projectConfig.enableMultiBuild && [
+                path.join(__dirname, '../plugins/babel/BabelPluginMultiTarget.js'),
+                { target: 'mini', context: this.cwd, alias: this._createResolve().alias },
+              ],
             ].filter(Boolean),
             presets: [
               [require.resolve('@babel/preset-env')],
@@ -151,10 +166,12 @@ class MiniConfigHelper extends BaseConfigHelper {
           postcssOptions: {
             plugins: [
               require.resolve('postcss-import'),
-              pxtOptions.enabled ? [path.join(__dirname, '..', './plugins/postcss/PostcssPxtransformer/index.js'), pxtOptions] : null
-            ].filter(p => !!p)
-          }
-        }
+              pxtOptions.enabled
+                ? [path.join(__dirname, '..', './plugins/postcss/PostcssPxtransformer/index.js'), pxtOptions]
+                : null,
+            ].filter(p => !!p),
+          },
+        },
       },
       require.resolve('less-loader'),
     ];
@@ -191,8 +208,9 @@ class MiniConfigHelper extends BaseConfigHelper {
         filename: '[name].ttss',
       }),
       new DefinePlugin(getEnv(this.options, this.cwd)),
-
       new OptimizeEntriesPlugin(),
+      // new CompressNodeTypePlugin(),
+
       this.projectConfig.compilerOptimization && new PerfTemplateRenderPlugin(),
     ].filter(Boolean);
   }

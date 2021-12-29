@@ -10,19 +10,7 @@ export function generateId() {
 
 export const NodeType = {
   ROOT: 'monaRoot',
-  VIEW: ComponentType.view,
-  TEXT: ComponentType.text,
-  BUTTON: ComponentType.button,
-  IMAGE: ComponentType.image,
-  WEBVIEW: ComponentType['web-view'],
   PTEXT: ComponentType.ptext,
-};
-
-const formatNodeType: Record<string, string> = {
-  span: NodeType.TEXT,
-  div: NodeType.VIEW,
-  img: NodeType.IMAGE,
-  iframe: NodeType.WEBVIEW,
 };
 
 export interface RenderNode {
@@ -60,8 +48,7 @@ export default class ServerElement {
     taskController: TaskController;
     props?: Record<string, any>;
   }) {
-    //*perf:  formatNodeType 运行时 -> 编译时
-    this.type = formatNodeType[type] ?? type;
+    this.type = type;
     this.props = props;
     this.key = generateId();
     this.taskController = taskController;

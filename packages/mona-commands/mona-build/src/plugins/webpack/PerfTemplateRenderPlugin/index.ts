@@ -1,10 +1,7 @@
 import { Compiler } from 'webpack';
-// import { Call } from '@babel/traverse';
-// import { ConfigAPI } from '@babel/core';
 import * as t from '@babel/types';
 import { transformNodeName } from '@/utils/reactNode';
 import { miniPro2rcPropMap, renderMapAction } from './store';
-// import { ejsParamsMap } from '@/alias';
 import monaStore from '../../../store';
 const PLUGIN_NAME = 'PerfTemplateRenderPlugin';
 const walk = require('acorn-walk');
@@ -12,7 +9,7 @@ const walk = require('acorn-walk');
 const CREATE_ELEMENT = 'createElement';
 const ClONE_ELEMENT = 'cloneElement';
 const ReactCallArr = [CREATE_ELEMENT, ClONE_ELEMENT];
-const isReactCreateElement = (name: string) => ReactCallArr.includes(name);
+export const isReactCreateElement = (name: string) => ReactCallArr.includes(name);
 
 // TODO:收集别名
 // const jsxAlias = new Set(['jsx', '_jsx', 'jsxs', '_jsxs', 'jsxDEV']);
@@ -54,7 +51,7 @@ export default class PerfTemplateRenderPlugin {
               renderMapAction.setComponentUse(nodeType);
 
               const miniPropMap = miniPro2rcPropMap.get(nodeType);
-              const rcPropMap = monaStore.ejsParamsMap.get(nodeType).alias;
+              const rcPropMap = monaStore.ejsParamsMap.get(nodeType)?.alias;
 
               const attribute = [];
 
@@ -104,5 +101,3 @@ export default class PerfTemplateRenderPlugin {
     // });
   }
 }
-
-

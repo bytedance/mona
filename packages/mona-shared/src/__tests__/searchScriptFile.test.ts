@@ -1,7 +1,7 @@
 import searchScriptFile from '../searchScriptFile';
 
 import { join } from 'path';
-import { execSync } from 'child_process';
+// import { execSync } from 'child_process';
 
 const tsRelativePath = '../index';
 const tsFilePath = join(__dirname, tsRelativePath + '.ts');

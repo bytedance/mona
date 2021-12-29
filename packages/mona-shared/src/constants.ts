@@ -6,7 +6,8 @@ export const RENDER_NODE = {
   COMPLIER_TEXT: 'x',
   COMPLIER_PROPS: 'p',
 };
-export const ComponentType = {
+
+const MiniComponentType = {
   text: '1',
   block: '2',
   'rich-text': '3',
@@ -46,8 +47,16 @@ export const ComponentType = {
   ptext: '36',
 };
 
-export const ComponentAliasMap = Object.keys(ComponentType).reduce((pre: Record<string, string>, item) => {
+export const webComponentType = {
+  span: MiniComponentType.text,
+  div: MiniComponentType.view,
+  img: MiniComponentType.image,
+  iframe: MiniComponentType['web-view'],
+};
+export const ComponentType = { ...webComponentType, ...MiniComponentType };
+
+export const ComponentAliasMap = Object.keys(MiniComponentType).reduce((pre: Record<string, string>, item) => {
   //@ts-ignore
-  pre[ComponentType[item]] = item;
+  pre[MiniComponentType[item]] = item;
   return pre;
 }, {});
