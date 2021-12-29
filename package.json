@@ -9,7 +9,7 @@
     "b": "node ./build",
     "s": "node ./build -s",
     "clean": "lerna run clean",
-    "clean:dp": "learn clean",
+    "clean:dp": "lerna clean",
     "bootstrap": "lerna bootstrap",
     "test": "jest",
     "test:c": "jest --coverage",
@@ -42,7 +42,6 @@
     "@wojtekmaj/enzyme-adapter-react-17": "^0.6.6",
     "babel-jest": "^27.3.1",
     "canvas": "^2.8.0",
-    "coffee": "^5.4.0",
     "enzyme": "^3.11.0",
     "fs-extra": "^10.0.0",
     "identity-obj-proxy": "^3.0.0",
@@ -50,6 +49,7 @@
     "jest-dom": "^4.0.0",
     "jsdom": "^19.0.0",
     "jsdom-global": "^3.0.2",
-    "semver": "^7.3.5"
+    "semver": "^7.3.5",
+    "typescript": "^4.4.4"
   }
 }

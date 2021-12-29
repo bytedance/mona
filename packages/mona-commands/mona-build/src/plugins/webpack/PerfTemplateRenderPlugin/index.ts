@@ -1,10 +1,7 @@
 import { Compiler } from 'webpack';
-// import { Call } from '@babel/traverse';
-// import { ConfigAPI } from '@babel/core';
 import * as t from '@babel/types';
 import { transformNodeName } from '@/utils/reactNode';
 import { miniPro2rcPropMap, renderMapAction } from './store';
-// import { ejsParamsMap } from '@/alias';
 import monaStore from '../../../store';
 const PLUGIN_NAME = 'PerfTemplateRenderPlugin';
 const walk = require('acorn-walk');
