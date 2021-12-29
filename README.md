@@ -125,6 +125,8 @@ export default createProjectConfig({
 | postcss | postcss相关配置 | 否 | object | { pxtransform: { enable: true } } |
 
 #### postcss.pxtransform
+移动端适配内容见[这里](https://github.com/bytedance/mona/tree/feat/miniapp#%E7%A7%BB%E5%8A%A8%E7%AB%AF%E9%80%82%E9%85%8D)
+
 postcss目前支持pxtransform的配置，该插件主要用于移动端尺寸单位转换以帮助适配。`postcss.pxtransform`的配置如下
 
 |  参数   | 说明  | 是否必填 | 类型 | 默认值 |
