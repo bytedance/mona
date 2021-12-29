@@ -1,5 +1,4 @@
 interface PxtransformConfig {
-  onePxTransform: boolean,
   unitPrecision: number,
   propList: string[],
   selectorBlackList: (string | RegExp)[],
@@ -11,7 +10,7 @@ interface PxtransformConfig {
 
 interface PostcssPxtransformProps {
   enable: boolean;
-  designWidth?: 750 | 640 | 828;
+  designWidth?: number;
   deviceRatio?: { [key: string]: number }
   config?: Partial<PxtransformConfig>;
 }

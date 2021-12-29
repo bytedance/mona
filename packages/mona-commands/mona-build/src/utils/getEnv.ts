@@ -18,7 +18,7 @@ export default function getEnv(config: Options, dir: string) {
   const injectEnv: Record<string, any> = {
     NODE_ENV: process.env.NODE_ENV || (config.dev ? 'development' : 'production'),
     PLAT_FORM: config.target,
-    BUILD_TARGET: config.target,
+    'process.env.MONA_TARGET': config.target,
   };
 
   Object.keys(process.env).forEach(envKey => {
