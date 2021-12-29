@@ -335,4 +335,10 @@ import { View, Text } from '@bytedance/mona-runtime';
 
 ## 常见问题
 ### mona性能如何
-我们测试了同时增加100个以及1000个节点在字节小程序中的表现，结果如下
+我们初步测试了同时增加100个以及1000个节点在字节小程序中的表现，结果如下
+
+![100](https://github.com/bytedance/mona/blob/feat/miniapp/static/%E5%A2%9E%E5%8A%A0100%E4%B8%AA%E5%88%97%E8%A1%A8%E9%A1%B9.png)
+![1000](https://github.com/bytedance/mona/blob/feat/miniapp/static/%E5%A2%9E%E5%8A%A01000%E4%B8%AA%E5%88%97%E8%A1%A8%E9%A1%B9.png)
+
+### 当前可用性
+目前我们已完全支持小程序转换，并实现了web大部分的组件和api。目前处于测试打磨阶段，后续会不断完善。使用中的任何问题欢迎多多提出。
