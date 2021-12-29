@@ -356,7 +356,14 @@ const baseDefaultProps: Record<string, string | number | boolean> = {
 };
 
 export const genEjsParamsMap = () => {
-  const ejsParamsMap = new Map();
+  const ejsParamsMap = new Map<
+    string,
+    {
+      reactComponentName: ComponentName;
+      alias: any;
+      defaultProps?: Record<string, string | boolean | number>;
+    }
+  >();
   for (let name in ejsParamsObj) {
     let defaultProps = ejsParamsObj[name].defaultProps || {};
 

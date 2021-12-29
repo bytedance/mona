@@ -18,13 +18,6 @@ export const NodeType = {
   PTEXT: ComponentType.ptext,
 };
 
-const formatNodeType: Record<string, string> = {
-  span: NodeType.TEXT,
-  div: NodeType.VIEW,
-  img: NodeType.IMAGE,
-  iframe: NodeType.WEBVIEW,
-};
-
 export interface RenderNode {
   COMPLIER_KEY: number;
   COMPLIER_TYPE: string;
@@ -60,8 +53,7 @@ export default class ServerElement {
     taskController: TaskController;
     props?: Record<string, any>;
   }) {
-    //*perf:  formatNodeType 运行时 -> 编译时
-    this.type = formatNodeType[type] ?? type;
+    this.type = type;
     this.props = props;
     this.key = generateId();
     this.taskController = taskController;

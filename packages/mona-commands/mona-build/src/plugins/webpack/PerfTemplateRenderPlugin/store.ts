@@ -22,7 +22,7 @@ const genAliasMap = (allPropsMap: any) => {
 // xx-xx形式 -> 驼峰。 bindtap-> onTap
 export const miniPro2rcPropMap = new Map();
 Array.from(monaStore.ejsParamsMap.keys()).forEach((nodeType: string) => {
-  miniPro2rcPropMap.set(nodeType, genAliasMap(monaStore.ejsParamsMap.get(nodeType).alias));
+  miniPro2rcPropMap.set(nodeType, genAliasMap(monaStore.ejsParamsMap.get(nodeType)?.alias));
 });
 
 const getRenderInit = (
