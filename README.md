@@ -58,7 +58,7 @@ mona build
 │   ├── components
 │   ├── pages
 │   │   ├── Home
-│   │   │   ├── index.less
+│   │   │   ├── index.module.less
 │   │   │   ├── index.tsx
 │   │   │   └── page.config.ts // 页面配置文件
 │   └── typings
@@ -181,10 +181,12 @@ export default createAppConfig({
 这个字段用于配置所有页面路径，配置每项是 路径 + 文件名 这个结构。配置项的第一个页面路径就是小程序启动展示的第一个页面。
 如开发目录如下：
 ```bash
-|____pages
-|       |____Home
-|       |        |____index.ts
-|       |        |____index.module.less
+├── src
+│   ├── pages
+│   │   ├── Home
+│   │   │   ├── index.module.less
+│   │   │   ├── index.tsx
+│   │   │   └── page.config.ts // 页面配置文件
 ```
 那么 `pages` 应该这样配置：
 ```json
@@ -320,13 +322,17 @@ api可以从`@bytedance/mona-runtime`中导入，如
 ```js
 import { redirectTo } from '@bytedance/mona-runtime';
 ```
-- 基础api见[小程序api](https://microapp.bytedance.com/docs/zh-CN/mini-app/develop/api/foundation/tt-can-i-use)
-- 插件额外api[mona-runtime文档](https://github.com/bytedance/mona/tree/main/packages/mona-runtime)
+- 基础api见-[小程序api](https://microapp.bytedance.com/docs/zh-CN/mini-app/develop/api/foundation/tt-can-i-use)
+- 插件额外api见-[mona-runtime文档](https://github.com/bytedance/mona/tree/main/packages/mona-runtime)
 
 ## 组件
 组件可以从`@bytedance/mona-runtime`中导入，如
 ```js
 import { View, Text } from '@bytedance/mona-runtime';
 ```
-- 基础组件见[小程序组件](https://microapp.bytedance.com/docs/zh-CN/mini-app/develop/component/all)
-- 插件额外组件[mona-runtime文档](https://github.com/bytedance/mona/tree/main/packages/mona-runtime)
+- 基础组件见-[小程序组件](https://microapp.bytedance.com/docs/zh-CN/mini-app/develop/component/all)
+- 插件额外组件见-[mona-runtime文档](https://github.com/bytedance/mona/tree/main/packages/mona-runtime)
+
+## 常见问题
+### mona性能如何
+我们测试了同时增加100个以及1000个节点在字节小程序中的表现，结果如下
