@@ -1,4 +1,5 @@
 import React from 'react';
+import { XOR } from './util';
 // base
 export interface BaseProps<T = Touch> {
   id?: string;
@@ -304,6 +305,7 @@ interface RegionPickerProps {
 
 export type PickerPropsSelect<T> = T extends PickerMode ? { mode: T } & PickerPropsMap[T] : never;
 export type PickerProps = PickerPropsSelect<PickerMode>;
+
 export type AllPickerProps = MultipleSelectorPickerProps &
   SelectorPickerProps &
   DatePickerProps &
@@ -409,14 +411,12 @@ export interface ImageProps extends BaseProps {
   onLoad?: EventHandler;
 }
 
-export interface VideoProps extends BaseProps {
+export interface VideoBaseProps extends BaseProps {
   src: string;
   autoplay?: boolean;
   poster?: string;
   loop?: boolean;
   showFullscreenBtn?: boolean;
-  showPlayBtn?: boolean;
-  controls?: boolean;
   objectFit?: 'contain' | 'fill' | 'cover';
   playBtnPosition?: 'center' | 'bottom';
   preRollUnitId?: string;
@@ -451,6 +451,14 @@ export interface VideoProps extends BaseProps {
   onCloseBackground?: EventHandler;
   onLeaveBackground?: EventHandler;
 }
+export type VideoProps = XOR<Control, ShowPlayBtn>;
+type Control = {
+  controls: boolean;
+} & VideoBaseProps;
+
+type ShowPlayBtn = {
+  showPlayBtn: boolean;
+} & VideoBaseProps;
 
 export interface LivePlayerProps extends BaseProps {
   src: string;

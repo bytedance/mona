@@ -1,6 +1,6 @@
 import { Compiler } from 'webpack';
 import * as t from '@babel/types';
-import { transformNodeName } from '@/utils/reactNode';
+import { transformNodeName } from '../../../utils/reactNode';
 import { miniPro2rcPropMap, renderMapAction } from './store';
 import monaStore from '../../../store';
 const PLUGIN_NAME = 'PerfTemplateRenderPlugin';

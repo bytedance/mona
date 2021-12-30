@@ -25,7 +25,6 @@ export default function compressNodeTypePlugin() {
           //@ts-ignore
           const alias = ComponentType[reactNode.name];
           if (alias) {
-            console.log({ alias, name: reactNode.name });
             reactNode.name = alias;
           }
           //@ts-ignore
