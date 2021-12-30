@@ -128,17 +128,6 @@ jobs:
           git add .
           git stash
 
-      # create git tag
-      - name: Create Git Tag
-        if: startsWith( env.commitmsg , 'chore(release):' ) && steps.tag_check.outputs.exists_tag == 'false'
-        uses: azu/action-package-version-to-git-tag@v1
-        with:
-          version: ${{ env.CURRENT_VERSION }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          github_repo: ${{ github.repository }}
-          git_commit_sha: ${{ github.sha }}
-          git_tag_prefix: 'v'
-
       # publish
       - name: Publish
         if: startsWith( env.commitmsg , 'chore(release):' ) && steps.tag_check.outputs.exists_tag == 'false'
@@ -160,6 +149,17 @@ jobs:
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # create git tag
+      - name: Create Git Tag
+        if: startsWith( env.commitmsg , 'chore(release):' ) && steps.tag_check.outputs.exists_tag == 'false'
+        uses: azu/action-package-version-to-git-tag@v1
+        with:
+          version: ${{ env.CURRENT_VERSION }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_repo: ${{ github.repository }}
+          git_commit_sha: ${{ github.sha }}
+          git_tag_prefix: 'v'
+          
       # Create relase when event is PR
       - name: Create Release
         id: create_release
