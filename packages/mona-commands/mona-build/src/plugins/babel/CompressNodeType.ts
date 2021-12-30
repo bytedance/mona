@@ -1,7 +1,7 @@
 import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import { ComponentType } from '@bytedance/mona-shared';
-import { isReactCall, isStringLiteral } from '../webpack/PerfTemplateRenderPlugin';
+import { isReactCall, isStringLiteral } from '../../utils/babel';
 
 export default function compressNodeTypePlugin() {
   return {
