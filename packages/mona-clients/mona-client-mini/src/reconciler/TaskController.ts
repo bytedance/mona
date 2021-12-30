@@ -36,7 +36,7 @@ export default class TaskController {
   constructor(context: any) {
     this.context = context;
     this.tasks = [];
-    this._root = new ServerElement({ type: NodeType.ROOT, taskController: this });
+    this._root = new ServerElement(NodeType.ROOT, this);
     this._root.mounted = true;
     this._stopUpdate = false;
     this.rootKey = ROOT_KEY;

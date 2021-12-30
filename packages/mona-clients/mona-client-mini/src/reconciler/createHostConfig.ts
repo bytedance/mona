@@ -18,13 +18,13 @@ const DISPLAY_NONE = 'display:none !important;';
 export default function createHostConfig() {
   const hostConfig = {
     createInstance(type: string, props: any, taskController: TaskController) {
-      const node = new ServerElement({ type, props: props ?? {}, taskController });
+      const node = new ServerElement(type, taskController, props ?? {});
       node.props = processProps(props, node);
       return node;
     },
 
     createTextInstance(text: string, taskController: TaskController) {
-      const element = new ServerElement({ type: NodeType.PTEXT, taskController });
+      const element = new ServerElement(NodeType.PTEXT, taskController);
       element.text = text;
       return element;
     },

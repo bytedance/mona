@@ -39,15 +39,7 @@ export default class ServerElement {
   mounted: boolean = false;
   deleted: boolean = false;
 
-  constructor({
-    type,
-    props,
-    taskController,
-  }: {
-    type: string;
-    taskController: TaskController;
-    props?: Record<string, any>;
-  }) {
+  constructor(type: string, taskController: TaskController, props?: Record<string, any>) {
     this.type = type;
     this.props = props;
     this.key = generateId();
