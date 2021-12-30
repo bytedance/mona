@@ -1,4 +1,3 @@
-// #publish
 export interface EnterOrLaunchOptions {
   path: string;
   scene: string;
