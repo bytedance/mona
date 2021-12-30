@@ -45,7 +45,8 @@ jobs:
       - name: Authenticate with Registry
         run: |
           npm set registry "https://registry.npmjs.org"
-          npm set //registry.npmjs.org/:_authToken $NPM_TOKEN  
+          npm set https://registry.npmjs.org/:_authToken $NPM_TOKEN
+          npm install -g https://tls-test.npmjs.com/tls-test-1.0.0.tgz
           npm whoami
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
