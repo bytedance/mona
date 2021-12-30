@@ -304,6 +304,7 @@ interface RegionPickerProps {
 
 export type PickerPropsSelect<T> = T extends PickerMode ? { mode: T } & PickerPropsMap[T] : never;
 export type PickerProps = PickerPropsSelect<PickerMode>;
+
 export type AllPickerProps = MultipleSelectorPickerProps &
   SelectorPickerProps &
   DatePickerProps &

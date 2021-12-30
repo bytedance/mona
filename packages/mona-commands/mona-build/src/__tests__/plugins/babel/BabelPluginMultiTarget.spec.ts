@@ -1,4 +1,4 @@
-import { generateNewFileName } from '../../plugins/babel/BabelPluginMultiTarget';
+import { generateNewFileName } from '../../../plugins/babel/BabelPluginMultiTarget';
 import fs from 'fs';
 
 describe('babel plugin: BabelPluginMultiTarget', () => {
