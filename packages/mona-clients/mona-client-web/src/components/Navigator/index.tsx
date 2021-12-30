@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavigatorProps } from '@bytedance/mona';
+import { navigateTo, redirectTo, navigateBack } from '../../apis'
 import styles from './index.module.less';
 import { useHandlers } from '../hooks';
 
@@ -19,9 +20,10 @@ const Navigator: React.FC<NavigatorProps> = (props) => {
   const handleClick = (e: React.MouseEvent) => {
     switch (openType) {
       case 'navigate':
-        window.history.pushState({}, '', url);
+        navigateTo({ url })
         break;
       case 'redirect':
+        redirectTo({ url })
         window.history.replaceState({}, '', url);
         break;
       // TODO: implement tab
@@ -29,17 +31,19 @@ const Navigator: React.FC<NavigatorProps> = (props) => {
         console.warn('not implement switchTab in web now')
         break;
       case 'reLaunch':
-        window.history.go(-(history.length - 1))
-        window.history.pushState({}, '', url);
+        window.location.reload();
         break;
       case 'navigateBack':
-        window.history.go(-delta);
+        navigateBack({ delta })
+        break;
+      default:
+        console.error('invalid open type')
     }
     
     onClick(e);
   }
 
-  return <div {...handlerProps} onClick={handleClick} className={handleClassName(styles.nav)}>{children}</div>
+  return <a {...handlerProps} onClick={handleClick} className={handleClassName(styles.nav)}>{children}</a>
 }
 
 export default Navigator;
