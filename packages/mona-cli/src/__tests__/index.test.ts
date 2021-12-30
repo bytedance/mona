@@ -11,6 +11,4 @@ describe('mona ', () => {
   test('mona -h', () => {
     execSync(`node ${join(__dirname, '../../bin/mona')} -h`, { encoding: 'utf-8' });
   });
-
-  // TODO: MONA命令集成测试
 });
