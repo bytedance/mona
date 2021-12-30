@@ -44,7 +44,7 @@ jobs:
       # login npm
       - name: Authenticate with Registry
         run: |
-          npm set registry "http://registry.npmjs.org"
+          npm set registry "https://registry.npmjs.org"
           npm set //registry.npmjs.org/:_authToken $NPM_TOKEN  
           npm whoami
         env:
