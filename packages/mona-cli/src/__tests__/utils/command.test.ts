@@ -8,9 +8,9 @@ test('command', () => {
 
   expect(getGlobalInstallPkgMan).not.toThrow();
 
-  expect(['yarn', 'npm', 'pnpm'].includes(getGlobalInstallPkgMan())).toBe(true);
+  expect(['yarn', 'npm', 'pnpm'].includes(getGlobalInstallPkgMan())).toBeTruthy();
 
   expect(isGlobaInstalled).not.toThrow();
 
-  expect([true, false].includes(isGlobaInstalled())).toBe(true);
+  expect([true, false].includes(isGlobaInstalled())).toBeTruthy();
 });

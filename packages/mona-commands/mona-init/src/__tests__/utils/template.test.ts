@@ -9,16 +9,16 @@ describe('template', () => {
     return fse.remove(tempDir);
   });
   test('fetchTemplate use error templateName', async () => {
-    expect(await catchError(() => fetchTemplate(tempDir, new Date().valueOf() + ''))).toBe(true);
+    expect(await catchError(() => fetchTemplate(tempDir, new Date().valueOf() + ''))).toBeTruthy();
     // await fse.remove(tempDir);
   });
   test('fetchTemplate', async () => {
-    expect(await catchError(() => fetchTemplate(tempDir, 'plugin'))).toBe(false);
+    expect(await catchError(() => fetchTemplate(tempDir, 'plugin'))).toBeFalsy();
     // await fse.remove(tempDir);
   });
 
   test('process Ts Templates', async () => {
-    expect(await catchError(() => fetchTemplate(tempDir, 'plugin'))).toBe(false);
+    expect(await catchError(() => fetchTemplate(tempDir, 'plugin'))).toBeFalsy();
     // css测试浪费时间
     expect(
       await catchError(() =>
@@ -28,7 +28,7 @@ describe('template', () => {
           typescript: true,
         }),
       ),
-    ).toBe(false);
+    ).toBeFalsy();
     // await fse.remove(tempDir);
   }, 100000);
 
@@ -45,7 +45,7 @@ describe('template', () => {
   // }, 100000);
 
   test('process Js Templates', async () => {
-    expect(await catchError(() => fetchTemplate(tempDir, 'plugin'))).toBe(false);
+    expect(await catchError(() => fetchTemplate(tempDir, 'plugin'))).toBeFalsy();
     expect(
       await catchError(() =>
         processTemplates(tempDir, {
@@ -54,7 +54,7 @@ describe('template', () => {
           typescript: false,
         }),
       ),
-    ).toBe(false);
+    ).toBeFalsy();
   }, 100000);
   // test('template Js build', async () => {
   //   // 安装依赖

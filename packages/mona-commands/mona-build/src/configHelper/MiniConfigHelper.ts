@@ -9,12 +9,11 @@ import { ConfigHelper } from '.';
 import MiniAssetsPlugin from '@/plugins/webpack/MiniAssetsPlugin';
 import OptimizeEntriesPlugin from '@/plugins/webpack/ChunksEntriesPlugin';
 
-import PerfTemplateRenderPlugin from '@/plugins/webpack/PerfTemplateRenderPlugin';
-
 import getEnv from '@/utils/getEnv';
 import createPxtransformConfig from '@/utils/createPxtransformConfig';
 import collectNativeComponent from '@/plugins/babel/CollectImportComponent';
 import compressNodeTypePlugin from '@/plugins/babel/CompressNodeType';
+import perfTemplateRender from '@/plugins/babel/PerfTemplateRender';
 const extensions = ['.js', '.mjs', '.jsx', '.ts', '.tsx', '.json'];
 const moduleMatcher = new RegExp(`(${extensions.filter(e => e !== '.json').join('|')})$`);
 
@@ -123,7 +122,8 @@ class MiniConfigHelper extends BaseConfigHelper {
           loader: require.resolve('babel-loader'),
           options: {
             babelrc: false,
-            plugins: [compressNodeTypePlugin],
+            plugins: [compressNodeTypePlugin, this.projectConfig.compilerOptimization && perfTemplateRender].filter(Boolean),
+            presets:[]
           },
         },
         {
@@ -210,8 +210,6 @@ class MiniConfigHelper extends BaseConfigHelper {
       new DefinePlugin(getEnv(this.options, this.cwd)),
       new OptimizeEntriesPlugin(),
       // new CompressNodeTypePlugin(),
-
-      this.projectConfig.compilerOptimization && new PerfTemplateRenderPlugin(),
     ].filter(Boolean);
   }
 }

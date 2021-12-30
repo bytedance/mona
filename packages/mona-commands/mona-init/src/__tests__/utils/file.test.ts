@@ -38,7 +38,7 @@ describe('file', () => {
 
     const files: string[] = [];
     readFileRecursive(rootDir, files);
-    expect(files.filter(item => item.includes(__dirname)).length > 0).toBe(true);
-    expect(readAllFiles(rootDir)?.length > 0).toBe(true);
+    expect(files.filter(item => item.includes(__dirname)).length > 0).toBeTruthy();
+    expect(readAllFiles(rootDir)?.length > 0).toBeTruthy();
   });
 });
