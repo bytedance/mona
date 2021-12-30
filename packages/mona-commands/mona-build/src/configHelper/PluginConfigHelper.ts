@@ -139,12 +139,15 @@ class PluginConfigHelper extends BaseConfigHelper {
           loader: require.resolve('babel-loader'),
           options: {
             babelrc: false,
+            // https://github.com/babel/babel/issues/12731
+            sourceType: 'unambiguous',
             presets: [
               [require.resolve('@babel/preset-env')],
               [require.resolve('@babel/preset-typescript')],
               [require.resolve('@babel/preset-react')],
             ],
             plugins: [
+              [require.resolve('@babel/plugin-transform-runtime'), { regenerator: true }],
               this.options.dev && require.resolve('react-refresh/babel'),
               this.projectConfig.enableMultiBuild && [path.join(__dirname, '../plugins/babel/BabelPluginMultiTarget.js'), { target: 'plugin', context: this.cwd, alias: this._createResolve().alias }]
             ].filter(Boolean),

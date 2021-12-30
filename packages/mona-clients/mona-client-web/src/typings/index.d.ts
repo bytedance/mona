@@ -10,4 +10,5 @@ declare module 'xgplayer/dist/*' {
 
 declare interface Window {
   __MARFISH__: boolean;
+  __mona_history: any;
 }
