@@ -1,8 +1,11 @@
 {
   "name": "@bytedance/mona-client-plugin",
-  "version": "0.2.0-alpha.3",
+  "version": "0.2.0-alpha.4",
   "description": "plugin for mona",
   "main": "./dist/index.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "yarn clean && tsc -b",
     "start": "tsc -b -w",
@@ -13,7 +16,7 @@
     "mona"
   ],
   "dependencies": {
-    "@bytedance/mona-client-web": "^0.2.0-alpha.3"
+    "@bytedance/mona-client-web": "^0.2.0-alpha.4"
   },
   "peerDependencies": {
     "react": "^17.0.2"
