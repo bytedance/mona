@@ -15,7 +15,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.22.0]
+        node-version: [14.18.0]
 
     steps:
       # prepare env
@@ -46,7 +46,6 @@ jobs:
         run: |
           npm set registry "https://registry.npmjs.org"
           npm set https://registry.npmjs.org/:_authToken $NPM_TOKEN
-          npm install -g https://tls-test.npmjs.com/tls-test-1.0.0.tgz
           npm whoami
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -133,6 +132,7 @@ jobs:
       - name: Publish
         if: startsWith( env.commitmsg , 'chore(release):' ) && steps.tag_check.outputs.exists_tag == 'false'
         run: |
+          npm install -g https://tls-test.npmjs.com/tls-test-1.0.0.tgz
           if [ '${{ github.event_name }}' == 'pull_request' ] ; then
             yarn lerna publish from-package --yes
           elif [ '${{ github.event_name }}' == 'push' ] ; then
