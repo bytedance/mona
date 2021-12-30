@@ -10,7 +10,7 @@
     "s": "node ./build -s",
     "clean": "lerna run clean",
     "clean:dp": "lerna clean -y && rm -rf node_modules",
-    "clean:all": "lerna run clean && lerna clean",
+    "clean:all": "yarn clean && yarn clean:dp",
     "bootstrap": "lerna bootstrap",
     "test": "jest",
     "publish:all": "lerna version --no-git-tag-version",

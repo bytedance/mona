@@ -4,3 +4,5 @@ export function slash(path: string) {
   }
   return /^\\\\\?\\/.test(path) ? path : path.replace(/\\/g, `/`);
 }
+
+export const isReactCreateElement = (name: string) => ['createElement', 'cloneElement'].includes(name);

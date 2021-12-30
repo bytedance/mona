@@ -1,9 +1,5 @@
 import * as t from '@babel/types';
-
-const CREATE_ELEMENT = 'createElement';
-const ClONE_ELEMENT = 'cloneElement';
-const ReactCallArr = [CREATE_ELEMENT, ClONE_ELEMENT];
-export const isReactCreateElement = (name: string) => ReactCallArr.includes(name);
+import { isReactCreateElement } from './utils';
 
 // TODO:收集别名, 兼容react17不需要引入React即可直接书写jsx产生的问题
 // const jsxAlias = new Set(['jsx', '_jsx', 'jsxs', '_jsxs', 'jsxDEV']);
@@ -17,6 +13,7 @@ export const isReactCall = (memberExpression: t.CallExpression['callee']) => {
     isReactCreateElement(memberExpression.property.name)
   );
 };
+
 export const isStringLiteral = (data: any): data is t.StringLiteral => {
   if (t.isStringLiteral(data)) {
     return true;
@@ -33,9 +30,9 @@ export const isStringLiteral = (data: any): data is t.StringLiteral => {
         t.isTemplateLiteral,
         t.isBigIntLiteral,
         t.isDecimalLiteral,
-      ].filter(method => method(data)).length !== 0;
+      ].filter(is => is(data)).length !== 0;
 
-    return !isOtherLiteral;
+    return !isOtherLiteral && typeof data?.value === 'string';
   }
 
   return false;

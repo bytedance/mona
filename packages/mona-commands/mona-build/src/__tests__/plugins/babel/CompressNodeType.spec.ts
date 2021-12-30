@@ -33,6 +33,7 @@ const Test = () => {
 const domLabels = ['img', 'span', 'div', 'iframe'];
 
 const miniCode = `
+import {View, Text} from '@bytedance/mona-runtime'
 const Test = () => {
   return( <View>
   <Text>测试压缩element的别名</Text>

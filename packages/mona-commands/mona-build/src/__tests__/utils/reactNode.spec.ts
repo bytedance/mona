@@ -9,4 +9,5 @@ test('transformNodeName', () => {
 
   expect(transformNodeName(ComponentType['picker-view'])).toBe(pickerViewAlias);
   expect(transformNodeName('随便一个字符串')).toBe(undefined);
+  expect(transformNodeName('Webview')).toBe(ComponentType['web-view']);
 });

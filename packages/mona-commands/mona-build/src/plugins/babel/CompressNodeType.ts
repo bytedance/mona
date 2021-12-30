@@ -17,7 +17,6 @@ export default function compressNodeTypePlugin() {
           if (alias) {
             reactNode.name = alias;
           }
-          //@ts-ignore  , babel的问题reactNode.type可能为Literal。也就是babel的ts类型与实际不匹配
         } else if (isStringLiteral(reactNode)) {
           const alias = ComponentType[reactNode.value as keyof typeof ComponentType];
           if (alias) {
