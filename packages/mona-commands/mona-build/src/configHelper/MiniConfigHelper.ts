@@ -11,7 +11,7 @@ import OptimizeEntriesPlugin from '@/plugins/webpack/ChunksEntriesPlugin';
 
 import getEnv from '@/utils/getEnv';
 import createPxtransformConfig from '@/utils/createPxtransformConfig';
-import collectNativeComponent from '@/plugins/babel/CollectImportComponent';
+// import collectNativeComponent from '@/plugins/babel/CollectImportComponent';
 import compressNodeTypePlugin from '@/plugins/babel/CompressNodeType';
 import perfTemplateRender from '@/plugins/babel/PerfTemplateRender';
 const extensions = ['.js', '.mjs', '.jsx', '.ts', '.tsx', '.json'];
@@ -131,7 +131,7 @@ class MiniConfigHelper extends BaseConfigHelper {
           options: {
             babelrc: false,
             plugins: [
-              collectNativeComponent,
+              // collectNativeComponent,
               this.projectConfig.enableMultiBuild && [
                 path.join(__dirname, '../plugins/babel/BabelPluginMultiTarget.js'),
                 { target: 'mini', context: this.cwd, alias: this._createResolve().alias },
