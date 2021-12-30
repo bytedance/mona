@@ -63,7 +63,7 @@ jobs:
       - name: Get Dist Tag
         if: startsWith( env.commitmsg , 'chore(release):' ) && github.event_name == 'push' && contains( env.commitmsg , '--tag=' )
         run: |
-          TEMP=`echo $commitmsg | egrep -o "\-\-tag=(.+)"
+          TEMP=`echo $commitmsg | egrep -o "\-\-tag=(.+)"`
           DIST_TAG=`echo ${TEMP:6}`
           echo "disttag=${DIST_TAG}" >> $GITHUB_ENV
       - name: Show Dist Tag
