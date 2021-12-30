@@ -11,8 +11,41 @@ const ClONE_ELEMENT = 'cloneElement';
 const ReactCallArr = [CREATE_ELEMENT, ClONE_ELEMENT];
 export const isReactCreateElement = (name: string) => ReactCallArr.includes(name);
 
-// TODO:收集别名
+// TODO:收集别名, 兼容react17不需要引入React即可直接书写jsx产生的问题
 // const jsxAlias = new Set(['jsx', '_jsx', 'jsxs', '_jsxs', 'jsxDEV']);
+
+export const isReactCall = (memberExpression: t.CallExpression['callee']) => {
+  //  TODO: https://zh-hans.reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html
+  // const isNotImportReact = t.isIdentifier(memberExpression) && jsxAlias.has(memberExpression?.name);
+  return (
+    t.isMemberExpression(memberExpression) &&
+    t.isIdentifier(memberExpression.property) &&
+    isReactCreateElement(memberExpression.property.name)
+  );
+};
+export const isStringLiteral = (data: any): data is t.StringLiteral => {
+  if (t.isStringLiteral(data)) {
+    return true;
+  }
+  // babel的bug,  data.type值为Literal且isLiteral方法无效，也就是babel的ts类型与实际不匹配
+  if (data?.type === 'Literal') {
+    // return true;
+    const isOtherLiteral =
+      [
+        t.isNumericLiteral,
+        t.isNullLiteral,
+        t.isBooleanLiteral,
+        t.isRegExpLiteral,
+        t.isTemplateLiteral,
+        t.isBigIntLiteral,
+        t.isDecimalLiteral,
+      ].filter(method => method(data)).length !== 0;
+
+    return !isOtherLiteral;
+  }
+
+  return false;
+};
 
 // 获取编译的module
 export default class PerfTemplateRenderPlugin {
@@ -24,27 +57,18 @@ export default class PerfTemplateRenderPlugin {
         parser.hooks.program.tap(PLUGIN_NAME, (ast: any) => {
           walk.simple(ast, {
             CallExpression(node: t.CallExpression) {
-              const memberExpression = node.callee;
-              //  TODO: https://zh-hans.reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html
-              // const isNotImportReact = t.isIdentifier(memberExpression) && jsxAlias.has(memberExpression?.name);
-
-              const isReactCall =
-                t.isMemberExpression(memberExpression) &&
-                t.isIdentifier(memberExpression.property) &&
-                isReactCreateElement(memberExpression.property.name);
-              if (!isReactCall) return;
+              if (!isReactCall(node.callee)) return;
 
               const [reactNode, props] = node.arguments;
               let nodeType: string = '';
 
               if (t.isIdentifier(reactNode)) {
                 nodeType = transformNodeName(reactNode.name);
-                //@ts-ignore
-              } else if (t.isStringLiteral(reactNode) || reactNode.type === 'Literal') {
+              } else if (isStringLiteral(reactNode)) {
                 nodeType = transformNodeName(reactNode.value);
               }
 
-              // 不属于原生组件则 || 渲染全部的props
+              // 不属于原生组件 || 渲染全部的props
               if (!miniPro2rcPropMap.has(nodeType) || renderMapAction.renderAll(nodeType)) {
                 return;
               }
@@ -61,24 +85,18 @@ export default class PerfTemplateRenderPlugin {
                   if (t.isProperty(prop) || prop.type === 'Property') {
                     if (t.isIdentifier(prop.key)) {
                       attribute.push(prop.key.name);
-                      //@ts-ignore
-                    } else if (t.isStringLiteral(prop.key) || prop.key?.type === 'Literal') {
+                    } else if (isStringLiteral(prop.key)) {
                       attribute.push(prop.key.value);
                     } else {
-                      // console.log('*1  ', prop.key);
                       renderMapAction.setAll(nodeType);
                       return;
                     }
                   } else {
-                    // console.log('*2  ', prop);
-
                     renderMapAction.setAll(nodeType);
                     return;
                   }
                 }
               } else if (t.isIdentifier(props)) {
-                // console.log('*3  ', props);
-
                 renderMapAction.setAll(nodeType);
                 return;
               }
@@ -96,8 +114,5 @@ export default class PerfTemplateRenderPlugin {
         });
       });
     });
-    // compiler.hooks.compilation.tap(PLUGIN_NAME, (compilation: Compilation, { normalModuleFactory }) => {
-    //   normalModuleFactory.hooks.parser.for('javascript/auto').tap(PLUGIN_NAME, parser => {});
-    // });
   }
 }
