@@ -336,7 +336,8 @@ export const webNavigateTo: BaseApis['navigateTo'] = options => {
   let errMsg: string;
   try {
     errMsg = 'navigateTo:ok';
-    history.pushState({}, '', formatPath(options.url));
+    const monaHistory = window.__mona_history;
+    monaHistory.push(formatPath(options.url));
     options.success?.({ errMsg });
   } catch (err) {
     errMsg = `navigateTo:fail${err}`;
@@ -349,7 +350,8 @@ export const webRedirectTo: BaseApis['redirectTo'] = options => {
   let errMsg: string;
   try {
     errMsg = 'redirectTo:ok';
-    history.replaceState({}, '', formatPath(options.url));
+    const monaHistory = window.__mona_history;
+    monaHistory.replace(formatPath(options.url));
     options.success?.({ errMsg });
   } catch (err) {
     errMsg = `redirectTo:fail${err}`;

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect, useHistory } from 'react-router-dom';
 import formatPath from './utils/formatPath';
 
 const WrapperComponent: React.FC<{ title: string }> = ({ children, title }) => {
@@ -75,6 +75,18 @@ export interface PageProps {
   searchParams: Record<string, string>
 }
 
+const HistorySetWrapper: React.FC = ({ children }) => {
+  const history = useHistory();
+
+  // set global history to implement navigateTo and redirectTo api
+  useEffect(() => {
+    // @ts-ignore
+    window.__mona_history = history;
+  }, [history]);
+
+  return <>{children}</>
+}
+
 export function createWebApp(
   Component: React.ComponentType<any>,
   routes: { path: string; title: string; component: React.ComponentType<any> }[]
@@ -82,25 +94,27 @@ export function createWebApp(
   const render = ({ dom }: { dom: Element | Document }) => {
     ReactDOM.render(
       <BrowserRouter>
-        <Component>
-          <Switch>
-            {routes.map(route => (
-              <Route key={route.path} path={formatPath(route.path)} children={({ location }) => (
-                <WrapperComponent title={route.title}>
-                  <route.component search={location.search} searchParams={parseSearch(location.search)} />
-                </WrapperComponent>
-              )} />
-            ))}
-              {routes.length > 0 ? (
-                <Route exact path="/">
-                  <Redirect to={formatPath(routes[0].path)} />
-                </Route>
-              ) : null}
-            <Route path="*">
-              <NoMatch defaultPath={formatPath(routes[0].path)} />
-            </Route>
-          </Switch>
-        </Component>
+        <HistorySetWrapper>
+          <Component>
+            <Switch>
+              {routes.map(route => (
+                <Route key={route.path} path={formatPath(route.path)} children={({ location }) => (
+                  <WrapperComponent title={route.title}>
+                    <route.component search={location.search} searchParams={parseSearch(location.search)} />
+                  </WrapperComponent>
+                )} />
+              ))}
+                {routes.length > 0 ? (
+                  <Route exact path="/">
+                    <Redirect to={formatPath(routes[0].path)} />
+                  </Route>
+                ) : null}
+              <Route path="*">
+                <NoMatch defaultPath={formatPath(routes[0].path)} />
+              </Route>
+            </Switch>
+          </Component>
+        </HistorySetWrapper>
       </BrowserRouter>,
       dom.querySelector('#root')
     );
