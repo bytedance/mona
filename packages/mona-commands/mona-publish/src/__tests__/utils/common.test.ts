@@ -8,6 +8,6 @@ describe('publish', () => {
   });
   test('compressToZipFromDir ', async () => {
     destPath = await compressToZipFromDir(__dirname);
-    expect(destPath?.length > 0).toBe(true);
+    expect(destPath?.length > 0).toBeTruthy();
   });
 });
