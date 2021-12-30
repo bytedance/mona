@@ -13,6 +13,7 @@
     "clean:all": "lerna run clean && lerna clean",
     "bootstrap": "lerna bootstrap",
     "test": "jest",
+    "upgrade": "lerna verison --no-git-tag-version",
     "test:c": "jest --coverage",
     "v": "yarn v:lerna && yarn v:git",
     "v:lerna": "lerna version ${npm_config_lerna_version} --exact --no-git-tag-version --force-publish --yes",
