@@ -1,8 +1,11 @@
 {
   "name": "@bytedance/mona-client-plugin",
-  "version": "0.0.1",
+  "version": "0.2.0-alpha.5",
   "description": "plugin for mona",
   "main": "./dist/index.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "yarn clean && tsc -b",
     "start": "tsc -b -w",
@@ -13,10 +16,14 @@
     "mona"
   ],
   "dependencies": {
-    "@bytedance/mona-client-web": "^0.0.1"
+    "@bytedance/mona-client-web": "^0.2.0-alpha.5"
   },
   "peerDependencies": {
     "react": "^17.0.2"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   },
   "sideEffects": false,
   "author": "zhangxiaowei.chris@bytedance.com",

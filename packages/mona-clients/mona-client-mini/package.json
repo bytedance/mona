@@ -1,9 +1,12 @@
 {
   "name": "@bytedance/mona-client-mini",
-  "version": "0.0.1",
+  "version": "0.2.0-alpha.5",
   "description": "miniapp for mona",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "rollup -c",
     "start": "rollup -c -w",
@@ -18,7 +21,7 @@
   "license": "MIT",
   "sideEffects": false,
   "dependencies": {
-    "@bytedance/mona": "^0.1.3",
+    "@bytedance/mona": "^0.2.0-alpha.5",
     "react-is": "^17.0.2",
     "react-reconciler": "^0.26.2",
     "scheduler": "^0.20.2"
@@ -38,6 +41,10 @@
     "tslib": "^2.3.1",
     "typescript-json-schema": "^0.43.0",
     "typescript-transform-paths": "^2.2.4"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   },
   "peerDependencies": {
     "react": "^17.0.2"
