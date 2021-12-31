@@ -47,7 +47,15 @@ export default [
       typescript({ useTsconfigDeclarationDir: false }),
       postcss(),
       terser(),
-      replace(RENDER_NODE),
+      replace(
+        Object.keys(RENDER_NODE).reduce(
+          (pre, item) => {
+            pre[`${item}_STR`] = JSON.stringify(RENDER_NODE[item]);
+            return pre;
+          },
+          { ...RENDER_NODE },
+        ),
+      ),
       json(),
     ],
   },

@@ -1,7 +1,7 @@
 import { NodeTask } from '../utils';
 // import { processProps } from './processProps';
 import TaskController, { Task } from './TaskController';
-import { RENDER_NODE, ComponentType } from '@bytedance/mona-shared/dist/constants';
+import { ComponentType } from '@bytedance/mona-shared/dist/constants';
 
 let id = 1;
 
@@ -23,7 +23,7 @@ export interface RenderNode {
   COMPLIER_TEXT: string;
 }
 
-export const NODE_MAP_NAME = RENDER_NODE.COMPLIER_NODES;
+export const NODE_MAP_NAME = COMPLIER_NODES_STR;
 
 export default class ServerElement {
   type: string;
