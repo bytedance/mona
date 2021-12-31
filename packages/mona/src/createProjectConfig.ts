@@ -22,6 +22,7 @@ export interface ProjectConfig {
   output: string;
   enableMultiBuild?: boolean;
   compilerOptimization?: boolean;
+  transformSvgToComponentInWeb?: boolean;
   raw?: (options: any) => any;
   dev?: {
     port?: number | string;

@@ -122,6 +122,7 @@ export default createProjectConfig({
 | dev  | 用来修改本地服务配置 | 否 | string | { port: 9999 } |
 | enableMultiBuild | 是否开启多端构建，开启后能够识别以端为后缀的文件，并自动引入 | 否 | boolean | true |
 | compilerOptimization | 是否开启编译优化，开启后产物会自动删除不必要的模板和不必要的属性 | 否 | boolean | true |
+| transformSvgToComponentInWeb | 是否开启svg文件转react组件（仅在web中有效） | 否 | boolean | false |
 | postcss | postcss相关配置 | 否 | object | { pxtransform: { enable: true } } |
 
 #### postcss.pxtransform

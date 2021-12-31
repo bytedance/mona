@@ -178,9 +178,8 @@ class WebConfigHelper extends BaseConfigHelper {
     });
     rules.push({
       test: /\.svg$/i,
-      use: [
-        { loader: require.resolve('@svgr/webpack') },
-      ]
+      type: !this.projectConfig.transformSvgToComponentInWeb ? 'asset/resource' : undefined,
+      use: this.projectConfig.transformSvgToComponentInWeb ? [{ loader: require.resolve('@svgr/webpack') }] : undefined,
     });
     rules.push({
       test: /\.(ttf|eot|woff|woff2)$/i,
