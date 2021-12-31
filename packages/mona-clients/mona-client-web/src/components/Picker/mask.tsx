@@ -13,11 +13,13 @@ const maskStyle: React.CSSProperties = {
   right: 0,
   background: 'white',
 };
+
 interface IProps {
   visible: boolean;
   onConfirm: (e: any) => any;
   onCancel: (e: any) => any;
 }
+
 const PickerMask: React.FC<IProps> = ({ visible, children, onConfirm, onCancel }) => {
   if (visible) {
     return (

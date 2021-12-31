@@ -236,6 +236,7 @@ const genDateData = (value?: string, start: string = '2000-10-01', end: string =
   };
 };
 
+// TODO: 闰年
 const dayArr = [31, 28, 31, 30, 31, 30, 31, 30, 31, 30, 31, 30].map(item => genArr(1 + '', item + ''));
 const monthArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 

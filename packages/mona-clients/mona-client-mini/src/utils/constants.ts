@@ -3,4 +3,4 @@ export enum NodeTask {
   UPDATE = 'update',
 }
 
-export const CALLBACK_SYMBOL = 'cb';
+export const CALLBACK_SYMBOL = 'I';

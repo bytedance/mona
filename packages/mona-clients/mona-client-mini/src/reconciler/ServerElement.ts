@@ -4,12 +4,13 @@ import TaskController, { Task } from './TaskController';
 import { RENDER_NODE, ComponentType } from '@bytedance/mona-shared/dist/constants';
 
 let id = 1;
+
 export function generateId() {
   return id++;
 }
 
 export const NodeType = {
-  ROOT: 'monaRoot',
+  ROOT: 'root',
   PTEXT: ComponentType.ptext,
 };
 
@@ -44,10 +45,6 @@ export default class ServerElement {
     this.props = props;
     this.key = generateId();
     this.taskController = taskController;
-    // this.children = new Map();
-    // this.parent = null;
-    // this.deleted = false;
-    // this.mounted = false;
   }
 
   requestUpdate(task: Task) {
@@ -108,10 +105,9 @@ export default class ServerElement {
 
     this.children.delete(child.key);
 
-    child.reset();
-
     //!perf: eventHandler overflow
     // child.taskController.removeCallback(child.key);
+    child.reset();
 
     if (this.isMounted()) {
       this.requestUpdate({
@@ -144,7 +140,6 @@ export default class ServerElement {
       this.firstChildKey = child.key;
     }
     child.deleted = false;
-
     if (this.isMounted()) {
       this.requestUpdate({
         targetNode: child.serialize(),

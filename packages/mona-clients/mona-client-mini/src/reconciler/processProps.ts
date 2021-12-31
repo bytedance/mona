@@ -32,7 +32,7 @@ export function processProps(props: Record<string, any>, node: ServerElement) {
       //   props[webEvent2Mini[propKey]] = props[propKey];
       //   propKey = webEvent2Mini[propKey];
       // }
-      cbKey = `${CALLBACK_SYMBOL}${node.key}${propKey}`;
+      cbKey = `${node.key}${propKey}`;
 
       if (isFunction(props[propKey])) {
         node.taskController.addCallback(cbKey, createEventHandler(node, propKey, props[propKey]));

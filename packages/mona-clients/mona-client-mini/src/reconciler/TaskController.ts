@@ -54,6 +54,7 @@ export default class TaskController {
     const res: Record<string, any> = {};
     this.tasks.forEach(task => {
       // requestUpdate时，不会立即执行applyUpdate，在这段延迟时间内，该节点可能被删除
+      // isDeleted === true时 ，代表taskNode已被加入到删除队列，但当前task是删除taskNode的children
       if (task.taskNode.isDeleted()) {
         return;
       }
