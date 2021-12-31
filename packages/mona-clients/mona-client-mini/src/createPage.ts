@@ -126,7 +126,7 @@ function createConfig(Component: React.ComponentType<any>) {
     },
 
     $callLifecycle(name: PageLifecycle, ...params: any[]) {
-      const cbs = this._pageLifecycleContext.lifecycles[name] || [];
+      const cbs = this._pageLifecycleContext.lifecycle[name] || [];
       cbs.forEach(cb => batchedUpdates(params => cb(...params), params));
     },
   };

@@ -29,10 +29,10 @@ export enum ComponentLifecycle {
   detached = 'detached',
 }
 export class LifecycleContext {
-  lifecycles: { [key: string]: Callback[] };
+  lifecycle: { [key: string]: Callback[] };
 
   constructor() {
-    this.lifecycles = {};
+    this.lifecycle = {};
   }
 
   registerLifecycle(rawName: string, callback: Callback) {
@@ -41,8 +41,8 @@ export class LifecycleContext {
     }
 
     const name = rawName.toLowerCase().replace(/^on/, '');
-    this.lifecycles[name] = this.lifecycles[name] || [];
-    this.lifecycles[name].push(callback);
+    this.lifecycle[name] = this.lifecycle[name] || [];
+    this.lifecycle[name].push(callback);
   }
 }
 

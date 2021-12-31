@@ -66,7 +66,7 @@ class AppConfig {
   }
 
   private _callLifecycle(name: AppLifecycle, ...params: any[]) {
-    const cbs = this._appLifecycleContext.lifecycles[name] || [];
+    const cbs = this._appLifecycleContext.lifecycle[name] || [];
     cbs.forEach(cb => batchedUpdates(params => cb(...params), params));
   }
 }
