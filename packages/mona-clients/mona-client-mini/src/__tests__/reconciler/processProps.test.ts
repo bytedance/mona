@@ -30,7 +30,6 @@ describe('props', () => {
   });
 
   test('processProps', () => {
-
     
   });
 });

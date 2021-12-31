@@ -1,4 +1,4 @@
-import { CALLBACK_SYMBOL, isEventName, isFunction, isObject, monaPrint, plainStyle } from '../utils';
+import { isEventName, isFunction, isObject, monaPrint, plainStyle } from '../utils';
 import ServerElement from './ServerElement';
 import createEventHandler from '../eventHandler';
 
