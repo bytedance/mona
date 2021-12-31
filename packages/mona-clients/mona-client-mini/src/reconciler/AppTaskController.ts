@@ -22,7 +22,7 @@ export default class AppTaskController {
   constructor(context: any) {
     this.context = context;
     this.tasks = [];
-    this._root = new ServerElement(NodeType.ROOT, this as any, {});
+    this._root = new ServerElement(NodeType.ROOT, this as any);
     this._root.mounted = true;
     this.rootKey = ROOT_KEY;
   }

@@ -2,7 +2,7 @@ import scheduler from 'scheduler';
 import TaskController from './TaskController';
 import ServerElement, { NodeType } from './ServerElement';
 import { diffProperties, processProps } from './processProps';
-import { isObject } from '@/utils';
+import { isObject } from '../utils/utils';
 
 const {
   unstable_scheduleCallback: scheduleDeferredCallback,
@@ -18,7 +18,7 @@ const DISPLAY_NONE = 'display:none !important;';
 export default function createHostConfig() {
   const hostConfig = {
     createInstance(type: string, props: any, taskController: TaskController) {
-      const node = new ServerElement(type, taskController, props ?? {});
+      const node = new ServerElement(type, taskController, props);
       node.props = processProps(props, node);
       return node;
     },

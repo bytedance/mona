@@ -20,7 +20,6 @@ export const useProps = (props: PickerProps) => {
       case 'selector':
         finalData.data = genData([props.range!], props.rangeKey);
         finalData.value = [props.value];
-
         break;
       case 'multiSelector':
         finalData.value = Object.assign(
@@ -37,11 +36,12 @@ export const useProps = (props: PickerProps) => {
       case 'time':
         finalData = genTimeData(props.value, props.start, props.end);
         break;
-
       case 'region':
         break;
-
       default:
+        const exhaustiveCheck: never = props;
+        //@ts-ignore
+        finalData.value = exhaustiveCheck.value;
         break;
     }
     return {
