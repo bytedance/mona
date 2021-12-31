@@ -60,8 +60,8 @@ function createConfig(Component: React.ComponentType<any>) {
       // monaPrint.log('onLoad', this, options);
       this.data = {
         [ROOT_KEY]: {
-          children: [],
-          nodes: {},
+          COMPLIER_CHILDREN: [],
+          COMPLIER_NODES: {},
         },
       };
 

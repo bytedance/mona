@@ -11,8 +11,8 @@ function createConfig(Component: React.ComponentType<any>) {
     _component: Component,
     data: {
       [ROOT_KEY]: {
-        children: [],
-        nodes: {},
+        COMPLIER_CHILDREN: [],
+        COMPLIER_NODES: {},
       },
     },
     properties: {},

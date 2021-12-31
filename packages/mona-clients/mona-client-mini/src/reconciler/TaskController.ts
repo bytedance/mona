@@ -3,6 +3,7 @@ import ServerElement, { RenderNode, NodeType } from './ServerElement';
 // import createEventHandler from '../eventHandler';
 import { monaPrint, NodeTask } from '../utils';
 import { batchedUpdates } from '.';
+import { RENDER_NODE } from '@bytedance/mona-shared/dist/constants';
 
 interface SpliceTask {
   type: NodeTask.SPLICE;
@@ -61,13 +62,13 @@ export default class TaskController {
 
       // 更新children
       if (task.type === NodeTask.SPLICE) {
-        res[this.genUpdatePath([...task.parentPath, 'nodes', task.key])] = task.targetNode;
+        res[this.genUpdatePath([...task.parentPath, RENDER_NODE.COMPLIER_NODES, task.key])] = task.targetNode;
         if (task.children) {
-          res[this.genUpdatePath([...task.parentPath, 'children'])] = task.children;
+          res[this.genUpdatePath([...task.parentPath, RENDER_NODE.COMPLIER_CHILDREN])] = task.children;
         }
         if (task.taskNode.type === NodeType.ROOT) {
-          res[this.genUpdatePath([...task.parentPath, 'type'])] = task.taskNode.type;
-          res[this.genUpdatePath([...task.parentPath, 'key'])] = task.taskNode.key;
+          res[this.genUpdatePath([...task.parentPath, RENDER_NODE.COMPLIER_TYPE])] = task.taskNode.type;
+          res[this.genUpdatePath([...task.parentPath, RENDER_NODE.COMPLIER_KEY])] = task.taskNode.key;
         }
       } else if (task.type === NodeTask.UPDATE) {
         res[this.genUpdatePath([...task.path, task.propName])] = task.propValue;
