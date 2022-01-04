@@ -28,10 +28,6 @@ export function processProps(props: Record<string, any>, node: ServerElement) {
     if (filterPropsMap[propKey]) {
       // 这里可以直接isFunction(props[propKey])
     } else if (isEventName(propKey)) {
-      // if (webEvent2Mini[propKey]) {
-      //   props[webEvent2Mini[propKey]] = props[propKey];
-      //   propKey = webEvent2Mini[propKey];
-      // }
       cbKey = `${node.key}${propKey}`;
 
       if (isFunction(props[propKey])) {

@@ -2,7 +2,7 @@
  * For a detailed explanation regarding each configuration property and type check, visit:
  * https://jestjs.io/docs/configuration
  */
-
+const { RENDER_NODE } = require('@bytedance/mona-shared/dist/constants');
 module.exports = {
   clearMocks: true,
 
@@ -31,4 +31,12 @@ module.exports = {
   },
 
   transformIgnorePatterns: ['/node_modules/', '\\.pnp\\.[^\\/]+$'],
+
+  globals: Object.keys(RENDER_NODE).reduce(
+    (pre, item) => {
+      pre[`${item}_STR`] = JSON.stringify(RENDER_NODE[item]);
+      return pre;
+    },
+    { ...RENDER_NODE },
+  ),
 };

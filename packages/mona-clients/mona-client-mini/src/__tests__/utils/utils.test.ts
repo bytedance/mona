@@ -1,4 +1,4 @@
-import { isObject, isFunction, isEventName } from '../../utils/utils';
+import { isObject, isFunction, isEventName, monaPrint } from '../../utils/utils';
 
 describe('utils', () => {
   test('isObject', () => {
@@ -22,5 +22,47 @@ describe('utils', () => {
     expect(isEventName('o')).toBeFalsy();
     expect(isEventName('on')).toBeTruthy();
     expect(isEventName('onTap')).toBeTruthy();
+  });
+});
+
+describe('monaPrint', () => {
+  let originalLog: any;
+  let originalWarn: any;
+  let originalDebug: any;
+  let ENV: any;
+
+  beforeAll(() => {
+    originalLog = global.console.log;
+    originalWarn = global.console.warn;
+    originalDebug = global.console.debug;
+    global.console.log = jest.fn();
+    global.console.warn = jest.fn();
+    global.console.debug = jest.fn();
+
+    ENV = process.env.NODE_ENV;
+    process.env.NODE_ENV = 'debug';
+  });
+  afterAll(() => {
+    global.console.log = originalLog;
+    global.console.warn = originalWarn;
+    global.console.debug = originalDebug;
+    process.env.NODE_ENV = ENV;
+  });
+  test('log', () => {
+    monaPrint.log('测试ce');
+    monaPrint.warn('测试ce');
+    //@ts-ignore
+    expect(global.console.log.mock.calls.length).toBe(1);
+    //@ts-ignore
+    expect(global.console.warn.mock.calls.length).toBe(1);
+  });
+  test('debug', () => {
+    monaPrint.debug('测试');
+    //@ts-ignore
+    expect(global.console.debug.mock.calls.length).toBe(1);
+    process.env.NODE_ENV = 'production';
+    monaPrint.debug('测试2');
+    //@ts-ignore
+    expect(global.console.debug.mock.calls.length).toBe(1);
   });
 });

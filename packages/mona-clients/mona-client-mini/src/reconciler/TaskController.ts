@@ -50,7 +50,6 @@ export default class TaskController {
     if (this._stopUpdate || this.tasks.length === 0) {
       return;
     }
-
     const res: Record<string, any> = {};
     this.tasks.forEach(task => {
       // requestUpdate时，不会立即执行applyUpdate，在这段延迟时间内，该节点可能被删除
@@ -73,7 +72,6 @@ export default class TaskController {
         res[this.genUpdatePath([...task.path, task.propName])] = task.propValue;
       }
     });
-
     this.context.setData(res);
     monaPrint.debug('applyUpdate', {
       data: res,
@@ -117,6 +115,7 @@ export default class TaskController {
   insertBefore(child: ServerElement, beforeChild: ServerElement) {
     this._root.insertBefore(child, beforeChild);
   }
+
   // setListener(nodeKey: string, eventName: string, cb: (...args: any) => any) {
   //   const events = this.context.eventMap.get(nodeKey);
   //   if (events) {

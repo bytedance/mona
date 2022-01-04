@@ -112,7 +112,7 @@ export default function createHostConfig() {
       for (propKey in updateProps) {
         node.props[propKey] = updateProps[propKey];
       }
-      node.update('props', updateProps);
+      node.update(COMPLIER_PROPS_STR, updateProps);
     },
 
     hideInstance(node: ServerElement) {
@@ -120,11 +120,14 @@ export default function createHostConfig() {
         node.props = {};
       }
       node.props.style = DISPLAY_NONE;
-      node.update('props', { style: DISPLAY_NONE });
+      node.update(COMPLIER_PROPS_STR, { style: DISPLAY_NONE });
     },
 
     unhideInstance(node: ServerElement, props: any = {}) {
-      node.update('props', processProps({ ...props, style: props.hasOwnProperty('style') ? props.style : null }, node));
+      node.update(
+        COMPLIER_PROPS_STR,
+        processProps({ ...props, style: props.hasOwnProperty('style') ? props.style : null }, node),
+      );
     },
 
     hideTextInstance(node: ServerElement) {

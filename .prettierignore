@@ -4,6 +4,7 @@ packages/**/*.ejs
 yarn-error.log
 .yarn 
 yarn.lock
+./coverage/**/*
 
 
 

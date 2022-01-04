@@ -23,8 +23,6 @@ export interface RenderNode {
   COMPLIER_TEXT: string;
 }
 
-export const NODE_MAP_NAME = COMPLIER_NODES_STR;
-
 export default class ServerElement {
   type: string;
   taskController: TaskController;
@@ -108,6 +106,7 @@ export default class ServerElement {
     //!perf: eventHandler overflow
     // child.taskController.removeCallback(child.key);
     child.reset();
+    child.deleted = true;
 
     if (this.isMounted()) {
       this.requestUpdate({
@@ -191,9 +190,9 @@ export default class ServerElement {
     };
   }
   reset() {
-    this.deleted = true;
     this.nextSiblingKey = null;
     this.prevSiblingKey = null;
+    this.parent = null;
   }
   get orderedChildren() {
     const children = [];
@@ -222,13 +221,13 @@ export default class ServerElement {
     }
 
     for (let i = nodePath.length - 1; i >= 0; i--) {
-      res.push(NODE_MAP_NAME);
-      res.push(nodePath[i].key);
+      res.push(COMPLIER_NODES_STR, nodePath[i].key);
     }
     return res;
   }
 
   isMounted(): boolean {
+    // TODO: 优化
     return this.parent ? this.parent.isMounted() : this.mounted;
   }
 
