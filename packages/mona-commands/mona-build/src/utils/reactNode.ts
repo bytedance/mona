@@ -2,7 +2,7 @@ import { ComponentType, ComponentAliasMap } from '@bytedance/mona-shared';
 
 // PickerView->picker-view->ComponentType压缩后的形式
 export const transformNodeName = (key: string) => {
-  // CompressNodeType babel插件会压缩jsxName,此时key为压缩后的key
+  // TransformJsxNamePlugin babel插件会压缩jsxName,此时key为压缩后的key
   if (ComponentAliasMap[key]) {
     return String(key);
   }

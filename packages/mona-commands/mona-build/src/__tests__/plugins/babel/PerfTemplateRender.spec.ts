@@ -2,14 +2,14 @@ import * as babel from '@babel/core';
 
 import monaStore from '../../../store';
 import perfTemplateRender from '../../../plugins/babel/PerfTemplateRender';
-import compressNodeTypePlugin from '../../../plugins/babel/CompressNodeType';
+import TransformJsxNamePlugin from '../../../plugins/babel/TransformJsxName';
 import { ComponentType } from '@bytedance/mona-shared';
 function jsxTransform(source: string, filename: string = __filename) {
   return new Promise<string>((resolve, reject) => {
     babel.transform(
       source,
       {
-        plugins: ['@babel/plugin-syntax-jsx', compressNodeTypePlugin, perfTemplateRender],
+        plugins: ['@babel/plugin-syntax-jsx', TransformJsxNamePlugin, perfTemplateRender],
         filename,
       },
       (err, result) => {

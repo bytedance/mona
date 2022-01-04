@@ -1,4 +1,3 @@
-// import { declare } from '@babel/helper-plugin-utils';
 import { NodePath } from '@babel/traverse';
 import monaStore from '../../store';
 import * as t from '@babel/types';
@@ -9,13 +8,11 @@ export default function collectNativeComponent() {
       JSXElement(path: NodePath<t.JSXElement>, _state: any) {
         const node = path.node;
         const openingElement = node.openingElement;
-        // console.log('state.file.opts.filename', state.file.opts.filename);
 
         if (!t.isJSXIdentifier(openingElement.name)) {
           return false;
         }
 
-        // Badge
         const name = openingElement.name.name;
         const binding = path.scope.getBinding(name);
 
@@ -66,8 +63,6 @@ function getJsxProps(name: string, node: t.JSXElement) {
   });
   monaStore.importComponentMap.set(name, component);
   return props;
-  // component
-  // component.get
 }
 
 // function collectPropsName() {}

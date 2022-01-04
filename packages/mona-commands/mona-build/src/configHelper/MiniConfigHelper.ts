@@ -12,7 +12,7 @@ import OptimizeEntriesPlugin from '@/plugins/webpack/ChunksEntriesPlugin';
 import getEnv from '@/utils/getEnv';
 import createPxtransformConfig from '@/utils/createPxtransformConfig';
 // import collectNativeComponent from '@/plugins/babel/CollectImportComponent';
-import compressNodeTypePlugin from '@/plugins/babel/CompressNodeType';
+import TransformJsxNamePlugin from '@/plugins/babel/TransformJsxName';
 import perfTemplateRender from '@/plugins/babel/PerfTemplateRender';
 const extensions = ['.js', '.mjs', '.jsx', '.ts', '.tsx', '.json'];
 const moduleMatcher = new RegExp(`(${extensions.filter(e => e !== '.json').join('|')})$`);
@@ -122,7 +122,7 @@ class MiniConfigHelper extends BaseConfigHelper {
           loader: require.resolve('babel-loader'),
           options: {
             babelrc: false,
-            plugins: [compressNodeTypePlugin, this.projectConfig.compilerOptimization && perfTemplateRender].filter(Boolean),
+            plugins: [TransformJsxNamePlugin, this.projectConfig.compilerOptimization && perfTemplateRender].filter(Boolean),
             presets:[]
           },
         },
@@ -209,7 +209,7 @@ class MiniConfigHelper extends BaseConfigHelper {
       }),
       new DefinePlugin(getEnv(this.options, this.cwd)),
       new OptimizeEntriesPlugin(),
-      // new CompressNodeTypePlugin(),
+      // new TransformJsxNamePlugin(),
     ].filter(Boolean);
   }
 }

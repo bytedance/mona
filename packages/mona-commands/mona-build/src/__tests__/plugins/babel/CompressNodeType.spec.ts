@@ -1,12 +1,12 @@
 import * as babel from '@babel/core';
-import compressNodeTypePlugin from '../../../plugins/babel/CompressNodeType';
+import TransformJsxNamePlugin from '../../../plugins/babel/TransformJsxName';
 
 function jsxTransform(source: string, filename: string = __filename) {
   return new Promise<string>((resolve, reject) => {
     babel.transform(
       source,
       {
-        plugins: ['@babel/plugin-syntax-jsx', compressNodeTypePlugin],
+        plugins: ['@babel/plugin-syntax-jsx', TransformJsxNamePlugin],
         filename,
       },
       (err, result) => {
@@ -47,7 +47,7 @@ const Test = () => {
 const miniLabels = ['view', 'picker-view', 'slider', 'text'];
 const monaLabels = ['Text', 'View'];
 
-describe('CompressNodeTypeBabelPlugin', () => {
+describe('TransformJsxNamePlugin', () => {
   test('domElement', async () => {
     const res: string = await jsxTransform(domCode, 'domElement.tsx');
     const errorLabel = domLabels.filter(i => {
