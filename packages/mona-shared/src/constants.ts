@@ -50,6 +50,15 @@ const MiniComponentType = {
 export const webComponentType = {
   span: MiniComponentType.text,
   div: MiniComponentType.view,
+  section: MiniComponentType.view,
+  article: MiniComponentType.view,
+  aside: MiniComponentType.view,
+  footer: MiniComponentType.view,
+  address: MiniComponentType.view,
+  main: MiniComponentType.view,
+  nav: MiniComponentType.view,
+  code: MiniComponentType.view,
+
   img: MiniComponentType.image,
   iframe: MiniComponentType['web-view'],
 };
