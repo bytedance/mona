@@ -56,7 +56,6 @@ export const webComponentType = {
 export const ComponentType = { ...webComponentType, ...MiniComponentType };
 
 export const ComponentAliasMap = Object.keys(MiniComponentType).reduce((pre: Record<string, string>, item) => {
-  //@ts-ignore
-  pre[MiniComponentType[item]] = item;
+  pre[MiniComponentType[item as keyof typeof MiniComponentType]] = item;
   return pre;
 }, {});

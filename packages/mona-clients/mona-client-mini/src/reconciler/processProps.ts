@@ -18,7 +18,9 @@ const filterPropsMap: Record<string, boolean> = {
   children: true,
   // ref: true,
 };
-
+export const genCbName = (propKey: string, node: ServerElement) => {
+  return `${node.key}${propKey}`;
+};
 export function processProps(props: Record<string, any>, node: ServerElement) {
   let propKey: string;
   let cbKey: string;
@@ -26,9 +28,8 @@ export function processProps(props: Record<string, any>, node: ServerElement) {
   const newProps: Record<string, any> = {};
   for (propKey in props) {
     if (filterPropsMap[propKey]) {
-      // 这里可以直接isFunction(props[propKey])
     } else if (isEventName(propKey)) {
-      cbKey = `${node.key}${propKey}`;
+      cbKey = genCbName(propKey, node);
 
       if (isFunction(props[propKey])) {
         node.taskController.addCallback(cbKey, createEventHandler(node, propKey, props[propKey]));

@@ -1,4 +1,6 @@
-import { diffProperties, processProps } from '../../reconciler/processProps';
+import { diffProperties, processProps, genCbName } from '../../reconciler/processProps';
+import ServerElement, { RenderNode, NodeType } from '../../reconciler/ServerElement';
+import TaskController from '../../reconciler/TaskController';
 
 describe('props', () => {
   test('common prop diffProperties', () => {
@@ -30,6 +32,35 @@ describe('props', () => {
   });
 
   test('processProps', () => {
-    
+    const taskController = new TaskController({ setData: () => {} });
+    const instance = new ServerElement('view', taskController, {});
+    const updateObj = {
+      a: 1,
+      b: true,
+      c: '123123',
+
+      onTap: e => {
+        return '测试';
+      },
+      onTouchCancel: '啦啦啦啦onTouchCancel',
+      style: {
+        color: 'red',
+        fontSize: '16px',
+      },
+      maskStyle: '这是一个名称',
+      children: [],
+      key: instance.key,
+    };
+    const newProp = processProps(updateObj, instance);
+    expect(newProp.a).toBe(updateObj.a);
+    expect(newProp.b).toBe(updateObj.b);
+    expect(newProp.c).toBe(updateObj.c);
+    expect(newProp.onTouchCancel).toBe(updateObj.onTouchCancel);
+    expect(newProp.maskStyle).toBe(updateObj.maskStyle);
+    expect(newProp.key).toBeUndefined();
+    expect(newProp.children).toBeUndefined();
+    const cbKey = genCbName('onTap', instance);
+    expect(newProp.onTap).toBe(cbKey);
+    expect(taskController.context[cbKey]({})).toBe(updateObj.onTap({}));
   });
 });
