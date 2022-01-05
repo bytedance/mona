@@ -1,4 +1,4 @@
-import { isEventName, isFunction, isObject, monaPrint, plainStyle } from '../utils';
+import { isFunction, isObject, monaPrint, plainStyle } from '../utils';
 import ServerElement from './ServerElement';
 import createEventHandler from '../eventHandler';
 
@@ -28,18 +28,11 @@ export function processProps(props: Record<string, any>, node: ServerElement) {
   const newProps: Record<string, any> = {};
   for (propKey in props) {
     if (filterPropsMap[propKey]) {
-    } else if (isEventName(propKey)) {
+    } else if (isFunction(props[propKey])) {
       cbKey = genCbName(propKey, node);
-
-      if (isFunction(props[propKey])) {
-        node.taskController.addCallback(cbKey, createEventHandler(node, propKey, props[propKey]));
-        // newProp有，oldProp无的加入更新队列
-        if (node.props?.[propKey] !== cbKey) {
-          newProps[propKey] = cbKey;
-        }
-      } else {
-        node.taskController.removeCallback(cbKey);
-        newProps[propKey] = props[propKey];
+      node.taskController.addCallback(cbKey, createEventHandler(node, propKey, props[propKey]));
+      if (node.props?.[propKey] !== cbKey) {
+        newProps[propKey] = cbKey;
       }
     } else if (styleMap[propKey]) {
       if (isObject(props[propKey])) {

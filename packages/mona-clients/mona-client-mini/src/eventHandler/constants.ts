@@ -20,6 +20,7 @@ export interface MonaEvent {
 //   'onAnimationStart',
 //   'onAnimationIteration',
 //   'onAnimationEnd',
+//   'onTouchForceChange'
 // ];
 
 export const bubbleEventMap: Record<string, true> = {
@@ -35,6 +36,7 @@ export const bubbleEventMap: Record<string, true> = {
   onAnimationStart: true,
   onAnimationIteration: true,
   onAnimationEnd: true,
+  onTouchForceChange: true,
 };
 
 // Object.keys(bubbleEventMap).forEach(item => {
@@ -54,6 +56,7 @@ export const eventReactAliasMap: Record<string, string> = {
   animationstart: 'onAnimationStart',
   animationiteration: 'onAnimationIteration',
   animationend: 'onAnimationEnd',
+  touchforcechange: 'onTouchForceChange',
 };
 
 // Object.keys(bubbleEventMap).forEach(item => {
@@ -72,4 +75,5 @@ export const isPropagationStop: Record<string, boolean> = {
   animationstart: false,
   animationiteration: false,
   animationend: false,
+  touchforcechange: false,
 };
