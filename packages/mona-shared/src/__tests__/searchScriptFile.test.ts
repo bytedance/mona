@@ -5,7 +5,7 @@ import { join } from 'path';
 
 const tsRelativePath = '../index';
 const tsFilePath = join(__dirname, tsRelativePath + '.ts');
-const jsRelativePath = '../../../../jest.config';
+const jsRelativePath = '../../../../babel.config';
 const jsFilePath = join(__dirname, jsRelativePath + '.js');
 
 describe('mona-shared searchScriptFile', () => {
