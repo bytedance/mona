@@ -20,7 +20,7 @@ class MiniAssetsPlugin {
         },
         async () => {
           // json
-          await createJson(compilation, this.configHelper);
+          await createJson(compiler, compilation, this.configHelper);
 
           // ttml
           await createTtml(compilation, this.configHelper);
