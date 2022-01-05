@@ -11,24 +11,6 @@ import json from '@rollup/plugin-json';
 const pkg = require('./package.json');
 
 export default [
-  // {
-  //   input: 'src/index.ts',
-  //   output: [
-  //     {
-  //       file: pkg.module,
-  //       format: 'esm',
-  //       sourcemap: true,
-  //     },
-  //   ],
-  //   plugins: [
-  //     peerDepsExternal(),
-  //     resolve({ browser: true, preferBuiltins: true }),
-  //     commonjs(),
-  //     typescript({ useTsconfigDeclarationDir: true }),
-  //     postcss(),
-  //     terser(),
-  //   ],
-  // },
   {
     input: 'src/index.ts',
     output: [

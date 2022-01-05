@@ -32,7 +32,9 @@
   "devDependencies": {
     "@types/compare-version": "^0.1.31",
     "@types/node": "^16.4.5",
-    "@types/yargs": "^16.0.0"
+    "@types/yargs": "^16.0.0",
+    "@types/semver": "^7.3.9",
+    "semver": "^7.3.5"
   },
   "publishConfig": {
     "access": "public",
