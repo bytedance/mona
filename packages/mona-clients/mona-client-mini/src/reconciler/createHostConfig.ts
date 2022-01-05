@@ -4,12 +4,7 @@ import ServerElement, { NodeType } from './ServerElement';
 import { diffProperties, processProps } from './processProps';
 import { isObject } from '../utils/utils';
 
-const {
-  unstable_scheduleCallback: scheduleDeferredCallback,
-  unstable_cancelCallback: cancelDeferredCallback,
-  unstable_shouldYield: shouldYield,
-  unstable_now: now,
-} = scheduler;
+const { unstable_shouldYield: shouldYield, unstable_now: now } = scheduler;
 
 const childHostContext = {};
 const rootHostContext = {};
@@ -141,13 +136,17 @@ export default function createHostConfig() {
     },
 
     clearContainer() {},
-    schedulePassiveEffects: scheduleDeferredCallback,
-    cancelPassiveEffects: cancelDeferredCallback,
+
     shouldYield,
-    // 废弃
-    scheduleDeferredCallback,
-    cancelDeferredCallback,
+    cancelTimeout: clearTimeout,
+    scheduleTimeout: setTimeout,
+    noTimeout: -1,
     supportsMutation: true,
+    supportsPersistence: false,
+    isPrimaryRenderer: true,
+    supportsHydration: false,
   };
   return hostConfig;
 }
+
+
