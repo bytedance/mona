@@ -1,20 +1,159 @@
-// import { useState, useEffect } from 'react';
-// import { AppConfig, BaseApis, Callbacks, CommonErrorArgs } from '@bytedance/mona';
 import { redirectTo } from '../../apis';
 import formatPath from '../../utils/formatPath';
 import { BaseApis } from '@bytedance/mona';
+import EventEmitter from '../../EventEmitter';
 import { useHistory } from 'react-router';
 import { TabBarProps } from '.';
-import { useState } from 'react';
-// import { TabBarProps } from './index';
+import { useEffect, useState } from 'react';
 
-export interface MONA_WEB_TAB_BAR_HANDLE {
-  showTabBarRedDot: BaseApis['showTabBarRedDot'];
-  setTabBarStyle: BaseApis['setTabBarStyle'];
-  setTabBarItem: BaseApis['setTabBarItem'];
-  setTabBarBadge: BaseApis['setTabBarBadge'];
-  removeTabBarBadge: BaseApis['removeTabBarBadge'];
-  hideTabBarRedDot: BaseApis['hideTabBarRedDot'];
+const eventEmitter = new EventEmitter();
+
+const defaultTabProps: TabBarProps = {
+  color: 'inherit',
+  selectedColor: 'inherit',
+  backgroundColor: '#fff',
+  list: []
+}
+
+function safeSet(value: any, oldValue: any) {
+  return typeof value === 'undefined' ? oldValue : value;
+}
+
+export const useTabProps = (rawTab?: TabBarProps) => {
+  const [tab, setTab] = useState(rawTab ?? defaultTabProps);
+
+  useEffect(() => {
+    eventEmitter.on('setTabBarStyle', (options: Parameters<BaseApis['setTabBarStyle']>[0]) => {
+      if (options) {
+        const { success, complete, color, selectedColor, backgroundColor, borderStyle } = options;
+        setTab(prev => ({
+          ...prev,
+          color: safeSet(color, prev.color),
+          selectedColor: safeSet(selectedColor, prev.selectedColor),
+          backgroundColor: safeSet(backgroundColor, prev.backgroundColor),
+          borderStyle: safeSet(borderStyle, prev.borderStyle),
+        }))
+
+        if (typeof success === 'function') {
+          success({ errMsg: '' })
+        }
+        if (typeof complete === 'function') {
+          complete({ errMsg: '' })
+        }
+      }
+    })
+
+    eventEmitter.on('setTabBarItem', (options: Parameters<BaseApis['setTabBarItem']>[0]) => {
+      if (options) {
+        const { success, fail, complete, index, text = '', iconPath, selectedIconPath } = options;
+        setTab(prev => {
+          const old = prev.list;
+          if (!old[index]) {
+            if (typeof fail === 'function') {
+              fail({ errMsg: 'invalid index when setTabBarItem' })
+            }
+            return prev;
+          }
+          
+          const target = old[index];
+
+          old[index] = {
+            ...target,
+            text: safeSet(text, target.text),
+            // TODO 处理iconPath变化
+            iconPath: safeSet(iconPath, target.iconPath),
+            selectedIconPath: safeSet(selectedIconPath, target.selectedIconPath)
+          }
+          return {
+            ...prev,
+            list: old
+          } 
+        })
+
+        if (typeof success === 'function') {
+          success({ errMsg: '' })
+        }
+        if (typeof complete === 'function') {
+          complete({ errMsg: '' })
+        }
+      }
+    })
+  }, [])
+
+  return { tab };
+}
+
+export const useBadge = () => {
+  const [badges, setBadges] = useState<string[]>([]);
+
+  useEffect(() => {
+    eventEmitter.on('setTabBarBadge', (options: Parameters<BaseApis['setTabBarBadge']>[0]) => {
+      setBadges(prev => {
+        prev[options.index] === options.text;
+        return prev;
+      })
+    })
+
+    eventEmitter.on('removeTabBarBadge', (options: Parameters<BaseApis['removeTabBarBadge']>[0]) => {
+      setBadges(prev => {
+        prev.splice(options.index, 1)
+        return prev;
+      })
+    })
+  }, [])
+
+  return { badges }
+}
+
+export const useToggleDotShow = () => {
+  const [dotIndexs, setDotIndexs] = useState<number[]>([]);
+
+  useEffect(() => {
+    eventEmitter.on('setTabBarDotToggle', (show: boolean, options?: Parameters<BaseApis['showTabBarRedDot']>[0]): void => {
+      if (show && options?.index) {
+        setDotIndexs((prev) => Array.from(new Set([...prev, options?.index])))
+      } else if(!show && options?.index) {
+        setDotIndexs(prev => {
+          const index = prev.indexOf(options.index);
+          const next = [...prev];
+          if (index !== -1) {
+            next.splice(index, 1)
+          }
+          return next;
+        })
+      }
+
+      if (typeof options?.success === 'function') {
+        options.success({ errMsg: '' })
+      }
+      if (typeof options?.complete === 'function') {
+        options.complete({ errMsg: '' })
+      }
+    })
+  }, [])
+
+  return { dotIndexs }
+}
+
+export const useToggleShow = () => {
+  const [show, setShow] = useState(true);
+  const [withAnimation, setWithAnimation] = useState(false);
+
+  useEffect(() => {
+    eventEmitter.on('setTabBarToggle', (newShow: boolean, options?: Parameters<BaseApis['showTabBar']>[0]): void => {
+      setShow(newShow);
+      setWithAnimation(!!options?.animation)
+
+      if (typeof options?.success === 'function') {
+        options.success({ errMsg: '' })
+      }
+      if (typeof options?.complete === 'function') {
+        options.complete({ errMsg: '' })
+      }
+    })
+  }, [])
+
+  return { show, withAnimation }
 }
 
 export const useSelectTab = (tab?: TabBarProps) => {
@@ -28,106 +167,3 @@ export const useSelectTab = (tab?: TabBarProps) => {
   
   return { currentIndex: current, setCurrent: onSelect }
 }
-
-declare global {
-  interface Window {
-    __MONA_WEB_TAB_BAR_HANDLE: MONA_WEB_TAB_BAR_HANDLE;
-  }
-}
-
-// export const useTabBarHandle = (props: { tab?: TabBarProps }) => {
-  // const [tab, setTab] = useState(props?.tab || { list: [] as AppConfig['tabBar']['list'] });
-
-  // const removeBadge = (params: { index: number } & Callbacks<CommonErrorArgs, CommonErrorArgs>, funccName: string) => {
-  //   const errMsg = `${funccName}:fail`;
-
-  //   if (!params.index) {
-  //     params.fail?.({ errMsg });
-  //     params.complete?.({ errMsg });
-  //   } else {
-  //     const errMsg = `${funccName}:ok`;
-  //     tab.list = tab.list.map((v, i) => {
-  //       if (i === params.index) {
-  //         v.badgeText = undefined;
-  //         v.dot = undefined;
-  //       }
-  //       return v;
-  //     });
-  //     setTab({ ...tab });
-  //     params.success?.({ errMsg });
-  //     params.complete?.({ errMsg });
-  //   }
-  // };
-
-  // window.__MONA_WEB_TAB_BAR_HANDLE = {
-  //   showTabBarRedDot: params => {
-  //     const errMsg = 'showTabBarRedDot:fail';
-  //     if (!params.index) {
-  //       params.fail?.({ errMsg });
-  //       params.complete?.({ errMsg });
-  //     } else {
-  //       const errMsg = 'showTabBarRedDot:ok';
-  //       tab.list = tab.list.map((v, i) => {
-  //         if (i === params.index) {
-  //           v.dot = true;
-  //         }
-  //         return v;
-  //       });
-
-  //       setTab({ ...tab });
-  //       params.success?.({ errMsg });
-  //       params.complete?.({ errMsg });
-  //     }
-  //   },
-  //   setTabBarStyle: (params = {}) => {
-  //     let errMsg = 'setTabBarStyle:fail';
-
-  //     if (!params.backgroundColor && !params.borderStyle && !params.selectedColor && !params.color) {
-  //       params.fail?.({ errMsg });
-  //       params.complete?.({ errMsg });
-  //     } else {
-  //       errMsg = 'setTabBarStyle:ok';
-  //       setTab({ ...tab, ...params });
-  //       params.success?.({ errMsg });
-  //       params.complete?.({ errMsg });
-  //     }
-  //   },
-  //   setTabBarItem: params => {
-  //     if (!params.index) {
-  //       params.fail?.({ errMsg: 'setTabBarItem:fail' });
-  //       params.complete?.({ errMsg: 'setTabBarItem:fail' });
-  //     } else {
-  //       tab.list = tab.list.map((v, i) => {
-  //         if (i === params.index) {
-  //           v = { ...v, ...params };
-  //         }
-  //         return v;
-  //       });
-  //       setTab({ ...tab });
-  //       params.success?.({ errMsg: 'setTabBarItem:ok' });
-  //       params.complete?.({ errMsg: 'setTabBarItem:ok' });
-  //     }
-  //   },
-
-  //   setTabBarBadge: params => {
-  //     tab.list = tab.list.map((v, i) => {
-  //       if (i === params.index) {
-  //         v.badgeText = params.text;
-  //       }
-  //       return v;
-  //     });
-  //     setTab({ ...tab });
-  //   },
-  //   removeTabBarBadge: params => removeBadge(params, 'removeTabBarBadge'),
-  //   hideTabBarRedDot: params => removeBadge(params, 'hideTabBarRedDot'),
-  // };
-
-  // useEffect(
-  //   () => () => {
-  //     window.__MONA_WEB_TAB_BAR_HANDLE = {} as unknown as MONA_WEB_TAB_BAR_HANDLE;
-  //   },
-  //   []
-  // );
-
-  // return { tab };
-// };

@@ -1,6 +1,6 @@
 import path from 'path';
 import VirtualModulesPlugin from '../VirtualModulesPlugin';
-import { readConfig } from '@bytedance/mona-shared';
+import { formatAppConfig, readConfig } from '@bytedance/mona-shared';
 import { PageConfig } from '@bytedance/mona';
 import { ConfigHelper } from '@/configHelper';
 
@@ -60,7 +60,8 @@ class WebEntryModule {
   }
 
   private _generateTabBarCode() {
-    const tabBarCode = `const tabBar = ${JSON.stringify(this.configHelper.appConfig.tabBar)}`;
+    const formatedAppConfig = formatAppConfig(this.configHelper.appConfig, this.configHelper.cwd);
+    const tabBarCode = `const tabBar = ${JSON.stringify(formatedAppConfig.tabBar)}`;
     return tabBarCode;
   }
 

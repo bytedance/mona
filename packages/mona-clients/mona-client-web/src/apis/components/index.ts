@@ -4,4 +4,3 @@ export * from './Modal';
 export * from './ActionSheet';
 export * from './PreviewImage';
 export * from './NavBar';
-export * from './TabBar';

@@ -5,7 +5,7 @@ import { PageConfig } from '@bytedance/mona';
 import { DEFAULT_APPID } from '@/constants';
 import { Compilation, sources } from 'webpack'
 import { ConfigHelper } from '@/configHelper';
-import { formatAppConfig } from '../TabBarAssetsPlugin/utils';
+import { formatAppConfig } from '@bytedance/mona-shared';
 
 const RawSource = sources.RawSource;
 

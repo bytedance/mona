@@ -7,6 +7,12 @@
   background-color: #fff;
   display: flex;
   align-items: center;
+  border-top: 1px solid transparent;
+  transform: translateY(0);
+
+  &.hidden {
+    transform: translateY(50px);
+  }
 }
 
 .item {
@@ -20,6 +26,16 @@
   width: 30px;
   height: 30px;
   margin: auto;
+
+  & .redDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    position: absolute;
+    background-color: #ff4d4f;
+    top: 2px;
+    right: 0;
+  }
 
   & .image {
     display: block;
