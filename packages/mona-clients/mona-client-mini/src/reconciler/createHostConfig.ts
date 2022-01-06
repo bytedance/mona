@@ -94,7 +94,7 @@ export default function createHostConfig() {
     commitTextUpdate(textInstance: ServerElement, oldText: string, newText: string) {
       if (oldText !== newText) {
         textInstance.text = newText;
-        textInstance.update('', { text: newText });
+        textInstance.update('', { COMPLIER_TEXT: newText });
       }
     },
 
@@ -148,5 +148,3 @@ export default function createHostConfig() {
   };
   return hostConfig;
 }
-
-
