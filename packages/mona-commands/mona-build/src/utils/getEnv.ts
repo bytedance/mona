@@ -3,30 +3,22 @@ import fs from 'fs';
 import { Options } from '..';
 
 const dotenv = require('dotenv');
-const dotenvExpand = require('dotenv-expand');
 
 export default function getEnv(config: Options, dir: string) {
   const envPath = path.join(dir, '.env');
 
   const envFilesPath = [envPath, `${envPath}.${process.env.NODE_ENV}`];
-  envFilesPath.forEach(envPath => {
-    if (fs.existsSync(envPath)) {
-      dotenvExpand(dotenv.config({ path: envPath }));
-    }
-  });
-
   const injectEnv: Record<string, any> = {
-    NODE_ENV: process.env.NODE_ENV || (config.dev ? 'development' : 'production'),
-    PLAT_FORM: config.target,
-    'process.env.MONA_TARGET': config.target,
+    'process.env.MONA_TARGET': JSON.stringify(config.target),
   };
 
-  Object.keys(process.env).forEach(envKey => {
-    injectEnv[`process.env.${envKey}`] = process.env[envKey];
-  });
-
-  Object.keys(injectEnv).forEach(envKey => {
-    injectEnv[envKey] = JSON.stringify(injectEnv[envKey]);
+  envFilesPath.forEach(envPath => {
+    if (fs.existsSync(envPath)) {
+      const envMap = dotenv.config({ path: envPath })?.parsed ?? {};
+      Object.keys(envMap).forEach(envKey => {
+        injectEnv[`process.env.${envKey}`] = JSON.stringify(envMap[envKey]);
+      });
+    }
   });
 
   return injectEnv;

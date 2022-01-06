@@ -1,11 +1,11 @@
-import formatPath from '../utils/formatPath';
+import formatPath, { resolveLocation } from '../utils/formatPath';
 import {
   GetImageInfoSuccessCallbackArgs,
   RequestTask,
   BaseApis,
   ChooseImageSuccessCallbackArgs,
   GetLocationSuccessCallbackArgs,
-  NetworkType
+  NetworkType,
 } from '@bytedance/mona';
 import clipboard from 'clipboardy';
 
@@ -15,11 +15,11 @@ export const webRequest: BaseApis['request'] = (data): RequestTask => {
   const controller = new AbortController();
   const promise = fetch(data.url, {
     //@ts-ignore
-    headers: data.header ?
-      data.header :
-      {
-        'Content-Type': 'application/json',
-      },
+    headers: data.header
+      ? data.header
+      : {
+          'Content-Type': 'application/json',
+        },
     method: data.method || 'GET',
     body: data.data ? JSON.stringify(data.data) : '',
     signal: controller.signal,
@@ -280,7 +280,7 @@ export const webGetLocation: BaseApis['getLocation'] = options => {
         options?.fail?.({
           errMsg: err.message,
         });
-      }
+      },
     );
   } else {
     options.fail?.({
@@ -337,7 +337,11 @@ export const webNavigateTo: BaseApis['navigateTo'] = options => {
   try {
     errMsg = 'navigateTo:ok';
     const monaHistory = window.__mona_history;
-    monaHistory.push(formatPath(options.url));
+    if (options.url.startsWith('..')) {
+      monaHistory.push(formatPath(resolveLocation('../' + options.url, monaHistory.location.pathname)));
+    } else {
+      monaHistory.push(formatPath(options.url));
+    }
     options.success?.({ errMsg });
   } catch (err) {
     errMsg = `navigateTo:fail${err}`;
