@@ -1,11 +1,10 @@
 import { ConfigHelper } from '@/configHelper';
 import { Compiler, Compilation } from 'webpack';
-import createJson from './createJson';
-import createTtml from './createTtml';
+import { applyCopyWebpackPlugin, formatAppConfig } from './utils';
 
-class MiniAssetsPlugin {
+class TabBarAssetsPlugin {
   configHelper: ConfigHelper;
-  pluginName = 'MiniAssetsPlugin';
+  pluginName = 'TabBarAssetsPlugin';
 
   constructor(configHelper: ConfigHelper) {
     this.configHelper = configHelper;
@@ -13,21 +12,19 @@ class MiniAssetsPlugin {
 
   apply(compiler: Compiler) {
     compiler.hooks.thisCompilation.tap(this.pluginName, compilation => {
-      compilation.hooks.processAssets.tapPromise(
+      compilation.hooks.processAssets.tap(
         {
           name: this.pluginName,
           stage: Compilation.PROCESS_ASSETS_STAGE_ADDITIONS,
         },
-        async () => {
-          // json
-          await createJson(compilation, this.configHelper);
-
-          // ttml
-          await createTtml(compilation, this.configHelper);
+        () => {
+          const { appConfig, cwd } = this.configHelper;
+          const formatedAppConfig = formatAppConfig(appConfig, cwd);
+          applyCopyWebpackPlugin(compiler, this.configHelper, formatedAppConfig)
         },
       );
     });
   }
 }
 
-export default MiniAssetsPlugin;
+export default TabBarAssetsPlugin;

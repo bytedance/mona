@@ -21,7 +21,7 @@ interface AppConfigTabBarItem {
 interface AppConfigTabBar {
   color: string;
   selectedColor: string;
-  backgroundColor?: string;
+  backgroundColor: string;
   borderStyle?: 'black' | 'white';
   list: AppConfigTabBarItem[]
 }

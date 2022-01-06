@@ -50,19 +50,34 @@ class WebEntryModule {
     return pageConfig.navigationBarTitleText || '';
   }
 
-  private _generatePluginEntryCode(filename: string) {
+  private _generateRoutesCode() {
     const pages = Array.from(new Set((this.configHelper.appConfig.pages || []) as string[]));
     let routesCode = pages.map((page, index) => `import Page${index} from './${page}';`).join('');
     routesCode += `const routes = [${pages
       .map((page, index) => `{ path: '${page}', component: Page${index}, title: '${this.getPageTitle(page)}' }`)
       .join(',')}];`;
+    return routesCode
+  }
 
+  private _generateTabBarCode() {
+    const tabBarCode = `const tabBar = ${JSON.stringify(this.configHelper.appConfig.tabBar)}`;
+    return tabBarCode;
+  }
+
+  // private _generateNavBarCode() {
+  //   const navBarCode = `const navBar = ${JSON.stringify(this.configHelper.appConfig.window)}`;
+  //   return navBarCode;
+  // }
+
+  private _generatePluginEntryCode(filename: string) {
+   
     const code = `
-      import { createWebApp } from '@bytedance/mona-runtime';
+      import { createWebApp, show } from '@bytedance/mona-runtime';
       import App from './${path.basename(filename)}';
-      ${routesCode}
+      ${this._generateRoutesCode()}
+      ${this._generateTabBarCode()}
       
-      const { provider: p } =  createWebApp(App, routes);
+      const { provider: p } =  createWebApp(App, routes, tabBar);
       export const provider = p;
     `;
 

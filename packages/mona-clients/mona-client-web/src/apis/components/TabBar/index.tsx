@@ -8,14 +8,14 @@ import './index.module.less';
 export { MONA_WEB_TAB_BAR_HANDLE };
 
 export interface TabBarProps {
-  color?: string;
-  selectedColor?: string;
-  borderStyle?: string;
-  backgroundColor?: string;
+  color: string;
+  selectedColor: string;
+  backgroundColor: string;
+  borderStyle?: 'black' | 'white';
   list: {
     pagePath: string;
-    iconPath: string;
-    selectedIconPath: string;
+    iconPath?: string;
+    selectedIconPath?: string;
     text: string;
     dot?: boolean;
     badgeText?: string;

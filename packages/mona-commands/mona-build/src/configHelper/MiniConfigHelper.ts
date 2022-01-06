@@ -13,6 +13,7 @@ import getEnv from '@/utils/getEnv';
 import createPxtransformConfig from '@/utils/createPxtransformConfig';
 // import collectNativeComponent from '@/plugins/babel/CollectImportComponent';
 import TransformJsxNamePlugin from '@/plugins/babel/TransformJsxName';
+import TabBarAssetsPlugin from '@/plugins/webpack/TabBarAssetsPlugin';
 import perfTemplateRender from '@/plugins/babel/PerfTemplateRender';
 const extensions = ['.js', '.mjs', '.jsx', '.ts', '.tsx', '.json'];
 const moduleMatcher = new RegExp(`(${extensions.filter(e => e !== '.json').join('|')})$`);
@@ -203,6 +204,7 @@ class MiniConfigHelper extends BaseConfigHelper {
     return [
       ...extraPlugin,
 
+      new TabBarAssetsPlugin(this as unknown as ConfigHelper),
       new MiniAssetsPlugin(this as unknown as ConfigHelper),
       new MiniCssExtractPlugin({
         filename: '[name].ttss',
