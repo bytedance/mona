@@ -21,6 +21,7 @@ export enum PageLifecycle {
   shareAppMessage = 'shareAppMessage',
   pageScroll = 'pageScroll',
 }
+
 export enum ComponentLifecycle {
   created = 'created',
   attached = 'attached',

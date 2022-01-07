@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Switch, Route, Redirect, useHistory } from 'react-router-dom';
 // import NavBar from './components/NavBar';
 import TabBar from './components/TabBar';
-import { formatPath } from '@bytedance/mona-shared';
+import { formatPath, parseSearch } from '@bytedance/mona-shared';
 
 const WrapperComponent: React.FC<{ title: string }> = ({ children, title }) => {
   useEffect(() => {
@@ -61,16 +61,6 @@ const NoMatch: React.FC<{ defaultPath: string }>  = ({ defaultPath }) => {
       </div>
     </div>
   )
-}
-
-function parseSearch(search: string): Record<string, string> {
-  if (!search || !/^\?/.test(search)) return {};
-  const rawSearch = search.replace(/^\?/, '').split('&');
-  return rawSearch.reduce((r, s) => {
-    const [key, value] = s.split('=');
-    r[key] = value;
-    return r;
-  }, {} as Record<string, string>)
 }
 
 export interface PageProps {

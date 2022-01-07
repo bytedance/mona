@@ -1,6 +1,6 @@
 import React from 'react';
 import { Portal } from 'react-is';
-
+import { stringifySearch } from '@bytedance/mona-shared';
 import { PageLifecycleGlobalContext, LifecycleContext, PageLifecycle } from '@/lifecycle/context';
 import TaskController, { ROOT_KEY } from '@/reconciler/TaskController';
 import render, { batchedUpdates } from '@/reconciler';
@@ -68,7 +68,7 @@ function createConfig(Component: React.ComponentType<any>) {
       this._controller = new TaskController(this);
 
       const wrapper = React.createElement(PageLifecycleGlobalContext.Provider, { value: this._pageLifecycleContext }, [
-        React.createElement(this._Component, { key: generateId() }, []),
+        React.createElement(this._Component, { key: generateId(), search: stringifySearch(options), searchParams: options }, []),
       ]);
 
       this.pageRoot = createPortal(wrapper, this._controller, generatePageId());

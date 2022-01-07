@@ -72,6 +72,7 @@ function formatAppConfig(rawConfig: AppConfig): AppConfig {
       ...config,
       tabBar: {
         ...config.tabBar,
+        list: config.tabBar.list.map(item => ({ ...item, iconPath: item.iconPath, selectedIconPath: item.selectedIconPath || item.iconPath,  pagePath: formatMiniPath(item.pagePath) }))
       }
     }
   }
