@@ -1,10 +1,21 @@
+function lowerCasePathName(name: string) {
+  const [p, n] = name.split('?');
+  return `${p.toLowerCase()}${n ? `?${n}` : ''}`
+}
+
 export default function formatPath(url: string, from?: string): string {
-  if (/^\.\./.test(url)) {
-    return resolveLocation(url.toLowerCase(), from);
+  let result = lowerCasePathName(url);
+  if (/^\./.test(result)) {
+    result = resolveLocation(result, from);
   } else if (/^[a-zA-Z]/.test(url)) {
-    return  `/${url.toLowerCase()}`
+    result =  `/${result}`
   }
-  return url.toLowerCase();
+
+  // fix url without pages
+  if (!/^\/pages/.test(result)) {
+    result = `/pages${result}`
+  }
+  return result;
 }
 
 // 参考reactV6
