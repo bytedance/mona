@@ -26,7 +26,7 @@ export default async function createJson(compilation: Compilation, configHelper:
   // app.json
   const appFile = 'app.json';
   if (!compilation.getAsset(appFile)) {
-    const formatedAppConfig = formatAppConfig(appConfig, cwd);
+    const formatedAppConfig = formatAppConfig(appConfig);
     const source = new RawSource(JSON.stringify(formatedAppConfig));
     compilation.emitAsset(appFile, source);
   }

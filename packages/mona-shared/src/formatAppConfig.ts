@@ -1,7 +1,3 @@
-import path from 'path';
-import fs from 'fs';
-import { getHashDigest } from 'loader-utils';
-
 // redundant define AppConfig to avoid import @bytedance/mona
 interface AppConfigWindow {
   navigationBarBackgroundColor?: string;
@@ -64,24 +60,7 @@ function formatMiniPath(url: string = '') {
   return url.toLowerCase().replace(/^\//, '');
 }
 
-function formatIconPath(input: string, iconPath?: string) {
-  if (!iconPath) {
-    return iconPath;
-  }
-
-  const filePath = path.join(input, iconPath);
-  if (!fs.existsSync(filePath)) {
-    throw new Error("can't find iconPath " + iconPath);
-  }
-
-  // @ts-ignore
-  const contentHash = getHashDigest(fs.readFileSync(filePath), 'md5', 'hex', 16);
-  const ext = path.extname(filePath);
-
-  return `/${contentHash}${ext}`;
-}
-
-function formatAppConfig(rawConfig: AppConfig, input: string): AppConfig {
+function formatAppConfig(rawConfig: AppConfig): AppConfig {
   let config: AppConfig = {
     ...defaultAppConfig,
     ...rawConfig,
@@ -93,7 +72,6 @@ function formatAppConfig(rawConfig: AppConfig, input: string): AppConfig {
       ...config,
       tabBar: {
         ...config.tabBar,
-        list: config.tabBar.list.map(item => ({ ...item, iconPath: formatIconPath(input, item.iconPath), selectedIconPath: formatIconPath(input, item.selectedIconPath || item.iconPath),  pagePath: formatMiniPath(item.pagePath) }))
       }
     }
   }

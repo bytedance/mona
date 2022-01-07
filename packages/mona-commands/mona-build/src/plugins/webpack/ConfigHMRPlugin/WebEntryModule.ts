@@ -60,7 +60,7 @@ class WebEntryModule {
   }
 
   private _generateTabBarCode() {
-    const formatedAppConfig = formatAppConfig(this.configHelper.appConfig, this.configHelper.cwd);
+    const formatedAppConfig = formatAppConfig(this.configHelper.appConfig);
     const tabBarCode = `const tabBar = ${JSON.stringify(formatedAppConfig.tabBar)}`;
     return tabBarCode;
   }
