@@ -8,7 +8,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CssMiniminzerPlugin from 'css-minimizer-webpack-plugin';
 import TerserWebpackPlugin from 'terser-webpack-plugin';
 import ConfigHMRPlugin from '@/plugins/webpack/ConfigHMRPlugin';
-import TabBarAssetsPlugin from '@/plugins/webpack/TabBarAssetsPlugin';
+import CopyPublicPlugin from '@/plugins/webpack/CopyPublicPlugin';
 import { Options } from "..";
 import { HTML_HANDLE_TAG } from "@/constants";
 import { ConfigHelper } from ".";
@@ -194,7 +194,7 @@ class WebConfigHelper extends BaseConfigHelper {
   private _createPlugins() {
     let plugins: any[] = [
       new ConfigHMRPlugin(this as unknown as ConfigHelper),
-      new TabBarAssetsPlugin(this as unknown as ConfigHelper),
+      new CopyPublicPlugin(this as unknown as ConfigHelper),
       // 75 / 750 * 100 = 10
       new HtmlWebpackPlugin({
         templateContent: `

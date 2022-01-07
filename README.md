@@ -315,6 +315,32 @@ import Title from './Title'
 
 该方式可以通过`mona.config.js`下的`enableMultiBuild`来控制是否开启，默认是开启状态。如果你不需要多端构建，可以关闭该开关，来加快打包速度。
 
+## public目录
+在项目根目录下创建`public`目录，该目录下的所有文件会全部被复制到输出目录，你可以将一些图片等文件放在该目录下，以供`iconPath`或其他场景使用，如
+
+```js
+// app.config.ts
+import { createAppConfig } from '@bytedance/mona';
+export default createAppConfig({
+  // ...more config
+  tabBar: {
+    list: [{
+      pagePath: "pages/home/index",
+      text: "home page",
+      iconPath: "/image.png"
+    }]
+  }
+})
+```
+
+或使用链接引用资源的场景，但这里推荐使用import的方式引用图片
+```js
+// ...more code
+return (
+  <Image src="/image.png">
+)
+```
+
 ## 移动端适配
 css中的单位在小程序中会自动转为`rpx`在web中会自动转为`rem`，你不需要关心如何换算，只需要按照设计稿时机尺寸来书写就可以。Mona会默认以`750px`标准设计稿作为换算尺寸的标准单位。如果设计稿不是`750px`那么你可以在`mona.config.js`的`postcss.pxtransform`中修改`deviceRatio`和`designWidth`。
 
