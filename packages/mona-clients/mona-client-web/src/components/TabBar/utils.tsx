@@ -1,5 +1,5 @@
 import { redirectTo } from '../../apis';
-import formatPath from '../../utils/formatPath';
+import { formatPath } from '@bytedance/mona-shared';
 import { BaseApis } from '@bytedance/mona';
 import EventEmitter from '../../EventEmitter';
 import { useHistory } from 'react-router';
@@ -161,7 +161,7 @@ export const useSelectTab = (tab?: TabBarProps) => {
   const getIndex = () => tab?.list?.findIndex(v => formatPath(v.pagePath) === history.location.pathname);
   const [current, setCurrent] = useState(getIndex());
   const onSelect = (url: string) => {
-    redirectTo({ url })
+    redirectTo({ url: formatPath(url) })
     setCurrent(getIndex())
   }
   

@@ -1,7 +1,7 @@
 import React from 'react';
 import createBaseComponent from '../createBaseComponent';
 import { ComponentType } from '@bytedance/mona-shared/dist/constants';
-import formatPath from '../utils/formatPath';
+import { formatPath } from '@bytedance/mona-shared';
 
 import {
   ButtonProps,

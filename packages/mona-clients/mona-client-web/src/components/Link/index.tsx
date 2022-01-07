@@ -1,4 +1,4 @@
-import formatPath from '../../utils/formatPath';
+import { formatPath } from '@bytedance/mona-shared';
 import React from 'react';
 import { Link as RouteLink } from 'react-router-dom';
 

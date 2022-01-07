@@ -41,7 +41,8 @@ import {
   webRequest,
   webSetClipboardData,
   webSetStorage,
-  webSetStorageSync
+  webSetStorageSync,
+  webSwitchTab
 } from './util';
 import EventEmitter from '../EventEmitter';
 
@@ -244,7 +245,7 @@ export const createBytennEngineContext: BaseApis['createBytennEngineContext'] =
   noImplementFactory('createBytennEngineContext');
 export const navigateTo: BaseApis['navigateTo'] = webNavigateTo;
 export const redirectTo: BaseApis['redirectTo'] = webRedirectTo;
-export const switchTab: BaseApis['switchTab'] = noImplementFactory('switchTab');
+export const switchTab: BaseApis['switchTab'] = webSwitchTab;
 export const navigateBack: BaseApis['navigateBack'] = webNavigateBack;
 export const reLaunch: BaseApis['reLaunch'] = webReLaunch;
 export const showShareMenu: BaseApis['showShareMenu'] = noImplementFactory('showShareMenu');

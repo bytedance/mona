@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Switch, Route, Redirect, useHistory } from 'react-router-dom';
 // import NavBar from './components/NavBar';
 import TabBar from './components/TabBar';
-import formatPath from './utils/formatPath';
+import { formatPath } from '@bytedance/mona-shared';
 
 const WrapperComponent: React.FC<{ title: string }> = ({ children, title }) => {
   useEffect(() => {

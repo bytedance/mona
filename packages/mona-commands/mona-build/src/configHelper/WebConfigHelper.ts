@@ -24,6 +24,7 @@ class WebConfigHelper extends BaseConfigHelper {
   generate() {
     const config: Configuration = {
       mode: this._createMode(),
+      target: 'web',
       devtool: this.options.dev ? 'cheap-source-map' : undefined,
       entry: this._createEntry(),
       output: this._createOutput(),

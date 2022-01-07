@@ -24,6 +24,7 @@ class MiniConfigHelper extends BaseConfigHelper {
 
     const config: Configuration = {
       mode: this._createMode(),
+      target: 'web',
       devtool: false,
       output: this._createOutput(),
       entry: miniEntryPlugin.entryModule.entries,
