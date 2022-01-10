@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { componentLifecycleContext } from '@/lifecycle/context';
+import { ComponentLifecycleGlobalContext } from '@bytedance/mona';
 import TaskController, { ROOT_KEY } from '@/reconciler/TaskController';
 import render from '@/reconciler';
 
@@ -27,7 +27,7 @@ function createConfig(Component: React.ComponentType<any>) {
       init(this: any) {
         this._controller = new TaskController(this);
         this.componentRoot = render(
-          React.createElement(componentLifecycleContext.Provider, { value: this }, [
+          React.createElement(ComponentLifecycleGlobalContext.Provider, { value: this }, [
             React.createElement(this._component, this.properties),
           ]),
           this._controller,

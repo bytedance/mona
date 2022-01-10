@@ -1,5 +1,5 @@
 import React from 'react';
-import { LifecycleContext, appLifecycleContext, AppLifecycle } from './lifecycle/context';
+import { LifecycleContext, AppLifecycleGlobalContext, AppLifecycle } from '@bytedance/mona';
 import render, { batchedUpdates } from '@/reconciler';
 import AppTaskController from '@/reconciler/AppTaskController';
 
@@ -29,7 +29,7 @@ class AppConfig {
   private _render() {
     return render(
       React.createElement(
-        appLifecycleContext.Provider,
+        AppLifecycleGlobalContext.Provider,
         {
           value: this._appLifecycleContext,
         },

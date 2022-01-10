@@ -1,7 +1,7 @@
 import React from 'react';
 import { Portal } from 'react-is';
 import { stringifySearch } from '@bytedance/mona-shared';
-import { PageLifecycleGlobalContext, LifecycleContext, PageLifecycle } from '@/lifecycle/context';
+import { PageLifecycleGlobalContext, LifecycleContext, PageLifecycle } from '@bytedance/mona';
 import TaskController, { ROOT_KEY } from '@/reconciler/TaskController';
 import render, { batchedUpdates } from '@/reconciler';
 import { monaPrint } from '@/utils';
