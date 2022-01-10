@@ -38,6 +38,7 @@ abstract class BaseConfigHelper {
     this.projectConfig = { ...DEFAULT_PROJECT_CONFIG, ...this._readConfig<ProjectConfig>('mona.config') };
     this.appConfig = { ...DEFAULT_APP_CONFIG, ...this._readConfig<AppConfig>('app.config') };
     this.entryPath = searchScriptFile(path.resolve(this.cwd, this.projectConfig.input));
+
     if (this.options.port) {
       this.projectConfig.dev = { ...this.projectConfig.dev, port: this.options.port };
     }

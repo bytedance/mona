@@ -61,7 +61,6 @@ export default async function ImportCustomerComponentLoader(this: LoaderContext<
 let id = 1;
 // 将路径和jsx收集的prop一一对应
 export const genNativeComponentId = (resourcePath: string) => {
-  console.log(resourcePath);
   const componentInfo = monaStore.importComponentMap.get(resourcePath);
   if (componentInfo?.id) {
     return componentInfo?.id;

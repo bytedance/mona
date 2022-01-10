@@ -1,10 +1,11 @@
 {
   "name": "@bytedance/mona-shared",
   "displayName": "mona-shared",
-  "version": "0.2.0-alpha.5",
+  "version": "0.2.0-alpha.6",
   "description": "mona shared utils",
   "main": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
+  "module": "./dist/index.js",
+  "browser": "./dist/index.web.js",
   "scripts": {
     "build": "yarn clean && ttsc -b",
     "start": "ttsc -b -w",

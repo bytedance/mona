@@ -1,4 +1,5 @@
 import { BaseApis } from '@bytedance/mona'
+import { formatPath } from '@bytedance/mona-shared'
 
 export const canIUse: BaseApis["canIUse"] = tt.canIUse
 export const base64ToArrayBuffer: BaseApis["base64ToArrayBuffer"] = tt.base64ToArrayBuffer
@@ -148,9 +149,9 @@ export const hideTabBar: BaseApis["hideTabBar"] = tt.hideTabBar
 export const getAlgorithmManager: BaseApis["getAlgorithmManager"] = tt.getAlgorithmManager
 export const createStickerManager: BaseApis["createStickerManager"] = tt.createStickerManager
 export const createBytennEngineContext: BaseApis["createBytennEngineContext"] = tt.createBytennEngineContext
-export const navigateTo: BaseApis["navigateTo"] = tt.navigateTo
-export const redirectTo: BaseApis["redirectTo"] = tt.redirectTo
-export const switchTab: BaseApis["switchTab"] = tt.switchTab
+export const navigateTo: BaseApis["navigateTo"] = (options) => tt.navigateTo({...options, url: formatPath(options.url)})
+export const redirectTo: BaseApis["redirectTo"] = (options) => tt.redirectTo({...options, url: formatPath(options.url)})
+export const switchTab: BaseApis["switchTab"] = (options) => tt.switchTab({...options, url: formatPath(options.url)})
 export const navigateBack: BaseApis["navigateBack"] = tt.navigateBack
 export const reLaunch: BaseApis["reLaunch"] = tt.reLaunch
 export const showShareMenu: BaseApis["showShareMenu"] = tt.showShareMenu

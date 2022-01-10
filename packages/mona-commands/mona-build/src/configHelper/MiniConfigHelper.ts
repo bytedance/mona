@@ -13,6 +13,7 @@ import getEnv from '@/utils/getEnv';
 import createPxtransformConfig from '@/utils/createPxtransformConfig';
 import collectNativeComponent from '@/plugins/babel/CollectImportComponent';
 import TransformJsxNamePlugin from '@/plugins/babel/TransformJsxName';
+import CopyPublicPlugin from '@/plugins/webpack/CopyPublicPlugin';
 import perfTemplateRender from '@/plugins/babel/PerfTemplateRender';
 const extensions = ['.js', '.mjs', '.jsx', '.ts', '.tsx', '.json'];
 const moduleMatcher = new RegExp(`(${extensions.filter(e => e !== '.json').join('|')})$`);
@@ -23,6 +24,7 @@ class MiniConfigHelper extends BaseConfigHelper {
 
     const config: Configuration = {
       mode: this._createMode(),
+      target: 'web',
       devtool: false,
       output: this._createOutput(),
       entry: miniEntryPlugin.entryModule.entries,
@@ -200,6 +202,7 @@ class MiniConfigHelper extends BaseConfigHelper {
     return [
       ...extraPlugin,
 
+      new CopyPublicPlugin(this as unknown as ConfigHelper),
       new MiniAssetsPlugin(this as unknown as ConfigHelper),
       new MiniCssExtractPlugin({
         filename: '[name].ttss',

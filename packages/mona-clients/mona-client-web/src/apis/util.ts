@@ -1,4 +1,4 @@
-import formatPath, { resolveLocation } from '../utils/formatPath';
+import { formatPath } from '@bytedance/mona-shared'
 import {
   GetImageInfoSuccessCallbackArgs,
   RequestTask,
@@ -338,9 +338,9 @@ export const webNavigateTo: BaseApis['navigateTo'] = options => {
     errMsg = 'navigateTo:ok';
     const monaHistory = window.__mona_history;
     if (options.url.startsWith('..')) {
-      monaHistory.push(formatPath(resolveLocation('../' + options.url, monaHistory.location.pathname)));
+      monaHistory.push(formatPath(options.url, monaHistory.location.pathname));
     } else {
-      monaHistory.push(formatPath(options.url));
+      monaHistory.push(formatPath(options.url, monaHistory.location.pathname));
     }
     options.success?.({ errMsg });
   } catch (err) {
@@ -355,7 +355,7 @@ export const webRedirectTo: BaseApis['redirectTo'] = options => {
   try {
     errMsg = 'redirectTo:ok';
     const monaHistory = window.__mona_history;
-    monaHistory.replace(formatPath(options.url));
+    monaHistory.replace(formatPath(options.url, monaHistory.location.pathname));
     options.success?.({ errMsg });
   } catch (err) {
     errMsg = `redirectTo:fail${err}`;
@@ -364,6 +364,10 @@ export const webRedirectTo: BaseApis['redirectTo'] = options => {
 
   options.complete?.({ errMsg });
 };
+
+export const webSwitchTab: BaseApis['switchTab'] = ({ url, success, fail, complete }) => {
+  webRedirectTo({ url, success, fail, complete })
+}
 
 export const webNavigateBack: BaseApis['navigateBack'] = (options = {}) => {
   let errMsg: string;

@@ -2,6 +2,9 @@
 import { ConfigHelper } from '@/configHelper';
 import { Compiler, Compilation } from 'webpack';
 import createJson, { addUsingComponents } from './createJson';
+// import chokidar from 'chokidar';
+import path from 'path';
+import createJson from './createJson';
 import createTtml from './createTtml';
 import monaStore from '../../../store';
 
@@ -14,15 +17,35 @@ class MiniAssetsPlugin {
   }
 
   apply(compiler: Compiler) {
-    addUsingComponents(compiler, this.configHelper);
+    compiler.hooks.beforeCompile.tap(this.pluginName, params => {
+      this.configHelper.readAllConfig();
+      return params;
+    });
+
+    compiler.hooks.emit.tap(this.pluginName, async compilation => {
+      addUsingComponents(compilation, this.configHelper);
+    });
 
     compiler.hooks.emit.tapPromise(this.pluginName, async compilation => {
-      //
       // json
-      await createJson(compiler, compilation, this.configHelper);
+      await createJson(compilation, this.configHelper);
 
       // ttml
       await createTtml(compilation, this.configHelper);
+    });
+
+    // add new depenpencies
+    compiler.hooks.afterCompile.tap(this.pluginName, compilation => {
+      const { cwd, appConfig } = this.configHelper;
+      const deps = ['app.config.ts', 'app.config.js'];
+      appConfig.pages.forEach(page => {
+        deps.push(path.join(`./src/${page}`, '..', 'page.config.js'));
+        deps.push(path.join(`./src/${page}`, '..', 'page.config.ts'));
+      });
+
+      deps.forEach(name => {
+        compilation.fileDependencies.add(path.join(cwd, name));
+      });
     });
   }
 }

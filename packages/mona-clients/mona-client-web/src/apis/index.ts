@@ -5,10 +5,7 @@ import {
   webShowLoading,
   webShowModal,
   webShowActionSheet,
-  webShowTabBar,
-  webHideTabBar,
-  MONA_WEB_TAB_BAR_HANDLE
-} from './components/';
+} from './components';
 import {
   createCanvasContext as originCreateCanvasContext,
   canvasToTempFilePath as originCanvasToTempFilePath
@@ -44,10 +41,12 @@ import {
   webRequest,
   webSetClipboardData,
   webSetStorage,
-  webSetStorageSync
+  webSetStorageSync,
+  webSwitchTab
 } from './util';
+import EventEmitter from '../EventEmitter';
 
-window.__MONA_WEB_TAB_BAR_HANDLE = {} as unknown as MONA_WEB_TAB_BAR_HANDLE;
+const eventEmitter = new EventEmitter();
 
 const noImplementFactory = (api: string) => (): any => {
   console.error(`no implement${api} in web`);
@@ -216,22 +215,37 @@ export const createAnimation: BaseApis['createAnimation'] = noImplementFactory('
 export const pageScrollTo: BaseApis['pageScrollTo'] = webPageScrollTo;
 export const setSwipeBackMode: BaseApis['setSwipeBackMode'] = noImplementFactory('setSwipeBackMode');
 export const startPullDownRefresh: BaseApis['startPullDownRefresh'] = noImplementFactory('startPullDownRefresh');
-export const { showTabBarRedDot } = window.__MONA_WEB_TAB_BAR_HANDLE;
-// @ts-ignore ignore
-export const showTabBar: BaseApis['showTabBar'] = webShowTabBar;
-export const { setTabBarStyle } = window.__MONA_WEB_TAB_BAR_HANDLE;
-export const { setTabBarItem } = window.__MONA_WEB_TAB_BAR_HANDLE;
-export const { setTabBarBadge } = window.__MONA_WEB_TAB_BAR_HANDLE;
-export const { removeTabBarBadge } = window.__MONA_WEB_TAB_BAR_HANDLE;
-export const { hideTabBarRedDot } = window.__MONA_WEB_TAB_BAR_HANDLE;
-export const hideTabBar: BaseApis['hideTabBar'] = webHideTabBar;
+export const showTabBar: BaseApis['showTabBar'] = (options) => {
+  eventEmitter.emit('setTabBarToggle', true, options);
+}
+export const hideTabBar: BaseApis['hideTabBar'] = (options) => {
+  eventEmitter.emit('setTabBarToggle', false, options);
+}
+export const showTabBarRedDot: BaseApis['showTabBarRedDot'] = (options) => {
+  eventEmitter.emit('setTabBarDotToggle', true, options);
+}
+export const hideTabBarRedDot: BaseApis['hideTabBarRedDot'] = (options) => {
+  eventEmitter.emit('setTabBarDotToggle', false, options);
+}
+export const setTabBarStyle: BaseApis['setTabBarStyle'] = (options) => {
+  eventEmitter.emit('setTabBarStyle', options);
+}
+export const setTabBarItem: BaseApis['setTabBarItem'] = (options) => {
+  eventEmitter.emit('setTabBarItem', options);
+}
+export const setTabBarBadge: BaseApis['setTabBarBadge'] = (options) => {
+  eventEmitter.emit('setTabBarBadge', options);
+}
+export const removeTabBarBadge: BaseApis['removeTabBarBadge'] = (options) => {
+  eventEmitter.emit('removeTabBarBadge', options);
+}
 export const getAlgorithmManager: BaseApis['getAlgorithmManager'] = noImplementFactory('getAlgorithmManager');
 export const createStickerManager: BaseApis['createStickerManager'] = noImplementFactory('createStickerManager');
 export const createBytennEngineContext: BaseApis['createBytennEngineContext'] =
   noImplementFactory('createBytennEngineContext');
 export const navigateTo: BaseApis['navigateTo'] = webNavigateTo;
 export const redirectTo: BaseApis['redirectTo'] = webRedirectTo;
-export const switchTab: BaseApis['switchTab'] = noImplementFactory('switchTab');
+export const switchTab: BaseApis['switchTab'] = webSwitchTab;
 export const navigateBack: BaseApis['navigateBack'] = webNavigateBack;
 export const reLaunch: BaseApis['reLaunch'] = webReLaunch;
 export const showShareMenu: BaseApis['showShareMenu'] = noImplementFactory('showShareMenu');

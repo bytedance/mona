@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-client-web",
-  "version": "0.2.0-alpha.5",
+  "version": "0.2.0-alpha.6",
   "description": "web for mona",
   "main": "./dist/index.js",
   "files": [
@@ -19,7 +19,7 @@
     "mona"
   ],
   "dependencies": {
-    "@bytedance/mona": "^0.2.0-alpha.5",
+    "@bytedance/mona": "^0.2.0-alpha.6",
     "classnames": "^2.3.1",
     "clipboardy": "^3.0.0",
     "copyfiles": "^2.4.1",

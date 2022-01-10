@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavigatorProps } from '@bytedance/mona';
-import { navigateTo, redirectTo, navigateBack } from '../../apis'
+import { navigateTo, redirectTo, switchTab, navigateBack } from '../../apis'
 import styles from './index.module.less';
 import { useHandlers } from '../hooks';
 
@@ -24,11 +24,9 @@ const Navigator: React.FC<NavigatorProps> = (props) => {
         break;
       case 'redirect':
         redirectTo({ url })
-        window.history.replaceState({}, '', url);
         break;
-      // TODO: implement tab
       case 'switchTab':
-        console.warn('not implement switchTab in web now')
+        switchTab({ url })
         break;
       case 'reLaunch':
         window.location.reload();

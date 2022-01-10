@@ -1,7 +1,10 @@
+import { AppConfig } from '@bytedance/mona';
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Switch, Route, Redirect, useHistory } from 'react-router-dom';
-import formatPath from './utils/formatPath';
+// import NavBar from './components/NavBar';
+import TabBar from './components/TabBar';
+import { formatPath, parseSearch } from '@bytedance/mona-shared';
 
 const WrapperComponent: React.FC<{ title: string }> = ({ children, title }) => {
   useEffect(() => {
@@ -60,16 +63,6 @@ const NoMatch: React.FC<{ defaultPath: string }>  = ({ defaultPath }) => {
   )
 }
 
-function parseSearch(search: string): Record<string, string> {
-  if (!search || !/^\?/.test(search)) return {};
-  const rawSearch = search.replace(/^\?/, '').split('&');
-  return rawSearch.reduce((r, s) => {
-    const [key, value] = s.split('=');
-    r[key] = value;
-    return r;
-  }, {} as Record<string, string>)
-}
-
 export interface PageProps {
   search: string;
   searchParams: Record<string, string>
@@ -89,13 +82,16 @@ const HistorySetWrapper: React.FC = ({ children }) => {
 
 export function createWebApp(
   Component: React.ComponentType<any>,
-  routes: { path: string; title: string; component: React.ComponentType<any> }[]
+  routes: { path: string; title: string; component: React.ComponentType<any> }[],
+  // navBar: AppConfig['window'],
+  tabBar: AppConfig['tabBar']
 ) {
   const render = ({ dom }: { dom: Element | Document }) => {
     ReactDOM.render(
       <BrowserRouter>
         <HistorySetWrapper>
           <Component>
+            {/* <NavBar tab={navBar} /> */}
             <Switch>
               {routes.map(route => (
                 <Route key={route.path} path={formatPath(route.path)} children={({ location }) => (
@@ -113,6 +109,7 @@ export function createWebApp(
                 <NoMatch defaultPath={formatPath(routes[0].path)} />
               </Route>
             </Switch>
+            <TabBar tab={tabBar} />
           </Component>
         </HistorySetWrapper>
       </BrowserRouter>,

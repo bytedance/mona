@@ -1,18 +1,33 @@
-import { parsePath } from 'history';
+function lowerCasePathName(name: string) {
+  const [p, n] = name.split('?');
+  return `${p.toLowerCase()}${n ? `?${n}` : ''}`
+}
 
-export default function formatPath(url: string): string {
-  return /^\//.test(url) ? url.toLowerCase() : `/${url.toLowerCase()}`;
+export default function formatPath(url: string, from?: string): string {
+  let result = lowerCasePathName(url);
+  if (/^\./.test(result)) {
+    result = resolveLocation(result, from);
+  } else if (/^[a-zA-Z]/.test(url)) {
+    result =  `/${result}`
+  }
+
+  // fix url without pages
+  if (!/^\/pages/.test(result)) {
+    result = `/pages${result}`
+  }
+  return result;
 }
 
 // 参考reactV6
 // 以下函数参考 https://github.com/remix-run/react-router
-export function resolveLocation(to: string, fromPathname = '/') {
-  let { pathname: toPathname } = typeof to === 'string' ? parsePath(to) : to;
+function resolveLocation(to: string, fromPathname = '/') {
+  const [toPathname, search] = to.split('?');
+  const from = fromPathname.startsWith('/') ? fromPathname.split('/').slice(0, -1).join('/') : fromPathname;
 
   let pathname = toPathname
-    ? resolvePathname(toPathname, toPathname.startsWith('/') ? '/' : fromPathname)
-    : fromPathname;
-  return pathname;
+    ? resolvePathname(toPathname, toPathname.startsWith('/') ? '/' : from)
+    : from;
+  return `${pathname}${search ? `?${search}` : ''}`;
 }
 const trimTrailingSlashes = (path: string) => path.replace(/\/+$/, '');
 const normalizeSlashes = (path: string) => path.replace(/\/\/+/g, '/');
