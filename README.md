@@ -341,6 +341,22 @@ return (
 )
 ```
 
+## query参数获取
+在页面见跳转时，可以在路径后加入查询参数，如
+```js
+navigateTo('/pages/home/index?name="xiaoming"')
+```
+查询参数的只可以在页面组件的`props`中进行获取，其中`search`为查询参数字符串，`searchParams`为解析后的查询参数
+```jsx
+import { MonaPage } from '@bytedance/mona'
+
+const Home: React.FC<MonaPage> = ({ search, searchParams }) => {
+  console.log(search, searchParams);
+  // 输出：?name="xiaoming" { name: "xiaoming" }
+  return <div></div>
+}
+```
+
 ## 移动端适配
 css中的单位在小程序中会自动转为`rpx`在web中会自动转为`rem`，你不需要关心如何换算，只需要按照设计稿时机尺寸来书写就可以。Mona会默认以`750px`标准设计稿作为换算尺寸的标准单位。如果设计稿不是`750px`那么你可以在`mona.config.js`的`postcss.pxtransform`中修改`deviceRatio`和`designWidth`。
 
