@@ -22,7 +22,7 @@ export default function perfTemplateRender() {
           nodeType = transformNodeName(reactNode.value);
         }
 
-        // 不属于原生组件 || 渲染全部的props
+        // 不属于基本组件 || 渲染全部的props
         if (!miniPro2rcPropMap.has(nodeType) || renderMapAction.renderAll(nodeType)) {
           return;
         }

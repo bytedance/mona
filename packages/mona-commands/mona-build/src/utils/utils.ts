@@ -10,7 +10,7 @@ export function slash(path: string) {
 export const isReactCreateElement = (name: string) => ['createElement', 'cloneElement'].includes(name);
 
 export const getPageEntryPath = (page: string, cwd: string) => {
-  page = page.endsWith('/') ? page.slice(0, -1) : page;
+  page = page?.length > 1 && page.endsWith('/') ? page.slice(0, -1) : page;
   return path.join(cwd, './src', page);
 };
 
