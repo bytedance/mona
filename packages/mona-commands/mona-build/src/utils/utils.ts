@@ -18,6 +18,5 @@ export function getRelativePath(from: string, to: string) {
   const fromDirName = path.extname(from) ? path.dirname(from) : from;
   const toDirName = path.extname(to) ? path.dirname(to) : to;
 
-  console.log({ fromDirName, toDirName }, path.relative(fromDirName, toDirName));
   return path.relative(fromDirName, toDirName);
 }

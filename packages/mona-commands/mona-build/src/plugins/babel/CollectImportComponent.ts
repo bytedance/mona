@@ -3,8 +3,9 @@ import monaStore from '../../store';
 import nodePath from 'path';
 import * as t from '@babel/types';
 import { genNativeComponentId } from '@/loaders/ImportCustomComponentLoader';
+import { formatReactNodeName } from '@/utils/reactNode';
 
-// 收集从pages 文件夹下引入的Component, 以及props，缩小判断nativeComponent的范围
+// 收集从pages中引入的native Component, 以及props，
 export default function collectNativeComponent() {
   return {
     visitor: {
@@ -65,7 +66,7 @@ function getJsxProps(importPath: string, componentName: string, node: t.JSXEleme
   const component = monaStore.importComponentMap.get(importPath) || {
     path: importPath,
     id: genNativeComponentId(importPath),
-    componentName: componentName,
+    componentName: formatReactNodeName(componentName),
     props: new Set(),
     type: 'native',
   };
