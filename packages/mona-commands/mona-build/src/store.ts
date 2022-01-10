@@ -6,11 +6,40 @@ interface ComponentImportInfo {
   path: Path;
 
   // 包名称，例如: @bytedance/mona-runtime
-  // pkgName: string;
-
-  // jsx中使用的prop, 自定义组件的jsx上不能 写spread attribute {...props} 的形式
+  // 引入名称例如 import CustomComponent from 'xxx'。 在JSX中这样使用<CustomComponent /> ，则jsx中使用的名称 CustomComponent为componentName
+  componentName: string;
+  id: string;
+  // jsx中使用的prop, native组件的jsx上不能 写spread attribute {...props} 的形式
   props: Set<string>;
+
+  // native: 小程序原生自定义组件
+  // normal: mona-runtime中引入得组件 | 小程序的原始组件view、video这种小写标签
+  // plugin: mona的自定义组件，组件可以编译成web的react组件 、 小程序原生自定义组件
+  type: 'native' | 'normal' | 'plugin';
 }
+
+//@ts-ignore
+interface NativeComponentInfo {
+  type: 'native';
+  id: string;
+  pages: string[];
+}
+
+// interface EntryInfo {
+//   path: string;
+//   id: string;
+//   type: 'native' | 'normal';
+// }
+interface MonaPageEntry {
+  usingComponents: Record<string, string>;
+  type: 'mona';
+}
+interface NativePageEntry {
+  usingComponents: Record<string, string>;
+  type: 'native';
+}
+
+type PageEntry = MonaPageEntry | NativePageEntry;
 
 // 模板生成信息
 interface ITemplateRenderInfo {
@@ -27,7 +56,7 @@ const monaStore = {
   templateRenderMap: new Map<string, ITemplateRenderInfo>(),
   ejsParamsMap: genEjsParamsMap(),
   nativeComponents: new Map<string, { id: string }>(),
-
+  pageEntires: new Map<string, PageEntry>(),
   // registerNativeComponent(path: string) {},
 };
 

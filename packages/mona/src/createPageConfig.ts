@@ -9,6 +9,7 @@ export interface PageConfig {
   disableScroll?: boolean;
   disableSwipeBack?: boolean;
   onReachBottomDistance?: number;
+  usingComponents?: Record<string, string>;
 }
 
 export function createPageConfig(pageConfig: PageConfig) {

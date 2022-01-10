@@ -21,6 +21,24 @@
   <%_}-%></<%=ComponentAliasMap[name]%>>
 </template><%};-%>
 
+
+<%for (let item of nativeComponents.values()) {%>
+  <template name="mona-<%=item.id%>">
+    <<%=item.name%> 
+      <%_for(let i in item.props){-%>
+        <%=i%>="{{node.<%=RENDER_NODE.COMPLIER_PROPS%>['<%=item.props[i]%>']}}" 
+      <%}-%>
+    >
+      <template 
+        is="{{ 'mona-' + node.<%=RENDER_NODE.COMPLIER_NODES%>[item].<%=RENDER_NODE.COMPLIER_TYPE%> }}" 
+        tt:for="{{ node.<%=RENDER_NODE.COMPLIER_CHILDREN%> }}"
+        tt:key="{{ item.<%=RENDER_NODE.COMPLIER_KEY%> }}"
+        data="{{ node: node.<%=RENDER_NODE.COMPLIER_NODES%>[item] }}" 
+      />
+     </<%=item.name%>>
+  </template>
+<%};-%>
+
 <template name="mona-36">
   <block>{{ node.<%=RENDER_NODE.COMPLIER_TEXT%> }}</block>
 </template>

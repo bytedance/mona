@@ -11,7 +11,7 @@ import OptimizeEntriesPlugin from '@/plugins/webpack/ChunksEntriesPlugin';
 
 import getEnv from '@/utils/getEnv';
 import createPxtransformConfig from '@/utils/createPxtransformConfig';
-// import collectNativeComponent from '@/plugins/babel/CollectImportComponent';
+import collectNativeComponent from '@/plugins/babel/CollectImportComponent';
 import TransformJsxNamePlugin from '@/plugins/babel/TransformJsxName';
 import perfTemplateRender from '@/plugins/babel/PerfTemplateRender';
 const extensions = ['.js', '.mjs', '.jsx', '.ts', '.tsx', '.json'];
@@ -104,15 +104,6 @@ class MiniConfigHelper extends BaseConfigHelper {
 
   private _createModuleRules() {
     const rules: RuleSetRule[] = [];
-    // rules.push({
-    //   test: /\.((j|t)sx?)$/i,
-    //   use: [
-    //     {
-    //       loader: path.resolve(__dirname, '../loaders/ImportCustomComponentLoader'),
-    //       options: {},
-    //     },
-    //   ],
-    // });
 
     // handle script
     rules.push({
@@ -122,8 +113,10 @@ class MiniConfigHelper extends BaseConfigHelper {
           loader: require.resolve('babel-loader'),
           options: {
             babelrc: false,
-            plugins: [TransformJsxNamePlugin, this.projectConfig.compilerOptimization && perfTemplateRender].filter(Boolean),
-            presets:[]
+            plugins: [TransformJsxNamePlugin, this.projectConfig.compilerOptimization && perfTemplateRender].filter(
+              Boolean,
+            ),
+            presets: [],
           },
         },
         {
@@ -131,7 +124,7 @@ class MiniConfigHelper extends BaseConfigHelper {
           options: {
             babelrc: false,
             plugins: [
-              // collectNativeComponent,
+              collectNativeComponent,
               this.projectConfig.enableMultiBuild && [
                 path.join(__dirname, '../plugins/babel/BabelPluginMultiTarget.js'),
                 { target: 'mini', context: this.cwd, alias: this._createResolve().alias },
@@ -143,6 +136,10 @@ class MiniConfigHelper extends BaseConfigHelper {
               [require.resolve('@babel/preset-react')],
             ],
           },
+        },
+        {
+          loader: path.resolve(__dirname, '../loaders/ImportCustomComponentLoader'),
+          options: {},
         },
       ],
     });

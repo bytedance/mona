@@ -1,7 +1,9 @@
+//@ts-nocheck
 import { ConfigHelper } from '@/configHelper';
 import { Compiler, Compilation } from 'webpack';
-import createJson from './createJson';
+import createJson, { addUsingComponents } from './createJson';
 import createTtml from './createTtml';
+import monaStore from '../../../store';
 
 class MiniAssetsPlugin {
   configHelper: ConfigHelper;
@@ -12,20 +14,15 @@ class MiniAssetsPlugin {
   }
 
   apply(compiler: Compiler) {
-    compiler.hooks.thisCompilation.tap(this.pluginName, compilation => {
-      compilation.hooks.processAssets.tapPromise(
-        {
-          name: this.pluginName,
-          stage: Compilation.PROCESS_ASSETS_STAGE_ADDITIONS,
-        },
-        async () => {
-          // json
-          await createJson(compiler, compilation, this.configHelper);
+    addUsingComponents(compiler, this.configHelper);
 
-          // ttml
-          await createTtml(compilation, this.configHelper);
-        },
-      );
+    compiler.hooks.emit.tapPromise(this.pluginName, async compilation => {
+      //
+      // json
+      await createJson(compiler, compilation, this.configHelper);
+
+      // ttml
+      await createTtml(compilation, this.configHelper);
     });
   }
 }

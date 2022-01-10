@@ -23,3 +23,17 @@ export const transformNodeName = (key: string) => {
   //@ts-ignore
   return ComponentType[styleValue];
 };
+
+// PickerView->picker-view
+export const formatReactNodeName = (key: string) => {
+  let styleValue = key.replace(/\.?([A-Z]+)/g, function (_x, y) {
+    return '-' + y.toLowerCase();
+  });
+
+  if (styleValue.startsWith('-')) {
+    styleValue = styleValue.replace(/^-/, '');
+  }
+
+  //@ts-ignore
+  return styleValue;
+};

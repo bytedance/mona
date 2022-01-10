@@ -6,7 +6,7 @@ import { noChildElements } from '@/alias/constants';
 import { RENDER_NODE, ComponentAliasMap } from '@bytedance/mona-shared';
 
 import monaStore from '../../../store';
-
+import { formatReactNodeName } from '@/utils/reactNode';
 export function getAliasMap(ejsParamsMap: Map<string, any>) {
   const result = new Map();
   for (const nodeType of ejsParamsMap.keys()) {
@@ -31,6 +31,27 @@ export function getAliasMap(ejsParamsMap: Map<string, any>) {
 }
 
 const RawSource = sources.RawSource;
+
+function genNativeEjsData() {
+  const result = new Map();
+
+  monaStore.importComponentMap.forEach(value => {
+    const { componentName, props, type } = value;
+    if (type !== 'native') {
+      return;
+    }
+    result.set(value.id, {
+      id: value.id,
+      name: componentName,
+      props: Array.from(props.values()).reduce((pre, item) => {
+        pre[formatReactNodeName(item)] = item;
+        return pre;
+      }, {} as Record<string, string>),
+    });
+  });
+  return result;
+}
+
 export default async function createTtml(compilation: Compilation, configHelper: ConfigHelper) {
   const isDev = configHelper.options.dev;
   const { appConfig } = configHelper;
@@ -50,6 +71,7 @@ export default async function createTtml(compilation: Compilation, configHelper:
         noChildElements,
         RENDER_NODE,
         ComponentAliasMap,
+        nativeComponents: genNativeEjsData(),
       },
       {
         rmWhitespace: !isDev,

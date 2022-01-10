@@ -1,7 +1,10 @@
 import { NodePath } from '@babel/traverse';
 import monaStore from '../../store';
+import nodePath from 'path';
 import * as t from '@babel/types';
+import { genNativeComponentId } from '@/loaders/ImportCustomComponentLoader';
 
+// 收集从pages 文件夹下引入的Component, 以及props，缩小判断nativeComponent的范围
 export default function collectNativeComponent() {
   return {
     visitor: {
@@ -13,8 +16,8 @@ export default function collectNativeComponent() {
           return false;
         }
 
-        const name = openingElement.name.name;
-        const binding = path.scope.getBinding(name);
+        const componentName = openingElement.name.name;
+        const binding = path.scope.getBinding(componentName);
 
         if (!binding) {
           return false;
@@ -26,12 +29,20 @@ export default function collectNativeComponent() {
           return false;
         }
 
+        // console.log(_state.file.opts.filename);
         const importPath = bindingPath.parentPath;
-
+        const from = _state.file.opts.filename;
         if (t.isImportDeclaration(importPath)) {
           const importNode = importPath.node as t.ImportDeclaration;
           const source = importNode.source.value;
-          getJsxProps(source, node);
+          if (source.startsWith('native://')) {
+            importNode.source.value = processNativePath(
+              importNode.source.value,
+              nodePath.dirname(from),
+              _state.file.opts.cwd,
+            );
+            getJsxProps(importNode.source.value, componentName, node);
+          }
         }
         return;
       },
@@ -39,10 +50,24 @@ export default function collectNativeComponent() {
   };
 }
 
-function getJsxProps(name: string, node: t.JSXElement) {
-  const component = monaStore.importComponentMap.get(name) || {
-    path: name,
+export function processNativePath(req: string, from: string, cwd: string) {
+  const sourcePath = req.replace('native://', '');
+  if (sourcePath.startsWith('../') || sourcePath.startsWith('./')) {
+    return nodePath.join(from, sourcePath);
+  } else if (nodePath.isAbsolute(sourcePath)) {
+    return sourcePath;
+  } else {
+    return nodePath.join(cwd, '/src', sourcePath);
+  }
+}
+
+function getJsxProps(importPath: string, componentName: string, node: t.JSXElement) {
+  const component = monaStore.importComponentMap.get(importPath) || {
+    path: importPath,
+    id: genNativeComponentId(importPath),
+    componentName: componentName,
     props: new Set(),
+    type: 'native',
   };
   const props: string[] = [];
   node.openingElement.attributes.forEach(prop => {
@@ -61,7 +86,7 @@ function getJsxProps(name: string, node: t.JSXElement) {
     component.props.add(propName);
     props.push(propName);
   });
-  monaStore.importComponentMap.set(name, component);
+  monaStore.importComponentMap.set(importPath, component);
   return props;
 }
 
