@@ -36,7 +36,7 @@ export default async function createJson(compilation: Compilation, configHelper:
     const pageDistPath = path.join(page.toLowerCase());
     const file = `${pageDistPath}.json`;
 
-     if (compilation.getAsset(file)) {
+    if (compilation.getAsset(file)) {
       return;
     }
 
