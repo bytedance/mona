@@ -10,7 +10,7 @@ exports.getCurrentVersion = getCurrentVersion;
 function getNewestVersion() {
     var newestVersion = '0.0.0';
     try {
-        var cmd = "npm view " + (0, package_1.getPkgPublicName)() + " version --registry=https://registry.npmjs.org";
+        var cmd = "npm view ".concat((0, package_1.getPkgPublicName)(), " version --registry=https://registry.npmjs.org");
         newestVersion = (0, child_process_1.execSync)(cmd).toString().replace(/\s/, '');
     }
     catch (err) {

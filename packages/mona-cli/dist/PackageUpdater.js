@@ -26,26 +26,26 @@ var PackageUpdater = /** @class */ (function () {
     };
     PackageUpdater.prototype.update = function () {
         if (this._incompatible) {
-            var spinner = (0, ora_1.default)("\u5347\u7EA7\u5230 v" + this._newestVersion + "...").start();
+            var spinner = (0, ora_1.default)("\u5347\u7EA7\u5230 v".concat(this._newestVersion, "...")).start();
             var installCmd = this.generateUpdateCmd();
             try {
                 (0, child_process_1.execSync)(installCmd, { stdio: 'ignore' }).toString();
                 spinner.color = 'green';
-                spinner.succeed(chalk_1.default.green((0, package_1.getPkgPublicName)() + " v" + this._newestVersion + " \u66F4\u65B0\u6210\u529F"));
+                spinner.succeed(chalk_1.default.green("".concat((0, package_1.getPkgPublicName)(), " v").concat(this._newestVersion, " \u66F4\u65B0\u6210\u529F")));
             }
             catch (e) {
                 spinner.color = 'red';
-                spinner.fail(chalk_1.default.red((0, package_1.getPkgPublicName)() + " v" + this._newestVersion + " \u66F4\u65B0\u5931\u8D25\n\u53EF\u624B\u52A8\u6267\u884C " + chalk_1.default.cyan(installCmd) + " \u8FDB\u884C\u66F4\u65B0"));
+                spinner.fail(chalk_1.default.red("".concat((0, package_1.getPkgPublicName)(), " v").concat(this._newestVersion, " \u66F4\u65B0\u5931\u8D25\n\u53EF\u624B\u52A8\u6267\u884C ").concat(chalk_1.default.cyan(installCmd), " \u8FDB\u884C\u66F4\u65B0")));
             }
         }
     };
     PackageUpdater.prototype.render = function () {
-        return "\n      \u7248\u672C\u68C0\u67E5: " + this._currentVersion + " -> " + this._newestVersion + "\n      " + (this._incompatible ? chalk_1.default.yellow('有新的版本可用！') : chalk_1.default.green('已是最新版本！')) + "\n    ";
+        return "\n      \u7248\u672C\u68C0\u67E5: ".concat(this._currentVersion, " -> ").concat(this._newestVersion, "\n      ").concat((this._incompatible ? chalk_1.default.yellow('有新的版本可用！') : chalk_1.default.green('已是最新版本！')), "\n    ");
     };
     PackageUpdater.prototype.generateUpdateCmd = function () {
         var pkgMan = (0, command_1.getGlobalInstallPkgMan)();
         var cmd = pkgMan === 'yarn' ? "yarn global add" : 'npm install -g';
-        return cmd + " " + (0, package_1.getPkgPublicName)() + "@" + this._newestVersion;
+        return "".concat(cmd, " ").concat((0, package_1.getPkgPublicName)(), "@").concat(this._newestVersion);
     };
     return PackageUpdater;
 }());

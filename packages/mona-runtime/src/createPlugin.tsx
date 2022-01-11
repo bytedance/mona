@@ -13,7 +13,7 @@ const WrapperComponent: React.FC<{ title: string }> = ({ children, title }) => {
     }
   }, [title])
 
-  return <div style={{ height: '100%' }}>{children}</div>
+  return <>{children}</>
 }
 
 const NoMatch: React.FC<{ defaultPath: string }>  = ({ defaultPath }) => {
@@ -77,7 +77,7 @@ const GlobalSetWrapper: React.FC = ({ children }) => {
     // @ts-ignore
     window.__mona_history = history;
   }, [history])
-  return <div style={{ height: '100%' }}>{children}</div>
+  return <>{children}</>
 }
 
 export interface PageProps {

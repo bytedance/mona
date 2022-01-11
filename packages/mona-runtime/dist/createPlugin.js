@@ -40,7 +40,7 @@ const WrapperComponent = ({ children, title }) => {
     return react_1.default.createElement(react_1.default.Fragment, null, children);
 };
 const NoMatch = ({ defaultPath }) => {
-    return (react_1.default.createElement("div", { style: { position: 'relative', minHeight: '100vh' } },
+    return (react_1.default.createElement("div", { style: { position: 'relative', minHeight: '100%' } },
         react_1.default.createElement("div", { style: {
                 position: 'absolute',
                 top: 0,
@@ -79,17 +79,26 @@ function parseSearch(search) {
         return r;
     }, {});
 }
+const GlobalSetWrapper = ({ children }) => {
+    const history = (0, react_router_dom_1.useHistory)();
+    (0, react_1.useEffect)(() => {
+        // @ts-ignore
+        window.__mona_history = history;
+    }, [history]);
+    return react_1.default.createElement(react_1.default.Fragment, null, children);
+};
 function createPlugin(Component, routes) {
     const render = ({ dom }) => {
         react_dom_1.default.render(react_1.default.createElement(react_router_dom_1.BrowserRouter, null,
-            react_1.default.createElement(Component, null,
-                react_1.default.createElement(react_router_dom_1.Switch, null,
-                    routes.map(route => (react_1.default.createElement(react_router_dom_1.Route, { key: route.path, path: (0, formatPath_1.formatPath)(route.path), children: ({ location }) => (react_1.default.createElement(WrapperComponent, { title: route.title },
-                            react_1.default.createElement(route.component, { search: location.search, searchParams: parseSearch(location.search) }))) }))),
-                    routes.length > 0 ? (react_1.default.createElement(react_router_dom_1.Route, { exact: true, path: "/" },
-                        react_1.default.createElement(react_router_dom_1.Redirect, { to: (0, formatPath_1.formatPath)(routes[0].path) }))) : null,
-                    react_1.default.createElement(react_router_dom_1.Route, { path: "*" },
-                        react_1.default.createElement(NoMatch, { defaultPath: (0, formatPath_1.formatPath)(routes[0].path) }))))), dom.querySelector('#root'));
+            react_1.default.createElement(GlobalSetWrapper, null,
+                react_1.default.createElement(Component, null,
+                    react_1.default.createElement(react_router_dom_1.Switch, null,
+                        routes.map(route => (react_1.default.createElement(react_router_dom_1.Route, { key: route.path, path: (0, formatPath_1.formatPath)(route.path), children: ({ location }) => (react_1.default.createElement(WrapperComponent, { title: route.title },
+                                react_1.default.createElement(route.component, { search: location.search, searchParams: parseSearch(location.search) }))) }))),
+                        routes.length > 0 ? (react_1.default.createElement(react_router_dom_1.Route, { exact: true, path: "/" },
+                            react_1.default.createElement(react_router_dom_1.Redirect, { to: (0, formatPath_1.formatPath)(routes[0].path) }))) : null,
+                        react_1.default.createElement(react_router_dom_1.Route, { path: "*" },
+                            react_1.default.createElement(NoMatch, { defaultPath: (0, formatPath_1.formatPath)(routes[0].path) })))))), dom.querySelector('#root'));
     };
     // 在首次加载和执行时会触发该函数
     const provider = () => ({

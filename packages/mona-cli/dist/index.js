@@ -28,10 +28,10 @@ function mona() {
             console.log((0, command_1.commandUsage)(cmds_1.default));
         }
         else if (yargs_1.default.argv.version) {
-            console.log("mona v" + (0, package_1.getPkgVersion)());
+            console.log("mona v".concat((0, package_1.getPkgVersion)()));
         }
         else {
-            console.log("mona v" + (0, package_1.getPkgVersion)());
+            console.log("mona v".concat((0, package_1.getPkgVersion)()));
         }
     }
     else if (currentCmd === 'update') {
@@ -40,7 +40,7 @@ function mona() {
         pkgUpdater.start();
     }
     else {
-        console.log("\u65E0\u6548\u7684\u547D\u4EE4\uFF0C\u4F7F\u7528 " + chalk_1.default.yellow((0, package_1.getPkgName)() + " -h") + " \u67E5\u770B\u5E2E\u52A9");
+        console.log("\u65E0\u6548\u7684\u547D\u4EE4\uFF0C\u4F7F\u7528 ".concat(chalk_1.default.yellow("".concat((0, package_1.getPkgName)(), " -h")), " \u67E5\u770B\u5E2E\u52A9"));
     }
 }
 exports.default = mona;
