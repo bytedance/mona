@@ -26,10 +26,9 @@ class WebEntryModule {
     const { entryPath } = this.configHelper;
 
     const module: Record<string, string> = {};
-    const virtualPath = path.join(entryPath, '..', 'app.entry.js')
+    const virtualPath = path.join(entryPath, '..', 'app.entry.js');
     module[virtualPath] = this._generatePluginEntryCode(entryPath);
     this.name = virtualPath;
-
 
     return new VirtualModulesPlugin(module);
   }
@@ -56,7 +55,7 @@ class WebEntryModule {
     routesCode += `const routes = [${pages
       .map((page, index) => `{ path: '${page}', component: Page${index}, title: '${this.getPageTitle(page)}' }`)
       .join(',')}];`;
-    return routesCode
+    return routesCode;
   }
 
   private _generateTabBarCode() {
@@ -65,20 +64,20 @@ class WebEntryModule {
     return tabBarCode;
   }
 
-  // private _generateNavBarCode() {
-  //   const navBarCode = `const navBar = ${JSON.stringify(this.configHelper.appConfig.window)}`;
-  //   return navBarCode;
-  // }
+  private _generateNavBarCode() {
+    const navBarCode = `const navBar = ${JSON.stringify(this.configHelper.appConfig.window)}`;
+    return navBarCode;
+  }
 
   private _generatePluginEntryCode(filename: string) {
-   
     const code = `
       import { createWebApp, show } from '@bytedance/mona-runtime';
       import App from './${path.basename(filename)}';
       ${this._generateRoutesCode()}
       ${this._generateTabBarCode()}
+      ${this._generateNavBarCode()}
       
-      const { provider: p } =  createWebApp(App, routes, tabBar);
+      const { provider: p } =  createWebApp(App, routes, tabBar, navBar);
       export const provider = p;
     `;
 

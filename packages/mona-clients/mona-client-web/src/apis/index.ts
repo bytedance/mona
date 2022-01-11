@@ -1,11 +1,5 @@
 import { BaseApis } from '@bytedance/mona';
-import {
-  webShowToast,
-  webHideToast,
-  webShowLoading,
-  webShowModal,
-  webShowActionSheet,
-} from './components';
+import { webShowToast, webHideToast, webShowLoading, webShowModal, webShowActionSheet } from './components';
 import {
   createCanvasContext as originCreateCanvasContext,
   canvasToTempFilePath as originCanvasToTempFilePath
@@ -206,8 +200,12 @@ export const showNavigationBarLoading: BaseApis['showNavigationBarLoading'] =
 export const hideNavigationBarLoading: BaseApis['hideNavigationBarLoading'] =
   noImplementFactory('hideNavigationBarLoading');
 export const hideHomeButton: BaseApis['hideHomeButton'] = noImplementFactory('hideHomeButton');
-export const setNavigationBarTitle: BaseApis['setNavigationBarTitle'] = noImplementFactory('setNavigationBarTitle');
-export const setNavigationBarColor: BaseApis['setNavigationBarColor'] = noImplementFactory('setNavigationBarColor');
+export const setNavigationBarTitle: BaseApis['setNavigationBarTitle'] = options => {
+  eventEmitter.emit('setNavigationBarTitle', options);
+};
+export const setNavigationBarColor: BaseApis['setNavigationBarColor'] = options => {
+  eventEmitter.emit('setNavigationBarColor', options);
+};
 export const getMenuButtonBoundingClientRect: BaseApis['getMenuButtonBoundingClientRect'] = noImplementFactory(
   'getMenuButtonBoundingClientRect'
 );
@@ -215,30 +213,30 @@ export const createAnimation: BaseApis['createAnimation'] = noImplementFactory('
 export const pageScrollTo: BaseApis['pageScrollTo'] = webPageScrollTo;
 export const setSwipeBackMode: BaseApis['setSwipeBackMode'] = noImplementFactory('setSwipeBackMode');
 export const startPullDownRefresh: BaseApis['startPullDownRefresh'] = noImplementFactory('startPullDownRefresh');
-export const showTabBar: BaseApis['showTabBar'] = (options) => {
+export const showTabBar: BaseApis['showTabBar'] = options => {
   eventEmitter.emit('setTabBarToggle', true, options);
-}
-export const hideTabBar: BaseApis['hideTabBar'] = (options) => {
+};
+export const hideTabBar: BaseApis['hideTabBar'] = options => {
   eventEmitter.emit('setTabBarToggle', false, options);
-}
-export const showTabBarRedDot: BaseApis['showTabBarRedDot'] = (options) => {
+};
+export const showTabBarRedDot: BaseApis['showTabBarRedDot'] = options => {
   eventEmitter.emit('setTabBarDotToggle', true, options);
-}
-export const hideTabBarRedDot: BaseApis['hideTabBarRedDot'] = (options) => {
+};
+export const hideTabBarRedDot: BaseApis['hideTabBarRedDot'] = options => {
   eventEmitter.emit('setTabBarDotToggle', false, options);
-}
-export const setTabBarStyle: BaseApis['setTabBarStyle'] = (options) => {
+};
+export const setTabBarStyle: BaseApis['setTabBarStyle'] = options => {
   eventEmitter.emit('setTabBarStyle', options);
-}
-export const setTabBarItem: BaseApis['setTabBarItem'] = (options) => {
+};
+export const setTabBarItem: BaseApis['setTabBarItem'] = options => {
   eventEmitter.emit('setTabBarItem', options);
-}
-export const setTabBarBadge: BaseApis['setTabBarBadge'] = (options) => {
+};
+export const setTabBarBadge: BaseApis['setTabBarBadge'] = options => {
   eventEmitter.emit('setTabBarBadge', options);
-}
-export const removeTabBarBadge: BaseApis['removeTabBarBadge'] = (options) => {
+};
+export const removeTabBarBadge: BaseApis['removeTabBarBadge'] = options => {
   eventEmitter.emit('removeTabBarBadge', options);
-}
+};
 export const getAlgorithmManager: BaseApis['getAlgorithmManager'] = noImplementFactory('getAlgorithmManager');
 export const createStickerManager: BaseApis['createStickerManager'] = noImplementFactory('createStickerManager');
 export const createBytennEngineContext: BaseApis['createBytennEngineContext'] =

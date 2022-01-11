@@ -2,7 +2,7 @@ import { AppConfig } from '@bytedance/mona';
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Switch, Route, Redirect, useHistory } from 'react-router-dom';
-// import NavBar from './components/NavBar';
+import NavBar from './components/NavBar';
 import TabBar from './components/TabBar';
 import { formatPath, parseSearch } from '@bytedance/mona-shared';
 
@@ -11,61 +11,57 @@ const WrapperComponent: React.FC<{ title: string }> = ({ children, title }) => {
     if (title) {
       document.title = title;
     } else {
-      document.title = 'Mona Web'
+      document.title = 'Mona Web';
     }
-  }, [title])
+  }, [title]);
 
-  return <>{children}</>
-}
+  return <>{children}</>;
+};
 
-const NoMatch: React.FC<{ defaultPath: string }>  = ({ defaultPath }) => {
-  return (
-    <div style={{ position: 'relative', minHeight: '100vh' }}>
+const NoMatch: React.FC<{ defaultPath: string }> = ({ defaultPath }) => (
+  <div style={{ position: 'relative', minHeight: '100vh' }}>
+    <div
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 1,
+        backgroundColor: 'rgba(255, 255, 255)',
+      }}
+    >
       <div
         style={{
+          color: '#0000008C',
+          fontSize: '14px',
+          textAlign: 'center',
+          lineHeight: '20px',
+          whiteSpace: 'nowrap',
           position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          zIndex: 1,
-          backgroundColor: 'rgba(255, 255, 255)',
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
         }}
       >
-        <div
-          style={{
-            color: '#0000008C',
-            fontSize: '14px',
-            textAlign: 'center',
-            lineHeight: '20px',
-            whiteSpace: 'nowrap',
-            position: 'absolute',
-            left: '50%',
-            top: '50%',
-            transform: 'translate(-50%, -50%)',
-          }}
-        >
-          <img
-            style={{ width: 320, marginBottom: 8 }}
-            src={`https://lf3-fe.ecombdstatic.com/obj/ecom-open-butler/mona/error.png`}
-          />
-          <div>
-            <span>
-              不存在路由 {location.pathname}{' '}
-              <a onClick={() => history.pushState({}, '', formatPath(defaultPath))}>
-               返回首页
-              </a>
-            </span>
-          </div>
+        <img
+          style={{ width: 320, marginBottom: 8 }}
+          src={'https://lf3-fe.ecombdstatic.com/obj/ecom-open-butler/mona/error.png'}
+        />
+        <div>
+          <span>
+            不存在路由 {location.pathname}{' '}
+            <a onClick={() => history.pushState({}, '', formatPath(defaultPath))}>返回首页</a>
+          </span>
         </div>
       </div>
     </div>
-  )
-}
+  </div>
+);
 
 export interface PageProps {
   search: string;
-  searchParams: Record<string, string>
+  searchParams: Record<string, string>;
 }
 
 const HistorySetWrapper: React.FC = ({ children }) => {
@@ -77,34 +73,38 @@ const HistorySetWrapper: React.FC = ({ children }) => {
     window.__mona_history = history;
   }, [history]);
 
-  return <>{children}</>
-}
+  return <>{children}</>;
+};
 
 export function createWebApp(
   Component: React.ComponentType<any>,
   routes: { path: string; title: string; component: React.ComponentType<any> }[],
-  // navBar: AppConfig['window'],
-  tabBar: AppConfig['tabBar']
+  tabBar: AppConfig['tabBar'],
+  navBar: AppConfig['window']
 ) {
   const render = ({ dom }: { dom: Element | Document }) => {
     ReactDOM.render(
       <BrowserRouter>
         <HistorySetWrapper>
           <Component>
-            {/* <NavBar tab={navBar} /> */}
+            <NavBar {...navBar} />
             <Switch>
               {routes.map(route => (
-                <Route key={route.path} path={formatPath(route.path)} children={({ location }) => (
-                  <WrapperComponent title={route.title}>
-                    <route.component search={location.search} searchParams={parseSearch(location.search)} />
-                  </WrapperComponent>
-                )} />
+                <Route
+                  key={route.path}
+                  path={formatPath(route.path)}
+                  children={({ location }) => (
+                    <WrapperComponent title={route.title}>
+                      <route.component search={location.search} searchParams={parseSearch(location.search)} />
+                    </WrapperComponent>
+                  )}
+                />
               ))}
-                {routes.length > 0 ? (
-                  <Route exact path="/">
-                    <Redirect to={formatPath(routes[0].path)} />
-                  </Route>
-                ) : null}
+              {routes.length > 0 ? (
+                <Route exact path="/">
+                  <Redirect to={formatPath(routes[0].path)} />
+                </Route>
+              ) : null}
               <Route path="*">
                 <NoMatch defaultPath={formatPath(routes[0].path)} />
               </Route>
