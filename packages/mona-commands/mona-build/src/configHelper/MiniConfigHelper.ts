@@ -126,7 +126,7 @@ class MiniConfigHelper extends BaseConfigHelper {
           options: {
             babelrc: false,
             plugins: [
-              collectNativeComponent,
+              collectNativeComponent.bind(null, this as unknown as ConfigHelper),
               this.projectConfig.enableMultiBuild && [
                 path.join(__dirname, '../plugins/babel/BabelPluginMultiTarget.js'),
                 { target: 'mini', context: this.cwd, alias: this._createResolve().alias },

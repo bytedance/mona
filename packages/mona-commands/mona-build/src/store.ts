@@ -1,14 +1,11 @@
 import { genEjsParamsMap } from './alias';
+import { NativeComponentEntry } from './entires/nativeComponentEntry';
 // import { nanoid } from 'nanoid';
 type Path = string;
 interface ComponentImportInfo {
-  // 组件目录绝对路径
-  path: Path;
-
   // 包名称，例如: @bytedance/mona-runtime
   // 引入名称例如 import CustomComponent from 'xxx'。 在JSX中这样使用<CustomComponent /> ，则jsx中使用的名称 CustomComponent为componentName
   componentName: string;
-  id: string;
   // jsx中使用的prop, native组件的jsx上不能 写spread attribute {...props} 的形式
   props: Set<string>;
 
@@ -16,6 +13,7 @@ interface ComponentImportInfo {
   // normal: mona-runtime中引入得组件 | 小程序的原始组件view、video这种小写标签
   // plugin: mona的自定义组件，组件可以编译成web的react组件 、 小程序原生自定义组件
   type: 'native' | 'normal' | 'plugin';
+  entry: NativeComponentEntry;
 }
 
 //@ts-ignore

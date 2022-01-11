@@ -93,7 +93,7 @@ function processModuleFactory(cwd: string, handledModules: Set<string>) {
             // 计算两个页面和自定义组件两个绝对路径之间的相对路径
             [formatReactNodeName(componentInfo.componentName)]: getRelativePath(
               path.dirname(getPageEntryPath(page, cwd)),
-              componentInfo.path,
+              componentInfo.entry.entry,
             ),
           };
 

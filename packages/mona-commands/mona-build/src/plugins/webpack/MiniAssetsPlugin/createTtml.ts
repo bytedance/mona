@@ -36,12 +36,12 @@ function genNativeEjsData() {
   const result = new Map();
 
   monaStore.importComponentMap.forEach(value => {
-    const { componentName, props, type } = value;
+    const { componentName, props, type, entry } = value;
     if (type !== 'native') {
       return;
     }
-    result.set(value.id, {
-      id: value.id,
+    result.set(entry.id, {
+      id: entry.id,
       name: componentName,
       props: Array.from(props.values()).reduce((pre, item) => {
         pre[formatReactNodeName(item)] = item;

@@ -2,11 +2,12 @@ import { NodePath } from '@babel/traverse';
 import monaStore from '../../store';
 import nodePath from 'path';
 import * as t from '@babel/types';
-import { genNativeComponentId } from '@/loaders/ImportCustomComponentLoader';
 import { formatReactNodeName } from '@/utils/reactNode';
+import { ConfigHelper } from '@/configHelper';
+import { genNativeComponentEntry, NativeComponentEntry } from '@/entires/nativeComponentEntry';
 
 // 收集从pages中引入的native Component, 以及props，
-export default function collectNativeComponent() {
+export default function collectNativeComponent(configHelper: ConfigHelper) {
   return {
     visitor: {
       JSXElement(path: NodePath<t.JSXElement>, _state: any) {
@@ -30,7 +31,6 @@ export default function collectNativeComponent() {
           return false;
         }
 
-        // console.log(_state.file.opts.filename);
         const importPath = bindingPath.parentPath;
         const from = _state.file.opts.filename;
         if (t.isImportDeclaration(importPath)) {
@@ -42,7 +42,7 @@ export default function collectNativeComponent() {
               nodePath.dirname(from),
               _state.file.opts.cwd,
             );
-            getJsxProps(importNode.source.value, componentName, node);
+            getJsxProps(genNativeComponentEntry(configHelper, importNode.source.value), componentName, node);
           }
         }
         return;
@@ -62,10 +62,9 @@ export function processNativePath(req: string, from: string, cwd: string) {
   }
 }
 
-function getJsxProps(importPath: string, componentName: string, node: t.JSXElement) {
-  const component = monaStore.importComponentMap.get(importPath) || {
-    path: importPath,
-    id: genNativeComponentId(importPath),
+function getJsxProps(entry: NativeComponentEntry, componentName: string, node: t.JSXElement) {
+  const component = monaStore.importComponentMap.get(entry.entry) || {
+    entry,
     componentName: formatReactNodeName(componentName),
     props: new Set(),
     type: 'native',
@@ -87,24 +86,7 @@ function getJsxProps(importPath: string, componentName: string, node: t.JSXEleme
     component.props.add(propName);
     props.push(propName);
   });
-  monaStore.importComponentMap.set(importPath, component);
+
+  monaStore.importComponentMap.set(component.entry.entry, component);
   return props;
 }
-
-// function collectPropsName() {}
-
-// // 还是要搞一个map。对于bindtap、这种无法处理
-// // 转为驼峰
-// function transformProps(allPropsMap: any, key: string) {
-//   // return key.replace(/-[a-z]/g, function (x) {
-//   //   return x.replace(/^-/, '').toUpperCase();
-//   // });
-
-//   return genAliasMap(allPropsMap)[key];
-// }
-// function slash(path: string) {
-//   if (!path) {
-//     return path;
-//   }
-//   return /^\\\\\?\\/.test(path) ? path : path.replace(/\\/g, `/`);
-// }
