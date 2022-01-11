@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect, useHistory } from 'react-router-dom';
 import { formatPath } from './utils/formatPath';
 import Link from '@/components/Link';
 
@@ -13,12 +13,12 @@ const WrapperComponent: React.FC<{ title: string }> = ({ children, title }) => {
     }
   }, [title])
 
-  return <>{children}</>
+  return <div style={{ height: '100%' }}>{children}</div>
 }
 
 const NoMatch: React.FC<{ defaultPath: string }>  = ({ defaultPath }) => {
   return (
-    <div style={{ position: 'relative', minHeight: '100vh' }}>
+    <div style={{ position: 'relative', minHeight: '100%' }}>
       <div
         style={{
           position: 'absolute',
@@ -71,6 +71,15 @@ function parseSearch(search: string): Record<string, string> {
   }, {} as Record<string, string>)
 }
 
+const GlobalSetWrapper: React.FC = ({ children }) => {
+  const history = useHistory();
+  useEffect(() => {
+    // @ts-ignore
+    window.__mona_history = history;
+  }, [history])
+  return <div style={{ height: '100%' }}>{children}</div>
+}
+
 export interface PageProps {
   search: string;
   searchParams: Record<string, string>
@@ -83,25 +92,27 @@ export function createPlugin(
   const render = ({ dom }: { dom: Element | Document }) => {
     ReactDOM.render(
       <BrowserRouter>
-        <Component>
-          <Switch>
-            {routes.map(route => (
-              <Route key={route.path} path={formatPath(route.path)} children={({ location }) => (
-                <WrapperComponent title={route.title}>
-                  <route.component search={location.search} searchParams={parseSearch(location.search)} />
-                </WrapperComponent>
-              )} />
-            ))}
-              {routes.length > 0 ? (
-                <Route exact path="/">
-                  <Redirect to={formatPath(routes[0].path)} />
-                </Route>
-              ) : null}
-            <Route path="*">
-              <NoMatch defaultPath={formatPath(routes[0].path)} />
-            </Route>
-          </Switch>
-        </Component>
+        <GlobalSetWrapper>
+          <Component>
+            <Switch>
+              {routes.map(route => (
+                <Route key={route.path} path={formatPath(route.path)} children={({ location }) => (
+                  <WrapperComponent title={route.title}>
+                    <route.component search={location.search} searchParams={parseSearch(location.search)} />
+                  </WrapperComponent>
+                )} />
+              ))}
+                {routes.length > 0 ? (
+                  <Route exact path="/">
+                    <Redirect to={formatPath(routes[0].path)} />
+                  </Route>
+                ) : null}
+              <Route path="*">
+                <NoMatch defaultPath={formatPath(routes[0].path)} />
+              </Route>
+            </Switch>
+          </Component>
+        </GlobalSetWrapper>
       </BrowserRouter>,
       dom.querySelector('#root')
     );

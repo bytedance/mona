@@ -296,7 +296,7 @@ class ConfigHelper {
               <title>Mona Plugin</title>
               <meta name="viewport" content="width=device-width, initial-scale=1"></head>
             <body>
-              <div id="root"></div>
+              <div id="root" style="height: 100%"></div>
             </body>
           </html>
         `,

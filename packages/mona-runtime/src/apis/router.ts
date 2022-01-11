@@ -1,11 +1,19 @@
 import { formatPath } from '@/utils/formatPath';
 
 export function navigateTo(url: string) {
-  history.pushState({}, '', formatPath(url));
+  // @ts-ignore
+  const _history = window.__mona_history;
+  if (_history) {
+    _history.push(formatPath(url))
+  }
 }
 
 export function redirectTo(url: string) {
-  window.location.href = formatPath(url);
+  // @ts-ignore
+  const _history = window.__mona_history;
+  if (_history) {
+    _history.replace(formatPath(url))
+  }
 }
 
 export function open(url: string) {

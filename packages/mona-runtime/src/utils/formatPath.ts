@@ -1,3 +1,8 @@
+function lowerCasePathName(name: string) {
+  const [p, n] = name.split('?');
+  return `${p.toLowerCase()}${n ? `?${n}` : ''}`
+}
+
 export function formatPath(url: string): string {
-  return /^\//.test(url) ? url.toLowerCase() : `/${url.toLowerCase()}`;
+  return lowerCasePathName(/^\//.test(url) ? url : `/${url}`);
 }
