@@ -1,34 +1,36 @@
 import React, { FC } from 'react';
-import cs from 'classnames';
+import { AppConfig } from '@bytedance/mona';
+import { useNavBarTitle } from './utils';
 import './index.module.less';
 
-interface NavBarProps {
-  left?: React.ReactNode;
-  right?: React.ReactNode;
-  title: string | React.ReactNode;
-  onLeftClick?: () => void;
-  onRightClick?: () => void;
-  onTitleClick?: () => void;
-  className?: string;
-}
+export type NavBarProps = AppConfig['window'];
 
-const NavBar: FC<NavBarProps> = props => (
-  <div className={cs('mona-web-navbar', props.className)}>
-    <div className="mona-web-navbar-left" onClick={props.onLeftClick}>
-      {props.left ? (
-        props.left
-      ) : (
+const NavBar: FC<NavBarProps> = props => {
+  if (!props.navigationBarTitleText) {
+    return null;
+  }
+
+  const { title, frontColor, backgroundColor } = useNavBarTitle(props);
+
+  const navBarStyle: React.CSSProperties = {
+    backgroundColor,
+    color: frontColor,
+  };
+
+  return (
+    <div className="mona-web-navbar" style={{ ...navBarStyle }}>
+      <div className="mona-web-navbar-left" onClick={() => history.go(-1)}>
         <img
           className="mona-web-navbar-back"
           src="https://p3-ecom-fe.byteimg.com/tos-cn-i-w59vco1lho/5e8385040f71f4bc2b8d749a5406fae0.png~tplv-w59vco1lho-png.png"
         />
-      )}
+      </div>
+      <div className="mona-web-navbar-title" style={{ color: frontColor }}>
+        {title}
+      </div>
+      <div></div>
     </div>
-    <div className="mona-web-navbar-title" onClick={props.onTitleClick}>
-      {props.title}
-    </div>
-    <div onClick={props.onRightClick}>{props.right}</div>
-  </div>
-);
+  );
+};
 
 export default NavBar;

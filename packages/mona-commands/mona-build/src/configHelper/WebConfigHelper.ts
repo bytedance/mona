@@ -1,4 +1,4 @@
-import BaseConfigHelper from "./BaseConfigHelper";
+import BaseConfigHelper from './BaseConfigHelper';
 
 import webpack, { RuleSetRule, Configuration, DefinePlugin } from 'webpack';
 import path from 'path';
@@ -9,9 +9,9 @@ import CssMiniminzerPlugin from 'css-minimizer-webpack-plugin';
 import TerserWebpackPlugin from 'terser-webpack-plugin';
 import ConfigHMRPlugin from '@/plugins/webpack/ConfigHMRPlugin';
 import CopyPublicPlugin from '@/plugins/webpack/CopyPublicPlugin';
-import { Options } from "..";
-import { HTML_HANDLE_TAG } from "@/constants";
-import { ConfigHelper } from ".";
+import { Options } from '..';
+import { HTML_HANDLE_TAG } from '@/constants';
+import { ConfigHelper } from '.';
 import getEnv from '@/utils/getEnv';
 import createPxtransformConfig from "@/utils/createPxtransformConfig";
 import collectNativeComponent from "@/plugins/babel/CollectImportComponent";
@@ -20,7 +20,6 @@ class WebConfigHelper extends BaseConfigHelper {
   constructor(options: Required<Options>) {
     super(options);
   }
-
 
   generate() {
     const config: Configuration = {
@@ -35,12 +34,14 @@ class WebConfigHelper extends BaseConfigHelper {
       optimization: this._createOptimization() as any,
     };
 
-    const raw = this.projectConfig.raw;
+    const { raw } = this.projectConfig;
     return raw ? raw(config) : config;
   }
 
   private _createOptimization() {
-    if (this.options.dev) return {};
+    if (this.options.dev) {
+      return {};
+    }
     return {
       minimize: true,
       minimizer: [new TerserWebpackPlugin({ parallel: true, extractComments: false }), new CssMiniminzerPlugin()],
@@ -68,11 +69,11 @@ class WebConfigHelper extends BaseConfigHelper {
           default: {
             minChunks: 2,
             priority: -20,
-            reuseExistingChunk: true
-          }
-        }
-      }
-    }
+            reuseExistingChunk: true,
+          },
+        },
+      },
+    };
   }
 
   private _createResolve() {
@@ -86,7 +87,7 @@ class WebConfigHelper extends BaseConfigHelper {
   }
 
   private _createEntry() {
-     return path.join(this.entryPath, '..', 'app.entry.js')
+    return path.join(this.entryPath, '..', 'app.entry.js');
   }
 
   private _createMode() {
@@ -131,8 +132,11 @@ class WebConfigHelper extends BaseConfigHelper {
               collectNativeComponent.bind(null, this as unknown as ConfigHelper),
               [require.resolve('@babel/plugin-transform-runtime'), { regenerator: true }],
               this.options.dev && require.resolve('react-refresh/babel'),
-              this.projectConfig.enableMultiBuild && [path.join(__dirname, '../plugins/babel/BabelPluginMultiTarget.js'), { target: 'web', context: this.cwd, alias: this._createResolve().alias }]
-            ].filter(Boolean)
+              this.projectConfig.enableMultiBuild && [
+                path.join(__dirname, '../plugins/babel/BabelPluginMultiTarget.js'),
+                { target: 'web', context: this.cwd, alias: this._createResolve().alias },
+              ],
+            ].filter(Boolean),
           },
         },
         {
@@ -162,17 +166,19 @@ class WebConfigHelper extends BaseConfigHelper {
           postcssOptions: {
             plugins: [
               require.resolve('postcss-import'),
-              pxtOptions.enabled ? [path.join(__dirname, '..', './plugins/postcss/PostcssPxtransformer/index.js'), pxtOptions] : null
-            ].filter(p => !!p)
-          }
-        }
+              pxtOptions.enabled ?
+                [path.join(__dirname, '..', './plugins/postcss/PostcssPxtransformer/index.js'), pxtOptions] :
+                null,
+            ].filter(p => Boolean(p)),
+          },
+        },
       },
       require.resolve('less-loader'),
-    ]
+    ];
     if (!this.options.dev) {
-      styleLoader.unshift(MiniCssExtractPlugin.loader)
+      styleLoader.unshift(MiniCssExtractPlugin.loader);
     } else {
-      styleLoader.unshift(require.resolve('style-loader'))
+      styleLoader.unshift(require.resolve('style-loader'));
     }
 
     // handle style
@@ -212,7 +218,7 @@ class WebConfigHelper extends BaseConfigHelper {
             <head>
               <meta charset="utf-8">
               <title>Mona Web</title>
-              <meta name="viewport" content="width=device-width, initial-scale=1"></head>
+              <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover"></head>
             <body style="padding: 0; margin: 0;">
               <div id="root"></div>
             </body>
@@ -225,24 +231,21 @@ class WebConfigHelper extends BaseConfigHelper {
           removeRedundantAttributes: true,
           removeScriptTypeAttributes: true,
           removeStyleLinkTypeAttributes: true,
-          useShortDoctype: true
-        }
+          useShortDoctype: true,
+        },
       }),
       new DefinePlugin(getEnv(this.options, this.cwd)),
-    ]
+    ];
 
     if (this.options.dev) {
-      plugins = [
-        new ReactRefreshWebpackPlugin(),
-        ...plugins
-      ]
+      plugins = [new ReactRefreshWebpackPlugin(), ...plugins];
     } else {
       plugins = [
         new MiniCssExtractPlugin({
-          filename: '[name].[contenthash:7].css'
+          filename: '[name].[contenthash:7].css',
         }),
-        ...plugins
-      ]
+        ...plugins,
+      ];
     }
     return plugins;
   }
