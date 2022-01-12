@@ -1,12 +1,10 @@
-//@ts-nocheck
 import { ConfigHelper } from '@/configHelper';
-import { Compiler, Compilation } from 'webpack';
+import { Compiler } from 'webpack';
+
 import createJson, { addUsingComponents } from './createJson';
 // import chokidar from 'chokidar';
 import path from 'path';
-import createJson from './createJson';
 import createTtml from './createTtml';
-import monaStore from '../../../store';
 
 class MiniAssetsPlugin {
   configHelper: ConfigHelper;
@@ -32,12 +30,14 @@ class MiniAssetsPlugin {
 
       // ttml
       await createTtml(compilation, this.configHelper);
+      // createNativeFile(compilation, this.configHelper);
     });
 
     // add new depenpencies
     compiler.hooks.afterCompile.tap(this.pluginName, compilation => {
       const { cwd, appConfig } = this.configHelper;
       const deps = ['app.config.ts', 'app.config.js'];
+      // loader里
       appConfig.pages.forEach(page => {
         deps.push(path.join(`./src/${page}`, '..', 'page.config.js'));
         deps.push(path.join(`./src/${page}`, '..', 'page.config.ts'));

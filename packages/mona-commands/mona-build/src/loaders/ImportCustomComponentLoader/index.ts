@@ -3,7 +3,7 @@ import { LoaderContext } from 'webpack';
 import path from 'path';
 import fse from 'fs-extra';
 import monaStore from '../../store';
-import { genNativeComponentId } from '@/entires/nativeComponentEntry';
+import { ConfigHelper } from '@/configHelper';
 
 // import monaStore from '../store';
 
@@ -16,6 +16,7 @@ function isNativeComponent(jsPath: string) {
 
   return fse.existsSync(jsonPath) ? Boolean(require(jsonPath)?.component) : false;
 }
+
 // 强制要求自定义组件不得使用spread attribute  {...props}
 // ① babel插件CollectImportComponent: 获取jsx对应import的包信息(path、name、jsxProps等)。为了缩小webpack查询范围。
 // ② webpack的loader, loader根据path判断isNativeComponent，生成该组件的uid(用于生成模板), 用createNativeComponent包裹uid导出。
@@ -28,13 +29,28 @@ export default async function ImportCustomerComponentLoader(this: LoaderContext<
   const dirName = entryPath.replace(path.extname(entryPath), '');
 
   const componentInfo = monaStore.importComponentMap.get(dirName);
-  if (componentInfo?.type === 'native' && isNativeComponent(entryPath)) {
-    const nId = genNativeComponentId(entryPath);
+  const configHelper = this.getOptions().configHelper as ConfigHelper;
+  const { target } = configHelper.options;
+  if (componentInfo?.type === 'native') {
+    const { virtualSource } = componentInfo.entry;
 
-    const virtualSource = `
-      import { createNativeComponent } from '@bytedance/mona-runtime';
-      export default createNativeComponent('${nId}')
-    `;
+    if (target === 'mini' && isNativeComponent(entryPath)) {
+      const { dependencies: d } = componentInfo.entry;
+      d.forEach(this.addDependency);
+
+      // entry.virtualModule.apply(this._compiler!);
+      // const { virtualModule, virtualPath } = entry;
+      // virtualModule.writeModule(virtualPath, entry.outputSource());
+      // // const dep = new SingleEntryDependency(this.virtualPath);
+      // // dep.loc = { name: this.name };
+      // console.log({
+      //   resource: entry.outputSource(),
+      //   virtualPath,
+      // });
+      // const dep = new dependencies.ModuleDependency(entry.outputSource());
+      // //@ts-ignore
+      // this._compilation?.addEntry(null, dep, virtualPath, () => {});
+    }
 
     callback(null, virtualSource);
     return;

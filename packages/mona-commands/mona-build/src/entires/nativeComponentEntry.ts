@@ -1,6 +1,9 @@
-import { ConfigHelper } from '@/configHelper';
 import path from 'path';
 import fse from 'fs-extra';
+
+import { ConfigHelper } from '@/configHelper';
+import { MINI_EXT_LIST } from '@/constants';
+
 const defaultEntryConfig: Record<string, any> = {};
 const nativeConfigExt = '.json';
 export const nativeEntryMap = new Map<string, NativeComponentEntry>();
@@ -21,7 +24,8 @@ export class NativeComponentEntry {
   configHelper: ConfigHelper;
   id: string;
   _config?: Record<string, any>;
-  _dependencies?: string[];
+  _dependencies: Set<string>;
+  virtualPath: string;
   /**
    *
    * @param configHelper 配置文件
@@ -32,6 +36,19 @@ export class NativeComponentEntry {
     this.configHelper = configHelper;
     this.dirname = path.dirname(entryPath);
     this.id = genNativeComponentId(entryPath);
+    this._dependencies = new Set(MINI_EXT_LIST.map(ext => `${this.entry}${ext}`));
+
+    this.virtualPath = `${this.entry}.entry.js`;
+
+    // const rootDir = path.join(this.configHelper.cwd, './src/');
+    // if (entryPath.startsWith(rootDir)) {
+    // } else {
+    //   //
+    // }
+    // // !测试
+    // this.virtualModule = new VirtualModulesPlugin({
+    //   [this.virtualPath]: this.outputSource(),
+    // });
   }
 
   static isNativeComponent(jsPath: string) {
@@ -53,24 +70,33 @@ export class NativeComponentEntry {
   // 获取usingComponents
   readDependencies() {
     const config = this.config;
-    const usingComponent = config.usingComponent;
-    const res: string[] = [];
+    const usingComponent = config.usingComponents || {};
+    const res = new Set(this._dependencies);
 
     // TODO: 防止自定义组件循环依赖，热更新
     Object.keys(usingComponent).forEach(name => {
       const vPath = path.join(this.dirname, usingComponent[name]);
-      res.push(vPath);
       let nEntry = genNativeComponentEntry(this.configHelper, vPath);
-
-      res.push(...nEntry.readDependencies());
+      nEntry.readDependencies().forEach(d => {
+        res.add(d);
+      });
     });
-    this._dependencies = res;
+
     return res;
+  }
+
+  get resource() {
+    return MINI_EXT_LIST.map(ext => `${this.entry}${ext}`);
+  }
+
+  outputSource() {
+    return fse.readFileSync(`${this.entry}.js`).toString();
   }
 
   readConfig() {
     const ext = path.extname(this.entry);
-    const filename = ext ? this.entry.replace(ext, nativeConfigExt) : path.join(this.entry, nativeConfigExt);
+    const filename = ext ? this.entry.replace(ext, nativeConfigExt) : `${this.entry}${nativeConfigExt}`;
+
     let res = defaultEntryConfig;
     if (fse.existsSync(filename)) {
       try {
@@ -84,8 +110,9 @@ export class NativeComponentEntry {
   get config() {
     return this._config ?? (this._config = this.readConfig());
   }
+
   get dependencies() {
-    return this._dependencies ?? (this._dependencies = this.readDependencies());
+    return Array.from(this.readDependencies().values());
   }
 
   get virtualSource() {

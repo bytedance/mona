@@ -14,6 +14,7 @@ import { HTML_HANDLE_TAG } from "@/constants";
 import { ConfigHelper } from ".";
 import getEnv from '@/utils/getEnv';
 import createPxtransformConfig from "@/utils/createPxtransformConfig";
+import collectNativeComponent from "@/plugins/babel/CollectImportComponent";
 
 class WebConfigHelper extends BaseConfigHelper {
   constructor(options: Required<Options>) {
@@ -127,10 +128,17 @@ class WebConfigHelper extends BaseConfigHelper {
               [require.resolve('@babel/preset-react')],
             ],
             plugins: [
+              collectNativeComponent.bind(null, this as unknown as ConfigHelper),
               [require.resolve('@babel/plugin-transform-runtime'), { regenerator: true }],
               this.options.dev && require.resolve('react-refresh/babel'),
               this.projectConfig.enableMultiBuild && [path.join(__dirname, '../plugins/babel/BabelPluginMultiTarget.js'), { target: 'web', context: this.cwd, alias: this._createResolve().alias }]
             ].filter(Boolean)
+          },
+        },
+        {
+          loader: path.resolve(__dirname, '../loaders/ImportCustomComponentLoader'),
+          options: {
+            configHelper: this,
           },
         },
       ],

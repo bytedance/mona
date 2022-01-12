@@ -13,11 +13,10 @@ const emptyHandler = {
       }
     };
   },
-  set: () => false
+  set: () => false,
 };
 
 const emptyObj = new Proxy({}, emptyHandler);
-
 
 const handler = {
   get: function (_: any, prop: string) {
@@ -26,7 +25,7 @@ const handler = {
     }
     return window?.[SDK_NAME_IN_WINDOW]?.[prop] || emptyObj;
   },
-  set: () => false
+  set: () => false,
 };
 
 const monaPluginEvents = new Proxy({}, handler) as MonaPluginEvents;

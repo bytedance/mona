@@ -15,6 +15,7 @@ import ConfigHMRPlugin from '../plugins/webpack/ConfigHMRPlugin';
 import { Options } from '..';
 import { HTML_HANDLE_TAG } from '@/constants';
 import { ConfigHelper } from '.';
+import collectNativeComponent from '@/plugins/babel/CollectImportComponent';
 
 export function createUniqueId() {
   const random = () => Number(Math.random().toString().substr(2)).toString(36);
@@ -147,10 +148,17 @@ class PluginConfigHelper extends BaseConfigHelper {
               [require.resolve('@babel/preset-react')],
             ],
             plugins: [
+              collectNativeComponent.bind(null, this as unknown as ConfigHelper),
               [require.resolve('@babel/plugin-transform-runtime'), { regenerator: true }],
               this.options.dev && require.resolve('react-refresh/babel'),
               this.projectConfig.enableMultiBuild && [path.join(__dirname, '../plugins/babel/BabelPluginMultiTarget.js'), { target: 'plugin', context: this.cwd, alias: this._createResolve().alias }]
             ].filter(Boolean),
+          },
+        },
+        {
+          loader: path.resolve(__dirname, '../loaders/ImportCustomComponentLoader'),
+          options: {
+            configHelper: this,
           },
         },
       ],

@@ -141,7 +141,9 @@ class MiniConfigHelper extends BaseConfigHelper {
         },
         {
           loader: path.resolve(__dirname, '../loaders/ImportCustomComponentLoader'),
-          options: {},
+          options: {
+            configHelper: this,
+          },
         },
       ],
     });
