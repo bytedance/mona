@@ -19,7 +19,7 @@ const WrapperComponent: React.FC<{ title: string }> = ({ children, title }) => {
 };
 
 const NoMatch: React.FC<{ defaultPath: string }> = ({ defaultPath }) => (
-  <div style={{ position: 'relative', minHeight: '100vh' }}>
+  <div style={{ position: 'relative', minHeight: '100%' }}>
     <div
       style={{
         position: 'absolute',
