@@ -371,6 +371,8 @@ import { redirectTo } from '@bytedance/mona-runtime';
 - 插件额外api见-[mona-runtime文档](https://github.com/bytedance/mona/tree/main/packages/mona-runtime)
 
 ## 组件
+如果你只是web项目，你完全可以使用在web中的开发方式，引入antd等三方库。
+
 组件可以从`@bytedance/mona-runtime`中导入，如
 ```js
 import { View, Text } from '@bytedance/mona-runtime';
