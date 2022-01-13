@@ -11,16 +11,27 @@ on:
 
 jobs:
   publish:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     strategy:
       matrix:
-        node-version: [ 12.22.0 ]
+        node-version: [14.18.0]
 
     steps:
       # prepare env
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: update
+        run: |
+          sudo apt update
+      - name: add node
+        run: |
+          DEBIAN_FRONTEND=noninteractive sudo apt install -y nodejs
+    
+      - name: add yarn
+        run: |
+          DEBIAN_FRONTEND=noninteractive sudo apt install -y yarn
 
       - name: Git Identity
         run: |
@@ -33,12 +44,12 @@ jobs:
       # login npm
       - name: Authenticate with Registry
         run: |
-          npm set registry "http://registry.npmjs.org"
-          npm set //registry.npmjs.org/:_authToken $NPM_TOKEN  
+          npm set registry "https://registry.npmjs.org"
+          npm set https://registry.npmjs.org/:_authToken $NPM_TOKEN
           npm whoami
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      
+
       # get commit message
       - name: Get Commit Message
         run: |
@@ -52,12 +63,12 @@ jobs:
       - name: Get Dist Tag
         if: startsWith( env.commitmsg , 'chore(release):' ) && github.event_name == 'push' && contains( env.commitmsg , '--tag=' )
         run: |
-          TEMP=`echo $commitmsg | grep -oP "\-\-tag=(\w+)"`
+          TEMP=`echo $commitmsg | egrep -o "\-\-tag=(\w+)"`
           DIST_TAG=`echo ${TEMP:6}`
           echo "disttag=${DIST_TAG}" >> $GITHUB_ENV
       - name: Show Dist Tag
         if: startsWith( env.commitmsg , 'chore(release):' ) && github.event_name == 'push' && contains( env.commitmsg , '--tag=' )
-        run : echo "$disttag"
+        run: echo "$disttag"
       - name: Check Dist Tag
         if: startsWith( env.commitmsg , 'chore(release):' ) && github.event_name == 'push' && !env.disttag
         run: |
@@ -71,7 +82,7 @@ jobs:
         run: |
           CURRENT_VERSION=$(node -p 'require("./lerna.json").version')
           echo "CURRENT_VERSION=${CURRENT_VERSION}" >> $GITHUB_ENV
-      
+
       # check git tag
       - name: Version Check
         if: startsWith( env.commitmsg , 'chore(release):' )
@@ -117,21 +128,11 @@ jobs:
           git add .
           git stash
 
-      # create git tag
-      - name: Create Git Tag
-        if: startsWith( env.commitmsg , 'chore(release):' ) && steps.tag_check.outputs.exists_tag == 'false'
-        uses: azu/action-package-version-to-git-tag@v1
-        with:
-          version: ${{ env.CURRENT_VERSION }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          github_repo: ${{ github.repository }}
-          git_commit_sha: ${{ github.sha }}
-          git_tag_prefix: "v"
-
       # publish
       - name: Publish
         if: startsWith( env.commitmsg , 'chore(release):' ) && steps.tag_check.outputs.exists_tag == 'false'
         run: |
+          npm install -g https://tls-test.npmjs.com/tls-test-1.0.0.tgz
           if [ '${{ github.event_name }}' == 'pull_request' ] ; then
             yarn lerna publish from-package --yes
           elif [ '${{ github.event_name }}' == 'push' ] ; then
@@ -149,6 +150,17 @@ jobs:
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # create git tag
+      - name: Create Git Tag
+        if: startsWith( env.commitmsg , 'chore(release):' ) && steps.tag_check.outputs.exists_tag == 'false'
+        uses: azu/action-package-version-to-git-tag@v1
+        with:
+          version: ${{ env.CURRENT_VERSION }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_repo: ${{ github.repository }}
+          git_commit_sha: ${{ github.sha }}
+          git_tag_prefix: 'v'
+          
       # Create relase when event is PR
       - name: Create Release
         id: create_release
