@@ -1,5 +1,5 @@
 import { genEjsParamsMap } from './alias';
-import { NativeComponentEntry } from './entires/ttComponentEntry';
+import type { NativeComponentEntry } from './entires/ttComponentEntry';
 // import { nanoid } from 'nanoid';
 type Path = string;
 interface ComponentImportInfo {
@@ -55,6 +55,7 @@ const monaStore = {
   ejsParamsMap: genEjsParamsMap(),
   nativeComponents: new Map<string, { id: string }>(),
   pageEntires: new Map<string, PageEntry>(),
+  nativeEntryMap: new Map<string, NativeComponentEntry>(),
   // registerNativeComponent(path: string) {},
 };
 

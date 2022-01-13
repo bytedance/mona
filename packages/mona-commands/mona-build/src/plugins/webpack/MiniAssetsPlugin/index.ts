@@ -31,7 +31,7 @@ class MiniAssetsPlugin {
 
       // ttml
       await createTtml(compilation, this.configHelper);
-      
+
       createNativeFile(compilation, this.configHelper);
     });
 

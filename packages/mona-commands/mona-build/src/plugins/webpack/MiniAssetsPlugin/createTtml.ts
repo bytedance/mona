@@ -88,6 +88,9 @@ export default async function createTtml(compilation: Compilation, configHelper:
   // page ttml
   pages.forEach(async page => {
     const pageDistPath = path.join(page.toLowerCase());
+    if (monaStore.nativeEntryMap.get(path.join(configHelper.cwd, './src', page))) {
+      return;
+    }
 
     // generate ttml file
     const file = `${pageDistPath}.ttml`;

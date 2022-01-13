@@ -3,10 +3,12 @@ import fse from 'fs-extra';
 
 import { ConfigHelper } from '@/configHelper';
 import { MINI_EXT_LIST } from '@/constants';
+import { genNativeComponentEntry } from './util';
+import monaStore from '../store';
+const { nativeEntryMap } = monaStore;
 
 const defaultEntryConfig: Record<string, any> = {};
-const nativeConfigExt = '.json';
-export const nativeEntryMap = new Map<string, NativeComponentEntry>();
+export const nativeConfigExt = '.json';
 
 let id = 1;
 // 将路径和jsx收集的prop一一对应
@@ -19,32 +21,36 @@ export const genNativeComponentId = (resourcePath: string) => {
 };
 
 // 小程序语法自定义组件入口
-export class NativeComponentEntry {
+export class ttEntry {
   readonly entry: string;
   readonly dirPath: string;
   configHelper: ConfigHelper;
   readonly id: string;
   _config?: Record<string, any>;
-  _dependencies: Set<string>;
-  virtualPath: string;
+  _dependencies: Array<string>;
+
   /**
    *
    * @param configHelper 配置文件
-   * @param entryPath xxxx/index 入口文件
+   * @param entryPath xxxx/index 入口文件。/a/b/index.js的entryPath为/a/b/index
    */
   constructor(configHelper: ConfigHelper, entryPath: string) {
     this.entry = entryPath.replace(path.extname(entryPath), '');
     this.configHelper = configHelper;
     this.dirPath = path.dirname(entryPath);
     this.id = genNativeComponentId(entryPath);
-    this._dependencies = new Set(MINI_EXT_LIST.map(ext => `${this.entry}${ext}`));
-    this.virtualPath = `${this.entry}.entry.js`;
+
+    // const projectSrcPath = path.join(this.configHelper.cwd, './src');
+    // console.log(path.relative(projectSrcPath, this.entry));
+    this._dependencies = MINI_EXT_LIST.map(ext => `${this.entry}${ext}`);
   }
 
-  // TODO: 分析.js中  import和require的依赖
-  // 获取usingComponents
+  // TODO(p1): 分析.js中  import和require的依赖
+  // 依赖包括
+  // 1. *.js中import & require
+  // 2. *.json文件中的usingComponents
   readDependencies() {
-    const config = this.config;
+    const config = this.readConfig();
     const usingComponent = config.usingComponents || {};
     const res = new Set(this._dependencies);
     // TODO(p3): 防止自定义组件循环依赖。加一个set判断
@@ -65,12 +71,9 @@ export class NativeComponentEntry {
     return res;
   }
 
-  get resource() {
-    return MINI_EXT_LIST.map(ext => `${this.entry}${ext}`);
-  }
-
   readConfig() {
     const ext = path.extname(this.entry);
+
     const filename = ext ? this.entry.replace(ext, nativeConfigExt) : `${this.entry}${nativeConfigExt}`;
 
     try {
@@ -78,7 +81,25 @@ export class NativeComponentEntry {
     } catch (error) {}
     return defaultEntryConfig;
   }
+  isNative(jsPath: string) {
+    if (!jsPath) {
+      return false;
+    }
+    const ext = path.extname(jsPath);
+    if (!ext) {
+      jsPath = path.join(jsPath, '/index.js');
+    } else if (ext !== '.js') {
+      return false;
+    }
 
+    const ttmlPath = jsPath.replace(/\.js$/, '.ttml');
+
+    if ([ttmlPath, jsPath].every(fse.existsSync)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   get outputDir() {
     const dirPath = path.join(this.configHelper.cwd, './src');
     let outputPath = path.relative(dirPath, this.dirPath);
@@ -109,7 +130,12 @@ export class NativeComponentEntry {
     outputJson.usingComponents = usingComponents;
     return outputJson;
   }
-
+  get entrySource() {
+    try {
+      return fse.readFileSync(`${this.entry}.js`).toString();
+    } catch {}
+    return '';
+  }
   get outputResource() {
     const outputDir = this.outputDir;
 
@@ -136,22 +162,4 @@ export class NativeComponentEntry {
       resource: Buffer | string;
     }[];
   }
-
-  get config() {
-    return this.readConfig();
-  }
-
-  get dependencies() {
-    return Array.from(this.readDependencies().values());
-  }
 }
-
-export const genNativeComponentEntry = (configHelper: ConfigHelper, entryPath: string) => {
-  if (nativeEntryMap.has(entryPath)) {
-    return nativeEntryMap.get(entryPath)!;
-  } else {
-    const nEntry = new NativeComponentEntry(configHelper, entryPath);
-    nativeEntryMap.set(entryPath, nEntry);
-    return nEntry;
-  }
-};

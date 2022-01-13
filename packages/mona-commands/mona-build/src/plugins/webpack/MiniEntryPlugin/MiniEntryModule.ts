@@ -2,7 +2,8 @@ import { ConfigHelper } from '@/configHelper';
 import { searchScriptFile } from '@bytedance/mona-shared';
 import path from 'path';
 import VirtualModulesPlugin from '../VirtualModulesPlugin';
-
+import { TtPageEntry } from '../../../entires/ttPageEntry';
+import { genTtPageEntry } from '@/entires/util';
 export default class MiniEntryModule {
   entries: Record<string, string> = {};
   module: VirtualModulesPlugin;
@@ -51,17 +52,23 @@ export default class MiniEntryModule {
       const name = names[i];
       const realPath = realPaths[i];
       const virtualPath = MiniEntryModule.extendEntryName(realPath);
-      entries[name.toLowerCase()] = virtualPath;
-      // this first entry is app entry
-      if (i === 0) {
-        module[virtualPath] = MiniEntryModule.generateAppEntryCode(realPath);
+      if (!TtPageEntry.isNative(realPath)) {
+        entries[name.toLowerCase()] = virtualPath;
+
+        // this first entry is app entry
+        if (i === 0) {
+          module[virtualPath] = MiniEntryModule.generateAppEntryCode(realPath);
+        } else {
+          module[virtualPath] = MiniEntryModule.generatePageEntryCode(realPath, name);
+        }
       } else {
-        module[virtualPath] = MiniEntryModule.generatePageEntryCode(realPath, name);
+        genTtPageEntry(this.configHelper, realPath.replace(path.extname(realPath), ''));
       }
     }
 
     // update entries
     this.entries = entries;
+
     // PERF: type handle
     return new VirtualModulesPlugin(module);
   }

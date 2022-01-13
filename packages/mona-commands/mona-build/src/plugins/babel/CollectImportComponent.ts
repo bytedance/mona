@@ -4,7 +4,8 @@ import nodePath from 'path';
 import * as t from '@babel/types';
 import { formatReactNodeName } from '@/utils/reactNode';
 import { ConfigHelper } from '@/configHelper';
-import { genNativeComponentEntry, NativeComponentEntry } from '@/entires/ttComponentEntry';
+import { NativeComponentEntry } from '@/entires/ttComponentEntry';
+import { genNativeComponentEntry } from '@/entires/util';
 
 // 收集从pages中引入的native Component, 以及props，
 export default function collectNativeComponent(configHelper: ConfigHelper) {

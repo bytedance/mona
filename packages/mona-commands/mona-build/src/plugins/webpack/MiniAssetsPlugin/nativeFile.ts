@@ -1,14 +1,19 @@
 import { ConfigHelper } from '@/configHelper';
+import { TtPageEntry } from '@/entires/ttPageEntry';
 
 import { Compilation, sources } from 'webpack';
 
-import { nativeEntryMap } from '@/entires/ttComponentEntry';
+import monaStore from '../../../store';
 
 const RawSource = sources.RawSource;
 
 export default async function createNativeFile(compilation: Compilation, _configHelper: ConfigHelper) {
-  nativeEntryMap.forEach(entry => {
+  monaStore.nativeEntryMap.forEach(entry => {
     entry.outputResource.forEach(({ outputPath, resource }) => {
+      // TODO: 优化
+      if (entry instanceof TtPageEntry) {
+        outputPath = outputPath.toLowerCase();
+      }
       const currentSource = new RawSource(resource);
       if (compilation.getAsset(outputPath)) {
         compilation.updateAsset(outputPath, currentSource);
