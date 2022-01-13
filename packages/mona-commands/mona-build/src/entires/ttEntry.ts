@@ -41,22 +41,6 @@ export class NativeComponentEntry {
     this.virtualPath = `${this.entry}.entry.js`;
   }
 
-  static isNativeComponent(jsPath: string) {
-    if (!jsPath) {
-      return false;
-    }
-    const ext = path.extname(jsPath);
-    let jsonPath = '';
-    if (ext === '.js') {
-      jsonPath = jsPath.replace(/\.js$/, '.json');
-    } else if (!ext) {
-      jsonPath = path.join(jsPath, '/index.json');
-    } else {
-      return false;
-    }
-    return fse.existsSync(jsonPath) ? Boolean(require(jsonPath)?.component) : false;
-  }
-
   // TODO: 分析.js中  import和require的依赖
   // 获取usingComponents
   readDependencies() {
@@ -152,19 +136,13 @@ export class NativeComponentEntry {
       resource: Buffer | string;
     }[];
   }
+
   get config() {
     return this.readConfig();
   }
 
   get dependencies() {
     return Array.from(this.readDependencies().values());
-  }
-
-  get virtualSource() {
-    return `
-    import { createNativeComponent } from '@bytedance/mona-runtime';
-    export default createNativeComponent('${this.id}')
-  `;
   }
 }
 
