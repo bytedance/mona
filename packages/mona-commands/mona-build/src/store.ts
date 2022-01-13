@@ -1,5 +1,5 @@
 import { genEjsParamsMap } from './alias';
-import { NativeComponentEntry } from './entires/nativeComponentEntry';
+import { NativeComponentEntry } from './entires/ttComponentEntry';
 // import { nanoid } from 'nanoid';
 type Path = string;
 interface ComponentImportInfo {

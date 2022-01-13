@@ -3,7 +3,7 @@ import { ConfigHelper } from '@/configHelper';
 
 import { Compilation, sources } from 'webpack';
 
-import { nativeEntryMap } from '@/entires/nativeComponentEntry';
+import { nativeEntryMap } from '@/entires/ttComponentEntry';
 
 const RawSource = sources.RawSource;
 

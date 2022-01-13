@@ -18,6 +18,7 @@ export const genNativeComponentId = (resourcePath: string) => {
   return `native${id++}`;
 };
 
+// 小程序语法自定义组件入口
 export class NativeComponentEntry {
   entry: string;
   dirname: string;
@@ -73,13 +74,11 @@ export class NativeComponentEntry {
     const usingComponent = config.usingComponents || {};
     const res = new Set(this._dependencies);
 
-    // TODO: 防止自定义组件循环依赖，热更新
+    // TODO(p3): 防止自定义组件循环依赖。加一个set判断
     Object.keys(usingComponent).forEach(name => {
       const vPath = path.join(this.dirname, usingComponent[name]);
-      let nEntry = genNativeComponentEntry(this.configHelper, vPath);
-      nEntry.readDependencies().forEach(d => {
-        res.add(d);
-      });
+      const nEntry = genNativeComponentEntry(this.configHelper, vPath);
+      nEntry.readDependencies().forEach(res.add);
     });
 
     return res;
