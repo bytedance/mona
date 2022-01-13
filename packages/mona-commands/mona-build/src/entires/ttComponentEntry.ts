@@ -20,10 +20,10 @@ export const genNativeComponentId = (resourcePath: string) => {
 
 // 小程序语法自定义组件入口
 export class NativeComponentEntry {
-  entry: string;
-  dirname: string;
+  readonly entry: string;
+  readonly dirPath: string;
   configHelper: ConfigHelper;
-  id: string;
+  readonly id: string;
   _config?: Record<string, any>;
   _dependencies: Set<string>;
   virtualPath: string;
@@ -35,10 +35,9 @@ export class NativeComponentEntry {
   constructor(configHelper: ConfigHelper, entryPath: string) {
     this.entry = entryPath.replace(path.extname(entryPath), '');
     this.configHelper = configHelper;
-    this.dirname = path.dirname(entryPath);
+    this.dirPath = path.dirname(entryPath);
     this.id = genNativeComponentId(entryPath);
     this._dependencies = new Set(MINI_EXT_LIST.map(ext => `${this.entry}${ext}`));
-
     this.virtualPath = `${this.entry}.entry.js`;
 
     // const rootDir = path.join(this.configHelper.cwd, './src/');
@@ -68,19 +67,20 @@ export class NativeComponentEntry {
     return fse.existsSync(jsonPath) ? Boolean(require(jsonPath)?.component) : false;
   }
 
+  // TODO: 分析.js中  import和require的依赖
   // 获取usingComponents
   readDependencies() {
     const config = this.config;
     const usingComponent = config.usingComponents || {};
     const res = new Set(this._dependencies);
-
     // TODO(p3): 防止自定义组件循环依赖。加一个set判断
     Object.keys(usingComponent).forEach(name => {
-      const vPath = path.join(this.dirname, usingComponent[name]);
+      const vPath = path.join(this.dirPath, usingComponent[name]);
       const nEntry = genNativeComponentEntry(this.configHelper, vPath);
-      nEntry.readDependencies().forEach(res.add);
+      nEntry.readDependencies().forEach(d => {
+        res.add(d);
+      });
     });
-
     return res;
   }
 
@@ -88,26 +88,74 @@ export class NativeComponentEntry {
     return MINI_EXT_LIST.map(ext => `${this.entry}${ext}`);
   }
 
-  outputSource() {
-    return fse.readFileSync(`${this.entry}.js`).toString();
-  }
-
   readConfig() {
     const ext = path.extname(this.entry);
     const filename = ext ? this.entry.replace(ext, nativeConfigExt) : `${this.entry}${nativeConfigExt}`;
 
     let res = defaultEntryConfig;
-    if (fse.existsSync(filename)) {
-      try {
-        res = JSON.parse(fse.readFileSync(filename).toString());
-      } catch (error) {}
-    }
-    this._config = res;
+    try {
+      res = JSON.parse(fse.readFileSync(filename).toString());
+    } catch (error) {}
+
+    // this._config = res;
     return res;
   }
 
+  get outputDir() {
+    const dirPath = path.join(this.configHelper.cwd, './src');
+    let outputPath = path.relative(dirPath, this.dirPath);
+
+    if (!this.dirPath.startsWith(dirPath)) {
+      const dirname = path.basename(this.dirPath);
+      const componentPath = path.join(this.configHelper.cwd, `./src/components/tt/${dirname}${this.id}`);
+      outputPath = path.relative(dirPath, componentPath);
+    }
+    return outputPath;
+  }
+
+  createOutputConfig() {
+    const outputJson = this.readConfig();
+    const usingComponents = outputJson.usingComponents || {};
+    const outputPath = this.outputDir;
+
+    Object.keys(usingComponents).forEach(name => {
+      const vPath = path.join(this.dirPath, usingComponents[name]);
+      const nEntry = genNativeComponentEntry(this.configHelper, vPath);
+      usingComponents[name] = path.relative(outputPath, path.join(nEntry.outputDir, './index'));
+    });
+
+    outputJson.usingComponents = usingComponents;
+    return outputJson;
+  }
+
+  get outputResource() {
+    const outputDir = this.outputDir;
+
+    const res = MINI_EXT_LIST.map(ext => {
+      if (fse.existsSync(`${this.entry}${ext}`)) {
+        const outputPath = `${outputDir}/index${ext}`;
+        let resource;
+
+        if (ext.includes('json')) {
+          resource = JSON.stringify(this.createOutputConfig(), null, 2);
+        } else {
+          resource = fse.readFileSync(`${this.entry}${ext}`);
+        }
+        return {
+          outputPath,
+          resource,
+        };
+      }
+      return;
+    }).filter(Boolean);
+
+    return res as {
+      outputPath: string;
+      resource: Buffer | string;
+    }[];
+  }
   get config() {
-    return this._config ?? (this._config = this.readConfig());
+    return this.readConfig();
   }
 
   get dependencies() {

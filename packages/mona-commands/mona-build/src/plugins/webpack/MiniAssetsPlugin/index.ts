@@ -5,6 +5,7 @@ import createJson, { addUsingComponents } from './createJson';
 // import chokidar from 'chokidar';
 import path from 'path';
 import createTtml from './createTtml';
+import createNativeFile from './nativeFile';
 
 class MiniAssetsPlugin {
   configHelper: ConfigHelper;
@@ -30,7 +31,8 @@ class MiniAssetsPlugin {
 
       // ttml
       await createTtml(compilation, this.configHelper);
-      // createNativeFile(compilation, this.configHelper);
+      
+      createNativeFile(compilation, this.configHelper);
     });
 
     // add new depenpencies
