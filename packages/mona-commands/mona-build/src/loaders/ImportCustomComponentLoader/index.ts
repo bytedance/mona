@@ -36,7 +36,6 @@ export default async function ImportCustomerComponentLoader(this: LoaderContext<
 
     if (target === 'mini' && isNativeComponent(entryPath)) {
       const { dependencies: d } = componentInfo.entry;
-      console.log(d);
       d.forEach(d => this.addDependency(d));
 
       // entry.virtualModule.apply(this._compiler!);

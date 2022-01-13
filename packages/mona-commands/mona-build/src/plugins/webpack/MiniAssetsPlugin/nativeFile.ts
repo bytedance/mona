@@ -1,4 +1,3 @@
-// import path from 'path';
 import { ConfigHelper } from '@/configHelper';
 
 import { Compilation, sources } from 'webpack';
