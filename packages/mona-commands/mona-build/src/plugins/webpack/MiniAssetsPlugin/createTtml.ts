@@ -46,7 +46,10 @@ function genNativeEjsData() {
       props: Array.from(props.values()).reduce((pre, item) => {
         // 自定组件ref比较特殊,约定__ref透传react的ref
         // https://microapp.bytedance.com/docs/zh-CN/mini-app/develop/framework/custom-component/ref/
-        pre[formatReactNodeName(item)] = item === 'ref' ? CUSTOM_REF : item;
+        const propKey = item === 'ref' ? 'tt:ref' : formatReactNodeName(item);
+        const propValue = item === 'ref' ? CUSTOM_REF : item;
+
+        pre[propKey] = propValue;
         return pre;
       }, {} as Record<string, string>),
     });
