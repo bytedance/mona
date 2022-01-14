@@ -29,7 +29,8 @@
     "@bytedance/mona-client-plugin": "^0.2.0-alpha.6",
     "@bytedance/mona-client-web": "^0.2.0-alpha.6",
     "@bytedance/mona-plugin-events": "^0.2.0-alpha.6",
-    "@bytedance/mona-shared": "^0.2.0-alpha.6"
+    "@bytedance/mona-shared": "^0.2.0-alpha.6",
+    "@bytedance/mona": "^0.2.0-alpha.6"
   },
   "publishConfig": {
     "access": "public",
