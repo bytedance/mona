@@ -4,7 +4,7 @@ import nodePath from 'path';
 import * as t from '@babel/types';
 import { formatReactNodeName } from '@/utils/reactNode';
 import { ConfigHelper } from '@/configHelper';
-import { NativeComponentEntry } from '@/entires/ttComponentEntry';
+import { TtComponentEntry } from '@/entires/ttComponentEntry';
 import { genNativeComponentEntry } from '@/entires/util';
 
 // 收集从pages中引入的native Component, 以及props，
@@ -63,7 +63,7 @@ export function processNativePath(req: string, from: string, cwd: string) {
   }
 }
 
-function getJsxProps(entry: NativeComponentEntry, componentName: string, node: t.JSXElement) {
+function getJsxProps(entry: TtComponentEntry, componentName: string, node: t.JSXElement) {
   const component = monaStore.importComponentMap.get(entry.entry) || {
     entry,
     componentName: formatReactNodeName(componentName),

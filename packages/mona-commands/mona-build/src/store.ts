@@ -1,5 +1,5 @@
 import { genEjsParamsMap } from './alias';
-import type { NativeComponentEntry } from './entires/ttComponentEntry';
+import type { TtComponentEntry } from './entires/ttComponentEntry';
 // import { nanoid } from 'nanoid';
 type Path = string;
 interface ComponentImportInfo {
@@ -13,7 +13,7 @@ interface ComponentImportInfo {
   // normal: mona-runtime中引入得组件 | 小程序的原始组件view、video这种小写标签
   // plugin: mona的自定义组件，组件可以编译成web的react组件 、 小程序原生自定义组件
   type: 'native' | 'normal' | 'plugin';
-  entry: NativeComponentEntry;
+  entry: TtComponentEntry;
 }
 
 //@ts-ignore
@@ -55,7 +55,7 @@ const monaStore = {
   ejsParamsMap: genEjsParamsMap(),
   nativeComponents: new Map<string, { id: string }>(),
   pageEntires: new Map<string, PageEntry>(),
-  nativeEntryMap: new Map<string, NativeComponentEntry>(),
+  nativeEntryMap: new Map<string, TtComponentEntry>(),
   // registerNativeComponent(path: string) {},
 };
 

@@ -2,10 +2,10 @@ import path from 'path';
 import fse from 'fs-extra';
 
 import { ConfigHelper } from '@/configHelper';
-import { NativeComponentEntry } from './ttComponentEntry';
+import { TtComponentEntry } from './ttComponentEntry';
 
 // 小程序语法自定义组件入口
-export class TtPageEntry extends NativeComponentEntry {
+export class TtPageEntry extends TtComponentEntry {
   /**
    *
    * @param configHelper 配置文件

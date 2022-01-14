@@ -3,6 +3,7 @@ import { LoaderContext } from 'webpack';
 import path from 'path';
 import monaStore from '../../store';
 import { ConfigHelper } from '@/configHelper';
+import { TtComponentEntry } from '@/entires/ttComponentEntry';
 
 // import monaStore from '../store';
 
@@ -22,7 +23,7 @@ export default async function ImportCustomerComponentLoader(this: LoaderContext<
   if (nativeEntry) {
     const { virtualSource } = nativeEntry;
 
-    if (target === 'mini' && nativeEntry.isNative(entryPath)) {
+    if (target === 'mini' && TtComponentEntry.isNative(entryPath)) {
       const dependencies = nativeEntry.readDependencies();
       dependencies.forEach(d => this.addDependency(d));
     }
