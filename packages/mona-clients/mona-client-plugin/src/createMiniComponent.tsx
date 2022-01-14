@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export function createNativeComponent(name: string) {
+export function createMiniComponent(name: string) {
   const ChildrenComponent: React.FC = ({ children }) => {
     return <>{children}</>;
   };

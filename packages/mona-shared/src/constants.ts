@@ -68,3 +68,5 @@ export const ComponentAliasMap = Object.keys(MiniComponentType).reduce((pre: Rec
   pre[MiniComponentType[item as keyof typeof MiniComponentType]] = item;
   return pre;
 }, {});
+
+export const CUSTOM_REF = '__ref'

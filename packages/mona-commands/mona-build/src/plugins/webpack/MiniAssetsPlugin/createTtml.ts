@@ -3,7 +3,7 @@ import ejs from 'ejs';
 import { Compilation, sources } from 'webpack';
 import { ConfigHelper } from '@/configHelper';
 import { noChildElements } from '@/alias/constants';
-import { RENDER_NODE, ComponentAliasMap } from '@bytedance/mona-shared';
+import { RENDER_NODE, ComponentAliasMap, CUSTOM_REF } from '@bytedance/mona-shared';
 
 import monaStore from '../../../store';
 import { formatReactNodeName } from '@/utils/reactNode';
@@ -44,7 +44,9 @@ function genNativeEjsData() {
       id: entry.id,
       name: componentName,
       props: Array.from(props.values()).reduce((pre, item) => {
-        pre[formatReactNodeName(item)] = item;
+        // 自定组件ref比较特殊,约定__ref透传react的ref
+        // https://microapp.bytedance.com/docs/zh-CN/mini-app/develop/framework/custom-component/ref/
+        pre[formatReactNodeName(item)] = item === 'ref' ? CUSTOM_REF : item;
         return pre;
       }, {} as Record<string, string>),
     });

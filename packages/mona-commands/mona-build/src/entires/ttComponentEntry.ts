@@ -105,8 +105,8 @@ export class TtComponentEntry {
 
   get virtualSource() {
     return `
-    import { createNativeComponent } from '@bytedance/mona-runtime';
-    export default createNativeComponent('${this.id}')
+    import { createMiniComponent } from '@bytedance/mona-runtime';
+    export default createMiniComponent('${this.id}')
   `;
   }
 
