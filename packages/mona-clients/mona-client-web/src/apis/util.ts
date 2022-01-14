@@ -1,11 +1,11 @@
-import { formatPath } from '@bytedance/mona-shared'
+import { formatPath } from '@bytedance/mona-shared';
 import {
   GetImageInfoSuccessCallbackArgs,
   RequestTask,
   BaseApis,
   ChooseImageSuccessCallbackArgs,
   GetLocationSuccessCallbackArgs,
-  NetworkType,
+  NetworkType
 } from '@bytedance/mona';
 import clipboard from 'clipboardy';
 
@@ -13,19 +13,23 @@ import { showPreviewImage } from './components/';
 
 export const webRequest: BaseApis['request'] = (data): RequestTask => {
   const controller = new AbortController();
-  const promise = fetch(data.url, {
-    //@ts-ignore
-    headers: data.header
-      ? data.header
-      : {
-          'Content-Type': 'application/json',
-        },
+  const init: Record<string, any> = {
+    headers: data.header ?
+      data.header :
+      {
+        'Content-Type': 'application/json',
+      },
     method: data.method || 'GET',
-    body: data.data ? JSON.stringify(data.data) : '',
     signal: controller.signal,
-  });
+  };
+
+  if (data.method === 'POST') {
+    init.body = data.data ? JSON.stringify(data.data) : '';
+  }
+  const promise = fetch(data.url, init);
 
   promise
+    .then(r => r.json())
     .then(r => {
       data.success?.({
         statusCode: r.status,
@@ -129,7 +133,7 @@ export const webChooseVideo: BaseApis['chooseVideo'] = (options = {}) => {
             width: video.videoWidth,
             height: video.videoHeight,
             errMsg: 'chooseVideo: ok',
-            //@ts-ignore
+            // @ts-ignore
             duration: video.duration,
             size: content?.size,
             tempFilePath: video.src,
@@ -280,7 +284,7 @@ export const webGetLocation: BaseApis['getLocation'] = options => {
         options?.fail?.({
           errMsg: err.message,
         });
-      },
+      }
     );
   } else {
     options.fail?.({
@@ -366,8 +370,8 @@ export const webRedirectTo: BaseApis['redirectTo'] = options => {
 };
 
 export const webSwitchTab: BaseApis['switchTab'] = ({ url, success, fail, complete }) => {
-  webRedirectTo({ url, success, fail, complete })
-}
+  webRedirectTo({ url, success, fail, complete });
+};
 
 export const webNavigateBack: BaseApis['navigateBack'] = (options = {}) => {
   let errMsg: string;
