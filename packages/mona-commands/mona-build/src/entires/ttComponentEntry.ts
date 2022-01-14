@@ -5,7 +5,6 @@ import { ConfigHelper } from '@/configHelper';
 import { MINI_EXT_LIST } from '@/constants';
 import { genNativeComponentEntry } from './util';
 import monaStore from '../store';
-const { nativeEntryMap } = monaStore;
 
 const defaultEntryConfig: Record<string, any> = {};
 export const nativeConfigExt = '.json';
@@ -13,7 +12,7 @@ export const nativeConfigExt = '.json';
 let id = 1;
 // 将路径和jsx收集的prop一一对应
 export const genNativeComponentId = (resourcePath: string) => {
-  const entry = nativeEntryMap.get(resourcePath);
+  const entry = monaStore.nativeEntryMap.get(resourcePath);
   if (entry?.id) {
     return entry?.id;
   }
@@ -24,6 +23,8 @@ export const genNativeComponentId = (resourcePath: string) => {
 export class TtComponentEntry {
   readonly entry: string;
   readonly dirPath: string;
+  readonly basename: string;
+
   configHelper: ConfigHelper;
   readonly id: string;
   _config?: Record<string, any>;
@@ -39,7 +40,7 @@ export class TtComponentEntry {
     this.configHelper = configHelper;
     this.dirPath = path.dirname(entryPath);
     this.id = genNativeComponentId(entryPath);
-
+    this.basename = path.basename(entryPath);
     this._dependencies = MINI_EXT_LIST.map(ext => `${this.entry}${ext}`);
   }
 
@@ -95,7 +96,7 @@ export class TtComponentEntry {
     if (ext === '.js') {
       jsonPath = jsPath.replace(/\.js$/, '.json');
     } else if (!ext) {
-      jsonPath = path.join(jsPath, '/index.json');
+      jsonPath = path.join(jsPath, `/${path.basename(jsPath)}.json`);
     } else {
       return false;
     }
@@ -108,6 +109,7 @@ export class TtComponentEntry {
     export default createNativeComponent('${this.id}')
   `;
   }
+
   get outputDir() {
     const dirPath = path.join(this.configHelper.cwd, './src');
     let outputPath = path.relative(dirPath, this.dirPath);
@@ -131,7 +133,7 @@ export class TtComponentEntry {
 
         const vPath = path.join(this.dirPath, cPath);
         const nEntry = genNativeComponentEntry(this.configHelper, vPath);
-        usingComponents[name] = path.relative(outputPath, path.join(nEntry.outputDir, './index'));
+        usingComponents[name] = path.relative(outputPath, path.join(nEntry.outputDir, `./${nEntry.basename}`));
       }
     });
 
@@ -151,7 +153,7 @@ export class TtComponentEntry {
 
     const res = MINI_EXT_LIST.map(ext => {
       if (fse.existsSync(`${this.entry}${ext}`)) {
-        const outputPath = `${outputDir}/index${ext}`;
+        const outputPath = `${outputDir}/${this.basename}${ext}`;
         let resource;
 
         if (ext.includes('json')) {

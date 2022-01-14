@@ -4,13 +4,8 @@ import fse from 'fs-extra';
 import { ConfigHelper } from '@/configHelper';
 import { TtComponentEntry } from './ttComponentEntry';
 
-// 小程序语法自定义组件入口
+// 小程序语法页面入口
 export class TtPageEntry extends TtComponentEntry {
-  /**
-   *
-   * @param configHelper 配置文件
-   * @param entryPath pages/xx的形式
-   */
   constructor(configHelper: ConfigHelper, entryPath: string) {
     super(configHelper, entryPath);
   }
@@ -21,7 +16,7 @@ export class TtPageEntry extends TtComponentEntry {
     }
     const ext = path.extname(jsPath);
     if (!ext) {
-      jsPath = path.join(jsPath, '/index.js');
+      jsPath = path.join(jsPath, `/${path.basename(jsPath)}.js`);
     } else if (ext !== '.js') {
       return false;
     }
@@ -40,6 +35,7 @@ export class TtPageEntry extends TtComponentEntry {
     let outputPath = path.relative(dirPath, this.dirPath);
 
     if (!this.dirPath.startsWith(dirPath)) {
+      console.warn('please check page path', outputPath);
       return '';
     }
     return outputPath;
