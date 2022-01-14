@@ -8,7 +8,7 @@ export function parseSearch(search: string): Record<string, string> {
   }, {} as Record<string, string>)
 }
 
-export function stringifySearch(searchObj: Record<string, string>) {
+export function stringifySearch(searchObj: Record<string, any>) {
   if (typeof searchObj !== 'object') {
     return '';
   }
