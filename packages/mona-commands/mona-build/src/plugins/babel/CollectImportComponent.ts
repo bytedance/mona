@@ -6,7 +6,7 @@ import { formatReactNodeName } from '@/utils/reactNode';
 import { ConfigHelper } from '@/configHelper';
 import { TtComponentEntry } from '@/entires/ttComponentEntry';
 import { genNativeComponentEntry } from '@/entires/util';
-
+import { CUSTOM_COMPONENT_PROTOCOL } from '@bytedance/mona-shared';
 // 收集从pages中引入的native Component, 以及props，
 export default function collectNativeComponent(configHelper: ConfigHelper) {
   return {
@@ -37,7 +37,7 @@ export default function collectNativeComponent(configHelper: ConfigHelper) {
         if (t.isImportDeclaration(importPath)) {
           const importNode = importPath.node as t.ImportDeclaration;
           const source = importNode.source.value;
-          if (source.startsWith('native://')) {
+          if (source.startsWith(CUSTOM_COMPONENT_PROTOCOL)) {
             importNode.source.value = processNativePath(
               importNode.source.value,
               nodePath.dirname(from),
@@ -53,7 +53,7 @@ export default function collectNativeComponent(configHelper: ConfigHelper) {
 }
 
 export function processNativePath(req: string, from: string, cwd: string) {
-  const sourcePath = req.replace('native://', '');
+  const sourcePath = req.replace(CUSTOM_COMPONENT_PROTOCOL, '');
   if (sourcePath.startsWith('../') || sourcePath.startsWith('./')) {
     return nodePath.join(from, sourcePath);
   } else if (nodePath.isAbsolute(sourcePath)) {

@@ -69,4 +69,6 @@ export const ComponentAliasMap = Object.keys(MiniComponentType).reduce((pre: Rec
   return pre;
 }, {});
 
-export const CUSTOM_REF = '__ref'
+export const CUSTOM_REF = '__ref';
+
+export const CUSTOM_COMPONENT_PROTOCOL = 'native://';
