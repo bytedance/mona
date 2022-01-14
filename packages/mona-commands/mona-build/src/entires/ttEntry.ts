@@ -40,8 +40,6 @@ export class ttEntry {
     this.dirPath = path.dirname(entryPath);
     this.id = genNativeComponentId(entryPath);
 
-    // const projectSrcPath = path.join(this.configHelper.cwd, './src');
-    // console.log(path.relative(projectSrcPath, this.entry));
     this._dependencies = MINI_EXT_LIST.map(ext => `${this.entry}${ext}`);
   }
 
@@ -49,22 +47,28 @@ export class ttEntry {
   // 依赖包括
   // 1. *.js中import & require
   // 2. *.json文件中的usingComponents
-  readDependencies() {
+  readDependencies(handledPath: Set<string> = new Set([this.entry])) {
     const config = this.readConfig();
     const usingComponent = config.usingComponents || {};
     const res = new Set(this._dependencies);
-    // TODO(p3): 防止自定义组件循环依赖。加一个set判断
+
     Object.keys(usingComponent).forEach(name => {
       const cPath = usingComponent[name];
       let vPath;
       if (path.isAbsolute(cPath)) {
-        const dirPath = path.join(this.configHelper.cwd, './src');
-        vPath = path.join(dirPath, cPath);
+        const appEntryDir = path.join(this.configHelper.cwd, './src');
+        vPath = path.join(appEntryDir, cPath);
       } else {
         vPath = path.join(this.dirPath, usingComponent[name]);
       }
+
+      if (handledPath.has(vPath)) {
+        return;
+      }
+      handledPath.add(vPath);
+
       const nEntry = genNativeComponentEntry(this.configHelper, vPath);
-      nEntry.readDependencies().forEach(d => {
+      nEntry.readDependencies(handledPath).forEach(d => {
         res.add(d);
       });
     });
