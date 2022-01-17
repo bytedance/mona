@@ -1,7 +1,7 @@
 import { NodeTask } from '../utils';
 // import { processProps } from './processProps';
 import TaskController, { Task } from './TaskController';
-import { ComponentType } from '@bytedance/mona-shared/dist/constants';
+import { ComponentType } from '@bytedance/mona-shared';
 
 let id = 1;
 

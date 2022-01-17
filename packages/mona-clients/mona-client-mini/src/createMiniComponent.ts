@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CUSTOM_REF } from '@bytedance/mona-shared/dist/constants';
+import { CUSTOM_REF } from '@bytedance/mona-shared';
 
 export default function createMiniComponent(name: string) {
   const Component = React.forwardRef(({ children, ...props }, ref) => {

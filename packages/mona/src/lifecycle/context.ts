@@ -30,20 +30,37 @@ export enum ComponentLifecycle {
   detached = 'onDetached',
 }
 export class LifecycleContext {
-  lifecycle: { [key: string]: Callback[] };
+  lifecycle: Record<string, Callback[]>;
 
   constructor() {
-    this.lifecycle = {};
+    this.lifecycle = new Proxy<Record<string, Callback[]>>(
+      {},
+      {
+        get: function (target, property) {
+          if (typeof property === 'string') {
+            return target[property.toLowerCase().replace(/^on/, '')];
+          }
+          return;
+        },
+        set: function (target, property, value) {
+          if (typeof property === 'string') {
+            target[property.toLowerCase().replace(/^on/, '')] = value;
+          }
+          return true;
+        },
+      },
+    );
   }
 
-  registerLifecycle(rawName: string, callback: Callback) {
+  registerLifecycle(name: string, callback: Callback) {
     if (typeof callback !== 'function') {
       return;
     }
-
-    const name = rawName.toLowerCase().replace(/^on/, '');
     this.lifecycle[name] = this.lifecycle[name] || [];
     this.lifecycle[name].push(callback);
+    return () => {
+      this.lifecycle[name].splice(this.lifecycle[name].indexOf(callback), 1);
+    };
   }
 }
 
