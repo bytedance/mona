@@ -53,7 +53,7 @@ class WebEntryModule {
     const pages = Array.from(new Set((this.configHelper.appConfig.pages || []) as string[]));
     let routesCode = pages.map((page, index) => `import Page${index} from './${page}';`).join('');
     routesCode += `const routes = [${pages
-      .map((page, index) => `{ path: '${page}', component: Page${index}, title: '${this.getPageTitle(page)}' }`)
+      .map((page, index) => `{ path: '${page}', component: createPageLifecycle(Page${index}), title: '${this.getPageTitle(page)}' }`)
       .join(',')}];`;
     return routesCode;
   }
@@ -71,13 +71,13 @@ class WebEntryModule {
 
   private _generatePluginEntryCode(filename: string) {
     const code = `
-      import { createWebApp, show } from '@bytedance/mona-runtime';
+      import { createWebApp, show, createAppLifeCycle, createPageLifecycle } from '@bytedance/mona-runtime';
       import App from './${path.basename(filename)}';
       ${this._generateRoutesCode()}
       ${this._generateTabBarCode()}
       ${this._generateNavBarCode()}
       
-      const { provider: p } =  createWebApp(App, routes, tabBar, navBar);
+      const { provider: p } =  createWebApp(createAppLifeCycle(App), routes, tabBar, navBar);
       export const provider = p;
     `;
 

@@ -6,19 +6,17 @@ export function useAppEvent(eventName: string, callback: Callback) {
   const appLifecycle = useContext(AppLifecycleGlobalContext);
 
   useLayoutEffect(() => {
-    if (appLifecycle) {
-      appLifecycle.registerLifecycle(eventName, callback);
-    }
-  });
+    let clear = appLifecycle?.registerLifecycle(eventName, callback);
+    return () => clear?.();
+  }, [callback, eventName, appLifecycle]);
 }
 
 // for page
 export function usePageEvent(eventName: string, callback: Callback) {
   const pageLifecycleContext = useContext(PageLifecycleGlobalContext);
-
+ 
   useLayoutEffect(() => {
-    if (pageLifecycleContext) {
-      pageLifecycleContext.registerLifecycle(eventName, callback);
-    }
-  });
+    let clear = pageLifecycleContext?.registerLifecycle(eventName, callback);
+    return () => clear?.();
+  }, [callback, eventName, pageLifecycleContext]);
 }

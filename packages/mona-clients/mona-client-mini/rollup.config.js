@@ -5,7 +5,7 @@ import typescript from 'rollup-plugin-typescript2';
 import postcss from 'rollup-plugin-postcss';
 import { terser } from 'rollup-plugin-terser';
 import replace from '@rollup/plugin-replace';
-import { RENDER_NODE } from '@bytedance/mona-shared/dist/constants';
+import { RENDER_NODE } from '@bytedance/mona-shared';
 import json from '@rollup/plugin-json';
 
 const pkg = require('./package.json');

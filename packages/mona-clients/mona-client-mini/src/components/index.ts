@@ -1,6 +1,6 @@
 import React from 'react';
 import createBaseComponent from '../createBaseComponent';
-import { ComponentType } from '@bytedance/mona-shared/dist/constants';
+import { ComponentType } from '@bytedance/mona-shared';
 import { formatPath } from '@bytedance/mona-shared';
 
 import {

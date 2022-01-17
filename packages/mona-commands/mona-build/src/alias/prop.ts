@@ -12,7 +12,7 @@ export const bubbleEventsAlias = {
   onAnimationIteration: 'bindanimationiteration',
   onAnimationEnd: 'bindanimationend',
   onTouchForceChange: 'bindtouchforcechange',
-  catchTap: 'bindtap',
+  catchTap: 'catchtap',
   catchTouchStart: 'catchtouchstart',
   catchTouchMove: 'catchtouchmove',
   catchTouchEnd: 'catchtouchend',
