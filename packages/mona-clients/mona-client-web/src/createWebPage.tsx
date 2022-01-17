@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { isClassComponent } from '@bytedance/mona-shared';
 import { LifecycleContext, PageLifecycleGlobalContext, PageLifecycle } from '@bytedance/mona';
 
 export function createPageLifecycle(Component: React.ComponentType<any>) {
@@ -41,6 +41,9 @@ export function createPageLifecycle(Component: React.ComponentType<any>) {
       // onLoad
       handleLoad();
       // onShow & onHide
+      if (document.visibilityState === 'visible') {
+        callLifecycle(PageLifecycle.show);
+      }
       document.addEventListener('visibilitychange', handleVisibilityChange);
 
       // onReady
@@ -69,8 +72,4 @@ export function createPageLifecycle(Component: React.ComponentType<any>) {
       <PageWrapper {...props} />
     </PageLifecycleGlobalContext.Provider>
   );
-}
-
-export function isClassComponent(Component: any): Component is React.ComponentClass {
-  return typeof Component.prototype?.render === 'function';
 }

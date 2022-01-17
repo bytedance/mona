@@ -15,20 +15,17 @@ export default function TransformJsxNamePlugin() {
         const [reactNode, props] = node.arguments;
 
         if (t.isIdentifier(reactNode)) {
-          if (miniBanLabel[reactNode.name]) {
-            console.warn(`${reactNode.name} 标签在小程序端不支持，请修改`);
-          }
           const alias = ComponentType[reactNode.name as keyof typeof ComponentType];
           if (alias) {
             reactNode.name = alias;
           }
         } else if (isStringLiteral(reactNode)) {
-          if (miniBanLabel[reactNode.value]) {
-            console.warn(`${reactNode.value} 标签在小程序端不支持，请修改`);
-          }
           const alias = ComponentType[reactNode.value as keyof typeof ComponentType];
           if (alias) {
             reactNode.value = alias;
+          } else {
+            console.warn(`${reactNode.value} 标签在小程序端不支持，将会转为view`);
+            reactNode.value = ComponentType.view;
           }
         }
 
@@ -76,56 +73,56 @@ const miniBanProp: Record<string, true> = {
   'tt:key': true,
 };
 
-const miniBanLabel: Record<string, true> = {
-  p: true,
-  hr: true,
-  blockquote: true,
-  ol: true,
-  li: true,
-  ul: true,
-  dl: true,
-  dt: true,
-  dd: true,
-  figure: true,
-  figcaption: true,
-  em: true,
-  strong: true,
-  small: true,
-  s: true,
-  a: true,
-  cite: true,
-  q: true,
-  dfn: true,
-  abbr: true,
-  time: true,
-  code: true,
-  var: true,
-  samp: true,
-  br: true,
-  wbr: true,
-  audio: true,
-  area: true,
-  svg: true,
-  math: true,
-  source: true,
-  track: true,
-  table: true,
-  caption: true,
-  colgroup: true,
-  col: true,
-  tbody: true,
-  thead: true,
-  tfoot: true,
-  tr: true,
-  td: true,
-  th: true,
-  meter: true,
-  output: true,
-  keygen: true,
-  option: true,
-  optgroup: true,
-  datalist: true,
-  select: true,
-  legend: true,
-  fieldset: true,
-};
+// const miniBanLabel: Record<string, true> = {
+//   p: true,
+//   hr: true,
+//   blockquote: true,
+//   ol: true,
+//   li: true,
+//   ul: true,
+//   dl: true,
+//   dt: true,
+//   dd: true,
+//   figure: true,
+//   figcaption: true,
+//   em: true,
+//   strong: true,
+//   small: true,
+//   s: true,
+//   a: true,
+//   cite: true,
+//   q: true,
+//   dfn: true,
+//   abbr: true,
+//   time: true,
+//   code: true,
+//   var: true,
+//   samp: true,
+//   br: true,
+//   wbr: true,
+//   audio: true,
+//   area: true,
+//   svg: true,
+//   math: true,
+//   source: true,
+//   track: true,
+//   table: true,
+//   caption: true,
+//   colgroup: true,
+//   col: true,
+//   tbody: true,
+//   thead: true,
+//   tfoot: true,
+//   tr: true,
+//   td: true,
+//   th: true,
+//   meter: true,
+//   output: true,
+//   keygen: true,
+//   option: true,
+//   optgroup: true,
+//   datalist: true,
+//   select: true,
+//   legend: true,
+//   fieldset: true,
+// };

@@ -6,6 +6,7 @@ import TaskController, { ROOT_KEY } from '@/reconciler/TaskController';
 import render, { batchedUpdates } from '@/reconciler';
 import { monaPrint } from '@/utils';
 import { generateId } from './reconciler/ServerElement';
+import { isClassComponent } from '@bytedance/mona-shared';
 
 export function createPortal(children: React.ReactNode, containerInfo: any, key?: string): any {
   return {
@@ -43,17 +44,19 @@ function generatePageId(pre?: string) {
   return `page_${pre ?? ''}${pageId}`;
 }
 
-function createConfig(Component: React.ComponentType<any>) {
+function createConfig(PageComponent: React.ComponentType<any>) {
   let app: any;
   try {
     app = getApp();
   } catch (e) {
     app = null;
   }
+  const isClass = isClassComponent(PageComponent);
+  const pageEntryRef = React.createRef<any>();
   // const eventMap = new Map();
   const config: PageConfig = {
     _pageLifecycleContext: new LifecycleContext(),
-    _Component: Component,
+    _Component: PageComponent,
     _controller: new TaskController({}),
 
     onLoad(this: any, options: any) {
@@ -66,10 +69,18 @@ function createConfig(Component: React.ComponentType<any>) {
       };
 
       this._controller = new TaskController(this);
+      console.log('_pageLifecycleContext', this._pageLifecycleContext);
 
-      const wrapper = React.createElement(PageLifecycleGlobalContext.Provider, { value: this._pageLifecycleContext }, [
-        React.createElement(this._Component, { key: generateId(), search: stringifySearch(options), searchParams: options }, []),
-      ]);
+      const wrapper = (
+        <PageLifecycleGlobalContext.Provider value={this._pageLifecycleContext}>
+          <PageComponent
+            key={generateId()}
+            search={stringifySearch(options)}
+            searchParams={options}
+            ref={isClass ? pageEntryRef : undefined}
+          />
+        </PageLifecycleGlobalContext.Provider>
+      );
 
       this.pageRoot = createPortal(wrapper, this._controller, generatePageId());
 
@@ -93,41 +104,44 @@ function createConfig(Component: React.ComponentType<any>) {
       }
     },
 
-    onReady() {
-      this.$callLifecycle(PageLifecycle.ready);
+    onReady(...params: any[]) {
+      this.$callLifecycle(PageLifecycle.ready, ...params);
     },
 
-    onShow(options: any) {
-      this.$callLifecycle(PageLifecycle.show, options);
+    onShow(...params: any[]) {
+      this.$callLifecycle(PageLifecycle.show, ...params);
     },
 
-    onHide() {
-      this.$callLifecycle(PageLifecycle.hide);
+    onHide(...params: any[]) {
+      this.$callLifecycle(PageLifecycle.hide, ...params);
     },
 
-    onResize(e: any) {
-      this.$callLifecycle(PageLifecycle.resize, e);
+    onResize(...params: any[]) {
+      this.$callLifecycle(PageLifecycle.resize, ...params);
     },
 
-    onPullDownRefresh(e: any) {
-      this.$callLifecycle(PageLifecycle.pullDownRefresh, e);
+    onPullDownRefresh(...params: any[]) {
+      this.$callLifecycle(PageLifecycle.pullDownRefresh, ...params);
     },
 
-    onReachBottom() {
-      this.$callLifecycle(PageLifecycle.reachBottom);
+    onReachBottom(...params: any[]) {
+      this.$callLifecycle(PageLifecycle.reachBottom, ...params);
     },
 
-    onShareAppMessage(options) {
-      this.$callLifecycle(PageLifecycle.shareAppMessage, options);
+    onShareAppMessage(...params: any[]) {
+      this.$callLifecycle(PageLifecycle.shareAppMessage, ...params);
     },
 
-    onPageScroll(e: any) {
-      this.$callLifecycle(PageLifecycle.pageScroll, e);
+    onPageScroll(...params: any[]) {
+      this.$callLifecycle(PageLifecycle.pageScroll, ...params);
     },
 
     $callLifecycle(name: PageLifecycle, ...params: any[]) {
       const cbs = this._pageLifecycleContext.lifecycle[name] || [];
       cbs.forEach(cb => batchedUpdates(params => cb(...params), params));
+      if (pageEntryRef.current?.[name]) {
+        return pageEntryRef.current[name](...params);
+      }
     },
   };
 

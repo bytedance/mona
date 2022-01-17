@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { LifecycleContext, AppLifecycleGlobalContext, AppLifecycle } from '@bytedance/mona';
-
+import { isClassComponent } from '@bytedance/mona-shared';
 export function createAppLifeCycle(Component: React.ComponentType<any>) {
   const appLifecycleContext = new LifecycleContext();
   const appEntryRef = React.createRef<any>();
@@ -58,6 +58,3 @@ export function createAppLifeCycle(Component: React.ComponentType<any>) {
   );
 }
 
-export function isClassComponent(Component: any): Component is React.ComponentClass {
-  return typeof Component.prototype?.render === 'function';
-}
