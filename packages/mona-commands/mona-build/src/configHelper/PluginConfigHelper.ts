@@ -97,7 +97,7 @@ class PluginConfigHelper extends BaseConfigHelper {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
       alias: {
         '@': path.resolve(this.cwd, './src'),
-        '@bytedance/mona-runtime': path.resolve(this.cwd, 'node_modules/@bytedance/mona-runtime/dist/index-plugin.js'),
+        '@bytedance/mona-runtime': path.resolve(this.cwd, 'node_modules/@bytedance/mona-runtime/dist/index.plugin.js'),
       },
     };
   }

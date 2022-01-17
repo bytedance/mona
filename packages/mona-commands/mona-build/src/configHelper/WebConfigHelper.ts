@@ -81,7 +81,7 @@ class WebConfigHelper extends BaseConfigHelper {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
       alias: {
         '@': path.resolve(this.cwd, './src'),
-        '@bytedance/mona-runtime': path.resolve(this.cwd, 'node_modules/@bytedance/mona-runtime/dist/index-web.js'),
+        '@bytedance/mona-runtime': path.resolve(this.cwd, 'node_modules/@bytedance/mona-runtime/dist/index.web.js'),
       },
     };
   }

@@ -1,1 +1,0 @@
-export * from '@bytedance/mona-client-web';
