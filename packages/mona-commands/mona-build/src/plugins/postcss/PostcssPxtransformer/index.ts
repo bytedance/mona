@@ -121,7 +121,7 @@ module.exports = (options: Partial<PxTransformerOptions> = {}) => {
 
   switch (opts.platform) {
     case 'web': {
-      opts.rootValue = baseFontSize * opts.deviceRatio[opts.designWidth]
+      opts.rootValue = options.rootValue || baseFontSize * opts.deviceRatio[opts.designWidth]
       targetUnit = 'rem'
       break
     }
