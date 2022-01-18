@@ -5,6 +5,7 @@ import { Configuration } from 'webpack';
 import { readConfig, searchScriptFile } from '@bytedance/mona-shared';
 import { Options } from '..';
 import { DEFAULT_PORT } from '@/constants';
+import { TtPageEntry } from '@/entires/ttPageEntry';
 
 const DEFAULT_PROJECT_CONFIG: ProjectConfig = {
   projectName: 'mona-app',
@@ -38,6 +39,11 @@ abstract class BaseConfigHelper {
     this.projectConfig = { ...DEFAULT_PROJECT_CONFIG, ...this._readConfig<ProjectConfig>('mona.config') };
     this.appConfig = { ...DEFAULT_APP_CONFIG, ...this._readConfig<AppConfig>('app.config') };
     this.entryPath = searchScriptFile(path.resolve(this.cwd, this.projectConfig.input));
+    if (this.options.target !== 'mini') {
+      this.appConfig.pages = this.appConfig.pages.filter(page => {
+        return !TtPageEntry.isNative(path.join(this.cwd, './src', page));
+      });
+    }
 
     if (this.options.port) {
       this.projectConfig.dev = { ...this.projectConfig.dev, port: this.options.port };

@@ -379,6 +379,38 @@ import { View, Text } from '@bytedance/mona-runtime';
 ```
 - 基础组件见-[小程序组件](https://microapp.bytedance.com/docs/zh-CN/mini-app/develop/component/all)
 - 插件额外组件见-[mona-runtime文档](https://github.com/bytedance/mona/tree/main/packages/mona-runtime)
+## 使用原生模块
+### 小程序页面
+与其他页面无异，直接在` app.config` 中的` pages `属性中加入路径即可
+### 小程序组件
+示例：
+```js
+//@ts-ignore
+import CustomComponent from 'native://../CustomComponent/index';
+
+export default function(){
+  return (
+    <CustomComponent ref={customRef} headerText={'headerText属性'}>
+      <View>这是Children</View>
+    </CustomComponent>
+  );
+}
+```
+#### 导入
+路径前加入`native://`前缀, 路径是一个相对路径 或者 是与` app.config` 中` pages `路径相同的路径。
+#### 使用
+在原生模块组件的jsx上，不允许写spread attribute。例如:
+```js
+// bad
+<CustomComponent {...props}>
+  <View>这是Children</View>
+</CustomComponent>
+
+// good
+<CustomComponent  ref={customRef} headerText={'headerText属性'}>
+  <View>这是Children</View>
+</CustomComponent>
+```
 
 ## 常见问题
 ### mona性能如何

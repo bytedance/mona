@@ -16,7 +16,11 @@ export class TtPageEntry extends TtComponentEntry {
     }
     const ext = path.extname(jsPath);
     if (!ext) {
-      jsPath = path.join(jsPath, `/${path.basename(jsPath)}.js`);
+      if (jsPath.endsWith('/')) {
+        jsPath = path.join(jsPath, './index.js');
+      } else {
+        jsPath = `${jsPath}.js`;
+      }
     } else if (ext !== '.js') {
       return false;
     }
