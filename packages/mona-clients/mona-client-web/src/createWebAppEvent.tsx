@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { LifecycleContext, AppLifecycleGlobalContext, AppLifecycle } from '@bytedance/mona';
-import { isClassComponent } from '@bytedance/mona-shared';
+import { isClassComponent, GLOBAL_LIFECYCLE_STORE } from '@bytedance/mona-shared';
+
 export function createAppLifeCycle(Component: React.ComponentType<any>) {
   const appLifecycleContext = new LifecycleContext();
   const appEntryRef = React.createRef<any>();
@@ -27,6 +28,17 @@ export function createAppLifeCycle(Component: React.ComponentType<any>) {
     } else {
       callLifecycle(AppLifecycle.hide);
     }
+  };
+  const handlePageNotFound = (...rest: any[]) => {
+    callLifecycle(AppLifecycle.pageNotFound, ...rest);
+  };
+
+  //@ts-ignore
+  window[GLOBAL_LIFECYCLE_STORE] = {
+    handleError,
+    handleLaunch,
+    handleVisibilityChange,
+    handlePageNotFound,
   };
 
   class AppConfig extends React.Component {
@@ -57,4 +69,3 @@ export function createAppLifeCycle(Component: React.ComponentType<any>) {
     </AppLifecycleGlobalContext.Provider>
   );
 }
-

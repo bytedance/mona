@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Switch, Route, Redirect, useHistory } from 'react-router-dom';
 import NavBar from './components/NavBar';
 import TabBar from './components/TabBar';
-import { formatPath, parseSearch } from '@bytedance/mona-shared';
+import { formatPath, parseSearch, GLOBAL_LIFECYCLE_STORE } from '@bytedance/mona-shared';
 
 const WrapperComponent: React.FC<{ title: string }> = ({ children, title }) => {
   useEffect(() => {
@@ -18,46 +18,53 @@ const WrapperComponent: React.FC<{ title: string }> = ({ children, title }) => {
   return <>{children}</>;
 };
 
-const NoMatch: React.FC<{ defaultPath: string }> = ({ defaultPath }) => (
-  <div style={{ position: 'relative', minHeight: '100%' }}>
-    <div
-      style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        zIndex: 1,
-        backgroundColor: 'rgba(255, 255, 255)',
-      }}
-    >
+const NoMatch: React.FC<{ defaultPath: string }> = ({ defaultPath }) => {
+  useEffect(() => {
+    // app生命周期pageNotFound
+    //@ts-ignore
+    window[GLOBAL_LIFECYCLE_STORE]?.handlePageNotFound?.(defaultPath);
+  }, [defaultPath]);
+  return (
+    <div style={{ position: 'relative', minHeight: '100%' }}>
       <div
         style={{
-          color: '#0000008C',
-          fontSize: '14px',
-          textAlign: 'center',
-          lineHeight: '20px',
-          whiteSpace: 'nowrap',
           position: 'absolute',
-          left: '50%',
-          top: '50%',
-          transform: 'translate(-50%, -50%)',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 1,
+          backgroundColor: 'rgba(255, 255, 255)',
         }}
       >
-        <img
-          style={{ width: 320, marginBottom: 8 }}
-          src={'https://lf3-fe.ecombdstatic.com/obj/ecom-open-butler/mona/error.png'}
-        />
-        <div>
-          <span>
-            不存在路由 {location.pathname}{' '}
-            <a onClick={() => history.pushState({}, '', formatPath(defaultPath))}>返回首页</a>
-          </span>
+        <div
+          style={{
+            color: '#0000008C',
+            fontSize: '14px',
+            textAlign: 'center',
+            lineHeight: '20px',
+            whiteSpace: 'nowrap',
+            position: 'absolute',
+            left: '50%',
+            top: '50%',
+            transform: 'translate(-50%, -50%)',
+          }}
+        >
+          <img
+            style={{ width: 320, marginBottom: 8 }}
+            src={'https://lf3-fe.ecombdstatic.com/obj/ecom-open-butler/mona/error.png'}
+          />
+          <div>
+            <span>
+              不存在路由 {location.pathname}{' '}
+              <a onClick={() => history.pushState({}, '', formatPath(defaultPath))}>返回首页</a>
+            </span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export interface PageProps {
   search: string;
@@ -80,7 +87,7 @@ export function createWebApp(
   Component: React.ComponentType<any>,
   routes: { path: string; title: string; component: React.ComponentType<any> }[],
   tabBar: AppConfig['tabBar'],
-  navBar: AppConfig['window']
+  navBar: AppConfig['window'],
 ) {
   const render = ({ dom }: { dom: Element | Document }) => {
     ReactDOM.render(
@@ -113,7 +120,7 @@ export function createWebApp(
           </Component>
         </HistorySetWrapper>
       </BrowserRouter>,
-      dom.querySelector('#root')
+      dom.querySelector('#root'),
     );
   };
 

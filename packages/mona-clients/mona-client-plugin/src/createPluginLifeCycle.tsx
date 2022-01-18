@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { LifecycleContext, AppLifecycleGlobalContext, AppLifecycle } from '@bytedance/mona';
-import { isClassComponent } from '@bytedance/mona-shared';
+import { isClassComponent, GLOBAL_LIFECYCLE_STORE } from '@bytedance/mona-shared';
 import events from '@bytedance/mona-plugin-events';
 
 export function createPluginLifeCycle(Component: React.ComponentType<any>) {
@@ -26,9 +26,17 @@ export function createPluginLifeCycle(Component: React.ComponentType<any>) {
   const handleLaunch = (...rest: any[]) => {
     callLifecycle(AppLifecycle.launch, ...rest);
   };
-  // const handlePageNotFound = (...rest: any[]) => {
-  //   callLifecycle(AppLifecycle.pageNotFound, ...rest);
-  // };
+  const handlePageNotFound = (...rest: any[]) => {
+    callLifecycle(AppLifecycle.pageNotFound, ...rest);
+  };
+
+  //@ts-ignore
+  window[GLOBAL_LIFECYCLE_STORE] = {
+    handleLaunch,
+    handleHide,
+    handleShow,
+    handlePageNotFound,
+  };
 
   class AppConfig extends React.Component {
     componentDidMount() {

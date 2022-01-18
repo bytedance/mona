@@ -72,3 +72,5 @@ export const ComponentAliasMap = Object.keys(MiniComponentType).reduce((pre: Rec
 export const CUSTOM_REF = '__ref';
 
 export const CUSTOM_COMPONENT_PROTOCOL = 'native://';
+
+export const GLOBAL_LIFECYCLE_STORE = '_mona_app_lifecycle';

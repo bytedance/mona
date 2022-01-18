@@ -13,9 +13,7 @@ const emptyHandler = {
   get: function (_: any, prop: string) {
     return (data: InputCallbackParams) => {
       printWarn(prop);
-      if (prop === REMOVE_LISTENER) {
-        return () => printWarn(prop);
-      } else if (typeof data === 'object') {
+      if (typeof data === 'object') {
         data?.failed?.({ code: ErrorCode.Unknown, message: '非飞鸽容器' });
       }
     };
