@@ -96,7 +96,7 @@ export class TtComponentEntry {
     if (ext === '.js') {
       jsonPath = jsPath.replace(/\.js$/, '.json');
     } else if (!ext) {
-      jsonPath = path.join(jsPath, `/${path.basename(jsPath)}.json`);
+      jsonPath = `${jsPath}.json`;
     } else {
       return false;
     }
