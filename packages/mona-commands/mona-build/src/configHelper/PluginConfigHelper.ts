@@ -164,7 +164,7 @@ class PluginConfigHelper extends BaseConfigHelper {
       ],
     });
 
-    const styleLoader = [
+    const styleLoader: any[] = [
       {
         loader: require.resolve('css-loader'),
         options: {
@@ -205,7 +205,14 @@ class PluginConfigHelper extends BaseConfigHelper {
           },
         },
       },
-      require.resolve('less-loader'),
+      {
+        loader: require.resolve('less-loader'),
+        options: {
+          lessOptions: {
+            javascriptEnabled: true
+          }
+        }
+      }
     ];
     if (!this.options.dev) {
       styleLoader.unshift(MiniCssExtractPlugin.loader);

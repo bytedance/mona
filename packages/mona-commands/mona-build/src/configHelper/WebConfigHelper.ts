@@ -150,7 +150,7 @@ class WebConfigHelper extends BaseConfigHelper {
 
     const pxtOptions = createPxtransformConfig('web', this.projectConfig);
 
-    const styleLoader = [
+    const styleLoader: any[] = [
       {
         loader: require.resolve('css-loader'),
         options: {
@@ -173,7 +173,14 @@ class WebConfigHelper extends BaseConfigHelper {
           },
         },
       },
-      require.resolve('less-loader'),
+      {
+        loader: require.resolve('less-loader'),
+        options: {
+          lessOptions: {
+            javascriptEnabled: true
+          }
+        }
+      }
     ];
     if (!this.options.dev) {
       styleLoader.unshift(MiniCssExtractPlugin.loader);

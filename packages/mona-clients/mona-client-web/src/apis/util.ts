@@ -23,7 +23,7 @@ export const webRequest: BaseApis['request'] = (data): RequestTask => {
     signal: controller.signal,
   };
 
-  if (data.method === 'POST') {
+  if ((init.method as string).toUpperCase() === 'POST') {
     init.body = data.data ? JSON.stringify(data.data) : '';
   }
   const promise = fetch(data.url, init);
@@ -34,7 +34,7 @@ export const webRequest: BaseApis['request'] = (data): RequestTask => {
       data.success?.({
         statusCode: r.status,
         header: r.headers,
-        data: r.json(),
+        data: r,
         // @ts-ignore ignore
         profile: '',
       });
