@@ -113,7 +113,6 @@ export const usePlayer = ({
     if (!player || !completeRef.current) return;
     const currRotate = rotateRef.current;
     let times = currRotate / 90;
-    console.log(times);
     if (Math.floor(times) > 0) {
       player.rotate(false, true, times);
     } else if (Math.floor(times) < 0) {
