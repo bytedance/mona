@@ -1,12 +1,13 @@
 import { ConfigHelper } from '@/configHelper';
-import { Compiler } from 'webpack';
+import { Compiler, EntryPlugin } from 'webpack';
 
 import createJson, { addUsingComponents } from './createJson';
 // import chokidar from 'chokidar';
 import path from 'path';
 import createTtml from './createTtml';
 import createNativeFile from './nativeFile';
-
+import monaStore from '../../../store';
+import { TtPageEntry } from '@/entires/ttPageEntry';
 class MiniAssetsPlugin {
   configHelper: ConfigHelper;
   pluginName = 'MiniAssetsPlugin';
@@ -34,7 +35,11 @@ class MiniAssetsPlugin {
 
       createNativeFile(compilation, this.configHelper);
     });
-
+    monaStore.nativeEntryMap.forEach(entry => {
+      if (entry instanceof TtPageEntry) {
+        new EntryPlugin(path.dirname(entry.entry), `${entry.entry}.js`).apply(compiler);
+      }
+    });
     // add new depenpencies
     compiler.hooks.afterCompile.tap(this.pluginName, compilation => {
       const { cwd, appConfig } = this.configHelper;

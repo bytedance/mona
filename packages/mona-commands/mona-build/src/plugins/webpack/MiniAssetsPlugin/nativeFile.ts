@@ -11,8 +11,8 @@ export default async function createNativeFile(compilation: Compilation, _config
   monaStore.nativeEntryMap.forEach(entry => {
     entry.outputResource.forEach(({ outputPath, resource }) => {
       // 小程序page目录要求小写
-      if(entry instanceof TtPageEntry){
-        outputPath = outputPath.toLowerCase()
+      if (entry instanceof TtPageEntry) {
+        outputPath = outputPath.toLowerCase();
       }
       const currentSource = new RawSource(resource);
       if (compilation.getAsset(outputPath)) {
