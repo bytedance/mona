@@ -63,11 +63,11 @@ class PluginEntryModule {
 
     const code = `
       import './public-path';
-      import { createPlugin } from '@bytedance/mona-runtime';
+      import { createPlugin, createPluginLifeCycle } from '@bytedance/mona-runtime';
       import App from './${path.basename(filename)}';
       ${routesCode}
       
-      const { provider: p } =  createPlugin(App, routes);
+      const { provider: p } =  createPlugin(createPluginLifeCycle(App), routes);
       export const provider = p;
     `;
 

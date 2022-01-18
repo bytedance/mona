@@ -14,7 +14,7 @@ export function useAppEvent(eventName: string, callback: Callback) {
 // for page
 export function usePageEvent(eventName: string, callback: Callback) {
   const pageLifecycleContext = useContext(PageLifecycleGlobalContext);
- 
+  
   useLayoutEffect(() => {
     let clear = pageLifecycleContext?.registerLifecycle(eventName, callback);
     return () => clear?.();
