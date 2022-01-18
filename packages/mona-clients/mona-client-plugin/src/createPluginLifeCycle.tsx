@@ -2,8 +2,9 @@ import React from 'react';
 
 import { LifecycleContext, AppLifecycleGlobalContext, AppLifecycle } from '@bytedance/mona';
 import { isClassComponent, GLOBAL_LIFECYCLE_STORE } from '@bytedance/mona-shared';
+import events from '@bytedance/mona-plugin-events';
 
-export function createAppLifeCycle(Component: React.ComponentType<any>) {
+export function createPluginLifeCycle(Component: React.ComponentType<any>) {
   const appLifecycleContext = new LifecycleContext();
   const appEntryRef = React.createRef<any>();
 
@@ -16,18 +17,14 @@ export function createAppLifeCycle(Component: React.ComponentType<any>) {
     }
   };
 
-  const handleError = (...rest: any[]) => {
-    callLifecycle(AppLifecycle.error, ...rest);
+  const handleShow = (...rest: any[]) => {
+    callLifecycle(AppLifecycle.show, ...rest);
+  };
+  const handleHide = (...rest: any[]) => {
+    callLifecycle(AppLifecycle.hide, ...rest);
   };
   const handleLaunch = (...rest: any[]) => {
     callLifecycle(AppLifecycle.launch, ...rest);
-  };
-  const handleVisibilityChange = () => {
-    if (document.visibilityState === 'visible') {
-      callLifecycle(AppLifecycle.show);
-    } else {
-      callLifecycle(AppLifecycle.hide);
-    }
   };
   const handlePageNotFound = (...rest: any[]) => {
     callLifecycle(AppLifecycle.pageNotFound, ...rest);
@@ -35,25 +32,23 @@ export function createAppLifeCycle(Component: React.ComponentType<any>) {
 
   //@ts-ignore
   window[GLOBAL_LIFECYCLE_STORE] = {
-    handleError,
     handleLaunch,
-    handleVisibilityChange,
+    handleHide,
+    handleShow,
     handlePageNotFound,
   };
 
   class AppConfig extends React.Component {
     componentDidMount() {
-      handleVisibilityChange();
-      // onError
-      window.addEventListener('error', handleError);
-      // onShow & onHide
-      document.addEventListener('visibilitychange', handleVisibilityChange);
-      // onLaunch
       handleLaunch();
+      events.pigeon?.onShow?.(handleShow);
+      events.pigeon?.onHide?.(handleHide);
+      // events.pigeon?.onPageNotFound?.(handlePageNotFound);
     }
     componentWillUnmount() {
-      window.removeEventListener('error', handleError);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      events.removePluginListener('onShow');
+      events.removePluginListener('onHide');
+      // events.removePluginListener('onPageNotFound');
     }
     render() {
       if (isClassComponent(Component)) {

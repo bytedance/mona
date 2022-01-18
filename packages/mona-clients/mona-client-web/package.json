@@ -19,7 +19,6 @@
     "mona"
   ],
   "dependencies": {
-    "@bytedance/mona": "^0.2.0-alpha.6",
     "classnames": "^2.3.1",
     "clipboardy": "^3.0.0",
     "copyfiles": "^2.4.1",
@@ -32,12 +31,18 @@
     "@types/react-router-dom": "^5.3.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-router-dom": "^5.2.0"
+    "react-router-dom": "^5.2.0",
+    "@bytedance/mona-shared": "^0.2.0-alpha.6",
+    "@bytedance/mona": "^0.2.0-alpha.6"
+
   },
   "peerDependencies": {
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-router-dom": "^5.2.0"
+    "react-router-dom": "^5.2.0",
+    "@bytedance/mona-shared": "^0.2.0-alpha.6",
+    "@bytedance/mona": "^0.2.0-alpha.6"
+
   },
   "publishConfig": {
     "access": "public",

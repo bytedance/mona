@@ -69,7 +69,6 @@ function createConfig(PageComponent: React.ComponentType<any>) {
       };
 
       this._controller = new TaskController(this);
-      console.log('_pageLifecycleContext', this._pageLifecycleContext);
 
       const wrapper = (
         <PageLifecycleGlobalContext.Provider value={this._pageLifecycleContext}>
