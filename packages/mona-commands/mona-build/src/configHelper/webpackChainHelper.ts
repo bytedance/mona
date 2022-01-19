@@ -11,10 +11,9 @@ import BaseConfigHelper from './BaseConfigHelper';
 const extensions = ['.js', '.mjs', '.jsx', '.ts', '.tsx', '.json'];
 const moduleMatcher = new RegExp(`(${extensions.filter(e => e !== '.json').join('|')})$`);
 
+const webpackConfig = new WebpackChain();
 class MiniConfigHelper extends BaseConfigHelper {
-  webpackConfig: WebpackChain = new WebpackChain();
   generate() {
-    // TODO: 这里有点丑，优化
     const miniEntryPlugin = new MonaPlugins.MiniEntryPlugin(this as unknown as ConfigHelper);
     const config = {
       target: 'web',
@@ -28,17 +27,14 @@ class MiniConfigHelper extends BaseConfigHelper {
     this._createOptimization();
     this._createModuleRules();
     this._createOutput();
-
-    const finalConfig = this.webpackConfig.merge(config).toConfig();
-    finalConfig.plugins?.unshift(miniEntryPlugin);
+    const finalConfig = webpackConfig.merge(config).toConfig();
 
     const raw = this.projectConfig.raw;
     return raw ? raw(finalConfig) : finalConfig;
   }
 
   private _createOptimization() {
-    const optimization = this.webpackConfig.optimization;
-    optimization
+    webpackConfig.optimization
       .usedExports(true)
       .runtimeChunk({ name: 'runtimeChunk' })
       .splitChunks({
@@ -53,7 +49,7 @@ class MiniConfigHelper extends BaseConfigHelper {
           },
         },
       });
-    optimization.when(!this.options.dev, c => {
+    webpackConfig.optimization.when(!this.options.dev, c => {
       c.minimizer('terser-plugin')
         .use(MonaPlugins.TerserWebpackPlugin.terserMinify, [{ parallel: true, extractComments: false }])
         .end()
@@ -63,46 +59,46 @@ class MiniConfigHelper extends BaseConfigHelper {
   }
 
   private _createResolve() {
-    const resolve = this.webpackConfig.resolve;
-    resolve.extensions.merge(['.js', '.jsx', '.ts', '.tsx', '.json']);
-    resolve.alias.merge({
-      '@': path.resolve(this.cwd, './src'),
-      '@bytedance/mona-runtime': path.resolve(this.cwd, 'node_modules/@bytedance/mona-runtime/dist/index.mini.js'),
+    webpackConfig.resolve.merge({
+      extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+      alias: {
+        '@': path.resolve(this.cwd, './src'),
+        '@bytedance/mona-runtime': path.resolve(this.cwd, 'node_modules/@bytedance/mona-runtime/dist/index.mini.js'),
+      },
     });
   }
 
   private _createMode() {
-    this.webpackConfig.mode(this.options.dev ? 'development' : 'production');
+    webpackConfig.mode(this.options.dev ? 'development' : 'production');
   }
 
   private _createOutput() {
-    this.webpackConfig.output.path(path.join(this.cwd, this.projectConfig.output)).publicPath('/').globalObject('tt');
+    webpackConfig.output.path(path.join(this.cwd, this.projectConfig.output)).publicPath('/').globalObject('tt');
   }
 
   private _createModuleRules() {
-    const { TransformJsxNamePlugin, collectNativeComponent } = MonaPlugins.babel;
-    const jsRule = this.webpackConfig.module.rule('js').test(/\.((j|t)sx?)$/i);
+    const jsRule = webpackConfig.module.rule('js').test(/\.((j|t)sx?)$/i);
     jsRule
-      .use('transformJsxName')
-      .loader('babel-loader')
-      .options({
-        babelrc: false,
-        plugins: [
-          TransformJsxNamePlugin,
-          this.projectConfig.compilerOptimization && MonaPlugins.babel.perfTemplateRender,
-        ].filter(Boolean),
-        presets: [],
-      })
-      .end()
       .use('babel')
       .loader('babel-loader')
       .options({
         babelrc: false,
         plugins: [
-          collectNativeComponent.bind(null, this as unknown as ConfigHelper),
+          MonaPlugins.babel.TransformJsxNamePlugin,
+          this.projectConfig.compilerOptimization && MonaPlugins.babel.perfTemplateRender,
+        ].filter(Boolean),
+        presets: [],
+      })
+      .end()
+      .use('babel2')
+      .loader('babel-loader')
+      .options({
+        babelrc: false,
+        plugins: [
+          MonaPlugins.babel.collectNativeComponent.bind(null, this as unknown as ConfigHelper),
           this.projectConfig.enableMultiBuild && [
             path.join(__dirname, '../plugins/babel/BabelPluginMultiTarget.js'),
-            { target: 'mini', context: this.cwd, alias: this.webpackConfig.toConfig().resolve?.alias },
+            { target: 'mini', context: this.cwd, alias: webpackConfig.toConfig().resolve?.alias },
           ],
         ].filter(Boolean),
         presets: [['@babel/preset-env'], ['@babel/preset-typescript'], ['@babel/preset-react']],
@@ -114,9 +110,8 @@ class MiniConfigHelper extends BaseConfigHelper {
       .end();
 
     const pxtOptions = createPxtransformConfig('mini', this.projectConfig);
-
-    const styleRule = this.webpackConfig.module.rule('style').test(/\.(c|le)ss$/i);
-    styleRule.use('MiniCssExtractPlugin.loader').loader(MonaPlugins.MiniCssExtractPlugin.loader);
+    const styleRule = webpackConfig.module.rule('style').test(/\.(c|le)ss$/i);
+    styleRule.use('miniCss').loader(MonaPlugins.MiniCssExtractPlugin.loader);
     styleRule
       .use('cssLoader')
       .loader(require.resolve('css-loader'))
@@ -149,13 +144,12 @@ class MiniConfigHelper extends BaseConfigHelper {
         },
       });
 
-    createAssetRules(this.webpackConfig);
+    createAssetRules(webpackConfig);
   }
 
   private _createPlugins() {
     const config = this as unknown as ConfigHelper;
-    const webpackConfig = this.webpackConfig;
-    // webpackConfig.plugin('miniEntryPlugin').use(MonaPlugins.MiniEntryPlugin, [config]);
+    webpackConfig.plugin('miniEntryPlugin').use(MonaPlugins.MiniEntryPlugin, [config]);
     webpackConfig.plugin('CopyPublicPlugin').use(MonaPlugins.CopyPublicPlugin, [config]);
     webpackConfig.plugin('MiniAssetsPlugin').use(MonaPlugins.MiniAssetsPlugin, [config]);
     webpackConfig.plugin('MiniCssExtractPlugin').use(MonaPlugins.MiniCssExtractPlugin, [{ filename: '[name].ttss' }]);

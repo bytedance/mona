@@ -1,21 +1,15 @@
-import BaseConfigHelper from './BaseConfigHelper';
-
-import webpack, { RuleSetRule, Configuration, DefinePlugin } from 'webpack';
 import path from 'path';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import CssMiniminzerPlugin from 'css-minimizer-webpack-plugin';
-import TerserWebpackPlugin from 'terser-webpack-plugin';
 import loaderUtils from 'loader-utils';
+import webpack, { RuleSetRule, Configuration } from 'webpack';
+
 import { hexMD5 } from '../utils/md5';
 import getEnv from '@/utils/getEnv';
-
-import ConfigHMRPlugin from '../plugins/webpack/ConfigHMRPlugin';
-import { Options } from '..';
 import { HTML_HANDLE_TAG } from '@/constants';
+
 import { ConfigHelper } from '.';
-import collectNativeComponent from '@/plugins/babel/CollectImportComponent';
+import { Options } from '..';
+import { MonaPlugins } from './plugins';
+import BaseConfigHelper from './BaseConfigHelper';
 
 export function createUniqueId() {
   const random = () => Number(Math.random().toString().substr(2)).toString(36);
@@ -60,7 +54,10 @@ class PluginConfigHelper extends BaseConfigHelper {
     if (this.options.dev) return {};
     return {
       minimize: true,
-      minimizer: [new TerserWebpackPlugin({ parallel: true, extractComments: false }), new CssMiniminzerPlugin()],
+      minimizer: [
+        new MonaPlugins.TerserWebpackPlugin({ parallel: true, extractComments: false }),
+        new MonaPlugins.CssMinimizerPlugin(),
+      ],
       splitChunks: {
         chunks: 'async',
         minSize: 20000,
@@ -148,10 +145,13 @@ class PluginConfigHelper extends BaseConfigHelper {
               [require.resolve('@babel/preset-react')],
             ],
             plugins: [
-              collectNativeComponent.bind(null, this as unknown as ConfigHelper),
+              MonaPlugins.babel.collectNativeComponent.bind(null, this as unknown as ConfigHelper),
               [require.resolve('@babel/plugin-transform-runtime'), { regenerator: true }],
               this.options.dev && require.resolve('react-refresh/babel'),
-              this.projectConfig.enableMultiBuild && [path.join(__dirname, '../plugins/babel/BabelPluginMultiTarget.js'), { target: 'plugin', context: this.cwd, alias: this._createResolve().alias }]
+              this.projectConfig.enableMultiBuild && [
+                path.join(__dirname, '../plugins/babel/BabelPluginMultiTarget.js'),
+                { target: 'plugin', context: this.cwd, alias: this._createResolve().alias },
+              ],
             ].filter(Boolean),
           },
         },
@@ -209,13 +209,13 @@ class PluginConfigHelper extends BaseConfigHelper {
         loader: require.resolve('less-loader'),
         options: {
           lessOptions: {
-            javascriptEnabled: true
-          }
-        }
-      }
+            javascriptEnabled: true,
+          },
+        },
+      },
     ];
     if (!this.options.dev) {
-      styleLoader.unshift(MiniCssExtractPlugin.loader);
+      styleLoader.unshift(MonaPlugins.MiniCssExtractPlugin.loader);
     } else {
       styleLoader.unshift(require.resolve('style-loader'));
     }
@@ -245,6 +245,8 @@ class PluginConfigHelper extends BaseConfigHelper {
   }
 
   private _createPlugins() {
+    const { ConfigHMRPlugin, HtmlWebpackPlugin, DefinePlugin, ReactRefreshWebpackPlugin, MiniCssExtractPlugin } =
+      MonaPlugins;
     let plugins: any[] = [
       new ConfigHMRPlugin(this as unknown as ConfigHelper, true),
       new HtmlWebpackPlugin({

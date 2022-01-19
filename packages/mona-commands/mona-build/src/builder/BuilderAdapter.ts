@@ -15,6 +15,7 @@ class BuilderAdapter implements BaseBuilder {
   
   constructor(options: Options) {
     const requiredOptions = { target: options.target || 'web', port: options.port || DEFAULT_PORT, dev: options.dev || false };
+    // TODO: config,参数检查
     const configHelper = new ConfigHelper(requiredOptions)
     log(['启动', '目标端', options.target as string])
 

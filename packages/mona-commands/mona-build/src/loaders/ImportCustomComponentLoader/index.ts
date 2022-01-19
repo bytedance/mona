@@ -19,21 +19,18 @@ export default async function ImportCustomerComponentLoader(this: LoaderContext<
   const entryPath = resourcePath.replace(/\.entry(?=\.(js|ts)$)/, '');
   const dirName = entryPath.replace(path.extname(entryPath), '');
   const nativeEntry = monaStore.nativeEntryMap.get(dirName);
-
   const configHelper = this.getOptions().configHelper as ConfigHelper;
   const { target } = configHelper.options;
+  let finalSource = source;
   if (nativeEntry) {
     const { virtualSource } = nativeEntry;
-
+    finalSource = virtualSource;
     //TtPageEntry 已经提前判断过
     if (target === 'mini' && (TtComponentEntry.isNative(entryPath) || nativeEntry instanceof TtPageEntry)) {
       const dependencies = nativeEntry.readDependencies();
       dependencies.forEach(d => this.addDependency(d));
     }
-
-    callback(null, virtualSource);
-    return;
   }
 
-  callback(null, source);
+  callback(null, finalSource);
 }

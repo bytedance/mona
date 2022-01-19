@@ -1,20 +1,14 @@
 import BaseConfigHelper from './BaseConfigHelper';
 
-import webpack, { RuleSetRule, Configuration, DefinePlugin } from 'webpack';
+import webpack, { RuleSetRule, Configuration } from 'webpack';
 import path from 'path';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import CssMiniminzerPlugin from 'css-minimizer-webpack-plugin';
-import TerserWebpackPlugin from 'terser-webpack-plugin';
-import ConfigHMRPlugin from '@/plugins/webpack/ConfigHMRPlugin';
-import CopyPublicPlugin from '@/plugins/webpack/CopyPublicPlugin';
+
 import { Options } from '..';
 import { HTML_HANDLE_TAG } from '@/constants';
 import { ConfigHelper } from '.';
 import getEnv from '@/utils/getEnv';
-import createPxtransformConfig from "@/utils/createPxtransformConfig";
-import collectNativeComponent from "@/plugins/babel/CollectImportComponent";
+import createPxtransformConfig from '@/utils/createPxtransformConfig';
+import { MonaPlugins } from './plugins';
 
 class WebConfigHelper extends BaseConfigHelper {
   constructor(options: Required<Options>) {
@@ -42,9 +36,10 @@ class WebConfigHelper extends BaseConfigHelper {
     if (this.options.dev) {
       return {};
     }
+    const { TerserWebpackPlugin, CssMinimizerPlugin } = MonaPlugins;
     return {
       minimize: true,
-      minimizer: [new TerserWebpackPlugin({ parallel: true, extractComments: false }), new CssMiniminzerPlugin()],
+      minimizer: [new TerserWebpackPlugin({ parallel: true, extractComments: false }), new CssMinimizerPlugin()],
       splitChunks: {
         chunks: 'async',
         minSize: 20000,
@@ -129,7 +124,7 @@ class WebConfigHelper extends BaseConfigHelper {
               [require.resolve('@babel/preset-react')],
             ],
             plugins: [
-              collectNativeComponent.bind(null, this as unknown as ConfigHelper),
+              MonaPlugins.babel.collectNativeComponent.bind(null, this as unknown as ConfigHelper),
               [require.resolve('@babel/plugin-transform-runtime'), { regenerator: true }],
               this.options.dev && require.resolve('react-refresh/babel'),
               this.projectConfig.enableMultiBuild && [
@@ -166,9 +161,9 @@ class WebConfigHelper extends BaseConfigHelper {
           postcssOptions: {
             plugins: [
               require.resolve('postcss-import'),
-              pxtOptions.enabled ?
-                [path.join(__dirname, '..', './plugins/postcss/PostcssPxtransformer/index.js'), pxtOptions] :
-                null,
+              pxtOptions.enabled
+                ? [path.join(__dirname, '..', './plugins/postcss/PostcssPxtransformer/index.js'), pxtOptions]
+                : null,
             ].filter(p => Boolean(p)),
           },
         },
@@ -177,13 +172,13 @@ class WebConfigHelper extends BaseConfigHelper {
         loader: require.resolve('less-loader'),
         options: {
           lessOptions: {
-            javascriptEnabled: true
-          }
-        }
-      }
+            javascriptEnabled: true,
+          },
+        },
+      },
     ];
     if (!this.options.dev) {
-      styleLoader.unshift(MiniCssExtractPlugin.loader);
+      styleLoader.unshift(MonaPlugins.MiniCssExtractPlugin.loader);
     } else {
       styleLoader.unshift(require.resolve('style-loader'));
     }
@@ -213,6 +208,15 @@ class WebConfigHelper extends BaseConfigHelper {
   }
 
   private _createPlugins() {
+    const {
+      CopyPublicPlugin,
+      ConfigHMRPlugin,
+      HtmlWebpackPlugin,
+      DefinePlugin,
+      ReactRefreshWebpackPlugin,
+      MiniCssExtractPlugin,
+    } = MonaPlugins;
+
     let plugins: any[] = [
       new ConfigHMRPlugin(this as unknown as ConfigHelper),
       new CopyPublicPlugin(this as unknown as ConfigHelper),
