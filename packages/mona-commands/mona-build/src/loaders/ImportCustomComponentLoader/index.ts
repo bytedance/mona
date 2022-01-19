@@ -4,6 +4,7 @@ import path from 'path';
 import monaStore from '../../store';
 import { ConfigHelper } from '@/configHelper';
 import { TtComponentEntry } from '@/entires/ttComponentEntry';
+import { TtPageEntry } from '@/entires/ttPageEntry';
 
 // import monaStore from '../store';
 
@@ -18,12 +19,14 @@ export default async function ImportCustomerComponentLoader(this: LoaderContext<
   const entryPath = resourcePath.replace(/\.entry(?=\.(js|ts)$)/, '');
   const dirName = entryPath.replace(path.extname(entryPath), '');
   const nativeEntry = monaStore.nativeEntryMap.get(dirName);
+
   const configHelper = this.getOptions().configHelper as ConfigHelper;
   const { target } = configHelper.options;
   if (nativeEntry) {
     const { virtualSource } = nativeEntry;
 
-    if (target === 'mini' && TtComponentEntry.isNative(entryPath)) {
+    //TtPageEntry 已经提前判断过
+    if (target === 'mini' && (TtComponentEntry.isNative(entryPath) || nativeEntry instanceof TtPageEntry)) {
       const dependencies = nativeEntry.readDependencies();
       dependencies.forEach(d => this.addDependency(d));
     }
