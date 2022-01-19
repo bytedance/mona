@@ -38,7 +38,6 @@ class EventEmitter {
   emit(key: string, ...args: any[]) {
     this._refreshListeners();
     const arr = this.listeners[key] || []; 
-    console.log('run', key, arr)
     arr.forEach(listener => {
       if (typeof listener === 'function') {
         listener(...args);
