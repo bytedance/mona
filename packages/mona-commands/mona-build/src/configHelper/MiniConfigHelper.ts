@@ -56,22 +56,24 @@ class MiniConfigHelper extends BaseConfigHelper {
         },
       });
 
-    optimization.when(!this.options.dev, c => {
-      c.minimizer('TerserWebpackPlugin')
+    optimization.when(!this.options.dev, op => {
+      op.minimizer('TerserWebpackPlugin')
         .use(new MonaPlugins.TerserWebpackPlugin({ parallel: true, extractComments: false }))
         .end()
         .minimizer('CssMinimizerPlugin')
         .use(new MonaPlugins.CssMinimizerPlugin({ test: /\.ttss(\?.*)?$/i }));
     });
   }
-
+  private genAlias() {
+    return {
+      '@': path.resolve(this.cwd, './src'),
+      '@bytedance/mona-runtime': path.resolve(this.cwd, 'node_modules/@bytedance/mona-runtime/dist/index.mini.js'),
+    };
+  }
   private createResolve() {
     const resolve = this.webpackConfig.resolve;
     resolve.extensions.merge(extensions);
-    resolve.alias.merge({
-      '@': path.resolve(this.cwd, './src'),
-      '@bytedance/mona-runtime': path.resolve(this.cwd, 'node_modules/@bytedance/mona-runtime/dist/index.mini.js'),
-    });
+    resolve.alias.merge(this.genAlias());
   }
 
   private createOutput() {
@@ -102,7 +104,7 @@ class MiniConfigHelper extends BaseConfigHelper {
           collectNativeComponent.bind(null, this as unknown as ConfigHelper),
           this.projectConfig.enableMultiBuild && [
             path.join(__dirname, '../plugins/babel/BabelPluginMultiTarget.js'),
-            { target: 'mini', context: this.cwd, alias: this.webpackConfig.toConfig().resolve?.alias },
+            { target: 'mini', context: this.cwd, alias: this.genAlias() },
           ],
         ].filter(Boolean),
         presets: [['@babel/preset-env'], ['@babel/preset-typescript'], ['@babel/preset-react']],

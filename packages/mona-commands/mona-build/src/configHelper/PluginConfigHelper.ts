@@ -1,6 +1,6 @@
 import path from 'path';
 import loaderUtils from 'loader-utils';
-import webpack, { RuleSetRule, Configuration } from 'webpack';
+import WebpackChain from 'webpack-chain';
 
 import { hexMD5 } from '@/utils/md5';
 import getEnv from '@/utils/getEnv';
@@ -29,152 +29,157 @@ export function createUniqueId() {
 
 class PluginConfigHelper extends BaseConfigHelper {
   buildId: string;
+  webpackConfig: WebpackChain = new WebpackChain();
 
   constructor(options: Required<Options>) {
     super(options);
     this.buildId = `_${createUniqueId()}`;
+    this.init();
+  }
+  init() {
+    this.webpackConfig
+      .target('web')
+      .devtool(this.options.dev ? 'cheap-source-map' : false)
+      .mode(this.options.dev ? 'development' : 'production')
+      .entry('app.entry')
+      .add(path.join(this.entryPath, '..', 'app.entry.js'));
+
+    this._createResolve();
+    this._createOutput();
+    this._createModuleRules();
+    this._createPlugins();
+    this._createOptimization();
   }
 
   generate() {
-    const config: Configuration = {
-      mode: this._createMode(),
-      devtool: this.options.dev ? 'cheap-source-map' : undefined,
-      entry: this._createEntry(),
-      output: this._createOutput(),
-      resolve: this._createResolve(),
-      module: this._createModule(),
-      plugins: this._createPlugins(),
-      optimization: this._createOptimization() as any,
-    };
-
-    const raw = this.projectConfig.raw;
-    return raw ? raw(config) : config;
+    const finalConfig = this.webpackConfig.toConfig();
+    const { raw } = this.projectConfig;
+    return typeof raw === 'function' ? raw(finalConfig) : finalConfig;
   }
 
-  private _createOptimization() {
-    if (this.options.dev) return {};
+  private _createOptimization(optimization = this.webpackConfig.optimization) {
+    const { TerserWebpackPlugin, CssMinimizerPlugin } = MonaPlugins;
+    optimization.when(!this.options.dev, op =>
+      op
+        .minimize(true)
+        .minimizer('TerserWebpackPlugin')
+        .use(new TerserWebpackPlugin({ parallel: true, extractComments: false }))
+        .end()
+        .minimizer('CssMinimizerPlugin')
+        .use(CssMinimizerPlugin)
+        .end()
+        .splitChunks({
+          chunks: 'async',
+          minSize: 20000,
+          minRemainingSize: 0,
+          minChunks: 1,
+          maxAsyncRequests: 30,
+          maxInitialRequests: 30,
+          enforceSizeThreshold: 50000,
+          cacheGroups: {
+            reactBase: {
+              name: 'react-chunk',
+              test: /react/,
+              chunks: 'initial',
+              priority: 10,
+            },
+            common: {
+              name: 'common',
+              chunks: 'initial',
+              priority: 2,
+              minChunks: 2,
+            },
+            default: {
+              minChunks: 2,
+              priority: -20,
+              reuseExistingChunk: true,
+            },
+          },
+        }),
+    );
+  }
+
+  private genAlias() {
     return {
-      minimize: true,
-      minimizer: [
-        new MonaPlugins.TerserWebpackPlugin({ parallel: true, extractComments: false }),
-        new MonaPlugins.CssMinimizerPlugin(),
-      ],
-      splitChunks: {
-        chunks: 'async',
-        minSize: 20000,
-        minRemainingSize: 0,
-        minChunks: 1,
-        maxAsyncRequests: 30,
-        maxInitialRequests: 30,
-        enforceSizeThreshold: 50000,
-        cacheGroups: {
-          reactBase: {
-            name: 'react-chunk',
-            test: /react/,
-            chunks: 'initial',
-            priority: 10,
-          },
-          common: {
-            name: 'common',
-            chunks: 'initial',
-            priority: 2,
-            minChunks: 2,
-          },
-          default: {
-            minChunks: 2,
-            priority: -20,
-            reuseExistingChunk: true,
-          },
-        },
-      },
+      '@': path.resolve(this.cwd, './src'),
+      '@bytedance/mona-runtime': path.resolve(this.cwd, 'node_modules/@bytedance/mona-runtime/dist/index.plugin.js'),
     };
   }
-
   private _createResolve() {
-    return {
-      extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
-      alias: {
-        '@': path.resolve(this.cwd, './src'),
-        '@bytedance/mona-runtime': path.resolve(this.cwd, 'node_modules/@bytedance/mona-runtime/dist/index.plugin.js'),
-      },
-    };
-  }
-
-  private _createEntry() {
-    return path.join(this.entryPath, '..', 'app.entry.js');
-  }
-
-  private _createMode() {
-    return this.options.dev ? 'development' : 'production';
+    const resolve = this.webpackConfig.resolve;
+    resolve.extensions.merge(['.js', '.jsx', '.ts', '.tsx', '.json']);
+    resolve.alias.merge(this.genAlias());
   }
 
   private _createOutput() {
-    return {
-      path: path.join(this.cwd, this.projectConfig.output),
-      filename: '[name].[contenthash:7].js',
-      publicPath: '/',
-      libraryTarget: 'umd',
-      globalObject: 'window',
-      chunkLoadingGlobal: `webpackJsonp_${this.projectConfig.projectName}_${Date.now()}`,
-    };
+    this.webpackConfig.output
+      .path(path.join(this.cwd, this.projectConfig.output))
+      .filename('[name].[contenthash:7].js')
+      .publicPath('/')
+      .libraryTarget('umd')
+      .globalObject('window');
+    this.webpackConfig.output.set('chunkLoadingGlobal', `webpackJsonp_${this.projectConfig.projectName}_${Date.now()}`);
   }
 
-  private _createModule() {
-    const module: webpack.ModuleOptions = {
-      rules: this._createModuleRules(),
-    };
+  createJsRule() {
+    const jsRule = this.webpackConfig.module.rule('js').test(/\.((j|t)sx?)$/i);
 
-    return module;
+    jsRule
+      .use('babel')
+      .loader(require.resolve('babel-loader'))
+      .options({
+        babelrc: false,
+        // https://github.com/babel/babel/issues/12731
+        sourceType: 'unambiguous',
+        presets: [['@babel/preset-env'], ['@babel/preset-typescript'], ['@babel/preset-react']],
+        plugins: [
+          MonaPlugins.babel.collectNativeComponent.bind(null, this as unknown as ConfigHelper),
+          [require.resolve('@babel/plugin-transform-runtime'), { regenerator: true }],
+          this.options.dev && require.resolve('react-refresh/babel'),
+          this.projectConfig.enableMultiBuild && [
+            path.join(__dirname, '../plugins/babel/BabelPluginMultiTarget.js'),
+            { target: 'plugin', context: this.cwd, alias: this.genAlias() },
+          ],
+        ].filter(Boolean),
+      });
+    jsRule
+      .use('ttComponentLoader')
+      .loader(path.resolve(__dirname, '../loaders/ImportCustomComponentLoader'))
+      .options({ configHelper: this });
   }
+  createCssRule(isCssModule: boolean) {
+    const cssModuleTest = /(.*\.module).*\.(css|less)$/;
 
-  private _createModuleRules() {
-    const rules: RuleSetRule[] = [];
+    const cssModuleRule = this.webpackConfig.module.rule('cssModule').test(cssModuleTest);
+    const cssRule = this.webpackConfig.module
+      .rule('css')
+      .test(/\.(c|le)ss$/i)
+      .exclude.add(cssModuleTest)
+      .end();
+    createRule(this, cssRule);
+    createRule(this, cssModuleRule, isCssModule);
 
-    // handle script
-    rules.push({
-      test: /\.((j|t)sx?)$/i,
-      use: [
-        {
-          loader: require.resolve('babel-loader'),
-          options: {
-            babelrc: false,
-            // https://github.com/babel/babel/issues/12731
-            sourceType: 'unambiguous',
-            presets: [
-              [require.resolve('@babel/preset-env')],
-              [require.resolve('@babel/preset-typescript')],
-              [require.resolve('@babel/preset-react')],
-            ],
-            plugins: [
-              MonaPlugins.babel.collectNativeComponent.bind(null, this as unknown as ConfigHelper),
-              [require.resolve('@babel/plugin-transform-runtime'), { regenerator: true }],
-              this.options.dev && require.resolve('react-refresh/babel'),
-              this.projectConfig.enableMultiBuild && [
-                path.join(__dirname, '../plugins/babel/BabelPluginMultiTarget.js'),
-                { target: 'plugin', context: this.cwd, alias: this._createResolve().alias },
-              ],
-            ].filter(Boolean),
-          },
-        },
-        {
-          loader: path.resolve(__dirname, '../loaders/ImportCustomComponentLoader'),
-          options: {
-            configHelper: this,
-          },
-        },
-      ],
-    });
-
-    const styleLoader: any[] = [
-      {
-        loader: require.resolve('css-loader'),
-        options: {
-          modules: {
+    function createRule(
+      configHelper: PluginConfigHelper,
+      styleRule: WebpackChain.Rule<WebpackChain.Module>,
+      isCssModule: boolean = false,
+    ) {
+      styleRule.use('style-loader').when(
+        configHelper.options.dev,
+        r => r.loader(require.resolve('style-loader')),
+        r => r.loader(MonaPlugins.MiniCssExtractPlugin.loader),
+      );
+      styleRule
+        .use('cssLoader')
+        .loader(require.resolve('css-loader'))
+        .options({
+          importLoaders: 2,
+          modules: isCssModule && {
             auto: (filename: string) => /\.module\.\w+$/i.test(filename),
             localIdentName: '[local]___[hash:base64:5]',
             getLocalIdent: (loaderContext: any, localIdentName: string, localName: string, options: any) => {
               // 配合PostcssPreSelector插件
-              if (localName === this.buildId) {
+              if (localName === configHelper.buildId) {
                 return localName;
               }
 
@@ -193,63 +198,78 @@ class PluginConfigHelper extends BaseConfigHelper {
               return hash;
             },
           },
-        },
-      },
-      {
-        loader: require.resolve('postcss-loader'),
-        options: {
+        });
+      styleRule
+        .use('postcss-loader')
+        .loader(require.resolve('postcss-loader'))
+        .options({
           postcssOptions: {
             plugins: [
               require.resolve('postcss-import'),
-              [path.join(__dirname, '..', './plugins/postcss/PostcssPreSelector.js'), { selector: `#${this.buildId}` }],
+              [
+                path.join(__dirname, '..', './plugins/postcss/PostcssPreSelector.js'),
+                { selector: `#${configHelper.buildId}` },
+              ],
             ],
           },
-        },
-      },
-      {
-        loader: require.resolve('less-loader'),
-        options: {
+        });
+      styleRule
+        .use('less')
+        .loader(require.resolve('less-loader'))
+        .options({
           lessOptions: {
             javascriptEnabled: true,
           },
-        },
-      },
-    ];
-    if (!this.options.dev) {
-      styleLoader.unshift(MonaPlugins.MiniCssExtractPlugin.loader);
-    } else {
-      styleLoader.unshift(require.resolve('style-loader'));
+        });
     }
-
-    // handle style
-    rules.push({
-      test: /\.(c|le)ss$/i,
-      use: styleLoader,
-    });
-
-    // handle assets
-    rules.push({
-      test: /\.(png|jpe?g|gif|webp)$/i,
-      type: 'asset/resource',
-    });
-    rules.push({
-      test: /\.svg$/i,
-      type: !this.projectConfig.transformSvgToComponentInWeb ? 'asset/resource' : undefined,
-      use: this.projectConfig.transformSvgToComponentInWeb ? [{ loader: require.resolve('@svgr/webpack') }] : undefined,
-    });
-    rules.push({
-      test: /\.(ttf|eot|woff|woff2)$/i,
-      type: 'asset/resource',
-    });
-
-    return rules;
   }
+  createAssetRule() {
+    // as any 兼容webpack5
+    const resourceType = 'asset/resource' as any;
 
+    this.webpackConfig.module
+      .rule('img')
+      .test(/\.(png|jpe?g|gif|webp)$/i)
+      .type(resourceType);
+
+    this.webpackConfig.module
+      .rule('svg')
+      .test(/\.svg$/i)
+      .when(
+        !!this.projectConfig.transformSvgToComponentInWeb,
+        s => s.use('@svgr/webpack').loader(require.resolve('@svgr/webpack')),
+        s => s.type(resourceType),
+      );
+
+    this.webpackConfig.module
+      .rule('font')
+      .test(/\.(ttf|eot|woff|woff2)$/i)
+      .type(resourceType);
+  }
+  private _createModuleRules() {
+    this.createJsRule();
+    this.createCssRule(true);
+    this.createAssetRule();
+  }
   private _createPlugins() {
-    const { ConfigHMRPlugin, HtmlWebpackPlugin, DefinePlugin, ReactRefreshWebpackPlugin, MiniCssExtractPlugin } =
-      MonaPlugins;
-    let plugins: any[] = [
-      new ConfigHMRPlugin(this as unknown as ConfigHelper, true),
+    const {
+      CopyPublicPlugin,
+      ConfigHMRPlugin,
+      HtmlWebpackPlugin,
+      DefinePlugin,
+      ReactRefreshWebpackPlugin,
+      MiniCssExtractPlugin,
+    } = MonaPlugins;
+    const config = this as unknown as ConfigHelper;
+    const webpackConfig = this.webpackConfig;
+    webpackConfig.when(
+      this.options.dev,
+      w => w.plugin('ReactRefreshWebpackPlugin').use(ReactRefreshWebpackPlugin),
+      w => w.plugin('MiniCssExtractPlugin').use(MiniCssExtractPlugin, [{ filename: '[name].[contenthash:7].css' }]),
+    );
+    webpackConfig.plugin('ConfigHMRPlugin').use(ConfigHMRPlugin, [config, true]);
+    webpackConfig.plugin('CopyPublicPlugin').use(CopyPublicPlugin, [config]);
+    webpackConfig.plugin('HtmlWebpackPlugin').use(
       new HtmlWebpackPlugin({
         templateContent: genPluginHtml(this),
         minify: {
@@ -262,30 +282,18 @@ class PluginConfigHelper extends BaseConfigHelper {
           useShortDoctype: true,
         },
       }),
-      new DefinePlugin(getEnv(this.options, this.cwd)),
-    ];
-
-    if (this.options.dev) {
-      plugins = [new ReactRefreshWebpackPlugin(), ...plugins];
-    } else {
-      plugins = [
-        new MiniCssExtractPlugin({
-          filename: '[name].[contenthash:7].css',
-        }),
-        ...plugins,
-      ];
-    }
-    return plugins;
+    );
+    webpackConfig.plugin('DefinePlugin').use(DefinePlugin, [getEnv(this.options, this.cwd)]);
   }
 }
 
 export default PluginConfigHelper;
 
-export const genPluginHtml = (confighelper: PluginConfigHelper) => {
+export const genPluginHtml = (configHelper: PluginConfigHelper) => {
   return `
   <!-- ${HTML_HANDLE_TAG} -->
   <!DOCTYPE html>
-  <html id="${confighelper.buildId}">
+  <html id="${configHelper.buildId}">
     <head>
       <meta charset="utf-8">
       <title>Mona Plugin</title>
