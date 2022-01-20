@@ -225,12 +225,12 @@ class PluginConfigHelper extends BaseConfigHelper {
   }
   createAssetRule() {
     // as any 兼容webpack5
-    const resourceType = 'asset/resource' as any;
+    const resourceType = 'asset/resource';
 
     this.webpackConfig.module
       .rule('img')
       .test(/\.(png|jpe?g|gif|webp)$/i)
-      .type(resourceType);
+      .set('type', resourceType);
 
     this.webpackConfig.module
       .rule('svg')
@@ -238,13 +238,13 @@ class PluginConfigHelper extends BaseConfigHelper {
       .when(
         !!this.projectConfig.transformSvgToComponentInWeb,
         s => s.use('@svgr/webpack').loader(require.resolve('@svgr/webpack')),
-        s => s.type(resourceType),
+        s => s.set('type', resourceType),
       );
 
     this.webpackConfig.module
       .rule('font')
       .test(/\.(ttf|eot|woff|woff2)$/i)
-      .type(resourceType);
+      .set('type', resourceType);
   }
   private _createModuleRules() {
     this.createJsRule();

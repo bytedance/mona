@@ -176,13 +176,13 @@ function createAssetRules(webpackChain: WebpackChain) {
   webpackChain.module
     .rule('img')
     .test(/\.(png|jpe?g|gif|webp)$/i)
-    .type('asset/resource' as any);
+    .set('type', 'asset/resource')
   webpackChain.module
     .rule('svg')
     .test(/\.svg$/i)
-    .type('asset/inline' as any);
+    .set('type', 'asset/inline')
   webpackChain.module
     .rule('font')
     .test(/\.(ttf|eot|woff|woff2)$/i)
-    .type('asset/resource' as any);
+    .set('type', 'asset/resource')
 }
