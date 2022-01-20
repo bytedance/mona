@@ -8,7 +8,7 @@ import { HTML_HANDLE_TAG } from '@/constants';
 
 import { ConfigHelper } from '.';
 import { Options } from '..';
-import { MonaPlugins } from './plugins';
+import { MonaPlugins } from '../plugins';
 import BaseConfigHelper from './BaseConfigHelper';
 
 export function createUniqueId() {

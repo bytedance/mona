@@ -11,7 +11,7 @@ import MiniAssetsPlugin from '@/plugins/webpack/MiniAssetsPlugin';
 import OptimizeEntriesPlugin from '@/plugins/webpack/ChunksEntriesPlugin';
 import CopyPublicPlugin from '@/plugins/webpack/CopyPublicPlugin';
 
-import ConfigHMRPlugin from '../plugins/webpack/ConfigHMRPlugin';
+import ConfigHMRPlugin from './webpack/ConfigHMRPlugin';
 
 
 import collectNativeComponent from '@/plugins/babel/CollectImportComponent';

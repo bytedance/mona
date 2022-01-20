@@ -5,7 +5,7 @@ import getEnv from '@/utils/getEnv';
 import createPxtransformConfig from '@/utils/createPxtransformConfig';
 
 import { ConfigHelper } from '.';
-import { MonaPlugins } from './plugins';
+import { MonaPlugins } from '../plugins';
 import BaseConfigHelper from './BaseConfigHelper';
 import { Options } from '..';
 

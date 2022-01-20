@@ -9,7 +9,7 @@ import { HTML_HANDLE_TAG } from '@/constants';
 import { ConfigHelper } from '.';
 import getEnv from '@/utils/getEnv';
 import createPxtransformConfig from '@/utils/createPxtransformConfig';
-import { MonaPlugins } from './plugins';
+import { MonaPlugins } from '../plugins';
 
 class WebConfigHelper extends BaseConfigHelper {
   webpackConfig: WebpackChain = new WebpackChain();
