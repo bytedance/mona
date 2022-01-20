@@ -9,35 +9,26 @@ import { MonaPlugins } from './plugins';
 import BaseConfigHelper from './BaseConfigHelper';
 
 const extensions = ['.js', '.mjs', '.jsx', '.ts', '.tsx', '.json'];
-const moduleMatcher = new RegExp(`(${extensions.filter(e => e !== '.json').join('|')})$`);
 
 class MiniConfigHelper extends BaseConfigHelper {
   webpackConfig: WebpackChain = new WebpackChain();
   generate() {
-    // TODO: 这里有点丑，优化
     const miniEntryPlugin = new MonaPlugins.MiniEntryPlugin(this as unknown as ConfigHelper);
-    const config = {
-      target: 'web',
-      devtool: false,
-      entry: miniEntryPlugin.entryModule.entries,
-    };
-
+    this.webpackConfig.target('web').devtool(false).merge({ entry: miniEntryPlugin.entryModule.entries });
     this._createResolve();
     this._createMode();
-    this._createPlugins();
+    this._createPlugins(miniEntryPlugin);
     this._createOptimization();
     this._createModuleRules();
     this._createOutput();
 
-    const finalConfig = this.webpackConfig.merge(config).toConfig();
-    finalConfig.plugins?.unshift(miniEntryPlugin);
+    const finalConfig = this.webpackConfig.toConfig();
 
     const raw = this.projectConfig.raw;
     return raw ? raw(finalConfig) : finalConfig;
   }
 
-  private _createOptimization() {
-    const optimization = this.webpackConfig.optimization;
+  private _createOptimization(optimization = this.webpackConfig.optimization) {
     optimization
       .usedExports(true)
       .runtimeChunk({ name: 'runtimeChunk' })
@@ -45,7 +36,7 @@ class MiniConfigHelper extends BaseConfigHelper {
         cacheGroups: {
           vendors: {
             name: 'vendors',
-            test: moduleMatcher,
+            test: new RegExp(`(${extensions.filter(e => e !== '.json').join('|')})$`),
             chunks: 'initial',
             minChunks: 2,
             minSize: 0,
@@ -64,7 +55,7 @@ class MiniConfigHelper extends BaseConfigHelper {
 
   private _createResolve() {
     const resolve = this.webpackConfig.resolve;
-    resolve.extensions.merge(['.js', '.jsx', '.ts', '.tsx', '.json']);
+    resolve.extensions.merge(extensions);
     resolve.alias.merge({
       '@': path.resolve(this.cwd, './src'),
       '@bytedance/mona-runtime': path.resolve(this.cwd, 'node_modules/@bytedance/mona-runtime/dist/index.mini.js'),
@@ -152,10 +143,10 @@ class MiniConfigHelper extends BaseConfigHelper {
     createAssetRules(this.webpackConfig);
   }
 
-  private _createPlugins() {
+  private _createPlugins(miniEntryPlugin: any) {
     const config = this as unknown as ConfigHelper;
     const webpackConfig = this.webpackConfig;
-    // webpackConfig.plugin('miniEntryPlugin').use(MonaPlugins.MiniEntryPlugin, [config]);
+    webpackConfig.plugin('miniEntryPlugin').use(miniEntryPlugin);
     webpackConfig.plugin('CopyPublicPlugin').use(MonaPlugins.CopyPublicPlugin, [config]);
     webpackConfig.plugin('MiniAssetsPlugin').use(MonaPlugins.MiniAssetsPlugin, [config]);
     webpackConfig.plugin('MiniCssExtractPlugin').use(MonaPlugins.MiniCssExtractPlugin, [{ filename: '[name].ttss' }]);
