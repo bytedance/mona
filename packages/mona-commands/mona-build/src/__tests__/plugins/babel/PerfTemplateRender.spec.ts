@@ -57,6 +57,7 @@ describe('perfTemplateRender', () => {
 
   it('collect Template', async () => {
     await jsxTransform(templateCollectCode, 'templateCollectCode.tsx');
+
     expect(Array.from(monaStore.templateRenderMap.keys()).length === 4).toBeTruthy();
   });
 
@@ -67,7 +68,6 @@ describe('perfTemplateRender', () => {
     const pickerViewInfo = monaStore.templateRenderMap.get(ComponentType['picker-view']);
     const pickerViewColumnInfo = monaStore.templateRenderMap.get(ComponentType['picker-view-column']);
     const imageInfo = monaStore.templateRenderMap.get(ComponentType.image);
-
     expect([viewInfo.isRenderAllProps, Object.keys(viewInfo.renderProps).length]).toEqual([false, 3]);
     expect([pickerInfo.isRenderAllProps, Object.keys(pickerInfo.renderProps).length]).toEqual([false, 1]);
     expect(pickerViewInfo.isRenderAllProps).toBeTruthy();

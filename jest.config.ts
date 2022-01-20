@@ -25,7 +25,7 @@ module.exports = {
 
   testEnvironmentOptions: { resources: 'usable' },
 
-  testPathIgnorePatterns: ['/node_modules/', '/dist/'],
+  testPathIgnorePatterns: ['/node_modules/', '/dist/','/local-test-fb/'],
 
   transform: {
     '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
