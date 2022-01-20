@@ -5,14 +5,12 @@ import getEnv from '@/utils/getEnv';
 import createPxtransformConfig from '@/utils/createPxtransformConfig';
 
 import { ConfigHelper } from '.';
-import { MonaPlugins } from '../plugins';
-import BaseConfigHelper from './BaseConfigHelper';
 import { Options } from '..';
+import BaseConfigHelper from './BaseConfigHelper';
+import { MonaPlugins } from '../plugins';
 
 const extensions = ['.js', '.mjs', '.jsx', '.ts', '.tsx', '.json'];
-// const defualtWebpackConfig = {
 
-// }
 class MiniConfigHelper extends BaseConfigHelper {
   webpackConfig: WebpackChain = new WebpackChain();
   constructor(options: Required<Options>) {
@@ -37,8 +35,8 @@ class MiniConfigHelper extends BaseConfigHelper {
 
   generate() {
     const finalConfig = this.webpackConfig.toConfig();
-    const raw = this.projectConfig.raw;
-    return raw ? raw(finalConfig) : finalConfig;
+    const { raw } = this.projectConfig;
+    return typeof raw === 'function' ? raw(finalConfig) : finalConfig;
   }
 
   private createOptimization(optimization = this.webpackConfig.optimization) {

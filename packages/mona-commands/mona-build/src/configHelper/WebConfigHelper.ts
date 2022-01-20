@@ -1,14 +1,13 @@
-import BaseConfigHelper from './BaseConfigHelper';
-
 import WebpackChain from 'webpack-chain';
-
 import path from 'path';
 
-import { Options } from '..';
 import { HTML_HANDLE_TAG } from '@/constants';
-import { ConfigHelper } from '.';
 import getEnv from '@/utils/getEnv';
 import createPxtransformConfig from '@/utils/createPxtransformConfig';
+
+import { ConfigHelper } from '.';
+import BaseConfigHelper from './BaseConfigHelper';
+import { Options } from '..';
 import { MonaPlugins } from '../plugins';
 
 class WebConfigHelper extends BaseConfigHelper {
@@ -32,10 +31,11 @@ class WebConfigHelper extends BaseConfigHelper {
     this._createPlugins();
     this._createOptimization();
   }
+
   generate() {
-    const config = this.webpackConfig.toConfig();
+    const finalConfig = this.webpackConfig.toConfig();
     const { raw } = this.projectConfig;
-    return raw ? raw(config) : config;
+    return typeof raw === 'function' ? raw(finalConfig) : finalConfig;
   }
 
   private _createOptimization(optimization = this.webpackConfig.optimization) {
@@ -118,7 +118,7 @@ class WebConfigHelper extends BaseConfigHelper {
         presets: [['@babel/preset-env'], ['@babel/preset-typescript'], ['@babel/preset-react']],
         plugins: [
           MonaPlugins.babel.collectNativeComponent.bind(null, this as unknown as ConfigHelper),
-          [require.resolve('@babel/plugin-transform-runtime'), { regenerator: true }],
+          ['@babel/plugin-transform-runtime', { regenerator: true }],
           this.options.dev && require.resolve('react-refresh/babel'),
           this.projectConfig.enableMultiBuild && [
             path.join(__dirname, '../plugins/babel/BabelPluginMultiTarget.js'),
@@ -186,26 +186,29 @@ class WebConfigHelper extends BaseConfigHelper {
         });
     }
   }
+
   createAssetRule() {
+    // as any 兼容webpack5
+    const resourceType = 'asset/resource' as any;
+
     this.webpackConfig.module
       .rule('img')
       .test(/\.(png|jpe?g|gif|webp)$/i)
-      .type('asset/resource' as any);
+      .type(resourceType);
 
-    const trsSvg2Component = !!this.projectConfig.transformSvgToComponentInWeb;
     this.webpackConfig.module
       .rule('svg')
       .test(/\.svg$/i)
       .when(
-        trsSvg2Component,
+        !!this.projectConfig.transformSvgToComponentInWeb,
         s => s.use('@svgr/webpack').loader(require.resolve('@svgr/webpack')),
-        s => s.type('asset/resource' as any),
+        s => s.type(resourceType),
       );
 
     this.webpackConfig.module
       .rule('font')
       .test(/\.(ttf|eot|woff|woff2)$/i)
-      .type('asset/resource' as any);
+      .type(resourceType);
   }
   private _createPlugins() {
     const {

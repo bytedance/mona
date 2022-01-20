@@ -2,14 +2,15 @@ import path from 'path';
 import loaderUtils from 'loader-utils';
 import webpack, { RuleSetRule, Configuration } from 'webpack';
 
-import { hexMD5 } from '../utils/md5';
+import { hexMD5 } from '@/utils/md5';
 import getEnv from '@/utils/getEnv';
 import { HTML_HANDLE_TAG } from '@/constants';
 
 import { ConfigHelper } from '.';
 import { Options } from '..';
-import { MonaPlugins } from '../plugins';
 import BaseConfigHelper from './BaseConfigHelper';
+
+import { MonaPlugins } from '../plugins';
 
 export function createUniqueId() {
   const random = () => Number(Math.random().toString().substr(2)).toString(36);
