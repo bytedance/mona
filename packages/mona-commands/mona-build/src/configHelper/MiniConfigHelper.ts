@@ -7,31 +7,44 @@ import createPxtransformConfig from '@/utils/createPxtransformConfig';
 import { ConfigHelper } from '.';
 import { MonaPlugins } from './plugins';
 import BaseConfigHelper from './BaseConfigHelper';
+import { Options } from '..';
 
 const extensions = ['.js', '.mjs', '.jsx', '.ts', '.tsx', '.json'];
+// const defualtWebpackConfig = {
 
+// }
 class MiniConfigHelper extends BaseConfigHelper {
   webpackConfig: WebpackChain = new WebpackChain();
-  generate() {
+  constructor(options: Required<Options>) {
+    super(options);
+    this.init();
+  }
+
+  init() {
     const miniEntryPlugin = new MonaPlugins.MiniEntryPlugin(this as unknown as ConfigHelper);
-    this.webpackConfig.target('web').devtool(false).merge({ entry: miniEntryPlugin.entryModule.entries });
-    this._createResolve();
-    this._createMode();
-    this._createPlugins(miniEntryPlugin);
-    this._createOptimization();
-    this._createModuleRules();
-    this._createOutput();
+    this.webpackConfig
+      .target('web')
+      .devtool(false)
+      .merge({ entry: miniEntryPlugin.entryModule.entries })
+      .mode(this.options.dev ? 'development' : 'production');
 
+    this.createResolve();
+    this.createPlugins(miniEntryPlugin);
+    this.createOptimization();
+    this.createModuleRules();
+    this.createOutput();
+  }
+
+  generate() {
     const finalConfig = this.webpackConfig.toConfig();
-
     const raw = this.projectConfig.raw;
     return raw ? raw(finalConfig) : finalConfig;
   }
 
-  private _createOptimization(optimization = this.webpackConfig.optimization) {
+  private createOptimization(optimization = this.webpackConfig.optimization) {
     optimization
       .usedExports(true)
-      .runtimeChunk({ name: 'runtimeChunk' })
+      .runtimeChunk('single')
       .splitChunks({
         cacheGroups: {
           vendors: {
@@ -44,16 +57,17 @@ class MiniConfigHelper extends BaseConfigHelper {
           },
         },
       });
+
     optimization.when(!this.options.dev, c => {
-      c.minimizer('terser-plugin')
-        .use(MonaPlugins.TerserWebpackPlugin.terserMinify, [{ parallel: true, extractComments: false }])
+      c.minimizer('TerserWebpackPlugin')
+        .use(new MonaPlugins.TerserWebpackPlugin({ parallel: true, extractComments: false }))
         .end()
-        .minimizer('css')
-        .use(MonaPlugins.CssMinimizerPlugin.cssnanoMinify, [{ test: /\.ttss(\?.*)?$/i }]);
+        .minimizer('CssMinimizerPlugin')
+        .use(new MonaPlugins.CssMinimizerPlugin({ test: /\.ttss(\?.*)?$/i }));
     });
   }
 
-  private _createResolve() {
+  private createResolve() {
     const resolve = this.webpackConfig.resolve;
     resolve.extensions.merge(extensions);
     resolve.alias.merge({
@@ -62,31 +76,28 @@ class MiniConfigHelper extends BaseConfigHelper {
     });
   }
 
-  private _createMode() {
-    this.webpackConfig.mode(this.options.dev ? 'development' : 'production');
-  }
-
-  private _createOutput() {
+  private createOutput() {
     this.webpackConfig.output.path(path.join(this.cwd, this.projectConfig.output)).publicPath('/').globalObject('tt');
   }
 
-  private _createModuleRules() {
+  private createModuleRules() {
     const { TransformJsxNamePlugin, collectNativeComponent } = MonaPlugins.babel;
     const jsRule = this.webpackConfig.module.rule('js').test(/\.((j|t)sx?)$/i);
+
     jsRule
       .use('transformJsxName')
-      .loader('babel-loader')
+      .loader(require.resolve('babel-loader'))
       .options({
         babelrc: false,
         plugins: [
           TransformJsxNamePlugin,
           this.projectConfig.compilerOptimization && MonaPlugins.babel.perfTemplateRender,
         ].filter(Boolean),
-        presets: [],
-      })
-      .end()
+      });
+
+    jsRule
       .use('babel')
-      .loader('babel-loader')
+      .loader(require.resolve('babel-loader'))
       .options({
         babelrc: false,
         plugins: [
@@ -97,21 +108,24 @@ class MiniConfigHelper extends BaseConfigHelper {
           ],
         ].filter(Boolean),
         presets: [['@babel/preset-env'], ['@babel/preset-typescript'], ['@babel/preset-react']],
-      })
-      .end()
-      .use('ImportCustomComponentLoader')
+      });
+
+    jsRule
+      .use('ttComponentLoader')
       .loader(path.resolve(__dirname, '../loaders/ImportCustomComponentLoader'))
       .options({ configHelper: this })
       .end();
 
     const pxtOptions = createPxtransformConfig('mini', this.projectConfig);
-
     const styleRule = this.webpackConfig.module.rule('style').test(/\.(c|le)ss$/i);
+
     styleRule.use('MiniCssExtractPlugin.loader').loader(MonaPlugins.MiniCssExtractPlugin.loader);
+
     styleRule
       .use('cssLoader')
       .loader(require.resolve('css-loader'))
       .options({
+        importLoaders: 2,
         modules: {
           auto: (filename: string) => /\.module\.\w+$/i.test(filename),
           localIdentName: '[local]___[hash:base64:5]',
@@ -119,18 +133,19 @@ class MiniConfigHelper extends BaseConfigHelper {
       });
 
     styleRule
-      .use('postcss')
+      .use('postcss-loader')
       .loader(require.resolve('postcss-loader'))
       .options({
         postcssOptions: {
           plugins: [
             require.resolve('postcss-import'),
             pxtOptions.enabled
-              ? [path.join(__dirname, '..', './plugins/postcss/PostcssPxtransformer/index.js'), pxtOptions]
+              ? [path.join(__dirname, '../plugins/postcss/PostcssPxtransformer/index.js'), pxtOptions]
               : null,
           ].filter(p => p),
         },
       });
+
     styleRule
       .use('less')
       .loader(require.resolve('less-loader'))
@@ -143,7 +158,7 @@ class MiniConfigHelper extends BaseConfigHelper {
     createAssetRules(this.webpackConfig);
   }
 
-  private _createPlugins(miniEntryPlugin: any) {
+  private createPlugins(miniEntryPlugin: any) {
     const config = this as unknown as ConfigHelper;
     const webpackConfig = this.webpackConfig;
     webpackConfig.plugin('miniEntryPlugin').use(miniEntryPlugin);

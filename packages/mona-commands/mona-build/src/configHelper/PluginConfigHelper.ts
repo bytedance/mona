@@ -250,19 +250,7 @@ class PluginConfigHelper extends BaseConfigHelper {
     let plugins: any[] = [
       new ConfigHMRPlugin(this as unknown as ConfigHelper, true),
       new HtmlWebpackPlugin({
-        templateContent: `
-          <!-- ${HTML_HANDLE_TAG} -->
-          <!DOCTYPE html>
-          <html id="${this.buildId}">
-            <head>
-              <meta charset="utf-8">
-              <title>Mona Plugin</title>
-              <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover"></head>
-            <body>
-              <div id="root"></div>
-            </body>
-          </html>
-        `,
+        templateContent: genPluginHtml(this),
         minify: {
           collapseWhitespace: true,
           keepClosingSlash: true,
@@ -291,3 +279,19 @@ class PluginConfigHelper extends BaseConfigHelper {
 }
 
 export default PluginConfigHelper;
+
+export const genPluginHtml = (confighelper: PluginConfigHelper) => {
+  return `
+  <!-- ${HTML_HANDLE_TAG} -->
+  <!DOCTYPE html>
+  <html id="${confighelper.buildId}">
+    <head>
+      <meta charset="utf-8">
+      <title>Mona Plugin</title>
+      <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover"></head>
+    <body>
+      <div id="root"></div>
+    </body>
+  </html>
+  `;
+};
