@@ -18,48 +18,44 @@ const WrapperComponent: React.FC<{ title: string }> = ({ children, title }) => {
   return <>{children}</>;
 };
 
+const maskStyle: React.CSSProperties = {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  zIndex: 1,
+  backgroundColor: 'rgba(255, 255, 255)',
+};
+
+const NoMatchImgWrapperStyle: React.CSSProperties = {
+  color: '#0000008C',
+  fontSize: '14px',
+  textAlign: 'center',
+  lineHeight: '20px',
+  whiteSpace: 'nowrap',
+  position: 'absolute',
+  left: '50%',
+  top: '50%',
+  transform: 'translate(-50%, -50%)',
+};
+
+const imgStyle = { width: 320, marginBottom: 8 };
 const NoMatch: React.FC<{ defaultPath: string }> = ({ defaultPath }) => {
+  const history = useHistory();
   useEffect(() => {
     // app生命周期pageNotFound
     //@ts-ignore
     window[GLOBAL_LIFECYCLE_STORE]?.handlePageNotFound?.(defaultPath);
   }, [defaultPath]);
   return (
-    <div style={{ position: 'relative', minHeight: '100%' }}>
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          zIndex: 1,
-          backgroundColor: 'rgba(255, 255, 255)',
-        }}
-      >
-        <div
-          style={{
-            color: '#0000008C',
-            fontSize: '14px',
-            textAlign: 'center',
-            lineHeight: '20px',
-            whiteSpace: 'nowrap',
-            position: 'absolute',
-            left: '50%',
-            top: '50%',
-            transform: 'translate(-50%, -50%)',
-          }}
-        >
-          <img
-            style={{ width: 320, marginBottom: 8 }}
-            src={'https://lf3-fe.ecombdstatic.com/obj/ecom-open-butler/mona/error.png'}
-          />
-          <div>
-            <span>
-              不存在路由 {location.pathname}{' '}
-              <a onClick={() => history.pushState({}, '', formatPath(defaultPath))}>返回首页</a>
-            </span>
-          </div>
+    <div style={maskStyle}>
+      <div style={NoMatchImgWrapperStyle}>
+        <img style={imgStyle} src={'https://lf3-fe.ecombdstatic.com/obj/ecom-open-butler/mona/error.png'} />
+        <div>
+          <span>
+            不存在路由 {location.pathname} <a onClick={() => history.push(formatPath(defaultPath))}>返回首页</a>
+          </span>
         </div>
       </div>
     </div>
@@ -96,7 +92,7 @@ export function createWebApp(
           <Component>
             <NavBar {...navBar} />
             <Switch>
-              {routes.map(route => (
+              {routes?.map(route => (
                 <Route
                   key={route.path}
                   path={formatPath(route.path)}
@@ -107,11 +103,11 @@ export function createWebApp(
                   )}
                 />
               ))}
-              {routes.length > 0 ? (
+              {routes?.length && (
                 <Route exact path="/">
                   <Redirect to={formatPath(routes[0].path)} />
                 </Route>
-              ) : null}
+              )}
               <Route path="*">
                 <NoMatch defaultPath={formatPath(routes[0].path)} />
               </Route>

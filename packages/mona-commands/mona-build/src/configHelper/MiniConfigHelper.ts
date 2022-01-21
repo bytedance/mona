@@ -128,7 +128,7 @@ class MiniConfigHelper extends BaseConfigHelper {
         importLoaders: 2,
         modules: {
           auto: true,
-          localIdentName: '[local]___[hash:base64:5]',
+          localIdentName: '[local]_[hash:base64:5]',
         },
       });
 
