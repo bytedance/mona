@@ -102,6 +102,7 @@ export default class TaskController {
 
   removeCallback(name: string | number) {
     this.context[name] = undefined;
+    // delete this.context[name];
   }
 
   appendChild(child: ServerElement) {

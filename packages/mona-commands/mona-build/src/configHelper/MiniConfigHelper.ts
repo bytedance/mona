@@ -107,6 +107,7 @@ class MiniConfigHelper extends BaseConfigHelper {
             { target: 'mini', context: this.cwd, alias: this.genAlias() },
           ],
         ].filter(Boolean),
+        // ! mini端，'@babel/preset-react'，不要添加 "runtime": "automatic" 配置。 可能会导致perfTemplateRender插件收集props遗漏
         presets: [['@babel/preset-env'], ['@babel/preset-typescript'], ['@babel/preset-react']],
       });
 
@@ -176,13 +177,13 @@ function createAssetRules(webpackChain: WebpackChain) {
   webpackChain.module
     .rule('img')
     .test(/\.(png|jpe?g|gif|webp)$/i)
-    .set('type', 'asset/resource')
+    .set('type', 'asset/resource');
   webpackChain.module
     .rule('svg')
     .test(/\.svg$/i)
-    .set('type', 'asset/inline')
+    .set('type', 'asset/inline');
   webpackChain.module
     .rule('font')
     .test(/\.(ttf|eot|woff|woff2)$/i)
-    .set('type', 'asset/resource')
+    .set('type', 'asset/resource');
 }

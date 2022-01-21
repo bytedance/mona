@@ -12,11 +12,11 @@ function findIndexFromItemId(children: React.ReactNode, itemId: string) {
     if (React.isValidElement(child) && child.props.itemId === itemId) {
       resultIndex = index;
     }
-  })
+  });
   return resultIndex;
 }
 
-const Swiper: React.FC<SwiperProps> = (props) => {
+const Swiper: React.FC<SwiperProps> = props => {
   const {
     children,
     indicatorDots = false,
@@ -24,9 +24,9 @@ const Swiper: React.FC<SwiperProps> = (props) => {
     indicatorActiveColor = 'rgba(0, 0, 0, 1)',
     autoplay = false,
     current = 0,
-    currentItemId = "",
+    currentItemId = '',
     interval = 5000,
-    previousMargin = "",
+    previousMargin = '',
     nextMargin = '',
     displayMultipleItems = 1,
     duration = 500,
@@ -47,51 +47,73 @@ const Swiper: React.FC<SwiperProps> = (props) => {
   const total = React.Children.count(children);
   const currentIndex = currentItemId ? findIndexFromItemId(children, currentItemId) : current;
 
-  const { next, prev, wrapperRef, activeIndex } = useSlide({ current: currentIndex, total: total, vertical, duration, circular, onChange });
+  const { next, prev, wrapperRef, activeIndex } = useSlide({
+    current: currentIndex,
+    total,
+    vertical,
+    duration,
+    circular,
+    onChange,
+  });
 
   const touchParams = {
     left: vertical ? null : (e: React.TouchEvent) => next(false, e),
-    right : vertical ? null : (e: React.TouchEvent) => prev(false, e),
+    right: vertical ? null : (e: React.TouchEvent) => prev(false, e),
     top: vertical ? (e: React.TouchEvent) => next(false, e) : null,
     bottom: vertical ? (e: React.TouchEvent) => prev(false, e) : null,
-    duration: duration,
-  }
+    duration,
+  };
   const { handleTouchStart, handleTouchMove } = useTouch(touchParams);
 
   // autoplay
   useEffect(() => {
+    if (!total) {
+      return;
+    }
     if (autoplay) {
       const timer = setInterval(() => {
         next(true);
-      }, interval)
+      }, interval);
 
       return () => clearInterval(timer);
     }
-    return () => {}
-  }, [autoplay, interval, next]);
+    return () => {};
+  }, [autoplay, interval, next, total]);
+
+  if (!total) {
+    return null;
+  }
 
   return (
     <div ref={ref} {...handleProps} className={handleClassName(styles.swiper)}>
-      <div ref={wrapperRef} onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} className={styles.wrapper} style={{ transitionDuration: `${duration}ms`, transform: 'translate3d(0px, 0px, 0px)' }}>
+      <div
+        ref={wrapperRef}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        className={cs(vertical ? styles['vertical-wrapper'] : styles.wrapper)}
+        style={{ transitionDuration: '0ms', transform: 'translate3d(10px, 0px, 0px)' }}
+      >
         {children}
       </div>
-      {
-        indicatorDots && (
-          <div className={cs(styles.dots, { [styles.horizontal]: !vertical })} ref={dotsRef}>
-          {
-            (function() {
-              const result = [];
-              for (let i = 0; i < total; i++) {
-                result.push(<span className={styles.dot} style={{ backgroundColor: activeIndex === i ? indicatorActiveColor : indicatorColor }} key={i}></span>)
-              }
-              return result;
-            })()
-          }
+      {indicatorDots && (
+        <div className={cs(styles.dots, { [styles.horizontal]: !vertical })} ref={dotsRef}>
+          {(function () {
+            const result = [];
+            for (let i = 0; i < total; i++) {
+              result.push(
+                <span
+                  className={styles.dot}
+                  style={{ backgroundColor: activeIndex === i ? indicatorActiveColor : indicatorColor }}
+                  key={i}
+                ></span>
+              );
+            }
+            return result;
+          })()}
         </div>
-        )
-      }
+      )}
     </div>
-  )
-}
+  );
+};
 
 export default Swiper;

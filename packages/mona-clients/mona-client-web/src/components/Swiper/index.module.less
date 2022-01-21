@@ -18,33 +18,49 @@
     transition-timing-function: ease-in-out;
   }
 
+  & .vertical-wrapper {
+    flex-direction: column;
+    &:extend(.swiper .wrapper);
+  }
+
   .dots {
     position: absolute;
     font-size: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+
+    .dot {
+      display: block;
+      margin-right: 8px;
+      margin-bottom: 8px;
+      height: 8px;
+      width: 8px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition-property: background-color;
+      transition-timing-function: ease;
+      background: red;
+      border-radius: 50%;
+    }
 
     &.horizontal {
+      top: initial;
+      transform: initial;
       left: 50%;
       bottom: 10px;
       text-align: center;
       white-space: nowrap;
       transform: translate(-50%, 0);
-    }
-  }
-  
-  .dot {
-    display: inline-block;
-    margin-right: 8px;
-    height: 8px;
-    width: 8px;
-    border-radius: 50%;
-    cursor: pointer;
-    transition-property: background-color;
-    transition-timing-function: ease;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 50%;
 
-    &:last-child {
-      margin-right: 0;
+      .dot {
+        display: inline-block;
+        margin-bottom: 0;
+
+        &:last-child {
+          margin-right: 0;
+        }
+      }
     }
   }
 }
