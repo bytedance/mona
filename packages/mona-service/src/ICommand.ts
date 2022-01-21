@@ -1,5 +1,6 @@
 import minimist from 'minimist';
 import commandLineUsage from 'command-line-usage';
+import Builder from './builder';
 
 export interface ICommandOptions {
   description?: string
@@ -8,7 +9,7 @@ export interface ICommandOptions {
 }
 
 export interface ICommandCallback {
-  (args: Record<string, any>): void | Promise<void>
+  (args: Record<string, any>, builder?: Builder): void | Promise<void>
 }
 
 
@@ -23,7 +24,7 @@ class ICommand {
     this._fn = fn;
   }
 
-  runCommand(args: minimist.ParsedArgs) {
+  runCommand(args: minimist.ParsedArgs, builder?: Builder) {
     const { options, _fn, name } = this;
     // if is help
     if (args.help) {
@@ -40,7 +41,7 @@ class ICommand {
       return;
     }
 
-    _fn.call(this, args);
+    _fn.call(this, args, builder);
   }
 }
 
