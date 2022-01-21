@@ -10,6 +10,7 @@ const pkgs = {
   'build': '@bytedance/mona-build',
   'init': '@bytedance/mona-init',
   'publish': '@bytedance/mona-publish',
+  'service': '@bytedance/mona-service',
 }
 const rawTargets = process.argv.slice(2);
 const startIndex = rawTargets.indexOf('-s');

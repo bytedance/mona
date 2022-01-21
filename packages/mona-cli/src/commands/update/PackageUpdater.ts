@@ -2,7 +2,7 @@ import ora from 'ora';
 import compareVersion from 'compare-version';
 import { execSync } from 'child_process';
 import chalk from 'chalk';
-import { getGlobalInstallPkgMan } from './utils/command';
+import { getGlobalInstallPkgMan } from './utils/common';
 import { getPkgPublicName } from './utils/package';
 import { getCurrentVersion, getNewestVersion } from './utils/version';
 

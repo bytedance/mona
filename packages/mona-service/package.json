@@ -1,11 +1,12 @@
 {
-  "name": "@bytedance/mona-cli",
+  "name": "@bytedance/mona-service",
   "version": "0.2.0-alpha.6",
   "displayName": "mona",
   "description": "Merchant app's developing and building tools",
-  "main": "./bin/mona",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "bin": {
-    "mona": "./bin/mona"
+    "mona-service": "./bin/mona-service"
   },
   "files": [
     "bin",
@@ -19,24 +20,13 @@
   "author": "zhangxiaowei.chris@bytedance.com",
   "license": "MIT",
   "dependencies": {
-    "@bytedance/mona-build": "^0.2.0-alpha.6",
-    "@bytedance/mona-init": "^0.2.0-alpha.6",
-    "@bytedance/mona-publish": "^0.2.0-alpha.6",
-    "@bytedance/mona-service": "^0.2.0-alpha.6",
     "chalk": "^4.1.2",
     "command-line-usage": "^6.1.1",
-    "compare-version": "^0.1.2",
-    "compressing": "^1.5.1",
-    "ora": "^5.4.1",
-    "pkg-dir": "^5.0.0",
-    "yargs": "^17.0.1"
+    "minimist": "^1.2.5"
   },
   "devDependencies": {
-    "@types/compare-version": "^0.1.31",
-    "@types/node": "^16.4.5",
-    "@types/semver": "^7.3.9",
-    "@types/yargs": "^16.0.0",
-    "semver": "^7.3.5"
+    "@types/minimist": "^1.2.2",
+    "@types/node": "^16.4.5"
   },
   "publishConfig": {
     "access": "public",
