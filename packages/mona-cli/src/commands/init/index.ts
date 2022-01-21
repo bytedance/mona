@@ -23,9 +23,9 @@ const init: IPlugin = (ctx) => {
 
     const askOpts: AskOpts = {
       projectName: args._[1],
-      useTypescript: args.u || args['use-typescript'] as AskOpts['useTypescript'],
-      styleProcessor: args.s || args['style'] as AskOpts['styleProcessor'],
-      templateType: args.t || args['template'] as AskOpts['templateType']
+      useTypescript: args.u as AskOpts['useTypescript'],
+      styleProcessor: args.s as AskOpts['styleProcessor'],
+      templateType: args.t as AskOpts['templateType']
     };
 
     // 交互式提问

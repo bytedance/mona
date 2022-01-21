@@ -33,9 +33,9 @@ class Service {
   }
 
   run() {
-    const argv = minimist(process.argv.slice(2));
-
+    
     const pluginContext = this._pluginContext;
+    const argv = minimist(process.argv.slice(2));
     const cmdName = argv._[0] as string;
     const cmd = pluginContext.getCommand(cmdName);
     if (!cmd) {
@@ -43,8 +43,16 @@ class Service {
       return;
     }
     
+    const alias: Record<string, string> = { h: 'help' };
+    const options = cmd.options.options;
+    options?.forEach((option => {
+      if (option.alias) {
+        alias[option.alias] = option.name
+      }
+    }))
+    const cmdArgv = minimist(process.argv.slice(2), { alias });
     // run cmd
-    cmd.runCommand(argv);
+    cmd.runCommand(cmdArgv);
   }
 }
 

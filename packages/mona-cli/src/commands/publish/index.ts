@@ -28,7 +28,7 @@ function readDest(): string {
 }
 
 const publish: IPlugin = (ctx) => {
-  ctx.registerCommand('init', {
+  ctx.registerCommand('publish', {
     description: '压缩打包后的产物，以便在开放平台发布',
     options: [
         { name: 'help', description: '输出帮助信息', alias: 'h' }

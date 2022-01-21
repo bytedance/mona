@@ -11,4 +11,4 @@ const update: IPlugin = (ctx) => {
   })
 }
 
-export default update;
+module.exports = update;
