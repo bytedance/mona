@@ -37,6 +37,7 @@ export default class ServerElement {
   nextSiblingKey: number | null = null;
   mounted: boolean = false;
   deleted: boolean = false;
+  eventsCallbackList = new Set<string>();
 
   constructor(type: string, taskController: TaskController, props?: Record<string, any>) {
     this.type = type;
@@ -47,6 +48,26 @@ export default class ServerElement {
 
   requestUpdate(task: Task) {
     this.taskController.requestUpdate(task);
+  }
+
+  // 清楚自身&子节点挂载的callback
+  clearEvents() {
+    // 不要这么写 forEach(this.taskController.removeCallback)，要包裹一个函数 Set会bind导致错误
+    this.eventsCallbackList.forEach(c => {
+      this.taskController.removeCallback(c);
+    });
+    let currKey = this.firstChildKey;
+    let currItem: ServerElement | null = currKey ? this.children.get(currKey)! : null;
+    while (currItem) {
+      currItem.clearEvents();
+      currKey = currItem.nextSiblingKey;
+      currItem = currKey ? this.children.get(currKey)! : null;
+    }
+  }
+
+  addCallback(cbKey: string, cb: (...args: any) => any) {
+    this.eventsCallbackList.add(cbKey);
+    this.taskController.addCallback(cbKey, cb);
   }
 
   appendChild(child: ServerElement) {
@@ -103,10 +124,7 @@ export default class ServerElement {
 
     this.children.delete(child.key);
 
-    //!perf: eventHandler overflow
-    // child.taskController.removeCallback(child.key);
-    child.reset();
-    child.deleted = true;
+    child.delete();
 
     if (this.isMounted()) {
       this.requestUpdate({
@@ -189,11 +207,15 @@ export default class ServerElement {
       COMPLIER_NODES: nodes,
     };
   }
-  reset() {
+
+  delete() {
+    this.clearEvents();
     this.nextSiblingKey = null;
     this.prevSiblingKey = null;
     this.parent = null;
+    this.deleted = true;
   }
+
   get orderedChildren() {
     const children = [];
     let currKey = this.firstChildKey;
@@ -227,7 +249,6 @@ export default class ServerElement {
   }
 
   isMounted(): boolean {
-    // TODO: 优化
     return this.parent ? this.parent.isMounted() : this.mounted;
   }
 

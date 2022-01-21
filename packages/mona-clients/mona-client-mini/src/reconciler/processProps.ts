@@ -30,7 +30,7 @@ export function processProps(props: Record<string, any>, node: ServerElement) {
     if (filterPropsMap[propKey]) {
     } else if (isFunction(props[propKey])) {
       cbKey = genCbName(propKey, node);
-      node.taskController.addCallback(cbKey, createEventHandler(node, propKey, props[propKey]));
+      node.addCallback(cbKey, createEventHandler(node, propKey, props[propKey]));
       if (node.props?.[propKey] !== cbKey) {
         newProps[propKey] = cbKey;
       }
