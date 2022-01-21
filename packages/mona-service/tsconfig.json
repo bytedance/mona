@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2017",
+    "target": "es5",
     "moduleResolution": "node",
     "strict": true,
     "module": "commonjs",
@@ -28,14 +28,18 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": [
+        "src/*"
+      ]
     }
   },
-  "include": ["src"],
+  "include": [
+    "src"
+  ],
   "exclude": [
     "**/*.test.ts",
     "**/*.spec.ts",
     "**/*.test.tsx",
     "**/*.spec.tsx"
-   ]
+  ]
 }

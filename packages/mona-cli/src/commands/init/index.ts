@@ -1,44 +1,31 @@
+import { IPlugin } from '@bytedance/mona-service';
 import ora from 'ora';
 import path from 'path';
-import yargs from 'yargs';
 import chalk from 'chalk';
 import { execSync } from 'child_process';
 import { ask, AskOpts } from './utils/ask';
 import { fetchTemplate, processTemplates } from './utils/template';
 import { hasYarn, printWelcomeMessage, printFinishMessage } from './utils/common';
-import { commandUsage } from './help';
 
-function init() {
-  yargs
-    .version(false)
-    .help(false)
-    .alias('h', 'help')
-    .option('style', {
-      alias: 's',
-      type: 'string'
-    })
-    .option('use-typescript', {
-      alias: 'u',
-      type: 'boolean'
-    })
-    .option('template', {
-      alias: 't',
-      type: 'string'
-    });
-  yargs.command('$0', false, {}, async function (argv) {
-    if (argv.help) {
-      const helpInfo = commandUsage();
-      console.log(helpInfo);
-      return;
-    }
 
+const init: IPlugin = (ctx) => {
+  ctx.registerCommand('init', {
+    description: '初始化一个商家应用/商家应用插件项目',
+    options: [
+        { name: 'help', description: '输出帮助信息', alias: 'h' },
+        { name: 'use-typescript', description: '是否使用typescript', alias: 'u' },
+        { name: 'style', description: '指定样式处理器', alias: 's' },
+        { name: 'template', description: '指定模板', alias: 't' },
+      ],
+    usage: 'mona init <projectName>',
+  }, async (args) => {
     printWelcomeMessage();
 
     const askOpts: AskOpts = {
-      projectName: typeof argv._[0] === 'number' ? `${argv._[0]}` : (argv._[0] as string),
-      useTypescript: argv.u as AskOpts['useTypescript'],
-      styleProcessor: argv.s as AskOpts['styleProcessor'],
-      templateType: argv.t as AskOpts['templateType']
+      projectName: args._[1],
+      useTypescript: args.u as AskOpts['useTypescript'],
+      styleProcessor: args.s as AskOpts['styleProcessor'],
+      templateType: args.t as AskOpts['templateType']
     };
 
     // 交互式提问
@@ -58,7 +45,7 @@ function init() {
     });
 
     // 安装依赖
-    const command = hasYarn() ? 'yarn install' : 'npm install';
+    const command = hasYarn() ? 'yarn' : 'npm install';
     const installSpinner = ora(`安装项目依赖 ${chalk.cyan.bold(command)}，可能需要一些时间...`).start();
     try {
       // 改变当前目录
@@ -76,7 +63,7 @@ function init() {
     }
 
     printFinishMessage(projectName);
-  }).argv;
+  })
 }
 
-export default init;
+module.exports = init;
