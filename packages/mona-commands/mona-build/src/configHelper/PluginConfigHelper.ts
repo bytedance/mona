@@ -147,23 +147,11 @@ class PluginConfigHelper extends BaseConfigHelper {
       .loader(path.resolve(__dirname, '../loaders/ImportCustomComponentLoader'))
       .options({ configHelper: this });
   }
-  createCssRule(isCssModule: boolean) {
-    const cssModuleTest = /(.*\.module).*\.(css|less)$/;
-
-    const cssModuleRule = this.webpackConfig.module.rule('cssModule').test(cssModuleTest);
-    const cssRule = this.webpackConfig.module
-      .rule('css')
-      .test(/\.(c|le)ss$/i)
-      .exclude.add(cssModuleTest)
-      .end();
+  createCssRule() {
+    const cssRule = this.webpackConfig.module.rule('css').test(/\.(c|le)ss$/i);
     createRule(this, cssRule);
-    createRule(this, cssModuleRule, isCssModule);
 
-    function createRule(
-      configHelper: PluginConfigHelper,
-      styleRule: WebpackChain.Rule<WebpackChain.Module>,
-      isCssModule: boolean = false,
-    ) {
+    function createRule(configHelper: PluginConfigHelper, styleRule: WebpackChain.Rule<WebpackChain.Module>) {
       styleRule.use('style-loader').when(
         configHelper.options.dev,
         r => r.loader(require.resolve('style-loader')),
@@ -174,8 +162,8 @@ class PluginConfigHelper extends BaseConfigHelper {
         .loader(require.resolve('css-loader'))
         .options({
           importLoaders: 2,
-          modules: isCssModule && {
-            auto: (filename: string) => /\.module\.\w+$/i.test(filename),
+          modules: {
+            auto: true,
             localIdentName: '[local]___[hash:base64:5]',
             getLocalIdent: (loaderContext: any, localIdentName: string, localName: string, options: any) => {
               // 配合PostcssPreSelector插件
@@ -248,7 +236,7 @@ class PluginConfigHelper extends BaseConfigHelper {
   }
   private _createModuleRules() {
     this.createJsRule();
-    this.createCssRule(true);
+    this.createCssRule();
     this.createAssetRule();
   }
   private _createPlugins() {

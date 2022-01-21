@@ -102,7 +102,7 @@ class WebConfigHelper extends BaseConfigHelper {
 
   private _createModuleRules() {
     this.createJsRule();
-    this.createCssRule(true);
+    this.createCssRule();
     this.createAssetRule();
   }
   createJsRule() {
@@ -131,24 +131,14 @@ class WebConfigHelper extends BaseConfigHelper {
       .loader(path.resolve(__dirname, '../loaders/ImportCustomComponentLoader'))
       .options({ configHelper: this });
   }
-  createCssRule(isCssModule: boolean) {
+  createCssRule() {
     const pxtOptions = createPxtransformConfig('web', this.projectConfig);
-    const cssModuleTest = /(.*\.module).*\.(css|less)$/;
 
-    const cssModuleRule = this.webpackConfig.module.rule('cssModule').test(cssModuleTest);
-    const cssRule = this.webpackConfig.module
-      .rule('css')
-      .test(/\.(c|le)ss$/i)
-      .exclude.add(cssModuleTest)
-      .end();
+    const cssRule = this.webpackConfig.module.rule('css').test(/\.(c|le)ss$/i);
+
     createRule(this, cssRule);
-    createRule(this, cssModuleRule, isCssModule);
 
-    function createRule(
-      configHelper: WebConfigHelper,
-      styleRule: WebpackChain.Rule<WebpackChain.Module>,
-      isCssModule: boolean = false,
-    ) {
+    function createRule(configHelper: WebConfigHelper, styleRule: WebpackChain.Rule<WebpackChain.Module>) {
       styleRule.use('style-loader').when(
         configHelper.options.dev,
         r => r.loader(require.resolve('style-loader')),
@@ -159,7 +149,8 @@ class WebConfigHelper extends BaseConfigHelper {
         .loader(require.resolve('css-loader'))
         .options({
           importLoaders: 2,
-          modules: isCssModule && {
+          modules: {
+            auto: true,
             localIdentName: '[local]___[hash:base64:5]',
           },
         });
@@ -188,7 +179,6 @@ class WebConfigHelper extends BaseConfigHelper {
   }
 
   createAssetRule() {
-    // as any 兼容webpack5
     const resourceType = 'asset/resource';
 
     this.webpackConfig.module
