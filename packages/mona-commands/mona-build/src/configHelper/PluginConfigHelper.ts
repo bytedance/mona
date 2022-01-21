@@ -164,7 +164,7 @@ class PluginConfigHelper extends BaseConfigHelper {
           importLoaders: 2,
           modules: {
             auto: true,
-            localIdentName: '[local]___[hash:base64:5]',
+            localIdentName: '[local]_[hash:base64:5]',
             getLocalIdent: (loaderContext: any, localIdentName: string, localName: string, options: any) => {
               // 配合PostcssPreSelector插件
               if (localName === configHelper.buildId) {
