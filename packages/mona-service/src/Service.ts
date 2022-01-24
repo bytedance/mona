@@ -33,8 +33,9 @@ class Service {
   }
 
   run() {
-    
     const pluginContext = this._pluginContext;
+
+    // run all command
     const argv = minimist(process.argv.slice(2));
     const cmdName = argv._[0] as string;
     const cmd = pluginContext.getCommand(cmdName);
@@ -51,8 +52,18 @@ class Service {
       }
     }))
     const cmdArgv = minimist(process.argv.slice(2), { alias });
-    // run cmd
-    cmd.runCommand(cmdArgv);
+    
+    // for build and start, pass builder to callback
+    const shouldPassBuilder = cmdName === 'build' || cmdName === 'start';
+    if (shouldPassBuilder) {
+      const { target: targetName } = cmdArgv;
+      // find target builder
+      const target = pluginContext.getTarget(targetName);
+      target?.runTarget()
+      cmd.runCommand(cmdArgv, target?.targetContext.builder)
+    } else {
+      cmd.runCommand(cmdArgv);
+    }
   }
 }
 
