@@ -52,7 +52,8 @@ export default class ServerElement {
 
   // 清楚自身&子节点挂载的callback
   clearEvents() {
-    // 不要这么写 forEach(this.taskController.removeCallback)，要包裹一个函数 Set会bind导致错误
+    // Set.forEach传入要包裹一层函数 ,否则this指向会改变
+    // bug case: forEach(this.taskController.removeCallback)
     this.eventsCallbackList.forEach(c => {
       this.taskController.removeCallback(c);
     });

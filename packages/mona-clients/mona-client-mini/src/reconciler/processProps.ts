@@ -1,4 +1,4 @@
-import { isFunction, isObject, monaPrint, plainStyle } from '../utils';
+import { isFunction, isObject, plainStyle } from '../utils';
 import ServerElement from './ServerElement';
 import createEventHandler from '../eventHandler';
 
@@ -36,7 +36,7 @@ export function processProps(props: Record<string, any>, node: ServerElement) {
       }
     } else if (styleMap[propKey]) {
       if (isObject(props[propKey])) {
-        monaPrint.warn(`${propKey} 属性的值，对象数据量过大时，会影响渲染性能，请考虑使用其他方式`);
+        // monaPrint.warn(`${propKey} 属性的值，对象数据量过大时，会影响渲染性能，请考虑使用其他方式`);
         newProps[propKey] = plainStyle(props[propKey]);
       } else {
         newProps[propKey] = props[propKey];
