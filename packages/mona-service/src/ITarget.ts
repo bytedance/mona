@@ -1,4 +1,4 @@
-import Builder from "./builder";
+import Builder from "./Builder";
 import TargetContext from "./TargetContext";
 
 export interface ITargetCallback {

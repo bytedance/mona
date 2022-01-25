@@ -1,15 +1,18 @@
 import merge from 'webpack-merge';
 import { Configuration } from 'webpack';
 import Config from 'webpack-chain';
+import ConfigHelper from './ConfigHelper';
 
 export type RawWebpackConfigFn = Configuration | ((webpackConfig: Configuration) => Partial<Configuration> | void)
 export type ChainWebpackConfigFn = (webpack: Config) => void;
 
 class Builder {
+  configHelper: ConfigHelper;
   rawWebpackConfigFns: RawWebpackConfigFn[];
   chainWebpackConfigFns: ChainWebpackConfigFn[];
 
   constructor() {
+    this.configHelper = new ConfigHelper();
     this.rawWebpackConfigFns = [];
     this.chainWebpackConfigFns = [];
   }

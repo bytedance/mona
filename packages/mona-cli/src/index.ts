@@ -6,14 +6,16 @@ import path from 'path';
 // import PackageUpdater from './PackageUpdater';
 import { Service } from '@bytedance/mona-service'
 
-const defaultPlugins = [
+const pathToPlugin = (pathname: string) => require(pathname);
+
+const buildInPlugins = [
   './commands/init',
   './commands/publish',
   './commands/update'
-].map(p => path.join('@bytedance/mona-cli/dist', p))
+].map(name => pathToPlugin(path.join('@bytedance/mona-cli/dist', name)))
 
 function mona() {
-  const service = new Service(defaultPlugins);
+  const service = new Service(buildInPlugins);
 
   service.install();
 
