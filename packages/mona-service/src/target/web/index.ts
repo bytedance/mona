@@ -7,8 +7,10 @@ import { chainResolve } from './chainResolve';
 
 const web: IPlugin = (ctx) => {
   const configHelper = ctx.configHelper;
+  
   ctx.registerTarget('web', (tctx) => {
     const { entryPath, cwd, projectConfig } = configHelper;
+
     tctx.configureWebpack(() => ({
       target: 'web',
       mode: 'development',

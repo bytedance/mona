@@ -13,7 +13,7 @@ class ITarget {
   constructor(name: string, fn: ITargetCallback, builder: Builder) {
     this.name = name;
     this._fn = fn;
-    this.targetContext = new TargetContext(builder)
+    this.targetContext = new TargetContext(name, builder)
   }
 
   runTarget() {

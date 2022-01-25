@@ -2,6 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import { AppConfig, ProjectConfig } from '@bytedance/mona';
 import { readConfig, searchScriptFile } from '@bytedance/mona-shared';
+import { DEFAULT_PORT } from './target/constants';
 
 const DEFAULT_PROJECT_CONFIG: ProjectConfig = {
   projectName: 'mona-app',
@@ -9,7 +10,7 @@ const DEFAULT_PROJECT_CONFIG: ProjectConfig = {
   output: 'dist',
   compilerOptimization: true,
   dev: {
-    port: 9999,
+    port: DEFAULT_PORT,
   },
 };
 

@@ -55,13 +55,13 @@ class Service {
     
     // for build and start, pass builder to callback
     const shouldPassBuilder = cmdName === 'build' || cmdName === 'start';
-    if (shouldPassBuilder) {
+    if (shouldPassBuilder && !cmdArgv.help) {
       const { target: targetName } = cmdArgv;
       // find target builder
       const target = pluginContext.getTarget(targetName);
       if (target) {
         target.runTarget()
-        cmd.runCommand(cmdArgv, target.targetContext.builder)
+        cmd.runCommand(cmdArgv, target.targetContext)
       } else {
         log.error(`invalid target -- ${targetName}`);
       }

@@ -9,7 +9,7 @@ const pathToPlugin = (pathname: string) => require(pathname);
 
 const buildInPlugins = [
   './commands/build',
-  // './commands/start',
+  './commands/start',
   './config/asset',
   './target/web/index'
 ].map(name => pathToPlugin(name));
