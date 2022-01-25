@@ -24,6 +24,7 @@ interface UpdateTask {
 
 export type Task = SpliceTask | UpdateTask;
 
+// template render will get ROOT_KEY prop from page to template render.
 export const ROOT_KEY = 'mona';
 export default class TaskController {
   context: any;
@@ -92,14 +93,6 @@ export default class TaskController {
     this.context[cbKey] = (...args: any[]) => batchedUpdates((args: any) => cb(...args), args);
   }
 
-  // addCallback(nodeKey: string | number, eventName: string, cb: (...args: any) => any) {
-  //   if (isObject(this.context[nodeKey])) {
-  //     this.context[nodeKey][eventName] = cb;
-  //   } else {
-  //     this.context[nodeKey] = { [eventName]: cb };
-  //   }
-  // }
-
   removeCallback(name: string | number) {
     this.context[name] = undefined;
     // delete this.context[name];
@@ -116,18 +109,4 @@ export default class TaskController {
   insertBefore(child: ServerElement, beforeChild: ServerElement) {
     this._root.insertBefore(child, beforeChild);
   }
-
-  // setListener(nodeKey: string, eventName: string, cb: (...args: any) => any) {
-  //   const events = this.context.eventMap.get(nodeKey);
-  //   if (events) {
-  //     events[eventName] = cb;
-  //   } else {
-  //     this.context.eventMap.set(nodeKey, {
-  //       [eventName]: cb,
-  //     });
-  //   }
-  // }
-  // removeListener(nodeKey: string) {
-  //   this.context.eventMap.remove(nodeKey);
-  // }
 }

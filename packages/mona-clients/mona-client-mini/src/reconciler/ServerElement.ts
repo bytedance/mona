@@ -1,8 +1,8 @@
 import { NodeTask } from '../utils';
-// import { processProps } from './processProps';
 import TaskController, { Task } from './TaskController';
 import { ComponentType } from '@bytedance/mona-shared';
 
+// non-zero
 let id = 1;
 
 export function generateId() {
@@ -57,6 +57,7 @@ export default class ServerElement {
     this.eventsCallbackList.forEach(c => {
       this.taskController.removeCallback(c);
     });
+
     let currKey = this.firstChildKey;
     let currItem: ServerElement | null = currKey ? this.children.get(currKey)! : null;
     while (currItem) {
@@ -73,7 +74,7 @@ export default class ServerElement {
 
   appendChild(child: ServerElement) {
     if (this.children.get(child.key)) {
-      this.removeChild(child);
+      this.removeChild(child, false);
     }
     this.children.set(child.key, child);
     child.parent = this;
@@ -102,7 +103,7 @@ export default class ServerElement {
     }
   }
 
-  removeChild(child: ServerElement) {
+  removeChild(child: ServerElement, clearEvents: boolean = true) {
     const prevSibling = child.prevSiblingKey ? this.children.get(child.prevSiblingKey) : null;
     const nextSibling = child.nextSiblingKey ? this.children.get(child.nextSiblingKey) : null;
 
@@ -126,6 +127,9 @@ export default class ServerElement {
     this.children.delete(child.key);
 
     child.delete();
+    if (clearEvents) {
+      child.clearEvents();
+    }
 
     if (this.isMounted()) {
       this.requestUpdate({
@@ -141,7 +145,7 @@ export default class ServerElement {
 
   insertBefore(child: ServerElement, nextSibling: ServerElement) {
     if (this.children.get(child.key)) {
-      this.removeChild(child);
+      this.removeChild(child, false);
     }
     this.children.set(child.key, child);
     const prevSibling = nextSibling.prevSiblingKey ? this.children.get(nextSibling.prevSiblingKey) : null;
@@ -210,7 +214,6 @@ export default class ServerElement {
   }
 
   delete() {
-    this.clearEvents();
     this.nextSiblingKey = null;
     this.prevSiblingKey = null;
     this.parent = null;
@@ -220,7 +223,7 @@ export default class ServerElement {
   get orderedChildren() {
     const children = [];
     let currKey = this.firstChildKey;
-    // currKey 不为0
+
     let currItem: ServerElement | null = currKey ? this.children.get(currKey)! : null;
 
     while (currItem) {

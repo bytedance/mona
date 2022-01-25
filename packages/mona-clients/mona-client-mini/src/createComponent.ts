@@ -6,7 +6,7 @@ import render from '@/reconciler';
 
 
 function createConfig(Component: React.ComponentType<any>) {
-  // const eventMap = new Map();
+
   const config: any = {
     _component: Component,
     data: {

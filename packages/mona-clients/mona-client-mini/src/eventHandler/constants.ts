@@ -23,6 +23,7 @@ export interface MonaEvent {
 //   'onTouchForceChange'
 // ];
 
+// obj is faster than Map and Set; 
 export const bubbleEventMap: Record<string, true> = {
   onClick: true,
   onTap: true,
@@ -62,6 +63,7 @@ export const eventReactAliasMap: Record<string, string> = {
 // Object.keys(bubbleEventMap).forEach(item => {
 //   isPropagationStop[item.slice(2).toLowerCase()] = false;
 // });
+// obj is faster than Map and Set; 
 export const isPropagationStop: Record<string, boolean> = {
   click: false,
   tap: false,

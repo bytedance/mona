@@ -3,8 +3,8 @@ import ServerElement from './ServerElement';
 import createEventHandler from '../eventHandler';
 
 /**
- * picker-view 组件： indicatorStyle,maskStyle
- * input\textarea组件: placeholderStyle
+ * picker-view ： indicatorStyle,maskStyle
+ * input\textarea: placeholderStyle
  */
 const styleMap: Record<string, boolean> = {
   style: true,

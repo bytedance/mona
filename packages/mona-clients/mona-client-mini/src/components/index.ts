@@ -81,7 +81,7 @@ export const Map = createBaseComponent<MapProps>(ComponentType['map']);
 export const Webview = createBaseComponent<WebviewProps>(ComponentType['web-view']);
 export const Ad = createBaseComponent<AdProps>(ComponentType['ad']);
 export const OpenData = createBaseComponent<OpenDataProps>(ComponentType['open-data']);
-// 自定义
+
 export const Link = (function createBaseComponent(name) {
   const Component = React.forwardRef(({ children, to }: any, ref) =>
     React.createElement(name, { url: formatPath(to), ref }, children),
