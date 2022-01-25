@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
 import ReactDOM from 'react-dom';
 import { ShowModalOptions, CommonErrorArgs } from '@bytedance/mona';
-import { Masking } from '../Masking/index'
-import { hide } from '../util'
+import { Masking } from '../Masking/index';
+import { hide } from '../util';
 import './index.module.less';
 
 const MONA_WEB_MODAL = 'mona-web-modal';
@@ -16,7 +16,7 @@ export function Modal(props: ShowModalOptions): JSX.Element {
     }: { confirm?: boolean; cancel?: boolean } & Partial<CommonErrorArgs>) => {
       props.success?.({ confirm, cancel, errMsg });
       props.complete?.({ confirm, cancel, errMsg });
-      hide(MONA_WEB_MODAL)
+      hide(MONA_WEB_MODAL);
     },
     [props]
   );
@@ -24,31 +24,17 @@ export function Modal(props: ShowModalOptions): JSX.Element {
   return (
     <>
       <div className="mona-web-modal-body">
-        {props.title && (
-          <div className="mona-web-modal-title">{props.title}</div>
-        )}
-        <div
-          className={`mona-web-modal-content ${
-            props.content ? 'mona-web-modal-has-border' : ''
-          }`}
-        >
+        {props.title && <div className="mona-web-modal-title">{props.title}</div>}
+        <div className={`mona-web-modal-content ${props.content ? 'mona-web-modal-has-border' : ''}`}>
           {props.content}
         </div>
         <div className="mona-web-modal-footer">
-          {
-            props.showCancel && <div
-              className="mona-web-modal-button"
-              onClick={() => btnConfirm({ cancel: true })}
-            >
+          {props.showCancel && (
+            <div className="mona-web-modal-button" onClick={() => btnConfirm({ cancel: true })}>
               {props.confirmText || '取消'}
             </div>
-          }
-          <div
-            className="mona-web-modal-button"
-            onClick={() =>
-              btnConfirm({ confirm: true })
-            }
-          >
+          )}
+          <div className="mona-web-modal-button" onClick={() => btnConfirm({ confirm: true })}>
             {props.cancelText || '确认'}
           </div>
         </div>
@@ -72,9 +58,10 @@ function confirm(props: ShowModalOptions) {
 }
 
 export function webShowModal(props: ShowModalOptions = {}) {
-  if(!props.title && !props.content) {
-    props.fail?.({ errMsg: 'showModal: error' })
+  if (!props.title && !props.content) {
+    props?.fail?.({ errMsg: 'showModal: error' });
+    props?.complete?.({ errMsg: 'showModal: error' });
   } else {
-    confirm({showCancel: true,...props});
+    confirm({ showCancel: true, ...props });
   }
 }
