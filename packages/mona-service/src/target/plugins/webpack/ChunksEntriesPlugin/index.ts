@@ -1,5 +1,4 @@
-import { ConcatSource } from 'webpack-sources';
-import { Compiler, Compilation } from 'webpack';
+import { Compiler, Compilation, sources } from 'webpack';
 import path from 'path';
 import { slash } from '../../../utils/utils';
 
