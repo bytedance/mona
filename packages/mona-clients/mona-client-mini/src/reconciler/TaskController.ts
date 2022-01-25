@@ -1,7 +1,7 @@
 import { FiberRoot } from 'react-reconciler';
 import ServerElement, { RenderNode, NodeType } from './ServerElement';
 // import createEventHandler from '../eventHandler';
-import { monaPrint, NodeTask } from '../utils';
+import { NodeTask } from '../utils';
 import { batchedUpdates } from '.';
 
 interface SpliceTask {
@@ -73,10 +73,10 @@ export default class TaskController {
       }
     });
     this.context.setData(res);
-    monaPrint.debug('applyUpdate', {
-      data: res,
-      tasks: this.tasks,
-    });
+    // monaPrint.debug('applyUpdate', {
+    //   data: res,
+    //   tasks: this.tasks,
+    // });
     this.tasks = [];
   }
 

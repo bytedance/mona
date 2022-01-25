@@ -94,13 +94,9 @@ function createConfig(PageComponent: React.ComponentType<any>) {
     },
 
     onUnload(...rest) {
-      monaPrint.log('onUnload', ...rest);
-
       this._controller.stopUpdate();
-      this.$callLifecycle(PageLifecycle.unload);
-      if (app) {
-        app.removePage(this);
-      }
+      this.$callLifecycle(PageLifecycle.unload, ...rest);
+      app?.removePage(this);
     },
 
     onReady(...params: any[]) {
