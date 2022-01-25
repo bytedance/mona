@@ -11,7 +11,7 @@ const RPX = 'rpx';
 const PX = 'px';
 
 export const transformReactStyleKey = (key: string) => {
-  // css3变量
+  // css3
   if (key.startsWith('--')) {
     return key;
   }
