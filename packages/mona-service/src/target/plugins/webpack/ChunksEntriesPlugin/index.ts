@@ -31,8 +31,9 @@ export default class OptimizeEntriesPlugin {
             }
           });
           const chunkPath = group.name + '.js';
-          //@ts-ignore
-          compilation.assets[chunkPath] = new ConcatSource(...imports, compilation.assets[chunkPath] ?? '');
+          if (compilation.getAsset(chunkPath)) {
+            compilation.updateAsset(chunkPath, Source => new sources.ConcatSource(...imports, Source));
+          }
         }
       });
     });
