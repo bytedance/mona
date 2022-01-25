@@ -1,7 +1,7 @@
-import Builder, { RawWebpackConfigFn, ChainWebpackConfigFn } from "./builder";
+import Builder, { RawWebpackConfigFn, ChainWebpackConfigFn } from "./Builder";
 import ICommand, { ICommandCallback, ICommandOptions } from "./ICommand";
 import log from "./utils/log";
-import TargetContext from './TargetContext';
+// import TargetContext from './TargetContext';
 import ITarget, { ITargetCallback } from "./ITarget";
 
 class PluginContext {

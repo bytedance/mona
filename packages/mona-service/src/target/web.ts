@@ -1,7 +1,7 @@
 import { IPlugin }  from '../Service';
 
 const web: IPlugin = (ctx) => {
-  ctx.registerTarget('web', (tctx) => {
+  ctx.registerTarget('web', (_tctx) => {
     // todo
   })
 }

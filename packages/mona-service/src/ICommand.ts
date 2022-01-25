@@ -1,6 +1,6 @@
 import minimist from 'minimist';
 import commandLineUsage from 'command-line-usage';
-import Builder from './builder';
+import Builder from './Builder';
 
 export interface ICommandOptions {
   description?: string

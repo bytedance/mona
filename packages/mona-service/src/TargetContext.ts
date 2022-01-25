@@ -1,4 +1,4 @@
-import Builder, { ChainWebpackConfigFn, RawWebpackConfigFn } from "./builder";
+import Builder, { ChainWebpackConfigFn, RawWebpackConfigFn } from "./Builder";
 
 class TargetContext {
   builder: Builder;

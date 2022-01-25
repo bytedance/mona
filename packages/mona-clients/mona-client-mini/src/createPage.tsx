@@ -4,7 +4,6 @@ import { stringifySearch } from '@bytedance/mona-shared';
 import { PageLifecycleGlobalContext, LifecycleContext, PageLifecycle } from '@bytedance/mona';
 import TaskController, { ROOT_KEY } from '@/reconciler/TaskController';
 import render, { batchedUpdates } from '@/reconciler';
-import { monaPrint } from '@/utils';
 import { generateId } from './reconciler/ServerElement';
 import { isClassComponent } from '@bytedance/mona-shared';
 
