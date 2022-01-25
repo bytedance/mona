@@ -4,7 +4,7 @@ import { CUSTOM_REF } from '@bytedance/mona-shared';
 export default function createMiniComponent(name: string) {
   const Component = React.forwardRef(({ children, ...props }, ref) => {
     const newProps: any = { ...props };
-    // 自定组件ref比较特殊,约定__ref透传react的ref
+    // The attribute ref of custom components is special， It is agreed that the ref of react is passed through __ref
     // https://microapp.bytedance.com/docs/zh-CN/mini-app/develop/framework/custom-component/ref/
     newProps[CUSTOM_REF] =
       typeof ref === 'function'

@@ -7,9 +7,9 @@ import './index.module.less';
 
 const MONA_WEB_PREVIEW_IMAGE = 'mona-web-preview-image';
 
-export const PreviewImage: FC<PreviewImageOptions> = ({ urls, current }) => {
+export const PreviewImage: FC<PreviewImageOptions> = ({ urls, current, success, complete }) => {
   const [pos, setPos] = useState(0);
-  const [src, setSrc] = useState(urls[0]);
+  const [src, setSrc] = useState(urls?.[0]);
 
   useEffect(() => {
     if (current) {
@@ -31,6 +31,8 @@ export const PreviewImage: FC<PreviewImageOptions> = ({ urls, current }) => {
       }
       setPos(currentPos);
       setSrc(urls[currentPos]);
+      success?.({ errMsg: 'previewImage:ok' });
+      complete?.({ errMsg: 'previewImage:ok' });
     },
     [src, pos]
   );

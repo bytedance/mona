@@ -1,4 +1,3 @@
-// 参考自remax
 import React from 'react';
 
 const isVendorPrefixes: Record<string, boolean> = {

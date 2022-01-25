@@ -4,10 +4,10 @@ import { stringifySearch } from '@bytedance/mona-shared';
 import { PageLifecycleGlobalContext, LifecycleContext, PageLifecycle } from '@bytedance/mona';
 import TaskController, { ROOT_KEY } from '@/reconciler/TaskController';
 import render, { batchedUpdates } from '@/reconciler';
-import { monaPrint } from '@/utils';
 import { generateId } from './reconciler/ServerElement';
 import { isClassComponent } from '@bytedance/mona-shared';
 
+// in order to share react runtime
 export function createPortal(children: React.ReactNode, containerInfo: any, key?: string): any {
   return {
     $$typeof: Portal,
@@ -32,9 +32,8 @@ interface PageConfig {
   onReachBottom: () => void;
   onShareAppMessage: (options: { channel?: string }) => void;
   onPageScroll: (e: any) => void;
+
   $callLifecycle: (name: PageLifecycle, params?: any) => void;
-  // eventHandler: ReturnType<typeof genEventHandler>;
-  // eventMap: EventMap;
 }
 
 let pageId = 0;
@@ -85,8 +84,8 @@ function createConfig(PageComponent: React.ComponentType<any>) {
 
       if (app) {
         app.addPage(this);
+        // When subcontracting independently，getApp() === undefined
       } else {
-        // 独立分包时，getApp() === undefined
         render(wrapper, this._controller);
       }
 
@@ -94,13 +93,9 @@ function createConfig(PageComponent: React.ComponentType<any>) {
     },
 
     onUnload(...rest) {
-      monaPrint.log('onUnload', ...rest);
-
       this._controller.stopUpdate();
-      this.$callLifecycle(PageLifecycle.unload);
-      if (app) {
-        app.removePage(this);
-      }
+      this.$callLifecycle(PageLifecycle.unload, ...rest);
+      app?.removePage(this);
     },
 
     onReady(...params: any[]) {

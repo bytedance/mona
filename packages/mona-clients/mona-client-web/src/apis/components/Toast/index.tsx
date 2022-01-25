@@ -1,33 +1,30 @@
-import React from 'react'
+import React from 'react';
 import ReactDOM from 'react-dom';
-import { ShowToastOptions } from '@bytedance/mona'
+import { ShowToastOptions } from '@bytedance/mona';
 import './index.module.less';
 import { getToastIconConfig, ToastType } from './util';
-import { hide } from '../util'
+import { hide } from '../util';
 
 export * from './util';
 
 const MONA_WEB_TOAST = 'mona-web-toast';
 
-export const webHideToast = () => hide(MONA_WEB_TOAST)
+export const webHideToast = () => hide(MONA_WEB_TOAST);
 
 export function Toast({ title, icon = 'success' }: ShowToastOptions): JSX.Element {
   const { url, className } = getToastIconConfig(icon);
   return (
     <div className="mona-web-toast-body">
-      {url && (
-        <img
-          className={`mona-web-toast-${className}-img`}
-          src={url}
-          alt={className}
-        />
-      )}
+      {url && <img className={`mona-web-toast-${className}-img`} src={url} alt={className} />}
       <span className="mona-web-toast-text">{title}</span>
     </div>
   );
 }
 
-export function Toastconfirm(config: ShowToastOptions, popType: ToastType) {
+export function Toastconfirm(config: ShowToastOptions, popType?: ToastType) {
+  if (!config?.title) {
+    return;
+  }
   const container = document.createElement('div');
   container.id = MONA_WEB_TOAST;
 
@@ -36,7 +33,7 @@ export function Toastconfirm(config: ShowToastOptions, popType: ToastType) {
   }
 
   const successCallbackText = { errMsg: 'showToast:ok' };
-  const errorCallbackText = { errMsg: `showToast:fail params.title should be string, but got ${typeof config.title} ` }
+  const errorCallbackText = { errMsg: `showToast:fail params.title should be string, but got ${typeof config.title} ` };
 
   function render() {
     let timer = null;
@@ -68,9 +65,9 @@ export function Toastconfirm(config: ShowToastOptions, popType: ToastType) {
 
 export function webShowToast(config: ShowToastOptions) {
   if (!config.title) {
-    config.fail?.({
-      errMsg: 'showToast调用失败'
-    });
+    const errMsg = 'showToast:fail';
+    config?.fail?.({ errMsg });
+    config?.complete?.({ errMsg });
   } else {
     Toastconfirm(config, ToastType.toast);
   }
