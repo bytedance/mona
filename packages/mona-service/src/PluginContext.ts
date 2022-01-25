@@ -1,7 +1,6 @@
 import Builder, { RawWebpackConfigFn, ChainWebpackConfigFn } from "./Builder";
 import ICommand, { ICommandCallback, ICommandOptions } from "./ICommand";
 import log from "./utils/log";
-// import TargetContext from './TargetContext';
 import ITarget, { ITargetCallback } from "./ITarget";
 
 class PluginContext {
@@ -13,6 +12,10 @@ class PluginContext {
     this._commandMap = new Map();
     this._targetMap = new Map();
     this.builder = new Builder();
+  }
+
+  get configHelper() {
+    return this.builder.configHelper;
   }
 
   registerCommand(name: string, options: ICommandOptions, fn: ICommandCallback) {

@@ -5,8 +5,17 @@ export { default as Service } from './Service';
 export { default as PluginContext } from './PluginContext';
 export { default as ICommand } from './ICommand';
 
+const pathToPlugin = (pathname: string) => require(pathname);
+
+const buildInPlugins = [
+  './commands/build',
+  // './commands/start',
+  './config/asset',
+  './target/web/index'
+].map(name => pathToPlugin(name));
+
 function main() {
-  const service = new Service([]);
+  const service = new Service(buildInPlugins);
 
   service.install();
   service.run();

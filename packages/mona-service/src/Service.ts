@@ -10,17 +10,17 @@ class Service {
   private _plugins: IPlugin[] = [];
   private _pluginContext: PluginContext;
   
-  constructor(plugins: string[]) {
+  constructor(plugins: IPlugin[]) {
     this.addPlugins(plugins);
     this._pluginContext = new PluginContext();
   }
 
-  addPlugins(plugins: string[]) {
-    plugins.forEach(p => {
-      const pluginPath = require.resolve(p);
-      const result: IPlugin = require(pluginPath);
-      this._plugins.push(result);
-    })
+  addPlugins(plugins: IPlugin[]) {
+    for (let i = 0; i < plugins.length; i++) {
+      if (typeof plugins[i] === 'function') {
+        this._plugins.push(plugins[i])
+      }
+    }
   }
 
   install() {
@@ -59,8 +59,12 @@ class Service {
       const { target: targetName } = cmdArgv;
       // find target builder
       const target = pluginContext.getTarget(targetName);
-      target?.runTarget()
-      cmd.runCommand(cmdArgv, target?.targetContext.builder)
+      if (target) {
+        target.runTarget()
+        cmd.runCommand(cmdArgv, target.targetContext.builder)
+      } else {
+        log.error(`invalid target -- ${targetName}`);
+      }
     } else {
       cmd.runCommand(cmdArgv);
     }
