@@ -49,9 +49,9 @@ export function processProps(props: Record<string, any>, node: ServerElement) {
 }
 
 /**
- * 需更新的2种情况
- * ①新无旧有,设为null。
- * ②新旧value不同的。
+ * 2 situations that need to be updated
+ * 1. new not owned, old owned。
+ * 2. new ！== old
  */
 export function diffProperties(oldProps: Record<string, any>, newProps: Record<string, any>) {
   let propKey: string;
@@ -66,7 +66,8 @@ export function diffProperties(oldProps: Record<string, any>, newProps: Record<s
       newStyle = newProps[propKey];
       if (isObject(oldStyle)) {
         for (styleKey in oldStyle) {
-          // 小程序中style 为 'color:white; font-size:16rpx;'的形式。所以有一个不同，style全更新
+          // The attribute of style in the miniapp is 'color:white; font-size:16rpx;'
+          // There is a property that is different and The style needs to be updated
           if (!newStyle?.hasOwnProperty(styleKey)) {
             propUpdateObj[propKey] = newProps[propKey];
             break;
@@ -74,7 +75,8 @@ export function diffProperties(oldProps: Record<string, any>, newProps: Record<s
         }
       }
     } else if (!newProps.hasOwnProperty(propKey)) {
-      // undefined 代表读取默认属性，null代表设为空
+      // undefined: default prop
+      // null: set property to empty
       propUpdateObj[propKey] = undefined;
     }
   }

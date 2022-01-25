@@ -1,5 +1,4 @@
-import { ConcatSource } from 'webpack-sources';
-import { Compiler, Compilation } from 'webpack';
+import { Compiler, Compilation, sources } from 'webpack';
 import path from 'path';
 import { slash } from '@/utils/utils';
 
@@ -31,8 +30,9 @@ export default class OptimizeEntriesPlugin {
             }
           });
           const chunkPath = group.name + '.js';
-          //@ts-ignore
-          compilation.assets[chunkPath] = new ConcatSource(...imports, compilation.assets[chunkPath] ?? '');
+          if (compilation.getAsset(chunkPath)) {
+            compilation.updateAsset(chunkPath, Source => new sources.ConcatSource(...imports, Source));
+          }
         }
       });
     });

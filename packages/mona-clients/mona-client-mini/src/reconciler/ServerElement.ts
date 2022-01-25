@@ -50,9 +50,9 @@ export default class ServerElement {
     this.taskController.requestUpdate(task);
   }
 
-  // 清楚自身&子节点挂载的callback
+  // Clear the events of itself and subtrees
   clearEvents() {
-    // Set.forEach传入要包裹一层函数 ,否则this指向会改变
+    // The callback of Set.forEach needs to wrap a layer of functions, otherwise the this pointer will change
     // bug case: forEach(this.taskController.removeCallback)
     this.eventsCallbackList.forEach(c => {
       this.taskController.removeCallback(c);

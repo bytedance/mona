@@ -8,7 +8,7 @@ export function isFunction(value: any) {
 }
 
 export function isObject(o: any) {
-  return null !== o && typeof 'object' === o;
+  return null !== o && 'object' === typeof o;
 }
 
 export const monaPrint = {

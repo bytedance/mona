@@ -1,6 +1,6 @@
 import scheduler from 'scheduler';
-import TaskController from './TaskController';
 import ServerElement, { NodeType } from './ServerElement';
+import TaskController from './TaskController';
 import { diffProperties, processProps } from './processProps';
 import { isObject } from '../utils/utils';
 

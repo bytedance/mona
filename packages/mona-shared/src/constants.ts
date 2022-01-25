@@ -47,6 +47,15 @@ const MiniComponentType = {
   ptext: '36',
 };
 
+// if (process.env.NODE_ENV === 'development') {
+//   for (const i in MiniComponentType) {
+//     if (i !== 'ptext') {
+//       // @ts-ignore
+//       MiniComponentType[i] === i;
+//     }
+//   }
+// }
+
 export const webComponentType = {
   span: MiniComponentType.text,
   div: MiniComponentType.view,
