@@ -1,8 +1,8 @@
 import Config from 'webpack-chain';
 import ConfigHelper from '@/ConfigHelper';
 import { MonaPlugins } from '../plugins';
-import { HTML_HANDLE_TAG } from '../constants';
 import getEnv from '../utils/getEnv';
+import { TARGET, genPluginHtml } from './constants';
 
 export function chainPlugins(webpackConfig: Config, configHelper: ConfigHelper) {
   const { cwd } = configHelper;
@@ -38,21 +38,5 @@ export function chainPlugins(webpackConfig: Config, configHelper: ConfigHelper) 
       },
     }),
   );
-  webpackConfig.plugin('DefinePlugin').use(DefinePlugin, [getEnv('plugin', cwd)]);
+  webpackConfig.plugin('DefinePlugin').use(DefinePlugin, [getEnv(TARGET, cwd)]);
 }
-
-export const genPluginHtml = (buildId: string) => {
-  return `
-  <!-- ${HTML_HANDLE_TAG} -->
-  <!DOCTYPE html>
-  <html id="${buildId}">
-    <head>
-      <meta charset="utf-8">
-      <title>Mona Plugin</title>
-      <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover"></head>
-    <body>
-      <div id="root"></div>
-    </body>
-  </html>
-  `;
-};

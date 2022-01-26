@@ -1,14 +1,56 @@
+import chalk from 'chalk';
 import path from 'path';
+import webpack from 'webpack';
+
+import WebpackDevServer from 'webpack-dev-server';
 import { IPlugin } from '../../Service';
+import { DEAULT_HOST, DEFAULT_PORT } from '../constants';
 import { chainModuleRule } from './chainModuleRule';
 import { chainOptimization } from './chainOptimization';
 import { chainPlugins } from './chainPlugins';
 import { chainResolve } from './chainResolve';
-
+import { TARGET } from './constants';
 const plugin: IPlugin = ctx => {
   const configHelper = ctx.configHelper;
 
-  ctx.registerTarget('plugin', tctx => {
+  ctx.registerTarget(TARGET, tctx => {
+    tctx.overrideStartCommand(args => {
+      const { builder } = tctx;
+      const webpackConfig = builder.resolveWebpackConfig();
+      if (!webpackConfig) {
+        return;
+      }
+
+      if (builder) {
+        const compiler = webpack(webpackConfig);
+        const { cwd, projectConfig } = builder.configHelper;
+        const staticDir = path.join(cwd, projectConfig.output);
+        const port = args.port || DEFAULT_PORT;
+
+        const devServer = new WebpackDevServer(
+          {
+            static: {
+              directory: staticDir,
+            },
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+            },
+            hot: true,
+            open: true,
+            historyApiFallback: true,
+            compress: true,
+            port,
+            allowedHosts: 'all',
+            host: DEAULT_HOST,
+          },
+          compiler,
+        );
+
+        devServer.startCallback(() => {
+          console.log(chalk.green(`服务启动成功： http://${DEAULT_HOST}:${port}`));
+        });
+      }
+    });
     tctx.chainWebpack(webpackConfig => {
       const { isDev } = configHelper;
       const { cwd, projectConfig } = configHelper;

@@ -4,11 +4,12 @@ import { chainModuleRule } from './chainModuleRule';
 import { chainOptimization } from './chainOptimization';
 import { chainPlugins } from './chainPlugins';
 import { chainResolve } from './chainResolve';
+import { TARGET } from './constants';
 
 const web: IPlugin = ctx => {
   const configHelper = ctx.configHelper;
 
-  ctx.registerTarget('web', tctx => {
+  ctx.registerTarget(TARGET, tctx => {
     const { entryPath, cwd, projectConfig } = configHelper;
 
     tctx.configureWebpack(() => ({

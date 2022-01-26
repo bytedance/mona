@@ -1,22 +1,8 @@
 import Config from 'webpack-chain';
 import ConfigHelper from '@/ConfigHelper';
 import { MonaPlugins } from '../plugins';
-import { HTML_HANDLE_TAG } from '../constants';
 import getEnv from '../utils/getEnv';
-
-const WEB_HTML = `
-<!-- ${HTML_HANDLE_TAG} -->
-<!DOCTYPE html>
-<html style="font-size: 10vw">
-  <head>
-    <meta charset="utf-8">
-    <title>Mona Web</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover"></head>
-  <body style="padding: 0; margin: 0;">
-    <div id="root"></div>
-  </body>
-</html>
-`;
+import { WEB_HTML, TARGET } from './constants';
 
 export function chainPlugins(webpackConfig: Config, configHelper: ConfigHelper) {
   const { cwd, isDev } = configHelper;
@@ -50,5 +36,5 @@ export function chainPlugins(webpackConfig: Config, configHelper: ConfigHelper) 
       },
     }),
   );
-  webpackConfig.plugin('DefinePlugin').use(DefinePlugin, [getEnv('web', cwd)]);
+  webpackConfig.plugin('DefinePlugin').use(DefinePlugin, [getEnv(TARGET, cwd)]);
 }

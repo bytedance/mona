@@ -2,7 +2,7 @@ import path from 'path';
 import Config from 'webpack-chain';
 
 import ConfigHelper from '@/ConfigHelper';
-
+import { TARGET } from './constants';
 import { genAlias } from './chainResolve';
 import { MonaPlugins } from '../plugins';
 import createPxtransformConfig from '../utils/createPxtransformConfig';
@@ -36,19 +36,19 @@ function createJsRule(webpackConfig: Config, configHelper: ConfigHelper) {
         configHelper.isDev && require.resolve('react-refresh/babel'),
         projectConfig.enableMultiBuild && [
           path.join(__dirname, '../plugins/babel/BabelPluginMultiTarget.js'),
-          { target: 'web', context: cwd, alias: genAlias(cwd) },
+          { target: TARGET, context: cwd, alias: genAlias(cwd) },
         ],
       ].filter(Boolean),
     });
   jsRule
     .use('ttComponentLoader')
     .loader(path.resolve(__dirname, '../loaders/ImportCustomComponentLoader'))
-    .options({ target: 'web' });
+    .options({ target: TARGET });
 }
 function createCssRule(webpackConfig: Config, configHelper: ConfigHelper) {
   const { projectConfig } = configHelper;
 
-  const pxtOptions = createPxtransformConfig('web', projectConfig);
+  const pxtOptions = createPxtransformConfig(TARGET, projectConfig);
 
   const cssRule = webpackConfig.module.rule('css').test(/\.(c|le)ss$/i);
 
