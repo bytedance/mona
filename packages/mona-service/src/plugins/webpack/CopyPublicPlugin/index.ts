@@ -1,4 +1,4 @@
-import ConfigHelper from '../../../../ConfigHelper';
+import ConfigHelper from '@/ConfigHelper';
 import { Compiler } from 'webpack';
 import fs from 'fs';
 import path from 'path';

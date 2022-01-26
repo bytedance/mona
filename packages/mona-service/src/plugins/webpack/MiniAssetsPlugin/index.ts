@@ -1,4 +1,4 @@
-import ConfigHelper from '../../../../ConfigHelper';
+import ConfigHelper from '@/ConfigHelper';
 import { Compiler, EntryPlugin } from 'webpack';
 
 import createJson, { addUsingComponents } from './createJson';
@@ -6,8 +6,8 @@ import createJson, { addUsingComponents } from './createJson';
 import path from 'path';
 import createTtml from './createTtml';
 import createNativeFile from './nativeFile';
-import monaStore from '../../../store';
-import { TtPageEntry } from '../../../entires/ttPageEntry';
+import monaStore from '@/target/store';
+import { TtPageEntry } from '@/target/entires/ttPageEntry';
 class MiniAssetsPlugin {
   configHelper: ConfigHelper;
   pluginName = 'MiniAssetsPlugin';

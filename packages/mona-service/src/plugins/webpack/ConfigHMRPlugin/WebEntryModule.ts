@@ -2,7 +2,7 @@ import path from 'path';
 import VirtualModulesPlugin from '../VirtualModulesPlugin';
 import { formatAppConfig, readConfig } from '@bytedance/mona-shared';
 import { PageConfig } from '@bytedance/mona';
-import ConfigHelper from '../../../../ConfigHelper';
+import ConfigHelper from '@/ConfigHelper';
 
 class WebEntryModule {
   configHelper: ConfigHelper;
@@ -53,7 +53,10 @@ class WebEntryModule {
     const pages = Array.from(new Set((this.configHelper.appConfig.pages || []) as string[]));
     let routesCode = pages.map((page, index) => `import Page${index} from './${page}';`).join('');
     routesCode += `const routes = [${pages
-      .map((page, index) => `{ path: '${page}', component: createPageLifecycle(Page${index}), title: '${this.getPageTitle(page)}' }`)
+      .map(
+        (page, index) =>
+          `{ path: '${page}', component: createPageLifecycle(Page${index}), title: '${this.getPageTitle(page)}' }`,
+      )
       .join(',')}];`;
     return routesCode;
   }

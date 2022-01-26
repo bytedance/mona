@@ -2,7 +2,7 @@ import path from 'path';
 import VirtualModulesPlugin from '../VirtualModulesPlugin';
 import { readConfig } from '@bytedance/mona-shared';
 import { PageConfig } from '@bytedance/mona';
-import ConfigHelper from '../../../../ConfigHelper';
+import ConfigHelper from '@/ConfigHelper';
 
 export const MONA_PUBLIC_PATH = '__mona_public_path__'
 

@@ -1,6 +1,7 @@
 import ConfigHelper from '@/ConfigHelper';
 import Config from 'webpack-chain';
-import { MonaPlugins } from '../plugins';
+import { MonaPlugins } from '@/plugins';
+
 const extensions = ['.js', '.mjs', '.jsx', '.ts', '.tsx', '.json'];
 
 export function chainOptimization(webpackConfig: Config, configHelper: ConfigHelper) {

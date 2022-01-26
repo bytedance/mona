@@ -1,9 +1,9 @@
-import ConfigHelper from '../../../../ConfigHelper';
-import { TtPageEntry } from '../../../entires/ttPageEntry';
+import ConfigHelper from '@/ConfigHelper';
+import { TtPageEntry } from '@/target/entires/ttPageEntry';
 
 import { Compilation, sources } from 'webpack';
 
-import monaStore from '../../../store';
+import monaStore from '@/target/store';
 
 const RawSource = sources.RawSource;
 

@@ -3,7 +3,8 @@ import path from 'path';
 import webpack from 'webpack';
 
 import { IPlugin } from '../../Service';
-import { MonaPlugins } from '../plugins';
+import { MonaPlugins } from '@/plugins';
+
 import { chainModuleRule } from './chainModuleRule';
 import { chainOptimization } from './chainOptimization';
 import { chainPlugins } from './chainPlugins';

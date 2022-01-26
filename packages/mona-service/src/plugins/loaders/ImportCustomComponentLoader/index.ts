@@ -1,8 +1,8 @@
 import { LoaderContext } from 'webpack';
 import path from 'path';
-import monaStore from '../../store';
-import { TtComponentEntry } from '../../entires/ttComponentEntry';
-import { TtPageEntry } from '../../entires/ttPageEntry';
+import monaStore from '@/target/store';
+import { TtComponentEntry } from '@/target/entires/ttComponentEntry';
+import { TtPageEntry } from '@/target/entires/ttPageEntry';
 
 // import monaStore from '../store';
 

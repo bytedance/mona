@@ -1,12 +1,16 @@
 import path from 'path';
 import ejs from 'ejs';
 import { Compilation, sources } from 'webpack';
-import ConfigHelper from '../../../../ConfigHelper';
-import { noChildElements } from '../../../alias/constants';
+import ConfigHelper from '@/ConfigHelper';
+
+import { noChildElements } from '@/target/alias/constants';
 import { RENDER_NODE, ComponentAliasMap, CUSTOM_REF } from '@bytedance/mona-shared';
 
-import monaStore from '../../../store';
-import { formatReactNodeName } from '../../../utils/reactNode';
+import monaStore from '@/target/store';
+import { formatReactNodeName } from '@/target/utils/reactNode';
+
+const ejsRelativePath = '../../../assets/ejs';
+
 export function getAliasMap(ejsParamsMap: Map<string, any>) {
   const result = new Map();
   for (const nodeType of Array.from(ejsParamsMap.keys())) {
@@ -68,8 +72,7 @@ export default async function createTtml(compilation: Compilation, configHelper:
 
   const file = `base.ttml`;
   if (!compilation.getAsset(file)) {
-    
-    const tplPath = path.join(__dirname, '../../../ejs', './base.ttml.ejs');
+    const tplPath = path.join(__dirname, ejsRelativePath, './base.ttml.ejs');
     let content = await ejs.renderFile(
       tplPath,
       {
@@ -104,7 +107,7 @@ export default async function createTtml(compilation: Compilation, configHelper:
       return;
     }
 
-    const tplPath = path.join(__dirname, '../../../ejs', './page.ttml.ejs');
+    const tplPath = path.join(__dirname, ejsRelativePath, './page.ttml.ejs');
     const content = await ejs.renderFile(tplPath, { pageId: pageDistPath });
     const source = new RawSource(content);
     compilation.emitAsset(file, source);

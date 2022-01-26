@@ -1,9 +1,9 @@
 import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
-import { transformNodeName } from '../../utils/reactNode';
+import { transformNodeName } from '@/target/utils/reactNode';
 import { miniPro2rcPropMap, renderMapAction } from './renderStore';
-import monaStore from '../../store';
-import { isReactCall, isStringLiteral } from '../../utils/babel';
+import monaStore from '@/target/store';
+import { isReactCall, isStringLiteral } from '@/target/utils/babel';
 
 export default function perfTemplateRender() {
   return {

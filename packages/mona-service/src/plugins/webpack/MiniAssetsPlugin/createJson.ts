@@ -2,19 +2,19 @@ import path from 'path';
 import ejs from 'ejs';
 import { readConfig } from '@bytedance/mona-shared';
 import { PageConfig } from '@bytedance/mona';
-import { DEFAULT_APPID } from '../../../constants';
-import ConfigHelper from '../../../../ConfigHelper';
+import ConfigHelper from '@/ConfigHelper';
 import { formatAppConfig } from '@bytedance/mona-shared';
 
 import { Compilation, sources, NormalModule } from 'webpack';
 
-import monaStore from '../../../store';
+import monaStore from '@/target/store';
 import { processNativePath } from '../../babel/CollectImportComponent';
-import { getPageEntryPath, getRelativePath } from '../../../utils/utils';
-import { formatReactNodeName } from '../../../utils/reactNode';
+import { getPageEntryPath, getRelativePath } from '@/target/utils/utils';
+import { formatReactNodeName } from '@/target/utils/reactNode';
+import { DEFAULT_APPID } from '@/target/constants';
 
 const RawSource = sources.RawSource;
-
+const ejsRelativePath = '../../../assets/ejs';
 export default async function createJson(compilation: Compilation, configHelper: ConfigHelper) {
   const { appConfig, cwd, projectConfig } = configHelper;
   const pages: string[] = appConfig.pages ?? [];
@@ -22,7 +22,7 @@ export default async function createJson(compilation: Compilation, configHelper:
   // project.config.json
   const projectFile = 'project.config.json';
   if (!compilation.getAsset(projectFile)) {
-    const tplPath = path.join(__dirname, '../../../ejs', './project.config.js.ejs');
+    const tplPath = path.join(__dirname, ejsRelativePath, './project.config.js.ejs');
     const raw = await ejs.renderFile(tplPath, {
       appid: projectConfig.appId || DEFAULT_APPID,
       name: projectConfig.projectName,

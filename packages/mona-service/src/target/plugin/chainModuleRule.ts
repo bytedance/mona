@@ -5,7 +5,8 @@ import loaderUtils from 'loader-utils';
 import ConfigHelper from '@/ConfigHelper';
 
 import { genAlias } from './chainResolve';
-import { MonaPlugins } from '../plugins';
+import { MonaPlugins } from '@/plugins';
+
 import { TARGET } from './constants';
 
 export function chainModuleRule(webpackConfig: Config, configHelper: ConfigHelper) {
@@ -36,14 +37,14 @@ function createJsRule(webpackConfig: Config, configHelper: ConfigHelper) {
         [require.resolve('@babel/plugin-transform-runtime'), { regenerator: true }],
         configHelper.isDev && require.resolve('react-refresh/babel'),
         projectConfig.enableMultiBuild && [
-          path.join(__dirname, '../plugins/babel/BabelPluginMultiTarget.js'),
+          path.join(__dirname, '../../plugins/babel/BabelPluginMultiTarget.js'),
           { target: TARGET, context: cwd, alias: genAlias(cwd) },
         ],
       ].filter(Boolean),
     });
   jsRule
     .use('ttComponentLoader')
-    .loader(path.resolve(__dirname, '../loaders/ImportCustomComponentLoader'))
+    .loader(path.resolve(__dirname, '../../plugins/loaders/ImportCustomComponentLoader'))
     .options({ target: TARGET });
 }
 function createCssRule(webpackConfig: Config, configHelper: ConfigHelper) {
@@ -95,7 +96,7 @@ function createCssRule(webpackConfig: Config, configHelper: ConfigHelper) {
           plugins: [
             require.resolve('postcss-import'),
             [
-              path.join(__dirname, '../plugins/postcss/PostcssPreSelector.js'),
+              path.join(__dirname, '../../plugins/postcss/PostcssPreSelector.js'),
               { selector: `#${configHelper.buildId}` },
             ],
           ],

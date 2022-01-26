@@ -1,9 +1,9 @@
-import ConfigHelper from '../../../../ConfigHelper';
+import ConfigHelper from '@/ConfigHelper';
 import { searchScriptFile } from '@bytedance/mona-shared';
 import path from 'path';
 import VirtualModulesPlugin from '../VirtualModulesPlugin';
-import { TtPageEntry } from '../../../entires/ttPageEntry';
-import { genTtPageEntry } from '../../../entires/util';
+import { TtPageEntry } from '@/target/entires/ttPageEntry';
+import { genTtPageEntry } from '@/target/entires/util';
 export default class MiniEntryModule {
   entries: Record<string, string> = {};
   module: VirtualModulesPlugin;

@@ -1,6 +1,7 @@
 import Config from 'webpack-chain';
 import ConfigHelper from '@/ConfigHelper';
-import { MonaPlugins } from '../plugins';
+import { MonaPlugins } from '@/plugins';
+
 import getEnv from '../utils/getEnv';
 import { WEB_HTML, TARGET } from './constants';
 

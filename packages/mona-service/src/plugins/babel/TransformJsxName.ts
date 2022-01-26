@@ -1,7 +1,7 @@
 import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import { ComponentType, ComponentAliasMap } from '@bytedance/mona-shared';
-import { isReactCall, isStringLiteral } from '../../utils/babel';
+import { isReactCall, isStringLiteral } from '@/target/utils/babel';
 
 // const specialLabel = new Set(['script', 'react']);
 // 1. 用于将开头小写的jsx，例如view、div等转换为ComponentType中的别名。两个作用①压缩jsx名称②转换jsx名称，例如div->view

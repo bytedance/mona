@@ -1,11 +1,11 @@
 import { NodePath } from '@babel/traverse';
-import monaStore from '../../store';
+import monaStore from '@/target/store';
 import nodePath from 'path';
 import * as t from '@babel/types';
-import { formatReactNodeName } from '../../utils/reactNode';
-import ConfigHelper from '../../../ConfigHelper';
-import { TtComponentEntry } from '../../entires/ttComponentEntry';
-import { genNativeComponentEntry } from '../../entires/util';
+import { formatReactNodeName } from '@/target/utils/reactNode';
+import ConfigHelper from '@/ConfigHelper';
+import { TtComponentEntry } from '@/target/entires/ttComponentEntry';
+import { genNativeComponentEntry } from '@/target/entires/util';
 import { CUSTOM_COMPONENT_PROTOCOL } from '@bytedance/mona-shared';
 // 收集从pages中引入的native Component, 以及props，
 export default function collectNativeComponent(configHelper: ConfigHelper) {

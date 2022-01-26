@@ -5,7 +5,8 @@ import ConfigHelper from '@/ConfigHelper';
 import { TARGET } from './constants';
 
 import { genAlias } from './chainResolve';
-import { MonaPlugins } from '../plugins';
+import { MonaPlugins } from '@/plugins';
+
 import createPxtransformConfig from '../utils/createPxtransformConfig';
 
 export function chainModuleRule(webpackConfig: Config, configHelper: ConfigHelper) {
@@ -38,7 +39,7 @@ function createJsRule(webpackConfig: Config, configHelper: ConfigHelper) {
       plugins: [
         collectNativeComponent.bind(null, configHelper),
         projectConfig.enableMultiBuild && [
-          path.join(__dirname, '../plugins/babel/BabelPluginMultiTarget.js'),
+          path.join(__dirname, '../../plugins/babel/BabelPluginMultiTarget.js'),
           { target: TARGET, context: cwd, alias: genAlias(configHelper.cwd) },
         ],
       ].filter(Boolean),
@@ -48,7 +49,7 @@ function createJsRule(webpackConfig: Config, configHelper: ConfigHelper) {
 
   jsRule
     .use('ttComponentLoader')
-    .loader(path.resolve(__dirname, '../loaders/ImportCustomComponentLoader'))
+    .loader(path.resolve(__dirname, '../../plugins/loaders/ImportCustomComponentLoader'))
     .options({ target: TARGET })
     .end();
 }
@@ -79,7 +80,7 @@ function createCssRule(webpackConfig: Config, configHelper: ConfigHelper) {
         plugins: [
           require.resolve('postcss-import'),
           pxtOptions.enabled
-            ? [path.join(__dirname, '../plugins/postcss/PostcssPxtransformer/index.js'), pxtOptions]
+            ? [path.join(__dirname, '../../plugins/postcss/PostcssPxtransformer/index.js'), pxtOptions]
             : null,
         ].filter(p => p),
       },

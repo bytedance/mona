@@ -1,4 +1,4 @@
-import ConfigHelper from '../../../../ConfigHelper';
+import ConfigHelper from '@/ConfigHelper';
 import { Compiler } from 'webpack';
 import chokidar from 'chokidar';
 import PluginEntryModule from './PluginEntryModule';

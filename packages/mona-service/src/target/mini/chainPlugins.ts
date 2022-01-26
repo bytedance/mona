@@ -1,7 +1,8 @@
 import Config from 'webpack-chain';
 import ConfigHelper from '@/ConfigHelper';
 import { TARGET } from './constants';
-import { MonaPlugins } from '../plugins';
+import { MonaPlugins } from '@/plugins';
+
 import getEnv from '../utils/getEnv';
 
 export function chainPlugins(webpackConfig: Config, configHelper: ConfigHelper, miniEntryPlugin: any) {
