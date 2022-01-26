@@ -1,11 +1,11 @@
 import path from 'path';
 import Config from 'webpack-chain';
+import loaderUtils from 'loader-utils';
 
 import ConfigHelper from '@/ConfigHelper';
 
 import { genAlias } from './chainResolve';
 import { MonaPlugins } from '../plugins';
-import createPxtransformConfig from '../utils/createPxtransformConfig';
 
 export function chainModuleRule(webpackConfig: Config, configHelper: ConfigHelper) {
   createJsRule(webpackConfig, configHelper);
@@ -46,10 +46,6 @@ function createJsRule(webpackConfig: Config, configHelper: ConfigHelper) {
     .options({ target: 'web' });
 }
 function createCssRule(webpackConfig: Config, configHelper: ConfigHelper) {
-  const { projectConfig } = configHelper;
-
-  const pxtOptions = createPxtransformConfig('web', projectConfig);
-
   const cssRule = webpackConfig.module.rule('css').test(/\.(c|le)ss$/i);
 
   createRule(cssRule);
@@ -68,6 +64,26 @@ function createCssRule(webpackConfig: Config, configHelper: ConfigHelper) {
         modules: {
           auto: true,
           localIdentName: '[local]_[hash:base64:5]',
+          getLocalIdent: (loaderContext: any, localIdentName: string, localName: string, options: any) => {
+            // 配合PostcssPreSelector插件
+            if (localName === configHelper.buildId) {
+              return localName;
+            }
+
+            if (!options.context) {
+              options.context = loaderContext.rootContext;
+            }
+
+            const request = path.relative(options.context, loaderContext.resourcePath).replace(/\\/g, '/');
+
+            options.content = `${options.hashPrefix + request}+${localName}`;
+
+            localIdentName = localIdentName.replace(/\[local\]/gi, localName);
+
+            const hash = loaderUtils.interpolateName(loaderContext, localIdentName, options);
+
+            return hash;
+          },
         },
       });
     styleRule
@@ -77,10 +93,11 @@ function createCssRule(webpackConfig: Config, configHelper: ConfigHelper) {
         postcssOptions: {
           plugins: [
             require.resolve('postcss-import'),
-            pxtOptions.enabled
-              ? [path.join(__dirname, '../plugins/postcss/PostcssPxtransformer/index.js'), pxtOptions]
-              : null,
-          ].filter(p => p),
+            [
+              path.join(__dirname, '../plugins/postcss/PostcssPreSelector.js'),
+              { selector: `#${configHelper.buildId}` },
+            ],
+          ],
         },
       });
     styleRule

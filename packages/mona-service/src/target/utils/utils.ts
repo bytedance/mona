@@ -1,4 +1,5 @@
 import path from 'path';
+import { hexMD5 } from './md5';
 
 export function slash(path: string) {
   if (!path) {
@@ -19,4 +20,19 @@ export function getRelativePath(from: string, to: string) {
   const toDirName = path.extname(to) ? path.dirname(to) : to;
 
   return path.relative(fromDirName, toDirName);
+}
+
+export function createUniqueId() {
+  const random = () => Number(Math.random().toString().substr(2)).toString(36);
+  const arr = [String(Date.now())];
+  function createId() {
+    var num = random();
+    arr.push(num);
+  }
+  var i = 0;
+  while (i < 4) {
+    createId();
+    i++;
+  }
+  return hexMD5(arr.join(','));
 }

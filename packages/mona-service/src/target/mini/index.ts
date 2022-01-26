@@ -10,19 +10,14 @@ const mini: IPlugin = ctx => {
   const configHelper = ctx.configHelper;
 
   ctx.registerTarget('mini', tctx => {
-    const { cwd, projectConfig } = configHelper;
-
-    tctx.overrideStartCommand(()=>{
-      
-    })
+    const { cwd, projectConfig, isDev } = configHelper;
     tctx.chainWebpack(webpackConfig => {
-      const isProd = process.env.NODE_ENV === 'production';
       const miniEntryPlugin = new MonaPlugins.MiniEntryPlugin(configHelper);
       webpackConfig
         .target('web')
         .devtool(false)
         .merge({ entry: miniEntryPlugin.entryModule.entries })
-        .mode(!isProd ? 'development' : 'production')
+        .mode(isDev ? 'development' : 'production')
         .output.path(path.join(cwd, projectConfig.output))
         .publicPath('/')
         .globalObject('tt');
@@ -30,11 +25,9 @@ const mini: IPlugin = ctx => {
       chainResolve(webpackConfig, configHelper);
       chainModuleRule(webpackConfig, configHelper);
       chainPlugins(webpackConfig, configHelper, miniEntryPlugin);
-      chainOptimization(webpackConfig);
+      chainOptimization(webpackConfig, configHelper);
     });
   });
-
-  
 };
 
 module.exports = mini;

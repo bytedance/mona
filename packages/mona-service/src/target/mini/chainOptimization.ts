@@ -1,10 +1,10 @@
+import ConfigHelper from '@/ConfigHelper';
 import Config from 'webpack-chain';
 import { MonaPlugins } from '../plugins';
 const extensions = ['.js', '.mjs', '.jsx', '.ts', '.tsx', '.json'];
 
-export function chainOptimization(webpackConfig: Config) {
+export function chainOptimization(webpackConfig: Config, configHelper: ConfigHelper) {
   const optimization = webpackConfig.optimization;
-  const isProd = process.env.NODE_ENV === 'production';
   optimization
     .usedExports(true)
     .runtimeChunk('single')
@@ -21,7 +21,7 @@ export function chainOptimization(webpackConfig: Config) {
       },
     });
 
-  optimization.when(isProd, op => {
+  optimization.when(!configHelper.isDev, op => {
     op.minimizer('TerserWebpackPlugin')
       .use(new MonaPlugins.TerserWebpackPlugin({ parallel: true, extractComments: false }))
       .end()

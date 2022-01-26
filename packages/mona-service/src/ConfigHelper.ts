@@ -3,6 +3,7 @@ import fs from 'fs';
 import { AppConfig, ProjectConfig } from '@bytedance/mona';
 import { readConfig, searchScriptFile } from '@bytedance/mona-shared';
 import { DEFAULT_PORT } from './target/constants';
+import { createUniqueId } from './target/utils/utils';
 
 const DEFAULT_PROJECT_CONFIG: ProjectConfig = {
   projectName: 'mona-app',
@@ -23,10 +24,14 @@ class ConfigHelper {
   projectConfig!: ProjectConfig;
   appConfig!: AppConfig;
   entryPath!: string;
+  buildId: string;
+  isDev: boolean;
 
   constructor() {
     this.cwd = process.cwd();
     this.readAllConfig();
+    this.buildId = `_${createUniqueId()}`;
+    this.isDev = process.env.NODE_ENV !== 'production';
   }
 
   readAllConfig() {

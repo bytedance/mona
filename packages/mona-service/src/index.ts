@@ -13,6 +13,7 @@ const buildInPlugins = [
   './config/asset',
   './target/web/index',
   './target/mini/index',
+  './target/plugin/index',
 ].map(name => pathToPlugin(name));
 
 function main() {

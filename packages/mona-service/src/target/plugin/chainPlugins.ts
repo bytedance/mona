@@ -4,22 +4,8 @@ import { MonaPlugins } from '../plugins';
 import { HTML_HANDLE_TAG } from '../constants';
 import getEnv from '../utils/getEnv';
 
-const WEB_HTML = `
-<!-- ${HTML_HANDLE_TAG} -->
-<!DOCTYPE html>
-<html style="font-size: 10vw">
-  <head>
-    <meta charset="utf-8">
-    <title>Mona Web</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover"></head>
-  <body style="padding: 0; margin: 0;">
-    <div id="root"></div>
-  </body>
-</html>
-`;
-
 export function chainPlugins(webpackConfig: Config, configHelper: ConfigHelper) {
-  const { cwd, isDev } = configHelper;
+  const { cwd } = configHelper;
   const {
     CopyPublicPlugin,
     ConfigHMRPlugin,
@@ -30,15 +16,17 @@ export function chainPlugins(webpackConfig: Config, configHelper: ConfigHelper) 
   } = MonaPlugins;
 
   webpackConfig.when(
-    isDev,
+    configHelper.isDev,
     w => w.plugin('ReactRefreshWebpackPlugin').use(ReactRefreshWebpackPlugin),
     w => w.plugin('MiniCssExtractPlugin').use(MiniCssExtractPlugin, [{ filename: '[name].[contenthash:7].css' }]),
   );
-  webpackConfig.plugin('ConfigHMRPlugin').use(ConfigHMRPlugin, [configHelper]);
+  webpackConfig.plugin('ConfigHMRPlugin').use(ConfigHMRPlugin, [configHelper, true]);
+
   webpackConfig.plugin('CopyPublicPlugin').use(CopyPublicPlugin, [configHelper]);
   webpackConfig.plugin('HtmlWebpackPlugin').use(
     new HtmlWebpackPlugin({
-      templateContent: WEB_HTML,
+      templateContent: genPluginHtml(configHelper.buildId),
+
       minify: {
         collapseWhitespace: true,
         keepClosingSlash: true,
@@ -50,5 +38,21 @@ export function chainPlugins(webpackConfig: Config, configHelper: ConfigHelper) 
       },
     }),
   );
-  webpackConfig.plugin('DefinePlugin').use(DefinePlugin, [getEnv('web', cwd)]);
+  webpackConfig.plugin('DefinePlugin').use(DefinePlugin, [getEnv('plugin', cwd)]);
 }
+
+export const genPluginHtml = (buildId: string) => {
+  return `
+  <!-- ${HTML_HANDLE_TAG} -->
+  <!DOCTYPE html>
+  <html id="${buildId}">
+    <head>
+      <meta charset="utf-8">
+      <title>Mona Plugin</title>
+      <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover"></head>
+    <body>
+      <div id="root"></div>
+    </body>
+  </html>
+  `;
+};
