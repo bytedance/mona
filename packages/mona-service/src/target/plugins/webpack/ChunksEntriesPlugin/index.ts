@@ -1,10 +1,11 @@
 import { Compiler, Compilation, sources } from 'webpack';
 import path from 'path';
-import { slash } from '../../../utils/utils';
+// import { slash } from '../../../utils/utils';
+import { slash } from '@/target/utils/utils';
 
-const PLUGIN_NAME = 'OptimizeEntriesPlugin';
+const PLUGIN_NAME = 'MiniEntriesImportChunkPlugin';
 
-// 用于将runtimeChunk 、vendor 引入每个page的入口
+// 用于将runtime 、vendor 引入每个page的入口
 export default class OptimizeEntriesPlugin {
   constructor() {}
 
@@ -20,7 +21,6 @@ export default class OptimizeEntriesPlugin {
   importChunks(compilation: Compilation) {
     compilation.chunkGroups.forEach(group => {
       group.chunks.reverse().forEach((chunk: any) => {
-        // 导入文件
         if (chunk.name !== group.name) {
           const imports: string[] = [];
           chunk.files.forEach((file: string) => {

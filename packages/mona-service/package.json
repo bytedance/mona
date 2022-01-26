@@ -13,8 +13,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "yarn clean && tsc -b",
-    "start": "tsc -b -w",
+    "build": "yarn clean && ttsc -b",
+    "start": "ttsc -b -w",
     "clean": "rm -rf dist"
   },
   "author": "zhangxiaowei.chris@bytedance.com",
