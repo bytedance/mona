@@ -1,6 +1,6 @@
 import minimist from 'minimist';
-import PluginContext from "./PluginContext";
-import log from "./utils/log";
+import PluginContext from './PluginContext';
+import log from './utils/log';
 
 export interface IPlugin {
   (ctx: PluginContext): void;
@@ -9,7 +9,7 @@ export interface IPlugin {
 class Service {
   private _plugins: IPlugin[] = [];
   private _pluginContext: PluginContext;
-  
+
   constructor(plugins: IPlugin[]) {
     this.addPlugins(plugins);
     this._pluginContext = new PluginContext();
@@ -18,7 +18,7 @@ class Service {
   addPlugins(plugins: IPlugin[]) {
     for (let i = 0; i < plugins.length; i++) {
       if (typeof plugins[i] === 'function') {
-        this._plugins.push(plugins[i])
+        this._plugins.push(plugins[i]);
       }
     }
   }
@@ -29,7 +29,7 @@ class Service {
     // apply all plugins
     plugins.forEach(p => {
       p.call(this, this._pluginContext);
-    })
+    });
   }
 
   run() {
@@ -43,16 +43,18 @@ class Service {
       log.error(`invalid command`);
       return;
     }
-    
+
     const alias: Record<string, string> = { h: 'help' };
     const options = cmd.options.options;
-    options?.forEach((option => {
+
+    options?.forEach(option => {
       if (option.alias) {
-        alias[option.alias] = option.name
+        alias[option.alias] = option.name;
       }
-    }))
+    });
+
     const cmdArgv = minimist(process.argv.slice(2), { alias });
-    
+
     // for build and start, pass builder to callback
     const shouldPassBuilder = cmdName === 'build' || cmdName === 'start';
     if (shouldPassBuilder && !cmdArgv.help) {
@@ -60,8 +62,8 @@ class Service {
       // find target builder
       const target = pluginContext.getTarget(targetName);
       if (target) {
-        target.runTarget()
-        cmd.runCommand(cmdArgv, target.targetContext)
+        target.runTarget();
+        cmd.runCommand(cmdArgv, target.targetContext);
       } else {
         log.error(`invalid target -- ${targetName}`);
       }
@@ -71,4 +73,4 @@ class Service {
   }
 }
 
-export default Service
+export default Service;

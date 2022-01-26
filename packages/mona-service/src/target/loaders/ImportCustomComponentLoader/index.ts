@@ -17,7 +17,7 @@ export default async function ImportCustomerComponentLoader(this: LoaderContext<
   const entryPath = resourcePath.replace(/\.entry(?=\.(js|ts)$)/, '');
   const dirName = entryPath.replace(path.extname(entryPath), '');
   const nativeEntry = monaStore.nativeEntryMap.get(dirName);
-  const target = this.getOptions().target as string
+  const target = this.getOptions().target as string;
   let finalSource = source;
   if (nativeEntry) {
     const { virtualSource } = nativeEntry;

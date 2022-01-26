@@ -68,6 +68,7 @@ export default async function createTtml(compilation: Compilation, configHelper:
 
   const file = `base.ttml`;
   if (!compilation.getAsset(file)) {
+    
     const tplPath = path.join(__dirname, '../../../ejs', './base.ttml.ejs');
     let content = await ejs.renderFile(
       tplPath,

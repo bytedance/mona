@@ -1,0 +1,110 @@
+import path from 'path';
+import Config from 'webpack-chain';
+
+import ConfigHelper from '@/ConfigHelper';
+
+import { genAlias } from './chainResolve';
+import { MonaPlugins } from '../plugins';
+import createPxtransformConfig from '../utils/createPxtransformConfig';
+
+export function chainModuleRule(webpackConfig: Config, configHelper: ConfigHelper) {
+  createJsRule(webpackConfig, configHelper);
+  createCssRule(webpackConfig, configHelper);
+  createAssetRule(webpackConfig, configHelper);
+}
+
+function createJsRule(webpackConfig: Config, configHelper: ConfigHelper) {
+  const { projectConfig, cwd } = configHelper;
+  const { TransformJsxNamePlugin, collectNativeComponent } = MonaPlugins.babel;
+  const jsRule = webpackConfig.module.rule('js').test(/\.((j|t)sx?)$/i);
+
+  jsRule
+    .use('transformJsxName')
+    .loader(require.resolve('babel-loader'))
+    .options({
+      babelrc: false,
+      plugins: [
+        TransformJsxNamePlugin,
+        projectConfig.compilerOptimization && MonaPlugins.babel.perfTemplateRender,
+      ].filter(Boolean),
+    });
+
+  jsRule
+    .use('babel')
+    .loader(require.resolve('babel-loader'))
+    .options({
+      babelrc: false,
+      plugins: [
+        collectNativeComponent.bind(null, configHelper),
+        projectConfig.enableMultiBuild && [
+          path.join(__dirname, '../plugins/babel/BabelPluginMultiTarget.js'),
+          { target: 'mini', context: cwd, alias: genAlias(configHelper.cwd) },
+        ],
+      ].filter(Boolean),
+      // ! mini端，'@babel/preset-react'，不要添加 "runtime": "automatic" 配置。 可能会导致perfTemplateRender插件收集props遗漏
+      presets: [['@babel/preset-env'], ['@babel/preset-typescript'], ['@babel/preset-react']],
+    });
+
+  jsRule
+    .use('ttComponentLoader')
+    .loader(path.resolve(__dirname, '../loaders/ImportCustomComponentLoader'))
+    .options({ target: 'mini' })
+    .end();
+}
+function createCssRule(webpackConfig: Config, configHelper: ConfigHelper) {
+  const { projectConfig } = configHelper;
+
+  const pxtOptions = createPxtransformConfig('mini', projectConfig);
+  const styleRule = webpackConfig.module.rule('style').test(/\.(c|le)ss$/i);
+
+  styleRule.use('MiniCssExtractPlugin.loader').loader(MonaPlugins.MiniCssExtractPlugin.loader);
+
+  styleRule
+    .use('cssLoader')
+    .loader(require.resolve('css-loader'))
+    .options({
+      importLoaders: 2,
+      modules: {
+        auto: true,
+        localIdentName: '[local]_[hash:base64:5]',
+      },
+    });
+
+  styleRule
+    .use('postcss-loader')
+    .loader(require.resolve('postcss-loader'))
+    .options({
+      postcssOptions: {
+        plugins: [
+          require.resolve('postcss-import'),
+          pxtOptions.enabled
+            ? [path.join(__dirname, '../plugins/postcss/PostcssPxtransformer/index.js'), pxtOptions]
+            : null,
+        ].filter(p => p),
+      },
+    });
+
+  styleRule
+    .use('less')
+    .loader(require.resolve('less-loader'))
+    .options({
+      lessOptions: {
+        javascriptEnabled: true,
+      },
+    });
+}
+
+function createAssetRule(webpackConfig: Config, _configHelper: ConfigHelper) {
+  webpackConfig.module
+    .rule('img')
+    .test(/\.(png|jpe?g|gif|webp)$/i)
+    .set('type', 'asset/resource');
+  webpackConfig.module
+    .rule('svg')
+    .test(/\.svg$/i)
+    .set('type', 'asset/inline');
+  webpackConfig.module
+    .rule('font')
+    .test(/\.(ttf|eot|woff|woff2)$/i)
+    .set('type', 'asset/resource');
+}

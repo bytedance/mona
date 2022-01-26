@@ -13,9 +13,10 @@
     "dist"
   ],
   "scripts": {
-    "build": "yarn clean && ttsc -b",
+    "build": "yarn clean  && yarn copy && ttsc -b",
     "start": "ttsc -b -w",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "copy": "copyfiles -f ./src/target/ejs/*.ejs ./dist/target/ejs"
   },
   "author": "zhangxiaowei.chris@bytedance.com",
   "license": "MIT",

@@ -52,7 +52,6 @@ export class TtComponentEntry {
     const config = this.readConfig();
     const usingComponent = config.usingComponents || {};
     const res = new Set(this._dependencies);
-
     Object.keys(usingComponent).forEach(name => {
       const cPath = usingComponent[name];
       let vPath;
