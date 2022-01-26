@@ -1,14 +1,14 @@
 import path from 'path';
-import { IPlugin }  from '../../Service';
+import { IPlugin } from '../../Service';
 import { chainModuleRule } from './chainModuleRule';
 import { chainOptimization } from './chainOptimization';
 import { chainPlugins } from './chainPlugins';
 import { chainResolve } from './chainResolve';
 
-const web: IPlugin = (ctx) => {
+const web: IPlugin = ctx => {
   const configHelper = ctx.configHelper;
-  
-  ctx.registerTarget('web', (tctx) => {
+
+  ctx.registerTarget('web', tctx => {
     const { entryPath, cwd, projectConfig } = configHelper;
 
     tctx.configureWebpack(() => ({
@@ -19,17 +19,17 @@ const web: IPlugin = (ctx) => {
       output: {
         path: path.join(cwd, projectConfig.output),
         filename: '[name].[contenthash:7].js',
-        publicPath: '/'
-      }
-    }))
+        publicPath: '/',
+      },
+    }));
 
     tctx.chainWebpack(webpackConfig => {
-      chainResolve(webpackConfig, configHelper)
-      chainModuleRule(webpackConfig, configHelper)
-      chainPlugins(webpackConfig, configHelper)
-      chainOptimization(webpackConfig)
-    })
-  })
-}
+      chainResolve(webpackConfig, configHelper);
+      chainModuleRule(webpackConfig, configHelper);
+      chainPlugins(webpackConfig, configHelper);
+      chainOptimization(webpackConfig);
+    });
+  });
+};
 
 module.exports = web;

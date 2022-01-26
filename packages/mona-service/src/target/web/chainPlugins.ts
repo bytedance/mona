@@ -33,7 +33,7 @@ export function chainPlugins(webpackConfig: Config, configHelper: ConfigHelper) 
   webpackConfig.when(
     !isProd,
     w => w.plugin('ReactRefreshWebpackPlugin').use(ReactRefreshWebpackPlugin),
-    w => w.plugin('MiniCssExtractPlugin').use(MiniCssExtractPlugin, [{ filename: '[name].[contenthash:7].css' }])
+    w => w.plugin('MiniCssExtractPlugin').use(MiniCssExtractPlugin, [{ filename: '[name].[contenthash:7].css' }]),
   );
   webpackConfig.plugin('ConfigHMRPlugin').use(ConfigHMRPlugin, [configHelper]);
   webpackConfig.plugin('CopyPublicPlugin').use(CopyPublicPlugin, [configHelper]);
@@ -49,7 +49,7 @@ export function chainPlugins(webpackConfig: Config, configHelper: ConfigHelper) 
         removeStyleLinkTypeAttributes: true,
         useShortDoctype: true,
       },
-    })
+    }),
   );
   webpackConfig.plugin('DefinePlugin').use(DefinePlugin, [getEnv('web', cwd)]);
 }
