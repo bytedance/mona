@@ -1,4 +1,4 @@
-import { genEjsParamsMap } from './alias';
+import { genEjsParamsMap } from './mini/alias';
 import type { TtComponentEntry } from './entires/ttComponentEntry';
 // import { nanoid } from 'nanoid';
 type Path = string;

@@ -31,7 +31,7 @@ const mini: IPlugin = ctx => {
 
       compiler.watch(
         {
-          aggregateTimeout: 500,
+          aggregateTimeout: 300,
         },
         (error: any, stats: any) => {
           if (error) {
