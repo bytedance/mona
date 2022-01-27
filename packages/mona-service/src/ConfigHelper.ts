@@ -13,6 +13,9 @@ const DEFAULT_PROJECT_CONFIG: ProjectConfig = {
   dev: {
     port: DEFAULT_PORT,
   },
+  abilities: {
+    define: {},
+  },
 };
 
 const DEFAULT_APP_CONFIG: AppConfig = {

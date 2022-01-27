@@ -6,7 +6,7 @@ import getEnv from '../utils/getEnv';
 import { WEB_HTML, TARGET } from './constants';
 
 export function chainPlugins(webpackConfig: Config, configHelper: ConfigHelper) {
-  const { cwd, isDev } = configHelper;
+  const { cwd, isDev, projectConfig } = configHelper;
   const {
     CopyPublicPlugin,
     ConfigHMRPlugin,
@@ -37,5 +37,10 @@ export function chainPlugins(webpackConfig: Config, configHelper: ConfigHelper) 
       },
     }),
   );
-  webpackConfig.plugin('DefinePlugin').use(DefinePlugin, [getEnv(TARGET, cwd)]);
+  webpackConfig.plugin('DefinePlugin').use(DefinePlugin, [
+    {
+      ...getEnv(TARGET, cwd),
+      ...(projectConfig?.abilities?.define || {}),
+    },
+  ]);
 }
