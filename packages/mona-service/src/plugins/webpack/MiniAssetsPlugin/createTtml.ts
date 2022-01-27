@@ -3,7 +3,7 @@ import ejs from 'ejs';
 import { Compilation, sources } from 'webpack';
 import ConfigHelper from '@/ConfigHelper';
 
-import { noChildElements } from '@/target/mini/alias/constants';
+import { noChildElements } from '@/target/mini/baseComponents/constants';
 import { RENDER_NODE, ComponentAliasMap, CUSTOM_REF } from '@bytedance/mona-shared';
 
 import monaStore from '@/target/store';
