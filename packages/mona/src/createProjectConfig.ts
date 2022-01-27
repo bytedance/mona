@@ -28,14 +28,15 @@ export interface ProjectConfig {
   abilities?: {
     define?: Record<string, string>;
     copy?: PluginOptions;
-    // pattern
+    css?: {
+      postcss?: {
+        pxtransform?: PostcssPxtransformProps;
+      };
+    };
   };
   raw?: (options: any) => any;
   dev?: {
     port?: number | string;
-  };
-  postcss?: {
-    pxtransform?: PostcssPxtransformProps;
   };
 }
 
