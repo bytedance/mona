@@ -16,7 +16,7 @@
     "build": "yarn clean  && yarn copy && ttsc -b",
     "start": "ttsc -b -w",
     "clean": "rm -rf dist",
-    "copy": "copyfiles -f ./src/assets/ejs/*.ejs ./dist/assets/ejs/"
+    "copy": "copyfiles -u 1 ./src/assets/**/* ./dist/"
   },
   "author": "zhangxiaowei.chris@bytedance.com",
   "license": "MIT",
