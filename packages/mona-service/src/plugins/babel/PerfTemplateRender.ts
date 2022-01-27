@@ -1,10 +1,10 @@
 import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
-import { transformNodeName } from '@/target/utils/reactNode';
+import { compressNodeName } from '@/target/utils/reactNode';
 import { miniPro2rcPropMap, renderMapAction } from './renderStore';
 import monaStore from '@/target/store';
 import { isReactCall, isStringLiteral } from '@/target/utils/babel';
-
+// import { ComponentAliasMap } from '@bytedance/mona-shared';
 export default function perfTemplateRender() {
   return {
     visitor: {
@@ -17,15 +17,16 @@ export default function perfTemplateRender() {
         let nodeType: string = '';
 
         if (t.isIdentifier(reactNode)) {
-          nodeType = transformNodeName(reactNode.name);
+          nodeType = compressNodeName(reactNode.name);
         } else if (isStringLiteral(reactNode)) {
-          nodeType = transformNodeName(reactNode.value);
+          nodeType = compressNodeName(reactNode.value);
         }
 
         // 不属于基本组件 || 渲染全部的props
         if (!miniPro2rcPropMap.has(nodeType) || renderMapAction.renderAll(nodeType)) {
           return;
         }
+
         renderMapAction.setComponentUse(nodeType);
 
         const miniPropMap = miniPro2rcPropMap.get(nodeType);

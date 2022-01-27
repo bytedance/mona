@@ -7,7 +7,8 @@ export default function getEnv(target: string, cwd: string) {
   const envPath = path.join(cwd, '.env');
 
   const envFilesPath = [envPath, `${envPath}.${process.env.NODE_ENV}`];
-  const injectEnv: Record<string, any> = {
+
+  const injectEnv: Record<string, string> = {
     'process.env.MONA_TARGET': JSON.stringify(target),
   };
 

@@ -1,26 +1,12 @@
 import path from 'path';
 import { hexMD5 } from './md5';
 
-export function slash(path: string) {
-  if (!path) {
-    return path;
-  }
-  return /^\\\\\?\\/.test(path) ? path : path.replace(/\\/g, `/`);
-}
-
-export const isReactCreateElement = (name: string) => ['createElement', 'cloneElement'].includes(name);
-
 export const getPageEntryPath = (page: string, cwd: string) => {
   page = page?.length > 1 && page.endsWith('/') ? page.slice(0, -1) : page;
   return path.join(cwd, './src', page);
 };
 
-export function getRelativePath(from: string, to: string) {
-  const fromDirName = path.extname(from) ? path.dirname(from) : from;
-  const toDirName = path.extname(to) ? path.dirname(to) : to;
-
-  return path.relative(fromDirName, toDirName);
-}
+export const isReactCreateElement = (name: string) => ['createElement', 'cloneElement'].includes(name);
 
 export function createUniqueId() {
   const random = () => Number(Math.random().toString().substr(2)).toString(36);
@@ -35,4 +21,18 @@ export function createUniqueId() {
     i++;
   }
   return hexMD5(arr.join(','));
+}
+
+export function getRelativePath(from: string, to: string) {
+  const fromDirName = path.extname(from) ? path.dirname(from) : from;
+  const toDirName = path.extname(to) ? path.dirname(to) : to;
+
+  return path.relative(fromDirName, toDirName);
+}
+
+export function slash(path: string) {
+  if (!path) {
+    return path;
+  }
+  return /^\\\\\?\\/.test(path) ? path : path.replace(/\\/g, `/`);
 }

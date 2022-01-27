@@ -118,7 +118,7 @@ export const ejsParamsObj: Record<
     reactComponentName: 'SwiperItem',
     alias: swiperItem,
   },
-  'movable-area': {
+  [ComponentType['movable-area']]: {
     reactComponentName: 'MovableArea',
 
     alias: movableArea,
