@@ -16,11 +16,13 @@ class CopyPublicPlugin {
   apply(compiler: Compiler) {
     const { cwd, projectConfig } = this.configHelper;
     const publicPath = path.join(cwd, PUBLIC_PATH_NAME);
+    const { patterns = [], options } = projectConfig?.abilities?.copy || { patterns: [] };
+
     if (fs.existsSync(publicPath)) {
       const outputPath = path.join(cwd, projectConfig.output);
-      // @ts-ignore
-      new CopyWebpackPlugin({ patterns: [{ from: publicPath, to: outputPath }] }).apply(compiler)
+      patterns.unshift({ from: publicPath, to: outputPath });
     }
+    patterns?.length && new CopyWebpackPlugin({ patterns, options }).apply(compiler);
   }
 }
 

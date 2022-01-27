@@ -1,3 +1,5 @@
+import { PluginOptions } from 'copy-webpack-plugin';
+
 interface PxtransformConfig {
   unitPrecision: number;
   propList: string[];
@@ -25,6 +27,8 @@ export interface ProjectConfig {
   transformSvgToComponentInWeb?: boolean;
   abilities?: {
     define?: Record<string, string>;
+    copy?: PluginOptions;
+    // pattern
   };
   raw?: (options: any) => any;
   dev?: {

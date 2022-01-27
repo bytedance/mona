@@ -15,6 +15,7 @@ const DEFAULT_PROJECT_CONFIG: ProjectConfig = {
   },
   abilities: {
     define: {},
+    copy: { patterns: [] },
   },
 };
 
