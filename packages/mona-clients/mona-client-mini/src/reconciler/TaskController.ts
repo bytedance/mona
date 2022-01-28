@@ -53,7 +53,7 @@ export default class TaskController {
     }
     const res: Record<string, any> = {};
     this.tasks.forEach(task => {
-      // When requestUpdate is called, applyUpdate will not be applied immediately, and the node may be deleted during delayed execution
+      // When requestUpdate is called, applyUpdate will not be called immediately, and the node may be deleted during delayed execution
       // isDeleted === true，It means that the taskNode has been added to the deletion queue, but the current task is to delete the children of the taskNode
       if (task.taskNode.isDeleted()) {
         return;
