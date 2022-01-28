@@ -4,29 +4,14 @@
  */
 
 module.exports = {
-  testEnvironment: 'node',
-  projects: ['<rootDir>/packages/mona-clients/*', '<rootDir>/packages/mona-shared/', '<rootDir>/packages/mona-cli/'],
-
-  // projects: ['<rootDir>', '<rootDir>/packages/mona-clients/mona-client-mini/'],
-  clearMocks: true,
-
-  coverageDirectory: 'coverage',
-
-  coverageProvider: 'v8',
-
-  moduleNameMapper: {
-    '\\.(css|less)$': 'identity-obj-proxy',
-  },
-
-  setupFilesAfterEnv: ['./jest-setup.ts'],
-
-  testEnvironmentOptions: { resources: 'usable' },
+  projects: [
+    '<rootDir>/packages/mona-cli/',
+    '<rootDir>/packages/mona-clients/*',
+    '<rootDir>/packages/mona-shared/',
+    '<rootDir>/packages/mona-service/',
+    '<rootDir>/packages/mona-runtime/',
+    '<rootDir>/packages/mona/',
+  ],
 
   testPathIgnorePatterns: ['/node_modules/', '/dist/', '/local-test-fb/'],
-
-  transform: {
-    '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
-  },
-
-  transformIgnorePatterns: ['/node_modules/', '\\.pnp\\.[^\\/]+$'],
 };
