@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - main
-      - feat/miniapp
 
   pull_request:
     branches:
