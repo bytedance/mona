@@ -1,5 +1,4 @@
-import { askConfig, ask, AskOpts } from '../../utils/ask';
-
+import { askConfig, ask, AskOpts } from '../../../../commands/init/utils/ask';
 describe('ask', () => {
   test('ask use default value', async () => {
     const params = Object.keys(askConfig).reduce<AskOpts>((res, item) => {

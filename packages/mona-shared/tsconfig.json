@@ -4,6 +4,7 @@
     "moduleResolution": "node",
     "strict": true,
     "module": "commonjs",
+    "allowJs": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,

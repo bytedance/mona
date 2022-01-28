@@ -8,6 +8,7 @@
     "dist"
   ],
   "scripts": {
+    "test": "jest",
     "build": "rollup -c",
     "start": "rollup -c -w",
     "clean": "rm -rf dist",

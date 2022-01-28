@@ -1,7 +1,6 @@
-import { fetchTemplate, processTemplates } from '../../utils/template';
+import { fetchTemplate, processTemplates } from '../../../../commands/init/utils/template';
 import fse from 'fs-extra';
-import PackageUpdater from '@bytedance/mona-cli/src/PackageUpdater';
-
+import PackageUpdater from '../../../../commands/update/PackageUpdater';
 describe('template', () => {
   let tempDir = `./monaJest${new Date().valueOf()}`;
   new PackageUpdater().start();

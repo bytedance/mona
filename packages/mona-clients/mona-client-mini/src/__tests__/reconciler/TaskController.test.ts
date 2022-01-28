@@ -1,4 +1,4 @@
-import ServerElement, { RenderNode, NodeType } from '../../reconciler/ServerElement';
+import ServerElement from '../../reconciler/ServerElement';
 import TaskController from '../../reconciler/TaskController';
 
 describe('TaskController', () => {
@@ -6,7 +6,7 @@ describe('TaskController', () => {
   let context = {
     setData: jest.fn(),
   };
-  let mockFn;
+  let mockFn: jest.Mock<any, any>;
   let parent: ServerElement, child: ServerElement;
   beforeEach(() => {
     instance = new TaskController(context);

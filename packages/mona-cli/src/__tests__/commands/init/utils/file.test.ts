@@ -1,4 +1,4 @@
-import { makeDir, readFileRecursive, readAllFiles, removeEmptyDirs } from '../../utils/file';
+import { makeDir, readFileRecursive, readAllFiles, removeEmptyDirs } from '../../../../commands/init/utils/file';
 import fse from 'fs-extra';
 import { join } from 'path';
 

@@ -17,6 +17,7 @@
     "sourceMap": true,
     "jsx": "react",
     "declaration": true,
+    "allowJs": true,
     "paths": {
       "@/*": [
         "src/*"

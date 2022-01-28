@@ -1,5 +1,4 @@
-import { getNewestVersion, getCurrentVersion } from '../../utils/version';
-import { getPkgPublicName, getPkgName, getPkgVersion } from '../../utils/package';
+import { getPkgPublicName, getPkgName, getPkgVersion } from '../../commands/update/utils/package';
 import { join } from 'path';
 import semver from 'semver';
 import fse from 'fs-extra';

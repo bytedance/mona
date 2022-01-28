@@ -1,5 +1,5 @@
 import ServerElement from '../reconciler/ServerElement';
-import { isPropagationStop, eventReactAliasMap, bubbleEventMap, MonaEvent } from '../eventHandler/constants';
+import { isPropagationStop, eventReactAliasMap } from '../eventHandler/constants';
 import createEventHandler from '../eventHandler/index';
 import TaskController from '../reconciler/TaskController';
 

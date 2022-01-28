@@ -1,4 +1,4 @@
-import { getNewestVersion, getCurrentVersion } from '../../utils/version';
+import { getNewestVersion, getCurrentVersion } from '../../commands/update/utils/version';
 import { join } from 'path';
 import semver from 'semver';
 import fse from 'fs-extra';

@@ -1,7 +1,7 @@
 import { FiberRoot } from 'react-reconciler';
 import ServerElement, { RenderNode, NodeType } from './ServerElement';
 // import createEventHandler from '../eventHandler';
-import { NodeTask } from '../utils';
+import { NodeTask } from '@/utils';
 import { batchedUpdates } from '.';
 
 interface SpliceTask {

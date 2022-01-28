@@ -1,5 +1,5 @@
 import { diffProperties, processProps, genCbName } from '../../reconciler/processProps';
-import ServerElement, { RenderNode, NodeType } from '../../reconciler/ServerElement';
+import ServerElement from '../../reconciler/ServerElement';
 import TaskController from '../../reconciler/TaskController';
 
 describe('props', () => {

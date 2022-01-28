@@ -1,4 +1,4 @@
-import PackageUpdater from '../PackageUpdater';
+import PackageUpdater from '../commands/update/PackageUpdater';
 
 describe('pkgVersion', () => {
   const pkgUpdate = new PackageUpdater();
