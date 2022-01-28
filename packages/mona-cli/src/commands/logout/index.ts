@@ -9,7 +9,7 @@ const logout: IPlugin = (ctx) => {
     options: [
       { name: 'help', description: '输出帮助信息', alias: 'h' }
     ],
-    usage: 'mona login',
+    usage: 'mona logout',
   }, () => {
     try {
       if (fs.existsSync(userDataFile)) {
@@ -23,6 +23,5 @@ const logout: IPlugin = (ctx) => {
     }
   });
 }
-
 
 module.exports = logout;
