@@ -3,10 +3,11 @@ on:
   push:
     branches:
       - main
+      - feat/miniapp
+
   pull_request:
     branches:
       - main
-      - feat/miniapp
 
 jobs:
   test:
