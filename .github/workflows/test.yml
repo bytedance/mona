@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - main
+      - feat/miniapp
 
 jobs:
   test:
@@ -32,10 +33,17 @@ jobs:
       - name: add yarn
         run: |
           DEBIAN_FRONTEND=noninteractive sudo apt install -y yarn
-      - name: npm install and npm test
+
+      - name: install packages
         run: |
           yarn config set registry http://registry.npmjs.org
-          yarn install
+          yarn
+
+      - name: build
+        run: |
           yarn global add lerna
           lerna run build
+
+      - name: test
+        run: |
           yarn test
