@@ -14,8 +14,8 @@ function checkPropagation(eventName: string, node: ServerElement) {
     stopPropagation(eventName, parent);
   }
 
-  // When there is an event callback on the parent , at this time isPropagationStop[eventName] is true,
-  // The parent will not call the callback
+  // if ancestor has an event callback  , at this time isPropagationStop[eventName] is true,
+  // The ancestor will not call the callback
   return;
 }
 

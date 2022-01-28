@@ -26,9 +26,6 @@ const mini: IPlugin = ctx => {
 
       const compiler = webpack(webpackConfig);
 
-      // const spinner = ora('编译中...').start();
-      // spinner.color = 'green';
-
       compiler.watch(
         {
           aggregateTimeout: 300,
