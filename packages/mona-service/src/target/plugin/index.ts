@@ -4,7 +4,7 @@ import webpack from 'webpack';
 
 import WebpackDevServer from 'webpack-dev-server';
 import { IPlugin } from '../../Service';
-import { DEAULT_HOST, DEFAULT_PORT } from '../constants';
+import { DEFAULT_HOST, DEFAULT_PORT } from '../constants';
 import { chainModuleRule } from './chainModuleRule';
 import { chainOptimization } from './chainOptimization';
 import { chainPlugins } from './chainPlugins';
@@ -41,13 +41,13 @@ const plugin: IPlugin = ctx => {
             compress: true,
             port,
             allowedHosts: 'all',
-            host: DEAULT_HOST,
+            host: DEFAULT_HOST,
           },
           compiler,
         );
 
         devServer.startCallback(() => {
-          console.log(chalk.green(`服务启动成功： http://${DEAULT_HOST}:${port}`));
+          console.log(chalk.green(`服务启动成功： http://${DEFAULT_HOST}:${port}`));
         });
       }
     });

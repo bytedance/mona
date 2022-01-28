@@ -21,7 +21,6 @@ export default [
         sourcemap: true,
       },
     ],
-
     plugins: [
       peerDepsExternal(),
       resolve({ browser: true, preferBuiltins: true }),

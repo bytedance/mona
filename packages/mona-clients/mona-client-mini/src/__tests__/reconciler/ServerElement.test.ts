@@ -139,6 +139,26 @@ describe('ServerElement', () => {
     taskController.removeChild(instance);
     expect(instance.isDeleted()).toBeTruthy();
   });
+
+  it('clean events', () => {
+    const child1 = new ServerElement('view', taskController);
+    const child3 = new ServerElement('view', taskController);
+    const child4 = new ServerElement('view', taskController);
+
+    instance.addCallback('1', () => {});
+    child1.addCallback('2', () => {});
+    child3.addCallback('3', () => {});
+    child4.addCallback('4', () => {});
+    child4.addCallback('5', () => {});
+    child4.addCallback('6', () => {});
+
+    instance.appendChild(child1);
+    child1.appendChild(child3);
+    child1.appendChild(child4);
+    instance.clearEvents();
+    const context = ['1', '2', '3', '4', '5', '6'].map(v => instance.taskController.context[v]).filter(Boolean);
+    expect(context).toEqual([]);
+  });
 });
 
 describe('generateId', () => {

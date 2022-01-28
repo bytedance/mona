@@ -4,5 +4,5 @@ module.exports = {
   ...baseConfig,
   testEnvironmentOptions: { resources: 'usable' },
 
-  setupFilesAfterEnv: ['../../../jest-setup.ts'],
+  setupFilesAfterEnv: ['./jest-setup.ts'],
 };
