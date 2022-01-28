@@ -1,5 +1,4 @@
 const { jsWithTs } = require('ts-jest/presets');
-import jest from "jest"
 const config = {
   coverageDirectory: 'coverage',
   moduleNameMapper: {
