@@ -4,6 +4,7 @@ on:
     branches:
       - main
       - feat/overseaTest
+      - feat/miniapp
   pull_request:
     branches:
       - main
