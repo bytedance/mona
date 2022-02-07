@@ -14,7 +14,7 @@ const logout: IPlugin = (ctx) => {
     try {
       if (fs.existsSync(userDataFile)) {
         fs.unlinkSync(userDataFile)
-        console.log(chalk.green(`用户名：${readUser().name},登出成功！`))
+        console.log(chalk.green(`用户名：${readUser().name}，登出成功！`))
       } else {
         console.log(chalk.red('未找到登录信息！'))
       }

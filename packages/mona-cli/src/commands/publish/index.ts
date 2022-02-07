@@ -1,47 +1,31 @@
 import { IPlugin } from '@bytedance/mona-service';
-import ora from 'ora';
 import chalk from 'chalk';
-import path from 'path';
-import fs from 'fs';
-import { searchScriptFile, readConfig } from '@bytedance/mona-shared';
-import { ProjectConfig } from '@bytedance/mona';
-import compressing from 'compressing';
-
-export const ZIP_NAME = 'publish.zip';
-export async function compressToZipFromDir(destPath: string) {
-  const spinner = ora('开始打包').start();
-  const zipPath = path.resolve(destPath, '..', ZIP_NAME);
-  await compressing.zip.compressDir(destPath, zipPath);
-  spinner.succeed(`打包成功：${zipPath}`);
-  return zipPath;
-}
-
-function readDest(): string {
-  const projectConfigPath = path.join(process.cwd(), 'mona.config');
-  const fullConfigPath = searchScriptFile(projectConfigPath);
-  if (fs.existsSync(fullConfigPath)) {
-    const projectConfig = readConfig<ProjectConfig>(fullConfigPath);
-    return path.join(process.cwd(), `./${projectConfig.output || 'dist'}`);
-  } else {
-    throw new Error('无效的项目目录，请在mona项目根目录执行命令');
-  }
-}
+// import fs from 'fs';
+// import { compressToZipFromDir, readDest } from '../compress';
+import { readUser } from '../login';
 
 const publish: IPlugin = (ctx) => {
   ctx.registerCommand('publish', {
-    description: '压缩打包后的产物，以便在开放平台发布',
+    description: '发布新版本代码',
     options: [
         { name: 'help', description: '输出帮助信息', alias: 'h' }
       ],
     usage: 'mona publish',
   }, async () => {
     try {
-      const destPath = readDest();
-      if (!fs.existsSync(destPath)) {
-        throw new Error(`请先使用 ${chalk.cyan('mona build')} 进行打包`);
+      // const destPath = readDest();
+      // if (!fs.existsSync(destPath)) {
+      //   throw new Error(`请先使用 ${chalk.cyan('mona build')} 进行打包`);
+      // }
+      // const zipPath = await compressToZipFromDir(destPath);
+      // console.log(zipPath);
+      // get user info
+      const user = readUser();
+      if (user) {
+        // get appid and plugin name
+        // compress
+        // upload
       }
-      const zipPath = await compressToZipFromDir(destPath);
-      console.log(chalk.green(`请在开放平台 应用后台-插件管理-新增版本 中，上传 ${chalk.cyan(zipPath)} 压缩包`));
     } catch (err: any) {
       console.log(chalk.red(err.message));
     }
