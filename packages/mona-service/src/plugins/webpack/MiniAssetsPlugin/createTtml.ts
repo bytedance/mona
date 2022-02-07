@@ -38,26 +38,25 @@ const RawSource = sources.RawSource;
 
 function genNativeEjsData() {
   const result = new Map();
+  monaStore.nativeEntryMap.forEach(entry => {
+    if (entry.templateInfo) {
+      const { componentName, props } = entry.templateInfo;
+      result.set(entry.id, {
+        id: entry.id,
+        name: componentName,
+        props: Array.from(props.values()).reduce((pre, item) => {
+          // 自定组件ref比较特殊,约定__ref透传react的ref
+          // https://microapp.bytedance.com/docs/zh-CN/mini-app/develop/framework/custom-component/ref/
+          const propKey = item === 'ref' ? 'tt:ref' : formatReactNodeName(item);
+          const propValue = item === 'ref' ? CUSTOM_REF : item;
 
-  monaStore.importComponentMap.forEach(value => {
-    const { componentName, props, type, entry } = value;
-    if (type !== 'native') {
-      return;
+          pre[propKey] = propValue;
+          return pre;
+        }, {} as Record<string, string>),
+      });
     }
-    result.set(entry.id, {
-      id: entry.id,
-      name: componentName,
-      props: Array.from(props.values()).reduce((pre, item) => {
-        // 自定组件ref比较特殊,约定__ref透传react的ref
-        // https://microapp.bytedance.com/docs/zh-CN/mini-app/develop/framework/custom-component/ref/
-        const propKey = item === 'ref' ? 'tt:ref' : formatReactNodeName(item);
-        const propValue = item === 'ref' ? CUSTOM_REF : item;
-
-        pre[propKey] = propValue;
-        return pre;
-      }, {} as Record<string, string>),
-    });
   });
+
   return result;
 }
 

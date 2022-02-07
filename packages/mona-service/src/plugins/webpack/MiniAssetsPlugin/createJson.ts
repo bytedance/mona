@@ -12,6 +12,7 @@ import { processNativePath } from '../../babel/CollectImportComponent';
 import { getPageEntryPath, getRelativePath } from '@/target/utils/utils';
 import { formatReactNodeName } from '@/target/utils/reactNode';
 import { DEFAULT_APPID } from '@/target/constants';
+import { TtComponentEntry } from '@/target/entires/ttComponentEntry';
 
 const RawSource = sources.RawSource;
 const ejsRelativePath = '../../../assets/ejs';
@@ -87,19 +88,18 @@ function processModuleFactory(cwd: string, handledModules: Set<string>) {
 
         let filePath = processNativePath(requestPath, module.context, cwd);
 
-        const componentInfo = monaStore.importComponentMap.get(filePath);
-        if (componentInfo?.type === 'native') {
+        const componentEntry = monaStore.nativeEntryMap.get(filePath);
+        if (componentEntry instanceof TtComponentEntry && componentEntry.templateInfo) {
+          const { componentName } = componentEntry.templateInfo;
           let pageInfo = monaStore.pageEntires.get(page) || { usingComponents: {}, type: 'mona' };
-
           pageInfo.usingComponents = {
             ...(pageInfo.usingComponents || {}),
-            // 计算两个页面和自定义组件两个绝对路径之间的相对路径
-            [formatReactNodeName(componentInfo.componentName)]: getRelativePath(
+            // 计算页面和自定义组件两个绝对路径之间的相对路径
+            [formatReactNodeName(componentName)]: getRelativePath(
               path.dirname(getPageEntryPath(page, cwd)),
-              componentInfo.entry.entry,
+              componentEntry.entry,
             ),
           };
-
           monaStore.pageEntires.set(page, pageInfo);
         } else {
           processModule(compilation, dependencyModule as NormalModule, page);

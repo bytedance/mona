@@ -1,5 +1,4 @@
 import { NodePath } from '@babel/traverse';
-import monaStore from '@/target/store';
 import nodePath from 'path';
 import * as t from '@babel/types';
 import { formatReactNodeName } from '@/target/utils/reactNode';
@@ -43,6 +42,7 @@ export default function collectNativeComponent(configHelper: ConfigHelper) {
               nodePath.dirname(from),
               _state.file.opts.cwd,
             );
+            console.log('importNode.source.value', importNode.source.value);
             getJsxProps(genNativeComponentEntry(configHelper, importNode.source.value), componentName, node);
           }
         }
@@ -64,8 +64,7 @@ export function processNativePath(req: string, from: string, cwd: string) {
 }
 
 function getJsxProps(entry: TtComponentEntry, componentName: string, node: t.JSXElement) {
-  const component = monaStore.importComponentMap.get(entry.entry) || {
-    entry,
+  const component = entry.templateInfo || {
     componentName: formatReactNodeName(componentName),
     props: new Set(),
     type: 'native',
@@ -88,6 +87,6 @@ function getJsxProps(entry: TtComponentEntry, componentName: string, node: t.JSX
     props.push(propName);
   });
 
-  monaStore.importComponentMap.set(component.entry.entry, component);
+  entry.templateInfo = component;
   return props;
 }
