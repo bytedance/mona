@@ -1,23 +1,21 @@
-// MIT License
-
-// Copyright © 2011 Sebastian Tschan, https://blueimp.net
-
-// Permission is hereby granted, free of charge, to any person obtaining a copy of
-// this software and associated documentation files (the "Software"), to deal in
-// the Software without restriction, including without limitation the rights to
-// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-// the Software, and to permit persons to whom the Software is furnished to do so,
-// subject to the following conditions:
-
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-// FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-// COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-// IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-// CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+/*
+ * JavaScript MD5
+ * https://github.com/blueimp/JavaScript-MD5
+ *
+ * Copyright 2011, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * https://opensource.org/licenses/MIT
+ *
+ * Based on
+ * A JavaScript implementation of the RSA Data Security, Inc. MD5 Message
+ * Digest Algorithm, as defined in RFC 1321.
+ * Version 2.2 Copyright (C) Paul Johnston 1999 - 2009
+ * Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet
+ * Distributed under the BSD License
+ * See http://pajhome.org.uk/crypt/md5 for more info.
+ */
 /**
  * Add integers, wrapping at 2^32.
  * This uses 16-bit operations internally to work around bugs in interpreters.
