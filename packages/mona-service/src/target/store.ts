@@ -1,7 +1,7 @@
 import { genEjsParamsMap } from './mini/baseComponents';
 import type { TtComponentEntry } from './entires/ttComponentEntry';
+// import { PageEntry } from './entires/pageEntry';
 // import { nanoid } from 'nanoid';
-type Path = string;
 export interface ComponentImportInfo {
   // 包名称，例如: @bytedance/mona-runtime
   // 引入名称例如 import CustomComponent from 'xxx'。 在JSX中这样使用<CustomComponent /> ，则jsx中使用的名称 CustomComponent为componentName
@@ -19,12 +19,6 @@ interface MonaPageEntry {
   usingComponents: Record<string, string>;
   type: 'mona';
 }
-interface NativePageEntry {
-  usingComponents: Record<string, string>;
-  type: 'native';
-}
-
-type PageEntry = MonaPageEntry | NativePageEntry;
 
 // 模板生成信息
 interface ITemplateRenderInfo {
@@ -41,8 +35,9 @@ const monaStore = {
   ejsParamsMap: genEjsParamsMap(),
 
   // TODO: pageEntires、nativeEntryMap合并成entry
-  pageEntires: new Map<string, PageEntry>(),
+  pageEntires: new Map<string, MonaPageEntry>(),
   nativeEntryMap: new Map<string, TtComponentEntry>(),
+  // entryMap: new Map<string, PageEntry>(),
 };
 
 export default Object.freeze(monaStore);

@@ -2,11 +2,12 @@ import ConfigHelper from '../../ConfigHelper';
 import { PageConfig } from '@bytedance/mona';
 import { readConfig } from '@bytedance/mona-shared';
 import path from 'path';
-import monaStore from '../store';
+import { merge } from 'lodash';
 export class PageEntry {
   readonly entry: string;
   configHelper: ConfigHelper;
-  importUsingComponents: Record<string, string>;
+  importUsingComponents: Record<string, string> = {};
+  config: PageConfig = {};
   /**
    *
    * @param configHelper 配置文件
@@ -15,7 +16,10 @@ export class PageEntry {
   constructor(configHelper: ConfigHelper, entryPath: string) {
     this.entry = entryPath.replace(path.extname(entryPath), '');
     this.configHelper = configHelper;
-    this.importUsingComponents = {};
+  }
+
+  mergeConfig(other: PageConfig) {
+    return (this.config = merge(this.config, other));
   }
 
   createOutputConfig() {
@@ -23,22 +27,12 @@ export class PageEntry {
     const pageDistPath = path.join(page.toLowerCase());
     const { cwd } = this.configHelper;
 
-    if (monaStore.nativeEntryMap.get(path.join(cwd, './src', page))) {
-      return;
-    }
-
     const pageConfigPath = path.join(cwd, `./src/${page}`, '..', 'page.config');
     const pageConfig = readConfig<PageConfig>(pageConfigPath);
 
-    const usingComponents = monaStore.pageEntires.get(page)?.usingComponents;
-    pageConfig.usingComponents = {
-      ...usingComponents,
-      ...(pageConfig.usingComponents || {}),
-    };
-
     return {
       outputPath: `${pageDistPath}.json`,
-      resource: JSON.stringify(pageConfig),
+      resource: JSON.stringify(merge(this.config, pageConfig)),
     };
   }
 
