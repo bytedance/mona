@@ -104,7 +104,7 @@ function createAssetRule(webpackConfig: Config, _configHelper: ConfigHelper) {
   webpackConfig.module
     .rule('svg')
     .test(/\.svg$/i)
-    .set('type', 'asset/inline');
+    .set('type', 'asset/resource');
   webpackConfig.module
     .rule('font')
     .test(/\.(ttf|eot|woff|woff2)$/i)

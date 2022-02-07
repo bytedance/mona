@@ -162,6 +162,7 @@ export default class ServerElement {
       this.firstChildKey = child.key;
     }
     child.deleted = false;
+
     if (this.isMounted()) {
       this.requestUpdate({
         targetNode: child.serialize(),

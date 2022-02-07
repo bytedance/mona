@@ -62,7 +62,7 @@ function genNativeEjsData() {
 }
 
 export default async function createTtml(compilation: Compilation, configHelper: ConfigHelper) {
-  const isDev = process.env.NODE_ENV !== 'production';
+  const isDev = configHelper.isDev;
   const { appConfig } = configHelper;
   const pages = appConfig.pages ?? [];
   let renderTemplateAliasMap = monaStore.ejsParamsMap;
