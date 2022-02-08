@@ -34,6 +34,7 @@ interface PageConfig {
   onPageScroll: (e: any) => void;
 
   $callLifecycle: (name: PageLifecycle, params?: any) => void;
+  [key: string]: any;
 }
 
 let pageId = 0;
@@ -58,7 +59,7 @@ function createConfig(PageComponent: React.ComponentType<any>) {
     _Component: PageComponent,
     _controller: new TaskController({}),
 
-    onLoad(this: any, options: any) {
+    onLoad(options: any) {
       // monaPrint.log('onLoad', this, options);
       this.data = {
         [ROOT_KEY]: {
