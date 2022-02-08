@@ -1,6 +1,6 @@
 import { ComponentType } from '@bytedance/mona-shared';
 // 无需渲染子节点的元素
-export const noChildElements = new Set([
+export const voidChildrenElements = new Set([
   ComponentType['progress'],
   ComponentType['icon'],
   ComponentType['rich-text'],

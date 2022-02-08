@@ -22,7 +22,7 @@ class CopyPublicPlugin {
       const outputPath = path.join(cwd, projectConfig.output);
       patterns.unshift({ from: publicPath, to: outputPath });
     }
-    patterns?.length && new CopyWebpackPlugin({ patterns, options }).apply(compiler);
+    patterns.length && new CopyWebpackPlugin({ patterns, options }).apply(compiler);
   }
 }
 

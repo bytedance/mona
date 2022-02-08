@@ -2,7 +2,7 @@ import path from 'path';
 import ejs from 'ejs';
 import { Compilation, sources } from 'webpack';
 import { ConfigHelper } from '@/configHelper';
-import { noChildElements } from '@/alias/constants';
+import { voidChildrenElements } from '@/alias/constants';
 import { RENDER_NODE, ComponentAliasMap, CUSTOM_REF } from '@bytedance/mona-shared';
 
 import monaStore from '../../../store';
@@ -73,7 +73,7 @@ export default async function createTtml(compilation: Compilation, configHelper:
       tplPath,
       {
         ejsParamsMap: renderTemplateAliasMap,
-        noChildElements,
+        voidChildrenElements,
         RENDER_NODE,
         ComponentAliasMap,
         nativeComponents: genNativeEjsData(),
