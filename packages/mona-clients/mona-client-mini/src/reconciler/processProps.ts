@@ -16,7 +16,6 @@ const styleMap: Record<string, boolean> = {
 const filterPropsMap: Record<string, boolean> = {
   key: true,
   children: true,
-  // ref: true,
 };
 export const genCbName = (propKey: string, node: ServerElement) => {
   return `${node.key}${propKey}`;
