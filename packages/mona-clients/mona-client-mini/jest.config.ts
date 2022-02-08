@@ -11,7 +11,6 @@ module.exports = {
 
   globals: Object.keys(RENDER_NODE).reduce(
     (pre, item) => {
-      //@ts-ignore
       pre[`${item}_STR`] = JSON.stringify(RENDER_NODE[item]);
       return pre;
     },
