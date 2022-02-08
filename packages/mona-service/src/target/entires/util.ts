@@ -1,3 +1,4 @@
+import path from 'path';
 import ConfigHelper from '../../ConfigHelper';
 import { TtComponentEntry } from './ttComponentEntry';
 import { TtPageEntry } from './ttPageEntry';
@@ -6,6 +7,7 @@ import monaStore from '../store';
 const { nativeEntryMap } = monaStore;
 
 export const genNativeComponentEntry = (configHelper: ConfigHelper, entryPath: string) => {
+  entryPath = entryPath.replace(path.extname(entryPath), '');
   if (nativeEntryMap.has(entryPath)) {
     return nativeEntryMap.get(entryPath)! as TtComponentEntry;
   } else {
@@ -16,6 +18,8 @@ export const genNativeComponentEntry = (configHelper: ConfigHelper, entryPath: s
 };
 
 export const genTtPageEntry = (configHelper: ConfigHelper, entryPath: string) => {
+  entryPath = entryPath.replace(path.extname(entryPath), '');
+
   if (nativeEntryMap.has(entryPath)) {
     return nativeEntryMap.get(entryPath)! as TtPageEntry;
   } else {

@@ -7,4 +7,4 @@ export { isClassComponent } from './reactNode';
 export { genCallbackName } from './event';
 
 export * from './search';
-export { RENDER_NODE, ComponentType, ComponentAliasMap, CUSTOM_REF, CUSTOM_COMPONENT_PROTOCOL } from './constants';
+export * from './constants';

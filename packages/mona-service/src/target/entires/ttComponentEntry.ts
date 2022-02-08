@@ -4,7 +4,7 @@ import fse from 'fs-extra';
 import ConfigHelper from '../../ConfigHelper';
 import { MINI_EXT_LIST } from '../constants';
 import { genNativeComponentEntry } from './util';
-import monaStore from '../store';
+import monaStore, { ComponentImportInfo } from '../store';
 
 const defaultEntryConfig: Record<string, any> = {};
 export const nativeConfigExt = '.json';
@@ -30,13 +30,16 @@ export class TtComponentEntry {
   _config?: Record<string, any>;
   _dependencies: Array<string>;
 
+  // 用于生成模板
+  templateInfo?: Omit<ComponentImportInfo, 'entry'>;
+
   /**
    *
    * @param configHelper 配置文件
    * @param entryPath xxxx/index 入口文件。/a/b/index.js的entryPath为/a/b/index
    */
   constructor(configHelper: ConfigHelper, entryPath: string) {
-    this.entry = entryPath.replace(path.extname(entryPath), '');
+    this.entry = entryPath;
     this.configHelper = configHelper;
     this.dirPath = path.dirname(entryPath);
     this.id = genNativeComponentId(entryPath);

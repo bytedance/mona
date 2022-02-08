@@ -1,17 +1,15 @@
 const pkgs = {
-  'mona': '@bytedance/mona',
-  'cli': '@bytedance/mona-cli',
-  'mini': '@bytedance/mona-client-mini',
-  'web': '@bytedance/mona-client-web',
-  'plugin': '@bytedance/mona-client-plugin',
-  'events': '@bytedance/mona-plugin-events',
-  'runtime': '@bytedance/mona-runtime',
-  'shared': '@bytedance/mona-shared',
-  'build': '@bytedance/mona-build',
-  'init': '@bytedance/mona-init',
-  'publish': '@bytedance/mona-publish',
-  'service': '@bytedance/mona-service',
-}
+  mona: '@bytedance/mona',
+  cli: '@bytedance/mona-cli',
+  mini: '@bytedance/mona-client-mini',
+  web: '@bytedance/mona-client-web',
+  plugin: '@bytedance/mona-client-plugin',
+  events: '@bytedance/mona-plugin-events',
+  runtime: '@bytedance/mona-runtime',
+  shared: '@bytedance/mona-shared',
+  build: '@bytedance/mona-build',
+  service: '@bytedance/mona-service',
+};
 const rawTargets = process.argv.slice(2);
 const startIndex = rawTargets.indexOf('-s');
 const isStart = startIndex !== -1;
@@ -21,7 +19,7 @@ if (isStart) {
 const targets = rawTargets.map(key => pkgs[key]).filter(r => !!r);
 console.log(`now ${isStart ? 'start' : 'build'} for`, targets);
 console.log('');
-const cmds = targets.map(t => `yarn workspace ${t} ${isStart ? 'start' : 'build'}`)
+const cmds = targets.map(t => `yarn workspace ${t} ${isStart ? 'start' : 'build'}`);
 
 // execute a single shell command where "cmd" is a string
 const exec = function (cmd, cb) {
@@ -40,7 +38,6 @@ const exec = function (cmd, cb) {
   });
 };
 
-
 // execute multiple commands in series
 // this could be replaced by any flow control lib
 const series = function (cmds, cb) {
@@ -57,6 +54,6 @@ const series = function (cmds, cb) {
   execNext();
 };
 
-series(cmds, function(err) {
-  console.log('executed many commands in a row'); 
-})
+series(cmds, function (err) {
+  console.log('executed many commands in a row');
+});

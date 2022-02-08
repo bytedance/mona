@@ -1,6 +1,17 @@
 // fork from https://github.com/sysgears/webpack-virtual-modules to fix hot reload bug
 // will delete when it's fixed
 
+// MIT License
+// Copyright (c) 2017 SysGears
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+
 import path from 'path';
 import { VirtualStats } from './virtual-stats';
 import type { Compiler } from 'webpack';
@@ -8,12 +19,12 @@ import type { Compiler } from 'webpack';
 let inode = 45000000;
 
 let FS_ACCURACY = 2000;
-function applyMtime (mtime: number) {
-    if (FS_ACCURACY > 1 && mtime % 2 !== 0) FS_ACCURACY = 1;
-    else if (FS_ACCURACY > 10 && mtime % 20 !== 0) FS_ACCURACY = 10;
-    else if (FS_ACCURACY > 100 && mtime % 200 !== 0) FS_ACCURACY = 100;
-    else if (FS_ACCURACY > 1000 && mtime % 2000 !== 0) FS_ACCURACY = 1000;
-};
+function applyMtime(mtime: number) {
+  if (FS_ACCURACY > 1 && mtime % 2 !== 0) FS_ACCURACY = 1;
+  else if (FS_ACCURACY > 10 && mtime % 20 !== 0) FS_ACCURACY = 10;
+  else if (FS_ACCURACY > 100 && mtime % 200 !== 0) FS_ACCURACY = 100;
+  else if (FS_ACCURACY > 1000 && mtime % 2000 !== 0) FS_ACCURACY = 1000;
+}
 
 function checkActivation(instance: any) {
   if (!instance._compiler) {
@@ -26,7 +37,7 @@ function getModulePath(filePath: string, compiler: Compiler) {
 }
 
 function createWebpackData(result: never[] | VirtualStats) {
-  return (backendOrStorage: { _data: any; _currentLevel: any; _levels: { [x: string]: any; }; }) => {
+  return (backendOrStorage: { _data: any; _currentLevel: any; _levels: { [x: string]: any } }) => {
     // In Webpack v5, this variable is a "Backend", and has the data stored in a field
     // _data. In V4, the `_` prefix isn't present.
     if (backendOrStorage._data) {
@@ -42,7 +53,10 @@ function createWebpackData(result: never[] | VirtualStats) {
   };
 }
 
-function getData(storage: { _data: { get: (arg0: any) => any; }; data: { [x: string]: any; get: (arg0: any) => any; }; }, key: string | number) {
+function getData(
+  storage: { _data: { get: (arg0: any) => any }; data: { [x: string]: any; get: (arg0: any) => any } },
+  key: string | number,
+) {
   // Webpack 5
   if (storage._data instanceof Map) {
     return storage._data.get(key);
@@ -56,7 +70,21 @@ function getData(storage: { _data: { get: (arg0: any) => any; }; data: { [x: str
   }
 }
 
-function setData(backendOrStorage: { _data: { set: (arg0: any, arg1: any) => void; }; data: { [x: string]: any; set: (arg0: any, arg1: any) => void; }; }, key: string | number, valueFactory: { (backendOrStorage: any): any[] | { result: any; level: any; }; (backendOrStorage: any): any[] | { result: any; level: any; }; (backendOrStorage: any): any[] | { result: any; level: any; }; (backendOrStorage: any): any[] | { result: any; level: any; }; (backendOrStorage: any): any[] | { result: any; level: any; }; (arg0: any): any; }) {
+function setData(
+  backendOrStorage: {
+    _data: { set: (arg0: any, arg1: any) => void };
+    data: { [x: string]: any; set: (arg0: any, arg1: any) => void };
+  },
+  key: string | number,
+  valueFactory: {
+    (backendOrStorage: any): any[] | { result: any; level: any };
+    (backendOrStorage: any): any[] | { result: any; level: any };
+    (backendOrStorage: any): any[] | { result: any; level: any };
+    (backendOrStorage: any): any[] | { result: any; level: any };
+    (backendOrStorage: any): any[] | { result: any; level: any };
+    (arg0: any): any;
+  },
+) {
   const value = valueFactory(backendOrStorage);
 
   // Webpack v5
@@ -72,7 +100,7 @@ function setData(backendOrStorage: { _data: { set: (arg0: any, arg1: any) => voi
   }
 }
 
-function getStatStorage(fileSystem: { _statStorage: any; _statBackend: any; }) {
+function getStatStorage(fileSystem: { _statStorage: any; _statBackend: any }) {
   if (fileSystem._statStorage) {
     // Webpack v4
     return fileSystem._statStorage;
@@ -85,7 +113,7 @@ function getStatStorage(fileSystem: { _statStorage: any; _statBackend: any; }) {
   }
 }
 
-function getFileStorage(fileSystem: { _readFileStorage: any; _readFileBackend: any; }) {
+function getFileStorage(fileSystem: { _readFileStorage: any; _readFileBackend: any }) {
   if (fileSystem._readFileStorage) {
     // Webpack v4
     return fileSystem._readFileStorage;
@@ -97,7 +125,7 @@ function getFileStorage(fileSystem: { _readFileStorage: any; _readFileBackend: a
   }
 }
 
-function getReadDirBackend(fileSystem: { _readdirBackend: any; _readdirStorage: any; }) {
+function getReadDirBackend(fileSystem: { _readdirBackend: any; _readdirStorage: any }) {
   if (fileSystem._readdirBackend) {
     return fileSystem._readdirBackend;
   } else if (fileSystem._readdirStorage) {
@@ -200,7 +228,7 @@ class VirtualModulesPlugin {
         finalInputFileSystem.purge = () => {
           originalPurge.apply(finalInputFileSystem, []);
           if (finalInputFileSystem._virtualFiles) {
-            Object.keys(finalInputFileSystem._virtualFiles).forEach((file) => {
+            Object.keys(finalInputFileSystem._virtualFiles).forEach(file => {
               const data = finalInputFileSystem._virtualFiles[file];
               finalInputFileSystem._writeVirtualFile(file, data.stats, data.contents);
             });
@@ -273,13 +301,13 @@ class VirtualModulesPlugin {
       const virtualFiles = (compiler as any).inputFileSystem._virtualFiles;
       const fts = compiler.fileTimestamps as any;
       if (virtualFiles && fts && typeof fts.set === 'function') {
-        Object.keys(virtualFiles).forEach((file) => {
+        Object.keys(virtualFiles).forEach(file => {
           const mtime = +virtualFiles[file].stats.mtime;
           if (mtime) applyMtime(mtime);
           fts.set(file, {
-              accuracy: 0,
-              safeTime: mtime ? mtime + FS_ACCURACY : Infinity,
-              timestamp: mtime
+            accuracy: 0,
+            safeTime: mtime ? mtime + FS_ACCURACY : Infinity,
+            timestamp: mtime,
           });
         });
       }
