@@ -4,4 +4,4 @@ export { isClassComponent } from './reactNode';
 
 export * from './search';
 
-export { RENDER_NODE, ComponentType, ComponentAliasMap } from './constants';
+export * from './constants';
