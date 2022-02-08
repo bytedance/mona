@@ -10,6 +10,6 @@ test('isReactCreateElement', () => {
   // const retValue = isReactCreateElement(name);
   expect(isReactCreateElement('createElement')).toBeTruthy();
   expect(isReactCreateElement('cloneElement')).toBeTruthy();
-  expect(isReactCreateElement('ccloneElement')).toBeFalsy();
-  expect(isReactCreateElement('ccreateElement')).toBeFalsy();
+  expect(isReactCreateElement('errorCloneElement')).toBeFalsy();
+  expect(isReactCreateElement('errorCreateElement')).toBeFalsy();
 });

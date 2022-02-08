@@ -26,6 +26,7 @@
     "command-line-usage": "^6.1.1",
     "compare-version": "^0.1.2",
     "compressing": "^1.5.1",
+    "download-git-repo": "^3.0.2",
     "node-uuid": "^1.4.8",
     "open": "^8.4.0",
     "ora": "^5.4.1",
