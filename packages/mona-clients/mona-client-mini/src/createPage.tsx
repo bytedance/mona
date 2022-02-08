@@ -22,16 +22,16 @@ interface PageConfig {
   _controller: TaskController;
   _Component: React.ComponentType<any>;
   _pageLifecycleContext: LifecycleContext;
-  onLoad: (options: any) => void;
-  onUnload: () => void;
-  onReady: () => void;
-  onShow: (options: any) => void;
-  onHide: () => void;
-  onResize: (e: any) => void;
-  onPullDownRefresh: (e: any) => void;
-  onReachBottom: () => void;
-  onShareAppMessage: (options: { channel?: string }) => void;
-  onPageScroll: (e: any) => void;
+  onLoad: (...params: any[]) => void;
+  onUnload: (...params: any[]) => void;
+  onReady: (...params: any[]) => void;
+  onShow: (...params: any[]) => void;
+  onHide: (...params: any[]) => void;
+  onResize: (...params: any[]) => void;
+  onPullDownRefresh: (...params: any[]) => void;
+  onReachBottom: (...params: any[]) => void;
+  onShareAppMessage: (...params: any[]) => void;
+  onPageScroll: (...params: any[]) => void;
 
   $callLifecycle: (name: PageLifecycle, params?: any) => void;
   [key: string]: any;
