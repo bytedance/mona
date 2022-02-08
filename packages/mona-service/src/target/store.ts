@@ -1,7 +1,6 @@
 import { genEjsParamsMap } from './mini/baseComponents';
 import type { TtComponentEntry } from './entires/ttComponentEntry';
 // import { PageEntry } from './entires/pageEntry';
-// import { nanoid } from 'nanoid';
 export interface ComponentImportInfo {
   // 包名称，例如: @bytedance/mona-runtime
   // 引入名称例如 import CustomComponent from 'xxx'。 在JSX中这样使用<CustomComponent /> ，则jsx中使用的名称 CustomComponent为componentName

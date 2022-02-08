@@ -6,7 +6,6 @@ import { merge } from 'lodash';
 export class PageEntry {
   readonly entry: string;
   configHelper: ConfigHelper;
-  importUsingComponents: Record<string, string> = {};
   config: PageConfig = {};
   /**
    *
@@ -14,7 +13,7 @@ export class PageEntry {
    * @param entryPath xxxx/index 入口文件。/a/b/index.js的entryPath为/a/b/index
    */
   constructor(configHelper: ConfigHelper, entryPath: string) {
-    this.entry = entryPath.replace(path.extname(entryPath), '');
+    this.entry = entryPath;
     this.configHelper = configHelper;
   }
 
