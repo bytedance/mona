@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createBaseComponent 1`] = `<test-test />`;
+
+exports[`react ref 1`] = `<div />`;
