@@ -16,7 +16,7 @@ export async function compressToZipFromDir(destPath: string) {
   return zipPath;
 }
 
-function readDest(): string {
+export function readDest(): string {
   const projectConfigPath = path.join(process.cwd(), 'mona.config');
   const fullConfigPath = searchScriptFile(projectConfigPath);
   if (fs.existsSync(fullConfigPath)) {
