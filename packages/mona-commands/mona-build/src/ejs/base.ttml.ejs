@@ -11,7 +11,7 @@
     <%=ejsParamsMap.get(name).alias[i]%>="{{node.<%=RENDER_NODE.COMPLIER_PROPS%>['<%=i%>']}}" 
     <%_}}-%>
   >
-  <% if(!noChildElements.has(name)) { -%>
+  <% if(!voidChildElements.has(name)) { -%>
     <template 
       is="{{ 'mona-' + node.<%=RENDER_NODE.COMPLIER_NODES%>[item].<%=RENDER_NODE.COMPLIER_TYPE%> }}" 
       tt:for="{{ node.<%=RENDER_NODE.COMPLIER_CHILDREN%> }}"

@@ -42,7 +42,6 @@ export default function collectNativeComponent(configHelper: ConfigHelper) {
               nodePath.dirname(from),
               _state.file.opts.cwd,
             );
-            console.log('importNode.source.value', importNode.source.value);
             getJsxProps(genNativeComponentEntry(configHelper, importNode.source.value), componentName, node);
           }
         }
