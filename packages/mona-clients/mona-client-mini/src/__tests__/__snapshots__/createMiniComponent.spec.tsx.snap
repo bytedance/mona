@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createMiniComponent func ref 1`] = `
+<test-test
+  __ref={[Function]}
+/>
+`;
+
+exports[`createMiniComponent react ref 1`] = `
+<test-test
+  __ref={[Function]}
+/>
+`;
