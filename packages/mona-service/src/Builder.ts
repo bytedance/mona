@@ -25,10 +25,6 @@ class Builder {
 
   resolveWebpackConfig() {
     const chainableConfig = this.resolveChainWebpackConfig();
-    const { raw: rawCb, chain: chainCb } = this.configHelper.projectConfig;
-    if (typeof chainCb === 'function') {
-      chainCb(chainableConfig);
-    }
     let config = chainableConfig.toConfig() as Configuration;
     this.rawWebpackConfigFns.forEach(fn => {
       if (typeof fn === 'function') {
@@ -38,9 +34,6 @@ class Builder {
         config = merge(config, fn);
       }
     });
-    if (typeof rawCb === 'function') {
-      return rawCb(config);
-    }
     return config;
   }
 

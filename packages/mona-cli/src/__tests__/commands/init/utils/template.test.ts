@@ -1,75 +1,45 @@
-// import { fetchTemplate, processTemplates } from '../../../../commands/init/utils/template';
-// import fse from 'fs-extra';
-// describe('template', () => {
-//   let tempDir = `./monaJest${new Date().valueOf()}`;
-//   afterEach(() => {
-//     return fse.remove(tempDir);
-//   });
-//   test('fetchTemplate use error templateName', async () => {
-//     expect(await catchError(() => fetchTemplate(tempDir, new Date().valueOf() + ''))).toBeTruthy();
-//     // await fse.remove(tempDir);
-//   });
-//   test('fetchTemplate', async () => {
-//     expect(await catchError(() => fetchTemplate(tempDir, 'plugin'))).toBeFalsy();
-//     // await fse.remove(tempDir);
-//   });
+import fse from 'fs-extra';
+import { fetchTemplate, processTemplates } from '../../../../commands/init/utils/template';
 
-//   test('process Ts Templates', async () => {
-//     expect(await catchError(() => fetchTemplate(tempDir, 'plugin'))).toBeFalsy();
-//     // css测试浪费时间
-//     expect(
-//       await catchError(() =>
-//         processTemplates(tempDir, {
-//           projectName: 'monaTest',
-//           cssExt: 'less',
-//           typescript: true,
-//         }),
-//       ),
-//     ).toBeFalsy();
-//     // await fse.remove(tempDir);
-//   }, 100000);
+function isEmtpyDir(dirname: string) {
+  try {
+    const files = fse.readdirSync(dirname)
+    if (files && files.length) {
+      return false
+    }
+  } catch (e) {
+    return true
+  }
+  return true
+}
 
-//   // test('template Ts build', async () => {
-//   //   // 安装依赖
-//   //   const command = `npm i  --registry=https://registry.npmjs.org`;
-//   //   const build = `npm run build`;
-//   //   execSync(`cd ${tempDir} && ${command} `, { stdio: 'ignore' });
-//   //   execSync(`cd ${tempDir} &&  yarn build`, { stdio: 'ignore' });
+describe('template', () => {
+  let tempDir = `./monaJest`;
 
-//   //   // execSync(`cd ${tempDir} && ${command} && ${build}`, { stdio: 'ignore' });
+  afterEach(() => {
+    return fse.remove(tempDir);
+  });
 
-//   //   await fse.remove(tempDir);
-//   // }, 100000);
+  test('should reject when fetch invalid tempalteName', () => {
+    expect(fetchTemplate(tempDir, new Date().valueOf() + '')).rejects.not.toBeNull();
+  });
+  test('should fetch templates to local directory correctly', async () => {
+    expect(isEmtpyDir(tempDir)).toBeTruthy()
+    await fetchTemplate(tempDir, 'plugin')
+    expect(isEmtpyDir(tempDir)).toBeFalsy()
+  });
 
-//   test('process Js Templates', async () => {
-//     expect(await catchError(() => fetchTemplate(tempDir, 'plugin'))).toBeFalsy();
-//     expect(
-//       await catchError(() =>
-//         processTemplates(tempDir, {
-//           projectName: 'monaTest',
-//           cssExt: 'less',
-//           typescript: false,
-//         }),
-//       ),
-//     ).toBeFalsy();
-//   }, 100000);
-//   // test('template Js build', async () => {
-//   //   // 安装依赖
-//   //   const command = `npm i --registry=https://registry.npmjs.org`;
-//   //   const build = `npm run build`;
-//   //   execSync(`cd ${tempDir} && ${command} && ${build}`, { stdio: 'ignore' });
-//   //   await fse.remove(tempDir);
-//   // }, 100000);
-// });
-
-// const catchError = async (fn: any) => {
-//   let hasError = false;
-//   try {
-//     await fn();
-//     hasError = false;
-//   } catch (error) {
-//     console.log(error);
-//     hasError = true;
-//   }
-//   return hasError;
-// };
+  test('should process template normally', async () => {
+    await fetchTemplate(tempDir, 'plugin');
+    // css测试浪费时间
+    await processTemplates(tempDir, {
+      projectName: 'monaTest',
+      cssExt: 'less',
+      typescript: true,
+    })
+    const config = JSON.parse(fse.readFileSync(`${tempDir}/package.json`).toString());
+    const names = fse.readdirSync(tempDir);
+    expect(config.name).toBe('monaTest')
+    expect(names.some(name => /\.ts/.test(name))).toBeTruthy()
+  })
+})

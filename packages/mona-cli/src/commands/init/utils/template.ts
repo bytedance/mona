@@ -64,26 +64,23 @@ export async function processTemplate(filePath: string, templateData: Record<str
     const fileContent = await ejs.renderFile(
       filePath,
       {
-        data: templateData
+        data: templateData,
       },
       {
-        async: true
+        async: true,
       }
     );
     fs.writeFileSync(filePath, fileContent);
     // 修改后缀
     newFilePath = renameFile(filePath, {
       typescript: templateData.typescript,
-      cssExt: templateData.cssExt
+      cssExt: templateData.cssExt,
     });
   }
   // 打印出来文件成功
   spinner.succeed(chalk.grey(`文件 ${newFilePath} 创建成功`));
 }
 
-/**
- * ! 此函数更新时，注意更新mona-template的测试文件。路径__test__/plugin.test.ts
- */
 export async function processTemplates(dirPath: string, templateData: Record<string, any>) {
   const files = readAllFiles(dirPath);
   // 遍历文件 处理问题

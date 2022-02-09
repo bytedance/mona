@@ -7,6 +7,8 @@ const config = {
   },
   preset: 'ts-jest',
   transform: jsWithTs.transform,
+  testMatch: ["**/?(*.)+(spec|test).[jt]s?(x)" ],
+  testPathIgnorePatterns: ['/node_modules/', '/dist/', '/local-test-fb/'],
 
   globals: {
     'ts-jest': {
