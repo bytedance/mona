@@ -13,24 +13,10 @@ describe("createService", () => {
   })
 
   it("should create a new service", () => {
-    
     const service = new Service([]);
     expect(service).not.toBeNull();
     expect(service.run).toBeInstanceOf(Function);
     expect(service.install).toBeInstanceOf(Function);
-  })
-
-  it("should add and run plugin correctly", () => {
-    const p1 = jest.fn()
-    const p2 = jest.fn()
-    const service = new Service([p1])
-    service.addPlugins([p2])
-
-    service.install();
-    service.run();
-
-    expect(p1).toBeCalled();
-    expect(p2).toBeCalled();
   })
   it('should run command correctly', () => {
     process.argv = ['a', 'b', 'test', '-t', 'hello'];

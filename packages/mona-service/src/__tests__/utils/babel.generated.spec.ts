@@ -32,7 +32,7 @@ React.createElement(false, {});
 
 test('isReactCall', () => {
   const res = [];
-  acornWalk.simple(acorn.parse(code), {
+  acornWalk.simple(acorn.parse(code, {ecmaVersion: 2020}), {
     CallExpression(node: t.CallExpression) {
       res.push(isReactCall(node.callee));
     },
@@ -42,7 +42,7 @@ test('isReactCall', () => {
 
 test('isStringLiteral', () => {
   const res = [];
-  acornWalk.simple(acorn.parse(propCode), {
+  acornWalk.simple(acorn.parse(propCode, {ecmaVersion: 2020}), {
     CallExpression(node: t.CallExpression) {
       const [reactNode] = node.arguments;
       res.push(isStringLiteral(reactNode));
