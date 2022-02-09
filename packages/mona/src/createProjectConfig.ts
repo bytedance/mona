@@ -1,5 +1,6 @@
 import { PluginOptions } from 'copy-webpack-plugin';
-
+import Config from 'webpack-chain';
+import { Configuration } from 'webpack';
 interface PxtransformConfig {
   unitPrecision: number;
   propList: string[];
@@ -33,8 +34,14 @@ export interface ProjectConfig {
         pxtransform?: PostcssPxtransformProps;
       };
     };
+
+    // default: false
+    sourceMap?: Config.DevTool;
+    // default: { "@": "./src/" }
+    alias?: Record<string, string>;
   };
-  raw?: (options: any) => any;
+  raw?: (config: Configuration) => Configuration;
+  chain?: (config: Config) => void;
   dev?: {
     port?: number | string;
   };

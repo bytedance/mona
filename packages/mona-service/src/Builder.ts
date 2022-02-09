@@ -3,7 +3,7 @@ import { Configuration } from 'webpack';
 import Config from 'webpack-chain';
 import ConfigHelper from './ConfigHelper';
 
-export type RawWebpackConfigFn = Configuration | ((webpackConfig: Configuration) => Partial<Configuration> | void)
+export type RawWebpackConfigFn = Configuration | ((webpackConfig: Configuration) => Partial<Configuration> | void);
 export type ChainWebpackConfigFn = (webpack: Config) => void;
 
 class Builder {
@@ -17,25 +17,31 @@ class Builder {
     this.chainWebpackConfigFns = [];
   }
 
-  resolveChainWebpackConfig () {
-    const chainableConfig = new Config()
-    this.chainWebpackConfigFns.forEach(fn => fn(chainableConfig))
-    return chainableConfig
+  resolveChainWebpackConfig() {
+    const chainableConfig = new Config();
+    this.chainWebpackConfigFns.forEach(fn => fn(chainableConfig));
+    return chainableConfig;
   }
 
   resolveWebpackConfig() {
-    const chainableConfig = this.resolveChainWebpackConfig()
-    let config = chainableConfig.toConfig() as Configuration
+    const chainableConfig = this.resolveChainWebpackConfig();
+    const { raw: rawCb, chain: chainCb } = this.configHelper.projectConfig;
+    if (typeof chainCb === 'function') {
+      chainCb(chainableConfig);
+    }
+    let config = chainableConfig.toConfig() as Configuration;
     this.rawWebpackConfigFns.forEach(fn => {
       if (typeof fn === 'function') {
-        const res = fn(config) as Configuration
-        if (res) config = merge(config, res)
+        const res = fn(config) as Configuration;
+        if (res) config = merge(config, res);
       } else if (fn) {
-        config = merge(config, fn)
+        config = merge(config, fn);
       }
-    })
-
-    return config
+    });
+    if (typeof rawCb === 'function') {
+      return rawCb(config);
+    }
+    return config;
   }
 
   clone() {
@@ -46,4 +52,4 @@ class Builder {
   }
 }
 
-export default Builder
+export default Builder;

@@ -25,7 +25,7 @@ const plugin: IPlugin = ctx => {
         const compiler = webpack(webpackConfig);
         const { cwd, projectConfig } = builder.configHelper;
         const staticDir = path.join(cwd, projectConfig.output);
-        const port = args.port || DEFAULT_PORT;
+        const port = args.port || projectConfig.dev?.port || DEFAULT_PORT;
 
         const devServer = new WebpackDevServer(
           {
@@ -57,7 +57,7 @@ const plugin: IPlugin = ctx => {
       // webpackConfig.devServer.hot(isDev);
       webpackConfig
         .target('web')
-        .devtool(isDev ? 'cheap-source-map' : false)
+        .devtool(projectConfig.abilities?.sourceMap!)
         .mode(isDev ? 'development' : 'production')
         .entry('app.entry')
         .add(path.join(configHelper.entryPath, '..', 'app.entry.js'));
