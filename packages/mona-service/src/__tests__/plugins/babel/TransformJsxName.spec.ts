@@ -1,12 +1,11 @@
-import * as babel from '@babel/core';
 import TransformJsxNamePlugin from '../../../plugins/babel/TransformJsxName';
 
 function jsxTransform(source: string, filename: string = __filename) {
   return new Promise<string>((resolve, reject) => {
-    babel.transform(
+    require('@babel/core').transform(
       source,
       {
-        plugins: ['@babel/plugin-syntax-jsx', TransformJsxNamePlugin],
+        plugins: ['@babel/plugin-transform-react-jsx', TransformJsxNamePlugin],
         filename,
       },
       (err, result) => {

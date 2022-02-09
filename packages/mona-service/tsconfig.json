@@ -17,6 +17,7 @@
     "pretty": true,
     "sourceMap": true,
     "declaration": true,
+    "allowJs":true,
     "plugins": [
       {
         "transform": "typescript-transform-paths"
