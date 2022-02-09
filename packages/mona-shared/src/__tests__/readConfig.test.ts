@@ -1,42 +1,26 @@
 import { readTypescriptFile, readJavascriptFile } from '../readConfig';
 import { readConfig } from '../index';
 
-import { join } from 'path';
+// import { join } from 'path';
 
-const tsRelativePath = '../index';
-const tsFilePath = join(__dirname, tsRelativePath + '.ts');
-const jsRelativePath = '../../../../babel.config';
-const jsFilePath = join(__dirname, jsRelativePath + '.js');
-
-const emptyFilePath = `./${new Date()}`;
+const tsFilePath = './__tests__/config.ts';
+const jsFilePath = './__tests__/config.js'
+const emptyFilePath = `./temp`;
 
 describe('mona-shared readConfig', () => {
-  test('readTypescriptFile', async () => {
-    readTypescriptFile(tsFilePath);
+  it('should read config file correctly',  () => {
+    expect(readTypescriptFile(tsFilePath)).toEqual({});
+    expect(readJavascriptFile(jsFilePath)).toEqual({});
   });
 
-  test('readJavascriptFile', async () => {
-    readJavascriptFile(jsFilePath);
+  it('should not throw error when file not found', () => {
+    expect(() => readTypescriptFile(emptyFilePath)).not.toThrow();
+    expect(() => readJavascriptFile(emptyFilePath)).not.toThrow();
   });
 
-  test('readTsFile empty', async () => {
-    expect(() => readTypescriptFile(emptyFilePath)).toThrow();
-  });
-
-  test('readJsFile empty', async () => {
-    expect(() => readJavascriptFile(emptyFilePath)).toThrow();
-  });
-
-  test('readConfig Ts', async () => {
-    readConfig(tsFilePath);
-  });
-
-  test('readConfig Js', async () => {
-    readConfig(jsFilePath);
-  });
-
-  test('readConfig empty', async () => {
-    expect(() => readConfig(emptyFilePath)).not.toThrow();
-    expect(readConfig(emptyFilePath)).toEqual({});
+  it('should read config file correctly', async () => {
+    expect(readConfig(tsFilePath)).toEqual({})
+    expect(readConfig(jsFilePath)).toEqual({})
+    expect(readConfig(emptyFilePath)).toEqual({})
   });
 });
