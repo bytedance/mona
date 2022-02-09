@@ -57,7 +57,7 @@ const plugin: IPlugin = ctx => {
       // webpackConfig.devServer.hot(isDev);
       webpackConfig
         .target('web')
-        .devtool(isDev ? 'cheap-source-map' : false)
+        .devtool(projectConfig.abilities?.sourceMap!)
         .mode(isDev ? 'development' : 'production')
         .entry('app.entry')
         .add(path.join(configHelper.entryPath, '..', 'app.entry.js'));
