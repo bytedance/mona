@@ -13,5 +13,6 @@ module.exports = {
     '<rootDir>/packages/mona/',
   ],
 
+  testMatch: ["**/?(*.)+(spec|test).[jt]s?(x)" ],
   testPathIgnorePatterns: ['/node_modules/', '/dist/', '/local-test-fb/'],
 };
