@@ -43,7 +43,6 @@ const Test = () => {
 </View>);
 }
 `;
-
 const miniLabels = ['view', 'picker-view', 'slider', 'text'];
 const monaLabels = ['Text', 'View'];
 
