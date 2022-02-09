@@ -1,9 +1,4 @@
-// import { getPkgName, getPkgVersion } from './utils/package';
-// import chalk from 'chalk';
 import path from 'path';
-// import cmds from './cmds';
-// import { commandUsage, dispatchCommand, joinCmdPath } from './utils/command';
-// import PackageUpdater from './PackageUpdater';
 import { Service } from '@bytedance/mona-service'
 
 const pathToPlugin = (pathname: string) => require(pathname);
