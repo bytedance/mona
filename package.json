@@ -27,7 +27,6 @@
   "license": "MIT",
   "workspaces": [
     "packages/mona*",
-    "packages/mona-commands/*",
     "packages/mona-clients/*"
   ],
   "packageManager": "yarn@1.22.4",

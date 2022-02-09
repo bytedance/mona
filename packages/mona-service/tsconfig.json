@@ -3,6 +3,7 @@
     "target": "es2017",
     "moduleResolution": "node",
     "strict": true,
+    "allowJs": true,
     "module": "commonjs",
     "esModuleInterop": true,
     "resolveJsonModule": true,

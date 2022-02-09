@@ -5,10 +5,10 @@
 
 module.exports = {
   projects: [
-    '<rootDir>/packages/mona-cli/',
     '<rootDir>/packages/mona-clients/*',
-    '<rootDir>/packages/mona-shared/',
+    '<rootDir>/packages/mona-cli/',
     '<rootDir>/packages/mona-service/',
+    '<rootDir>/packages/mona-shared/',
     '<rootDir>/packages/mona-runtime/',
     '<rootDir>/packages/mona/',
   ],
