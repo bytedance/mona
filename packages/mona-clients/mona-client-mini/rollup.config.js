@@ -5,7 +5,7 @@ import typescript from 'rollup-plugin-typescript2';
 import postcss from 'rollup-plugin-postcss';
 import { terser } from 'rollup-plugin-terser';
 import replace from '@rollup/plugin-replace';
-import { RENDER_NODE } from '@bytedance/mona-shared';
+import { RENDER_NODE, ComponentType } from '@bytedance/mona-shared';
 import json from '@rollup/plugin-json';
 
 const pkg = require('./package.json');
@@ -34,7 +34,11 @@ export default [
             pre[`${item}_STR`] = JSON.stringify(RENDER_NODE[item]);
             return pre;
           },
-          { ...RENDER_NODE },
+          {
+            ...RENDER_NODE,
+
+            NAVIGATE_ALIAS: JSON.stringify(ComponentType.navigator),
+          },
         ),
       ),
       json(),

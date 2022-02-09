@@ -82,10 +82,11 @@ export const Webview = createBaseComponent<WebviewProps>(ComponentType['web-view
 export const Ad = createBaseComponent<AdProps>(ComponentType['ad']);
 export const OpenData = createBaseComponent<OpenDataProps>(ComponentType['open-data']);
 
-export const Link = (function createBaseComponent(name) {
+export const Link = (function createBaseComponent() {
   const Component = React.forwardRef(({ children, to }: any, ref) =>
-    React.createElement(name, { url: formatPath(to), ref }, children),
+    // NAVIGATE_ALIAS 方便编译时分析，记录Navigator被引用
+    React.createElement(NAVIGATE_ALIAS, { url: formatPath(to), ref }, children),
   );
-  Component.displayName = name;
+  Component.displayName = 'Link';
   return Component;
-})(ComponentType['navigator']) as React.ComponentType<LinkProps>;
+})() as React.ComponentType<LinkProps>;

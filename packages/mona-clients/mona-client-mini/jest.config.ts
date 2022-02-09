@@ -2,7 +2,7 @@
  * For a detailed explanation regarding each configuration property and type check, visit:
  * https://jestjs.io/docs/configuration
  */
-import { RENDER_NODE } from '@bytedance/mona-shared';
+import { RENDER_NODE, ComponentType } from '@bytedance/mona-shared';
 
 import baseConfig from '../../../jestconfig.base';
 
@@ -17,6 +17,7 @@ module.exports = {
     },
     {
       ...RENDER_NODE,
+      NAVIGATE_ALIAS: JSON.stringify(ComponentType.navigator),
       ...baseConfig.globals,
     },
   ),

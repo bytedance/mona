@@ -12,3 +12,5 @@ declare const COMPLIER_KEY: a,
   COMPLIER_CHILDREN_STR: 'd',
   COMPLIER_TEXT_STR: 'e',
   COMPLIER_PROPS_STR: 'f';
+
+  declare const NAVIGATE_ALIAS: '26'
