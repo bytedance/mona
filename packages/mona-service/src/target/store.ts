@@ -1,5 +1,5 @@
-import { genEjsParamsMap } from './mini/baseComponents';
 import type { TtComponentEntry } from './entires/ttComponentEntry';
+import { genEjsParamsMap } from './mini/baseComponents';
 // import { PageEntry } from './entires/pageEntry';
 export interface ComponentImportInfo {
   // 包名称，例如: @bytedance/mona-runtime
