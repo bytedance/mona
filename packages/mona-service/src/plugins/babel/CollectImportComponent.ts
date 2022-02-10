@@ -62,7 +62,7 @@ export function processNativePath(req: string, from: string, cwd: string) {
   }
 }
 
-function getJsxProps(entry: TtComponentEntry, componentName: string, node: t.JSXElement) {
+export function getJsxProps(entry: TtComponentEntry, componentName: string, node: t.JSXElement) {
   const component = entry.templateInfo || {
     componentName: formatReactNodeName(componentName),
     props: new Set(),

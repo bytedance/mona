@@ -18,7 +18,6 @@ const buildInPlugins = [
 
 function main() {
   const service = new Service(buildInPlugins);
-
   service.install();
   service.run();
 }

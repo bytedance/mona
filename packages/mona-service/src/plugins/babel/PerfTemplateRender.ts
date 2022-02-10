@@ -4,6 +4,7 @@ import { compressNodeName } from '@/target/utils/reactNode';
 import { miniPro2rcPropMap, renderMapAction } from './renderStore';
 import monaStore from '@/target/store';
 import { isReactCall, isStringLiteral } from '@/target/utils/babel';
+import runtimePkgJson from '@bytedance/mona-runtime/package.json';
 // import { ComponentAliasMap } from '@bytedance/mona-shared';
 export default function perfTemplateRender() {
   return {
@@ -17,7 +18,13 @@ export default function perfTemplateRender() {
         let nodeType: string = '';
 
         if (t.isIdentifier(reactNode)) {
-          nodeType = compressNodeName(reactNode.name);
+          const bindingPath = path.scope.getBinding(reactNode.name)?.path;
+          const importNode = bindingPath?.parentPath?.node;
+          if (t.isImportDeclaration(importNode) && importNode.source.value === runtimePkgJson.name) {
+            nodeType = compressNodeName(reactNode.name);
+          } else {
+            return;
+          }
         } else if (isStringLiteral(reactNode)) {
           nodeType = compressNodeName(reactNode.value);
         }

@@ -9,9 +9,11 @@ export interface IPlugin {
 class Service {
   private _plugins: IPlugin[] = [];
   private _pluginContext: PluginContext;
-
   constructor(plugins: IPlugin[]) {
+    this.init();
+
     this.addPlugins(plugins);
+
     this._pluginContext = new PluginContext();
   }
 
@@ -23,9 +25,20 @@ class Service {
     }
   }
 
+  // init NODE_ENV
+  init() {
+    if (process.env.NODE_ENV === undefined) {
+      const cmdName = minimist(process.argv.slice(2))._[0] as string;
+      if (cmdName === 'build') {
+        process.env.NODE_ENV = 'production';
+      } else {
+        process.env.NODE_ENV = 'development';
+      }
+    }
+  }
+
   install() {
     const plugins = this._plugins;
-
     // apply all plugins
     plugins.forEach(p => {
       p.call(this, this._pluginContext);
@@ -34,8 +47,6 @@ class Service {
 
   run() {
     const pluginContext = this._pluginContext;
-
-    // run all command
     const argv = minimist(process.argv.slice(2));
     const cmdName = argv._[0] as string;
     const cmd = pluginContext.getCommand(cmdName);
@@ -57,6 +68,7 @@ class Service {
 
     // for build and start, pass builder to callback
     const shouldPassBuilder = cmdName === 'build' || cmdName === 'start';
+
     if (shouldPassBuilder && !cmdArgv.help) {
       const { target: targetName } = cmdArgv;
       // find target builder
