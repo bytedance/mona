@@ -167,6 +167,7 @@ const MovableView: React.FC<MovableViewProps> = props => {
     disRef.current.distX = clientX - posInfo.left;
     disRef.current.distY = clientY - posInfo.top;
   }, []);
+
   const handleScale = useCallback<TouchEventHandler<HTMLSpanElement>>(e => {
     const { clientX, clientY } = e.targetTouches[0];
     const { distX, distY } = disRef.current;

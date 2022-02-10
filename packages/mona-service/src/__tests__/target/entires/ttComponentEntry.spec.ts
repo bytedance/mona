@@ -16,8 +16,7 @@ describe('TtComponentEntry', () => {
   configHelperIns.cwd = __dirname;
   const entryPath = path.join(__dirname, './src/CustomComponent/index');
 
-  let TtEntry = new TtComponentEntry(configHelperIns, entryPath);
-  beforeEach(() => {});
+  let TtEntry = new TtPageEntry(configHelperIns, entryPath);
 
   it('readDependencies', () => {
     const res = TtEntry.readDependencies();
@@ -68,7 +67,8 @@ describe('TtComponentEntry', () => {
   });
 
   it('virtualSource', () => {
-    expect(typeof TtEntry.virtualSource === 'string').toBeTruthy();
-    expect(TtEntry.virtualSource.length > 0).toBeTruthy();
+    const custom4Entry = monaStore.nativeEntryMap.get(path.join(__dirname, './CustomComponent4/index'));
+    expect(typeof custom4Entry.virtualSource === 'string').toBeTruthy();
+    expect(custom4Entry.virtualSource.length > 0).toBeTruthy();
   });
 });
