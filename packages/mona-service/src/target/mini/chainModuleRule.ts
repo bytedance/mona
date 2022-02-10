@@ -70,7 +70,6 @@ function createCssRule(webpackConfig: Config, configHelper: ConfigHelper) {
         auto: true,
         // localIdentName: '[local]_[hash:base64:5]',
         localIdentName: configHelper.isDev ? '[path][name]__[local]' : '[local]_[hash:base64:5]',
-
       },
     });
 

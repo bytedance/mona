@@ -130,7 +130,8 @@ export class TtComponentEntry {
 
     Object.keys(usingComponents).forEach(name => {
       const cPath = usingComponents[name];
-      if (!path.isAbsolute(cPath)) {
+      if (cPath.startWith('ext://')) {
+      } else if (!path.isAbsolute(cPath)) {
         const outputPath = this.outputDir;
 
         const vPath = path.join(this.dirPath, cPath);
