@@ -3,8 +3,7 @@ import nodePath from 'path';
 import * as t from '@babel/types';
 import { formatReactNodeName } from '@/target/utils/reactNode';
 import ConfigHelper from '@/ConfigHelper';
-import { TtComponentEntry } from '@/target/entires/ttComponentEntry';
-import { genNativeComponentEntry } from '@/target/entires/util';
+import { TtComponentEntry, genNativeComponentEntry } from '@/target/entires/ttComponentEntry';
 import { CUSTOM_COMPONENT_PROTOCOL } from '@bytedance/mona-shared';
 // 收集从pages中引入的native Component, 以及props，
 export default function collectNativeComponent(configHelper: ConfigHelper) {

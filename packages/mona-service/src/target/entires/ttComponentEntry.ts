@@ -3,7 +3,7 @@ import fse from 'fs-extra';
 
 import ConfigHelper from '../../ConfigHelper';
 import { MINI_EXT_LIST } from '../constants';
-import { genNativeComponentEntry } from './util';
+// import { genNativeComponentEntry } from './util';
 import monaStore, { ComponentImportInfo } from '../store';
 
 const defaultEntryConfig: Record<string, any> = {};
@@ -17,6 +17,17 @@ export const genNativeComponentId = (resourcePath: string) => {
     return entry?.id;
   }
   return `native${id++}`;
+};
+
+export const genNativeComponentEntry = (configHelper: ConfigHelper, entryPath: string) => {
+  entryPath = entryPath.replace(path.extname(entryPath), '');
+  if (monaStore.nativeEntryMap.has(entryPath)) {
+    return monaStore.nativeEntryMap.get(entryPath)! as TtComponentEntry;
+  } else {
+    const nEntry = new TtComponentEntry(configHelper, entryPath);
+    monaStore.nativeEntryMap.set(entryPath, nEntry);
+    return nEntry;
+  }
 };
 
 // 小程序语法自定义组件入口
@@ -52,6 +63,9 @@ export class TtComponentEntry {
   // 1. *.js中import & require
   // 2. *.json文件中的usingComponents
   readDependencies(handledPath: Set<string> = new Set([this.entry])) {
+    if (!fse.existsSync(`${this.entry}.js`)) {
+      return new Set([]);
+    }
     const config = this.readConfig();
     const usingComponent = config.usingComponents || {};
     const res = new Set(this._dependencies);
@@ -118,7 +132,7 @@ export class TtComponentEntry {
 
     if (!this.dirPath.startsWith(dirPath)) {
       const dirname = path.basename(this.dirPath);
-      const componentPath = path.join(this.configHelper.cwd, `./src/components/tt/${dirname}${this.id}`);
+      const componentPath = path.join(this.configHelper.cwd, `./src/components/tt/${dirname}_${this.id}`);
       outputPath = path.relative(dirPath, componentPath);
     }
     return outputPath;
@@ -130,7 +144,7 @@ export class TtComponentEntry {
 
     Object.keys(usingComponents).forEach(name => {
       const cPath = usingComponents[name];
-      if (cPath.startWith('ext://')) {
+      if (cPath.startsWith('ext://')) {
       } else if (!path.isAbsolute(cPath)) {
         const outputPath = this.outputDir;
 
@@ -142,13 +156,6 @@ export class TtComponentEntry {
 
     outputJson.usingComponents = usingComponents;
     return outputJson;
-  }
-
-  get entrySource() {
-    try {
-      return fse.readFileSync(`${this.entry}.js`).toString();
-    } catch {}
-    return '';
   }
 
   get outputResource() {

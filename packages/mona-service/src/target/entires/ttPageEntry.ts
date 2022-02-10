@@ -3,7 +3,8 @@ import fse from 'fs-extra';
 
 import ConfigHelper from '../../ConfigHelper';
 import { TtComponentEntry } from './ttComponentEntry';
-
+import monaStore from '../store';
+const { nativeEntryMap } = monaStore;
 // 小程序语法页面入口
 export class TtPageEntry extends TtComponentEntry {
   constructor(configHelper: ConfigHelper, entryPath: string) {
@@ -49,3 +50,15 @@ export class TtPageEntry extends TtComponentEntry {
     return ``;
   }
 }
+
+export const genTtPageEntry = (configHelper: ConfigHelper, entryPath: string) => {
+  entryPath = entryPath.replace(path.extname(entryPath), '');
+
+  if (nativeEntryMap.has(entryPath)) {
+    return nativeEntryMap.get(entryPath)! as TtPageEntry;
+  } else {
+    const nEntry = new TtPageEntry(configHelper, entryPath);
+    nativeEntryMap.set(entryPath, nEntry);
+    return nEntry;
+  }
+};
