@@ -1,6 +1,6 @@
 import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
-import { ComponentType, ComponentAliasMap } from '@bytedance/mona-shared';
+import { ComponentType, MiniComponentAliasMap } from '@bytedance/mona-shared';
 import { isReactCall, isStringLiteral } from '@/target/utils/babel';
 
 // const specialLabel = new Set(['script', 'react']);
@@ -25,7 +25,7 @@ export default function TransformJsxNamePlugin() {
           if (alias) {
             reactNode.value = alias;
           } else {
-            if (!ComponentAliasMap[reactNode.value]) {
+            if (!MiniComponentAliasMap[reactNode.value]) {
               console.warn(`${reactNode.value} 标签在小程序端不支持，将会转为view`);
               reactNode.value = ComponentType.view;
             }

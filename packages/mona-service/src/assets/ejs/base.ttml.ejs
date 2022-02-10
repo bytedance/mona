@@ -1,14 +1,15 @@
 <template name="mona-base">
   <template tt:for="{{root.<%=RENDER_NODE.COMPLIER_CHILDREN%>}}" tt:key="{{ item.<%=RENDER_NODE.COMPLIER_KEY%> }}" is="{{'mona-' + root.<%=RENDER_NODE.COMPLIER_NODES%>[item].<%=RENDER_NODE.COMPLIER_TYPE%>}}" data="{{node: root.<%=RENDER_NODE.COMPLIER_NODES%>[item]}}" />
 </template>
-<%for (let name of ejsParamsMap.keys()) {%>
+<%for (let name of miniComponents.keys()) {%>
+<%_const itemInfo = miniComponents.get(name)-%>
 <template name="mona-<%=name%>">
-  <<%=ComponentAliasMap[name]%> 
-    <%_for(let i in ejsParamsMap.get(name).alias){-%>
-    <%_if(ejsParamsMap.get(name).defaultProps[i] !== undefined){-%>
-    <%=ejsParamsMap.get(name).alias[i]%>="{{node.<%=RENDER_NODE.COMPLIER_PROPS%>['<%=i%>'] === undefined ? <%-ejsParamsMap.get(name).defaultProps[i]%> : node.<%=RENDER_NODE.COMPLIER_PROPS%>['<%=i%>']}}" 
+  <<%=itemInfo.miniName%> 
+    <%_for(let i in itemInfo.alias){-%>
+    <%_if(itemInfo.defaultProps[i] !== undefined){-%>
+    <%=itemInfo.alias[i]%>="{{node.<%=RENDER_NODE.COMPLIER_PROPS%>['<%=i%>'] === undefined ? <%-itemInfo.defaultProps[i]%> : node.<%=RENDER_NODE.COMPLIER_PROPS%>['<%=i%>']}}" 
     <%_} else{-%>
-    <%=ejsParamsMap.get(name).alias[i]%>="{{node.<%=RENDER_NODE.COMPLIER_PROPS%>['<%=i%>']}}" 
+    <%=itemInfo.alias[i]%>="{{node.<%=RENDER_NODE.COMPLIER_PROPS%>['<%=i%>']}}" 
     <%_}}-%>
   >
   <% if(!voidChildrenElements.has(name)) { -%>
@@ -18,7 +19,7 @@
       tt:key="{{ item.<%=RENDER_NODE.COMPLIER_KEY%> }}"
       data="{{ node: node.<%=RENDER_NODE.COMPLIER_NODES%>[item] }}" 
     />
-  <%_}-%></<%=ComponentAliasMap[name]%>>
+  <%_}-%></<%=itemInfo.miniName%>>
 </template><%};-%>
 
 
@@ -39,7 +40,7 @@
   </template>
 <%};-%>
 
-<template name="mona-36">
+<template name="mona-<%=PTextName%>">
   <block>{{ node.<%=RENDER_NODE.COMPLIER_TEXT%> }}</block>
 </template>
 

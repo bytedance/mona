@@ -34,12 +34,12 @@ import webview from './Webview/alias';
 import map from './Map/alias';
 // import map from './Ca/alias';
 // import * as Components from '@bytedance/mona-components';
-import { ComponentType } from '@bytedance/mona-shared';
+import { ComponentType, MiniComponentAliasMap } from '@bytedance/mona-shared';
 type ComponentName = any;
 export const ejsParamsObj: Record<
   string,
   {
-    reactComponentName: ComponentName | 'Block';
+    reactComponentName?: ComponentName | 'Block';
     alias: any;
     defaultProps?: Record<string, string | boolean | number>;
   }
@@ -359,7 +359,8 @@ export const genEjsParamsMap = () => {
   const ejsParamsMap = new Map<
     string,
     {
-      reactComponentName: ComponentName;
+      miniName: string;
+      // reactComponentName: ComponentName;
       alias: any;
       defaultProps?: Record<string, string | boolean | number>;
     }
@@ -374,7 +375,11 @@ export const genEjsParamsMap = () => {
       }
     }
 
-    ejsParamsMap.set(name, { ...ejsParamsObj[name], defaultProps });
+    ejsParamsMap.set(name, {
+      ...ejsParamsObj[name],
+      defaultProps,
+      miniName: MiniComponentAliasMap[name],
+    });
   }
 
   return ejsParamsMap;

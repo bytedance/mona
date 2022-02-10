@@ -47,12 +47,18 @@ const MiniComponentType = {
   ptext: '36',
 };
 
-// if (process.env.NODE_ENV === 'development') {
-//   for (const i in MiniComponentType) {
-//     if (i !== 'ptext') {
-//       // @ts-ignore
-//       MiniComponentType[i] === i;
-//     }
+// TODO:开发模式语义化, 小程序运行时 build两份代码, production.xx development.xxx
+// if (process.env.NODE_ENV === 'production') {
+//   RENDER_NODE = {
+//     COMPLIER_KEY: 'key',
+//     COMPLIER_TYPE: 'type',
+//     COMPLIER_NODES: 'nodes',
+//     COMPLIER_CHILDREN: 'children',
+//     COMPLIER_TEXT: 'text',
+//     COMPLIER_PROPS: 'props',
+//   };
+//   for (const k in MiniComponentType) {
+//     MiniComponentType[k as keyof typeof MiniComponentType] = k;
 //   }
 // }
 
@@ -73,7 +79,7 @@ export const webComponentType = {
 };
 export const ComponentType = { ...webComponentType, ...MiniComponentType };
 
-export const ComponentAliasMap = Object.keys(MiniComponentType).reduce((pre: Record<string, string>, item) => {
+export const MiniComponentAliasMap = Object.keys(MiniComponentType).reduce((pre: Record<string, string>, item) => {
   pre[MiniComponentType[item as keyof typeof MiniComponentType]] = item;
   return pre;
 }, {});

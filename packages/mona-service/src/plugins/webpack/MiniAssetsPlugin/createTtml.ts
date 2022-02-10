@@ -4,7 +4,7 @@ import { Compilation, sources } from 'webpack';
 import ConfigHelper from '@/ConfigHelper';
 
 import { voidChildrenElements } from '@/target/mini/baseComponents/constants';
-import { RENDER_NODE, ComponentAliasMap, CUSTOM_REF } from '@bytedance/mona-shared';
+import { RENDER_NODE, ComponentType, CUSTOM_REF } from '@bytedance/mona-shared';
 
 import monaStore from '@/target/store';
 import { formatReactNodeName } from '@/target/utils/reactNode';
@@ -64,9 +64,9 @@ export default async function createTtml(compilation: Compilation, configHelper:
   const isDev = configHelper.isDev;
   const { appConfig } = configHelper;
   const pages = appConfig.pages ?? [];
-  let renderTemplateAliasMap = monaStore.ejsParamsMap;
+  let miniComponents = monaStore.ejsParamsMap;
   if (configHelper.projectConfig.compilerOptimization) {
-    renderTemplateAliasMap = getAliasMap(renderTemplateAliasMap);
+    miniComponents = getAliasMap(miniComponents);
   }
 
   const file = `base.ttml`;
@@ -75,11 +75,11 @@ export default async function createTtml(compilation: Compilation, configHelper:
     let content = await ejs.renderFile(
       tplPath,
       {
-        ejsParamsMap: renderTemplateAliasMap,
+        miniComponents,
+        nativeComponents: genNativeEjsData(),
         voidChildrenElements,
         RENDER_NODE,
-        ComponentAliasMap,
-        nativeComponents: genNativeEjsData(),
+        PTextName: ComponentType.ptext,
       },
       {
         rmWhitespace: !isDev,
