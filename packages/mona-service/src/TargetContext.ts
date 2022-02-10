@@ -97,7 +97,7 @@ class TargetContext {
   }
 
   overrideBuildCommand(fn: Fn) {
-    this.startFn = fn;
+    this.buildFn = fn;
   }
 
   // chain webpack config

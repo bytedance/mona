@@ -1,10 +1,7 @@
 import { IPlugin } from '../../Service';
 
 const start: IPlugin = ctx => {
-  if (process.env.NODE_ENV === undefined) {
-    ctx.configHelper.isDev = true;
-  }
-
+ 
   ctx.registerCommand(
     'start',
     {

@@ -47,7 +47,7 @@ export class TtComponentEntry {
     this._dependencies = MINI_EXT_LIST.map(ext => `${this.entry}${ext}`);
   }
 
-  // TODO(p1): 分析.js中  import和require的依赖
+  // TODO(p1):native分包支持。 分析.js中import和require的依赖
   // 依赖包括
   // 1. *.js中import & require
   // 2. *.json文件中的usingComponents
