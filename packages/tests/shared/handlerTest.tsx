@@ -9,6 +9,7 @@ configure({ adapter: new Adapter() });
 
 export default function handlerTest({
   Component,
+  props: addProps,
   hasHover = false,
   firstTag = 'div',
   clickTag,
@@ -17,12 +18,14 @@ export default function handlerTest({
   hasHover?: boolean;
   firstTag?: string;
   clickTag?: string;
+  props?: any
 }) {
   describe('common events handle', () => {
     it('should act normally when trigger tap event', () => {
       const props = {
          onTap: jest.fn(),
-         onTouchStart: jest.fn()
+         onTouchStart: jest.fn(),
+         ...addProps
       }
 
       const wrapper = mount(<Component {...props} />);
@@ -36,15 +39,17 @@ export default function handlerTest({
       const props = {
         onTap: jest.fn(),
         onLongPress: jest.fn(),
-        onLongTap: jest.fn()
+        onLongTap: jest.fn(),
+        ...addProps
       }
 
       const wrapper = mount(<Component {...props} />);
-      wrapper.simulate('touchstart')
+      const mockTouches = [{ clientX: 0, clientY: 0 }]
+      wrapper.simulate('touchstart', { touches: mockTouches, targetTouches: mockTouches })
       act(() => {
         jest.advanceTimersByTime(350)
       })
-      wrapper.simulate('touchend');
+      wrapper.simulate('touchend', { touches: mockTouches, targetTouches: mockTouches });
       expect(props.onLongPress).toHaveBeenCalled();
       expect(props.onLongTap).toHaveBeenCalled();
       expect(props.onTap).not.toHaveBeenCalled();
@@ -58,6 +63,7 @@ export default function handlerTest({
         onAnimationEnd: jest.fn(),
         onAnimationStart: jest.fn(),
         onAnimationIteration: jest.fn(),
+        ...addProps
       }
 
       const wrapper = mount(<Component {...props} />)

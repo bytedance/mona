@@ -7,10 +7,12 @@ const MovableArea: React.FC<MovableAreaProps> = ({ scaleArea = false, children, 
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [{ wrapperWidth, wrapperHeight }, setWrapper] = useState({ wrapperWidth: 0, wrapperHeight: 0 });
   useEffect(() => {
-    setWrapper({
-      wrapperWidth: wrapperRef.current!.clientWidth,
-      wrapperHeight: wrapperRef.current!.clientHeight,
-    });
+    if (wrapperRef.current) {
+      setWrapper({
+        wrapperWidth: wrapperRef.current.clientWidth,
+        wrapperHeight: wrapperRef.current.clientHeight,
+      });
+    }
   }, []);
   const { handleClassName, ...handlerProps } = useHandlers(restProps);
 

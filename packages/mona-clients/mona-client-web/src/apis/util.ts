@@ -7,7 +7,7 @@ import {
   GetLocationSuccessCallbackArgs,
   NetworkType
 } from '@bytedance/mona';
-import clipboard from 'clipboardy';
+// import clipboard from 'clipboardy';
 
 import { showPreviewImage } from './components/';
 
@@ -406,8 +406,9 @@ export const webGetClipboardData: BaseApis['getClipboardData'] = (options = {}) 
   const errMsg = 'setClipboardData:fail';
 
   try {
-    const data = clipboard.readSync();
-    const ret = { data, errMsg: 'setClipboardData:ok' };
+    // TODO
+    // const data = clipboard.readSync();
+    const ret = { data: {} as any, errMsg: 'setClipboardData:ok' };
     options.success?.(ret);
     options.complete?.(ret);
   } catch (e) {
@@ -420,7 +421,8 @@ export const webSetClipboardData: BaseApis['setClipboardData'] = options => {
   let errMsg = 'setClipboardData:fail';
   try {
     errMsg = 'setClipboardData:ok';
-    clipboard.writeSync(options.data);
+    // TODO
+    // clipboard.writeSync(options.data);
     options.success?.({ errMsg });
     options.complete?.({ errMsg });
   } catch (e) {
