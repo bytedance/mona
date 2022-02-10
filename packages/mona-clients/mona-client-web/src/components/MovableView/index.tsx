@@ -161,8 +161,6 @@ const MovableView: React.FC<MovableViewProps> = props => {
   }, [x, y, setPositionWithCheck]);
 
   const handleTouchStart = useCallback<TouchEventHandler<HTMLSpanElement>>(e => {
-    console.log('e');
-
     setExecuting(false);
     const { clientX, clientY } = e.targetTouches[0];
     const posInfo = domRef.current!.getBoundingClientRect();
@@ -268,14 +266,14 @@ const MovableView: React.FC<MovableViewProps> = props => {
     : { transition: `scale ${animationTime}` };
 
   useEffect(() => {
-    const wrapperDom = wrapperRef.current as HTMLDivElement;
+    const wrapperDom = wrapperRef?.current as HTMLDivElement;
     if (wrapperDom && scaleArea) {
       wrapperDom.addEventListener('touchmove', handleScale as any);
     }
     return () => {
       scaleArea && wrapperDom.removeEventListener('touchmove', handleScale as any);
     };
-  }, [handleScale, scaleArea]);
+  }, [handleScale, scaleArea, wrapperRef]);
   return (
     //@ts-ignore
     <span

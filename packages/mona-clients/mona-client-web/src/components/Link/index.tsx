@@ -6,6 +6,6 @@ export interface LinkProps {
   to: string;
 }
 
-const Link: React.FC<LinkProps> = ({ children, to }) => <RouteLink to={formatPath(to)}>{children}</RouteLink>;
+const Link: React.FC<LinkProps> = ({ children, to, ...props }) => <RouteLink to={formatPath(to)} {...props}>{children}</RouteLink>;
 
 export default Link;
