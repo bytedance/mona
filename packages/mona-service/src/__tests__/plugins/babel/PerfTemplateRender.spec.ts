@@ -2,6 +2,7 @@ import monaStore from '../../../target/store';
 import perfTemplateRender from '../../../plugins/babel/PerfTemplateRender';
 import TransformJsxNamePlugin from '../../../plugins/babel/TransformJsxName';
 import { ComponentType } from '@bytedance/mona-shared';
+import runtimePkgJson from '@bytedance/mona-runtime/package.json';
 
 function jsxTransform(source: string, filename: string = __filename) {
   return new Promise<string>((resolve, reject) => {
@@ -33,6 +34,8 @@ const templateCollectCode = `
 </>)
 `;
 const propsCollectCode = `
+import {View} from "${runtimePkgJson.name}"
+
 ()=>( <>
   <view onTap={()=>{}} ></view>
   <div onTouchMove={()=>{}} ></div>
@@ -45,7 +48,19 @@ const propsCollectCode = `
   <img range={[1,2]} src="https://dontInvolution.bytedance.com" ></img>
 </>)
 `;
+const importCode = `
+import { View } from "${runtimePkgJson.name}"
+import { PickerView } from "other"
 
+()=>( <>
+  <view onTap={()=>{}} ></view>
+  <div onTouchMove={()=>{}} ></div>
+  <View class="1" ></View>
+  <text space="ensp">1234</text>
+  <Text selectable={true}>123</Text>
+  <PickerView></PickerView>
+</>)
+`;
 describe('perfTemplateRender', () => {
   beforeEach(() => {
     monaStore.templateRenderMap.clear();
@@ -67,6 +82,7 @@ describe('perfTemplateRender', () => {
     const pickerViewInfo = monaStore.templateRenderMap.get(ComponentType['picker-view']);
     const pickerViewColumnInfo = monaStore.templateRenderMap.get(ComponentType['picker-view-column']);
     const imageInfo = monaStore.templateRenderMap.get(ComponentType.image);
+    // console.log(viewInfo);
     expect([viewInfo.isRenderAllProps, Object.keys(viewInfo.renderProps).length]).toEqual([false, 3]);
     expect([pickerInfo.isRenderAllProps, Object.keys(pickerInfo.renderProps).length]).toEqual([false, 1]);
     expect(pickerViewInfo.isRenderAllProps).toBeTruthy();
@@ -75,5 +91,20 @@ describe('perfTemplateRender', () => {
       0,
     ]);
     expect([imageInfo.isRenderAllProps, Object.keys(imageInfo.renderProps).length]).toEqual([false, 1]);
+  });
+  // 测试非 @bytedance/mona-runtime 导入的同名组件是否会记录
+  it('collect Props', async () => {
+    await jsxTransform(importCode, 'importCode.tsx');
+    const viewInfo = monaStore.templateRenderMap.get(ComponentType.view);
+    const pickerViewInfo = monaStore.templateRenderMap.get(ComponentType['picker-view']);
+    const textInfo = monaStore.templateRenderMap.get(ComponentType['text']);
+    expect([viewInfo.isRenderAllProps, Object.keys(viewInfo.renderProps).length]).toEqual([false, 3]);
+    expect([
+      textInfo.isRenderAllProps,
+      textInfo.renderProps['space'],
+      Object.keys(textInfo.renderProps).length,
+    ]).toEqual([false, true, 1]);
+
+    expect(pickerViewInfo).toBeUndefined();
   });
 });
