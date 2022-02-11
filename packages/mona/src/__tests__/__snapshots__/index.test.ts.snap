@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mona createConfig createProjectConfig 1`] = `
+Object {
+  "input": "./src/app.tsx",
+  "output": "dist",
+  "projectName": "mona",
+}
+`;
+
+exports[`mona createConfig createProjectConfig 2`] = `
+Object {
+  "pages": Array [],
+}
+`;
+
+exports[`mona createConfig createProjectConfig 3`] = `Object {}`;
