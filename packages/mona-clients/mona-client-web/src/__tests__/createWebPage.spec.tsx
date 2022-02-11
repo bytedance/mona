@@ -43,23 +43,29 @@ describe('createPageLifecycle', () => {
   it('createPageLifecycle FC lifeCycle', () => {
     const PageComponent = createPageLifecycle(Page);
     const PageIns = mount(<PageComponent name="mona" />);
+    expect(PageIns.render()).toMatchSnapshot();
+
     // PageIns.props
     expect(PageIns.prop('name')).toBe('mona');
 
     expect(launchMock.mock.calls.length).toBe(2);
     PageIns.unmount();
-    console.log(launchMock.mock.calls);
+    // console.log(launchMock.mock.calls);
     expect(launchMock.mock.calls.length).toBe(3);
   });
   it(`createPageLifecycle Class lifeCycle `, () => {
     const PageComponent = createPageLifecycle(PageClass);
     const PageIns = mount(<PageComponent name="mona" />);
+    expect(PageIns.render()).toMatchSnapshot();
+
+    // console.log(' PageIns.find("Component")', PageIns.find('Component'));
     expect(PageIns.prop('name')).toBe('mona');
 
     expect(launchMock.mock.calls.length).toBe(2);
 
+    // expect(PageIns.)
     PageIns.unmount();
-    console.log(launchMock.mock.calls);
+    // console.log(launchMock.mock.calls);
     expect(launchMock.mock.calls.length).toBe(3);
   });
 });

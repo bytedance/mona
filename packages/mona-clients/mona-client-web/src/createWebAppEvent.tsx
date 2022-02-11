@@ -44,6 +44,7 @@ export function createAppLifeCycle(Component: React.ComponentType<any>) {
 
   class AppConfig extends React.Component {
     componentDidMount() {
+      
       handleVisibilityChange();
       // onError
       window.addEventListener('error', handleError);
