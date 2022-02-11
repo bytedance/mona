@@ -1,21 +1,28 @@
 # mona
-## mona是什么
-mona是商家应用跨端开发方案，支持使用React来开发web应用、字节小程序应用、web插件（未来增加桌面端应用、小程序插件）。同时后续会逐渐增加商家应用业务基础组件库，方便开发者更加高效的进行开发。
 
-## 原理
-mona在小程序侧采用了运行时方案，配合React进行diff并将需要更新的虚拟dom树压缩后，通过setData传递到渲染层，通过模板组件动态构建页面，从而达到小程序渲染的目的。同时在web侧我们完整实现了字节小程序常用的基本组件和api，这就使得web和小程序的还原度很高。
-## 特性
-- 多端构建
-- 完整的ts提示
-- 完整的字节小程序组件和api
-- 较优的运行性能
-- 较小的打包体积
+## 目录
+- [简介](https://github.com/bytedance/mona/tree/feat/miniapp#简介)
+- [快速开始](https://github.com/bytedance/mona/tree/feat/miniapp#快速开始)
+- [CLI命令](https://github.com/bytedance/mona/tree/feat/miniapp#CLI命令)
+- [场景](https://github.com/bytedance/mona/tree/feat/miniapp#场景)
+## 简介
+mona是抖店开放平台推出的商家应用跨端开发方案，支持使用**React框架**来开发
+- 移动端h5应用
+- 字节小程序应用
+- 飞鸽桌面端插件
+- 店铺装修组件
+- 桌面端应用（未来实现）
+  
+同时后续会逐渐增加商家应用业务基础组件库，方便开发者更加高效的进行开发
+
 ## 快速开始
 ### 安装CLI
 快速开始开发一个插件需要先安装该CLI工具，使用如下命令进行安装
 ```bash
 npm install -g @bytedance/mona-cli
-// 或使用yarn安装，任选其一
+```
+如果使用的是yarn则命令如下
+```bash
 yarn global add @bytedance/mona-cli
 ```
 
@@ -31,18 +38,18 @@ mona -v
 mona init
 ```
 
-按照提示依次输入项目名称，选择模板，选择是否使用typescript和样式预处理器
+按照提示依次输入项目名称，选择模板，选择是否使用typescript和样式预处理器等按需使用
 
 ### 开发
-项目初始化完成后可以进行开发，使用如下命令启动开发服务器，可以实时调试
+项目初始化完成后进入项目跟目录，使用如下命令启动开发服务器，可以实时调试
 ```bash
-mona start
+npm run start
 ```
 
 ### 打包
 开发完成后，对项目进行打包，可以使用如下命令
 ```
-mona build
+npm run build
 ```
 
 ## 目录结构
@@ -421,3 +428,13 @@ export default function(){
 
 ### 当前可用性
 目前我们已完全支持小程序转换，并实现了web大部分的组件和api。目前处于测试打磨阶段，后续会不断完善。使用中的任何问题欢迎多多提出。
+
+
+## 原理
+mona在小程序侧采用了运行时方案，配合React进行diff并将需要更新的虚拟dom树压缩后，通过setData传递到渲染层，通过模板组件动态构建页面，从而达到小程序渲染的目的。同时在web侧我们完整实现了字节小程序常用的基本组件和api，这就使得web和小程序的还原度很高。
+## 特性
+- 多端构建
+- 完整的ts提示
+- 完整的字节小程序组件和api
+- 较优的运行性能
+- 较小的打包体积
