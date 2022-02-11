@@ -29,6 +29,7 @@ export enum ComponentLifecycle {
   moved = 'onMoved',
   detached = 'onDetached',
 }
+
 export class LifecycleContext {
   lifecycle: Record<string, Set<Callback>>;
 

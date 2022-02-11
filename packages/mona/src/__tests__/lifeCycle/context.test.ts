@@ -1,4 +1,18 @@
-import { LifecycleContext, PageLifecycle } from '../../lifecycle/context';
+import { LifecycleContext, PageLifecycle, AppLifecycle, ComponentLifecycle } from '../../lifecycle/context';
+
+describe('lifeCycleName', () => {
+  it('AppLifecycle SnapShot', () => {
+    expect(AppLifecycle).toMatchSnapshot();
+  });
+
+  it('PageLifecycle SnapShot', () => {
+    expect(PageLifecycle).toMatchSnapshot();
+  });
+
+  it('ComponentLifecycle SnapShot', () => {
+    expect(ComponentLifecycle).toMatchSnapshot();
+  });
+});
 
 describe('LifecycleContext', () => {
   let ctx: LifecycleContext;

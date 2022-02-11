@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`lifeCycleName AppLifecycle SnapShot 1`] = `
+Object {
+  "error": "onError",
+  "hide": "onHide",
+  "launch": "onLaunch",
+  "pageNotFound": "onPageNotFound",
+  "show": "onShow",
+}
+`;
+
+exports[`lifeCycleName ComponentLifecycle SnapShot 1`] = `
+Object {
+  "attached": "onAttached",
+  "created": "onCreated",
+  "detached": "onDetached",
+  "moved": "onMoved",
+  "ready": "onReady",
+}
+`;
+
+exports[`lifeCycleName PageLifecycle SnapShot 1`] = `
+Object {
+  "hide": "onHide",
+  "load": "onLoad",
+  "pageScroll": "onPageScroll",
+  "pullDownRefresh": "onPullDownRefresh",
+  "reachBottom": "onReachBottom",
+  "ready": "onReady",
+  "resize": "onResize",
+  "shareAppMessage": "onShareAppMessage",
+  "show": "onShow",
+  "unload": "onUnload",
+}
+`;
