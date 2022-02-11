@@ -1,6 +1,34 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`createPageLifecycle createPageLifecycle Class lifeCycle  1`] = `
+exports[`createAppLifecycle class error 1`] = `
+Array [
+  Array [
+    ErrorEvent {
+      "isTrusted": true,
+    },
+    "error",
+  ],
+]
+`;
+
+exports[`createAppLifecycle class pageNotFound 1`] = `
+Array [
+  Array [
+    "/path/a/b",
+    "pageNotFound",
+  ],
+]
+`;
+
+exports[`createAppLifecycle class show & hide 1`] = `
+Array [
+  Array [
+    "hide",
+  ],
+]
+`;
+
+exports[`createAppLifecycle createPageLifecycle Class lifeCycle  1`] = `
 LoadedCheerio {
   "0": Node {
     "children": Array [
@@ -50,7 +78,7 @@ LoadedCheerio {
 }
 `;
 
-exports[`createPageLifecycle createPageLifecycle FC lifeCycle 1`] = `
+exports[`createAppLifecycle createPageLifecycle FC lifeCycle 1`] = `
 LoadedCheerio {
   "0": Node {
     "children": Array [
@@ -100,7 +128,18 @@ LoadedCheerio {
 }
 `;
 
-exports[`createPageLifecycle pageNotFound 1`] = `
+exports[`createAppLifecycle func error 1`] = `
+Array [
+  Array [
+    ErrorEvent {
+      "isTrusted": true,
+    },
+    "error",
+  ],
+]
+`;
+
+exports[`createAppLifecycle func pageNotFound 1`] = `
 Array [
   Array [
     "/path/a/b",
@@ -110,11 +149,10 @@ Array [
 ]
 `;
 
-exports[`createPageLifecycle pageNotFound 2`] = `
+exports[`createAppLifecycle func show & hide 1`] = `
 Array [
   Array [
-    "/path/a/b",
-    "pageNotFound",
+    "hide",
   ],
 ]
 `;

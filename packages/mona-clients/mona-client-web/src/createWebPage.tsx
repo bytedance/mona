@@ -34,7 +34,9 @@ export function createPageLifecycle(Component: React.ComponentType<any>) {
       callLifecycle(PageLifecycle.hide);
     }
   };
-
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+  // onResize
+  window.addEventListener('resize', handleResize);
   class PageWrapper extends React.Component {
     isReachBottom = false;
     componentDidMount() {
@@ -44,13 +46,9 @@ export function createPageLifecycle(Component: React.ComponentType<any>) {
       if (document.visibilityState === 'visible') {
         callLifecycle(PageLifecycle.show);
       }
-      document.addEventListener('visibilitychange', handleVisibilityChange);
 
       // onReady
       handleReady();
-
-      // onResize
-      window.addEventListener('resize', handleResize);
     }
     componentWillUnmount() {
       // onUnload

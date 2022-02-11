@@ -11,7 +11,6 @@ export function createAppLifeCycle(Component: React.ComponentType<any>) {
     const cbs = appLifecycleContext.lifecycle[callbackName] || new Set([]);
 
     cbs.forEach(cb => cb(...params));
-
     if (appEntryRef.current?.[callbackName]) {
       return appEntryRef.current[callbackName](...params);
     }
@@ -41,15 +40,15 @@ export function createAppLifeCycle(Component: React.ComponentType<any>) {
     handleVisibilityChange,
     handlePageNotFound,
   };
-
+  // onError
+  window.addEventListener('error', handleError);
+  // onShow & onHide
+  document.addEventListener('visibilitychange', handleVisibilityChange);
   class AppConfig extends React.Component {
+    // componentDidCatch
     componentDidMount() {
-      
       handleVisibilityChange();
-      // onError
-      window.addEventListener('error', handleError);
-      // onShow & onHide
-      document.addEventListener('visibilitychange', handleVisibilityChange);
+
       // onLaunch
       handleLaunch();
     }
