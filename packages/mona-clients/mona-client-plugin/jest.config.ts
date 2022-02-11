@@ -1,5 +1,7 @@
 import baseConfig from '../../../jestconfig.base';
 
 module.exports = {
-  ...baseConfig
+  ...baseConfig,
+  setupFilesAfterEnv: ['../../mona-clients/mona-client-web/jest-setup.ts'],
+
 };

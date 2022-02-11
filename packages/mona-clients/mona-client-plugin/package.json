@@ -9,7 +9,8 @@
   "scripts": {
     "build": "yarn clean && tsc -b",
     "start": "tsc -b -w",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "test": "jest"
   },
   "keywords": [
     "plugin",
