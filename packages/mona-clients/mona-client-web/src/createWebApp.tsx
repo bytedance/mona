@@ -6,7 +6,7 @@ import NavBar from './components/NavBar';
 import TabBar from './components/TabBar';
 import { formatPath, parseSearch, GLOBAL_LIFECYCLE_STORE } from '@bytedance/mona-shared';
 
-const WrapperComponent: React.FC<{ title: string }> = ({ children, title }) => {
+export const WrapperComponent: React.FC<{ title: string }> = ({ children, title }) => {
   useEffect(() => {
     if (title) {
       document.title = title;
@@ -41,7 +41,7 @@ const NoMatchImgWrapperStyle: React.CSSProperties = {
 };
 
 const imgStyle = { width: 320, marginBottom: 8 };
-const NoMatch: React.FC<{ defaultPath: string }> = ({ defaultPath }) => {
+export const NoMatch: React.FC<{ defaultPath: string }> = ({ defaultPath }) => {
   const history = useHistory();
   useEffect(() => {
     // app生命周期pageNotFound
@@ -67,7 +67,7 @@ export interface PageProps {
   searchParams: Record<string, string>;
 }
 
-const HistorySetWrapper: React.FC = ({ children }) => {
+export const HistorySetWrapper: React.FC = ({ children }) => {
   const history = useHistory();
 
   // set global history to implement navigateTo and redirectTo api

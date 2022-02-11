@@ -3,6 +3,7 @@ import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { useAppEvent, AppLifecycle } from '@bytedance/mona';
 import { createAppLifeCycle } from '../createWebAppEvent';
 import { configure, mount } from 'enzyme';
+import mountTest from '../../../../tests/shared/mountTest';
 
 configure({ adapter: new Adapter() });
 
@@ -28,6 +29,9 @@ describe('createPageLifecycle', () => {
     }
   }
 
+  mountTest(createAppLifeCycle(App));
+  mountTest(createAppLifeCycle(AppClass));
+  
   it('createPageLifecycle FC lifeCycle', () => {
     const PageComponent = createAppLifeCycle(App);
     const AppIns = mount(<PageComponent name="mona" />);

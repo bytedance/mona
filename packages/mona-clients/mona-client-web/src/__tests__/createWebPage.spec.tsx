@@ -5,6 +5,8 @@ import { createPageLifecycle } from '../createWebPage';
 // import createApp from '../createApp';
 import { configure, mount } from 'enzyme';
 
+import mountTest from '../../../../tests/shared/mountTest';
+
 configure({ adapter: new Adapter() });
 
 describe('createPageLifecycle', () => {
@@ -39,6 +41,8 @@ describe('createPageLifecycle', () => {
       return <>class组件{this.props.name}</>;
     }
   }
+  mountTest(createPageLifecycle(Page));
+  mountTest(createPageLifecycle(PageClass));
 
   it('createPageLifecycle FC lifeCycle', () => {
     const PageComponent = createPageLifecycle(Page);

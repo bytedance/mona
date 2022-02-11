@@ -1,10 +1,15 @@
 import React from 'react';
-import TestRenderer from 'react-test-renderer';
+import { configure, mount } from 'enzyme';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 
-import {createMiniComponent} from '../createMiniComponent';
+import { createMiniComponent } from '../createMiniComponent';
+import mountTest from '../../../../tests/shared/mountTest';
+configure({ adapter: new Adapter() });
+
+mountTest(createMiniComponent('test-test'));
 
 test('createMiniComponent', () => {
   const Test = createMiniComponent('test-test');
-  const testIns = TestRenderer.create(<Test />);
-  expect(testIns.toJSON()).toMatchSnapshot();
+  const testIns = mount(<Test />);
+  expect(testIns.render()).toMatchSnapshot();
 });
