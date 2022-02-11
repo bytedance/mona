@@ -1,10 +1,10 @@
 # mona
 
 ## 目录
-- [简介](https://github.com/bytedance/mona)
-- [快速开始](https://github.com/bytedance/mona)
-- [CLI命令](https://github.com/bytedance/mona)
-- [场景](https://github.com/bytedance/mona)
+- [简介](https://github.com/bytedance/mona/tree/feat/miniapp#简介)
+- [快速开始](https://github.com/bytedance/mona/tree/feat/miniapp#快速开始)
+- [CLI命令](https://github.com/bytedance/mona/tree/feat/miniapp#CLI命令)
+- [场景](https://github.com/bytedance/mona/tree/feat/miniapp#场景)
 ## 简介
 mona是抖店开放平台推出的商家应用跨端开发方案，支持使用**React框架**来开发
 - 移动端h5应用
