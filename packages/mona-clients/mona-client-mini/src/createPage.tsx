@@ -132,7 +132,7 @@ function createConfig(PageComponent: React.ComponentType<any>) {
     },
 
     $callLifecycle(name: PageLifecycle, ...params: any[]) {
-      const cbs = this._pageLifecycleContext.lifecycle[name] || [];
+      const cbs = this._pageLifecycleContext.lifecycle[name] || new Set([]);
       cbs.forEach(cb => batchedUpdates(params => cb(...params), params));
       if (pageEntryRef.current?.[name]) {
         return pageEntryRef.current[name](...params);

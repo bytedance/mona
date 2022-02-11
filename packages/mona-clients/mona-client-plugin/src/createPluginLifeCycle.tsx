@@ -9,7 +9,7 @@ export function createPluginLifeCycle(Component: React.ComponentType<any>) {
   const appEntryRef = React.createRef<any>();
 
   const callLifecycle = (callbackName: AppLifecycle, ...params: any[]) => {
-    const cbs = appLifecycleContext.lifecycle[callbackName] || [];
+    const cbs = appLifecycleContext.lifecycle[callbackName] || new Set([]);
     cbs.forEach(cb => cb(...params));
 
     if (appEntryRef.current?.[callbackName]) {

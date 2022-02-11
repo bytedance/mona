@@ -30,10 +30,10 @@ export enum ComponentLifecycle {
   detached = 'onDetached',
 }
 export class LifecycleContext {
-  lifecycle: Record<string, Callback[]>;
+  lifecycle: Record<string, Set<Callback>>;
 
   constructor() {
-    this.lifecycle = new Proxy<Record<string, Callback[]>>(
+    this.lifecycle = new Proxy<Record<string, Set<Callback>>>(
       {},
       {
         get: function (target, property) {
@@ -56,10 +56,11 @@ export class LifecycleContext {
     if (typeof callback !== 'function') {
       return;
     }
-    this.lifecycle[name] = this.lifecycle[name] || [];
-    this.lifecycle[name].push(callback);
+    this.lifecycle[name] = this.lifecycle[name] || new Set([]);
+    this.lifecycle[name].add(callback);
+
     return () => {
-      this.lifecycle[name].splice(this.lifecycle[name].indexOf(callback), 1);
+      this.lifecycle[name].delete(callback);
     };
   }
 }

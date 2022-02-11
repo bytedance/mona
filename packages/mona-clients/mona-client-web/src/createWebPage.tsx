@@ -7,7 +7,7 @@ export function createPageLifecycle(Component: React.ComponentType<any>) {
   const pageEntryRef = React.createRef<any>();
 
   const callLifecycle = (callbackName: PageLifecycle, ...params: any[]) => {
-    const cbs = PageLifecycleContext.lifecycle[callbackName] || [];
+    const cbs = PageLifecycleContext.lifecycle[callbackName] || new Set([]);
     cbs.forEach(cb => cb(...params));
 
     if (pageEntryRef.current?.[callbackName]) {
