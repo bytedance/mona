@@ -11,21 +11,21 @@ describe('postcss pre selector plugin', () => {
   it('should transform css correctly', () => {
     const input = '.hello { color: red }';
     const output = '#pre .hello { color: red }';
-    expect(run(input)).resolves.toEqual(output)
+    return expect(run(input)).resolves.toEqual(output)
   })
   it('should work normal with body', () => {
     const input = 'body { color: red }';
     const output = '#pre body { color: red }#pre div[__marfishmockbody__] { color: red }';
-    expect(run(input)).resolves.toEqual(output)
+    return expect(run(input)).resolves.toEqual(output)
   })
   it('should work normal with html', () => {
     const input = 'html { color: red }';
     const output = '#pre { color: red }';
-    expect(run(input)).resolves.toEqual(output)
+    return expect(run(input)).resolves.toEqual(output)
   })
   it('should work normal with html,body', () => {
     const input = 'html,body { color: red }';
-    const output = '#pre,#pre body { color: red }#pre,#pre div[__marfishmockbody__] { color: re }';
-    expect(run(input)).resolves.toEqual(output)
+    const output = '#pre,#pre body { color: red }#pre,#pre div[__marfishmockbody__] { color: red }';
+    return expect(run(input)).resolves.toEqual(output)
   })
 })
