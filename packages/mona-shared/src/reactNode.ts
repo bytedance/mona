@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 export function isClassComponent(Component: any): Component is React.ComponentClass {
-  return typeof Component.prototype?.render === 'function';
+  return typeof Component.prototype?.render === 'function' && Component?.prototype?.isReactComponent;
 }
