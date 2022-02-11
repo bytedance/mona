@@ -99,3 +99,22 @@ LoadedCheerio {
   },
 }
 `;
+
+exports[`createPageLifecycle pageNotFound 1`] = `
+Array [
+  Array [
+    "/path/a/b",
+    "class",
+    "pageNotFound",
+  ],
+]
+`;
+
+exports[`createPageLifecycle pageNotFound 2`] = `
+Array [
+  Array [
+    "/path/a/b",
+    "pageNotFound",
+  ],
+]
+`;

@@ -25,6 +25,7 @@ describe('createPageLifecycle', () => {
     usePageEvent(PageLifecycle.unload, (...rest) => {
       launchMock(...rest, 'unload');
     });
+   
     return <>fc组件{name}</>;
   }
   class PageClass extends React.Component<{ name: string }> {
@@ -72,4 +73,6 @@ describe('createPageLifecycle', () => {
     // console.log(launchMock.mock.calls);
     expect(launchMock.mock.calls.length).toBe(3);
   });
+
+ 
 });
