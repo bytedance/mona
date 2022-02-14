@@ -11,6 +11,7 @@ export default function TransformJsxNamePlugin() {
     visitor: {
       CallExpression(path: NodePath<t.CallExpression>) {
         const node = path.node;
+        // path.scope.getBinding
         if (!isReactCall(node.callee)) return;
 
         const [reactNode, props] = node.arguments;
