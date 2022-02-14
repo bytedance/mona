@@ -9,7 +9,6 @@ import { RENDER_NODE, ComponentType } from '@bytedance/mona-shared';
 import json from '@rollup/plugin-json';
 
 const pkg = require('./package.json');
-
 export default [
   {
     input: 'src/index.ts',
@@ -38,6 +37,9 @@ export default [
             ...RENDER_NODE,
 
             NAVIGATE_ALIAS: JSON.stringify(ComponentType.navigator),
+
+            // 不加会导致treeshaking失效
+            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
           },
         ),
       ),

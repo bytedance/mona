@@ -1,5 +1,4 @@
 import React from 'react';
-import { Portal } from 'react-is';
 import { stringifySearch } from '@bytedance/mona-shared';
 import { PageLifecycleGlobalContext, LifecycleContext, PageLifecycle } from '@bytedance/mona';
 import TaskController, { ROOT_KEY } from '@/reconciler/TaskController';
@@ -7,10 +6,12 @@ import render, { batchedUpdates } from '@/reconciler';
 import { generateId } from './reconciler/ServerElement';
 import { isClassComponent } from '@bytedance/mona-shared';
 
+let REACT_PORTAL_TYPE = typeof Symbol === 'function' && Symbol.for ? Symbol.for('react.portal') : 0xeaca;
+
 // in order to share react runtime
 export function createPortal(children: React.ReactNode, containerInfo: any, key?: string): any {
   return {
-    $$typeof: Portal,
+    $$typeof: REACT_PORTAL_TYPE,
     key: key == null ? null : String(key),
     children,
     containerInfo,
