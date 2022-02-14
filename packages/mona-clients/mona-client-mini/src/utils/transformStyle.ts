@@ -1,11 +1,5 @@
 import React from 'react';
 
-const isVendorPrefixes: Record<string, boolean> = {
-  webkit: true,
-  moz: true,
-  ms: true,
-  o: true,
-};
 
 const RPX = 'rpx';
 const PX = 'px';
@@ -16,19 +10,7 @@ export const transformReactStyleKey = (key: string) => {
     return key;
   }
 
-  let styleValue = key.replace(/\.?([A-Z]+)/g, function (_x, y) {
-    return '-' + y.toLowerCase();
-  });
-
-  if (styleValue.startsWith('-')) {
-    const firstWord = styleValue.split('-').filter(s => s)[0];
-    styleValue = styleValue.replace(/^-/, '');
-    if (isVendorPrefixes[firstWord]) {
-      styleValue = '-' + styleValue;
-    }
-  }
-
-  return styleValue;
+  return key.replace(/\.?([A-Z]+)/g, (_, str) => '-' + str.toLowerCase()).replace(/^-/, '');
 };
 
 export const setPxToRpx = (value: string) => {

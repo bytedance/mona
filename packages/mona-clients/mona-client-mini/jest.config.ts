@@ -18,6 +18,7 @@ module.exports = {
     {
       ...RENDER_NODE,
       NAVIGATE_ALIAS: JSON.stringify(ComponentType.navigator),
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       ...baseConfig.globals,
     },
   ),

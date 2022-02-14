@@ -11,8 +11,7 @@
     "test": "jest",
     "build": "NODE_ENV=production rollup -c",
     "start": "NODE_ENV=development rollup -c -w",
-    "clean": "rm -rf dist",
-    "build:r": "rollup -c"
+    "clean": "rm -rf dist"
   },
   "keywords": [
     "miniapp",

@@ -43,11 +43,10 @@ const MiniComponentType = {
   'web-view': '33',
   ad: '34',
   'open-data': '35',
-  // ptext的值不要随意改变, 改ptext需将base.ttml.ejs中 mona-36中的36做替换
   ptext: '36',
 };
 
-// TODO:开发模式语义化, 小程序运行时 build两份代码, production.xx development.xxx
+// TODO:开发模式语义化, 小程序运行时 build两份代码, index.production.js, index.development.js
 // if (process.env.NODE_ENV === 'production') {
 //   RENDER_NODE = {
 //     COMPLIER_KEY: 'key',
