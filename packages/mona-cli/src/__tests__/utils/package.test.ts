@@ -5,8 +5,8 @@ import fse from 'fs-extra';
 
 const pkgDirname = join(__dirname, '../../../package.json');
 
-test('pkgName', async () => {
-  const pkgJson = await fse.readFile(pkgDirname, 'utf8');
+test('pkgName', () => {
+  const pkgJson = fse.readFileSync(pkgDirname, 'utf8');
   const { name, displayName, version } = JSON.parse(pkgJson);
 
   expect(getPkgPublicName()).toBe(name);

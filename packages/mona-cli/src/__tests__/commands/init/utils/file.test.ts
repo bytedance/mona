@@ -14,13 +14,13 @@ describe('file', () => {
     return fse.remove(tempDir);
   });
 
-  test('makeDir error', async () => {
+  test('makeDir error', () => {
     expect(() => makeDir(__dirname)).toThrow();
     expect(() => makeDir(tempDir)).not.toThrow();
     expect(() => removeEmptyDirs(tempDir)).not.toThrow();
   });
 
-  test('removeEmptyDirs', async () => {
+  test('removeEmptyDirs', () => {
     // expect(() => removeEmptyDirs(tempDir)).toThrow();
     expect(() => makeDir(tempDir)).not.toThrow();
     expect(() => makeDir(join(tempDir, `./monaJest${new Date().valueOf()}`))).not.toThrow();
@@ -30,7 +30,7 @@ describe('file', () => {
     expect(() => removeEmptyDirs(tempDir)).not.toThrow();
   });
 
-  test('readFileRecursive', async () => {
+  test('readFileRecursive', () => {
     // readFileRecursive(tempDir, files);
     expect(() => readFileRecursive(tempDir, [])).toThrow();
     //@ts-ignore

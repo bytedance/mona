@@ -5,8 +5,8 @@ import fse from 'fs-extra';
 
 const pkgDirname = join(__dirname, '../../../package.json');
 
-test('pkgVersion', async () => {
-  const pkgJson = await fse.readFile(pkgDirname, 'utf8');
+test('pkgVersion', () => {
+  const pkgJson = fse.readFileSync(pkgDirname, 'utf8');
   let { version } = JSON.parse(pkgJson);
   version = semver.clean(version);
 

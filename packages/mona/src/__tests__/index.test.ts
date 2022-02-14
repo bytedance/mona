@@ -1,7 +1,7 @@
 import { createProjectConfig, createAppConfig, createPageConfig } from '../index';
 
 describe('mona createConfig', () => {
-  test('createProjectConfig', async () => {
+  test('createProjectConfig', () => {
     expect(() =>
       createProjectConfig({
         projectName: 'mona',
@@ -17,7 +17,7 @@ describe('mona createConfig', () => {
       }),
     ).toMatchSnapshot();
   });
-  test('createProjectConfig', async () => {
+  test('createProjectConfig', () => {
     expect(() =>
       createAppConfig({
         pages: [],
@@ -29,7 +29,7 @@ describe('mona createConfig', () => {
       }),
     ).toMatchSnapshot();
   });
-  test('createProjectConfig', async () => {
+  test('createProjectConfig', () => {
     expect(() => createPageConfig({})).not.toThrow();
     expect(createPageConfig({})).toMatchSnapshot();
   });

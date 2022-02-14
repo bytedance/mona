@@ -11,7 +11,6 @@ let ctx: LifecycleContext = new LifecycleContext();
 jest.mock('react', () => {
   const originalModule = jest.requireActual('react');
 
-  //Mock the default export and named export 'foo'
   return {
     __esModule: true,
     ...originalModule,
