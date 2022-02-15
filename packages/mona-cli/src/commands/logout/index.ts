@@ -1,7 +1,6 @@
 import { IPlugin } from '@bytedance/mona-service';
-import fs from 'fs';
 import chalk from 'chalk';
-import { userDataFile, readUser } from '../login';
+import { readUser, deleteUser } from '../login/utils';
 
 const logout: IPlugin = (ctx) => {
   ctx.registerCommand('logout', {
@@ -12,9 +11,10 @@ const logout: IPlugin = (ctx) => {
     usage: 'mona logout',
   }, () => {
     try {
-      if (fs.existsSync(userDataFile)) {
-        fs.unlinkSync(userDataFile)
-        console.log(chalk.green(`用户名：${readUser().name}，登出成功！`))
+      const user = readUser();
+      if (user) {
+        deleteUser();
+        console.log(chalk.green(`用户名：${user.nickName}，登出成功！`))
       } else {
         console.log(chalk.red('未找到登录信息！'))
       }

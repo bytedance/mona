@@ -1,16 +1,17 @@
 import path from 'path';
-import { Service } from '@bytedance/mona-service'
+import { GlobalService } from '@bytedance/mona-service'
 
 const pathToPlugin = (pathname: string) => require(pathname);
 
 const buildInPlugins = [
   './commands/init',
-  './commands/publish',
+  './commands/login',
+  './commands/logout',
   './commands/update'
 ].map(name => pathToPlugin(path.join('@bytedance/mona-cli/dist', name)))
 
 function mona() {
-  const service = new Service(buildInPlugins);
+  const service = new GlobalService(buildInPlugins);
 
   service.install();
 
