@@ -53,7 +53,7 @@ export const askConfig: Record<keyof AskOpts, AskItem> = {
   projectName: {
     type: 'input',
     name: 'projectName',
-    message: '请输入应用名称！',
+    message: '请输入应用名称1！',
     checkAsk: (defaultValue?: string) => !defaultValue,
     validate(input: string) {
       if (!input) {

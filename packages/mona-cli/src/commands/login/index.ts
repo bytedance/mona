@@ -2,29 +2,12 @@ import open from 'open';
 import uuid from 'node-uuid';
 import WebSocket from 'ws';
 import chalk from 'chalk';
-import fs from 'fs';
 import { IPlugin } from '@bytedance/mona-service';
+import { readUser, saveUser } from './utils';
 
-const openURL = 'https://op.jinritemai.com/authorize';
-const wsURL = 'ws://xxxx';
-export const userDataFile = '.user';
-
-export function readUser() {
-  try {
-    const str = fs.readFileSync(userDataFile);
-    const result = str ? JSON.parse(str.toString()) : null;
-    if (result && result.cookie && result.name) {
-      return result;
-    }
-  } catch(_) {
-    // do nothing
-  }
-  return null;
-}
-
-function saveUser(data: any) {
-  fs.writeFileSync(userDataFile, JSON.stringify(data));
-}
+const domain = 'op.jinritemai.com';
+const openURL = `https://${domain}/authorizatio`;
+const wsURL = `wss://${domain}/ws/api/terminal`;
 
 const login: IPlugin = (ctx) => {
   ctx.registerCommand('login', {
@@ -37,7 +20,7 @@ const login: IPlugin = (ctx) => {
     // alread login
     const user = readUser();
     if (user) {
-      console.log(chalk.green(`已登录，当前用户：${user.name}`))
+      console.log(chalk.green(`已登录，当前用户：${user.nickName}`))
       return;
     }
 
@@ -48,23 +31,21 @@ const login: IPlugin = (ctx) => {
     const url = `${openURL}?token=${token}`;
     console.log(chalk.cyan(`打开 ${url}`));
     open(url);
-    
-    // create ws link
-    const ws = new WebSocket(wsURL);
+    // TODO: to delete boe header
+    const ws = new WebSocket(`${wsURL}?token=${token}`);
     let success = false;
-
     ws.on('open', () => {
       console.log(chalk.cyan('等待授权登录中...'));
-      ws.send(JSON.stringify({ token }));
     })
 
-    ws.on('message', (data: { cookie: string, name: string }) => {
+    ws.on('message', (buffer: Buffer) => {
+      const data = JSON.parse(buffer.toString());
       // save data cookie to local
-      if (data && data.cookie, data.name) {
+      if (data && data.cookie, data.nickName) {
         try {
           // save user info
           saveUser(data);
-          console.log(chalk.green(`授权登录成功! 当前用户：${data.name}`));
+          console.log(chalk.green(`授权登录成功! 当前用户：${data.nickName}`));
           success = true;
         } catch(err) {
           console.log(chalk.red((err as Error).message));
