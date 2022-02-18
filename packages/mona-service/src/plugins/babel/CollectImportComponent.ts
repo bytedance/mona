@@ -6,6 +6,7 @@ import ConfigHelper from '@/ConfigHelper';
 import { TtComponentEntry, genNativeComponentEntry } from '@/target/entires/ttComponentEntry';
 import { CUSTOM_COMPONENT_PROTOCOL } from '@bytedance/mona-shared';
 import { processNativePath } from '@/utils';
+import monaStore from '@/target/store';
 
 // 收集从pages中引入的native Component, 以及props，
 export default function collectNativeComponent(configHelper: ConfigHelper) {
@@ -21,7 +22,6 @@ export default function collectNativeComponent(configHelper: ConfigHelper) {
 
         const componentName = openingElement.name.name;
         const binding = path.scope.getBinding(componentName);
-
         if (!binding) {
           return false;
         }
@@ -35,14 +35,17 @@ export default function collectNativeComponent(configHelper: ConfigHelper) {
         if (t.isImportDeclaration(importPath)) {
           const importNode = importPath.node as t.ImportDeclaration;
           const source = importNode.source.value;
-
-          if (source.startsWith(CUSTOM_COMPONENT_PROTOCOL)) {
-            importNode.source.value = processNativePath(
-              importNode.source.value,
-              nodePath.dirname(state.file.opts.filename),
-            );
-            const entry = genNativeComponentEntry(configHelper, importNode.source.value);
-            entry && getJsxProps(entry, componentName, node);
+          let componentEntry = monaStore.nativeEntryMap.get(source);
+          // 多次引入存在bug
+          if (source.startsWith(CUSTOM_COMPONENT_PROTOCOL) || componentEntry) {
+            if (!componentEntry) {
+              importNode.source.value = processNativePath(
+                importNode.source.value,
+                nodePath.dirname(state.file.opts.filename),
+              );
+              componentEntry = genNativeComponentEntry(configHelper, importNode.source.value);
+            }
+            componentEntry && getJsxProps(componentEntry, componentName, node);
           }
         }
         return;
@@ -74,7 +77,6 @@ export function getJsxProps(entry: TtComponentEntry, componentName: string, node
     component.props.add(propName);
     props.push(propName);
   });
-
   entry.templateInfo = component;
   return props;
 }

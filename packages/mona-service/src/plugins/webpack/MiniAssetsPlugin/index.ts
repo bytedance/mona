@@ -97,9 +97,15 @@ class NativeAssetsPlugin {
   }
 
   compileMainEntry(childCompiler: Compiler, entry: TtComponentEntry) {
+    if (!fse.existsSync(entry.path.main)) {
+      return;
+    }
     new EntryPlugin(entry.context, entry.path.main, path.join(entry.outputDir, entry.basename)).apply(childCompiler);
   }
   compileTemplate(childCompiler: Compiler, entry: TtComponentEntry) {
+    if (!fse.existsSync(entry.path.templatePath)) {
+      return;
+    }
     new EntryPlugin(entry.context, entry.path.templatePath, entry.outputPath.templatePath).apply(childCompiler);
   }
   compileStyleFile(childCompiler: Compiler, entry: TtComponentEntry) {
