@@ -60,7 +60,6 @@ describe('TtComponentEntry', () => {
 
   it('virtualSource', () => {
     const custom4Entry = monaStore.nativeEntryMap.get(path.join(__dirname, './CustomComponent4/index'));
-    console.log(custom4Entry);
     expect(typeof custom4Entry.virtualSource === 'string').toBeTruthy();
     expect(custom4Entry.virtualSource.length > 0).toBeTruthy();
   });
