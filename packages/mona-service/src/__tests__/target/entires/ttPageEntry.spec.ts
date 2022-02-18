@@ -1,11 +1,9 @@
-import { TtComponentEntry } from '../../../target/entires/ttComponentEntry';
 import { TtPageEntry } from '../../../target/entires/ttPageEntry';
 
 import ConfigHelper from '../../../ConfigHelper';
 import * as shared from '@bytedance/mona-shared';
 import fs from 'fs';
 import path from 'path';
-import monaStore from '../../../target/store';
 
 describe('TtPageEntry', () => {
   jest.spyOn(shared, 'readConfig').mockImplementation(() => ({}));

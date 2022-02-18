@@ -136,13 +136,13 @@ export class TtComponentEntry extends TtEntry {
     const usingComponent = config.usingComponents || {};
     const res = new Set(this._dependencies);
     Object.keys(usingComponent).forEach(name => {
-      const cPath = usingComponent[name];
+      const cPath = usingComponent[name] as string;
       let vPath;
       // usingComponent中填写绝对路径会根据资源目录读
       if (path.isAbsolute(cPath)) {
         const appEntryDir = path.join(this.configHelper.cwd, './src');
         vPath = path.join(appEntryDir, cPath);
-      } else if (cPath.startWith('../') || cPath.startWith('./')) {
+      } else if (cPath.startsWith('../') || cPath.startsWith('./')) {
         vPath = path.join(this.dirPath, usingComponent[name]);
       } else {
         // npm包忽略

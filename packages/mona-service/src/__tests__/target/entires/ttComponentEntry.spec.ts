@@ -19,8 +19,7 @@ describe('TtComponentEntry', () => {
   let TtEntry = new TtPageEntry(configHelperIns, entryPath);
 
   it('readDependencies', () => {
-    const res = TtEntry.readDependencies();
-    // console.log(res);
+    const res = TtEntry.readUsingComponents();
 
     expect(Array.from(res.values()).length).toBe(16);
   });
@@ -58,16 +57,10 @@ describe('TtComponentEntry', () => {
 
     expect(importPath.startsWith(vPath)).toBeTruthy();
   });
-  it('outputResource', () => {
-    const custom3Entry = monaStore.nativeEntryMap.get(path.join(__dirname, './src/CustomComponent3/index'));
-    const custom4Entry = monaStore.nativeEntryMap.get(path.join(__dirname, './CustomComponent4/index'));
-
-    expect(custom3Entry.outputResource.length).toBe(4);
-    expect(custom4Entry.outputResource.length).toBe(3);
-  });
 
   it('virtualSource', () => {
     const custom4Entry = monaStore.nativeEntryMap.get(path.join(__dirname, './CustomComponent4/index'));
+    console.log(custom4Entry);
     expect(typeof custom4Entry.virtualSource === 'string').toBeTruthy();
     expect(custom4Entry.virtualSource.length > 0).toBeTruthy();
   });
