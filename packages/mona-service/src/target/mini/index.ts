@@ -1,5 +1,6 @@
 import chalk from 'chalk';
 import path from 'path';
+import fse from 'fs-extra';
 import webpack from 'webpack';
 
 import { IPlugin } from '../../Service';
@@ -39,6 +40,11 @@ const mini: IPlugin = ctx => {
             info?.errors?.forEach((err: Error) => {
               console.log(chalk.red(err.message));
             });
+            console.log(info.children[0].errors);
+            fse.outputFile(
+              '/Users/bytedance/Desktop/mona2/mona/packages/mona-service/src/target/mini/error.text',
+              JSON.stringify(info.children[0].errors, null, 2),
+            );
             process.exit(1);
           }
           if (stats?.hasWarnings()) {
@@ -62,7 +68,6 @@ const mini: IPlugin = ctx => {
         .output.path(path.join(cwd, projectConfig.output))
         .publicPath('/')
         .globalObject('tt');
-        
       webpackConfig.externals(['@bytedance/mona-client-plugin', '@bytedance/mona-client-web']);
       chainResolve(webpackConfig, configHelper);
       chainModuleRule(webpackConfig, configHelper);

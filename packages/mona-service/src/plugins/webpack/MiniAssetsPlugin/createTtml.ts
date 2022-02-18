@@ -102,12 +102,12 @@ export default async function createTtml(compilation: Compilation, configHelper:
     }
 
     // generate ttml file
-    const file = `${pageDistPath}${miniExt}`;
+    const file = `${pageDistPath}${miniExt.templ}`;
     if (compilation.getAsset(file)) {
       return;
     }
 
-    const tplPath = path.join(__dirname, ejsRelativePath, `./page${miniExt}.ejs`);
+    const tplPath = path.join(__dirname, ejsRelativePath, `./page${miniExt.templ}.ejs`);
     const content = await ejs.renderFile(tplPath, { pageId: pageDistPath });
     const source = new RawSource(content);
     compilation.emitAsset(file, source);

@@ -2,6 +2,7 @@ import ConfigHelper from '@/ConfigHelper';
 import { Compiler, EntryPlugin, optimize, web, Compilation, sources } from 'webpack';
 import createJson, { addUsingComponents } from './createJson';
 import path from 'path';
+import fse from 'fs-extra';
 import createTtml from './createTtml';
 import OptimizeEntriesPlugin from '../ChunksEntriesPlugin';
 import { miniExt } from '@/target/mini/constants';
@@ -9,6 +10,7 @@ import { miniExt } from '@/target/mini/constants';
 // import { cloneDeep } from 'lodash';
 import monaStore from '@/target/store';
 import type { TtComponentEntry } from '@/target/entires/ttComponentEntry';
+import { MonaPlugins } from '@/plugins';
 //@ts-ignore
 const { SplitChunksPlugin, RuntimeChunkPlugin } = optimize;
 
@@ -33,6 +35,7 @@ class NativeAssetsPlugin {
       new Set(Array.from(monaStore.nativeEntryMap.values())).forEach(entry => {
         this.compileMainEntry(childCompiler, entry);
         this.compileTemplate(childCompiler, entry);
+        this.compileStyleFile(childCompiler, entry);
       });
       this.processOutput(childCompiler);
 
@@ -94,20 +97,20 @@ class NativeAssetsPlugin {
   }
 
   compileMainEntry(childCompiler: Compiler, entry: TtComponentEntry) {
-    if (path.isAbsolute(entry.context)) {
-      new EntryPlugin(entry.context, entry.path.main, path.join(entry.outputDir, entry.basename)).apply(childCompiler);
-    }
+    new EntryPlugin(entry.context, entry.path.main, path.join(entry.outputDir, entry.basename)).apply(childCompiler);
   }
   compileTemplate(childCompiler: Compiler, entry: TtComponentEntry) {
-    if (path.isAbsolute(entry.context)) {
-      new EntryPlugin(entry.context, entry.path.templatePath, entry.outputPath.templatePath).apply(childCompiler);
+    new EntryPlugin(entry.context, entry.path.templatePath, entry.outputPath.templatePath).apply(childCompiler);
+  }
+  compileStyleFile(childCompiler: Compiler, entry: TtComponentEntry) {
+    if (!fse.existsSync(entry.path.stylePath)) {
+      return;
     }
+    new MonaPlugins.MiniCssExtractPlugin({ filename: `[name]${miniExt.style}` }).apply(childCompiler);
+    new EntryPlugin(entry.context, entry.path.stylePath, entry.outputPath.stylePath).apply(childCompiler);
   }
   compileConfig(compilation: Compilation) {
-    monaStore.nativeEntryMap.forEach(entry => {
-      if (!path.isAbsolute(entry.context)) {
-        return;
-      }
+    new Set(Array.from(monaStore.nativeEntryMap.values())).forEach(entry => {
       const currentSource = new sources.RawSource(JSON.stringify(entry.genOutputConfig(), null, 2));
       const outputPath = entry.outputPath.configPath;
       if (compilation.getAsset(outputPath)) {
@@ -119,9 +122,7 @@ class NativeAssetsPlugin {
   }
   processOutput(childCompiler: Compiler) {
     childCompiler.hooks.compilation.tap(this.pluginName, compilation => {
-      /**
-       * 原生小程序混写时, ttml作为入口时会输出js文件，这里阻断js文件生成
-       */
+      // 原生小程序混写时, ttml作为入口时会输出js文件，这里阻断js文件生成
       compilation.hooks.afterOptimizeAssets.tap(this.pluginName, assets => {
         Object.keys(assets).forEach(assetPath => {
           const { style: styleExt, templ: templExt } = miniExt;

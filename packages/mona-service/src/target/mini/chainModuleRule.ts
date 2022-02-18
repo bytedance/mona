@@ -80,7 +80,7 @@ function createCssRule(webpackConfig: Config, configHelper: ConfigHelper) {
   const { projectConfig } = configHelper;
 
   const pxtOptions = createPxtransformConfig(TARGET, projectConfig);
-  const styleRule = webpackConfig.module.rule('style').test(/\.(c|le)ss$/i);
+  const styleRule = webpackConfig.module.rule('style').test(/\.(c|le|tt)ss$/i);
 
   styleRule.use('MiniCssExtractPlugin.loader').loader(MonaPlugins.MiniCssExtractPlugin.loader);
 
