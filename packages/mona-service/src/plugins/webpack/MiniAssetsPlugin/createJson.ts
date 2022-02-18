@@ -8,7 +8,7 @@ import { formatAppConfig } from '@bytedance/mona-shared';
 import { Compilation, sources, NormalModule } from 'webpack';
 
 import monaStore from '@/target/store';
-import { processNativePath } from '../../babel/CollectImportComponent';
+import { processNativePath } from '@/utils';
 import { getPageEntryPath, getRelativePath } from '@/target/utils/utils';
 import { formatReactNodeName } from '@/target/utils/reactNode';
 import { DEFAULT_APPID } from '@/target/constants';
@@ -86,7 +86,7 @@ function processModuleFactory(cwd: string, handledModules: Set<string>) {
           return;
         }
 
-        let filePath = processNativePath(requestPath, module.context, cwd);
+        let filePath = processNativePath(requestPath, module.context);
 
         const componentEntry = monaStore.nativeEntryMap.get(filePath);
 

@@ -6,6 +6,8 @@ import monaStore from '@/target/store';
 import { isReactCall, isStringLiteral } from '@/target/utils/babel';
 import runtimePkgJson from '@bytedance/mona-runtime/package.json';
 // import { ComponentAliasMap } from '@bytedance/mona-shared';
+
+// 1.压缩基础组件name  2.收集使用的组件&属性
 export default function perfTemplateRender() {
   return {
     visitor: {

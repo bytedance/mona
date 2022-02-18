@@ -5,6 +5,7 @@ import ConfigHelper from '@/ConfigHelper';
 
 import { voidChildrenElements } from '@/target/mini/baseComponents/constants';
 import { RENDER_NODE, ComponentType, CUSTOM_REF } from '@bytedance/mona-shared';
+import { miniExt } from '@/target/mini/constants';
 
 import monaStore from '@/target/store';
 import { formatReactNodeName } from '@/target/utils/reactNode';
@@ -101,12 +102,12 @@ export default async function createTtml(compilation: Compilation, configHelper:
     }
 
     // generate ttml file
-    const file = `${pageDistPath}.ttml`;
+    const file = `${pageDistPath}${miniExt}`;
     if (compilation.getAsset(file)) {
       return;
     }
 
-    const tplPath = path.join(__dirname, ejsRelativePath, './page.ttml.ejs');
+    const tplPath = path.join(__dirname, ejsRelativePath, `./page${miniExt}.ejs`);
     const content = await ejs.renderFile(tplPath, { pageId: pageDistPath });
     const source = new RawSource(content);
     compilation.emitAsset(file, source);

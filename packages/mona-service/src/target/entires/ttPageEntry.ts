@@ -1,5 +1,6 @@
 import path from 'path';
 import fse from 'fs-extra';
+import { miniExt } from '@/target/mini/constants';
 
 import ConfigHelper from '../../ConfigHelper';
 import { TtComponentEntry } from './ttComponentEntry';
@@ -26,7 +27,7 @@ export class TtPageEntry extends TtComponentEntry {
       return false;
     }
 
-    const ttmlPath = jsPath.replace(/\.js$/, '.ttml');
+    const ttmlPath = jsPath.replace(/\.js$/, miniExt.templ);
 
     if ([ttmlPath, jsPath].every(fse.existsSync)) {
       return true;

@@ -1,19 +1,13 @@
 import path from 'path';
 import fse from 'fs-extra';
 import ConfigHelper from '../../ConfigHelper';
-import { MINI_EXT_LIST, NPM_DIR } from '../constants';
+import { NPM_DIR } from '../constants';
 import monaStore, { ComponentImportInfo } from '../store';
+import { NODE_MODULES } from '@/target/constants';
+import { miniExt } from '@/target/mini/constants';
 
 const defaultEntryConfig: Record<string, any> = {};
-export const nativeConfigExt = '.json';
-const NODE_MODULES = 'node_modules';
 
-const miniType = {
-  style: 'ttss',
-  config: '.json',
-  main: '.js',
-  templ: '.ttml',
-};
 let id = 1;
 // 将路径和jsx收集的prop一一对应
 export const genNativeComponentId = (resourcePath: string) => {
@@ -61,7 +55,7 @@ export class TtEntry {
     this._entry = e;
     this.basename = path.basename(e);
     this.dirPath = path.dirname(e);
-    this._dependencies = MINI_EXT_LIST.map(ext => `${e}${ext}`);
+    this._dependencies = Object.values(miniExt).map(ext => `${e}${ext}`);
   }
 
   get entry() {
@@ -70,10 +64,10 @@ export class TtEntry {
 
   get path() {
     return {
-      main: `${this.entry}${miniType.main}`,
-      stylePath: `${this.entry}${miniType.style}`,
-      templatePath: `${this.entry}${miniType.templ}`,
-      configPath: `${this.entry}${miniType.config}`,
+      main: `${this.entry}${miniExt.main}`,
+      stylePath: `${this.entry}${miniExt.style}`,
+      templatePath: `${this.entry}${miniExt.templ}`,
+      configPath: `${this.entry}${miniExt.config}`,
     };
   }
 
@@ -105,17 +99,17 @@ export class TtEntry {
     const outputDir = this.outputDir;
     return {
       main: path.join(outputDir, `./${this.basename}`),
-      mainPath: path.join(outputDir, `./${this.basename}${miniType.main}`),
-      stylePath: path.join(outputDir, `./${this.basename}${miniType.style}`),
-      templatePath: path.join(outputDir, `./${this.basename}${miniType.templ}`),
-      configPath: path.join(outputDir, `./${this.basename}${miniType.config}`),
+      mainPath: path.join(outputDir, `./${this.basename}${miniExt.main}`),
+      stylePath: path.join(outputDir, `./${this.basename}${miniExt.style}`),
+      templatePath: path.join(outputDir, `./${this.basename}${miniExt.templ}`),
+      configPath: path.join(outputDir, `./${this.basename}${miniExt.config}`),
     };
   }
 
   readConfig() {
     const ext = path.extname(this.entry);
 
-    const filename = ext ? this.entry.replace(ext, nativeConfigExt) : this.path.configPath;
+    const filename = ext ? this.entry.replace(ext, miniExt.config) : this.path.configPath;
 
     try {
       return JSON.parse(fse.readFileSync(filename).toString());
@@ -144,11 +138,15 @@ export class TtComponentEntry extends TtEntry {
     Object.keys(usingComponent).forEach(name => {
       const cPath = usingComponent[name];
       let vPath;
+      // usingComponent中填写绝对路径会根据资源目录读
       if (path.isAbsolute(cPath)) {
         const appEntryDir = path.join(this.configHelper.cwd, './src');
         vPath = path.join(appEntryDir, cPath);
-      } else {
+      } else if (cPath.startWith('../') || cPath.startWith('./')) {
         vPath = path.join(this.dirPath, usingComponent[name]);
+      } else {
+        // npm包忽略
+        return;
       }
 
       if (handledPath.has(vPath)) {
@@ -203,31 +201,5 @@ export class TtComponentEntry extends TtEntry {
     });
     outputJson.usingComponents = usingComponents;
     return outputJson;
-  }
-
-  get outputResource() {
-    const outputDir = this.outputDir;
-
-    const res = MINI_EXT_LIST.map(ext => {
-      if (fse.existsSync(`${this.entry}${ext}`)) {
-        const outputPath = `${outputDir}/${this.basename}${ext}`;
-        let resource;
-
-        if (ext.includes('json')) {
-          resource = JSON.stringify(this.genOutputConfig(), null, 2);
-        } else {
-          resource = fse.readFileSync(`${this.entry}${ext}`);
-        }
-        return {
-          outputPath,
-          resource,
-        };
-      }
-      return;
-    }).filter(Boolean);
-    return res as {
-      outputPath: string;
-      resource: Buffer | string;
-    }[];
   }
 }

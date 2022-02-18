@@ -8,7 +8,7 @@ import { genAlias } from './chainResolve';
 import { MonaPlugins } from '@/plugins';
 
 import createPxtransformConfig from '../utils/createPxtransformConfig';
-import { NPM_DIR } from '../constants';
+import { NPM_DIR, NODE_MODULES } from '../constants';
 
 export function chainModuleRule(webpackConfig: Config, configHelper: ConfigHelper) {
   createJsRule(webpackConfig, configHelper);
@@ -35,8 +35,8 @@ function createTtmlRules(webpackConfig: Config, _configHelper: ConfigHelper) {
 
     ttmlRule.use('ttmlLoader').loader(path.resolve(__dirname, '../../plugins/loaders/miniTemplateLoader'));
   }
-  createRules('src', /node_modules/);
-  createRules('node_modules', undefined, NPM_DIR);
+  createRules('src', new RegExp(NODE_MODULES));
+  createRules(NODE_MODULES, undefined, NPM_DIR);
 }
 function createJsRule(webpackConfig: Config, configHelper: ConfigHelper) {
   const { projectConfig, cwd } = configHelper;

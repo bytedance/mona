@@ -5,11 +5,13 @@ import { formatReactNodeName } from '@/target/utils/reactNode';
 import ConfigHelper from '@/ConfigHelper';
 import { TtComponentEntry, genNativeComponentEntry } from '@/target/entires/ttComponentEntry';
 import { CUSTOM_COMPONENT_PROTOCOL } from '@bytedance/mona-shared';
+import { processNativePath } from '@/utils';
+
 // 收集从pages中引入的native Component, 以及props，
 export default function collectNativeComponent(configHelper: ConfigHelper) {
   return {
     visitor: {
-      JSXElement(path: NodePath<t.JSXElement>, _state: any) {
+      JSXElement(path: NodePath<t.JSXElement>, state: any) {
         const node = path.node;
         const openingElement = node.openingElement;
 
@@ -23,15 +25,13 @@ export default function collectNativeComponent(configHelper: ConfigHelper) {
         if (!binding) {
           return false;
         }
-
         const bindingPath = binding.path;
-
         if (!bindingPath) {
           return false;
         }
 
         const importPath = bindingPath.parentPath;
-        const from = _state.file.opts.filename;
+
         if (t.isImportDeclaration(importPath)) {
           const importNode = importPath.node as t.ImportDeclaration;
           const source = importNode.source.value;
@@ -39,8 +39,7 @@ export default function collectNativeComponent(configHelper: ConfigHelper) {
           if (source.startsWith(CUSTOM_COMPONENT_PROTOCOL)) {
             importNode.source.value = processNativePath(
               importNode.source.value,
-              nodePath.dirname(from),
-              _state.file.opts.cwd,
+              nodePath.dirname(state.file.opts.filename),
             );
             const entry = genNativeComponentEntry(configHelper, importNode.source.value);
             entry && getJsxProps(entry, componentName, node);
@@ -50,17 +49,6 @@ export default function collectNativeComponent(configHelper: ConfigHelper) {
       },
     },
   };
-}
-
-export function processNativePath(req: string, from: string, _cwd: string) {
-  const sourcePath = req.replace(CUSTOM_COMPONENT_PROTOCOL, '');
-  if (sourcePath.startsWith('../') || sourcePath.startsWith('./')) {
-    return nodePath.join(from, sourcePath);
-  } else if (nodePath.isAbsolute(sourcePath)) {
-    return sourcePath;
-  } else {
-    return sourcePath;
-  }
 }
 
 export function getJsxProps(entry: TtComponentEntry, componentName: string, node: t.JSXElement) {

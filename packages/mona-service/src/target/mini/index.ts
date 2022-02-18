@@ -62,6 +62,7 @@ const mini: IPlugin = ctx => {
         .output.path(path.join(cwd, projectConfig.output))
         .publicPath('/')
         .globalObject('tt');
+        
       webpackConfig.externals(['@bytedance/mona-client-plugin', '@bytedance/mona-client-web']);
       chainResolve(webpackConfig, configHelper);
       chainModuleRule(webpackConfig, configHelper);

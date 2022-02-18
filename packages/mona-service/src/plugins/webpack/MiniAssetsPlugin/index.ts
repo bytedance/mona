@@ -4,6 +4,7 @@ import createJson, { addUsingComponents } from './createJson';
 import path from 'path';
 import createTtml from './createTtml';
 import OptimizeEntriesPlugin from '../ChunksEntriesPlugin';
+import { miniExt } from '@/target/mini/constants';
 
 // import { cloneDeep } from 'lodash';
 import monaStore from '@/target/store';
@@ -53,7 +54,7 @@ class NativeAssetsPlugin {
     childCompiler.options.module = {
       ...childCompiler.options.module,
       //@ts-ignore
-      rules: childCompiler.options.module.rules.filter(item => !item.test.test('x.js')),
+      rules: childCompiler.options.module.rules.filter(item => !item.test.test('xxx.js')),
     };
     childCompiler.options.optimization = {
       ...childCompiler.options.optimization,
@@ -79,7 +80,6 @@ class NativeAssetsPlugin {
         cacheGroups: {
           miniVendors: {
             name: 'miniVendors',
-            // test: new RegExp(`(${extensions.filter(e => e !== '.json').join('|')})$`),
             minChunks: 2,
             minSize: 0,
             priority: 10,
@@ -100,11 +100,10 @@ class NativeAssetsPlugin {
   }
   compileTemplate(childCompiler: Compiler, entry: TtComponentEntry) {
     if (path.isAbsolute(entry.context)) {
-      new EntryPlugin(entry.context, entry.path.templatePath, entry.outputDir + '/asset/a.ttml').apply(childCompiler);
+      new EntryPlugin(entry.context, entry.path.templatePath, entry.outputPath.templatePath).apply(childCompiler);
     }
   }
   compileConfig(compilation: Compilation) {
-    // console.log('xmonaStore.nativeEntryMap', monaStore.nativeEntryMap);
     monaStore.nativeEntryMap.forEach(entry => {
       if (!path.isAbsolute(entry.context)) {
         return;
@@ -121,12 +120,11 @@ class NativeAssetsPlugin {
   processOutput(childCompiler: Compiler) {
     childCompiler.hooks.compilation.tap(this.pluginName, compilation => {
       /**
-       * 与原生小程序混写时解析模板与样式, ttml作为入口时会输出js文件，阻断js文件生成
+       * 原生小程序混写时, ttml作为入口时会输出js文件，这里阻断js文件生成
        */
       compilation.hooks.afterOptimizeAssets.tap(this.pluginName, assets => {
         Object.keys(assets).forEach(assetPath => {
-          const styleExt = '.ttss';
-          const templExt = '.ttml';
+          const { style: styleExt, templ: templExt } = miniExt;
           if (new RegExp(`(\\${styleExt}|\\${templExt})\\.js(\\.map){0,1}$`).test(assetPath)) {
             compilation.deleteAsset(assetPath);
           } else if (new RegExp(`${styleExt}${styleExt}$`).test(assetPath)) {
