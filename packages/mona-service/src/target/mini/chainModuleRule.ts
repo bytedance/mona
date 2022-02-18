@@ -8,13 +8,36 @@ import { genAlias } from './chainResolve';
 import { MonaPlugins } from '@/plugins';
 
 import createPxtransformConfig from '../utils/createPxtransformConfig';
+import { NPM_DIR } from '../constants';
 
 export function chainModuleRule(webpackConfig: Config, configHelper: ConfigHelper) {
   createJsRule(webpackConfig, configHelper);
   createCssRule(webpackConfig, configHelper);
   createAssetRule(webpackConfig, configHelper);
+  createTtmlRules(webpackConfig, configHelper);
 }
+function createTtmlRules(webpackConfig: Config, _configHelper: ConfigHelper) {
+  function createRules(dir: string, exclude?: RegExp, namePrefix: string = '/') {
+    const ttmlRule = webpackConfig.module
+      .rule('ttml' + dir)
+      .test(/\.ttml$/i)
+      .include.add(new RegExp(dir))
+      .end()
+      .when(!!exclude, c => c.exclude.add(exclude));
+    ttmlRule
+      .use('fileLoader')
+      .loader(require.resolve('file-loader'))
+      .options({
+        useRelativePath: true,
+        name: path.join(namePrefix, '[path][name].ttml'),
+        context: dir,
+      });
 
+    ttmlRule.use('ttmlLoader').loader(path.resolve(__dirname, '../../plugins/loaders/miniTemplateLoader'));
+  }
+  createRules('src', /node_modules/);
+  createRules('node_modules', undefined, NPM_DIR);
+}
 function createJsRule(webpackConfig: Config, configHelper: ConfigHelper) {
   const { projectConfig, cwd } = configHelper;
   const { TransformJsxNamePlugin, collectNativeComponent } = MonaPlugins.babel;

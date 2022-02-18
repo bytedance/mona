@@ -1,7 +1,7 @@
 import { LoaderContext } from 'webpack';
 import path from 'path';
 import monaStore from '@/target/store';
-import { TtComponentEntry } from '@/target/entires/ttComponentEntry';
+import { genNativeComponentEntry, TtComponentEntry } from '@/target/entires/ttComponentEntry';
 import { TtPageEntry } from '@/target/entires/ttPageEntry';
 
 // import monaStore from '../store';
@@ -17,10 +17,15 @@ export default async function ImportCustomerComponentLoader(this: LoaderContext<
 
   const entryPath = resourcePath.replace(/\.entry(?=\.(js|ts)$)/, '');
 
-  const dirName = entryPath.replace(path.extname(entryPath), '');
-
+  let dirName = entryPath.replace(path.extname(entryPath), '');
+  if (dirName.includes('node_modules')) {
+    dirName = dirName.slice(dirName.indexOf('node_modules') + 'node_modules'.length + 1);
+  }
   const nativeEntry = monaStore.nativeEntryMap.get(dirName);
-
+  if (resourcePath.includes('node_modules') && nativeEntry) {
+    nativeEntry.entry = entryPath.replace(path.extname(entryPath), '');
+    genNativeComponentEntry(nativeEntry.configHelper, nativeEntry.entry, nativeEntry);
+  }
   const target = this.getOptions().target as string;
   let finalSource = source;
 
@@ -29,7 +34,7 @@ export default async function ImportCustomerComponentLoader(this: LoaderContext<
     finalSource = virtualSource;
     //TtPageEntry 已经提前判断过
     if (target === 'mini' && (TtComponentEntry.isNative(entryPath) || nativeEntry instanceof TtPageEntry)) {
-      const dependencies = nativeEntry.readDependencies();
+      const dependencies = nativeEntry.readUsingComponents();
       dependencies.forEach(d => this.addDependency(d));
     }
   }

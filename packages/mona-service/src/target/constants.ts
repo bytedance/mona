@@ -4,4 +4,4 @@ export const HTML_HANDLE_TAG = 'createdByMonaCli';
 export const DEFAULT_APPID = 'testAppId';
 
 export const MINI_EXT_LIST = ['.js', '.ttml', '.json', '.ttss'];
-
+export const NPM_DIR = 'npm/';

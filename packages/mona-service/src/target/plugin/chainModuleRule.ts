@@ -47,6 +47,7 @@ function createJsRule(webpackConfig: Config, configHelper: ConfigHelper) {
     .loader(path.resolve(__dirname, '../../plugins/loaders/ImportCustomComponentLoader'))
     .options({ target: TARGET });
 }
+
 function createCssRule(webpackConfig: Config, configHelper: ConfigHelper) {
   const cssRule = webpackConfig.module.rule('css').test(/\.(c|le)ss$/i);
 

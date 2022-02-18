@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 const RPX = 'rpx';
 const PX = 'px';
 
@@ -33,8 +32,8 @@ export const plainStyle = (style: React.CSSProperties, isPxToRpx: boolean = fals
       if (!Number.isNaN(Number(value)) && !unitlessNumberMap[styleKey]) {
         value = `${value}${PX}`;
       }
-
-      return [...res, `${transformReactStyleKey(styleKey)}:${isPxToRpx ? setPxToRpx(value) : value};`];
+      res.push(`${transformReactStyleKey(styleKey)}:${isPxToRpx ? setPxToRpx(value) : value};`);
+      return res;
     }, [])
     .join('');
 };

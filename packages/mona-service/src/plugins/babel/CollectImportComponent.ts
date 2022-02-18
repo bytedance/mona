@@ -35,13 +35,15 @@ export default function collectNativeComponent(configHelper: ConfigHelper) {
         if (t.isImportDeclaration(importPath)) {
           const importNode = importPath.node as t.ImportDeclaration;
           const source = importNode.source.value;
+
           if (source.startsWith(CUSTOM_COMPONENT_PROTOCOL)) {
             importNode.source.value = processNativePath(
               importNode.source.value,
               nodePath.dirname(from),
               _state.file.opts.cwd,
             );
-            getJsxProps(genNativeComponentEntry(configHelper, importNode.source.value), componentName, node);
+            const entry = genNativeComponentEntry(configHelper, importNode.source.value);
+            entry && getJsxProps(entry, componentName, node);
           }
         }
         return;
@@ -50,14 +52,14 @@ export default function collectNativeComponent(configHelper: ConfigHelper) {
   };
 }
 
-export function processNativePath(req: string, from: string, cwd: string) {
+export function processNativePath(req: string, from: string, _cwd: string) {
   const sourcePath = req.replace(CUSTOM_COMPONENT_PROTOCOL, '');
   if (sourcePath.startsWith('../') || sourcePath.startsWith('./')) {
     return nodePath.join(from, sourcePath);
   } else if (nodePath.isAbsolute(sourcePath)) {
     return sourcePath;
   } else {
-    return nodePath.join(cwd, '/src', sourcePath);
+    return sourcePath;
   }
 }
 

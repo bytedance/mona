@@ -21,7 +21,7 @@ export class PageEntry {
     return (this.config = merge(this.config, other));
   }
 
-  createOutputConfig() {
+  genOutputConfig() {
     const page = '';
     const pageDistPath = path.join(page.toLowerCase());
     const { cwd } = this.configHelper;

@@ -26,7 +26,7 @@ export default class OptimizeEntriesPlugin {
           chunk.files.forEach((file: string) => {
             if (file.endsWith('.js')) {
               const relativePath = slash(path.relative(path.dirname(group.name!), file));
-              imports.push(`import('./${relativePath}');\n`);
+              imports.push(`require('./${relativePath}');\n`);
             }
           });
           const chunkPath = group.name + '.js';

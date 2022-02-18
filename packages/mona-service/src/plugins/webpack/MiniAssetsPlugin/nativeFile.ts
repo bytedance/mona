@@ -15,11 +15,12 @@ export default async function createNativeFile(compilation: Compilation, _config
       if (entry instanceof TtPageEntry) {
         outputPath = outputPath.toLowerCase();
       }
+      //@ts-ignore
       const currentSource = new RawSource(resource);
       if (compilation.getAsset(outputPath)) {
-        compilation.updateAsset(outputPath, currentSource);
+        // compilation.updateAsset(outputPath, currentSource);
       } else {
-        compilation.emitAsset(outputPath, currentSource);
+        // compilation.emitAsset(outputPath, currentSource);
       }
     });
   });
