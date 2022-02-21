@@ -1,18 +1,7 @@
 import type { TtComponentEntry } from './entires/ttComponentEntry';
 import { genEjsParamsMap } from './mini/baseComponents';
 // import { PageEntry } from './entires/pageEntry';
-export interface ComponentImportInfo {
-  // 包名称，例如: @bytedance/mona-runtime
-  // 引入名称例如 import CustomComponent from 'xxx'。 在JSX中这样使用<CustomComponent /> ，则jsx中使用的名称 CustomComponent为componentName
-  componentName: string;
 
-  // jsx中使用的prop, native组件的jsx上不能 写spread attribute {...props} 的形式
-  props: Set<string>;
-
-  // native: 小程序原生自定义组件
-  type: 'native';
-  entry: TtComponentEntry;
-}
 
 interface MonaPageEntry {
   usingComponents: Record<string, string>;

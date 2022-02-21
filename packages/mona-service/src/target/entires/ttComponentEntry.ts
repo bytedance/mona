@@ -2,7 +2,7 @@ import path from 'path';
 import fse from 'fs-extra';
 import ConfigHelper from '../../ConfigHelper';
 import { NPM_DIR } from '../constants';
-import monaStore, { ComponentImportInfo } from '../store';
+import monaStore from '../store';
 import { NODE_MODULES } from '@/target/constants';
 import { miniExt } from '@/target/mini/constants';
 
@@ -118,13 +118,33 @@ export class TtEntry {
   }
 }
 
+interface ComponentImportInfo {
+  // 包名称，例如: @bytedance/mona-runtime
+  // 引入名称例如 import CustomComponent from 'xxx'。 在JSX中这样使用<CustomComponent /> ，则jsx中使用的名称 CustomComponent为componentName
+  componentName: string;
+
+  // jsx中使用的prop, native组件的jsx上不能 写spread attribute {...props} 的形式
+  props: Set<string>;
+
+  defaultProps: Record<string, any>;
+  isRenderAllProps: boolean;
+  // 是否使用该组件
+  isUse: boolean;
+}
 // 小程序语法自定义组件入口
 export class TtComponentEntry extends TtEntry {
   // 用于生成模板
-  templateInfo?: Omit<ComponentImportInfo, 'entry'>;
+  templateInfo: ComponentImportInfo;
 
   constructor(configHelper: ConfigHelper, entryPath: string) {
     super(configHelper, entryPath);
+    this.templateInfo = {
+      props: new Set([]),
+      defaultProps: {},
+      isUse: false,
+      isRenderAllProps: false,
+      componentName: '',
+    };
   }
 
   // 依赖包括

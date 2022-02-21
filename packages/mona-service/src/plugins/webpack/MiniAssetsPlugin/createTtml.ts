@@ -40,20 +40,37 @@ const RawSource = sources.RawSource;
 function genNativeEjsData() {
   const result = new Map();
   monaStore.nativeEntryMap.forEach(entry => {
-    if (entry.templateInfo) {
-      const { componentName, props } = entry.templateInfo;
+    if (entry.templateInfo?.isUse) {
+      const { componentName, props, isRenderAllProps, defaultProps } = entry.templateInfo;
+
+      const allProps = Array.from(props.values()).reduce((pre, item) => {
+        // 自定组件ref比较特殊,约定__ref透传react的ref
+        // https://microapp.bytedance.com/docs/zh-CN/mini-app/develop/framework/custom-component/ref/
+        const propKey = item === 'ref' ? 'tt:ref' : formatReactNodeName(item);
+        const propValue = item === 'ref' ? CUSTOM_REF : item;
+
+        pre[propKey] = propValue;
+        return pre;
+      }, {} as Record<string, string>);
+
+      if (isRenderAllProps) {
+        Object.keys(defaultProps).reduce((pre, item) => {
+          if (!pre[item]) {
+            pre[item] = item;
+          }
+          return pre;
+        }, allProps);
+      }
       result.set(entry.id, {
         id: entry.id,
         name: componentName,
-        props: Array.from(props.values()).reduce((pre, item) => {
-          // 自定组件ref比较特殊,约定__ref透传react的ref
-          // https://microapp.bytedance.com/docs/zh-CN/mini-app/develop/framework/custom-component/ref/
-          const propKey = item === 'ref' ? 'tt:ref' : formatReactNodeName(item);
-          const propValue = item === 'ref' ? CUSTOM_REF : item;
-
-          pre[propKey] = propValue;
+        defaultProps: Object.keys(defaultProps).reduce((pre, item) => {
+          if (typeof defaultProps[item] === 'string') {
+            pre[item] = `"${defaultProps[item]}"`;
+          }
           return pre;
-        }, {} as Record<string, string>),
+        }, {} as Record<string, any>),
+        props: allProps,
       });
     }
   });

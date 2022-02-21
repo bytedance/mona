@@ -28,11 +28,16 @@
 
 
 <%for (let item of nativeComponents.values()) {%>
+<%_const { defaultProps,props } = item; -%>
+
   <template name="mona-<%=item.id%>">
     <<%=item.name%> 
-      <%_for(let i in item.props){-%>
-        <%=i%>="{{node.<%=COMPLIER_PROPS%>['<%=item.props[i]%>']}}" 
-      <%}-%>
+      <%_for(let i in props){-%>
+        <%_if(defaultProps[i] !== undefined){-%>
+        <%=i%>="{{node.<%=COMPLIER_PROPS%>['<%=props[i]%>'] === undefined ? <%-defaultProps[i]%> : node.<%=COMPLIER_PROPS%>['<%=props[i]%>']}}" 
+        <%_} else{-%>
+        <%=i%>="{{node.<%=COMPLIER_PROPS%>['<%=props[i]%>']}}" 
+      <%_}}-%>
     >
       <template 
         is="{{ 'mona-' + node.<%=COMPLIER_NODES%>[item].<%=COMPLIER_TYPE%> }}" 

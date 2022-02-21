@@ -55,14 +55,16 @@ export default function collectNativeComponent(configHelper: ConfigHelper) {
 }
 
 export function getJsxProps(entry: TtComponentEntry, componentName: string, node: t.JSXElement) {
-  const component = entry.templateInfo || {
+  
+  entry.templateInfo = {
+    ...entry.templateInfo,
     componentName: formatReactNodeName(componentName),
-    props: new Set(),
-    type: 'native',
+    isUse: true,
   };
   const props: string[] = [];
   node.openingElement.attributes.forEach(prop => {
     if (t.isJSXSpreadAttribute(prop)) {
+      entry.templateInfo.isRenderAllProps = true;
       return;
     }
     let propName: string;
@@ -74,9 +76,8 @@ export function getJsxProps(entry: TtComponentEntry, componentName: string, node
       return;
     }
 
-    component.props.add(propName);
+    entry.templateInfo.props.add(propName);
     props.push(propName);
   });
-  entry.templateInfo = component;
   return props;
 }
