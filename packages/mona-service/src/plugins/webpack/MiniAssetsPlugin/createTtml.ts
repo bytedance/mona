@@ -66,7 +66,7 @@ function genNativeEjsData() {
         name: componentName,
         defaultProps: Object.keys(defaultProps).reduce((pre, item) => {
           if (typeof defaultProps[item] === 'string') {
-            pre[item] = `"${defaultProps[item]}"`;
+            pre[item] = `'${defaultProps[item]}'`;
           }
           return pre;
         }, {} as Record<string, any>),

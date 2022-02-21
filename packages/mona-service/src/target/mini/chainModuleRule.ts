@@ -67,7 +67,11 @@ function createJsRule(webpackConfig: Config, configHelper: ConfigHelper) {
         ],
       ].filter(Boolean),
       // ! mini端，'@babel/preset-react'，不要添加 "runtime": "automatic" 配置。 可能会导致perfTemplateRender插件收集props遗漏
-      presets: [['@babel/preset-env'], ['@babel/preset-typescript'], ['@babel/preset-react']],
+      presets: [
+        ['@babel/preset-env'],
+        ['@babel/preset-typescript'],
+        ['@babel/preset-react', { throwIfNamespace: false }],
+      ],
     });
 
   jsRule

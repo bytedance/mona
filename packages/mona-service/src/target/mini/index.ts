@@ -1,6 +1,5 @@
 import chalk from 'chalk';
 import path from 'path';
-import fse from 'fs-extra';
 import webpack from 'webpack';
 
 import { IPlugin } from '../../Service';
@@ -40,12 +39,8 @@ const mini: IPlugin = ctx => {
             info?.errors?.forEach((err: Error) => {
               console.log(chalk.red(err.message));
             });
-            console.log(info.children[0].errors);
-            fse.outputFile(
-              '/Users/bytedance/Desktop/mona2/mona/packages/mona-service/src/target/mini/error.text',
-              JSON.stringify(info.children[0].errors, null, 2),
-            );
-            process.exit(1);
+            console.log(info?.children?.[0]?.errors);
+            return;
           }
           if (stats?.hasWarnings()) {
             info?.warnings?.forEach((w: Error) => {
