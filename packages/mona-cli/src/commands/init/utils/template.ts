@@ -33,14 +33,14 @@ export const fetchTemplate = function (projectRoot: string, templateName: string
     });
   });
 };
-
+// js文件不替换后缀
 export function renameFile(filePath: string, { typescript, cssExt }: { typescript: boolean; cssExt: string }) {
   const ext = path.extname(filePath);
   let newPath = filePath;
-  if (/^\.[jt]sx$/.test(ext)) {
-    newPath = filePath.replace(/\.[jt]sx$/, typescript ? '.tsx' : '.jsx');
-  } else if (/^\.[jt]s$/.test(ext)) {
-    newPath = filePath.replace(/\.[jt]s$/, typescript ? '.ts' : '.js');
+  if (/^\.tsx$/.test(ext)) {
+    newPath = filePath.replace(/\.tsx$/, typescript ? '.tsx' : '.jsx');
+  } else if (/^\.ts$/.test(ext)) {
+    newPath = filePath.replace(/\.ts$/, typescript ? '.ts' : '.js');
   } else if (/^\.(c|le|sa|sc)ss$/.test(ext)) {
     newPath = filePath.replace(/\.(c|le|sa|sc)ss$/, `.${cssExt}`);
   }
@@ -68,7 +68,7 @@ export async function processTemplate(filePath: string, templateData: Record<str
       },
       {
         async: true,
-      }
+      },
     );
     fs.writeFileSync(filePath, fileContent);
     // 修改后缀
