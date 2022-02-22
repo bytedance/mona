@@ -5,6 +5,7 @@ import { NPM_DIR } from '../constants';
 import monaStore from '../store';
 import { NODE_MODULES } from '@/target/constants';
 import { miniExt } from '@/target/mini/constants';
+import getMiniComponentDefaultValue from './util/getDefaultProps';
 
 const defaultEntryConfig: Record<string, any> = {};
 
@@ -136,6 +137,11 @@ export class TtComponentEntry extends TtEntry {
   // 用于生成模板
   templateInfo: ComponentImportInfo;
 
+  // TODO: 缓存方式优化，memoize
+  cache: {
+    usingComponents?: Set<string>;
+    defaultProps?: any;
+  };
   constructor(configHelper: ConfigHelper, entryPath: string) {
     super(configHelper, entryPath);
     this.templateInfo = {
@@ -145,13 +151,34 @@ export class TtComponentEntry extends TtEntry {
       isRenderAllProps: false,
       componentName: '',
     };
+    this.cache = {};
   }
+  readDefaultProps(content?: string) {
+    content = content || fse.readFileSync(this.path.main, 'utf8').toString();
+    if (this.cache.defaultProps) {
+      this.templateInfo.defaultProps = this.cache.defaultProps;
+      return this.templateInfo.defaultProps;
+    }
 
+    this.templateInfo.defaultProps = getMiniComponentDefaultValue(content);
+
+    if (this.isCache) {
+      this.cache.defaultProps = this.templateInfo.defaultProps;
+    }
+    return this.templateInfo.defaultProps;
+  }
+  get isCache() {
+    return this.entry.includes(NODE_MODULES);
+  }
   // 依赖包括
   readUsingComponents(handledPath: Set<string> = new Set([this.entry])) {
+    const isReadEntry = handledPath.size === 0;
     if (!fse.existsSync(`${this.entry}.js`)) {
       return new Set([]);
+    } else if (this.cache.usingComponents && isReadEntry) {
+      return this.cache.usingComponents;
     }
+
     const config = this.readConfig();
     const usingComponent = config.usingComponents || {};
     const res = new Set(this._dependencies);
@@ -179,6 +206,9 @@ export class TtComponentEntry extends TtEntry {
         res.add(d);
       });
     });
+    if (this.isCache && isReadEntry) {
+      this.cache.usingComponents = res;
+    }
     return res;
   }
 

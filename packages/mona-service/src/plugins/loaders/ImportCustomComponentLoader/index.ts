@@ -3,7 +3,9 @@ import path from 'path';
 import monaStore from '@/target/store';
 import { genNativeComponentEntry, TtComponentEntry } from '@/target/entires/ttComponentEntry';
 import { NODE_MODULES } from '@/target/constants';
-import getMiniComponentDefaultValue from './getDefaultValue';
+import type ConfigHelper from '@/ConfigHelper';
+
+const { nativeEntryMap } = monaStore;
 // 强制要求自定义组件不得使用spread attribute  {...props}
 // ① babel插件CollectImportComponent: 获取jsx对应import的包信息(path、name、jsxProps等)。为了缩小webpack查询范围。
 // ② webpack的loader, loader根据path判断isNativeComponent，生成该组件的uid(用于生成模板), 用createMiniComponent包裹uid导出。
@@ -11,7 +13,12 @@ import getMiniComponentDefaultValue from './getDefaultValue';
 export default async function ImportCustomerComponentLoader(this: LoaderContext<any>, source: string) {
   this.cacheable();
   const callback = this.async()!;
+  const { target, configHelper } = this.getOptions() as { configHelper: ConfigHelper; target: string };
+  const alias = configHelper.projectConfig.abilities?.alias;
+
   const resourcePath = this.resourcePath;
+
+  let requestType: typeof NODE_MODULES | '' | 'alias' = '';
 
   const entryPath = resourcePath.replace(/\.entry(?=\.(js|ts)$)/, '');
 
@@ -19,28 +26,33 @@ export default async function ImportCustomerComponentLoader(this: LoaderContext<
   // 提取npm名称
   if (dirName.includes(NODE_MODULES)) {
     dirName = dirName.slice(dirName.indexOf(NODE_MODULES) + NODE_MODULES.length + 1);
-  }
-
-  const nativeEntry = monaStore.nativeEntryMap.get(dirName);
-
-  const target = this.getOptions().target as string;
-  let finalSource = source;
-
-  if (nativeEntry) {
-    console.log(getMiniComponentDefaultValue(source));
-    nativeEntry.templateInfo = {
-      ...(nativeEntry.templateInfo || {}),
-      defaultProps: getMiniComponentDefaultValue(source),
-    };
-    // npm包名作为key => 绝对路径作为key
-    if (resourcePath.includes(NODE_MODULES)) {
-      nativeEntry.entry = entryPath.replace(path.extname(entryPath), '');
-      genNativeComponentEntry(nativeEntry.configHelper, nativeEntry.entry, nativeEntry);
+    requestType = NODE_MODULES;
+  } else if (alias) {
+    for (const i in alias) {
+      const realPath = alias[i].replace(/\/$/, '');
+      if (!dirName.startsWith(realPath)) {
+        continue;
+      }
+      const aliasName = dirName.replace(realPath, i);
+      if (nativeEntryMap.has(aliasName)) {
+        dirName = aliasName;
+        requestType = 'alias';
+        break;
+      }
     }
-
+  }
+  const nativeEntry = nativeEntryMap.get(dirName);
+  let finalSource = source;
+  if (nativeEntry) {
     finalSource = nativeEntry.virtualSource;
+    // npm包名作为key => 绝对路径作为key
 
     if (target === 'mini' && TtComponentEntry.isNative(entryPath)) {
+      if ([NODE_MODULES, 'alias'].includes(requestType)) {
+        nativeEntry.entry = entryPath.replace(path.extname(entryPath), '');
+        genNativeComponentEntry(nativeEntry.configHelper, nativeEntry.entry, nativeEntry);
+      }
+      nativeEntry.readDefaultProps(source);
       const dependencies = nativeEntry.readUsingComponents();
       dependencies.forEach(d => this.addDependency(d));
     }

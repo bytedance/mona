@@ -45,7 +45,7 @@ function createJsRule(webpackConfig: Config, configHelper: ConfigHelper) {
   jsRule
     .use('ttComponentLoader')
     .loader(path.resolve(__dirname, '../../plugins/loaders/ImportCustomComponentLoader'))
-    .options({ target: TARGET });
+    .options({ target: TARGET, configHelper });
 }
 
 function createCssRule(webpackConfig: Config, configHelper: ConfigHelper) {

@@ -45,6 +45,7 @@ export default function collectNativeComponent(configHelper: ConfigHelper) {
               );
               componentEntry = genNativeComponentEntry(configHelper, importNode.source.value);
             }
+
             componentEntry && getJsxProps(componentEntry, componentName, node);
           }
         }
@@ -55,7 +56,6 @@ export default function collectNativeComponent(configHelper: ConfigHelper) {
 }
 
 export function getJsxProps(entry: TtComponentEntry, componentName: string, node: t.JSXElement) {
-  
   entry.templateInfo = {
     ...entry.templateInfo,
     componentName: formatReactNodeName(componentName),
