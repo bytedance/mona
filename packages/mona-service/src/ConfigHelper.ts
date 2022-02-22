@@ -12,6 +12,7 @@ const genDefaultProjectConfig = (cwd: string): ProjectConfig => {
     input: './src/app',
     output: 'dist',
     compilerOptimization: true,
+    enableMultiBuild: true,
     dev: {
       port: DEFAULT_PORT,
     },
