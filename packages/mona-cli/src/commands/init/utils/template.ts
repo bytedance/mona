@@ -1,9 +1,8 @@
-import fs from 'fs';
+import fse from 'fs-extra';
 import ora from 'ora';
 import ejs from 'ejs';
 import path from 'path';
 import chalk from 'chalk';
-import { execSync } from 'child_process';
 import download from 'download-git-repo';
 import { makeDir, readAllFiles, removeEmptyDirs } from './file';
 
@@ -21,8 +20,9 @@ export const fetchTemplate = function (projectRoot: string, templateName: string
         return reject(error);
       } else {
         try {
-          const moveCmd = `mv ${tplDest}/${templateName}/* ${projectRoot} && rm -rf ${tplDest}`;
-          execSync(moveCmd, { stdio: 'ignore' });
+          // 使用mv 命令会导致 ,.gitignore 类似的文件未copy
+          fse.copySync(`${tplDest}/${templateName}/`, projectRoot);
+          fse.removeSync(`${tplDest}/${templateName}/`);
         } catch (err) {
           return reject(error);
         }
@@ -44,7 +44,7 @@ export function renameFile(filePath: string, { typescript, cssExt }: { typescrip
   } else if (/^\.(c|le|sa|sc)ss$/.test(ext)) {
     newPath = filePath.replace(/\.(c|le|sa|sc)ss$/, `.${cssExt}`);
   }
-  fs.renameSync(filePath, newPath);
+  fse.renameSync(filePath, newPath);
   return newPath;
 }
 
@@ -52,7 +52,7 @@ export async function processTemplate(filePath: string, templateData: Record<str
   // 判断文件是否应该存在, 不应该则直接删除
   // 如果不是ts则不应该存在tsconfig.json和d.ts文件
   if ((/\.d\.ts$/.test(filePath) || /tsconfig\.json$/.test(filePath)) && !templateData.typescript) {
-    fs.unlinkSync(filePath);
+    fse.unlinkSync(filePath);
     return;
   }
   // 判断文件是否是js/jsx/ts/tsx/css/less/sass/scss/json，如何是这些则要进行文件内容及后缀的处理
@@ -70,13 +70,14 @@ export async function processTemplate(filePath: string, templateData: Record<str
         async: true,
       },
     );
-    fs.writeFileSync(filePath, fileContent);
+    fse.writeFileSync(filePath, fileContent);
     // 修改后缀
     newFilePath = renameFile(filePath, {
       typescript: templateData.typescript,
       cssExt: templateData.cssExt,
     });
   }
+
   // 打印出来文件成功
   spinner.succeed(chalk.grey(`文件 ${newFilePath} 创建成功`));
 }

@@ -1,16 +1,16 @@
 import fse from 'fs-extra';
 import { fetchTemplate, processTemplates } from '../../../../commands/init/utils/template';
 
-function isEmtpyDir(dirname: string) {
+function isEmptyDir(dirname: string) {
   try {
-    const files = fse.readdirSync(dirname)
+    const files = fse.readdirSync(dirname);
     if (files && files.length) {
-      return false
+      return false;
     }
   } catch (e) {
-    return true
+    return true;
   }
-  return true
+  return true;
 }
 
 describe('template', () => {
@@ -24,9 +24,9 @@ describe('template', () => {
     expect(fetchTemplate(tempDir, new Date().valueOf() + '')).rejects.not.toBeNull();
   });
   test('should fetch templates to local directory correctly', async () => {
-    expect(isEmtpyDir(tempDir)).toBeTruthy()
-    await fetchTemplate(tempDir, 'plugin')
-    expect(isEmtpyDir(tempDir)).toBeFalsy()
+    expect(isEmptyDir(tempDir)).toBeTruthy();
+    await fetchTemplate(tempDir, 'plugin');
+    expect(isEmptyDir(tempDir)).toBeFalsy();
   });
 
   test('should process template normally', async () => {
@@ -36,10 +36,10 @@ describe('template', () => {
       projectName: 'monaTest',
       cssExt: 'less',
       typescript: true,
-    })
+    });
     const config = JSON.parse(fse.readFileSync(`${tempDir}/package.json`).toString());
     const names = fse.readdirSync(tempDir);
-    expect(config.name).toBe('monaTest')
-    expect(names.some(name => /\.ts/.test(name))).toBeTruthy()
-  })
-})
+    expect(config.name).toBe('monaTest');
+    expect(names.some(name => /\.ts/.test(name))).toBeTruthy();
+  });
+});
