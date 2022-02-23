@@ -22,7 +22,7 @@ export const fetchTemplate = function (projectRoot: string, templateName: string
         try {
           // 使用mv 命令会导致 ,.gitignore 类似的文件未copy
           fse.copySync(`${tplDest}/${templateName}/`, projectRoot);
-          fse.removeSync(`${tplDest}/${templateName}/`);
+          fse.removeSync(`${tplDest}/`);
         } catch (err) {
           return reject(error);
         }
