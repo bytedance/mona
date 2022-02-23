@@ -7,9 +7,13 @@ const templates = [
     value: 'app',
   },
   {
+    name: 'mini（适用于商家应用小程序开发）',
+    value: 'mini',
+  },
+  {
     name: 'plugin（适用于商家应用插件开发）',
-    value: 'plugin'
-  }
+    value: 'plugin',
+  },
 ];
 
 export type TemplateType = 'app' | 'plugin';
@@ -45,7 +49,7 @@ export async function ask(opts: Partial<AskOpts>) {
 
 const styleProcessors = [
   { name: 'less', value: 'less' },
-  { name: 'css', value: 'css' }
+  { name: 'css', value: 'css' },
 ];
 
 type AskItem = DistinctQuestion & { checkAsk?: (defaultValue?: any) => boolean; testDefault?: any };
@@ -65,14 +69,14 @@ export const askConfig: Record<keyof AskOpts, AskItem> = {
       return true;
     },
     // 用于测试
-    testDefault: 'mona'
+    testDefault: 'mona',
   },
   useTypescript: {
     type: 'confirm',
     name: 'useTypescript',
     message: '是否使用Typescript',
     default: true,
-    checkAsk: (defaultValue?: boolean) => typeof defaultValue !== 'boolean'
+    checkAsk: (defaultValue?: boolean) => typeof defaultValue !== 'boolean',
   },
   styleProcessor: {
     type: 'list',
@@ -80,7 +84,7 @@ export const askConfig: Record<keyof AskOpts, AskItem> = {
     message: '请选择样式预处理器',
     choices: styleProcessors,
     default: styleProcessors[0].value,
-    checkAsk: (defaultValue?: string) => !defaultValue || !styleProcessors.find(s => s.value === defaultValue)
+    checkAsk: (defaultValue?: string) => !defaultValue || !styleProcessors.find(s => s.value === defaultValue),
   },
   templateType: {
     type: 'list',
@@ -88,6 +92,6 @@ export const askConfig: Record<keyof AskOpts, AskItem> = {
     message: '请选择模板',
     choices: templates,
     default: templates[0].value,
-    checkAsk: (defaultValue?: string) => !defaultValue || !templates.find(t => t.value === defaultValue)
-  }
+    checkAsk: (defaultValue?: string) => !defaultValue || !templates.find(t => t.value === defaultValue),
+  },
 };
