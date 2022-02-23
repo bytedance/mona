@@ -13,7 +13,8 @@ const pathToPlugin = (pathname: string) => require(pathname);
 const buildInPlugins = [
   './commands/build',
   './commands/start',
-  // './config/asset',
+  './commands/compress',
+  './commands/publish',
   './target/web/index',
   './target/mini/index',
   './target/plugin/index',

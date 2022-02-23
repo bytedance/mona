@@ -1,3 +1,4 @@
+import { OPEN_DOMAIN, OPEN_DEV_HEADERS } from '@bytedance/mona-shared';
 import open from 'open';
 import uuid from 'node-uuid';
 import WebSocket from 'ws';
@@ -5,9 +6,8 @@ import chalk from 'chalk';
 import { IPlugin } from '@bytedance/mona-service';
 import { readUser, saveUser } from './utils';
 
-const domain = 'op.jinritemai.com';
-const openURL = `https://${domain}/authorizatio`;
-const wsURL = `wss://${domain}/ws/api/terminal`;
+const openURL = `https://${OPEN_DOMAIN}/authorization`;
+const wsURL = `wss://${OPEN_DOMAIN}/ws/api/terminal`;
 
 const login: IPlugin = (ctx) => {
   ctx.registerCommand('login', {
@@ -32,7 +32,7 @@ const login: IPlugin = (ctx) => {
     console.log(chalk.cyan(`打开 ${url}`));
     open(url);
     // TODO: to delete boe header
-    const ws = new WebSocket(`${wsURL}?token=${token}`);
+    const ws = new WebSocket(`${wsURL}?token=${token}`, { headers: OPEN_DEV_HEADERS });
     let success = false;
     ws.on('open', () => {
       console.log(chalk.cyan('等待授权登录中...'));
@@ -40,8 +40,9 @@ const login: IPlugin = (ctx) => {
 
     ws.on('message', (buffer: Buffer) => {
       const data = JSON.parse(buffer.toString());
+
       // save data cookie to local
-      if (data && data.cookie, data.nickName) {
+      if (data && data.cookie && data.nickName && data.userId) {
         try {
           // save user info
           saveUser(data);
