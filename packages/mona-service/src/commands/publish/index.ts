@@ -1,6 +1,6 @@
 import { IPlugin } from '../../Service';
 import chalk from 'chalk';
-import { readUser } from '@bytedance/mona-cli/dist/commands/login/utils';
+import { readUser } from './utils';
 import inquirer from 'inquirer';
 import fs from 'fs';
 
