@@ -4,6 +4,31 @@ import path from 'path';
 import FormData from 'form-data';
 import { OPEN_DOMAIN, OPEN_DEV_HEADERS } from '@bytedance/mona-shared';
 
+const userDataFile = path.join(__dirname, '.mona_user');
+
+export function deleteUser() {
+  if (fs.existsSync(userDataFile)) {
+    fs.unlinkSync(userDataFile);
+  }
+}
+
+export function readUser(): { cookie: string, nickName: string, userId: string } | null {
+  try {
+    const str = fs.readFileSync(userDataFile);
+    const result = str ? JSON.parse(str.toString()) : null;
+    if (result && result.cookie && result.nickName && result.userId) {
+      return result;
+    }
+  } catch(_) {
+    // do nothing
+  }
+  return null;
+}
+
+export function saveUser(data: any) {
+  fs.writeFileSync(userDataFile, JSON.stringify(data));
+}
+
 
 export const generateRequestFromOpen = (cookie: string) => (path: string, options?: Record<string, any>) => {
   const url = `https://${OPEN_DOMAIN}${path}`;

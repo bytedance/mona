@@ -4,7 +4,7 @@ import uuid from 'node-uuid';
 import WebSocket from 'ws';
 import chalk from 'chalk';
 import { IPlugin } from '@bytedance/mona-service';
-import { readUser, saveUser } from './utils';
+import { readUser, saveUser } from '@bytedance/mona-service/dist/commands/publish/utils';
 
 const openURL = `https://${OPEN_DOMAIN}/authorization`;
 const wsURL = `wss://${OPEN_DOMAIN}/ws/api/terminal`;
