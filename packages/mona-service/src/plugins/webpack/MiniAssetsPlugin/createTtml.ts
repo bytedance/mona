@@ -42,7 +42,6 @@ function genNativeEjsData() {
   monaStore.nativeEntryMap.forEach(entry => {
     if (entry.templateInfo?.isUse) {
       const { componentName, props, isRenderAllProps, defaultProps } = entry.templateInfo;
-
       const allProps = Array.from(props.values()).reduce((pre, item) => {
         // 自定组件ref比较特殊,约定__ref透传react的ref
         // https://microapp.bytedance.com/docs/zh-CN/mini-app/develop/framework/custom-component/ref/
@@ -55,8 +54,9 @@ function genNativeEjsData() {
 
       if (isRenderAllProps) {
         Object.keys(defaultProps).reduce((pre, item) => {
-          if (!pre[item]) {
-            pre[item] = item;
+          const propKey = formatReactNodeName(item);
+          if (!pre[propKey]) {
+            pre[propKey] = item;
           }
           return pre;
         }, allProps);
@@ -65,8 +65,11 @@ function genNativeEjsData() {
         id: entry.id,
         name: componentName,
         defaultProps: Object.keys(defaultProps).reduce((pre, item) => {
+          const propKey = formatReactNodeName(item);
           if (typeof defaultProps[item] === 'string') {
-            pre[item] = `'${defaultProps[item]}'`;
+            pre[propKey] = `'${defaultProps[item]}'`;
+          } else if (defaultProps[item] !== undefined) {
+            pre[propKey] = defaultProps[item];
           }
           return pre;
         }, {} as Record<string, any>),

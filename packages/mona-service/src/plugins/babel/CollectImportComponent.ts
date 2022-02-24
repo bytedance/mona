@@ -3,7 +3,7 @@ import nodePath from 'path';
 import * as t from '@babel/types';
 import { formatReactNodeName } from '@/target/utils/reactNode';
 import ConfigHelper from '@/ConfigHelper';
-import { TtComponentEntry, genNativeComponentEntry } from '@/target/entires/ttComponentEntry';
+import { MiniComponentEntry, genMiniComponentEntry } from '@/target/entires/miniComponentEntry';
 import { CUSTOM_COMPONENT_PROTOCOL } from '@bytedance/mona-shared';
 import { processNativePath } from '@/utils';
 import monaStore from '@/target/store';
@@ -43,7 +43,7 @@ export default function collectNativeComponent(configHelper: ConfigHelper) {
                 importNode.source.value,
                 nodePath.dirname(state.file.opts.filename),
               );
-              componentEntry = genNativeComponentEntry(configHelper, importNode.source.value);
+              componentEntry = genMiniComponentEntry(configHelper, importNode.source.value);
             }
 
             componentEntry && getJsxProps(componentEntry, componentName, node);
@@ -55,7 +55,7 @@ export default function collectNativeComponent(configHelper: ConfigHelper) {
   };
 }
 
-export function getJsxProps(entry: TtComponentEntry, componentName: string, node: t.JSXElement) {
+export function getJsxProps(entry: MiniComponentEntry, componentName: string, node: t.JSXElement) {
   entry.templateInfo = {
     ...entry.templateInfo,
     componentName: formatReactNodeName(componentName),

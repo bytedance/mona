@@ -12,7 +12,7 @@ import { processNativePath } from '@/utils';
 import { getPageEntryPath, getRelativePath } from '@/target/utils/utils';
 import { formatReactNodeName } from '@/target/utils/reactNode';
 import { DEFAULT_APPID } from '@/target/constants';
-import { TtComponentEntry } from '@/target/entires/ttComponentEntry';
+import { MiniComponentEntry } from '@/target/entires/miniComponentEntry';
 
 const RawSource = sources.RawSource;
 const ejsRelativePath = '../../../assets/ejs';
@@ -90,7 +90,7 @@ function processModuleFactory(cwd: string, handledModules: Set<string>) {
 
         const componentEntry = monaStore.nativeEntryMap.get(filePath);
 
-        if (componentEntry instanceof TtComponentEntry && componentEntry.templateInfo) {
+        if (componentEntry instanceof MiniComponentEntry && componentEntry.templateInfo) {
           const { componentName } = componentEntry.templateInfo;
           let pageInfo = monaStore.pageEntires.get(page) || { usingComponents: {}, type: 'mona' };
 

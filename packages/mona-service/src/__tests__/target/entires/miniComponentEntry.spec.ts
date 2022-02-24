@@ -1,5 +1,5 @@
-import { TtComponentEntry } from '../../../target/entires/ttComponentEntry';
-import { TtPageEntry } from '../../../target/entires/ttPageEntry';
+import { MiniComponentEntry } from '../../../target/entires/miniComponentEntry';
+import { MiniPageEntry } from '../../../target/entires/miniPageEntry';
 
 import ConfigHelper from '../../../ConfigHelper';
 import * as shared from '@bytedance/mona-shared';
@@ -7,7 +7,7 @@ import fs from 'fs';
 import path from 'path';
 import monaStore from '../../../target/store';
 // jest.spyOn(shared, 'readConfig').mockImplementation(() => ({}))
-describe('TtComponentEntry', () => {
+describe('MiniComponentEntry', () => {
   jest.spyOn(shared, 'readConfig').mockImplementation(() => ({}));
   jest.spyOn(fs, 'existsSync').mockImplementation(() => true);
   const configHelperIns = new ConfigHelper();
@@ -16,7 +16,7 @@ describe('TtComponentEntry', () => {
   configHelperIns.cwd = __dirname;
   const entryPath = path.join(__dirname, './src/CustomComponent/index');
 
-  let TtEntry = new TtPageEntry(configHelperIns, entryPath);
+  let TtEntry = new MiniPageEntry(configHelperIns, entryPath);
 
   it('readDependencies', () => {
     const res = TtEntry.readUsingComponents();
@@ -28,12 +28,12 @@ describe('TtComponentEntry', () => {
     TtEntry.readConfig();
   });
 
-  it('isNative', () => {
-    TtComponentEntry.isNative(TtEntry.entry);
-    expect(TtComponentEntry.isNative(TtEntry.entry)).toBeFalsy();
-    expect(TtPageEntry.isNative(TtEntry.entry)).toBeTruthy();
+  it('isMini', () => {
+    MiniComponentEntry.isMini(TtEntry.entry);
+    expect(MiniComponentEntry.isMini(TtEntry.entry)).toBeFalsy();
+    expect(MiniPageEntry.isMini(TtEntry.entry)).toBeTruthy();
     const custom4Entry = monaStore.nativeEntryMap.get(path.join(__dirname, './src/CustomComponent3/index'));
-    expect(TtComponentEntry.isNative(custom4Entry.entry)).toBeTruthy();
+    expect(MiniComponentEntry.isMini(custom4Entry.entry)).toBeTruthy();
   });
   it('src', () => {
     // console.log( monaStore.nativeEntryMap)

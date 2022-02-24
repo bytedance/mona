@@ -1,7 +1,6 @@
-import type { TtComponentEntry } from './entires/ttComponentEntry';
+import type { MiniComponentEntry } from './entires/miniComponentEntry';
 import { genEjsParamsMap } from './mini/baseComponents';
 // import { PageEntry } from './entires/pageEntry';
-
 
 interface MonaPageEntry {
   usingComponents: Record<string, string>;
@@ -24,7 +23,7 @@ const monaStore = {
 
   // TODO: pageEntires、nativeEntryMap合并成entry
   pageEntires: new Map<string, MonaPageEntry>(),
-  nativeEntryMap: new Map<string, TtComponentEntry>(),
+  nativeEntryMap: new Map<string, MiniComponentEntry>(),
   // entryMap: new Map<string, PageEntry>(),
 };
 

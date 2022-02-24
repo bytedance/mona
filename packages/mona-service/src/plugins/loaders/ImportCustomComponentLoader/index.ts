@@ -1,14 +1,14 @@
 import { LoaderContext } from 'webpack';
 import path from 'path';
 import monaStore from '@/target/store';
-import { genNativeComponentEntry, TtComponentEntry } from '@/target/entires/ttComponentEntry';
+import { genMiniComponentEntry, MiniComponentEntry } from '@/target/entires/miniComponentEntry';
 import { NODE_MODULES } from '@/target/constants';
 import type ConfigHelper from '@/ConfigHelper';
 
 const { nativeEntryMap } = monaStore;
 // 强制要求自定义组件不得使用spread attribute  {...props}
 // ① babel插件CollectImportComponent: 获取jsx对应import的包信息(path、name、jsxProps等)。为了缩小webpack查询范围。
-// ② webpack的loader, loader根据path判断isNativeComponent，生成该组件的uid(用于生成模板), 用createMiniComponent包裹uid导出。
+// ② webpack的loader, loader根据path判断isMiniComponent，生成该组件的uid(用于生成模板), 用createMiniComponent包裹uid导出。
 // ③ 在createTtml中生成自定义组件对应的模板, 插入到base.ttml中
 export default async function ImportCustomerComponentLoader(this: LoaderContext<any>, source: string) {
   this.cacheable();
@@ -47,10 +47,10 @@ export default async function ImportCustomerComponentLoader(this: LoaderContext<
     finalSource = nativeEntry.virtualSource;
     // npm包名作为key => 绝对路径作为key
 
-    if (target === 'mini' && TtComponentEntry.isNative(entryPath)) {
+    if (target === 'mini' && MiniComponentEntry.isMini(entryPath)) {
       if ([NODE_MODULES, 'alias'].includes(requestType)) {
         nativeEntry.entry = entryPath.replace(path.extname(entryPath), '');
-        genNativeComponentEntry(nativeEntry.configHelper, nativeEntry.entry, nativeEntry);
+        genMiniComponentEntry(nativeEntry.configHelper, nativeEntry.entry, nativeEntry);
       }
       nativeEntry.readDefaultProps(source);
       const dependencies = nativeEntry.readUsingComponents();

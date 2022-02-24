@@ -9,7 +9,7 @@ import { miniExt } from '@/target/mini/constants';
 
 // import { cloneDeep } from 'lodash';
 import monaStore from '@/target/store';
-import type { TtComponentEntry } from '@/target/entires/ttComponentEntry';
+import type { MiniComponentEntry } from '@/target/entires/miniComponentEntry';
 import { MonaPlugins } from '@/plugins';
 //@ts-ignore
 const { SplitChunksPlugin, RuntimeChunkPlugin } = optimize;
@@ -96,19 +96,19 @@ class NativeAssetsPlugin {
     plugins.forEach(p => p.apply(childCompiler));
   }
 
-  compileMainEntry(childCompiler: Compiler, entry: TtComponentEntry) {
+  compileMainEntry(childCompiler: Compiler, entry: MiniComponentEntry) {
     if (!fse.existsSync(entry.path.main)) {
       return;
     }
     new EntryPlugin(entry.context, entry.path.main, path.join(entry.outputDir, entry.basename)).apply(childCompiler);
   }
-  compileTemplate(childCompiler: Compiler, entry: TtComponentEntry) {
+  compileTemplate(childCompiler: Compiler, entry: MiniComponentEntry) {
     if (!fse.existsSync(entry.path.templatePath)) {
       return;
     }
     new EntryPlugin(entry.context, entry.path.templatePath, entry.outputPath.templatePath).apply(childCompiler);
   }
-  compileStyleFile(childCompiler: Compiler, entry: TtComponentEntry) {
+  compileStyleFile(childCompiler: Compiler, entry: MiniComponentEntry) {
     if (!fse.existsSync(entry.path.stylePath)) {
       return;
     }
@@ -174,7 +174,7 @@ class MiniAssetsPlugin {
     // const p = '/Users/bytedance/Desktop/mona2/mona/packages/local-test-fb';
 
     // monaStore.nativeEntryMap.forEach(entry => {
-    //   if (entry instanceof TtPageEntry) {
+    //   if (entry instanceof MiniPageEntry) {
     //     new EntryPlugin(path.dirname(entry.entry), `${entry.entry}.js`).apply(compiler);
     //   }
     // });

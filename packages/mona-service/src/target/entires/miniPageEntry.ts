@@ -3,16 +3,16 @@ import fse from 'fs-extra';
 import { miniExt } from '@/target/mini/constants';
 
 import ConfigHelper from '../../ConfigHelper';
-import { TtComponentEntry } from './ttComponentEntry';
+import { MiniComponentEntry } from './miniComponentEntry';
 import monaStore from '../store';
 const { nativeEntryMap } = monaStore;
 // 小程序语法页面入口
-export class TtPageEntry extends TtComponentEntry {
+export class MiniPageEntry extends MiniComponentEntry {
   constructor(configHelper: ConfigHelper, entryPath: string) {
     super(configHelper, entryPath);
   }
 
-  static isNative(jsPath: string) {
+  static isMini(jsPath: string) {
     if (!jsPath) {
       return false;
     }
@@ -52,13 +52,13 @@ export class TtPageEntry extends TtComponentEntry {
   }
 }
 
-export const genTtPageEntry = (configHelper: ConfigHelper, entryPath: string) => {
+export const genMiniPageEntry = (configHelper: ConfigHelper, entryPath: string) => {
   entryPath = entryPath.replace(path.extname(entryPath), '');
 
   if (nativeEntryMap.has(entryPath)) {
-    return nativeEntryMap.get(entryPath)! as TtPageEntry;
+    return nativeEntryMap.get(entryPath)! as MiniPageEntry;
   } else {
-    const nEntry = new TtPageEntry(configHelper, entryPath);
+    const nEntry = new MiniPageEntry(configHelper, entryPath);
     nativeEntryMap.set(entryPath, nEntry);
     return nEntry;
   }

@@ -11,30 +11,30 @@ const defaultEntryConfig: Record<string, any> = {};
 
 let id = 1;
 // 将路径和jsx收集的prop一一对应
-export const genNativeComponentId = (resourcePath: string) => {
+export const genMiniComponentId = (resourcePath: string) => {
   const entry = monaStore.nativeEntryMap.get(resourcePath);
   if (entry?.id) {
     return entry?.id;
   }
-  return `native${id++}`;
+  return `mini${id++}`;
 };
 
-export const genNativeComponentEntry = (
+export const genMiniComponentEntry = (
   configHelper: ConfigHelper,
   entryPath: string,
-  nativeEntry?: TtComponentEntry,
+  nativeEntry?: MiniComponentEntry,
 ) => {
   entryPath = entryPath.replace(path.extname(entryPath), '');
   if (monaStore.nativeEntryMap.has(entryPath)) {
-    return monaStore.nativeEntryMap.get(entryPath)! as TtComponentEntry;
+    return monaStore.nativeEntryMap.get(entryPath)! as MiniComponentEntry;
   } else {
-    const nEntry = nativeEntry || new TtComponentEntry(configHelper, entryPath);
+    const nEntry = nativeEntry || new MiniComponentEntry(configHelper, entryPath);
     monaStore.nativeEntryMap.set(entryPath, nEntry);
     return nEntry;
   }
 };
 
-export class TtEntry {
+export class MiniEntry {
   basename: string = '';
   dirPath: string = '';
   _dependencies: string[] = [];
@@ -49,7 +49,7 @@ export class TtEntry {
   constructor(configHelper: ConfigHelper, entryPath: string) {
     this.entry = entryPath;
     this.configHelper = configHelper;
-    this.id = genNativeComponentId(entryPath);
+    this.id = genMiniComponentId(entryPath);
   }
 
   set entry(e: string) {
@@ -133,7 +133,7 @@ interface ComponentImportInfo {
   isUse: boolean;
 }
 // 小程序语法自定义组件入口
-export class TtComponentEntry extends TtEntry {
+export class MiniComponentEntry extends MiniEntry {
   // 用于生成模板
   templateInfo: ComponentImportInfo;
 
@@ -201,7 +201,7 @@ export class TtComponentEntry extends TtEntry {
       }
       handledPath.add(vPath);
 
-      const nEntry = genNativeComponentEntry(this.configHelper, vPath);
+      const nEntry = genMiniComponentEntry(this.configHelper, vPath);
       nEntry?.readUsingComponents(handledPath)?.forEach(d => {
         res.add(d);
       });
@@ -212,7 +212,7 @@ export class TtComponentEntry extends TtEntry {
     return res;
   }
 
-  static isNative(jsPath: string) {
+  static isMini(jsPath: string) {
     if (!jsPath) {
       return false;
     }
@@ -243,7 +243,7 @@ export class TtComponentEntry extends TtEntry {
       const cPath = usingComponents[name];
       if (!cPath.startsWith('ext://') && !path.isAbsolute(cPath)) {
         const vPath = path.join(this.dirPath, cPath);
-        const nEntry = genNativeComponentEntry(this.configHelper, vPath);
+        const nEntry = genMiniComponentEntry(this.configHelper, vPath);
         if (nEntry) {
           usingComponents[name] = path.relative(outputPath, nEntry.outputPath.main);
         }

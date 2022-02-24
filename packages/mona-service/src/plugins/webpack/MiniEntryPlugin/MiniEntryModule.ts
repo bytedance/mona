@@ -2,7 +2,7 @@ import ConfigHelper from '@/ConfigHelper';
 import { searchScriptFile } from '@bytedance/mona-shared';
 import path from 'path';
 import VirtualModulesPlugin from '../VirtualModulesPlugin';
-import { TtPageEntry, genTtPageEntry } from '@/target/entires/ttPageEntry';
+import { MiniPageEntry, genMiniPageEntry } from '@/target/entires/miniPageEntry';
 export default class MiniEntryModule {
   entries: Record<string, string> = {};
   module: VirtualModulesPlugin;
@@ -51,7 +51,7 @@ export default class MiniEntryModule {
       const name = names[i];
       const realPath = realPaths[i];
       const virtualPath = MiniEntryModule.extendEntryName(realPath);
-      if (!TtPageEntry.isNative(realPath)) {
+      if (!MiniPageEntry.isMini(realPath)) {
         entries[name.toLowerCase()] = virtualPath;
 
         // this first entry is app entry
@@ -61,7 +61,7 @@ export default class MiniEntryModule {
           module[virtualPath] = MiniEntryModule.generatePageEntryCode(realPath, name);
         }
       } else {
-        genTtPageEntry(this.configHelper, realPath.replace(path.extname(realPath), ''));
+        genMiniPageEntry(this.configHelper, realPath.replace(path.extname(realPath), ''));
       }
     }
 
