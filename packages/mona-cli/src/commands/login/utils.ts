@@ -9,11 +9,11 @@ export function deleteUser() {
   }
 }
 
-export function readUser(): { cookie: string, nickName: string } | null {
+export function readUser(): { cookie: string, nickName: string, userId: string } | null {
   try {
     const str = fs.readFileSync(userDataFile);
     const result = str ? JSON.parse(str.toString()) : null;
-    if (result && result.cookie && result.nickName) {
+    if (result && result.cookie && result.nickName && result.userId) {
       return result;
     }
   } catch(_) {

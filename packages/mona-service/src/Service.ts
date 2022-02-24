@@ -64,7 +64,7 @@ class Service {
       }
     });
 
-    const cmdArgv = minimist(process.argv.slice(2), { alias });
+    const cmdArgv = minimist(process.argv.slice(2), { alias, string: ['appid'] });
 
     // for build and start, pass builder to callback
     const shouldPassBuilder = cmdName === 'build' || cmdName === 'start';
