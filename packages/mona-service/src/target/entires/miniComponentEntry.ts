@@ -142,6 +142,7 @@ export class MiniComponentEntry extends MiniEntry {
     usingComponents?: Set<string>;
     defaultProps?: any;
   };
+
   constructor(configHelper: ConfigHelper, entryPath: string) {
     super(configHelper, entryPath);
     this.templateInfo = {
@@ -153,6 +154,7 @@ export class MiniComponentEntry extends MiniEntry {
     };
     this.cache = {};
   }
+
   readDefaultProps(content?: string) {
     content = content || fse.readFileSync(this.path.main, 'utf8').toString();
     if (this.cache.defaultProps) {

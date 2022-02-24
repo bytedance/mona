@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavigatorProps } from '@bytedance/mona';
-import { navigateTo, redirectTo, switchTab, navigateBack } from '../../apis'
+import { navigateTo, redirectTo, switchTab, navigateBack } from '../../apis/api'
 import styles from './index.module.less';
 import { useHandlers } from '../hooks';
 

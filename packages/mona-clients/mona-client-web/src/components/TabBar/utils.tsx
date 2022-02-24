@@ -1,4 +1,4 @@
-import { redirectTo } from '../../apis';
+import { redirectTo } from '../../apis/api';
 import { formatPath } from '@bytedance/mona-shared';
 import { BaseApis } from '@bytedance/mona';
 import EventEmitter from '../../EventEmitter';
