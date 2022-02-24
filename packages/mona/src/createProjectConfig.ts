@@ -43,6 +43,7 @@ export interface ProjectConfig {
   dev?: {
     port?: number | string;
   };
+  chain?: (config: Config) => void;
 }
 
 export function createProjectConfig(projectConfig: ProjectConfig) {

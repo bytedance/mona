@@ -20,6 +20,12 @@ class Builder {
   resolveChainWebpackConfig() {
     const chainableConfig = new Config();
     this.chainWebpackConfigFns.forEach(fn => fn(chainableConfig));
+
+    const { chain } = this.configHelper.projectConfig;
+    if (typeof chain === 'function') {
+      chain(chainableConfig);
+    }
+
     return chainableConfig;
   }
 
