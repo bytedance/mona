@@ -1,7 +1,7 @@
 {
   "name": "@bytedance/mona-shared",
   "displayName": "mona-shared",
-  "version": "0.2.0-alpha.6",
+  "version": "0.2.0-alpha.7",
   "description": "mona shared utils",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -21,8 +21,8 @@
     "@babel/register": "^7.16.5"
   },
   "devDependencies": {
-    "react": "^17.0.2",
     "@types/node": "^16.4.5",
+    "react": "^17.0.2",
     "ttypescript": "^1.5.12",
     "typescript-json-schema": "^0.43.0",
     "typescript-transform-paths": "^2.2.4"

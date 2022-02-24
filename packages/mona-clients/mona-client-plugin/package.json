@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-client-plugin",
-  "version": "0.2.0-alpha.6",
+  "version": "0.2.0-alpha.7",
   "description": "plugin for mona",
   "main": "./dist/index.js",
   "files": [
@@ -17,11 +17,11 @@
     "mona"
   ],
   "dependencies": {
-    "@bytedance/mona-client-web": "^0.2.0-alpha.6"
+    "@bytedance/mona-client-web": "0.2.0-alpha.7"
   },
   "peerDependencies": {
-    "react": "^17.0.2",
-    "@bytedance/mona-plugin-events": "^0.2.0-alpha.6"
+    "@bytedance/mona-plugin-events": "^0.2.0-alpha.6",
+    "react": "^17.0.2"
   },
   "publishConfig": {
     "access": "public",
