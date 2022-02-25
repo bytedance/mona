@@ -16,7 +16,7 @@
     "test:coverage": "jest --coverage",
     "publish:all": "lerna version --no-git-tag-version",
     "test:c": "jest --coverage",
-    "v": "yarn v:lerna && yarn v:git:alpha",
+    "v": "yarn v:lerna && yarn v:git",
     "v:lerna": "lerna version ${npm_config_lerna_version} --exact --no-git-tag-version --force-publish --yes",
     "v:git": "git add . && git commit -m \"chore(release): publish ${npm_config_lerna_version}\"",
     "v:git:alpha": "git add . && git commit -m \"chore(release): publish ${npm_config_lerna_version} --tag=alpha\"",
