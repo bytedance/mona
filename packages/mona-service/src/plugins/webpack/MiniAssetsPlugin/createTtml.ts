@@ -66,10 +66,16 @@ function genNativeEjsData() {
         name: componentName,
         defaultProps: Object.keys(defaultProps).reduce((pre, item) => {
           const propKey = formatReactNodeName(item);
-          if (typeof defaultProps[item] === 'string') {
+          const propType = typeof defaultProps[item];
+
+          if (propType === 'string') {
             pre[propKey] = `'${defaultProps[item]}'`;
-          } else if (defaultProps[item] !== undefined) {
-            pre[propKey] = defaultProps[item];
+          } else if (propType === 'object') {
+            if (defaultProps[item] === null) {
+              pre[propKey] = 'null';
+            } else {
+              pre[propKey] = JSON.stringify(defaultProps[item]);
+            }
           }
           return pre;
         }, {} as Record<string, any>),
