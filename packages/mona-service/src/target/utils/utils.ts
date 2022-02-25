@@ -36,3 +36,18 @@ export function slash(path: string) {
   }
   return /^\\\\\?\\/.test(path) ? path : path.replace(/\\/g, `/`);
 }
+
+export function ejsDataProcess(data: any) {
+  const propType = typeof data;
+  let res = data;
+  if (propType === 'string') {
+    res = `'${data}'`;
+  } else if (propType === 'object') {
+    if (data === null) {
+      res = 'null';
+    } else {
+      res = JSON.stringify(data);
+    }
+  }
+  return res;
+}
