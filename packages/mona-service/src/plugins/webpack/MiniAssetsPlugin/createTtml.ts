@@ -8,7 +8,7 @@ import { RENDER_NODE, ComponentType, CUSTOM_REF } from '@bytedance/mona-shared';
 import { miniExt } from '@/target/mini/constants';
 
 import monaStore from '@/target/store';
-import { formatReactNodeName } from '@/target/utils/reactNode';
+import { formatPropsName } from '@/target/utils/reactNode';
 
 const ejsRelativePath = '../../../assets/ejs';
 
@@ -45,7 +45,7 @@ function genNativeEjsData() {
       const allProps = Array.from(props.values()).reduce((pre, item) => {
         // 自定组件ref比较特殊,约定__ref透传react的ref
         // https://microapp.bytedance.com/docs/zh-CN/mini-app/develop/framework/custom-component/ref/
-        const propKey = item === 'ref' ? 'tt:ref' : formatReactNodeName(item);
+        const propKey = item === 'ref' ? 'tt:ref' : formatPropsName(item);
         const propValue = item === 'ref' ? CUSTOM_REF : item;
 
         pre[propKey] = propValue;
@@ -54,7 +54,7 @@ function genNativeEjsData() {
 
       if (isRenderAllProps) {
         Object.keys(defaultProps).reduce((pre, item) => {
-          const propKey = formatReactNodeName(item);
+          const propKey = formatPropsName(item);
           if (!pre[propKey]) {
             pre[propKey] = item;
           }
@@ -65,12 +65,9 @@ function genNativeEjsData() {
         id: entry.id,
         name: componentName,
         defaultProps: Object.keys(defaultProps).reduce((pre, item) => {
-          const propKey = formatReactNodeName(item);
-          if (typeof defaultProps[item] === 'string') {
-            pre[propKey] = `'${defaultProps[item]}'`;
-          } else if (defaultProps[item] !== undefined) {
-            pre[propKey] = defaultProps[item];
-          }
+          const propKey = formatPropsName(item);
+          pre[propKey] = JSON.stringify(defaultProps[item]);
+
           return pre;
         }, {} as Record<string, any>),
         props: allProps,

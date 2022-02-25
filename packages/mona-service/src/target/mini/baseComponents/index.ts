@@ -370,9 +370,7 @@ export const genEjsParamsMap = () => {
 
     defaultProps = { ...baseDefaultProps, ...defaultProps };
     for (let prop in defaultProps) {
-      if (typeof defaultProps[prop] === 'string') {
-        defaultProps[prop] = `'${defaultProps[prop]}'`;
-      }
+      defaultProps[prop] = JSON.stringify(defaultProps[prop]);
     }
 
     ejsParamsMap.set(name, {
