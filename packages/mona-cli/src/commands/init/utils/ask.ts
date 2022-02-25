@@ -11,39 +11,56 @@ const templates = [
     value: 'mini',
   },
   {
-    name: 'plugin（适用于商家应用插件开发）',
+    name: 'plugin（适用于飞鸽桌面端插件开发）',
     value: 'plugin',
   },
+  {
+    name: 'max（适用于店铺装修组件开发）',
+    value: 'max'
+  }
 ];
 
-export type TemplateType = 'app' | 'plugin';
+type AskKey = keyof Omit<Answer, 'appId'>;
+
+export type TemplateType = 'app' | 'plugin' | 'mini' | 'max';
 
 export interface Answer {
   projectName: string;
   templateType: TemplateType;
   useTypescript: boolean;
   styleProcessor: 'less' | 'css';
+  appId?: string;
 }
 
-export interface AskOpts {
-  projectName: string;
-  templateType: TemplateType;
-  useTypescript: boolean;
-  styleProcessor: Answer['styleProcessor'];
-}
 
-export async function ask(opts: Partial<AskOpts>) {
+export async function ask(opts: Partial<Answer>) {
   const prompts: inquirer.DistinctQuestion<Answer>[] = [];
 
   Object.keys(askConfig).map(type => {
-    const defaultValue = opts[type as keyof AskOpts];
-    const itemInst = askConfig[type as keyof AskOpts];
+    const defaultValue = opts[type as AskKey];
+    const itemInst = askConfig[type as AskKey];
     if (itemInst && (itemInst?.checkAsk?.(defaultValue) || typeof itemInst?.checkAsk !== 'function')) {
       itemInst['checkAsk'] = undefined;
       prompts.push(itemInst);
     }
   });
   const answer: Answer = await inquirer.prompt(prompts);
+
+  if (answer.templateType === 'max') {
+    const { appId } = await inquirer.prompt([{
+      type: 'input',
+      name: 'appId',
+      message: '请输入appId',
+      validate(input: string) {
+        if (!input) {
+          return 'appId不能为空！请在抖店开放平台查看';
+        }
+        return true;
+      }
+    }])
+    answer.appId = appId;
+  }
+
   return Object.assign({}, opts, answer);
 }
 
@@ -53,7 +70,7 @@ const styleProcessors = [
 ];
 
 type AskItem = DistinctQuestion & { checkAsk?: (defaultValue?: any) => boolean; testDefault?: any };
-export const askConfig: Record<keyof AskOpts, AskItem> = {
+export const askConfig: Record<AskKey, AskItem> = {
   projectName: {
     type: 'input',
     name: 'projectName',
