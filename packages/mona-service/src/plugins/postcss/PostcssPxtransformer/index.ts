@@ -11,41 +11,41 @@
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 interface PxTransformerOptions {
-  designWidth: number
-  deviceRatio: { [key: string]: number }
-  platform: 'mini' | 'web'
+  designWidth: number;
+  deviceRatio: { [key: string]: number };
+  platform: 'mini' | 'web';
   rootValue: number | ((input: any) => number);
-  unitPrecision: number
-  selectorBlackList: (string | RegExp)[],
-  replace: boolean,
-  mediaQuery: boolean,
-  minPixelValue: number
-  propList: string[]
-  exclude: RegExp | null | ((name: string) => boolean)
+  unitPrecision: number;
+  selectorBlackList: (string | RegExp)[];
+  replace: boolean;
+  mediaQuery: boolean;
+  minPixelValue: number;
+  propList: string[];
+  exclude: RegExp | null | ((name: string) => boolean);
 }
 
-const pxRegex = require("./lib/pixel-unit-regex");
-const filterPropList = require("./lib/filter-prop-list");
-const type = require("./lib/type");
+const pxRegex = require('./lib/pixel-unit-regex');
+const filterPropList = require('./lib/filter-prop-list');
+const type = require('./lib/type');
 
 const deviceRatio = {
   640: 2.34 / 2,
   750: 1,
-  828: 1.81 / 2
-}
+  828: 1.81 / 2,
+};
 
-const defaults: PxTransformerOptions= {
+const defaults: PxTransformerOptions = {
   rootValue: 16,
   unitPrecision: 5,
   selectorBlackList: [],
-  propList: ["font", "font-size", "line-height", "letter-spacing"],
+  propList: ['font', 'font-size', 'line-height', 'letter-spacing'],
   replace: true,
   mediaQuery: false,
   minPixelValue: 0,
   exclude: null,
   platform: 'mini',
   designWidth: 750,
-  deviceRatio
+  deviceRatio,
 };
 
 function createPxReplace(rootValue: number, unitPrecision: number, minPixelValue: number, unit: string) {
@@ -54,7 +54,7 @@ function createPxReplace(rootValue: number, unitPrecision: number, minPixelValue
     const pixels = parseFloat($1);
     if (pixels < minPixelValue) return m;
     const fixedVal = toFixed(pixels / rootValue, unitPrecision);
-    return fixedVal === 0 ? "0" : fixedVal + unit;
+    return fixedVal === 0 ? '0' : fixedVal + unit;
   };
 }
 
@@ -69,9 +69,9 @@ function declarationExists(decls: any[], prop: string, value: string) {
 }
 
 function blacklistedSelector(blacklist: PxTransformerOptions['selectorBlackList'], selector: string) {
-  if (typeof selector !== "string") return;
+  if (typeof selector !== 'string') return;
   return blacklist.some(regex => {
-    if (typeof regex === "string") {
+    if (typeof regex === 'string') {
       return selector.indexOf(regex) !== -1;
     }
     return selector.match(regex);
@@ -79,7 +79,7 @@ function blacklistedSelector(blacklist: PxTransformerOptions['selectorBlackList'
 }
 
 function createPropListMatcher(propList: string[]) {
-  const hasWild = propList.indexOf("*") > -1;
+  const hasWild = propList.indexOf('*') > -1;
   const matchAll = hasWild && propList.length === 1;
   const lists = {
     exact: filterPropList.exact(propList),
@@ -89,31 +89,31 @@ function createPropListMatcher(propList: string[]) {
     notExact: filterPropList.notExact(propList),
     notContain: filterPropList.notContain(propList),
     notStartWith: filterPropList.notStartWith(propList),
-    notEndWith: filterPropList.notEndWith(propList)
+    notEndWith: filterPropList.notEndWith(propList),
   };
   return (prop: string) => {
     if (matchAll) return true;
     return (
       (hasWild ||
         lists.exact.indexOf(prop) > -1 ||
-        lists.contain.some(function(m: string) {
+        lists.contain.some(function (m: string) {
           return prop.indexOf(m) > -1;
         }) ||
-        lists.startWith.some(function(m: string) {
+        lists.startWith.some(function (m: string) {
           return prop.indexOf(m) === 0;
         }) ||
-        lists.endWith.some(function(m: string) {
+        lists.endWith.some(function (m: string) {
           return prop.indexOf(m) === prop.length - m.length;
         })) &&
       !(
         lists.notExact.indexOf(prop) > -1 ||
-        lists.notContain.some(function(m: string) {
+        lists.notContain.some(function (m: string) {
           return prop.indexOf(m) > -1;
         }) ||
-        lists.notStartWith.some(function(m: string) {
+        lists.notStartWith.some(function (m: string) {
           return prop.indexOf(m) === 0;
         }) ||
-        lists.notEndWith.some(function(m: string) {
+        lists.notEndWith.some(function (m: string) {
           return prop.indexOf(m) === prop.length - m.length;
         })
       )
@@ -121,22 +121,21 @@ function createPropListMatcher(propList: string[]) {
   };
 }
 
-const baseFontSize = 75
+const baseFontSize = 75;
 
 let targetUnit: string = 'rpx';
 
 module.exports = (options: Partial<PxTransformerOptions> = {}) => {
   const opts: PxTransformerOptions = Object.assign({}, defaults, options);
-  // console.log(options, opts);
 
   switch (opts.platform) {
     case 'web': {
-      opts.rootValue = options.rootValue || baseFontSize * opts.deviceRatio[opts.designWidth]
-      targetUnit = 'rem'
-      break
+      opts.rootValue = options.rootValue || baseFontSize * opts.deviceRatio[opts.designWidth];
+      targetUnit = 'rem';
+      break;
     }
     default: {
-      opts.rootValue = 1 / opts.deviceRatio[opts.designWidth]
+      opts.rootValue = 1 / opts.deviceRatio[opts.designWidth];
     }
   }
 
@@ -145,7 +144,7 @@ module.exports = (options: Partial<PxTransformerOptions> = {}) => {
   let isExcludeFile = false;
   let pxReplace: ReturnType<typeof createPxReplace>;
   return {
-    postcssPlugin: "postcss-pxtransform",
+    postcssPlugin: 'postcss-pxtransform',
     Once(css: any) {
       const filePath = css.source.input.file;
       if (
@@ -159,27 +158,18 @@ module.exports = (options: Partial<PxTransformerOptions> = {}) => {
         isExcludeFile = false;
       }
 
-      const rootValue =
-        typeof opts.rootValue === "function"
-          ? opts.rootValue(css.source.input)
-          : opts.rootValue;
-      pxReplace = createPxReplace(
-        rootValue,
-        opts.unitPrecision,
-        opts.minPixelValue,
-        targetUnit
-      );
+      const rootValue = typeof opts.rootValue === 'function' ? opts.rootValue(css.source.input) : opts.rootValue;
+      pxReplace = createPxReplace(rootValue, opts.unitPrecision, opts.minPixelValue, targetUnit);
     },
     Declaration(decl: any) {
       if (isExcludeFile) return;
 
       if (
-        decl.value.indexOf("px") === -1 ||
+        decl.value.indexOf('px') === -1 ||
         !satisfyPropList(decl.prop) ||
         blacklistedSelector(opts.selectorBlackList, decl.parent.selector)
       )
         return;
-
       const value = decl.value.replace(pxRegex, pxReplace);
       // if rem unit already exists, do not add or replace
       if (declarationExists(decl.parent, decl.prop, value)) return;
@@ -193,11 +183,11 @@ module.exports = (options: Partial<PxTransformerOptions> = {}) => {
     AtRule(atRule: any) {
       if (isExcludeFile) return;
 
-      if (opts.mediaQuery && atRule.name === "media") {
-        if (atRule.params.indexOf("px") === -1) return;
+      if (opts.mediaQuery && atRule.name === 'media') {
+        if (atRule.params.indexOf('px') === -1) return;
         atRule.params = atRule.params.replace(pxRegex, pxReplace);
       }
-    }
+    },
   };
 };
 module.exports.postcss = true;

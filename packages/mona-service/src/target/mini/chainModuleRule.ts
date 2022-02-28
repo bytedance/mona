@@ -77,42 +77,47 @@ function createJsRule(webpackConfig: Config, configHelper: ConfigHelper) {
   jsRule
     .use('ttComponentLoader')
     .loader(path.resolve(__dirname, '../../plugins/loaders/ImportCustomComponentLoader'))
-    .options({ target: TARGET,configHelper })
+    .options({ target: TARGET, configHelper })
     .end();
 }
 function createCssRule(webpackConfig: Config, configHelper: ConfigHelper) {
   const { projectConfig } = configHelper;
 
   const pxtOptions = createPxtransformConfig(TARGET, projectConfig);
-  const styleRule = webpackConfig.module.rule('style').test(/\.(c|le|tt)ss$/i);
 
-  styleRule.use('MiniCssExtractPlugin.loader').loader(MonaPlugins.MiniCssExtractPlugin.loader);
+  const styleRule = webpackConfig.module.rule('style').test(/\.(c|le)ss$/i);
+  const ttssRule = webpackConfig.module.rule('ttssStyle').test(/\.ttss$/i);
+  function createRule(styleRule: Config.Rule<Config.Module>) {
+    styleRule.use('MiniCssExtractPlugin.loader').loader(MonaPlugins.MiniCssExtractPlugin.loader);
 
-  styleRule
-    .use('cssLoader')
-    .loader(require.resolve('css-loader'))
-    .options({
-      importLoaders: 2,
-      modules: {
-        auto: true,
-        // localIdentName: '[local]_[hash:base64:5]',
-        localIdentName: configHelper.isDev ? '[path][name]__[local]' : '[local]_[hash:base64:5]',
-      },
-    });
+    styleRule
+      .use('cssLoader')
+      .loader(require.resolve('css-loader'))
+      .options({
+        importLoaders: 2,
+        modules: {
+          auto: true,
+          // localIdentName: '[local]_[hash:base64:5]',
+          localIdentName: configHelper.isDev ? '[path][name]__[local]' : '[local]_[hash:base64:5]',
+        },
+      });
 
-  styleRule
-    .use('postcss-loader')
-    .loader(require.resolve('postcss-loader'))
-    .options({
-      postcssOptions: {
-        plugins: [
-          require.resolve('postcss-import'),
-          pxtOptions.enabled
-            ? [path.join(__dirname, '../../plugins/postcss/PostcssPxtransformer/index.js'), pxtOptions]
-            : null,
-        ].filter(p => p),
-      },
-    });
+    styleRule
+      .use('postcss-loader')
+      .loader(require.resolve('postcss-loader'))
+      .options({
+        postcssOptions: {
+          plugins: [
+            require.resolve('postcss-import'),
+            pxtOptions.enabled
+              ? [path.join(__dirname, '../../plugins/postcss/PostcssPxtransformer/index.js'), pxtOptions]
+              : null,
+          ].filter(p => p),
+        },
+      });
+  }
+  createRule(styleRule);
+  createRule(ttssRule);
 
   styleRule
     .use('less')
