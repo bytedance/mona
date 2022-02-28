@@ -36,7 +36,7 @@ const publish: IPlugin = (ctx) => {
       const request = generateRequestFromOpen(user.cookie);
 
       // compress
-      const output = await compressDir(process.cwd());
+      const output = await compressDir(process.cwd(), ['dist']);
       
       // version detail
       const appDetail = await request('/captain/appManage/getAppDetail', {
