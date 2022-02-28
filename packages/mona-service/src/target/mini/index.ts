@@ -27,7 +27,9 @@ const mini: IPlugin = ctx => {
 
       compiler.watch(
         {
-          aggregateTimeout: 300,
+          aggregateTimeout: 1000,
+          poll: 2000,
+          ignored: /node_modules/,
         },
         (error: any, stats: any) => {
           if (error) {
@@ -39,7 +41,7 @@ const mini: IPlugin = ctx => {
             info?.errors?.forEach((err: Error) => {
               console.log(chalk.red(err.message));
             });
-            console.log(info?.children?.[0]?.errors);
+            // console.log(info?.children?.[0]?.errors);
             return;
           }
           if (stats?.hasWarnings()) {

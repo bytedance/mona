@@ -69,7 +69,7 @@ class NativeAssetsPlugin {
       chunkLoadingGlobal: 'webpackJsonMiniJs',
       iife: false,
     };
-
+    childCompiler.inputFileSystem = compiler.inputFileSystem;
     childCompiler.outputFileSystem = compiler.outputFileSystem;
   }
 
