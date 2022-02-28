@@ -23,7 +23,8 @@ export const fetchTemplate = function (projectRoot: string, templateName: string
           // 使用mv 命令会导致 ,.gitignore 类似的文件未copy
           fse.copySync(`${tplDest}/${templateName}/`, projectRoot);
           fse.removeSync(`${tplDest}/`);
-        } catch (err) {
+        } catch (err: any) {
+          spinner.fail(chalk.red(`模板拉取失败, ${err.message}`));
           return reject(error);
         }
         spinner.color = 'green';

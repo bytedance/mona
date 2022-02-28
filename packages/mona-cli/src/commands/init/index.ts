@@ -3,7 +3,7 @@ import ora from 'ora';
 import path from 'path';
 import chalk from 'chalk';
 import { execSync } from 'child_process';
-import { ask, AskOpts } from './utils/ask';
+import { ask, Answer } from './utils/ask';
 import { fetchTemplate, processTemplates } from './utils/template';
 import { hasYarn, printWelcomeMessage, printFinishMessage } from './utils/common';
 
@@ -16,33 +16,41 @@ const init: IPlugin = (ctx) => {
         { name: 'use-typescript', description: '是否使用typescript', alias: 'u' },
         { name: 'style', description: '指定样式处理器', alias: 's' },
         { name: 'template', description: '指定模板', alias: 't' },
+        { name: 'appid', description: '指定模板', alias: 'a' },
       ],
     usage: 'mona init <projectName>',
   }, async (args) => {
     printWelcomeMessage();
 
-    const askOpts: AskOpts = {
+    const askOpts: Answer = {
       projectName: args._[1],
-      useTypescript: args.u as AskOpts['useTypescript'],
-      styleProcessor: args.s as AskOpts['styleProcessor'],
-      templateType: args.t as AskOpts['templateType']
+      useTypescript: args.u as Answer['useTypescript'],
+      styleProcessor: args.s as Answer['styleProcessor'],
+      templateType: args.t as Answer['templateType'],
+      appId: args.a as Answer['appId']
     };
 
     // 交互式提问
     const answer = await ask(askOpts);
-    const { projectName, templateType, useTypescript, styleProcessor } = answer;
+    const { projectName, templateType, useTypescript, styleProcessor, appId } = answer;
     const appPath = process.cwd();
     const dirPath = path.resolve(appPath, projectName);
 
-    // 拉取模板
-    await fetchTemplate(dirPath, templateType);
+    try {
+      // 拉取模板
+      await fetchTemplate(dirPath, templateType);
 
-    // 文件处理
-    await processTemplates(dirPath, {
-      projectName,
-      cssExt: styleProcessor,
-      typescript: useTypescript
-    });
+      // 文件处理
+      await processTemplates(dirPath, {
+        projectName,
+        cssExt: styleProcessor,
+        typescript: useTypescript,
+        appId
+      });
+    } catch(err: any) {
+      return;
+    }
+
 
     // 安装依赖
     const command = hasYarn() ? 'yarn' : 'npm install';
