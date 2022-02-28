@@ -44,6 +44,10 @@ class TargetContext {
         info?.errors?.forEach((err: Error) => {
           console.log(chalk.red(err.message));
         });
+        info?.children?.forEach((item: any) => {
+          console.log(item?.errors);
+        });
+
         spinner.fail('编译失败');
         process.exit(1);
       }

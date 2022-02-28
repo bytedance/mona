@@ -41,7 +41,10 @@ const mini: IPlugin = ctx => {
             info?.errors?.forEach((err: Error) => {
               console.log(chalk.red(err.message));
             });
-            // console.log(info?.children?.[0]?.errors);
+            info?.children?.forEach((item: any) => {
+              console.log(item?.errors);
+            });
+            chalk.red('编译失败');
             return;
           }
           if (stats?.hasWarnings()) {
