@@ -20,17 +20,16 @@ const buildInPlugins = [
   './target/plugin/index',
 ].map(name => pathToPlugin(name));
 
-const pureBuildInPlugins = [
-  './commands/compress',
-  './commands/publish',
-].map(name => pathToPlugin(name));
+const max = require('@bytedance/mona-max');
+let pureBuildInPlugins = ['./commands/compress', './commands/publish'].map(name => pathToPlugin(name));
+pureBuildInPlugins = [...pureBuildInPlugins, ...max];
 
 function main() {
   const argv = minimist(process.argv.slice(2));
   const cmdName = argv._[0] as string;
 
   // TODO: unify all target develop standard
-  if (['publish', 'compress'].indexOf(cmdName) !== -1) {
+  if (['publish', 'compress', 'max-build', 'max-start'].indexOf(cmdName) !== -1) {
     const pureService = new GlobalService(pureBuildInPlugins);
     pureService.install();
     pureService.run();
