@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const { name = '@max-isv/isv-com' } = JSON.parse(fs.readFileSync(path.resolve(process.cwd(), './package.json'), 'utf-8'));
+const { name = '@shop-isv/isv-com' } = JSON.parse(fs.readFileSync(path.resolve(process.cwd(), './package.json'), 'utf-8'));
 
 module.exports = {
   entry: {

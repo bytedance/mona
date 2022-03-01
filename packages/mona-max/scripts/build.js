@@ -1,6 +1,6 @@
 const chalk = require('chalk');
 const webpack = require('webpack')
-
+const handleError = require('../utils/handleError');
 
 const maxBuild = (ctx) => {
   ctx.registerCommand(
@@ -16,19 +16,9 @@ const maxBuild = (ctx) => {
       const umdConfig = config('umd')
       const esmConfig = config('esm')
 
-      webpack(umdConfig, (err, stats) => {
-        if (err || stats.hasErrors()) {
-          console.log(`❌ ${chalk.red('umd构建错误！')}`);
-          console.log(err)
-        }
-      });
+      webpack(umdConfig, (err, stats) => handleError(err, stats, 'umd'));
 
-      webpack(esmConfig, (err, stats) => {
-        if (err || stats.hasErrors()) {
-          console.log(`❌ ${chalk.red('esm构建错误！')}`);
-          console.log(err)
-        }
-      });
+      webpack(esmConfig, (err, stats) => handleError(err, stats, 'esm'));
     }
   )
 }

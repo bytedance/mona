@@ -8,7 +8,7 @@ const umdConfig = require("./build-umd-config.js");
 const esmConfig = require("./build-esm-config.js");
 const { DEV_SERVER_PORT, AfterBuildPlugin, TARGET_URL } = require('../utils/maxDevServer');
 
-const {name = '@max-isv/isv-com'} = JSON.parse(fs.readFileSync(path.resolve(process.cwd(), './package.json'), 'utf-8'));
+const {name = '@shop-isv/isv-com'} = JSON.parse(fs.readFileSync(path.resolve(process.cwd(), './package.json'), 'utf-8'));
 
 const devConfig = {
   mode: "development",
