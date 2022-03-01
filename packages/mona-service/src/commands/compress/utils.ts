@@ -4,6 +4,8 @@ import archiver from 'archiver';
 import ora from 'ora';
 import chalk from 'chalk';
 
+const TEMP_DIR = '.mona';
+
 function isDir(rawFilename: string) {
   return fs.lstatSync(rawFilename).isDirectory()
 }
@@ -14,11 +16,12 @@ export function ensureDirExist(dirname: string) {
   }
 }
 
-export async function compressDir(inputPath: string) {
+export async function compressDir(inputPath: string, ignoreList: string[] = []) {
+  console.log(chalk.cyan('当前打包目录', inputPath));
   const spinner = ora('打包中...').start();
-  ensureDirExist('.mona');
-  const outputPath = path.join(inputPath, '.mona', `publish${Date.now()}.zip`);
-  await compressToZip(inputPath, outputPath, ['dist', 'node_modules', '.mona'])
+  ensureDirExist(TEMP_DIR);
+  const outputPath = path.join(process.cwd(), TEMP_DIR, `publish${Date.now()}.zip`);
+  await compressToZip(inputPath, outputPath, [...ignoreList, 'node_modules', TEMP_DIR])
   spinner.succeed(chalk.green('打包成功'));
   return outputPath;
 }
@@ -30,13 +33,11 @@ export function compressToZip(inputPath: string, outputPath: string, ignoreList:
       zlib: { level:9 }
     })
 
-    arc.on('close', () => {
-      console.log('close now')
-    })
     arc.on('end', () => {
-      resolve("success");
+      resolve('success')
     })
     arc.on('error', (err) => {
+      console.log('throw=====')
       reject(err);
     })
 
@@ -50,10 +51,11 @@ export function compressToZip(inputPath: string, outputPath: string, ignoreList:
           const filenames = fs.readdirSync(inputPath);
           filenames.forEach(filename => {
             if (!shouldIgnore(filename)) {
-              if (isDir(filename)) {
-                arc.directory(path.join(inputPath, filename), filename);
+              const filepath = path.join(inputPath, filename);
+              if (isDir(filepath)) {
+                arc.directory(filepath, filename);
               } else {
-                arc.file(path.join(inputPath, filename), { name: filename });
+                arc.file(filepath, { name: filename });
               }
             }
           })

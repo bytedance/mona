@@ -28,7 +28,6 @@ const compress: IPlugin = (ctx) => {
   }, async (args) => {
     console.log(chalk.cyan(`请确保在项目根目录使用该命令`));
     try {
-      // TODO: judge inputPath
       let inputPath = process.cwd()
       if (!args.r) {
         inputPath = readDest();
@@ -36,7 +35,7 @@ const compress: IPlugin = (ctx) => {
           throw new Error(`请先使用 ${chalk.cyan('mona-service build')} 进行打包`);
         }
       }
-      const output = await compressDir(inputPath)
+      const output = await compressDir(inputPath, args.r ? ['dist'] : [])
       console.log(chalk.green(`请在开放平台应用后台中手动上传 ${chalk.cyan(output)} 压缩包`));
     } catch (err: any) {
       console.log(chalk.red(`打包失败，${err.message}`));
