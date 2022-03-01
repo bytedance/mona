@@ -1,6 +1,8 @@
+import commandLineUsage from 'command-line-usage';
 import minimist from 'minimist';
 import PluginContext from './PluginContext';
 import log from './utils/log';
+const pkg = require('../package.json');
 
 export interface IPlugin {
   (ctx: PluginContext): void;
@@ -47,11 +49,32 @@ class Service {
 
   run() {
     const pluginContext = this._pluginContext;
-    const argv = minimist(process.argv.slice(2));
+    const argv = minimist(process.argv.slice(2), { alias: { h: 'help', v: 'version' } });
     const cmdName = argv._[0] as string;
+    
     const cmd = pluginContext.getCommand(cmdName);
     if (!cmd) {
-      log.error(`invalid command`);
+      if (argv.help) {
+        console.log(commandLineUsage([{
+          header: '描述',
+          content: '商家应用/插件开发构建工具',
+        },
+        {
+          header: '可选项',
+          optionList: [
+            { name: 'help', description: '输出帮助信息', alias: 'h', type: Boolean },
+            { name: 'version', description: '查看当前CLI版本', alias: 'v', type: Boolean },
+          ],
+        },
+        {
+          header: '命令',
+          content: pluginContext.getCommandsDesc()
+        }]))
+      } else if (argv.v) {
+        console.log(`v${pkg.version}`)
+      } else {
+        log.error(`invalid command`);
+      }
       return;
     }
 

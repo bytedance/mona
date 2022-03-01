@@ -32,6 +32,10 @@ class PluginContext {
     return map.get(name) || null;
   }
 
+  getCommandsDesc() {
+    return Array.from(this._commandMap.keys()).map(name => ({ name, summary: this._commandMap.get(name)?.options.description || '暂无描述' }))
+  }
+
   registerTarget(targetName: string, fn: ITargetCallback) {
     if (!this.builder) {
       this.builder = new Builder();
