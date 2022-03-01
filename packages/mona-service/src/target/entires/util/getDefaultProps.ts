@@ -27,13 +27,11 @@ export default function getMiniComponentDefaultValue(content: string) {
                     prop.remove();
                   }
                 });
-                
+
                 const code = JSON.parse(JSON.stringify(generate(value.node).code));
                 try {
                   eval('global.miniComponentPropValue = ' + code);
-                } catch (error) {
-                  console.error(error);
-                }
+                } catch (error) {}
                 //@ts-ignore
                 defaultProps[propKey] = global['miniComponentPropValue']?.value;
                 if (global.hasOwnProperty('miniComponentPropValue')) {

@@ -7,6 +7,11 @@ import { isReactCall, isStringLiteral } from '@/target/utils/babel';
 import runtimePkgJson from '@bytedance/mona-runtime/package.json';
 // import { ComponentAliasMap } from '@bytedance/mona-shared';
 
+function getImportName(path: NodePath<t.CallExpression>, name: string) {
+  // @ts-ignore
+  return path.scope.getBinding(name)?.path?.parentPath?.node?.source?.value;
+}
+
 // 1.压缩基础组件name  2.收集使用的组件&属性
 export default function perfTemplateRender() {
   return {
@@ -20,9 +25,8 @@ export default function perfTemplateRender() {
         let nodeType: string = '';
 
         if (t.isIdentifier(reactNode)) {
-          const bindingPath = path.scope.getBinding(reactNode.name)?.path;
-          const importNode = bindingPath?.parentPath?.node;
-          if (t.isImportDeclaration(importNode) && importNode.source.value === runtimePkgJson.name) {
+          const importPath = getImportName(path, reactNode.name);
+          if (importPath === runtimePkgJson.name) {
             nodeType = compressNodeName(reactNode.name);
           } else {
             return;
