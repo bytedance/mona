@@ -62,28 +62,6 @@ module.exports = {
         ],
       },
       {
-        test: /\.s[ac]ss$/i,
-        use: [
-          {
-            loader: "style-loader",
-          },
-          {
-            loader: "css-loader",
-          },
-          {
-            loader: "postcss-loader",
-            options: {
-              postcssOptions: {
-                plugins: [PostcssPluginRpxToVw],
-              },
-            },
-          },
-          {
-            loader: "sass-loader",
-          },
-        ],
-      },
-      {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         type: "asset/resource",
         generator: {
@@ -105,10 +83,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: [".ts", ".tsx", "..."],
-    alias: {
-      '@tarojs/components': '@tarojs/components/dist-h5/react'
-    }
+    extensions: [".ts", ".tsx", "..."]
   },
   plugins: [new MvJSONPlugin()]
 };

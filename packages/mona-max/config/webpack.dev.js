@@ -11,33 +11,33 @@ const { DEV_SERVER_PORT, AfterBuildPlugin, TARGET_URL } = require('../utils/maxD
 const {name = '@max-isv/isv-com'} = JSON.parse(fs.readFileSync(path.resolve(process.cwd(), './package.json'), 'utf-8'));
 
 const devConfig = {
-	mode: "development",
-	devServer: {
-		static: {
-			directory: path.join(process.cwd(), "./src"),
-		},
-		client: {
-			logging: 'info'
-		},
-		headers: {
-			"Access-Control-Allow-Origin": "*",
-			"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
-			"Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization",
-			"Cache-Control": "no-cache",
-			"ETag": Math.random().toString(),
-		},
-		allowedHosts: 'all',
-		compress: true,
-		hot: true,
-		port: DEV_SERVER_PORT,
-		open: {
-			target: [TARGET_URL]
-		},
-		https: true,
-	},
-	plugins: [
-		new HtmlWebpackPlugin({
-			templateContent: `
+  mode: "development",
+  devServer: {
+    static: {
+      directory: path.join(process.cwd(), "./src"),
+    },
+    client: {
+      logging: 'info'
+    },
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+      "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization",
+      "Cache-Control": "no-cache",
+      "ETag": Math.random().toString(),
+    },
+    allowedHosts: 'all',
+    compress: true,
+    hot: true,
+    port: DEV_SERVER_PORT,
+    open: {
+      target: [TARGET_URL]
+    },
+    https: true,
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      templateContent: `
         <!DOCTYPE html>
             <head>
                 <title>@max-com/isv-comp</title>
@@ -53,14 +53,14 @@ const devConfig = {
                 </script>
             </body>
         </html>`,
-		}),
-		new AfterBuildPlugin(),
-		new WatchExternalFilesPlugin({
-			files: [
-				path.join(process.cwd(), "./src/schema.json"),
-			]
-		})
-	]
+    }),
+    new AfterBuildPlugin(),
+    new WatchExternalFilesPlugin({
+      files: [
+        path.join(process.cwd(), "./src/schema.json"),
+      ]
+    })
+  ]
 };
 
 

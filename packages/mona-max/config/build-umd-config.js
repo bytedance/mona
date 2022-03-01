@@ -17,7 +17,6 @@ module.exports = {
   },
   externals: {
     "react": "React",
-    "react-dom": "ReactDOM",
-    "@tarojs/components": "@tarojs/components"
+    "react-dom": "ReactDOM"
   }
 };

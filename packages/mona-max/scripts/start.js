@@ -23,5 +23,3 @@ const maxStart = (ctx) => {
 }
 
 module.exports = maxStart
-
-
