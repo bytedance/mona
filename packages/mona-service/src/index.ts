@@ -10,32 +10,19 @@ export { default as PluginContext } from './PluginContext';
 export { default as GlobalPluginContext } from './GlobalPluginContext';
 export { default as ICommand } from './ICommand';
 
-const pathToPlugin = (pathname: string) => require(pathname);
-
-const buildInPlugins = [
-  './commands/build',
-  './commands/start',
-  './target/web/index',
-  './target/mini/index',
-  './target/plugin/index',
-].map(name => pathToPlugin(name));
-
-const pureBuildInPlugins = [
-  './commands/compress',
-  './commands/publish',
-].map(name => pathToPlugin(name));
+import config from './config';
 
 function main() {
   const argv = minimist(process.argv.slice(2));
   const cmdName = argv._[0] as string;
 
   // TODO: unify all target develop standard
-  if (['publish', 'compress'].indexOf(cmdName) !== -1) {
-    const pureService = new GlobalService(pureBuildInPlugins);
+  if (config.pureCommands.indexOf(cmdName) !== -1) {
+    const pureService = new GlobalService(config.pureBuildInPlugins);
     pureService.install();
     pureService.run();
   } else {
-    const service = new Service(buildInPlugins);
+    const service = new Service(config.buildInPlugins);
     service.install();
     service.run();
   }
