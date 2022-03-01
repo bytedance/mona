@@ -19,7 +19,6 @@ const publish: IPlugin = (ctx) => {
   }, async (args) => {
     try {
       console.log(chalk.cyan(`请确保在项目根目录使用该命令`));
-
       // ensure login
       const user = readUser();
       if (!user) {
@@ -33,7 +32,8 @@ const publish: IPlugin = (ctx) => {
       if (!appId) {
         throw Error('未指定 appId')
       }
-      const request = generateRequestFromOpen(user.cookie);
+      
+      const request = generateRequestFromOpen(args, user.cookie);
 
       // compress
       const output = await compressDir(process.cwd(), ['dist']);

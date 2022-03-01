@@ -16,7 +16,7 @@ const init: IPlugin = (ctx) => {
         { name: 'use-typescript', description: '是否使用typescript', alias: 'u' },
         { name: 'style', description: '指定样式处理器', alias: 's' },
         { name: 'template', description: '指定模板', alias: 't' },
-        { name: 'appid', description: '指定模板', alias: 'a' },
+        { name: 'appid', description: '指定appid', alias: 'a' },
       ],
     usage: 'mona init <projectName>',
   }, async (args) => {

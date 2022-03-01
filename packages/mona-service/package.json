@@ -34,6 +34,7 @@
     "@bytedance/mona": "0.2.0-alpha.9",
     "@bytedance/mona-runtime": "0.2.0-alpha.9",
     "@bytedance/mona-shared": "0.2.0-alpha.9",
+    "@bytedance/mona-max": "0.2.0-alpha.9",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.1",
     "@svgr/webpack": "^5.5.0",
     "acorn-walk": "^8.2.0",

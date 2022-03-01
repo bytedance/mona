@@ -6,9 +6,6 @@ import chalk from 'chalk';
 import { IPlugin } from '@bytedance/mona-service';
 import { readUser, saveUser } from '@bytedance/mona-service/dist/commands/publish/utils';
 
-const openURL = `https://${OPEN_DOMAIN}/authorization`;
-const wsURL = `wss://${OPEN_DOMAIN}/ws/api/terminal`;
-
 const login: IPlugin = (ctx) => {
   ctx.registerCommand('login', {
     description: '登录抖店开放平台账户',
@@ -16,7 +13,12 @@ const login: IPlugin = (ctx) => {
       { name: 'help', description: '输出帮助信息', alias: 'h' }
     ],
     usage: 'mona login',
-  }, () => {
+  }, (args) => {
+    const domain = args.domain || OPEN_DOMAIN;
+    const header = args.header ? JSON.parse(args.header) : OPEN_DEV_HEADERS;
+
+    const openURL = `https://${domain}/authorization`;
+    const wsURL = `wss://${domain}/ws/api/terminal`;
     // alread login
     const user = readUser();
     if (user) {
@@ -32,7 +34,7 @@ const login: IPlugin = (ctx) => {
     console.log(chalk.cyan(`打开 ${url}`));
     open(url);
     // TODO: to delete boe header
-    const ws = new WebSocket(`${wsURL}?token=${token}`, { headers: OPEN_DEV_HEADERS });
+    const ws = new WebSocket(`${wsURL}?token=${token}`, { headers: header });
     let success = false;
     ws.on('open', () => {
       console.log(chalk.cyan('等待授权登录中...'));

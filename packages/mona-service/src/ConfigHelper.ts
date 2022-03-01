@@ -58,9 +58,8 @@ class ConfigHelper {
     if (fs.existsSync(fullConfigPath)) {
       const projectConfig = readConfig<T>(fullConfigPath);
       return projectConfig;
-    } else {
-      throw new Error('无效的项目目录，请在mona项目根目录执行命令');
     }
+    return {} as T
   }
 }
 

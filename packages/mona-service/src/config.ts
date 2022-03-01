@@ -9,12 +9,10 @@ const config = {
     './target/web/index',
     './target/mini/index',
     './target/plugin/index',
-  ]),
-  pureBuildInPlugins: convertPlugins([
     './commands/compress',
     './commands/publish',
+    '@bytedance/mona-max'
   ]),
-  pureCommands: ['compress', 'publish', 'max-build', 'max-start']
 }
 
 export default config;

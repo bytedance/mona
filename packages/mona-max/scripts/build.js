@@ -1,6 +1,5 @@
 const chalk = require('chalk');
 const webpack = require('webpack')
-const config = require('../config/webpack.prod')
 
 
 const maxBuild = (ctx) => {
@@ -11,6 +10,8 @@ const maxBuild = (ctx) => {
       usage: 'mona-service max-build',
     },
     () => {
+      const config = require('../config/webpack.prod')
+
       console.log(chalk.yellow(`🏃 正在打包构建组件......`));
       const umdConfig = config('umd')
       const esmConfig = config('esm')

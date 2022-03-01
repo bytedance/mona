@@ -30,14 +30,17 @@ export function saveUser(data: any) {
 }
 
 
-export const generateRequestFromOpen = (cookie: string) => (path: string, options?: Record<string, any>) => {
-  const url = `https://${OPEN_DOMAIN}${path}`;
+export const generateRequestFromOpen = (args: any, cookie: string) => (path: string, options?: Record<string, any>) => {
+  const domain = args.domain || OPEN_DOMAIN;
+  const header = args.header ? JSON.parse(args.header) : OPEN_DEV_HEADERS;
+  const url = `https://${domain}${path}`;
+
   const config = {
     url,
     headers: {
       cookie,
       'Content-Type': 'application/json',
-      ...OPEN_DEV_HEADERS,
+      ...header
     },
     ...options,
   }

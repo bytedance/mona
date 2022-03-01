@@ -1,6 +1,5 @@
 const chalk = require('chalk');
 const webpack = require('webpack')
-const config = require('../config/webpack.dev')
 const WebpackDevServer = require('webpack-dev-server')
 
 const maxStart = (ctx) => {
@@ -11,6 +10,8 @@ const maxStart = (ctx) => {
       usage: 'mona-service max-start',
     },
     () => {
+      const config = require('../config/webpack.dev')
+
       console.log(chalk.yellow(`🏃 正在启动组件.....`));
       const umdConfig = config('umd')
       const compiler = webpack(umdConfig);
