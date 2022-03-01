@@ -1,20 +1,35 @@
 import Builder, { RawWebpackConfigFn, ChainWebpackConfigFn } from "./Builder";
-import log from "./utils/log";
 import ITarget, { ITargetCallback } from "./ITarget";
-import GlobalPluginContext from "./GlobalPluginContext";
+import ICommand, { ICommandCallback, ICommandOptions } from "./ICommand";
+import log from "./utils/log";
 
-class PluginContext extends GlobalPluginContext {
+class PluginContext {
   private _targetMap: Map<string, ITarget>
+  private _commandMap: Map<string, ICommand>
   builder: Builder;
 
   constructor() {
-    super();
     this._targetMap = new Map();
+    this._commandMap = new Map();
     this.builder = new Builder();
   }
 
   get configHelper() {
     return this.builder.configHelper;
+  }
+  
+  registerCommand(name: string, options: ICommandOptions, fn: ICommandCallback) {
+    const cmd = new ICommand(name, options, fn);
+    if (this._commandMap.has(name)) {
+      log.error(`the command name <${name}> has already been registered`);
+      return;
+    }
+    this._commandMap.set(name, cmd);
+  }
+
+  getCommand(name: string): ICommand | null {
+    const map = this._commandMap;
+    return map.get(name) || null;
   }
 
   registerTarget(targetName: string, fn: ITargetCallback) {
