@@ -56,7 +56,9 @@ export const generateRequestFromOpen = (args: any, cookie: string) => (path: str
     });
 };
 
-export async function upload(output: string, userId: string) {
+export async function upload(output: string, userId: string, args: any) {
+  const domain = args.domain || OPEN_DOMAIN;
+  const header = args.header ? JSON.parse(args.header) : OPEN_DEV_HEADERS;
   const mime = 'application/zip';
   const fileName = path.basename(output);
   const form = new FormData();
@@ -83,11 +85,12 @@ export async function upload(output: string, userId: string) {
   });
   const headers = form.getHeaders();
 
-  const res = await axios.post(`https://${OPEN_DOMAIN}/pssresource/external-large/upload`, form, {
+  const res = await axios.post(`https://${domain}/pssresource/external-large/upload`, form, {
     responseType: 'json',
     headers: {
       'Content-Type': headers['content-type'],
       'Content-Length': length,
+      ...header
     },
   });
 
@@ -95,6 +98,6 @@ export async function upload(output: string, userId: string) {
   if (data.code === 0) {
     return { fileId: data?.data?.file_id, fileName };
   } else {
-    throw new Error(data.message);
+    throw new Error(`上传文件失败：${data.message}`);
   }
 }

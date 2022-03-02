@@ -62,7 +62,7 @@ const publish: IPlugin = (ctx) => {
       }])
 
       // upload
-      const { fileId, fileName } = await upload(output, user.userId);
+      const { fileId, fileName } = await upload(output, user.userId, args);
 
       // params
       const params = { version: latestVersion, appId, desc: answer.desc || '', fileId, fileName }
@@ -87,7 +87,7 @@ const publish: IPlugin = (ctx) => {
       fs.unlinkSync(output);
       console.log(chalk.green('发布成功!'));
     } catch (err: any) {
-      console.log(chalk.red(`发布失败：${(err.message)}`));
+      console.log(chalk.red(`发布失败，${(err.message)}`));
     }
   })
 }
