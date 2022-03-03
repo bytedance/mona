@@ -915,6 +915,7 @@ export interface SystemInfo {
   pixelRatio: number;
   statusBarHeight: number;
   safeArea: SafeArea;
+  navigationBarSafeArea?: SafeArea;
 }
 
 export interface GetSystemInfoOptions extends Callbacks<SystemInfo, CommonErrorArgs> {
