@@ -75,7 +75,7 @@ const publish: IPlugin = (ctx) => {
           data: params
         })
       } else {
-        console.log(chalk.cyan(`即将创建新版本 ${latestVersion}`))
+        console.log(chalk.cyan(`即将创建新版本`))
         // create new version
         await request('/captain/app/version/create', {
           method: 'POST',

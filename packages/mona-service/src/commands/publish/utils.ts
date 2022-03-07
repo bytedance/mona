@@ -4,7 +4,8 @@ import path from 'path';
 import FormData from 'form-data';
 import { OPEN_DOMAIN, OPEN_DEV_HEADERS } from '@bytedance/mona-shared';
 
-const userDataFile = path.join(__dirname, '.mona_user');
+const homePath = (process.env.HOME ? process.env.HOME : process.env.USERPROFILE) || __dirname;
+const userDataFile = path.join(homePath, '.mona_user');
 
 export function deleteUser() {
   if (fs.existsSync(userDataFile)) {

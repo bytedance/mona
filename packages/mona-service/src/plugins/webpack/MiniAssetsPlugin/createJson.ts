@@ -36,7 +36,7 @@ export default async function createJson(compilation: Compilation, configHelper:
   const appFile = 'app.json';
   if (!compilation.getAsset(appFile)) {
     const formatedAppConfig = formatAppConfig(appConfig);
-    const source = new RawSource(JSON.stringify(formatedAppConfig));
+    const source = new RawSource(JSON.stringify(formatedAppConfig, null, 2));
     compilation.emitAsset(appFile, source);
   }
 
@@ -62,7 +62,7 @@ export default async function createJson(compilation: Compilation, configHelper:
       ...(pageConfig.usingComponents || {}),
     };
 
-    const source = new RawSource(JSON.stringify(pageConfig));
+    const source = new RawSource(JSON.stringify(pageConfig, null, 2));
     compilation.emitAsset(file, source);
   });
 }

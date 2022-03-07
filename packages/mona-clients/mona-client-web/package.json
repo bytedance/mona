@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-client-web",
-  "version": "0.2.0-alpha.11",
+  "version": "0.2.0-alpha.13",
   "description": "web for mona",
   "main": "./dist/index.js",
   "files": [
@@ -26,8 +26,8 @@
     "xgplayer-mp4": "^2.0.0"
   },
   "devDependencies": {
-    "@bytedance/mona": "0.2.0-alpha.11",
-    "@bytedance/mona-shared": "0.2.0-alpha.11",
+    "@bytedance/mona": "0.2.0-alpha.13",
+    "@bytedance/mona-shared": "0.2.0-alpha.13",
     "@types/react-dom": "^17.0.2",
     "@types/react-router": "^5.1.17",
     "@types/react-router-dom": "^5.3.1",

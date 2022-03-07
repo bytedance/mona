@@ -59,7 +59,7 @@ function createConfig(PageComponent: React.ComponentType<any>) {
     _pageLifecycleContext: new LifecycleContext(),
     _Component: PageComponent,
     _controller: new TaskController({}),
-
+    data: {},
     onLoad(options: any) {
       // monaPrint.log('onLoad', this, options);
       this.data = {
