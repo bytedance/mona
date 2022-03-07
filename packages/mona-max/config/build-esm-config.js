@@ -2,7 +2,7 @@ const path = require("path");
 
 module.exports = {
   entry: {
-    index: path.resolve(process.cwd(), "./src/index.tsx")
+    index: path.resolve(process.cwd(), "./src/index")
   },
   output: {
     filename: "[name].esm.js",

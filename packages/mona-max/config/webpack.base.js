@@ -11,8 +11,8 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/i,
-        use: "ts-loader",
+        test: /\.(js|mjs|jsx|ts|tsx)$/,
+        use: "babel-loader",
         exclude: /node_modules/,
       },
       {
@@ -83,7 +83,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: [".ts", ".tsx", "..."]
+    extensions: [".js", ".jsx", ".ts", ".tsx", "..."]
   },
   plugins: [new MvJSONPlugin()]
 };
