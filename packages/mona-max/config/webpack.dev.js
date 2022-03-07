@@ -23,8 +23,7 @@ const devConfig = {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
       "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization",
-      "Cache-Control": "no-cache",
-      "ETag": Math.random().toString(),
+      "Cache-Control": "no-cache"
     },
     allowedHosts: 'all',
     compress: true,

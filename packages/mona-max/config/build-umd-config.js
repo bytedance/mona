@@ -5,7 +5,7 @@ const { name = '@shop-isv/isv-com' } = JSON.parse(fs.readFileSync(path.resolve(p
 
 module.exports = {
   entry: {
-    index: path.resolve(process.cwd(), './src/index.tsx')
+    index: path.resolve(process.cwd(), './src/index')
   },
   output: {
     filename: '[name].umd.js',

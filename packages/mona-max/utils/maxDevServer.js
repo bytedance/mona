@@ -3,7 +3,7 @@ const path = require('path');
 
 const DEV_SERVER_PORT = 10089;
 const WS_PORT = 10079;
-const TARGET_URL = `https://fxg.jinritemai.com/ffa/mshop/decorate/newIsv/edit?debug=1&id=7018570872021582093&pageId=2&WSPORT=${WS_PORT}`;
+const TARGET_URL = `https://fxg.jinritemai.com/ffa/mshop/decorate/newIsv/entry?debug=1&WSPORT=${WS_PORT}`;
 
 const SEND_DATA = {
   indexURL: `https://localhost:${DEV_SERVER_PORT}/index.umd.js`,
