@@ -133,13 +133,22 @@ function createAssetRule(webpackConfig: Config, _configHelper: ConfigHelper) {
   webpackConfig.module
     .rule('img')
     .test(/\.(png|jpe?g|gif|webp)$/i)
-    .set('type', 'asset/resource');
+    .set('type', 'asset/resource')
+    .set('generator', {
+      filename: 'static/img/[hash][ext][query]',
+    });
   webpackConfig.module
     .rule('svg')
     .test(/\.svg$/i)
-    .set('type', 'asset/resource');
+    .set('type', 'asset/resource')
+    .set('generator', {
+      filename: 'static/img/[hash][ext][query]',
+    });
   webpackConfig.module
     .rule('font')
     .test(/\.(ttf|eot|woff|woff2)$/i)
-    .set('type', 'asset/resource');
+    .set('type', 'asset/resource')
+    .set('generator', {
+      filename: 'static/font/[hash][ext][query]',
+    });
 }
