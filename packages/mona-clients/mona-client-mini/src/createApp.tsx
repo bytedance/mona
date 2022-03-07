@@ -55,7 +55,7 @@ export default function createApp(AppComponent: React.ComponentType<any>) {
 
     _callLifecycle(name: AppLifecycle, ...params: any[]) {
       const cbs = this.appLifecycleContext.lifecycle[name] || new Set([]);
-      cbs.forEach(cb => batchedUpdates(params => cb(...params), params));
+      Array.from(cbs).forEach(cb => batchedUpdates(params => cb(...params), params));
       if (appEntryRef.current?.[name]) {
         return appEntryRef.current[name](...params);
       }
