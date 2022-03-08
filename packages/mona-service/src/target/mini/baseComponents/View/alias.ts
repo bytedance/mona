@@ -5,6 +5,7 @@ const alias: Alias = {
   ...basePropAlias,
   ...hoverPropAlias,
   ...bubbleEventsAlias,
+  slot: 'slot',
 };
 
 export default alias;

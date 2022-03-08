@@ -124,7 +124,9 @@ export interface IconProps extends BaseProps {
 }
 
 // 视图容器
-export interface ViewProps extends BaseProps, HoverProps {}
+export interface ViewProps extends BaseProps, HoverProps {
+  slot: string;
+}
 
 export interface ScrollViewProps extends BaseProps {
   scrollX?: boolean;
@@ -213,7 +215,7 @@ export interface CheckboxGroupProps extends BaseProps {
   name?: string;
 }
 
-type FormSumbitEventHandler = (e: BaseEvent<{ value: Record<string, any> }>) => void
+type FormSumbitEventHandler = (e: BaseEvent<{ value: Record<string, any> }>) => void;
 export interface FormProps extends BaseProps {
   onSubmit?: FormSumbitEventHandler;
   onReset?: EventHandler;
