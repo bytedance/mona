@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-client-mini",
-  "version": "0.2.0-alpha.15",
+  "version": "0.2.0-alpha.16",
   "description": "miniapp for mona",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -25,7 +25,7 @@
     "scheduler": "^0.20.2"
   },
   "devDependencies": {
-    "@bytedance/mona": "0.2.0-alpha.15",
+    "@bytedance/mona": "0.2.0-alpha.16",
     "@rollup/plugin-commonjs": "^19.0.1",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.0.2",
