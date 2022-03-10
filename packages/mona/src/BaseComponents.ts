@@ -125,7 +125,7 @@ export interface IconProps extends BaseProps {
 
 // 视图容器
 export interface ViewProps extends BaseProps, HoverProps {
-  slot: string;
+  slot?: string;
 }
 
 export interface ScrollViewProps extends BaseProps {
