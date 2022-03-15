@@ -46,14 +46,14 @@ function generatePageId(pre?: string) {
 }
 
 function createConfig(PageComponent: React.ComponentType<any>) {
+  const isClass = isClassComponent(PageComponent);
+  const pageEntryRef = React.createRef<any>();
   let app: any;
   try {
     app = getApp();
   } catch (e) {
     app = null;
   }
-  const isClass = isClassComponent(PageComponent);
-  const pageEntryRef = React.createRef<any>();
   // const eventMap = new Map();
   const config: PageConfig = {
     _pageLifecycleContext: new LifecycleContext(),
@@ -61,6 +61,14 @@ function createConfig(PageComponent: React.ComponentType<any>) {
     _controller: new TaskController({}),
     data: {},
     onLoad(options: any) {
+      try {
+        app = getApp();
+      } catch (e) {
+        app = null;
+      }
+      // tt.showModal({
+      //   content: app ? 'app不为空' : 'app为空',
+      // });
       // monaPrint.log('onLoad', this, options);
       this.data = {
         [ROOT_KEY]: {
