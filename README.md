@@ -6,10 +6,10 @@
 - [创建一个项目](https://github.com/bytedance/mona/tree/feat/miniapp#创建一个项目)
 - [发布上传项目](https://github.com/bytedance/mona/tree/feat/miniapp#发布上传项目)
 - [CLI命令](https://github.com/bytedance/mona/tree/feat/miniapp#CLI命令)
-- [目录结构](https://github.com/bytedance/mona/tree/feat/miniapp#目录结构)
 - [API](https://github.com/bytedance/mona/tree/feat/miniapp#API)
 - [组件](https://github.com/bytedance/mona/tree/feat/miniapp#组件)
 - [配置](https://github.com/bytedance/mona/tree/feat/miniapp#配置)
+- [目录结构](https://github.com/bytedance/mona/tree/feat/miniapp#目录结构)
 - [多端开发](https://github.com/bytedance/mona/tree/feat/miniapp#多端开发)
 - [public目录](https://github.com/bytedance/mona/tree/feat/miniapp#public目录)
 - [query参数获取](https://github.com/bytedance/mona/tree/feat/miniapp#query参数获取)
@@ -19,7 +19,7 @@
 - [原理](https://github.com/bytedance/mona/tree/feat/miniapp#原理)
 - [特性](https://github.com/bytedance/mona/tree/feat/miniapp#特性)
 ## 简介
-mona是抖店开放平台推出的商家应用跨端开发方案，支持使用**React框架**来开发应用
+mona是抖店开放平台推出的商家应用跨端开发方案，支持使用**React框架**来开发应用，以求达到一次开发处处运行
 - 飞鸽插件
 - 店铺装修组件
 - 移动端h5应用
