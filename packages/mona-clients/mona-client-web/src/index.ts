@@ -6,3 +6,5 @@ export { createAppLifeCycle } from './createWebAppEvent';
 export { createPageLifecycle } from './createWebPage';
 
 export { usePageEvent, useAppEvent, AppLifecycle, PageLifecycle } from '@bytedance/mona';
+
+export { useMiniEffect } from './miniEffect';

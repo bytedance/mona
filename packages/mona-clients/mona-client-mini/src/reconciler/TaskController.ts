@@ -3,6 +3,7 @@ import ServerElement, { RenderNode, NodeType } from './ServerElement';
 // import createEventHandler from '../eventHandler';
 import { NodeTask } from '@/utils';
 import { batchedUpdates } from '.';
+import { miniEffect } from '../miniEffect';
 
 interface SpliceTask {
   type: NodeTask.SPLICE;
@@ -72,7 +73,9 @@ export default class TaskController {
         res[this.genUpdatePath([...task.path, task.propName])] = task.propValue;
       }
     });
-    this.context.setData(res);
+    this.context.setData(res, () => {
+      miniEffect.run();
+    });
     // monaPrint.debug('applyUpdate', {
     //   data: res,
     //   tasks: this.tasks,

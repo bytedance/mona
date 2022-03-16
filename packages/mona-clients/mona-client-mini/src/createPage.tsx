@@ -46,14 +46,14 @@ function generatePageId(pre?: string) {
 }
 
 function createConfig(PageComponent: React.ComponentType<any>) {
+  const isClass = isClassComponent(PageComponent);
+  const pageEntryRef = React.createRef<any>();
   let app: any;
   try {
     app = getApp();
   } catch (e) {
     app = null;
   }
-  const isClass = isClassComponent(PageComponent);
-  const pageEntryRef = React.createRef<any>();
   // const eventMap = new Map();
   const config: PageConfig = {
     _pageLifecycleContext: new LifecycleContext(),
@@ -61,6 +61,14 @@ function createConfig(PageComponent: React.ComponentType<any>) {
     _controller: new TaskController({}),
     data: {},
     onLoad(options: any) {
+      try {
+        app = getApp();
+      } catch (e) {
+        app = null;
+      }
+      // tt.showModal({
+      //   content: app ? 'app不为空' : 'app为空',
+      // });
       // monaPrint.log('onLoad', this, options);
       this.data = {
         [ROOT_KEY]: {
@@ -134,7 +142,8 @@ function createConfig(PageComponent: React.ComponentType<any>) {
 
     $callLifecycle(name: PageLifecycle, ...params: any[]) {
       const cbs = this._pageLifecycleContext.lifecycle[name] || new Set([]);
-      cbs.forEach(cb => batchedUpdates(params => cb(...params), params));
+      // Array.from 转数组，避免cb更改cbs，导致动态遍历
+      Array.from(cbs).forEach(cb => batchedUpdates(params => cb(...params), params));
       if (pageEntryRef.current?.[name]) {
         return pageEntryRef.current[name](...params);
       }

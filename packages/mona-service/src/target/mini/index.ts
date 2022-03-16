@@ -28,7 +28,7 @@ const mini: IPlugin = ctx => {
       compiler.watch(
         {
           aggregateTimeout: 1000,
-          poll: 2000,
+          poll: false,
           ignored: /node_modules/,
         },
         (error: any, stats: any) => {
