@@ -6,7 +6,18 @@
 - [创建一个项目](https://github.com/bytedance/mona/tree/feat/miniapp#创建一个项目)
 - [发布上传项目](https://github.com/bytedance/mona/tree/feat/miniapp#发布上传项目)
 - [CLI命令](https://github.com/bytedance/mona/tree/feat/miniapp#CLI命令)
-- 
+- [目录结构](https://github.com/bytedance/mona/tree/feat/miniapp#目录结构)
+- [API](https://github.com/bytedance/mona/tree/feat/miniapp#API)
+- [组件](https://github.com/bytedance/mona/tree/feat/miniapp#组件)
+- [配置](https://github.com/bytedance/mona/tree/feat/miniapp#配置)
+- [多端开发](https://github.com/bytedance/mona/tree/feat/miniapp#多端开发)
+- [public目录](https://github.com/bytedance/mona/tree/feat/miniapp#public目录)
+- [query参数获取](https://github.com/bytedance/mona/tree/feat/miniapp#query参数获取)
+- [移动端适配](https://github.com/bytedance/mona/tree/feat/miniapp#移动端适配)
+- [使用小程序原生模块](https://github.com/bytedance/mona/tree/feat/miniapp#使用小程序原生模块)
+- [常见问题](https://github.com/bytedance/mona/tree/feat/miniapp#常见问题)
+- [原理](https://github.com/bytedance/mona/tree/feat/miniapp#原理)
+- [特性](https://github.com/bytedance/mona/tree/feat/miniapp#特性)
 ## 简介
 mona是抖店开放平台推出的商家应用跨端开发方案，支持使用**React框架**来开发应用
 - 飞鸽插件
@@ -102,6 +113,24 @@ npm run upload
 更新@bytedance/mona-cli到最新版本
 
 **<-----------------------------分割线，以下内容目前不支持店铺模块-------------------------------->**
+
+## API
+api可以从`@bytedance/mona-runtime`中导入，如
+```js
+import { redirectTo } from '@bytedance/mona-runtime';
+```
+- 基础api见-[小程序api](https://microapp.bytedance.com/docs/zh-CN/mini-app/develop/api/foundation/tt-can-i-use)
+- 插件额外api见-[mona-runtime文档](https://github.com/bytedance/mona/tree/main/packages/mona-runtime)
+
+## 组件
+如果你只是web项目，你完全可以使用在web中的开发方式，引入antd等三方库。
+
+组件可以从`@bytedance/mona-runtime`中导入，如
+```js
+import { View, Text } from '@bytedance/mona-runtime';
+```
+- 基础组件见-[小程序组件](https://microapp.bytedance.com/docs/zh-CN/mini-app/develop/component/all)
+- 插件额外组件见-[mona-runtime文档](https://github.com/bytedance/mona/tree/main/packages/mona-runtime)
 ## 目录结构
 ```bash
 .
@@ -390,27 +419,9 @@ const Home: React.FC<MonaPage> = ({ search, searchParams }) => {
 css中的单位在小程序中会自动转为`rpx`在web中会自动转为`rem`，你不需要关心如何换算，只需要按照设计稿时机尺寸来书写就可以。Mona会默认以`750px`标准设计稿作为换算尺寸的标准单位。如果设计稿不是`750px`那么你可以在`mona.config.js`的`postcss.pxtransform`中修改`deviceRatio`和`designWidth`。
 
 如果不部分属性被转换，可以使用`Px`或者`PX`这样这种形式，则插件会忽略装换
-
-## API
-api可以从`@bytedance/mona-runtime`中导入，如
-```js
-import { redirectTo } from '@bytedance/mona-runtime';
-```
-- 基础api见-[小程序api](https://microapp.bytedance.com/docs/zh-CN/mini-app/develop/api/foundation/tt-can-i-use)
-- 插件额外api见-[mona-runtime文档](https://github.com/bytedance/mona/tree/main/packages/mona-runtime)
-
-## 组件
-如果你只是web项目，你完全可以使用在web中的开发方式，引入antd等三方库。
-
-组件可以从`@bytedance/mona-runtime`中导入，如
-```js
-import { View, Text } from '@bytedance/mona-runtime';
-```
-- 基础组件见-[小程序组件](https://microapp.bytedance.com/docs/zh-CN/mini-app/develop/component/all)
-- 插件额外组件见-[mona-runtime文档](https://github.com/bytedance/mona/tree/main/packages/mona-runtime)
-## 使用原生模块
+## 使用小程序原生模块
 ### 小程序页面
-与其他页面无异，直接在` app.config` 中的` pages `属性中加入路径即可
+与其他页面无异，直接在`app.config` 中的`pages`属性中加入路径即可
 ### 小程序组件
 示例：
 ```js
@@ -454,6 +465,7 @@ export default function(){
 
 ## 原理
 mona在小程序侧采用了运行时方案，配合React进行diff并将需要更新的虚拟dom树压缩后，通过setData传递到渲染层，通过模板组件动态构建页面，从而达到小程序渲染的目的。同时在web侧我们完整实现了字节小程序常用的基本组件和api，这就使得web和小程序的还原度很高。
+
 ## 特性
 - 多端构建
 - 完整的ts提示
