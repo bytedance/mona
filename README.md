@@ -2,43 +2,53 @@
 
 ## 目录
 - [简介](https://github.com/bytedance/mona/tree/feat/miniapp#简介)
-- [快速开始](https://github.com/bytedance/mona/tree/feat/miniapp#快速开始)
+- [安装](https://github.com/bytedance/mona/tree/feat/miniapp#安装)
+- [创建一个项目](https://github.com/bytedance/mona/tree/feat/miniapp#创建一个项目)
+- [发布上传项目](https://github.com/bytedance/mona/tree/feat/miniapp#发布上传项目)
 - [CLI命令](https://github.com/bytedance/mona/tree/feat/miniapp#CLI命令)
-- [场景](https://github.com/bytedance/mona/tree/feat/miniapp#场景)
+- 
 ## 简介
-mona是抖店开放平台推出的商家应用跨端开发方案，支持使用**React框架**来开发
+mona是抖店开放平台推出的商家应用跨端开发方案，支持使用**React框架**来开发应用
+- 飞鸽插件
+- 店铺装修组件
 - 移动端h5应用
 - 字节小程序应用
-- 飞鸽桌面端插件
-- 店铺装修组件
-- 桌面端应用（未来实现）
   
-同时后续会逐渐增加商家应用业务基础组件库，方便开发者更加高效的进行开发
+同时后续会逐渐增加商家应用业务基础组件库，方便开发者更加高效的进行开发，方案尚处在逐渐完善的阶段，有问题欢迎在issue中指出，感谢您的支持~
 
-## 快速开始
-### 安装CLI
-快速开始开发一个插件需要先安装该CLI工具，使用如下命令进行安装
+## 安装
+> **Node版本要求**
+> 
+> Mona CLI 0.2.x 需要[Node.js](https://nodejs.org/en/) v14.x或更高版本。你可以使用[n](https://github.com/tj/n)，[nvm](https://github.com/nvm-sh/nvm)，[nvm-windows](https://github.com/coreybutler/nvm-windows)在一台电脑中管理Node多个版本
+可以使用如下任意命令来安装Mona CLI
 ```bash
 npm install -g @bytedance/mona-cli
-```
-如果使用的是yarn则命令如下
-```bash
+# 或
 yarn global add @bytedance/mona-cli
 ```
-
-安装完成后，控制台输入
+安装完成后，在控制台输入
 ```bash
 mona -v
 ```
-能正确打印出版本，则表明安装成功
+来验证是否安装成功，如果正确打印出版本，则表明安装成功
+### 升级
+如果需要升级全局的Mona CLI，可以运行
+```bash
+npm update -g @vue/cli
+# 或
+yarn global upgrade --latest @vue/cli
+# 或
+mona update
+```
 
-### 初始化项目
-下面我们来初始化一个项目，使用如下命令
+## 创建一个项目
+下面我们在本地创建一个项目，使用如下命令
 ```bash
 mona init
 ```
 
 按照提示依次输入项目名称，选择模板，选择是否使用typescript和样式预处理器等按需使用
+**店铺装修模块需要传入appid，请在抖店开放平台，创建店铺装修应用后，在应用概览-证书信息中查看App Key，作为appid传入**
 
 ### 开发
 项目初始化完成后进入项目跟目录，使用如下命令启动开发服务器，可以实时调试
@@ -51,6 +61,45 @@ npm run start
 ```
 npm run build
 ```
+
+## 发布上传项目
+目前仅支持飞鸽插件、店铺装修模块项目的发布上传
+项目开发完成后，需要在抖店开放平台进行发布
+
+### 在开放平台手动上传
+在项目跟目录运行以下命令
+```
+npm run compress
+```
+来进行项目的压缩，压缩完成后，到开放平台上传压缩包
+
+### 通过CLI上传（目前仅支持店铺模块）
+通过CLI上传需要先使用`mona login`登录当前开放平台账号，然后运行
+```
+npm run upload
+```
+来上传新版本到开放平台
+
+**IMPORTANT: 请注意，请保证appid是正确的！**
+
+## CLI命令
+可以使用`mona -h`查看帮助命令，`mona -v`查看当前版本
+
+### mona init <projectName>
+初始化一个商家应用/商家应用插件项目
+
+- -h, --help：输出帮助信息
+- -u, --use-typescript：是否使用typescript
+- -s, --style：指定样式处理器(css/less)
+- -t, --template：指定模板(plugin)
+
+### mona login
+登录抖店开放平台
+
+### mona logout
+登出抖店开放平台
+### mona update
+更新@bytedance/mona-cli到最新版本
 
 ## 目录结构
 ```bash
@@ -79,34 +128,6 @@ npm run build
 应用配置文件为`app.config.ts`，可以在该文件中配置路由
 
 页面配置文件分别放在页面文件下`page.config.ts`中，可以在这里配置页面相关的配置
-
-## CLI命令
-可以使用`mona -h`查看帮助命令，`mona -v`查看当前版本
-
-### mona init <projectName>
-初始化一个商家应用/商家应用插件项目
-
-- -h, --help：输出帮助信息
-- -u, --use-typescript：是否使用typescript
-- -s, --style：指定样式处理器(css/less)
-- -t, --template：指定模板(plugin)
-
-### mona start
-启动本地开发服务器
-
-- -h, --help：输出帮助信息
-- -p, --port：指定本地服务器端口
-### mona build
-对项目进行打包
-
-- -h, --help：输出帮助信息
-### mona publish
-压缩打包后的产物，以便在开放平台发布
-
-- -h, --help：输出帮助信息
-
-### mona update
-更新@bytedance/mona-cli到最新版本
 
 ## 配置
 ### 项目配置
