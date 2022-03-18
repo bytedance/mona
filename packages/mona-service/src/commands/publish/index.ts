@@ -18,6 +18,8 @@ const publish: IPlugin = (ctx) => {
     usage: 'mona-service publish',
   }, async (args) => {
     try {
+      console.log(args)
+      console.log(JSON.parse(args.header))
       console.log(chalk.cyan(`请确保在项目根目录使用该命令`));
       // ensure login
       const user = readUser();
