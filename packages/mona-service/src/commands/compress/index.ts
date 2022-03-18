@@ -22,7 +22,7 @@ const compress: IPlugin = (ctx) => {
     description: '压缩打包后的产物，以便在开放平台发布',
     options: [
         { name: 'help', description: '输出帮助信息', alias: 'h' },
-        { name: 'use-root', description: '是否打包根目录（默认为打包目录）', alias: 'r' }
+        { name: 'use-root', description: '是否打包根目录（默认为产物目录）', alias: 'r' }
       ],
     usage: 'mona-service compress',
   }, async (args) => {
