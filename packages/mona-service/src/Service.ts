@@ -54,7 +54,7 @@ class Service {
     
     const cmd = pluginContext.getCommand(cmdName);
     if (!cmd) {
-      if (argv.help) {
+      if (argv.help || !cmdName) {
         console.log(commandLineUsage([{
           header: '描述',
           content: '商家应用/插件开发构建工具',
