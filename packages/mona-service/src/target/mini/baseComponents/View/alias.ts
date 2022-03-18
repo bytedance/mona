@@ -5,6 +5,7 @@ const alias: Alias = {
   ...basePropAlias,
   ...hoverPropAlias,
   ...bubbleEventsAlias,
+  //@ts-ignore
   slot: 'slot',
 };
 
