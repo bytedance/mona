@@ -38,7 +38,12 @@ export function processProps(props: Record<string, any>, node: ServerElement) {
         // monaPrint.warn(`${propKey} 属性的值，对象数据量过大时，会影响渲染性能，请考虑使用其他方式`);
         newProps[propKey] = plainStyle(props[propKey]);
       } else {
-        newProps[propKey] = props[propKey];
+        // 修复飞书，设置style为undefined报错的bug
+        if (props[propKey] === undefined || props[propKey] === null) {
+          newProps[propKey] = '';
+        } else {
+          newProps[propKey] = props[propKey];
+        }
       }
     } else {
       newProps[propKey] = props[propKey];
