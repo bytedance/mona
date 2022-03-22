@@ -32,7 +32,7 @@ const publish: IPlugin = (ctx) => {
         throw new Error('appId应该为字符串')
       }
       if (!appId) {
-        throw Error('未指定 appId')
+        throw Error('未指定 appId，请在抖店开放平台查看应用appkey')
       }
       
       const request = generateRequestFromOpen(args, user.cookie);
