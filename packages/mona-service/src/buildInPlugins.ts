@@ -3,7 +3,7 @@ export const pathToPlugin = (pathname: string) => require(pathname);
 export const convertPlugins = (plugins: string[]) => flatten(plugins.map(pathToPlugin));
 
 const buildInPlugins = convertPlugins([
-   './commands/build',
+  './commands/build',
   './commands/start',
   './commands/compress',
   './commands/publish',
@@ -11,6 +11,6 @@ const buildInPlugins = convertPlugins([
   './target/web/index',
   './target/mini/index',
   './target/plugin/index',
-])
+]);
 
 export default buildInPlugins;

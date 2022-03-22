@@ -123,13 +123,13 @@ export function addUsingComponents(compilation: Compilation, configHelper: Confi
     pagesPath.set(res, page);
   });
 
-  const handledModules: Set<string> = new Set();
-  const processModule = processModuleFactory(configHelper.cwd, handledModules);
   const modules = Array.from(compilation.modules.values()) as NormalModule[];
   modules.forEach(module => {
     let resourcePath = module.resource?.replace(path.extname(module.resource), '');
     const pagePath = pagesPath.get(resourcePath);
     if (pagePath) {
+      const processModule = processModuleFactory(configHelper.cwd, new Set());
+
       processModule(compilation, module, pagePath);
     }
   });
