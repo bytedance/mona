@@ -32,7 +32,7 @@ const publish: IPlugin = (ctx) => {
         throw new Error('appId应该为字符串')
       }
       if (!appId) {
-        throw Error('未指定 appId')
+        throw Error('未指定 appId，请在抖店开放平台查看应用appkey')
       }
       
       const request = generateRequestFromOpen(args, user.cookie);
@@ -47,7 +47,7 @@ const publish: IPlugin = (ctx) => {
       })
       const latestVersion = appDetail.appBase.latestVersion;
       const latestVersionStatus = appDetail.appBase.latestVersionStatus;
-      const shouldEdit = latestVersionStatus && [4, 1, 6].indexOf(latestVersionStatus) === -1;
+      const shouldEdit = latestVersionStatus && [2, 3, 5, 7].indexOf(latestVersionStatus) !== -1;
       
       // ask desc
       const answer = await inquirer.prompt([{
@@ -57,8 +57,10 @@ const publish: IPlugin = (ctx) => {
         validate(input: string) {
           if (!input) {
             return '版本描述不能为空'
+          } else if (input.length <= 200) {
+            return '版本描述长度应小于200'
           } else {
-            return true;
+            return true
           }
         }
       }])
