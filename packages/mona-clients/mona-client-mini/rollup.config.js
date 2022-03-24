@@ -26,7 +26,7 @@ export default [
       commonjs(),
       typescript({ useTsconfigDeclarationDir: false }),
       postcss(),
-      terser(),
+      // terser(),
       replace(
         Object.keys(RENDER_NODE).reduce(
           (pre, item) => {

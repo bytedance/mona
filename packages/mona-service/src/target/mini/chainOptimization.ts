@@ -9,6 +9,7 @@ export function chainOptimization(webpackConfig: Config, configHelper: ConfigHel
   optimization
     .usedExports(true)
     .runtimeChunk('single')
+    .concatenateModules(false)
     .splitChunks({
       cacheGroups: {
         vendors: {
