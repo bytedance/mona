@@ -33,11 +33,16 @@ const login: IPlugin = (ctx) => {
     const url = `${openURL}?token=${token}`;
     console.log(chalk.cyan(`打开 ${url}`));
     open(url);
-    // TODO: to delete boe header
+    console.log(`${wsURL}?token=${token}`)
     const ws = new WebSocket(`${wsURL}?token=${token}`, { headers: header });
     let success = false;
     ws.on('open', () => {
       console.log(chalk.cyan('等待授权登录中...'));
+    })
+
+    ws.on('error', (err: Error) => {
+      success = true
+      console.log(chalk.red(`发生错误，${err.message || '未知错误'}`));
     })
 
     ws.on('message', (buffer: Buffer) => {
