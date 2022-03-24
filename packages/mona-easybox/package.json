@@ -1,0 +1,34 @@
+{
+  "name": "@bytedance/mona-easybox",
+  "displayName": "mona-easybox",
+  "version": "0.2.0-alpha.21",
+  "description": "mona easybox",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "browser": "./dist/index.js",
+  "scripts": {
+    "build": "yarn clean && ttsc -b",
+    "start": "ttsc -b -w",
+    "clean": "rm -rf dist",
+    "test": "jest"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "zhangxiaowei.chris@bytedance.com",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/register": "^7.16.5",
+    "import-html-entry": "^1.11.1"
+  },
+  "devDependencies": {
+    "ttypescript": "^1.5.12",
+    "typescript-json-schema": "^0.43.0",
+    "typescript-transform-paths": "^2.2.4"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "gitHead": "cc5aa5283af595fd7d8a7b4921f54e2797504edd"
+}
