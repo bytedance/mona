@@ -30,15 +30,15 @@ React.createElement(1, {});
 React.createElement(false, {});
 `;
 
-test('isReactCall', () => {
-  const res = [];
-  acornWalk.simple(acorn.parse(code, {ecmaVersion: 2020}), {
-    CallExpression(node: t.CallExpression) {
-      res.push(isReactCall(node.callee));
-    },
-  });
-  expect(res).toEqual([true, true, false]);
-});
+// test('isReactCall', () => {
+//   const res = [];
+//   acornWalk.simple(acorn.parse(code, {ecmaVersion: 2020}), {
+//     CallExpression(node: t.CallExpression) {
+//       res.push(isReactCall(node.callee));
+//     },
+//   });
+//   expect(res).toEqual([true, true, false]);
+// });
 
 test('isStringLiteral', () => {
   const res = [];

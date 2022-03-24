@@ -1,13 +1,8 @@
 import { NodePath } from '@babel/traverse';
 import * as t from '@babel/types';
 import { ComponentType, MiniComponentAliasMap } from '@bytedance/mona-shared';
-import { isReactCall, isStringLiteral } from '@/target/utils/babel';
+import { getImportName, isReactCall, isStringLiteral } from '@/target/utils/babel';
 import runtimePkgJson from '@bytedance/mona-runtime/package.json';
-
-function getImportName(path: NodePath<t.CallExpression>, name: string) {
-  // @ts-ignore
-  return path.scope.getBinding(name)?.path?.parentPath?.node?.source?.value;
-}
 
 // const specialLabel = new Set(['script', 'react']);
 // 1. 用于将开头小写的jsx，例如view、div等转换为ComponentType中的别名。两个作用①压缩jsx名称②转换jsx名称，例如div->view
@@ -18,7 +13,7 @@ export default function TransformJsxNamePlugin() {
       CallExpression(path: NodePath<t.CallExpression>) {
         const node = path.node;
         // path.scope.getBinding
-        if (!isReactCall(node.callee)) return;
+        if (!isReactCall(path)) return;
 
         const [reactNode, props] = node.arguments;
 

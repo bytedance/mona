@@ -3,14 +3,10 @@ import * as t from '@babel/types';
 import { compressNodeName } from '@/target/utils/reactNode';
 import { miniPro2rcPropMap, renderMapAction } from './renderStore';
 import monaStore from '@/target/store';
-import { isReactCall, isStringLiteral } from '@/target/utils/babel';
+import { getImportName, isReactCall, isStringLiteral } from '@/target/utils/babel';
 import runtimePkgJson from '@bytedance/mona-runtime/package.json';
 // import { ComponentAliasMap } from '@bytedance/mona-shared';
 
-function getImportName(path: NodePath<t.CallExpression>, name: string) {
-  // @ts-ignore
-  return path.scope.getBinding(name)?.path?.parentPath?.node?.source?.value;
-}
 
 // 1.压缩基础组件name  2.收集使用的组件&属性
 export default function perfTemplateRender() {
@@ -19,7 +15,7 @@ export default function perfTemplateRender() {
       CallExpression(path: NodePath<t.CallExpression>) {
         const node = path.node;
 
-        if (!isReactCall(node.callee)) return;
+        if (!isReactCall(path)) return;
 
         const [reactNode, props] = node.arguments;
         let nodeType: string = '';
