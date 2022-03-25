@@ -48,6 +48,7 @@ const init: IPlugin = (ctx) => {
         appId
       });
     } catch(err: any) {
+      console.log(chalk.red(err.message));
       return;
     }
 
