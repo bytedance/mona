@@ -93,7 +93,8 @@ class Service {
     const shouldPassBuilder = cmdName === 'build' || cmdName === 'start';
 
     if (shouldPassBuilder && !cmdArgv.help) {
-      const { target: targetName } = cmdArgv;
+      const { target: rawtargetName } = cmdArgv;
+      const targetName = rawtargetName || 'web'
       // find target builder
       const target = pluginContext.getTarget(targetName);
       if (target) {
