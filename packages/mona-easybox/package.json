@@ -18,7 +18,6 @@
   "author": "zhangxiaowei.chris@bytedance.com",
   "license": "MIT",
   "dependencies": {
-    "@babel/register": "^7.16.5",
     "import-html-entry": "^1.11.1"
   },
   "devDependencies": {

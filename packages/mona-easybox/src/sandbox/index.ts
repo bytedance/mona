@@ -13,6 +13,7 @@ class Sandbox {
     this.options = options;
   }
 
+  // ban web storage
   createProxyGlobal(): Window {
     const origin = window;
     const proxyDocument = this.createProxyDocument(origin.document);
@@ -48,10 +49,10 @@ class Sandbox {
       set(obj, prop, value) {
         if (prop === 'title') {
           console.warn("can't set title in app");
-          return;
+          return false;
         } else if (prop === 'cookie') {
           console.warn("can't set cookie in app");
-          return;
+          return false;
         }
         return Reflect.set(obj, prop, value);
       }
