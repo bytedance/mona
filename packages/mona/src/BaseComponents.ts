@@ -1,5 +1,6 @@
 import React from 'react';
 import { XOR } from './util';
+import { TouchEventHandler, EventHandler, TouchEvent, BaseEvent, CanvasTouch } from './EventType';
 // base
 export interface BaseProps<T = Touch> {
   id?: string;
@@ -39,47 +40,6 @@ export interface HoverProps {
   hoverStartTime?: number;
   hoverStayTime?: number;
   hoverStopPropagation?: boolean;
-}
-
-export interface BaseTarget {
-  id: string;
-  tagName: string;
-  dataset: Record<string, any>;
-}
-
-export interface BaseEvent<D = any> {
-  type: string;
-  timeStamp: number;
-  target: BaseTarget;
-  currentTarget: BaseTarget;
-  detail?: D;
-}
-
-export interface Touch {
-  identifier: number;
-  pageX: number;
-  pageY: number;
-  clientX: number;
-  clientY: number;
-}
-
-export interface CanvasTouch {
-  identifier: number;
-  x: number;
-  y: number;
-}
-
-export interface TouchEvent<T = Touch, D = any> extends BaseEvent<D> {
-  touches: T[];
-  changedTouches: T[];
-}
-
-export interface EventHandler {
-  (event: BaseEvent): void;
-}
-
-export interface TouchEventHandler<T = Touch, D = any> {
-  (event: TouchEvent<T, D>): void;
 }
 
 // 基础内容
