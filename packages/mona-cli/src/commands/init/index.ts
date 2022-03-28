@@ -48,13 +48,14 @@ const init: IPlugin = (ctx) => {
         appId
       });
     } catch(err: any) {
+      console.log(chalk.red(err.message));
       return;
     }
 
 
     // 安装依赖
     const command = hasYarn() ? 'yarn' : 'npm install';
-    const installSpinner = ora(`安装项目依赖 ${chalk.cyan.bold(command)}，可能需要一些时间...`).start();
+    const installSpinner = ora(`安装项目依赖中 ${chalk.cyan.bold(command)}，可能需要一些时间...`).start();
     try {
       // 改变当前目录
       process.chdir(dirPath);
