@@ -3,11 +3,32 @@
     "module": "ESNext",
     "target": "es5",
     "strict": true,
-    "composite": true,
-    "noImplicitAny": true,
-    "esModuleInterop": true,
     "moduleResolution": "node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
     "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
-  }
+    "pretty": true,
+    "sourceMap": true,
+    "jsx": "react",
+    "declaration": true,
+    "allowJs": true,
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    }
+  },
+  "exclude": [
+    "**/__tests__",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "**/*.test.tsx",
+    "**/*.spec.tsx"
+   ]
 }

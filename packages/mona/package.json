@@ -1,11 +1,13 @@
 {
   "name": "@bytedance/mona",
-  "version": "0.1.3",
+  "version": "0.2.0-alpha.25",
   "description": "Merchant app's developing and building tools",
   "main": "./dist/index",
   "scripts": {
-    "build": "rm -rf dist && ttsc -b",
-    "start": "ttsc -b -w"
+    "build": "yarn clean && ttsc -b",
+    "start": "ttsc -b -w",
+    "clean": "rm -rf dist",
+    "test": "jest"
   },
   "files": [
     "dist"
@@ -15,6 +17,15 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^10.2.0",
+    "react": "^17.0.2",
+    "webpack": "^5.58.2",
+    "webpack-chain": "^6.5.1"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2"
   },
   "gitHead": "cc5aa5283af595fd7d8a7b4921f54e2797504edd"
 }

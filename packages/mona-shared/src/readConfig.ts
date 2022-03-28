@@ -1,31 +1,39 @@
 import fs from 'fs';
 import path from 'path';
 
-function readTypescriptFile(filename: string): Record<string, any> {
-  require('@babel/register')({
-    presets: [
-      [require.resolve('@babel/preset-env'), { modules: 'commonjs' }],
-      require.resolve('@babel/preset-typescript'),
-    ],
-    extensions: ['.ts', '.tsx'],
-    cache: false,
-  });
-  delete require.cache[require.resolve(filename)];
-  const config = require(filename).default || require(filename);
-  return config;
+export function readTypescriptFile(filename: string) {
+  try {
+    require('@babel/register')({
+      presets: [
+        [require.resolve('@babel/preset-env'), { modules: 'commonjs' }],
+        require.resolve('@babel/preset-typescript'),
+      ],
+      extensions: ['.ts', '.tsx'],
+      cache: false,
+    });
+    delete require.cache[require.resolve(filename)];
+    const config = require(filename).default || require(filename);
+    return config;
+  } catch(_) {
+    return null
+  }
 }
 
-function readJavascriptFile(filename: string) {
-  require('@babel/register')({
-    presets: [
-      [require.resolve('@babel/preset-env'), { modules: 'commonjs' }],
-    ],
-    extensions: ['.js', 'jsx'],
-    cache: false,
-  });
-  delete require.cache[require.resolve(filename)];
-  const config = require(filename).default || require(filename);
-  return config;
+export function readJavascriptFile(filename: string) {
+  try {
+    require('@babel/register')({
+      presets: [
+        [require.resolve('@babel/preset-env'), { modules: 'commonjs' }],
+      ],
+      extensions: ['.js', 'jsx'],
+      cache: false,
+    });
+    delete require.cache[require.resolve(filename)];
+    const config = require(filename).default || require(filename);
+    return config;
+  } catch(_) {
+    return null
+  }
 }
 
 function readConfig<T = any>(filename: string): T {

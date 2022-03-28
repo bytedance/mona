@@ -6,13 +6,21 @@
   "main": "",
   "scripts": {
     "build": "lerna run build",
-    "clean": "lerna clean",
+    "b": "node ./build",
+    "s": "node ./build -s",
+    "clean": "lerna run clean",
+    "clean:dp": "lerna clean -y && rm -rf node_modules",
+    "clean:all": "yarn clean && yarn clean:dp",
     "bootstrap": "lerna bootstrap",
-    "test": "echo 'test'",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "test:c": "jest --coverage",
     "v": "yarn v:lerna && yarn v:git",
     "publish:all": "lerna version --no-git-tag-version",
     "v:lerna": "lerna version ${npm_config_lerna_version} --exact --no-git-tag-version --force-publish --yes",
-    "v:git": "git add . && git commit -m \"chore(release): publish ${npm_config_lerna_version}\""
+    "v:git": "git add . && git commit -m \"chore(release): publish ${npm_config_lerna_version}\"",
+    "v:git:alpha": "git add . && git commit -m \"chore(release): publish ${npm_config_lerna_version} --tag=alpha\"",
+    "v:git:beta": "git add . && git commit -m \"chore(release): publish ${npm_config_lerna_version} --tag=beta\""
   },
   "repository": {
     "type": "git",
@@ -21,7 +29,31 @@
   "author": "zhangxiaowei.chris@bytedance.com",
   "license": "MIT",
   "workspaces": [
-    "packages/*",
-    "packages/mona-commands/*"
-  ]
+    "packages/mona*",
+    "packages/mona-clients/*"
+  ],
+  "packageManager": "yarn@1.22.4",
+  "engines": {
+    "node": ">=14"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.1",
+    "@types/enzyme": "^3.10.10",
+    "@types/fs-extra": "^9.0.13",
+    "@types/jest": "^27.0.2",
+    "@types/react-test-renderer": "^17.0.1",
+    "@wojtekmaj/enzyme-adapter-react-17": "^0.6.6",
+    "canvas": "^2.8.0",
+    "enzyme": "^3.11.0",
+    "fs-extra": "^10.0.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^27.5.1",
+    "jest-dom": "^4.0.0",
+    "jsdom": "^19.0.0",
+    "jsdom-global": "^3.0.2",
+    "react-test-renderer": "^17.0.0",
+    "ts-jest": "^27.1.3",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.4.4"
+  }
 }

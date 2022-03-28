@@ -1,0 +1,158 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createAppLifecycle class error 1`] = `
+Array [
+  Array [
+    ErrorEvent {
+      "isTrusted": true,
+    },
+    "error",
+  ],
+]
+`;
+
+exports[`createAppLifecycle class pageNotFound 1`] = `
+Array [
+  Array [
+    "/path/a/b",
+    "pageNotFound",
+  ],
+]
+`;
+
+exports[`createAppLifecycle class show & hide 1`] = `
+Array [
+  Array [
+    "hide",
+  ],
+]
+`;
+
+exports[`createAppLifecycle createPageLifecycle Class lifeCycle  1`] = `
+LoadedCheerio {
+  "0": Node {
+    "children": Array [
+      Node {
+        "data": "class组件mona",
+        "next": null,
+        "parent": [Circular],
+        "prev": null,
+        "type": "text",
+      },
+    ],
+    "name": "root",
+    "next": null,
+    "parent": null,
+    "prev": null,
+    "type": "root",
+  },
+  "_root": LoadedCheerio {
+    "0": Node {
+      "children": Array [
+        Node {
+          "data": "class组件mona",
+          "next": null,
+          "parent": [Circular],
+          "prev": null,
+          "type": "text",
+        },
+      ],
+      "name": "root",
+      "next": null,
+      "parent": null,
+      "prev": null,
+      "type": "root",
+    },
+    "_root": [Circular],
+    "length": 1,
+    "options": Object {
+      "decodeEntities": true,
+      "xml": false,
+    },
+  },
+  "length": 1,
+  "options": Object {
+    "decodeEntities": true,
+    "xml": false,
+  },
+}
+`;
+
+exports[`createAppLifecycle createPageLifecycle FC lifeCycle 1`] = `
+LoadedCheerio {
+  "0": Node {
+    "children": Array [
+      Node {
+        "data": "fc组件mona",
+        "next": null,
+        "parent": [Circular],
+        "prev": null,
+        "type": "text",
+      },
+    ],
+    "name": "root",
+    "next": null,
+    "parent": null,
+    "prev": null,
+    "type": "root",
+  },
+  "_root": LoadedCheerio {
+    "0": Node {
+      "children": Array [
+        Node {
+          "data": "fc组件mona",
+          "next": null,
+          "parent": [Circular],
+          "prev": null,
+          "type": "text",
+        },
+      ],
+      "name": "root",
+      "next": null,
+      "parent": null,
+      "prev": null,
+      "type": "root",
+    },
+    "_root": [Circular],
+    "length": 1,
+    "options": Object {
+      "decodeEntities": true,
+      "xml": false,
+    },
+  },
+  "length": 1,
+  "options": Object {
+    "decodeEntities": true,
+    "xml": false,
+  },
+}
+`;
+
+exports[`createAppLifecycle func error 1`] = `
+Array [
+  Array [
+    ErrorEvent {
+      "isTrusted": true,
+    },
+    "error",
+  ],
+]
+`;
+
+exports[`createAppLifecycle func pageNotFound 1`] = `
+Array [
+  Array [
+    "/path/a/b",
+    "class",
+    "pageNotFound",
+  ],
+]
+`;
+
+exports[`createAppLifecycle func show & hide 1`] = `
+Array [
+  Array [
+    "hide",
+  ],
+]
+`;

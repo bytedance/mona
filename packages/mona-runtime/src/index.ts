@@ -1,5 +1,7 @@
 import events from '@bytedance/mona-plugin-events';
 export const pigeon = events.pigeon;
-export { createPlugin, PageProps } from './createPlugin';
-export * from './components';
-export * from './apis';
+
+export * from '@bytedance/mona-client-mini';
+export { createPlugin } from '@bytedance/mona-client-plugin';
+export { createWebApp } from '@bytedance/mona-client-web';
+export { usePageEvent, useAppEvent, AppLifecycle, PageLifecycle } from '@bytedance/mona';

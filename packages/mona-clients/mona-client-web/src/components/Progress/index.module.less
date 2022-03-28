@@ -1,0 +1,13 @@
+.progress {
+
+  & .inner {
+    width: 0;
+    height: 100%;
+
+    &.active {
+      transition-property: width;
+      transition-duration: 1s;
+      transition-timing-function: linear;
+    }
+  }
+}

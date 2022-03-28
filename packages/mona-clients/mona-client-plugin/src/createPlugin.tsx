@@ -1,0 +1,1 @@
+export { createWebApp as createPlugin } from '@bytedance/mona-client-web';

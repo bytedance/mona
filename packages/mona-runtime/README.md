@@ -16,7 +16,7 @@ import { Link } from '@bytedance/mona-runtime';
 const Index = () => {
   return (
     <div>
-      <Link to='/pages/home/index'>navigate to home </Link>
+      <Link to="/pages/home/index">navigate to home </Link>
     </div>
   );
 };
@@ -60,7 +60,7 @@ redirectTo('/pages/home/index');
 
 飞鸽 API 分为两类
 
-- 以`onXXXX`开头的监听类 API，该类 API 接受回调函数作为参数，当在飞鸽中相应事件发生时，飞鸽会调用传过来的回调函数。
+- 以`onXXXX`开头的监听类 API，该类 API 接受回调函数作为参数，当在飞鸽中相应事件发生时，飞鸽会调用传过来的回调函数。注意: 监听类的方法，只会记录最后一次监听的函数, 建议把监听的结果存入到全局变量。
 - 非`onXXXX`开头的普通的 API，可以直接触发飞鸽中相应的动作
   > 注意：飞鸽 API 需要在开放平台中拥有相应的插件 API 权限包
 
@@ -103,7 +103,7 @@ pigeon.addToInputBoxSafely({
   success: () => {},
   fail: error => {
     console.log(error);
-  } // {code: -100, message: '未知错误'}
+  }, // {code: -100, message: '未知错误'}
 });
 ```
 
@@ -155,7 +155,7 @@ pigeon.getInitInfo({
   },
   fail: error => {
     console.log(error);
-  } // {code: -100, message: '未知错误'}
+  }, // {code: -100, message: '未知错误'}
 });
 ```
 
