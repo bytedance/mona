@@ -10,14 +10,13 @@ const maxBuild = (ctx) => {
       usage: 'mona-service max-build',
     },
     () => {
-      const config = require('../config/webpack.prod')
-
       console.log(chalk.yellow(`🏃 正在打包构建组件......`));
-      const umdConfig = config('umd')
-      const esmConfig = config('esm')
 
+      const umdConfig = require('../config/webpack.prod')('umd')
       webpack(umdConfig, (err, stats) => handleError(err, stats, 'umd'));
+      delete require.cache[require.resolve("../config/webpack.prod")]
 
+      const esmConfig = require('../config/webpack.prod')('esm')
       webpack(esmConfig, (err, stats) => handleError(err, stats, 'esm'));
     }
   )

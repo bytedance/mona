@@ -13,7 +13,7 @@ export const genPluginHtml = (buildId: string) => {
       <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover"></head>
       <script></script>
     <body>
-      <div id="root"></div>
+      <div id="root" style="height: 100%"></div>
     </body>
   </html>
   `;

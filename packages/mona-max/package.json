@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-max",
-  "version": "0.2.0-alpha.24",
+  "version": "0.2.0-alpha.25",
   "description": "Cli for isv",
   "main": "index.js",
   "scripts": {
@@ -21,6 +21,7 @@
     "less-loader": "^10.2.0",
     "open": "^8.4.0",
     "postcss": "^8.4.5",
+    "postcss-import": "^14.0.2",
     "postcss-loader": "^6.2.1",
     "postcss-plugin-rpx2vw": "^0.0.2",
     "style-loader": "^3.3.1",
@@ -28,6 +29,7 @@
     "webpack": "^5.66.0",
     "webpack-dev-server": "^4.7.3",
     "webpack-merge": "^5.8.0",
+    "webpack-virtual-modules": "^0.4.3",
     "webpack-watch-files-plugin": "^1.2.0",
     "ws": "^8.4.2"
   },
