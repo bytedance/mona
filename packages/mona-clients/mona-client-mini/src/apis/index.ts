@@ -1,4 +1,4 @@
-import { BaseApis, Callbacks } from '@bytedance/mona';
+import { BaseApis } from '@bytedance/mona';
 import { formatPath } from '@bytedance/mona-shared';
 
 const MonaApi: Partial<BaseApis> = {
