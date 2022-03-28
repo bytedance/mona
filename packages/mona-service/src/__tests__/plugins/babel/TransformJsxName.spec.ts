@@ -19,6 +19,8 @@ function jsxTransform(source: string, filename: string = __filename) {
 }
 
 const domCode = `
+import React from 'react';
+
 const Test = () => {
   return( <View>
   <View>测试是否会将domElement转换为小程序压缩后element的别名</View>
@@ -33,6 +35,8 @@ const domLabels = ['img', 'span', 'div', 'iframe'];
 
 const miniCode = `
 import {View, Text} from '@bytedance/mona-runtime'
+import React from 'react';
+
 const Test = () => {
   return( <View>
   <Text>测试压缩element的别名</Text>
