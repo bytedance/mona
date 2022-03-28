@@ -4,9 +4,6 @@ const path = require('path');
 const { name = '@shop-isv/isv-com' } = JSON.parse(fs.readFileSync(path.resolve(process.cwd(), './package.json'), 'utf-8'));
 
 module.exports = {
-  entry: {
-    index: path.resolve(process.cwd(), './src/index')
-  },
   output: {
     filename: '[name].umd.js',
     library: {
