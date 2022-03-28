@@ -12,6 +12,9 @@
 //   }
 //   return true;
 // }
+test('temp', () => {
+  console.log('占位');
+});
 
 // describe('template', () => {
 //   let tempDir = `./monaJest`;
