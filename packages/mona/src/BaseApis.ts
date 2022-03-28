@@ -1503,5 +1503,5 @@ abstract class Api {
   // 自定义
   abstract open(url: string): void;
 }
-
-export default Api;
+type BaseApis =  Api & { [key: string | symbol | number]: (options: any) => void }
+export default BaseApis;

@@ -10,7 +10,7 @@ const MonaApi: Partial<BaseApis> = {
   switchTab: options => tt.switchTab({ ...options, url: formatPath(options.url) }),
 };
 
-export const Mona: BaseApis & { [key: string]: (options: any) => void } = new Proxy({} as any, {
+export const Mona: BaseApis = new Proxy({} as any, {
   get: function (_, property: keyof BaseApis) {
     if (MonaApi[property]) {
       return MonaApi[property];
