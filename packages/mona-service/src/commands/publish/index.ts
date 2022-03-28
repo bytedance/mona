@@ -57,7 +57,7 @@ const publish: IPlugin = (ctx) => {
         validate(input: string) {
           if (!input) {
             return '版本描述不能为空'
-          } else if (input.length <= 200) {
+          } else if (input.length > 200) {
             return '版本描述长度应小于200'
           } else {
             return true
