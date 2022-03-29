@@ -18,8 +18,6 @@ const publish: IPlugin = (ctx) => {
     usage: 'mona-service publish',
   }, async (args) => {
     try {
-      console.log(args)
-      console.log(JSON.parse(args.header))
       console.log(chalk.cyan(`请确保在项目根目录使用该命令`));
       // ensure login
       const user = readUser();
@@ -57,7 +55,7 @@ const publish: IPlugin = (ctx) => {
         validate(input: string) {
           if (!input) {
             return '版本描述不能为空'
-          } else if (input.length <= 200) {
+          } else if (input.length > 200) {
             return '版本描述长度应小于200'
           } else {
             return true

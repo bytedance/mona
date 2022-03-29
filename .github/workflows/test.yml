@@ -14,7 +14,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.22.0]
+        node-version: [14.18.0]
     steps:
       # prepare env
       - name: Checkout

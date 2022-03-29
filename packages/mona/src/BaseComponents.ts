@@ -79,7 +79,7 @@ export interface EventHandler {
 }
 
 export interface TouchEventHandler<T = Touch, D = any> {
-  (event: TouchEvent<T, D>): void;
+  (event: TouchEvent<T, D> & {stopPropagation?: () => void } ): void;
 }
 
 // 基础内容

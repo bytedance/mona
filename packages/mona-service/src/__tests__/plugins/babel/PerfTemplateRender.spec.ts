@@ -23,6 +23,8 @@ function jsxTransform(source: string, filename: string = __filename) {
 }
 
 const templateCollectCode = `
+import React from 'react';
+
 ()=>( <>
   <view></view>
   <div></div>
@@ -34,8 +36,8 @@ const templateCollectCode = `
 </>)
 `;
 const propsCollectCode = `
-import {View} from "${runtimePkgJson.name}"
-
+import {View} from "${runtimePkgJson.name}";
+import React from 'react';
 ()=>( <>
   <view onTap={()=>{}} ></view>
   <div onTouchMove={()=>{}} ></div>
@@ -51,6 +53,8 @@ import {View} from "${runtimePkgJson.name}"
 const importCode = `
 import { View } from "${runtimePkgJson.name}"
 import { PickerView } from "other"
+import React from 'react';
+
 
 ()=>( <>
   <view onTap={()=>{}} ></view>
@@ -71,7 +75,6 @@ describe('perfTemplateRender', () => {
 
   it('collect Template', async () => {
     await jsxTransform(templateCollectCode, 'templateCollectCode.tsx');
-
     expect(Array.from(monaStore.templateRenderMap.keys()).length === 4).toBeTruthy();
   });
 
@@ -82,7 +85,6 @@ describe('perfTemplateRender', () => {
     const pickerViewInfo = monaStore.templateRenderMap.get(ComponentType['picker-view']);
     const pickerViewColumnInfo = monaStore.templateRenderMap.get(ComponentType['picker-view-column']);
     const imageInfo = monaStore.templateRenderMap.get(ComponentType.image);
-    // console.log(viewInfo);
     expect([viewInfo.isRenderAllProps, Object.keys(viewInfo.renderProps).length]).toEqual([false, 3]);
     expect([pickerInfo.isRenderAllProps, Object.keys(pickerInfo.renderProps).length]).toEqual([false, 1]);
     expect(pickerViewInfo.isRenderAllProps).toBeTruthy();

@@ -1,5 +1,7 @@
 import path from 'path';
 import ejs from 'ejs';
+//@ts-ignore
+import ConcatenatedModule from 'webpack/lib/optimize/ConcatenatedModule';
 import { readConfig } from '@bytedance/mona-shared';
 import { PageConfig } from '@bytedance/mona';
 import ConfigHelper from '@/ConfigHelper';
@@ -69,6 +71,14 @@ export default async function createJson(compilation: Compilation, configHelper:
 
 function processModuleFactory(cwd: string, handledModules: Set<string>) {
   function processModule(compilation: Compilation, module: NormalModule, page: string) {
+    // production 模式下，optimization.concatenateModules默认开启，会对module做一些优化合并，导致module获取到的为ConcatenatedModule，所以这里取ConcatenatedModule.rootModule
+    if (module instanceof ConcatenatedModule) {
+      //@ts-ignore
+      if (module.rootModule instanceof NormalModule) {
+        //@ts-ignore
+        module = module.rootModule;
+      }
+    }
     // 处理循环递归
     if (!module?.resource || handledModules.has(module?.resource)) {
       return;
@@ -85,7 +95,14 @@ function processModuleFactory(cwd: string, handledModules: Set<string>) {
         if (!requestPath) {
           return;
         }
-
+        //@ts-ignore
+        if (requestPath?.includes('components/organization') && dependencyModule?.rootModule) {
+          console.log({
+            ...dependencyModule,
+            _valueAsString: undefined,
+            _modules: '',
+          });
+        }
         let filePath = processNativePath(requestPath, module.context);
 
         const componentEntry = monaStore.nativeEntryMap.get(filePath);
