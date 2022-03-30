@@ -13,10 +13,10 @@ module.exports = function createModule(id) {
 function _generatePluginEntryCode(id) {
   const code = `
     import App from './index'
-    function myComp () {
+    function myComp (props) {
         return (
-            <div id="${id}">
-              <App/>
+            <div id="_${id}">
+              <App {...props}/>
             </div>
         )
     }
