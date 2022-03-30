@@ -95,14 +95,7 @@ function processModuleFactory(cwd: string, handledModules: Set<string>) {
         if (!requestPath) {
           return;
         }
-        //@ts-ignore
-        if (requestPath?.includes('components/organization') && dependencyModule?.rootModule) {
-          console.log({
-            ...dependencyModule,
-            _valueAsString: undefined,
-            _modules: '',
-          });
-        }
+
         let filePath = processNativePath(requestPath, module.context);
 
         const componentEntry = monaStore.nativeEntryMap.get(filePath);
