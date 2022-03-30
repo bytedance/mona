@@ -83,6 +83,9 @@ class TargetContext {
           },
           hot: true,
           open: true,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+          },
           historyApiFallback: true,
           compress: true,
           port,
