@@ -63,11 +63,10 @@ export async function upload(output: string, userId: string, args: any) {
   const mime = 'application/zip';
   const fileName = path.basename(output);
   const form = new FormData();
-  // 8
-  form.append('app_id', '65');
+  const isOnline = domain.indexOf('jinritemai.com') !== -1;
+  form.append('app_id', isOnline ? '8' : '65');
   form.append('channel_key', 'open');
   form.append('ftype', '2');
-  // TODO
   form.append('uid', userId);
   form.append('file', fs.createReadStream(output), {
     contentType: mime,
