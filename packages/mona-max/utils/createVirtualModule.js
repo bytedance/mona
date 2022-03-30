@@ -15,7 +15,7 @@ function _generatePluginEntryCode(id) {
     import App from './index'
     function myComp (props) {
         return (
-            <div id="${id}">
+            <div id="_${id}">
               <App {...props}/>
             </div>
         )
