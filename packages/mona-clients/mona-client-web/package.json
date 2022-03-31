@@ -25,13 +25,8 @@
     "xgplayer-mp4": "^2.0.0"
   },
   "devDependencies": {
-<<<<<<< HEAD
     "@bytedance/mona": "0.2.3-alpha.3",
     "@bytedance/mona-shared": "0.2.3-alpha.3",
-=======
-    "@bytedance/mona": "0.2.3-alpha.1",
-    "@bytedance/mona-shared": "0.2.3-alpha.1",
->>>>>>> main
     "@types/react-dom": "^17.0.2",
     "@types/react-router": "^5.1.17",
     "@types/react-router-dom": "^5.3.1",

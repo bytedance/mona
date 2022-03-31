@@ -17,11 +17,7 @@
     "mona"
   ],
   "dependencies": {
-<<<<<<< HEAD
     "@bytedance/mona-client-web": "0.2.3-alpha.3"
-=======
-    "@bytedance/mona-client-web": "0.2.3-alpha.1"
->>>>>>> main
   },
   "peerDependencies": {
     "@bytedance/mona-plugin-events": "^0.2.0-alpha.6",
