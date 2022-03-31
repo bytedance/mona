@@ -1,6 +1,7 @@
 const { merge } = require("webpack-merge");
 
 const baseConfig = require("./webpack.base.js");
+delete require.cache[require.resolve("./webpack.base.js")]
 const umdConfig = require("./build-umd-config.js");
 const esmConfig = require("./build-esm-config.js");
 
