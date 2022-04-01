@@ -135,11 +135,14 @@ export function addUsingComponents(compilation: Compilation, configHelper: Confi
 
   const modules = Array.from(compilation.modules.values()) as NormalModule[];
   modules.forEach(module => {
+    if (!module.resource) {
+      return;
+    }
     let replaceEnd = '';
     if (module.resource?.endsWith('.entry.js') || module.resource?.endsWith('.entry.ts')) {
-      replaceEnd = `.entry${path.extname(module.resource)}`;
+      replaceEnd = `.entry${path.extname(module.resource || '')}`;
     } else {
-      replaceEnd = path.extname(module.resource);
+      replaceEnd = path.extname(module.resource || '');
     }
     let resourcePath = module.resource?.replace(new RegExp(`${replaceEnd}$`), '');
 
