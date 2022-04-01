@@ -2,29 +2,49 @@
  * easybox is a light sandbox for webapp
  * author: xwchris
  */
-import importHTML from 'import-html-entry';
+import importHTML from './import-html-entry';
 import Sandbox from './sandbox';
 
-interface EasyboxOptions {
-  scope?: string;
+export interface Navigation {
+  allowDomains?: string[];
+}
+export interface EasyboxOptions {
+  scope: string;
+  entryPath?: string;
+  navigation?: Navigation;
+}
+
+const defaultOptions: Required<EasyboxOptions> = {
+  scope: '',
+  entryPath: '/',
+  navigation: {}
 }
 class Easybox {
   entry: string;
-  options: EasyboxOptions;
+  options: Required<EasyboxOptions>;
 
   constructor(entry: string, options?: EasyboxOptions) {
     this.entry = entry;
-    this.options = options || {};
+    this.options = Object.assign({}, options, defaultOptions);
   }
 
   async run() {
     // parse entry
-    const { execScripts, ...rest } = await importHTML(this.entry);
-    console.log('rest', rest);
+    const { execScripts, template, assetPublicPath } = await importHTML(this.entry, {
+      // PERF: handle publicPath
+      getPublicPath: (entry: string) => `${(new URL(entry)).origin}/`
+    });
     // create sandbox
-    const storageScope = this.options.scope || '';
-    const sandbox = new Sandbox({ storageScope });
+    const sandbox = new Sandbox(this.options);
+    window.__mona_easy_box = sandbox;
     const global = sandbox.global;
+
+    // handle publicPath
+    window.__mona_public_path__ = assetPublicPath;
+
+    // write template
+    document.write(template);
+
     // exec script
     await execScripts(global, false)
   }

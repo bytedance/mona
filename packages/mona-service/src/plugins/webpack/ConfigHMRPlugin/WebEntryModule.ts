@@ -1,54 +1,7 @@
 import path from 'path';
-import VirtualModulesPlugin from '../VirtualModulesPlugin';
-import { formatAppConfig, readConfig } from '@bytedance/mona-shared';
-import { PageConfig } from '@bytedance/mona';
-import ConfigHelper from '@/ConfigHelper';
-
-class WebEntryModule {
-  configHelper: ConfigHelper;
-  name: string;
-  module: VirtualModulesPlugin;
-
-  constructor(configHelper: ConfigHelper) {
-    this.configHelper = configHelper;
-    this.name = 'entry.js';
-    this.module = this.createModule();
-  }
-
-  // change extention filename
-  static extendEntryName(filename: string) {
-    const ext = path.extname(filename);
-    const newExt = ext.endsWith('.ts') ? '.entry.ts' : '.entry.js';
-    return filename.replace(ext, newExt);
-  }
-
-  createModule() {
-    const { entryPath } = this.configHelper;
-
-    const module: Record<string, string> = {};
-    const virtualPath = path.join(entryPath, '..', 'app.entry.js');
-    module[virtualPath] = this._generatePluginEntryCode(entryPath);
-    this.name = virtualPath;
-
-    return new VirtualModulesPlugin(module);
-  }
-
-  updateModule() {
-    // update config first
-    this.configHelper.readAllConfig();
-
-    // update module
-    const code = this._generatePluginEntryCode(this.configHelper.entryPath);
-    const virtualPath = this.name;
-    this.module.writeModule(virtualPath, code);
-  }
-
-  getPageTitle(page: string) {
-    const pageConfigPath = path.join(this.configHelper.cwd, `./src/${page}`, '..', 'page.config');
-    const pageConfig = readConfig<PageConfig>(pageConfigPath);
-    return pageConfig.navigationBarTitleText || '';
-  }
-
+import { formatAppConfig } from '@bytedance/mona-shared';
+import CommonEntryModule from './CommonEntryModule';
+class WebEntryModule extends CommonEntryModule  {
   private _generateRoutesCode() {
     const pages = Array.from(new Set((this.configHelper.appConfig.pages || []) as string[]));
     let routesCode = pages.map((page, index) => `import Page${index} from './${page}';`).join('');
@@ -72,7 +25,7 @@ class WebEntryModule {
     return navBarCode;
   }
 
-  private _generatePluginEntryCode(filename: string) {
+  generateEntryCode(filename: string) {
     const code = `
       import { createWebApp, show, createAppLifeCycle, createPageLifecycle } from '@bytedance/mona-runtime';
       import App from './${path.basename(filename)}';

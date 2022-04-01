@@ -1,38 +1,69 @@
+import { EasyboxOptions } from '..';
 import FakeWindowFactory from './FakeWindowFactory';
-import ScopeStorage from './ScopeStorage';
+import route from './modules/route';
+import storage from './modules/storage';
+import document from './modules/document';
+import { bindContext, hasOwn } from './utils';
+import RouteSandbox from './modules/route/RouteSandbox';
 
-interface SandboxOptions {
-  storageScope: string;
-}
+export type SandboxOptions = Required<EasyboxOptions>
+
+const modules = [
+  storage,
+  route,
+  document
+]
 
 class Sandbox {
   global: Window;
   options: SandboxOptions;
+  overrides: Record<string, any>;
 
   constructor(options: SandboxOptions) {
     this.options = options;
+    this.overrides = {
+      // postMessage: window.postMessage.bind(window),
+    }
+    modules.forEach(module => {
+      this.overrides = { ...this.overrides, ...module(this.options) };
+    })
     this.global = this.createProxyGlobal();
   }
 
   // ban web storage
   createProxyGlobal(): Window {
+    const selfKeys = ['self', 'window', 'globalThis', 'top', 'parent'];
+    // set self keys can rewrite
     const factory = new FakeWindowFactory(window);
-    const origin = factory.createFakeWindow();
-
+    const origin = factory.createFakeWindow((prop) => selfKeys.indexOf(prop) !== -1);
+    
     // overrides
-    const overrides: Record<string, any> = {
-      document: this.createProxyDocument(origin.document),
-      localStorage: new ScopeStorage(this.options.storageScope, origin.localStorage),
-      sessionStorage: new ScopeStorage(this.options.storageScope, origin.sessionStorage),
-      ...this.createEventListener(),
-    };
-
+    const overrides = this.overrides;
+    
     // handler
-    const get = (obj: any, prop: string, receiver: any) => {
-      console.log('prop', prop, Object.prototype.hasOwnProperty.call(obj, prop), obj[prop])
-      return prop in overrides ? overrides[prop] : Reflect.get(obj, prop, receiver)
+    const get = (obj: any, prop: PropertyKey, receiver: any) => {
+      let value: any;
+      if (prop === Symbol.unscopables) {
+        return undefined;
+      } else if (prop in overrides) {
+        value = overrides[prop as string];
+      } else if (hasOwn(obj, prop)) {
+        value = Reflect.get(obj, prop, receiver) 
+      } else {
+        value = Reflect.get(window, prop);
+      }
+
+      return bindContext(value, window)
     };
-    const set = Reflect.set;
+    const set = (obj: any, prop: string, value: any, receiver: any) => {
+      // console.log('set', obj, prop, value);
+      // handle some location prop
+      const routeSandbox = overrides['_routeSandbox'] as RouteSandbox;
+      if (RouteSandbox.shouldProxyRouteSandbox(prop)) {
+        return routeSandbox.setInSandbox(prop, value);
+      }
+      return Reflect.set(obj, prop, value, receiver);
+    }
     const defineProperty = Reflect.defineProperty;
     const deleteProperty = Reflect.deleteProperty;
     const handler = { get, set, defineProperty, deleteProperty }
@@ -41,46 +72,9 @@ class Sandbox {
     const proxy = new Proxy(origin, handler);
     const subProxy = new Proxy(origin, handler);
 
-    proxy.self = subProxy;
-    proxy.window = subProxy;
-    proxy.globalThis = subProxy;
-    proxy.top = window.top === window ? subProxy : window.top;
-    proxy.parent = window.parent === window ? subProxy : window.top;
-    
-    return proxy;
-  }
-
-  createEventListener() {
-    const rawAddEventListener = window.addEventListener;
-    const rawRemoveEventListener = window.removeEventListener;
-    return {
-      addEventListener: (type: string, listener: any, options?: any) => rawAddEventListener.call(window, type, listener, options),
-      removeEventListener: (type: string, listener: any, options?: any) => rawRemoveEventListener.call(window, type, listener, options)
-    }
-  }
-
-  // ban document.cookie/document.title
-  createProxyDocument(origin: Document): Document {
-    const proxy = new Proxy(origin, {
-      get(obj, prop) {
-        if (prop === 'cookie') {
-          console.warn("can't get cookie in app");
-          return ''
-        }
-        return Reflect.get(obj, prop);
-      },
-      set(obj, prop, value) {
-        if (prop === 'title') {
-          console.warn("can't set title in app");
-          return false;
-        } else if (prop === 'cookie') {
-          console.warn("can't set cookie in app");
-          return false;
-        }
-        return Reflect.set(obj, prop, value);
-      }
+    selfKeys.forEach(key => {
+      proxy[key] = subProxy;
     })
-
     return proxy;
   }
 }
