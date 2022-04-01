@@ -54,7 +54,7 @@
     "jest-dom": "^4.0.0",
     "jsdom": "^19.0.0",
     "jsdom-global": "^3.0.2",
-    "ora": "^6.1.0",
+    "ora": "5.4.1",
     "react-test-renderer": "^17.0.0",
     "semver": "^7.3.5",
     "ts-jest": "^27.1.3",
