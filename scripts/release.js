@@ -47,8 +47,11 @@ function getTag(str) {
   }
   return;
 }
+function log(...args) {
+  console.log(chalk.white.bgBlack('release'), ...args);
+}
 function main() {
-  console.log('发布注意事项:\n 1. 确定已经merge main分支 2. 确保当前分支最新');
+  log(chalk.bold.red(`发布注意事项:\n   1. 确定已经merge main分支。\n   2. 确保当前分支最新`));
 
   const newVersion = getVersion();
   const tag = getTag(newVersion);
@@ -60,18 +63,18 @@ function main() {
   // const isValid = semver.valid(newVersion);
   const cmp = semver.compare(npmVersion, newVersion);
   const released = npmVersionList.includes(newVersion);
-  console.log(chalk.green(`即将发布版本: ${chalk.blue.underline.bold(newVersion)}`));
+  log(chalk.green(`即将发布版本: ${chalk.blue.underline.bold(newVersion)}`));
   // console.log(chalk.green(`npm最新版本: ${chalk.blue.underline.bold(npmVersion)}`));
-
   if (cmp === 1) {
     if (released) {
-      console.log(chalk.red(`版本<${newVersion}>已存在`));
+      log(chalk.red(`版本<${newVersion}>已存在`));
       return;
     } else {
-      console.log(chalk.red(`版本<${newVersion}>落后npm最新版本<${npmVersion}>`));
+      log(chalk.red(`版本<${newVersion}>落后npm最新版本<${npmVersion}>`));
+      return;
     }
   } else if (cmp === 0) {
-    console.log(chalk.red(`版本<${newVersion}>已存在`));
+    log(chalk.red(`版本<${newVersion}>已存在`));
     return;
   } else if (cmp === -1) {
     // execa.commandSync('git add .');
