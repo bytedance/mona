@@ -2,7 +2,7 @@ const execa = require('execa');
 const semver = require('semver');
 const chalk = require('chalk');
 const inquirer = require('inquirer');
-
+const ora = require('ora');
 function getGitBranch() {
   const res = execa.commandSync('git rev-parse --abbrev-ref HEAD');
   return res.stdout;
@@ -83,6 +83,7 @@ function main() {
   } else if (cmp === -1) {
     oldVersion = false;
   }
+
   inquirer
     .prompt(
       genPrompt(
@@ -93,11 +94,15 @@ function main() {
     )
     .then(ans => {
       if (ans.release) {
+        const spinner = ora('git 命令执行中').start();
+        spinner.color = 'green';
         execa.commandSync('git add .');
         execa.commandSync(`git commit -m \"chore(release): publish ${newVersion}  ${tag ? `--tag=${tag}` : ''}\"`, {
           shell: true,
         });
         execa.commandSync(`git push origin ${branch}`);
+
+        spinner.succeed(chalk.grey('git 命令执行成功！'));
         log(chalk.green(`请到 ${chalk.blue.underline.bold('https://github.com/bytedance/mona/actions')} 观察流水线`));
       } else {
         log(chalk.red(`npm发包终止`));
