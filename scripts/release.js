@@ -77,8 +77,8 @@ function main() {
     log(chalk.red(`版本<${newVersion}>已存在`));
     return;
   } else if (cmp === -1) {
-    // execa.commandSync('git add .');
-    // execa.commandSync(`git commit -m "chore(release): publish ${newVersion}  ${tag ? `--tag=${tag}` : ''}"`);
+    execa.commandSync('git add .');
+    execa.commandSync(`gcmsg \"chore(release): publish ${newVersion}  ${tag ? `--tag=${tag}` : ''}\"`);
   }
 }
 main();
