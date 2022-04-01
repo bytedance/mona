@@ -1,16 +1,7 @@
-// lerna version 0.2.4  --exact --no-git-tag-version --force-publish --yes
-// git add .
-// `git commit -m "chore(release): publish ${newVersion} --tag=alpha`
-// git push origin
-// npm run lint
 const execa = require('execa');
 const semver = require('semver');
 const chalk = require('chalk');
-
-function getGitHash() {
-  const res = execa.commandSync('git rev-parse --short HEAD');
-  return res.stdout;
-}
+const inquirer = require('inquirer');
 
 function getGitBranch() {
   const res = execa.commandSync('git rev-parse --abbrev-ref HEAD');
@@ -50,6 +41,19 @@ function getTag(str) {
 function log(...args) {
   console.log(chalk.white.bgBlack('release'), ...args);
 }
+
+const genPrompt = title => {
+  const arr = [
+    {
+      type: 'confirm',
+      name: 'release',
+      message: title,
+      default: true,
+    },
+  ];
+  return arr;
+};
+
 function main() {
   log(chalk.bold.red(`发布注意事项:\n   1. 确定已经merge main分支。\n   2. 确保当前分支最新`));
 
@@ -64,24 +68,40 @@ function main() {
   const cmp = semver.compare(npmVersion, newVersion);
   const released = npmVersionList.includes(newVersion);
   log(chalk.green(`即将发布版本: ${chalk.blue.underline.bold(newVersion)}`));
-  // console.log(chalk.green(`npm最新版本: ${chalk.blue.underline.bold(npmVersion)}`));
+  let oldVersion = false;
   if (cmp === 1) {
     if (released) {
       log(chalk.red(`版本<${newVersion}>已存在`));
       return;
     } else {
       log(chalk.red(`版本<${newVersion}>落后npm最新版本<${npmVersion}>`));
-      return;
+      oldVersion = true;
     }
   } else if (cmp === 0) {
     log(chalk.red(`版本<${newVersion}>已存在`));
     return;
   } else if (cmp === -1) {
-    execa.commandSync('git add .');
-    execa.commandSync(`git commit -m \"chore(release): publish ${newVersion}  ${tag ? `--tag=${tag}` : ''}\"`, {
-      shell: true,
-    });
-    execa.commandSync(`git push origin ${branch}`);
+    oldVersion = false;
   }
+  inquirer
+    .prompt(
+      genPrompt(
+        oldVersion
+          ? `版本<${newVersion}>落后npm最新版本<${npmVersion}>, 确认要发布吗`
+          : `版本<${newVersion}>, 确认发布吗`,
+      ),
+    )
+    .then(ans => {
+      if (ans.release) {
+        execa.commandSync('git add .');
+        execa.commandSync(`git commit -m \"chore(release): publish ${newVersion}  ${tag ? `--tag=${tag}` : ''}\"`, {
+          shell: true,
+        });
+        execa.commandSync(`git push origin ${branch}`);
+        log(chalk.green(`请到 ${chalk.blue.underline.bold('https://github.com/bytedance/mona/actions')} 观察流水线`));
+      } else {
+        return;
+      }
+    });
 }
 main();
