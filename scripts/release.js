@@ -78,7 +78,9 @@ function main() {
     return;
   } else if (cmp === -1) {
     execa.commandSync('git add .');
-    execa.commandSync(`gcmsg \"chore(release): publish ${newVersion}  ${tag ? `--tag=${tag}` : ''}\"`);
+    execa.commandSync(`git commit -m \"chore(release): publish ${newVersion}  ${tag ? `--tag=${tag}` : ''}\"`, {
+      shell: true,
+    });
   }
 }
 main();
