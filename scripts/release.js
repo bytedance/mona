@@ -81,6 +81,7 @@ function main() {
     execa.commandSync(`git commit -m \"chore(release): publish ${newVersion}  ${tag ? `--tag=${tag}` : ''}\"`, {
       shell: true,
     });
+    execa.commandSync(`git push origin ${branch}`);
   }
 }
 main();
