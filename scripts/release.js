@@ -87,8 +87,8 @@ function main() {
     .prompt(
       genPrompt(
         oldVersion
-          ? `版本<${newVersion}>落后npm最新版本<${npmVersion}>, 确认要发布吗`
-          : `版本<${newVersion}>, 确认发布吗`,
+          ? `版本<${newVersion}>落后npm最新版本<${npmVersion}>, 确认要发npm包吗`
+          : `版本<${newVersion}>, 确认发npm包吗`,
       ),
     )
     .then(ans => {
@@ -100,6 +100,7 @@ function main() {
         execa.commandSync(`git push origin ${branch}`);
         log(chalk.green(`请到 ${chalk.blue.underline.bold('https://github.com/bytedance/mona/actions')} 观察流水线`));
       } else {
+        log(chalk.red(`npm发包终止`));
         return;
       }
     });
