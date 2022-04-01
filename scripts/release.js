@@ -5,6 +5,8 @@
 // npm run lint
 const execa = require('execa');
 const semver = require('semver');
+const chalk = require('chalk');
+
 function getGitHash() {
   const res = execa.commandSync('git rev-parse --short HEAD');
   return res.stdout;
@@ -47,10 +49,7 @@ function getTag(str) {
 }
 function main() {
   console.log('发布注意事项:\n 1. 确定已经merge main分支 2. 确保当前分支最新');
-  // execa.commandSync('lerna version --exact --no-git-tag-version --force-publish --yes', { shell: true });
-  // execa('lerna', ['version', '--exact', '--no-git-tag-version', '--force-publish', '--yes']).then(res => {
-  //   console.log(res);
-  // });
+
   const newVersion = getVersion();
   const tag = getTag(newVersion);
   const npmVersionList = getPkgNpmVersionList();
@@ -58,28 +57,25 @@ function main() {
 
   const branch = getGitBranch();
 
-  const isValid = semver.valid(newVersion);
+  // const isValid = semver.valid(newVersion);
   const cmp = semver.compare(npmVersion, newVersion);
   const released = npmVersionList.includes(newVersion);
-  console.log(`即将发布版本: ${newVersion}`);
-  console.log(`Tag: ${tag}`);
-
-  console.log(`当前分支: ${branch}`);
-  console.log(`npmVersion: ${npmVersion}`);
+  console.log(chalk.green(`即将发布版本: ${chalk.blue.underline.bold(newVersion)}`));
+  // console.log(chalk.green(`npm最新版本: ${chalk.blue.underline.bold(npmVersion)}`));
 
   if (cmp === 1) {
     if (released) {
-      console.log('即将发布版本已存在');
+      console.log(chalk.red(`版本<${newVersion}>已存在`));
       return;
     } else {
-      console.log('即将发布版本落后npm版本');
+      console.log(chalk.red(`版本<${newVersion}>落后npm最新版本<${npmVersion}>`));
     }
   } else if (cmp === 0) {
-    console.log('即将发布版本已存在');
+    console.log(chalk.red(`版本<${newVersion}>已存在`));
     return;
   } else if (cmp === -1) {
-    execa.commandSync('git add .');
-    execa.commandSync(`git commit -m "chore(release): publish ${newVersion}  ${tag ? `--tag=${tag}` : ''}"`);
+    // execa.commandSync('git add .');
+    // execa.commandSync(`git commit -m "chore(release): publish ${newVersion}  ${tag ? `--tag=${tag}` : ''}"`);
   }
 }
 main();
