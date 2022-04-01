@@ -5,13 +5,15 @@ import storage from './modules/storage';
 import document from './modules/document';
 import { bindContext, hasOwn } from './utils';
 import RouteSandbox from './modules/route/RouteSandbox';
+import element from './modules/element';
 
 export type SandboxOptions = Required<EasyboxOptions>
 
 const modules = [
   storage,
   route,
-  document
+  document,
+  element
 ]
 
 class Sandbox {
