@@ -34,27 +34,10 @@ module.exports = {
             options: {
               importLoaders: 2,
               modules: {
-                auto: true,
-                localIdentName: '[local]_[hash:base64:5]',
                 getLocalIdent: (loaderContext, localIdentName, localName, options) => {
-                  // 配合PostcssPreSelector插件
                   if (localName === buildId) {
                     return localName;
                   }
-      
-                  if (!options.context) {
-                    options.context = loaderContext.rootContext;
-                  }
-      
-                  const request = path.relative(options.context, loaderContext.resourcePath).replace(/\\/g, '/');
-      
-                  options.content = `${options.hashPrefix + request}+${localName}`;
-      
-                  localIdentName = localIdentName.replace(/\[local\]/gi, localName);
-      
-                  const hash = loaderUtils.interpolateName(loaderContext, localIdentName, options);
-      
-                  return hash;
                 },
               },
             }
@@ -87,27 +70,10 @@ module.exports = {
             options: {
               importLoaders: 2,
               modules: {
-                auto: true,
-                localIdentName: '[local]_[hash:base64:5]',
                 getLocalIdent: (loaderContext, localIdentName, localName, options) => {
-                  // 配合PostcssPreSelector插件
                   if (localName === buildId) {
                     return localName;
                   }
-      
-                  if (!options.context) {
-                    options.context = loaderContext.rootContext;
-                  }
-      
-                  const request = path.relative(options.context, loaderContext.resourcePath).replace(/\\/g, '/');
-      
-                  options.content = `${options.hashPrefix + request}+${localName}`;
-      
-                  localIdentName = localIdentName.replace(/\[local\]/gi, localName);
-      
-                  const hash = loaderUtils.interpolateName(loaderContext, localIdentName, options);
-      
-                  return hash;
                 },
               },
             }
