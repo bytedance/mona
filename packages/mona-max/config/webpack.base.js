@@ -3,7 +3,6 @@ const PostcssPluginRpxToVw = require("postcss-plugin-rpx2vw");
 const TerserPlugin = require("terser-webpack-plugin");
 const MvJSONPlugin = require('../utils/mvJsonPlugin');
 const CreateUniqueId = require('../utils/createUniqueId');
-const loaderUtils = require('loader-utils');
 const buildId = CreateUniqueId()
 const createModule = require('../utils/createVirtualModule');
 
@@ -35,9 +34,7 @@ module.exports = {
               importLoaders: 2,
               modules: {
                 getLocalIdent: (loaderContext, localIdentName, localName, options) => {
-                  if (localName === buildId) {
-                    return localName;
-                  }
+                  return localName;
                 },
               },
             }
@@ -70,10 +67,8 @@ module.exports = {
             options: {
               importLoaders: 2,
               modules: {
-                getLocalIdent: (loaderContext, localIdentName, localName, options) => {
-                  if (localName === buildId) {
-                    return localName;
-                  }
+                getLocalIdent: (loaderContext, localIdentName, localName) => {
+                  return localName;
                 },
               },
             }
