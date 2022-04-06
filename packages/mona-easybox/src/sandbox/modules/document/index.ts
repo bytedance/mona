@@ -1,17 +1,21 @@
 // import { SandboxOptions } from "@/sandbox";
-
-import { bindContext } from "@/sandbox/utils";
+import { bindContext, limitedCreateElementNS, limitedCreateElement } from '@/sandbox/utils';
 
 export default () => {
   const origin = window.document;
   const proxy = new Proxy(origin, {
     get(obj, prop) {
       let value: any;
-      if (prop === 'cookie') {
-        value = ''
+      //createElementNS
+      if (prop === 'createElement') {
+        value = limitedCreateElement;
+      } else if (prop === 'createElementNS') {
+        value = limitedCreateElementNS;
+      } else if (prop === 'cookie') {
+        value = '';
       } else {
         // do not pass reciver, or will cause wrong point Uncaught TypeError: Illegal invocation
-        value = Reflect.get(obj, prop)
+        value = Reflect.get(obj, prop);
       }
       return bindContext(value, origin);
     },
@@ -24,15 +28,15 @@ export default () => {
         return true;
       }
       return Reflect.set(obj, prop, value, receiver);
-    }
-  })
+    },
+  });
 
-  const FakeDocument = function() {
+  const FakeDocument = function () {
     return proxy;
-  }
+  };
 
   return {
     document: proxy,
-    Document: FakeDocument
-  }
-}
+    Document: FakeDocument,
+  };
+};
