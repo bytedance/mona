@@ -17,9 +17,6 @@
   ],
   "author": "zhangxiaowei.chris@bytedance.com",
   "license": "MIT",
-  "dependencies": {
-    "import-html-entry": "^1.11.1"
-  },
   "devDependencies": {
     "ttypescript": "^1.5.12",
     "typescript-json-schema": "^0.43.0",
