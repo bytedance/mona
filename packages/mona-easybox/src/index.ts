@@ -18,7 +18,7 @@ export interface NetWork {
 }
 export interface EasyboxOptions {
   scope: string;
-  entryPath: string;
+  entryPath?: string;
   navigation?: Navigation;
   network?: NetWork;
 }
