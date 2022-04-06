@@ -9,17 +9,26 @@ import { writeTemplate } from './utils'
 export interface Navigation {
   allowDomains?: string[];
 }
+
+export interface NetWork {
+  blockDomains?: string[];
+  allowDomains?: string[];
+  canAccessOriginDomain?: boolean;
+  canAccessHttp?: false;
+}
 export interface EasyboxOptions {
   scope: string;
   entryPath?: string;
   navigation?: Navigation;
+  network?: NetWork;
 }
 
 const defaultOptions: Required<EasyboxOptions> = {
   scope: '',
   entryPath: '/',
-  navigation: {}
-}
+  navigation: {},
+  network: {},
+};
 class Easybox {
   entry: string;
   options: Required<EasyboxOptions>;
@@ -33,7 +42,7 @@ class Easybox {
     // parse entry
     const { execScripts, template, assetPublicPath } = await importHTML(this.entry, {
       // PERF: handle publicPath
-      getPublicPath: (entry: string) => `${(new URL(entry)).origin}/`
+      getPublicPath: (entry: string) => `${new URL(entry).origin}/`,
     });
     // create sandbox
     const sandbox = new Sandbox(this.options);
@@ -48,7 +57,7 @@ class Easybox {
     // document.write(template);
 
     // exec script
-    await execScripts(global, false)
+    await execScripts(global, false);
   }
 }
 

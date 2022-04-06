@@ -3,6 +3,8 @@ import FakeWindowFactory from './FakeWindowFactory';
 import route from './modules/route';
 import storage from './modules/storage';
 import document from './modules/document';
+import network from './modules/network';
+
 import { bindContext, hasOwn } from './utils';
 import RouteSandbox from './modules/route/RouteSandbox';
 import element from './modules/element';
@@ -14,6 +16,7 @@ const modules = [
   storage,
   route,
   document,
+  network
 ]
 
 class Sandbox {
