@@ -1,5 +1,4 @@
-// import { SandboxOptions } from "@/sandbox";
-
+// proxy document to ban document.cookie and document.title
 import { bindContext } from "@/sandbox/utils";
 
 export default () => {

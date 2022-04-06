@@ -4,6 +4,7 @@
  */
 import importHTML from './import-html-entry';
 import Sandbox from './sandbox';
+import { writeTemplate } from './utils'
 
 export interface Navigation {
   allowDomains?: string[];
@@ -43,7 +44,8 @@ class Easybox {
     window.__mona_public_path__ = assetPublicPath;
 
     // write template
-    document.write(template);
+    writeTemplate(template);
+    // document.write(template);
 
     // exec script
     await execScripts(global, false)

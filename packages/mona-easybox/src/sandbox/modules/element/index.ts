@@ -1,3 +1,6 @@
+// bind event to element a to handle link navigate
+// ban tag iframe
+
 const Element = window.Element as any;
 const rawSetAttribute = Element.prototype.setAttribute;
 const rawAddEventListener = Element.prototype.addEventListener;
@@ -98,17 +101,22 @@ const element =  () => {
 
   const { MutationObserver } = window;
   const observer = new MutationObserver((mutations) => {
-  const linkNodes: HTMLAnchorElement[] = [];
+    const linkNodes: HTMLAnchorElement[] = [];
+    const iframeNodes: HTMLIFrameElement[] = [];
     mutations.forEach(({ type, target, attributeName, addedNodes }) => {
-      // collect all a element
+      // collect all target element
       if (type === 'childList' && addedNodes.length > 0) {
         addedNodes.forEach((node) => {
           const tagName = (node as Element).tagName;
           if (tagName === 'A') {
             linkNodes.push(node as HTMLAnchorElement);
+          } else if (tagName === 'IFRAME') {
+            iframeNodes.push(node as HTMLIFrameElement);
           } else if ((node as Element).getElementsByTagName) {
-            const childNodes = (node as Element).getElementsByTagName('a');
-            linkNodes.push(...[].slice.call(childNodes));
+            const cn1 = (node as Element).getElementsByTagName('a');
+            const cn2 = (node as Element).getElementsByTagName('iframe');
+            linkNodes.push(...[].slice.call(cn1));
+            iframeNodes.push(...[].slice.call(cn2));
           }
         });
       } else if (
@@ -119,13 +127,20 @@ const element =  () => {
         linkNodes.push(target as HTMLAnchorElement);
       }
 
-      // handle a element
-      linkNodes.forEach((linkNode) => {
+      // handle link element
+      linkNodes.forEach(linkNode => {
         bindNavEvent(linkNode)
       });
+
+      // handle all iframe element
+      iframeNodes.forEach(iframeNode => {
+        // remove the element
+        iframeNode.remove();
+      })
     });
   });
-  const root = document.body;
+
+  const root = document.documentElement;
   observer.observe(root, { attributes: true, subtree: true, childList: true });
   return {}
 }

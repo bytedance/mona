@@ -10,10 +10,10 @@ import element from './modules/element';
 export type SandboxOptions = Required<EasyboxOptions>
 
 const modules = [
+  element,
   storage,
   route,
   document,
-  element
 ]
 
 class Sandbox {

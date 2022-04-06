@@ -1,3 +1,5 @@
+// handle link navigate
+
 import { SandboxOptions } from "@/sandbox";
 import RouteSandbox from "./RouteSandbox";
 
