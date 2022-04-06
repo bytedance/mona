@@ -18,20 +18,23 @@ export interface NetWork {
 }
 export interface EasyboxOptions {
   scope: string;
-  entryPath?: string;
+  entryPath: string;
   navigation?: Navigation;
   network?: NetWork;
 }
 
-const defaultOptions: Required<EasyboxOptions> = {
+type Options = Required<EasyboxOptions>;
+
+const defaultOptions: Options = {
   scope: '',
   entryPath: '/',
   navigation: {},
   network: {},
 };
+
 class Easybox {
   entry: string;
-  options: Required<EasyboxOptions>;
+  options: Options;
 
   constructor(entry: string, options?: EasyboxOptions) {
     this.entry = entry;
