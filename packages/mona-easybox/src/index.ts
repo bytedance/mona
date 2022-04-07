@@ -14,7 +14,7 @@ export interface NetWork {
   blockDomains?: string[];
   allowDomains?: string[];
   canAccessOriginDomain?: boolean;
-  canAccessHttp?: false;
+  canAccessHttp?: boolean;
 }
 export interface EasyboxOptions {
   scope: string;

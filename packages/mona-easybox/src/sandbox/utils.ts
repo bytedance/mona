@@ -17,12 +17,13 @@ export function bindContext(value: any, context: any) {
   return value;
 }
 
-const SCRIPT_TAG_NAME = 'SCRIPT';
+// const SCRIPT_TAG_NAME = 'SCRIPT';
 const IFRAME_TAG_NAME = 'IFRAME';
-const LINK_TAG_NAME = 'LINK';
+// const LINK_TAG_NAME = 'LINK';
 
 export function isHijackTag(tagName: string = '') {
-  return [SCRIPT_TAG_NAME, LINK_TAG_NAME, IFRAME_TAG_NAME].includes(tagName?.toUpperCase());
+  // return [SCRIPT_TAG_NAME, LINK_TAG_NAME, IFRAME_TAG_NAME].includes(tagName?.toUpperCase());
+  return [IFRAME_TAG_NAME].includes(tagName?.toUpperCase());
 }
 
 export function createPlaceholderElement(text: string = '') {
