@@ -1,9 +1,6 @@
-
 // set template
 // not use document.write(code) directly to keep root not change
-export function writeTemplate(code: string) {
-  const root = document.documentElement;
-
+export function writeTemplate(code: string, root: HTMLElement) {
   // set template
   root.innerHTML = code;
 
@@ -14,7 +11,7 @@ export function writeTemplate(code: string) {
     const htmlNode = parser.querySelector('html');
     if (htmlNode && htmlNode.attributes) {
       const attrs = [...((htmlNode.attributes as any) || [])];
-      attrs.forEach((attr) => {
+      attrs.forEach(attr => {
         htmlAttrs.push({ name: attr.name, value: attr.value });
       });
     }
@@ -23,5 +20,5 @@ export function writeTemplate(code: string) {
   // append attribute to root
   htmlAttrs.forEach(attr => {
     root.setAttribute(attr.name, attr.value);
-  })
+  });
 }

@@ -4,7 +4,7 @@
  */
 import importHTML from './import-html-entry';
 import Sandbox from './sandbox';
-import { writeTemplate } from './utils'
+import { writeTemplate } from './utils';
 
 export interface Navigation {
   allowDomains?: string[];
@@ -18,9 +18,12 @@ export interface NetWork {
 }
 export interface EasyboxOptions {
   scope: string;
+  domGetter: HTMLElement | null;
   entryPath?: string;
   navigation?: Navigation;
   network?: NetWork;
+  // 覆盖子应用拿到的window
+  global?: Record<string, any> | ((sandbox: Sandbox) => void);
 }
 
 type Options = Required<EasyboxOptions>;
@@ -30,6 +33,9 @@ const defaultOptions: Options = {
   entryPath: '/',
   navigation: {},
   network: {},
+
+  domGetter: document.documentElement,
+  global: {},
 };
 
 class Easybox {
@@ -38,7 +44,7 @@ class Easybox {
 
   constructor(entry: string, options?: EasyboxOptions) {
     this.entry = entry;
-    this.options = Object.assign({}, options, defaultOptions);
+    this.options = { ...defaultOptions, ...(options || {}) };
   }
 
   async run() {
@@ -56,7 +62,7 @@ class Easybox {
     window.__mona_public_path__ = assetPublicPath;
 
     // write template
-    writeTemplate(template);
+    writeTemplate(template, this.options.domGetter || document.documentElement);
     // document.write(template);
 
     // exec script

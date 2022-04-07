@@ -1,6 +1,8 @@
 // bind event to element a to handle link navigate
 // ban tag iframe
 
+import { SandboxOptions } from "@/sandbox";
+
 const Element = window.Element as any;
 const rawSetAttribute = Element.prototype.setAttribute;
 const rawAddEventListener = Element.prototype.addEventListener;
@@ -95,7 +97,7 @@ function proxyElement() {
   };
 }
 
-const element =  () => {
+const element =  (options: SandboxOptions) => {
   // proxy element only once
   proxyElement();
 
@@ -140,7 +142,7 @@ const element =  () => {
     });
   });
 
-  const root = document.documentElement;
+  const root = options.domGetter ||  document.documentElement;
   observer.observe(root, { attributes: true, subtree: true, childList: true });
   return {}
 }

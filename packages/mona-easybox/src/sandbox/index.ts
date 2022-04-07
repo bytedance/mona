@@ -32,7 +32,13 @@ class Sandbox {
     modules.forEach(module => {
       this.overrides = { ...this.overrides, ...module(this.options) };
     })
+    if(typeof options.global === 'object' && options.global!==null){
+      this.overrides = { ...this.overrides, ...options.global };
+    }
     this.global = this.createProxyGlobal();
+    if(typeof options.global === 'function'){
+      options.global(this)
+    }
   }
 
   // ban web storage
