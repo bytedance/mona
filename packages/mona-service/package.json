@@ -76,6 +76,7 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-react-jsx": "^7.16.7",
+    "@teamsupercell/typings-for-css-modules-loader": "^2.5.1",
     "@types/archiver": "^5.3.1",
     "@types/babel__helper-plugin-utils": "^7.10.0",
     "@types/command-line-usage": "^5.0.2",
