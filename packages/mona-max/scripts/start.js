@@ -10,7 +10,7 @@ const maxStart = (ctx) => {
       usage: 'mona-service max-start',
     },
     () => {
-      console.log(chalk.yellow(`🏃 正在启动组件.....`));
+      console.log(chalk.yellow(`🏃 正在启动组件......`));
       const umdConfig = require('../config/webpack.dev')('umd')
       delete require.cache[require.resolve("../config/webpack.dev")]
       const compiler = webpack(umdConfig);
