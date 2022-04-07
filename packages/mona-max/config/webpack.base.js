@@ -3,7 +3,6 @@ const PostcssPluginRpxToVw = require("postcss-plugin-rpx2vw");
 const TerserPlugin = require("terser-webpack-plugin");
 const MvJSONPlugin = require('../utils/mvJsonPlugin');
 const CreateUniqueId = require('../utils/createUniqueId');
-const loaderUtils = require('loader-utils');
 const buildId = CreateUniqueId()
 const createModule = require('../utils/createVirtualModule');
 
@@ -34,27 +33,8 @@ module.exports = {
             options: {
               importLoaders: 2,
               modules: {
-                auto: true,
-                localIdentName: '[local]_[hash:base64:5]',
                 getLocalIdent: (loaderContext, localIdentName, localName, options) => {
-                  // 配合PostcssPreSelector插件
-                  if (localName === buildId) {
-                    return localName;
-                  }
-      
-                  if (!options.context) {
-                    options.context = loaderContext.rootContext;
-                  }
-      
-                  const request = path.relative(options.context, loaderContext.resourcePath).replace(/\\/g, '/');
-      
-                  options.content = `${options.hashPrefix + request}+${localName}`;
-      
-                  localIdentName = localIdentName.replace(/\[local\]/gi, localName);
-      
-                  const hash = loaderUtils.interpolateName(loaderContext, localIdentName, options);
-      
-                  return hash;
+                  return localName;
                 },
               },
             }
@@ -87,27 +67,8 @@ module.exports = {
             options: {
               importLoaders: 2,
               modules: {
-                auto: true,
-                localIdentName: '[local]_[hash:base64:5]',
-                getLocalIdent: (loaderContext, localIdentName, localName, options) => {
-                  // 配合PostcssPreSelector插件
-                  if (localName === buildId) {
-                    return localName;
-                  }
-      
-                  if (!options.context) {
-                    options.context = loaderContext.rootContext;
-                  }
-      
-                  const request = path.relative(options.context, loaderContext.resourcePath).replace(/\\/g, '/');
-      
-                  options.content = `${options.hashPrefix + request}+${localName}`;
-      
-                  localIdentName = localIdentName.replace(/\[local\]/gi, localName);
-      
-                  const hash = loaderUtils.interpolateName(loaderContext, localIdentName, options);
-      
-                  return hash;
+                getLocalIdent: (loaderContext, localIdentName, localName) => {
+                  return localName;
                 },
               },
             }
