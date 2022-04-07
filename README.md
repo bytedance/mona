@@ -1,23 +1,23 @@
 # mona
 
 ## 目录
-- [简介](https://github.com/bytedance/mona/tree/feat/miniapp#简介)
-- [安装](https://github.com/bytedance/mona/tree/feat/miniapp#安装)
-- [创建一个项目](https://github.com/bytedance/mona/tree/feat/miniapp#创建一个项目)
-- [发布上传项目](https://github.com/bytedance/mona/tree/feat/miniapp#发布上传项目)
-- [CLI命令](https://github.com/bytedance/mona/tree/feat/miniapp#CLI命令)
-- [API](https://github.com/bytedance/mona/tree/feat/miniapp#API)
-- [组件](https://github.com/bytedance/mona/tree/feat/miniapp#组件)
-- [配置](https://github.com/bytedance/mona/tree/feat/miniapp#配置)
-- [目录结构](https://github.com/bytedance/mona/tree/feat/miniapp#目录结构)
-- [多端开发](https://github.com/bytedance/mona/tree/feat/miniapp#多端开发)
-- [public目录](https://github.com/bytedance/mona/tree/feat/miniapp#public目录)
-- [query参数获取](https://github.com/bytedance/mona/tree/feat/miniapp#query参数获取)
-- [移动端适配](https://github.com/bytedance/mona/tree/feat/miniapp#移动端适配)
-- [使用小程序原生模块](https://github.com/bytedance/mona/tree/feat/miniapp#使用小程序原生模块)
-- [常见问题](https://github.com/bytedance/mona/tree/feat/miniapp#常见问题)
-- [原理](https://github.com/bytedance/mona/tree/feat/miniapp#原理)
-- [特性](https://github.com/bytedance/mona/tree/feat/miniapp#特性)
+- [简介](https://github.com/bytedance/mona#简介)
+- [安装](https://github.com/bytedance/mona#安装)
+- [创建一个项目](https://github.com/bytedance/mona#创建一个项目)
+- [发布上传项目](https://github.com/bytedance/mona#发布上传项目)
+- [CLI命令](https://github.com/bytedance/mona#CLI命令)
+- [API](https://github.com/bytedance/mona#API)
+- [组件](https://github.com/bytedance/mona#组件)
+- [配置](https://github.com/bytedance/mona#配置)
+- [目录结构](https://github.com/bytedance/mona#目录结构)
+- [多端开发](https://github.com/bytedance/mona#多端开发)
+- [public目录](https://github.com/bytedance/mona#public目录)
+- [query参数获取](https://github.com/bytedance/mona#query参数获取)
+- [移动端适配](https://github.com/bytedance/mona#移动端适配)
+- [使用小程序原生模块](https://github.com/bytedance/mona#使用小程序原生模块)
+- [常见问题](https://github.com/bytedance/mona#常见问题)
+- [原理](https://github.com/bytedance/mona#原理)
+- [特性](https://github.com/bytedance/mona#特性)
 ## 简介
 mona是抖店开放平台推出的商家应用跨端开发方案，支持使用**React框架**来开发应用，以求达到一次开发处处运行
 - 飞鸽插件
@@ -45,9 +45,9 @@ mona -v
 ### 升级
 如果需要升级全局的Mona CLI，可以运行
 ```bash
-npm update -g @vue/cli
+npm update -g @bytedance/mona-cli
 # 或
-yarn global upgrade --latest @vue/cli
+yarn global upgrade --latest @bytedance/mona-cli
 # 或
 mona update
 ```
