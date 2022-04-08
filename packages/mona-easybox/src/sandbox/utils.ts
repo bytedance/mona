@@ -1,3 +1,5 @@
+import Sandbox from '.';
+
 export function hasOwn(target: any, prop: PropertyKey) {
   return Object.prototype.hasOwnProperty.call(target, prop);
 }
@@ -33,16 +35,36 @@ export function createPlaceholderElement(text: string = '') {
   return newDiv;
 }
 
-export const limitedCreateElement = (tagName: string, options: ElementCreationOptions | undefined) => {
+export const sandboxMap = {
+  deps: new WeakMap(),
+
+  get(element: Element): Sandbox {
+    return this.deps.get(element);
+  },
+
+  set(element: Element, sandbox: Sandbox) {
+    if (this.deps.get(element)) return;
+    this.deps.set(element, sandbox);
+  },
+};
+
+export const limitedCreateElement = (
+  sandbox: Sandbox,
+  tagName: string,
+  options: ElementCreationOptions | undefined,
+) => {
   if (isHijackTag(tagName.toUpperCase())) {
     return createPlaceholderElement(`Disable ${tagName} creation`);
   }
   const el = document.createElement(tagName, options);
+  sandboxMap.set(el, sandbox);
+
   //@ts-ignore
   // el.__createByMona = true;
   return el;
 };
 export const limitedCreateElementNS = (
+  sandbox: Sandbox,
   namespace: string | null,
   tagName: string,
   options?: string | ElementCreationOptions,
@@ -51,6 +73,8 @@ export const limitedCreateElementNS = (
     return createPlaceholderElement(`Disable ${tagName} creation`);
   }
   const el = document.createElementNS(namespace, tagName, options);
+  sandboxMap.set(el, sandbox);
+
   //@ts-ignore
   // el.__createByMona = true;
   return el;

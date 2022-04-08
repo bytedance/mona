@@ -1,21 +1,37 @@
 // proxy document to ban document.cookie and document.title
+import Sandbox from '@/sandbox';
 import { bindContext, limitedCreateElementNS, limitedCreateElement } from '@/sandbox/utils';
 
-export default () => {
+export default (sandbox: Sandbox) => {
+  const { options } = sandbox;
   const origin = window.document;
+  //@ts-ignore
+  const limitedCreateElementWrapper = (...args: any[]) => limitedCreateElement(sandbox, ...args);
+  //@ts-ignore
+  const limitedCreateElementNSWrapper = (...args: any[]) => limitedCreateElementNS(sandbox, ...args);
+
   const proxy = new Proxy(origin, {
     get(obj, prop) {
       let value: any;
-      //createElementNS
-      if (prop === 'createElement') {
-        value = limitedCreateElement;
-      } else if (prop === 'createElementNS') {
-        value = limitedCreateElementNS;
-      } else if (prop === 'cookie') {
-        value = '';
-      } else {
-        // do not pass reciver, or will cause wrong point Uncaught TypeError: Illegal invocation
-        value = Reflect.get(obj, prop);
+      switch (prop) {
+        case 'body':
+          return options.domGetter;
+        // case 'location':
+        //   return ;
+        // case 'defaultView':
+        //   return ;
+        case 'write':
+        case 'writeln':
+          return () => {};
+        case 'createElement':
+          return limitedCreateElementWrapper;
+        case 'createElementNS':
+          return limitedCreateElementNSWrapper;
+        case 'cookie':
+          value = '';
+          break;
+        default:
+          value = Reflect.get(obj, prop);
       }
       return bindContext(value, origin);
     },

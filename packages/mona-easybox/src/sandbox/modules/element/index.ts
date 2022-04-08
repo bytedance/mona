@@ -1,13 +1,14 @@
 // bind event to element a to handle link navigate
 // ban tag iframe
 
-import { SandboxOptions } from "@/sandbox";
+import Sandbox from '@/sandbox';
+import { sandboxMap } from '@/sandbox/utils';
 
 const Element = window.Element as any;
 const rawSetAttribute = Element.prototype.setAttribute;
 const rawAddEventListener = Element.prototype.addEventListener;
 const rawRemoveEventListener = Element.prototype.removeEventListener;
-const rawWindow = window
+const rawWindow = window;
 let alreadyProxied = false;
 
 // bind navigation event
@@ -86,29 +87,39 @@ function proxyElement() {
   Element.prototype.removeEventListener = function (type: string, callback: Function) {
     if (this.tagName === 'A' && type === 'click') {
       const listeners = [].concat([], this._listeners);
-      const targetIndex = listeners.findIndex(
-        (listener) => listener === callback,
-      );
+      const targetIndex = listeners.findIndex(listener => listener === callback);
       listeners.splice(targetIndex, 1);
       this._listeners = listeners;
     } else {
       rawRemoveEventListener.call(this, type, callback);
     }
   };
+  Object.defineProperty(Element.prototype, 'ownerDocument', {
+    get() {
+      const sandbox = sandboxMap.get(this);
+      if (this && sandbox) {
+        return sandbox.options.domGetter;
+      } else {
+        return Reflect.get(window.Node.prototype, 'ownerDocument', this);
+      }
+    },
+    set() {},
+  });
 }
 
-const element =  (options: SandboxOptions) => {
+const element = (sandbox: Sandbox) => {
+  const { options } = sandbox;
   // proxy element only once
   proxyElement();
 
   const { MutationObserver } = window;
-  const observer = new MutationObserver((mutations) => {
+  const observer = new MutationObserver(mutations => {
     const linkNodes: HTMLAnchorElement[] = [];
     const iframeNodes: HTMLIFrameElement[] = [];
     mutations.forEach(({ type, target, attributeName, addedNodes }) => {
       // collect all target element
       if (type === 'childList' && addedNodes.length > 0) {
-        addedNodes.forEach((node) => {
+        addedNodes.forEach(node => {
           const tagName = (node as Element).tagName;
           if (tagName === 'A') {
             linkNodes.push(node as HTMLAnchorElement);
@@ -121,30 +132,27 @@ const element =  (options: SandboxOptions) => {
             iframeNodes.push(...[].slice.call(cn2));
           }
         });
-      } else if (
-        type === 'attributes' &&
-        attributeName === 'href' &&
-        (target as HTMLAnchorElement).tagName === 'A'
-      ) {
+      } else if (type === 'attributes' && attributeName === 'href' && (target as HTMLAnchorElement).tagName === 'A') {
         linkNodes.push(target as HTMLAnchorElement);
       }
 
       // handle link element
       linkNodes.forEach(linkNode => {
-        bindNavEvent(linkNode)
+        bindNavEvent(linkNode);
       });
 
       // handle all iframe element
       iframeNodes.forEach(iframeNode => {
         // remove the element
         iframeNode.remove();
-      })
+      });
     });
   });
 
-  const root = options.domGetter ||  document.documentElement;
+  const root = options.domGetter || document.documentElement;
   observer.observe(root, { attributes: true, subtree: true, childList: true });
-  return {}
-}
+
+  return {};
+};
 
 export default element;

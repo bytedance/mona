@@ -30,7 +30,7 @@ class Sandbox {
       // postMessage: window.postMessage.bind(window),
     }
     modules.forEach(module => {
-      this.overrides = { ...this.overrides, ...module(this.options) };
+      this.overrides = { ...this.overrides, ...module(this) };
     })
     if(typeof options.global === 'object' && options.global!==null){
       this.overrides = { ...this.overrides, ...options.global };
