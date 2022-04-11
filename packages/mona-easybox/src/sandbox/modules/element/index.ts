@@ -149,7 +149,9 @@ const element = (sandbox: Sandbox) => {
     });
   });
 
-  const root = options.domGetter || document.documentElement;
+  // const root = options.domGetter || document.documentElement;
+  const root = document.documentElement;
+
   observer.observe(root, { attributes: true, subtree: true, childList: true });
   sandbox.destroyCbs.push(() => {
     observer.disconnect();
