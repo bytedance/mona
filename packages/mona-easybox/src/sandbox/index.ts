@@ -9,39 +9,34 @@ import { bindContext, hasOwn } from './utils';
 import RouteSandbox from './modules/route/RouteSandbox';
 import element from './modules/element';
 
-export type SandboxOptions = Required<EasyboxOptions>
+export type SandboxOptions = Required<EasyboxOptions>;
 
-const modules = [
-  element,
-  storage,
-  route,
-  document,
-  network
-]
+const modules = [element, storage, route, document, network];
 
 class Sandbox {
   global: Window;
   options: SandboxOptions;
   overrides: Record<string, any>;
+  destroyCbs: any[] = [];
 
   constructor(options: SandboxOptions) {
     this.options = options;
     this.overrides = {
       // postMessage: window.postMessage.bind(window),
-      exports:{},
-      module:null
-    }
+      exports: {},
+      module: null,
+    };
     modules.forEach(module => {
       this.overrides = { ...this.overrides, ...module(this) };
-    })
-    if(typeof options.global === 'object' && options.global!==null){
+    });
+    if (typeof options.global === 'object' && options.global !== null) {
       this.overrides = { ...this.overrides, ...options.global };
     }
     this.overrides.module = this.overrides;
 
     this.global = this.createProxyGlobal();
-    if(typeof options.global === 'function'){
-      options.global(this)
+    if (typeof options.global === 'function') {
+      options.global(this);
     }
   }
 
@@ -50,11 +45,11 @@ class Sandbox {
     const selfKeys = ['self', 'window', 'globalThis', 'top', 'parent'];
     // set self keys can rewrite
     const factory = new FakeWindowFactory(window);
-    const origin = factory.createFakeWindow((prop) => selfKeys.indexOf(prop) !== -1);
-    
+    const origin = factory.createFakeWindow(prop => selfKeys.indexOf(prop) !== -1);
+
     // overrides
     const overrides = this.overrides;
-    
+
     // handler
     const get = (obj: any, prop: PropertyKey, receiver: any) => {
       let value: any;
@@ -63,12 +58,12 @@ class Sandbox {
       } else if (prop in overrides) {
         value = overrides[prop as string];
       } else if (hasOwn(obj, prop)) {
-        value = Reflect.get(obj, prop, receiver) 
+        value = Reflect.get(obj, prop, receiver);
       } else {
         value = Reflect.get(window, prop);
       }
 
-      return bindContext(value, window)
+      return bindContext(value, window);
     };
     const set = (obj: any, prop: string, value: any, receiver: any) => {
       // console.log('set', obj, prop, value);
@@ -78,10 +73,10 @@ class Sandbox {
         return routeSandbox.setInSandbox(prop, value);
       }
       return Reflect.set(obj, prop, value, receiver);
-    }
+    };
     const defineProperty = Reflect.defineProperty;
     const deleteProperty = Reflect.deleteProperty;
-    const handler = { get, set, defineProperty, deleteProperty }
+    const handler = { get, set, defineProperty, deleteProperty };
 
     // proxy
     const proxy = new Proxy(origin, handler);
@@ -89,7 +84,7 @@ class Sandbox {
 
     selfKeys.forEach(key => {
       proxy[key] = subProxy;
-    })
+    });
     return proxy;
   }
 }

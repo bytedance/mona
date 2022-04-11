@@ -151,7 +151,9 @@ const element = (sandbox: Sandbox) => {
 
   const root = options.domGetter || document.documentElement;
   observer.observe(root, { attributes: true, subtree: true, childList: true });
-
+  sandbox.destroyCbs.push(() => {
+    observer.disconnect();
+  });
   return {};
 };
 
