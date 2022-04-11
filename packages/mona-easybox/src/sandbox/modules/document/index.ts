@@ -38,8 +38,8 @@ export default (sandbox: Sandbox) => {
       switch (prop) {
         case 'body':
           return options.domGetter?.querySelector(`div[${mockBody}]`);
-        // case 'location':
-        //   return ;
+        case 'location':
+          return sandbox.global.location;
         case 'defaultView':
           return sandbox.global.window;
         case 'write':
