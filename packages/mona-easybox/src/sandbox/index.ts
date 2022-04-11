@@ -28,6 +28,8 @@ class Sandbox {
     this.options = options;
     this.overrides = {
       // postMessage: window.postMessage.bind(window),
+      exports:{},
+      module:null
     }
     modules.forEach(module => {
       this.overrides = { ...this.overrides, ...module(this) };
@@ -35,6 +37,8 @@ class Sandbox {
     if(typeof options.global === 'object' && options.global!==null){
       this.overrides = { ...this.overrides, ...options.global };
     }
+    this.overrides.module = this.overrides;
+
     this.global = this.createProxyGlobal();
     if(typeof options.global === 'function'){
       options.global(this)

@@ -2,6 +2,9 @@
 import Sandbox from '@/sandbox';
 import { bindContext, limitedCreateElementNS, limitedCreateElement } from '@/sandbox/utils';
 
+const mockBody = '__mockbody__';
+const mockHtml = '__mockhtml__';
+
 export default (sandbox: Sandbox) => {
   const { options } = sandbox;
   const origin = window.document;
@@ -10,16 +13,35 @@ export default (sandbox: Sandbox) => {
   //@ts-ignore
   const limitedCreateElementNSWrapper = (...args: any[]) => limitedCreateElementNS(sandbox, ...args);
 
+  function createHtml() {
+    const fakeHtml = limitedCreateElementWrapper('div');
+    if (fakeHtml) {
+      fakeHtml.setAttribute(mockHtml, '');
+      options.domGetter?.appendChild(fakeHtml);
+    }
+  }
+
+  function createBody() {
+    const fakeBody = limitedCreateElementWrapper('div');
+    if (fakeBody) {
+      fakeBody.setAttribute(mockBody, '');
+      const fakeHtml = options.domGetter?.querySelector(`div[${mockHtml}]`);
+      fakeHtml?.appendChild(fakeBody);
+    }
+  }
+
+  createHtml();
+  createBody();
   const proxy = new Proxy(origin, {
     get(obj, prop) {
       let value: any;
       switch (prop) {
         case 'body':
-          return options.domGetter;
+          return options.domGetter?.querySelector(`div[${mockBody}]`);
         // case 'location':
         //   return ;
-        // case 'defaultView':
-        //   return ;
+        case 'defaultView':
+          return sandbox.global.window;
         case 'write':
         case 'writeln':
           return () => {};

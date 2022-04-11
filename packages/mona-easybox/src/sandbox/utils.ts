@@ -28,12 +28,12 @@ export function isHijackTag(tagName: string = '') {
   return [IFRAME_TAG_NAME].includes(tagName?.toUpperCase());
 }
 
-export function createPlaceholderElement(text: string = '') {
-  const newDiv = document.createElement('div');
-  const newContent = document.createTextNode(text);
-  newDiv.appendChild(newContent);
-  return newDiv;
-}
+// export function createPlaceholderElement(text: string = '') {
+//   const newDiv = document.createElement('div');
+//   const newContent = document.createTextNode(text);
+//   newDiv.appendChild(newContent);
+//   return newDiv;
+// }
 
 export const sandboxMap = {
   deps: new WeakMap(),
@@ -54,7 +54,7 @@ export const limitedCreateElement = (
   options: ElementCreationOptions | undefined,
 ) => {
   if (isHijackTag(tagName.toUpperCase())) {
-    return createPlaceholderElement(`Disable ${tagName} creation`);
+    return null;
   }
   const el = document.createElement(tagName, options);
   sandboxMap.set(el, sandbox);
@@ -70,7 +70,7 @@ export const limitedCreateElementNS = (
   options?: string | ElementCreationOptions,
 ) => {
   if (isHijackTag(tagName.toUpperCase())) {
-    return createPlaceholderElement(`Disable ${tagName} creation`);
+    return null;
   }
   const el = document.createElementNS(namespace, tagName, options);
   sandboxMap.set(el, sandbox);

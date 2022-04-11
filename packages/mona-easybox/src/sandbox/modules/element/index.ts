@@ -98,7 +98,7 @@ function proxyElement() {
     get() {
       const sandbox = sandboxMap.get(this);
       if (this && sandbox) {
-        return sandbox.options.domGetter;
+        return sandbox.global.document;
       } else {
         return Reflect.get(window.Node.prototype, 'ownerDocument', this);
       }
