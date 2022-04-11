@@ -108,7 +108,6 @@ function proxyElement() {
 }
 
 const element = (sandbox: Sandbox) => {
-  const { options } = sandbox;
   // proxy element only once
   proxyElement();
 
