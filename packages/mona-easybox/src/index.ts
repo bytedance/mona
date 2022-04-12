@@ -92,9 +92,12 @@ class Easybox {
     }
   }
 
-  uninstall() {
+  destroy() {
     if (this._provider) {
-      this._sandbox?.destroyCbs.forEach(cb => cb());
+      if (this._sandbox?.destroyCbs) {
+        this._sandbox.destroyCbs.forEach(cb => cb());
+        this._sandbox.destroyCbs = [];
+      }
       this._provider?.destroy({ dom: this._sandbox?.global?.document?.body });
     } else {
       console.error('provider 未设置');
