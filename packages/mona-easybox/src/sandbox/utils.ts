@@ -54,7 +54,8 @@ export const limitedCreateElement = (
   options: ElementCreationOptions | undefined,
 ) => {
   if (isHijackTag(tagName.toUpperCase())) {
-    return null;
+    // return null;
+    console.error(`${tagName} limit creation`);
   }
   const el = document.createElement(tagName, options);
   sandboxMap.set(el, sandbox);
@@ -70,7 +71,8 @@ export const limitedCreateElementNS = (
   options?: string | ElementCreationOptions,
 ) => {
   if (isHijackTag(tagName.toUpperCase())) {
-    return null;
+    // return null;
+    console.error(`${tagName} limit creation`);
   }
   const el = document.createElementNS(namespace, tagName, options);
   sandboxMap.set(el, sandbox);
