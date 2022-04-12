@@ -4,7 +4,6 @@ import route from './modules/route';
 import storage from './modules/storage';
 import document from './modules/document';
 import network from './modules/network';
-import jsBridge from './modules/jsBridge';
 
 import { bindContext, hasOwn } from './utils';
 import RouteSandbox from './modules/route/RouteSandbox';
@@ -12,7 +11,7 @@ import element from './modules/element';
 
 export type SandboxOptions = Required<EasyboxOptions>;
 
-const modules = [element, storage, route, document, network, jsBridge];
+const modules = [element, storage, route, document, network];
 
 class Sandbox {
   global: Window;
