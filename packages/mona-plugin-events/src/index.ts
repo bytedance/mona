@@ -6,7 +6,7 @@ const MONA_GLOBAL_STORE = 'monaGlobalStore';
 const REMOVE_LISTENER = 'removePluginListener';
 
 const printWarn = (prop: string) => {
-  console.warn(`非飞鸽容器, ${prop} 方法无法调用`);
+  console.warn(`非容器内, ${prop} 方法无法调用`);
 };
 
 const emptyHandler = {
@@ -14,7 +14,7 @@ const emptyHandler = {
     return (data: InputCallbackParams) => {
       printWarn(prop);
       if (typeof data === 'object') {
-        data?.failed?.({ code: ErrorCode.Unknown, message: '非飞鸽容器' });
+        data?.failed?.({ code: ErrorCode.Unknown, message: '非容器内' });
       }
     };
   },

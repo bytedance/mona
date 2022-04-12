@@ -3,19 +3,22 @@ export interface PluginSdkBaseType {
   [keyName: string]: (params: InputCallbackParams | inputFunc) => void | ((params: inputFunc) => void);
 }
 
-export interface MonaPluginEvents {
+interface Other {
+  [key: string]: Record<string, (params: InputCallbackParams<any, any> | ((data: any) => void)) => void>;
+}
+export type MonaPluginEvents = {
   pigeon: Pigeon;
   removePluginListener: (eventName: string) => void;
   globalStore: {
     getData: <T = any>(name?: string) => T;
   };
-}
+} & Other;
 
 export const enum ErrorCode {
   Unknown = -100,
   TypeError = -101,
   NoPermission = -102,
-  AppNoRegister = -103
+  AppNoRegister = -103,
 }
 
 export type ErrorResponse = { code: ErrorCode; message: string };
