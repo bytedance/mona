@@ -2,7 +2,6 @@
 // ban tag iframe
 
 import Sandbox from '@/sandbox';
-import { sandboxMap } from '@/sandbox/utils';
 
 const Element = window.Element as any;
 const rawSetAttribute = Element.prototype.setAttribute;
@@ -94,17 +93,6 @@ function proxyElement() {
       rawRemoveEventListener.call(this, type, callback);
     }
   };
-  Object.defineProperty(Element.prototype, 'ownerDocument', {
-    get() {
-      const sandbox = sandboxMap.get(this);
-      if (this && sandbox) {
-        return sandbox.global.document;
-      } else {
-        return Reflect.get(window.Node.prototype, 'ownerDocument', this);
-      }
-    },
-    set() {},
-  });
 }
 
 const element = (sandbox: Sandbox) => {

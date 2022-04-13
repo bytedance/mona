@@ -48,24 +48,17 @@ export const sandboxMap = {
   },
 };
 
-export const limitedCreateElement = (
-  sandbox: Sandbox,
-  tagName: string,
-  options: ElementCreationOptions | undefined,
-) => {
+export const limitedCreateElement = (tagName: string, options: ElementCreationOptions | undefined) => {
   if (isHijackTag(tagName.toUpperCase())) {
     // return null;
     console.error(`${tagName} limit creation`);
   }
   const el = document.createElement(tagName, options);
-  sandboxMap.set(el, sandbox);
-
   //@ts-ignore
   // el.__createByMona = true;
   return el;
 };
 export const limitedCreateElementNS = (
-  sandbox: Sandbox,
   namespace: string | null,
   tagName: string,
   options?: string | ElementCreationOptions,
@@ -75,8 +68,6 @@ export const limitedCreateElementNS = (
     console.error(`${tagName} limit creation`);
   }
   const el = document.createElementNS(namespace, tagName, options);
-  sandboxMap.set(el, sandbox);
-
   //@ts-ignore
   // el.__createByMona = true;
   return el;

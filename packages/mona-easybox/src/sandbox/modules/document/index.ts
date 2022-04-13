@@ -2,53 +2,27 @@
 import Sandbox from '@/sandbox';
 import { bindContext, limitedCreateElementNS, limitedCreateElement } from '@/sandbox/utils';
 
-const mockBody = '__mockbody__';
-const mockHtml = '__mockhtml__';
-
 export default (sandbox: Sandbox) => {
-  const { options } = sandbox;
+  // const { options } = sandbox;
   const origin = window.document;
-  //@ts-ignore
-  const limitedCreateElementWrapper = (...args: any[]) => limitedCreateElement(sandbox, ...args);
-  //@ts-ignore
-  const limitedCreateElementNSWrapper = (...args: any[]) => limitedCreateElementNS(sandbox, ...args);
 
-  function createHtml() {
-    const fakeHtml = limitedCreateElementWrapper('div');
-    if (fakeHtml) {
-      fakeHtml.setAttribute(mockHtml, '');
-      options.domGetter?.appendChild(fakeHtml);
-    }
-  }
-
-  function createBody() {
-    const fakeBody = limitedCreateElementWrapper('div');
-    if (fakeBody) {
-      fakeBody.setAttribute(mockBody, '');
-      const fakeHtml = options.domGetter?.querySelector(`div[${mockHtml}]`);
-      fakeHtml?.appendChild(fakeBody);
-    }
-  }
-
-  createHtml();
-  createBody();
   const proxy = new Proxy(origin, {
     get(obj, prop) {
       let value: any;
       switch (prop) {
-        case 'body':
-          return options.domGetter?.querySelector(`div[${mockBody}]`);
+        // case 'body':
+        //   return options.domGetter?.querySelector(`div[${mockBody}]`);
         case 'location':
           return sandbox.global.location;
         case 'defaultView':
           return sandbox.global.window;
-        case 'write':
-        case 'writeln':
-          return () => {};
+        // case 'write':
+        // case 'writeln':
+        //   return () => {};
         case 'createElement':
-          return limitedCreateElementWrapper;
+          return limitedCreateElement;
         case 'createElementNS':
-          return limitedCreateElementNSWrapper;
+          return limitedCreateElementNS;
         case 'cookie':
           value = '';
           break;

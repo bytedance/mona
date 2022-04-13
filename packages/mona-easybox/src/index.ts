@@ -4,6 +4,7 @@
  */
 import importHTML from './import-html-entry';
 import Sandbox from './sandbox';
+import { writeTemplate } from './utils';
 // import { writeTemplate } from './utils';
 
 export interface Navigation {
@@ -47,7 +48,7 @@ class Easybox {
   entry: string;
   options: Options;
   private _sandbox?: Sandbox;
-  private _provider?: Provider;
+  // private _provider?: Provider;
   constructor(entry: string, options?: EasyboxOptions) {
     this.entry = entry;
     this.options = { ...defaultOptions, ...(options || {}) };
@@ -55,7 +56,7 @@ class Easybox {
 
   async run() {
     // parse entry
-    const { execScripts, assetPublicPath } = await importHTML(this.entry, {
+    const { execScripts, template, assetPublicPath } = await importHTML(this.entry, {
       // PERF: handle publicPath
       getPublicPath: (entry: string) => `${new URL(entry).origin}/`,
     });
@@ -69,38 +70,21 @@ class Easybox {
     window.__mona_public_path__ = assetPublicPath;
 
     // write template
-    // writeTemplate(template, this.options.domGetter || document.documentElement);
+    writeTemplate(template, this.options.domGetter || document.documentElement);
     // document.write(template);
 
     // exec script
     await execScripts(global, false);
 
     //@ts-ignore
-    this._provider = global?.exports?.provider() as Provider;
-    this.render();
-  }
-
-  render() {
-    if (this._provider) {
-      // createBody
-      // const fakeBody = global?.document.createElement('div');
-      // fakeBody.setAttribute('__mockbody__', '');
-      // this._sandbox?.options.domGetter?.appendChild(fakeBody);
-      this._provider?.render({ dom: this._sandbox?.global?.document?.body });
-    } else {
-      console.error('provider 未设置');
-    }
+    // this._provider = global?.exports?.provider() as Provider;
+    // this.render();
   }
 
   destroy() {
-    if (this._provider) {
-      if (this._sandbox?.destroyCbs) {
-        this._sandbox.destroyCbs.forEach(cb => cb());
-        this._sandbox.destroyCbs = [];
-      }
-      this._provider?.destroy({ dom: this._sandbox?.global?.document?.body });
-    } else {
-      console.error('provider 未设置');
+    if (this._sandbox?.destroyCbs) {
+      this._sandbox.destroyCbs.forEach(cb => cb());
+      this._sandbox.destroyCbs = [];
     }
   }
 }
