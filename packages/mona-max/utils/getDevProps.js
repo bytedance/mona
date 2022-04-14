@@ -15,4 +15,6 @@ module.exports = function getDevProps(schemaJson) {
     if(preDefinedKey.includes(key)) continue
     value[key] = properties[key].default
   }
+
+  return value
 }
