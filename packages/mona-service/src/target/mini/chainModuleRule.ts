@@ -91,6 +91,10 @@ function createCssRule(webpackConfig: Config, configHelper: ConfigHelper) {
     styleRule.use('MiniCssExtractPlugin.loader').loader(MonaPlugins.MiniCssExtractPlugin.loader);
 
     styleRule
+      .use('@teamsupercell/typings-for-css-modules-loader')
+      .loader(require.resolve('@teamsupercell/typings-for-css-modules-loader'));
+
+    styleRule
       .use('cssLoader')
       .loader(require.resolve('css-loader'))
       .options({

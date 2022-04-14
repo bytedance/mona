@@ -60,6 +60,11 @@ function createCssRule(webpackConfig: Config, configHelper: ConfigHelper) {
       r => r.loader(require.resolve('style-loader')),
       r => r.loader(MonaPlugins.MiniCssExtractPlugin.loader),
     );
+
+    styleRule
+      .use('@teamsupercell/typings-for-css-modules-loader')
+      .loader(require.resolve('@teamsupercell/typings-for-css-modules-loader'));
+
     styleRule
       .use('cssLoader')
       .loader(require.resolve('css-loader'))
