@@ -28,6 +28,7 @@ function checkBranchBehind(branch) {
   return '';
 }
 
+
 module.exports = {
   checkBranchBehind,
   getCommitDiff,

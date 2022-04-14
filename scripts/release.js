@@ -3,7 +3,7 @@ const semver = require('semver');
 const chalk = require('chalk');
 const inquirer = require('inquirer');
 const ora = require('ora');
-const { checkBranchBehind, getGitBranch } = require('./branch');
+const { getGitBranch } = require('./branch');
 
 function getPkgNpmVersionList() {
   let res = execa.commandSync('npm view @bytedance/mona versions --json');
@@ -69,21 +69,6 @@ async function main() {
   log(chalk.green(`即将发布版本: ${chalk.blue.underline.bold(newVersion)}`));
   let oldVersion = false;
 
-  const branchBehindInfo = checkBranchBehind(branch);
-  console.log({ branchBehindInfo });
-  if (branchBehindInfo) {
-    const res = inquirer.prompt([
-      {
-        type: 'confirm',
-        name: 'behindBranch',
-        message: `落后${branchBehindInfo}分支，是否要继续`,
-        default: false,
-      },
-    ]);
-    if (!res.behindBranch) {
-      return;
-    }
-  }
   if (cmp === 1) {
     if (released) {
       log(chalk.red(`版本<${newVersion}>已存在`));
