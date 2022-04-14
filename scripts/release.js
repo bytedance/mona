@@ -53,7 +53,7 @@ const genPrompt = title => {
   ];
   return arr;
 };
-
+// TODO： 落后main分支检测
 function main() {
   log(chalk.bold.red(`发布注意事项:\n   1. 确定已经merge main分支。\n   2. 确保当前分支最新`));
 
