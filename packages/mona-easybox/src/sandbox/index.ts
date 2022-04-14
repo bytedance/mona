@@ -8,10 +8,11 @@ import network from './modules/network';
 import { bindContext, hasOwn } from './utils';
 import RouteSandbox from './modules/route/RouteSandbox';
 import element from './modules/element';
+import other from './modules/other';
 
 export type SandboxOptions = Required<EasyboxOptions>;
 
-const modules = [element, storage, route, document, network];
+const modules = [element, storage, route, document, network, other];
 
 class Sandbox {
   global: Window;
