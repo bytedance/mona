@@ -40,7 +40,7 @@ function getTag(str) {
 }
 
 function getDiff(branch1, branch2 = 'origin/main') {
-  const res = execa.commandSync(`git rev-list ${branch1} ^${branch2} --count  `);
+  const res = execa.commandSync(`git rev-list ${branch2} ^${branch1} --count  `);
   return res.stdout;
 }
 
