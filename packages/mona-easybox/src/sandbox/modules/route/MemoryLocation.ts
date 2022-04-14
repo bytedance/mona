@@ -103,7 +103,7 @@ class MemoryLocation {
 
   constructor(history: MemoryHistory) {
     this._history = history;
-    this._reloadApp = () => window.location.reload();
+    this._reloadApp = () => {};
 
     for(const property of ['hash', 'host', 'hostname', 'href', 'origin', 'pathname', 'port', 'protocol', 'search']) {
 			const descriptor = Object.getOwnPropertyDescriptor(MemoryLocation.prototype, property);
