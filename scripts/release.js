@@ -38,6 +38,11 @@ function getTag(str) {
   }
   return;
 }
+
+function getDiff(branch1, branch2 = 'origin/main') {
+  const res = execa.commandSync(`git diff ${branch1} ${branch2}`);
+  return res.stdout;
+}
 function log(...args) {
   console.log(chalk.white.bgBlack('release'), ...args);
 }
