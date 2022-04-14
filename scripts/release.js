@@ -39,10 +39,6 @@ function getTag(str) {
   return;
 }
 
-function getDiff(branch1, branch2 = 'origin/main') {
-  const res = execa.commandSync(`git rev-list ${branch2} ^${branch1} --count  `);
-  return res.stdout;
-}
 
 function log(...args) {
   console.log(chalk.white.bgBlack('release'), ...args);
@@ -75,6 +71,7 @@ function main() {
   const released = npmVersionList.includes(newVersion);
   log(chalk.green(`即将发布版本: ${chalk.blue.underline.bold(newVersion)}`));
   let oldVersion = false;
+
   if (cmp === 1) {
     if (released) {
       log(chalk.red(`版本<${newVersion}>已存在`));
