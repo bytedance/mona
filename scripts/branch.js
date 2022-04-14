@@ -14,21 +14,19 @@ function getCommitDiff(branch1, branch2 = `origin/${mainBranch}`) {
 }
 
 function checkBranchBehind(branch) {
-  const originBranchBehind = getDiff(branch, `origin/${branch}`);
+  const originBranchBehind = getCommitDiff(branch, `origin/${branch}`);
 
   if (originBranchBehind) {
-    return `落后${`origin/${branch}`}分支`;
+    return `origin/${branch}`;
   }
 
-  const mainBehind = getDiff(branch);
+  const mainBehind = getCommitDiff(branch);
   if (mainBehind) {
-    return `落后${`origin/${mainBranch}`}分支`;
+    return `origin/${mainBranch}`;
   }
 
   return '';
 }
-
-
 
 module.exports = {
   checkBranchBehind,

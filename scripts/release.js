@@ -3,10 +3,8 @@ const semver = require('semver');
 const chalk = require('chalk');
 const inquirer = require('inquirer');
 const ora = require('ora');
-function getGitBranch() {
-  const res = execa.commandSync('git rev-parse --abbrev-ref HEAD');
-  return res.stdout;
-}
+const { checkBranchBehind, getGitBranch } = require('./branch');
+
 function getPkgNpmVersionList() {
   let res = execa.commandSync('npm view @bytedance/mona versions --json');
   res = JSON.parse(res.stdout);
@@ -39,7 +37,6 @@ function getTag(str) {
   return;
 }
 
-
 function log(...args) {
   console.log(chalk.white.bgBlack('release'), ...args);
 }
@@ -56,7 +53,7 @@ const genPrompt = title => {
   return arr;
 };
 // TODO： 落后main分支检测
-function main() {
+async function main() {
   log(chalk.bold.red(`发布注意事项:\n   1. 确定已经merge main分支。\n   2. 确保当前分支最新`));
 
   const newVersion = getVersion();
@@ -72,6 +69,21 @@ function main() {
   log(chalk.green(`即将发布版本: ${chalk.blue.underline.bold(newVersion)}`));
   let oldVersion = false;
 
+  const branchBehindInfo = checkBranchBehind(branch);
+  console.log({ branchBehindInfo });
+  if (branchBehindInfo) {
+    const res = inquirer.prompt([
+      {
+        type: 'confirm',
+        name: 'behindBranch',
+        message: `落后${branchBehindInfo}分支，是否要继续`,
+        default: false,
+      },
+    ]);
+    if (!res.behindBranch) {
+      return;
+    }
+  }
   if (cmp === 1) {
     if (released) {
       log(chalk.red(`版本<${newVersion}>已存在`));
