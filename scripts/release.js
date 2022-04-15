@@ -97,7 +97,7 @@ function main() {
         const spinner = ora('git 命令执行中').start();
         spinner.color = 'green';
         execa.commandSync('git add .');
-        execa.commandSync(`git commit -m \"chore(release): publish ${newVersion}  ${tag ? `--tag=${tag}` : ''}\"`, {
+        execa.commandSync(`git commit -m \"chore(release): publish ${newVersion}  ${tag ? `--tag=${tag}` : '--tag=latest'}\"`, {
           shell: true,
         });
         execa.commandSync(`git push origin ${branch}`);
