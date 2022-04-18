@@ -43,7 +43,7 @@ export default async function ImportCustomerComponentLoader(this: LoaderContext<
   }
   const nativeEntry = nativeEntryMap.get(dirName);
   let finalSource = source;
-  if (nativeEntry) {
+  if (nativeEntry instanceof MiniComponentEntry) {
     finalSource = nativeEntry.virtualSource;
     // npm包名作为key => 绝对路径作为key
 

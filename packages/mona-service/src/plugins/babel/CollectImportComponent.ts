@@ -35,7 +35,7 @@ export default function collectNativeComponent(configHelper: ConfigHelper) {
         if (t.isImportDeclaration(importPath)) {
           const importNode = importPath.node as t.ImportDeclaration;
           const source = importNode.source.value;
-          let componentEntry = monaStore.nativeEntryMap.get(source);
+          let componentEntry = monaStore.nativeEntryMap.get(source) as MiniComponentEntry;
           // 多次引入存在bug
           if (source.startsWith(CUSTOM_COMPONENT_PROTOCOL) || componentEntry) {
             if (!componentEntry) {

@@ -18,6 +18,7 @@ import { MiniComponentEntry } from '@/target/entires/miniComponentEntry';
 
 const RawSource = sources.RawSource;
 const ejsRelativePath = '../../../assets/ejs';
+
 export default async function createJson(compilation: Compilation, configHelper: ConfigHelper) {
   const { appConfig, cwd, projectConfig } = configHelper;
   const pages: string[] = appConfig.pages ?? [];
@@ -34,14 +35,17 @@ export default async function createJson(compilation: Compilation, configHelper:
     compilation.emitAsset(projectFile, source);
   }
 
+  if (monaStore.miniAppEntry) {
+    return;
+  }
   // app.json
   const appFile = 'app.json';
+  // entryPath.replace(path.extname(entryPath), '');
   if (!compilation.getAsset(appFile)) {
     const formatedAppConfig = formatAppConfig(appConfig);
     const source = new RawSource(JSON.stringify(formatedAppConfig, null, 2));
     compilation.emitAsset(appFile, source);
   }
-
   // page json
   pages.forEach(page => {
     const pageDistPath = path.join(page.toLowerCase());

@@ -9,6 +9,8 @@ import { miniExt } from '@/target/mini/constants';
 
 import monaStore from '@/target/store';
 import { formatPropsName } from '@/target/utils/reactNode';
+import { MiniComponentEntry } from '@/target/entires/miniComponentEntry';
+import { MiniPageEntry } from '@/target/entires/miniPageEntry';
 
 const ejsRelativePath = '../../../assets/ejs';
 
@@ -40,6 +42,9 @@ const RawSource = sources.RawSource;
 function genNativeEjsData() {
   const result = new Map();
   monaStore.nativeEntryMap.forEach(entry => {
+    if (!(entry instanceof MiniComponentEntry) || entry instanceof MiniPageEntry) {
+      return;
+    }
     if (entry.templateInfo?.isUse) {
       const { componentName, props, isRenderAllProps, defaultProps } = entry.templateInfo;
       const allProps = Array.from(props.values()).reduce((pre, item) => {
@@ -111,6 +116,9 @@ export default async function createTtml(compilation: Compilation, configHelper:
     compilation.emitAsset(file, source);
   }
 
+  if (monaStore.miniAppEntry) {
+    return;
+  }
   // page ttml
   pages.forEach(async page => {
     const pageDistPath = path.join(page.toLowerCase());

@@ -3,6 +3,9 @@ import { searchScriptFile } from '@bytedance/mona-shared';
 import path from 'path';
 import VirtualModulesPlugin from '../VirtualModulesPlugin';
 import { MiniPageEntry, genMiniPageEntry } from '@/target/entires/miniPageEntry';
+import { genMiniAppEntry, MiniAppEntry } from '@/target/entires/miniAppEntry';
+import monaStore from '@/target/store';
+
 export default class MiniEntryModule {
   entries: Record<string, string> = {};
   module: VirtualModulesPlugin;
@@ -41,25 +44,31 @@ export default class MiniEntryModule {
     const { entryPath, appConfig, cwd } = this.configHelper;
     const pages = appConfig.pages;
     const realPagePaths = pages.map(page => searchScriptFile(path.resolve(cwd, 'src', page)));
-    const names = ['app', ...pages];
-    const realPaths = [entryPath, ...realPagePaths];
 
     const module: Record<string, string> = {};
     const entries: Record<string, string> = {};
 
-    for (let i = 0; i < names.length; i++) {
-      const name = names[i];
-      const realPath = realPaths[i];
-      const virtualPath = MiniEntryModule.extendEntryName(realPath);
-      if (!MiniPageEntry.isMini(realPath)) {
-        entries[name.toLowerCase()] = virtualPath;
+    if (!MiniAppEntry.isMini(entryPath)) {
+      const virtualPath = MiniEntryModule.extendEntryName(entryPath);
+      entries['app'] = virtualPath;
+      module[virtualPath] = MiniEntryModule.generateAppEntryCode(entryPath);
+    } else {
+      monaStore.miniAppEntry = true;
+      genMiniAppEntry(this.configHelper, entryPath.replace(path.extname(entryPath), ''));
+    }
 
-        // this first entry is app entry
-        if (i === 0) {
-          module[virtualPath] = MiniEntryModule.generateAppEntryCode(realPath);
-        } else {
-          module[virtualPath] = MiniEntryModule.generatePageEntryCode(realPath, name);
-        }
+    for (let i = 0; i < pages.length; i++) {
+      const name = pages[i];
+      const realPath = realPagePaths[i];
+      const virtualPath = MiniEntryModule.extendEntryName(realPath);
+      const isMiniEntry = MiniPageEntry.isMini(realPath);
+      if (!isMiniEntry && monaStore.miniAppEntry) {
+        console.log(`${name} 非法page入口`)
+        continue;
+      }
+      if (!isMiniEntry) {
+        entries[name.toLowerCase()] = virtualPath;
+        module[virtualPath] = MiniEntryModule.generatePageEntryCode(realPath, name);
       } else {
         genMiniPageEntry(this.configHelper, realPath.replace(path.extname(realPath), ''));
       }

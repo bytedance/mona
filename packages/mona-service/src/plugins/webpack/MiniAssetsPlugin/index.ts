@@ -9,8 +9,10 @@ import { miniExt } from '@/target/mini/constants';
 
 // import { cloneDeep } from 'lodash';
 import monaStore from '@/target/store';
-import type { MiniComponentEntry } from '@/target/entires/miniComponentEntry';
+// import type { MiniComponentEntry } from '@/target/entires/miniComponentEntry';
 import { MonaPlugins } from '@/plugins';
+import { MiniEntry } from '@/target/entires/miniEntry';
+// import { MiniAppEntry } from '@/target/entires/miniAppEntry';
 //@ts-ignore
 const { SplitChunksPlugin, RuntimeChunkPlugin } = optimize;
 
@@ -96,19 +98,19 @@ class NativeAssetsPlugin {
     plugins.forEach(p => p.apply(childCompiler));
   }
 
-  compileMainEntry(childCompiler: Compiler, entry: MiniComponentEntry) {
+  compileMainEntry(childCompiler: Compiler, entry: MiniEntry) {
     if (!fse.existsSync(entry.path.main)) {
       return;
     }
     new EntryPlugin(entry.context, entry.path.main, path.join(entry.outputDir, entry.basename)).apply(childCompiler);
   }
-  compileTemplate(childCompiler: Compiler, entry: MiniComponentEntry) {
+  compileTemplate(childCompiler: Compiler, entry: MiniEntry) {
     if (!fse.existsSync(entry.path.templatePath)) {
       return;
     }
     new EntryPlugin(entry.context, entry.path.templatePath, entry.outputPath.templatePath).apply(childCompiler);
   }
-  compileStyleFile(childCompiler: Compiler, entry: MiniComponentEntry) {
+  compileStyleFile(childCompiler: Compiler, entry: MiniEntry) {
     if (!fse.existsSync(entry.path.stylePath)) {
       return;
     }
@@ -160,6 +162,9 @@ class MiniAssetsPlugin {
     });
 
     compiler.hooks.emit.tap(this.pluginName, async compilation => {
+      if (monaStore.miniAppEntry) {
+        return;
+      }
       addUsingComponents(compilation, this.configHelper);
     });
 

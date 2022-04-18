@@ -1,4 +1,6 @@
-import type { MiniComponentEntry } from './entires/miniComponentEntry';
+// import type { MiniComponentEntry } from './entires/miniComponentEntry';
+import type { MiniEntry } from './entires/miniEntry';
+
 import { genEjsParamsMap } from './mini/baseComponents';
 // import { PageEntry } from './entires/pageEntry';
 
@@ -20,11 +22,11 @@ interface ITemplateRenderInfo {
 const monaStore = {
   templateRenderMap: new Map<string, ITemplateRenderInfo>(),
   ejsParamsMap: genEjsParamsMap(),
-
+  miniAppEntry: false,
   // TODO: pageEntires、nativeEntryMap合并成entry
   pageEntires: new Map<string, MonaPageEntry>(),
-  nativeEntryMap: new Map<string, MiniComponentEntry>(),
+  nativeEntryMap: new Map<string, MiniEntry>(),
   // entryMap: new Map<string, PageEntry>(),
 };
 
-export default Object.freeze(monaStore);
+export default monaStore;
