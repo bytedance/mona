@@ -7,7 +7,9 @@ const extensions = ['.js', '.mjs', '.jsx', '.ts', '.tsx', '.json'];
 export function chainOptimization(webpackConfig: Config, configHelper: ConfigHelper) {
   const optimization = webpackConfig.optimization;
   optimization
-    .usedExports(true)
+    // .usedExports(true)
+    .usedExports(false)
+
     .runtimeChunk('single')
     .splitChunks({
       cacheGroups: {

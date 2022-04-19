@@ -93,7 +93,7 @@ export class MiniComponentEntry extends MiniEntry {
   }
   // 依赖包括
   readUsingComponents(handledPath: Set<string> = new Set([this.entry])) {
-    const isReadEntry = handledPath.size === 0;
+    const isReadEntry = handledPath.size === 1 && handledPath.has(this.entry);
     if (!fse.existsSync(`${this.entry}.js`)) {
       return new Set([]);
     } else if (this.cache.usingComponents && isReadEntry) {

@@ -47,12 +47,14 @@ export default class MiniEntryModule {
 
     const module: Record<string, string> = {};
     const entries: Record<string, string> = {};
-
+    console.log({ entryPath });
     if (!MiniAppEntry.isMini(entryPath)) {
       const virtualPath = MiniEntryModule.extendEntryName(entryPath);
       entries['app'] = virtualPath;
       module[virtualPath] = MiniEntryModule.generateAppEntryCode(entryPath);
     } else {
+      entries['index'] = './fakeEntry/index.js';
+      module['./fakeEntry/index.js'] = '';
       monaStore.miniAppEntry = true;
       genMiniAppEntry(this.configHelper, entryPath.replace(path.extname(entryPath), ''));
     }
@@ -63,14 +65,16 @@ export default class MiniEntryModule {
       const virtualPath = MiniEntryModule.extendEntryName(realPath);
       const isMiniEntry = MiniPageEntry.isMini(realPath);
       if (!isMiniEntry && monaStore.miniAppEntry) {
-        console.log(`${name} 非法page入口`)
+        console.log(`${name} 非法page入口`);
         continue;
       }
       if (!isMiniEntry) {
         entries[name.toLowerCase()] = virtualPath;
         module[virtualPath] = MiniEntryModule.generatePageEntryCode(realPath, name);
       } else {
-        genMiniPageEntry(this.configHelper, realPath.replace(path.extname(realPath), ''));
+        // entries[name.toLowerCase()] = realPath;
+        const pEntry = genMiniPageEntry(this.configHelper, realPath.replace(path.extname(realPath), ''));
+        pEntry.readUsingComponents();
       }
     }
 
