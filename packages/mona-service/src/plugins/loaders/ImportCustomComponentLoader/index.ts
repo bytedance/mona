@@ -44,18 +44,23 @@ export default async function ImportCustomerComponentLoader(this: LoaderContext<
   }
   const nativeEntry = nativeEntryMap.get(dirName);
   let finalSource = source;
+
   if (nativeEntry instanceof MiniPageEntry && target === 'mini') {
     const dependencies = nativeEntry.readUsingComponents();
     dependencies.forEach(d => this.addDependency(d));
   } else if (nativeEntry instanceof MiniComponentEntry) {
     finalSource = nativeEntry.virtualSource;
-    // npm包名作为key => 绝对路径作为key
     if (target === 'mini' && MiniComponentEntry.isMini(entryPath)) {
-      if ([NODE_MODULES, 'alias'].includes(requestType)) {
-        nativeEntry.entry = entryPath.replace(path.extname(entryPath), '');
-        genMiniComponentEntry(nativeEntry.configHelper, nativeEntry.entry, nativeEntry);
+      if (monaStore.miniAppEntry) {
+        finalSource = source;
+      } else {
+        if ([NODE_MODULES, 'alias'].includes(requestType)) {
+          nativeEntry.entry = entryPath.replace(path.extname(entryPath), '');
+          genMiniComponentEntry(nativeEntry.configHelper, nativeEntry.entry, nativeEntry);
+        }
+        nativeEntry.readDefaultProps(source);
       }
-      nativeEntry.readDefaultProps(source);
+
       const dependencies = nativeEntry.readUsingComponents();
       dependencies.forEach(d => this.addDependency(d));
     }

@@ -72,9 +72,8 @@ export default class MiniEntryModule {
         entries[name.toLowerCase()] = virtualPath;
         module[virtualPath] = MiniEntryModule.generatePageEntryCode(realPath, name);
       } else {
-        // entries[name.toLowerCase()] = realPath;
-        genMiniPageEntry(this.configHelper, realPath.replace(path.extname(realPath), ''));
-        // pEntry.readUsingComponents();
+        const pEntry = genMiniPageEntry(this.configHelper, realPath.replace(path.extname(realPath), ''));
+        pEntry.readUsingComponents();
       }
     }
 

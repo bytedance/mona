@@ -76,7 +76,7 @@ export class MiniComponentEntry extends MiniEntry {
   get isCache() {
     return this.entry.includes(NODE_MODULES);
   }
-  
+
   get outputDir() {
     const dirPath = path.join(this.configHelper.cwd, './src');
     let outputPath = path.relative(dirPath, this.dirPath);
