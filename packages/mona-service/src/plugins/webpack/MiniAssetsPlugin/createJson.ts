@@ -40,7 +40,7 @@ export default async function createJson(compilation: Compilation, configHelper:
   }
   // app.json
   const appFile = 'app.json';
-  // entryPath.replace(path.extname(entryPath), '');
+
   if (!compilation.getAsset(appFile)) {
     const formatedAppConfig = formatAppConfig(appConfig);
     const source = new RawSource(JSON.stringify(formatedAppConfig, null, 2));
@@ -61,7 +61,6 @@ export default async function createJson(compilation: Compilation, configHelper:
     const pageConfigPath = path.join(cwd, `./src/${page}`, '..', 'page.config');
     const pageConfig = readConfig<PageConfig>(pageConfigPath);
 
-    // TODO:
     const usingComponents = monaStore.pageEntires.get(page)?.usingComponents;
     pageConfig.usingComponents = {
       ...usingComponents,

@@ -195,13 +195,13 @@ class MiniAssetsPlugin {
       await createTtml(compilation, this.configHelper);
     });
 
-    new HybridNativeAssetsPlugin(this.configHelper).apply(compiler);
-    // if (monaStore.miniAppEntry) {
-    //   new NativeAssetsPlugin(this.configHelper).apply(compiler);
-    // } else {
-    //   // 混用
-    //   new HybridNativeAssetsPlugin(this.configHelper).apply(compiler);
-    // }
+    // new HybridNativeAssetsPlugin(this.configHelper).apply(compiler);
+    if (monaStore.miniAppEntry) {
+      new NativeAssetsPlugin(this.configHelper).apply(compiler);
+    } else {
+      // 混用
+      new HybridNativeAssetsPlugin(this.configHelper).apply(compiler);
+    }
 
     compiler.hooks.afterCompile.tap(this.pluginName, compilation => {
       const { cwd, appConfig } = this.configHelper;

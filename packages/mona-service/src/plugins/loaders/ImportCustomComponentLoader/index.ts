@@ -4,6 +4,7 @@ import monaStore from '@/target/store';
 import { genMiniComponentEntry, MiniComponentEntry } from '@/target/entires/miniComponentEntry';
 import { NODE_MODULES } from '@/target/constants';
 import type ConfigHelper from '@/ConfigHelper';
+import { MiniPageEntry } from '@/target/entires/miniPageEntry';
 
 const { nativeEntryMap } = monaStore;
 // 强制要求自定义组件不得使用spread attribute  {...props}
@@ -43,10 +44,12 @@ export default async function ImportCustomerComponentLoader(this: LoaderContext<
   }
   const nativeEntry = nativeEntryMap.get(dirName);
   let finalSource = source;
-  if (nativeEntry instanceof MiniComponentEntry) {
+  if (nativeEntry instanceof MiniPageEntry && target === 'mini') {
+    const dependencies = nativeEntry.readUsingComponents();
+    dependencies.forEach(d => this.addDependency(d));
+  } else if (nativeEntry instanceof MiniComponentEntry) {
     finalSource = nativeEntry.virtualSource;
     // npm包名作为key => 绝对路径作为key
-
     if (target === 'mini' && MiniComponentEntry.isMini(entryPath)) {
       if ([NODE_MODULES, 'alias'].includes(requestType)) {
         nativeEntry.entry = entryPath.replace(path.extname(entryPath), '');
