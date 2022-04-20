@@ -66,7 +66,7 @@ class NativeAssetsPlugin {
     new Set(Array.from(monaStore.nativeEntryMap.values())).forEach(entry => {
       const currentSource = new sources.RawSource(JSON.stringify(entry.genOutputConfig(), null, 2));
       const outputPath = entry.outputPath.configPath;
-      console.log({ outputPath });
+      // console.log({ outputPath });
       if (compilation.getAsset(outputPath)) {
         compilation.updateAsset(outputPath, currentSource);
       } else {

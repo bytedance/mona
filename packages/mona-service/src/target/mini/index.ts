@@ -60,6 +60,7 @@ const mini: IPlugin = ctx => {
 
     tctx.chainWebpack(webpackConfig => {
       const miniEntryPlugin = new MonaPlugins.MiniEntryPlugin(configHelper);
+
       webpackConfig
         .target('web')
         .devtool(projectConfig.abilities?.sourceMap!)
@@ -68,6 +69,7 @@ const mini: IPlugin = ctx => {
         .output.path(path.join(cwd, projectConfig.output))
         .publicPath('/')
         .globalObject('tt');
+
       webpackConfig.externals(['@bytedance/mona-client-plugin', '@bytedance/mona-client-web']);
       chainResolve(webpackConfig, configHelper);
       chainModuleRule(webpackConfig, configHelper);

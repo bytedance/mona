@@ -66,6 +66,7 @@ function genNativeEjsData() {
           return pre;
         }, allProps);
       }
+      
       result.set(entry.id, {
         id: entry.id,
         name: componentName,
