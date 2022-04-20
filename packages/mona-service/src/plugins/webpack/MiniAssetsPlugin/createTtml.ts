@@ -66,7 +66,7 @@ function genNativeEjsData() {
           return pre;
         }, allProps);
       }
-      
+
       result.set(entry.id, {
         id: entry.id,
         name: componentName,
@@ -85,6 +85,9 @@ function genNativeEjsData() {
 }
 
 export default async function createTtml(compilation: Compilation, configHelper: ConfigHelper) {
+  if (monaStore.miniAppEntry) {
+    return;
+  }
   const isDev = configHelper.isDev;
   const { appConfig } = configHelper;
   const pages = appConfig.pages ?? [];
@@ -117,9 +120,6 @@ export default async function createTtml(compilation: Compilation, configHelper:
     compilation.emitAsset(file, source);
   }
 
-  if (monaStore.miniAppEntry) {
-    return;
-  }
   // page ttml
   pages.forEach(async page => {
     const pageDistPath = path.join(page.toLowerCase());
