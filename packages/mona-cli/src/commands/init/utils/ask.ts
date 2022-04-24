@@ -1,5 +1,6 @@
 import fs from 'fs';
 import inquirer, { DistinctQuestion } from 'inquirer';
+import { checkChinese } from './common';
 
 const templates = [
   {
@@ -16,8 +17,8 @@ const templates = [
   },
   {
     name: 'max（适用于店铺装修组件开发）',
-    value: 'max'
-  }
+    value: 'max',
+  },
 ];
 
 type AskKey = keyof Omit<Answer, 'appId'>;
@@ -31,7 +32,6 @@ export interface Answer {
   styleProcessor: 'less' | 'css';
   appId?: string;
 }
-
 
 export async function ask(opts: Partial<Answer>) {
   const prompts: inquirer.DistinctQuestion<Answer>[] = [];
@@ -47,17 +47,19 @@ export async function ask(opts: Partial<Answer>) {
   const answer: Answer = await inquirer.prompt(prompts);
 
   if (answer.templateType === 'max') {
-    const { appId } = await inquirer.prompt([{
-      type: 'input',
-      name: 'appId',
-      message: '请输入appId',
-      validate(input: string) {
-        if (!input) {
-          return 'appId不能为空！请在抖店开放平台查看';
-        }
-        return true;
-      }
-    }])
+    const { appId } = await inquirer.prompt([
+      {
+        type: 'input',
+        name: 'appId',
+        message: '请输入appId',
+        validate(input: string) {
+          if (!input) {
+            return 'appId不能为空！请在抖店开放平台查看';
+          }
+          return true;
+        },
+      },
+    ]);
     answer.appId = appId;
   }
 
@@ -79,6 +81,9 @@ export const askConfig: Record<AskKey, AskItem> = {
     validate(input: string) {
       if (!input) {
         return '应用名称不能为空！';
+      }
+      if (checkChinese(input)) {
+        return '项目名称不能含有中文';
       }
       if (fs.existsSync(input)) {
         return '当前目录已存在同名文件夹，请更换应用名称！';
