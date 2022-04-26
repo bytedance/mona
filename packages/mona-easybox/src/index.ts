@@ -68,6 +68,8 @@ class Easybox {
 
     // handle publicPath
     window.__mona_public_path__ = assetPublicPath;
+    sandbox.global.window.__mona_public_path__ = assetPublicPath;
+    sandbox.global.window.__mona_easy_box = sandbox;
 
     // write template
     writeTemplate(template, this.options.domGetter || document.documentElement);
