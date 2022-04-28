@@ -166,7 +166,7 @@ function proxyElement(sandbox: Sandbox) {
     }
   };
 
-  Element.prototype.appendChild = function (node: HTMLScriptElement) {
+  const fakeAppend =  function (node: HTMLScriptElement) {
     if (node.tagName === 'SCRIPT') {
       if (node.src) {
         const SRC = node.src;
@@ -178,8 +178,6 @@ function proxyElement(sandbox: Sandbox) {
         )
           // @ts-ignore
           .then(({ execScripts }) => {
-            console.log({ execScripts });
-            // exec script
             return execScripts(sandbox.global, false);
           })
           .then(() => {
@@ -192,8 +190,13 @@ function proxyElement(sandbox: Sandbox) {
       ProxyScriptNode(sandbox, node);
     }
 
+    // @ts-ignore
     return rawAppendChild.call(this, node);
   };
+
+  Element.prototype.appendChild = fakeAppend
+  Element.prototype.append = fakeAppend
+
 }
 
 const element = (sandbox: Sandbox) => {
