@@ -3,6 +3,7 @@
  * author: xwchris
  */
 import importHTML from './import-html-entry';
+import { preset } from './preset';
 import Sandbox from './sandbox';
 import { writeTemplate } from './utils';
 // import { writeTemplate } from './utils';
@@ -52,6 +53,7 @@ class Easybox {
   constructor(entry: string, options?: EasyboxOptions) {
     this.entry = entry;
     this.options = { ...defaultOptions, ...(options || {}) };
+    preset();
   }
 
   async run() {
