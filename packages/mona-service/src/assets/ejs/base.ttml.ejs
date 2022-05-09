@@ -17,12 +17,16 @@
     <%_}}-%>
   >
   <% if(!voidChildrenElements.has(name)) { -%>
-    <template 
-      is='{{ "mona-" + node.<%=COMPLIER_NODES%>[item].<%=COMPLIER_TYPE%> }}' 
+    <block  
       tt:for='{{ node.<%=COMPLIER_CHILDREN%> }}'
       tt:key='*this'
+    >
+    <template 
+      is='{{ "mona-" + node.<%=COMPLIER_NODES%>[item].<%=COMPLIER_TYPE%> }}' 
       data='{{ node: node.<%=COMPLIER_NODES%>[item] }}' 
     />
+    </block>
+   
   <%_}-%></<%=miniName%>>
 </template><%};-%>
 
@@ -39,18 +43,21 @@
         <%=i%>='{{node.<%=COMPLIER_PROPS%>["<%=props[i]%>"]}}' 
       <%_}}-%>
     >
-      <template 
-        is='{{ "mona-" + node.<%=COMPLIER_NODES%>[item].<%=COMPLIER_TYPE%> }}' 
-        tt:for='{{ node.<%=COMPLIER_CHILDREN%> }}'
-        tt:key='*this'
-        data='{{ node: node.<%=COMPLIER_NODES%>[item] }}' 
-      />
+    <block  
+      tt:for='{{ node.<%=COMPLIER_CHILDREN%> }}'
+      tt:key='*this'
+    >
+    <template 
+      is='{{ "mona-" + node.<%=COMPLIER_NODES%>[item].<%=COMPLIER_TYPE%> }}' 
+      data='{{ node: node.<%=COMPLIER_NODES%>[item] }}' 
+    />
+    </block>
      </<%=item.name%>>
   </template>
 <%};-%>
 
 <template name='mona-<%=PTextName%>'>
-  <block>{{ node.<%=COMPLIER_TEXT%> }}</block>
+  {{ node.<%=COMPLIER_TEXT%> }}
 </template>
 
 
