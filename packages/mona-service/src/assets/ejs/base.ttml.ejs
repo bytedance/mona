@@ -1,7 +1,7 @@
 <%_const { COMPLIER_CHILDREN, COMPLIER_PROPS, COMPLIER_NODES, COMPLIER_KEY, COMPLIER_TYPE, COMPLIER_TEXT } = RENDER_NODE-%>
 
 <template name='mona-base'>
-  <template tt:for='{{root.<%=COMPLIER_CHILDREN%>}}' tt:key='{{ item.<%=COMPLIER_KEY%> }}' is='{{"mona-" + root.<%=COMPLIER_NODES%>[item].<%=COMPLIER_TYPE%>}}' data='{{node: root.<%=COMPLIER_NODES%>[item]}}' />
+  <template tt:for='{{root.<%=COMPLIER_CHILDREN%>}}' tt:key='*this' is='{{"mona-" + root.<%=COMPLIER_NODES%>[item].<%=COMPLIER_TYPE%>}}' data='{{node: root.<%=COMPLIER_NODES%>[item]}}' />
 </template>
 
 
@@ -17,12 +17,16 @@
     <%_}}-%>
   >
   <% if(!voidChildrenElements.has(name)) { -%>
+    <block  
+      tt:for='{{ node.<%=COMPLIER_CHILDREN%> }}'
+      tt:key='*this'
+    >
     <template 
       is='{{ "mona-" + node.<%=COMPLIER_NODES%>[item].<%=COMPLIER_TYPE%> }}' 
-      tt:for='{{ node.<%=COMPLIER_CHILDREN%> }}'
-      tt:key='{{ item.<%=COMPLIER_KEY%> }}'
       data='{{ node: node.<%=COMPLIER_NODES%>[item] }}' 
     />
+    </block>
+   
   <%_}-%></<%=miniName%>>
 </template><%};-%>
 
@@ -39,18 +43,21 @@
         <%=i%>='{{node.<%=COMPLIER_PROPS%>["<%=props[i]%>"]}}' 
       <%_}}-%>
     >
-      <template 
-        is='{{ "mona-" + node.<%=COMPLIER_NODES%>[item].<%=COMPLIER_TYPE%> }}' 
-        tt:for='{{ node.<%=COMPLIER_CHILDREN%> }}'
-        tt:key='{{ item.<%=COMPLIER_KEY%> }}'
-        data='{{ node: node.<%=COMPLIER_NODES%>[item] }}' 
-      />
+    <block  
+      tt:for='{{ node.<%=COMPLIER_CHILDREN%> }}'
+      tt:key='*this'
+    >
+    <template 
+      is='{{ "mona-" + node.<%=COMPLIER_NODES%>[item].<%=COMPLIER_TYPE%> }}' 
+      data='{{ node: node.<%=COMPLIER_NODES%>[item] }}' 
+    />
+    </block>
      </<%=item.name%>>
   </template>
 <%};-%>
 
 <template name='mona-<%=PTextName%>'>
-  <block>{{ node.<%=COMPLIER_TEXT%> }}</block>
+  {{ node.<%=COMPLIER_TEXT%> }}
 </template>
 
 
