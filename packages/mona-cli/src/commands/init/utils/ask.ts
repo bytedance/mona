@@ -16,10 +16,20 @@ const templates = [
     value: 'plugin',
   },
   {
-    name: 'max（适用于店铺装修组件开发）',
+    name: 'max（适用于店铺装修模块开发）',
     value: 'max',
   },
 ];
+
+const maxTemplateTypes = [
+  {
+    name: 'component（店铺装修组件开发）',
+    value: 'max'
+  }, {
+    name: 'template（店铺装修模板开发）',
+    value: 'max-template'
+  }
+]
 
 type AskKey = keyof Omit<Answer, 'appId'>;
 
@@ -47,6 +57,17 @@ export async function ask(opts: Partial<Answer>) {
   const answer: Answer = await inquirer.prompt(prompts);
 
   if (answer.templateType === 'max') {
+    const { subTemplateType } = await inquirer.prompt([{
+      type: 'list',
+      name: 'subTemplateType',
+      message: '选择店铺装修类型',
+      choices: maxTemplateTypes,
+      default: maxTemplateTypes[0].value,
+      checkAsk: (defaultValue?: string) => !defaultValue || !maxTemplateTypes.find(t => t.value === defaultValue),
+    }])
+
+    answer.templateType = subTemplateType;
+
     const { appId } = await inquirer.prompt([
       {
         type: 'input',
