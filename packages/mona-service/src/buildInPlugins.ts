@@ -3,6 +3,9 @@ export const pathToPlugin = (pathname: string) => require(pathname);
 export const convertPlugins = (plugins: string[]) => flatten(plugins.map(pathToPlugin));
 
 const buildInPlugins = convertPlugins([
+  // 放到最前面
+  '@ecom/mona-dynamic-detection',
+
   './commands/build',
   './commands/start',
   './commands/compress',

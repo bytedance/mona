@@ -35,6 +35,7 @@
     "@bytedance/mona-max": "0.2.9-alpha.2",
     "@bytedance/mona-runtime": "0.2.9-alpha.2",
     "@bytedance/mona-shared": "0.2.9-alpha.2",
+    "@ecom/mona-dynamic-detection": "^0.0.1-alpha.3",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.1",
     "@svgr/webpack": "^5.5.0",
     "@teamsupercell/typings-for-css-modules-loader": "^2.5.1",
