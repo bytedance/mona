@@ -1,5 +1,6 @@
 import commandLineUsage from 'command-line-usage';
 import minimist from 'minimist';
+import ConfigHelper from './ConfigHelper';
 import PluginContext from './PluginContext';
 import log from './utils/log';
 const pkg = require('../package.json');
@@ -99,12 +100,13 @@ class Service {
       const target = pluginContext.getTarget(targetName);
       if (target) {
         target.runTarget();
-        cmd.runCommand(cmdArgv, target.targetContext);
+        cmd.runCommand(cmdArgv, target.targetContext?.builder.configHelper, target.targetContext);
       } else {
         log.error(`invalid target -- ${targetName}`);
       }
     } else {
-      cmd.runCommand(cmdArgv);
+      const configHelper = new ConfigHelper();
+      cmd.runCommand(cmdArgv, configHelper);
     }
   }
 }
