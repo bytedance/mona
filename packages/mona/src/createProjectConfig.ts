@@ -33,6 +33,7 @@ export interface ProjectConfig {
       postcss?: {
         pxtransform?: PostcssPxtransformProps;
       };
+      typings?: boolean;
     };
 
     // default: false

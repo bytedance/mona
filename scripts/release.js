@@ -3,10 +3,8 @@ const semver = require('semver');
 const chalk = require('chalk');
 const inquirer = require('inquirer');
 const ora = require('ora');
-function getGitBranch() {
-  const res = execa.commandSync('git rev-parse --abbrev-ref HEAD');
-  return res.stdout;
-}
+const { getGitBranch } = require('./branch');
+
 function getPkgNpmVersionList() {
   let res = execa.commandSync('npm view @bytedance/mona versions --json');
   res = JSON.parse(res.stdout);
@@ -38,6 +36,7 @@ function getTag(str) {
   }
   return;
 }
+
 function log(...args) {
   console.log(chalk.white.bgBlack('release'), ...args);
 }
@@ -69,6 +68,7 @@ function main() {
   const released = npmVersionList.includes(newVersion);
   log(chalk.green(`即将发布版本: ${chalk.blue.underline.bold(newVersion)}`));
   let oldVersion = false;
+
   if (cmp === 1) {
     if (released) {
       log(chalk.red(`版本<${newVersion}>已存在`));

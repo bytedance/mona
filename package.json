@@ -21,7 +21,8 @@
     "v:git": "git add . && git commit -m \"chore(release): publish ${npm_config_lerna_version}\"",
     "v:git:alpha": "git add . && git commit -m \"chore(release): publish ${npm_config_lerna_version} --tag=alpha\"",
     "v:git:beta": "git add . && git commit -m \"chore(release): publish ${npm_config_lerna_version} --tag=beta\"",
-    "release": "yarn v:lerna && node ./scripts/release.js"
+      "branchBehind": "node ./scripts/checkBranch.js",
+      "release": "yarn branchBehind && yarn v:lerna && node ./scripts/release.js"
   },
   "repository": {
     "type": "git",
