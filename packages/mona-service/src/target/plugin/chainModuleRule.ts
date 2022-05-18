@@ -49,6 +49,7 @@ function createJsRule(webpackConfig: Config, configHelper: ConfigHelper) {
 }
 
 function createCssRule(webpackConfig: Config, configHelper: ConfigHelper) {
+  const { projectConfig } = configHelper;
   const cssRule = webpackConfig.module.rule('css').test(/\.(c|le)ss$/i);
 
   createRule(cssRule);
@@ -59,9 +60,11 @@ function createCssRule(webpackConfig: Config, configHelper: ConfigHelper) {
       r => r.loader(require.resolve('style-loader')),
       r => r.loader(MonaPlugins.MiniCssExtractPlugin.loader),
     );
-    styleRule
-      .use('@teamsupercell/typings-for-css-modules-loader')
-      .loader(require.resolve('@teamsupercell/typings-for-css-modules-loader'));
+    const { typings } = projectConfig.abilities?.css || { typings: false };
+    typings &&
+      styleRule
+        .use('@teamsupercell/typings-for-css-modules-loader')
+        .loader(require.resolve('@teamsupercell/typings-for-css-modules-loader'));
     styleRule
       .use('cssLoader')
       .loader(require.resolve('css-loader'))
