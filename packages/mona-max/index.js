@@ -1,4 +1,3 @@
-const build = require('./scripts/build');
-const start = require('./scripts/start');
+const component = require('./scripts/component');
 
-module.exports = [build, start];
+module.exports = [component];

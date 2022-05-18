@@ -12,7 +12,7 @@ const start: IPlugin = ctx => {
         { name: 'port', description: '指定启动端口', alias: 'p' },
       ],
     },
-    (args, targetContext) => {
+    (args, _, targetContext) => {
       if (targetContext?.startFn) {
         targetContext?.startFn(args);
       }
