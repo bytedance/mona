@@ -76,18 +76,19 @@ class TargetContext {
       const staticDir = path.join(cwd, projectConfig.output);
       const port = args.port || projectConfig.dev?.port || DEFAULT_PORT;
 
-      const devServerConfig = webpackConfig.devServer || {
-        static: {
-          directory: staticDir,
+      const devServer = new WebpackDevServer(
+        {
+          static: {
+            directory: staticDir,
+          },
+          hot: true,
+          open: true,
+          historyApiFallback: true,
+          compress: true,
+          port,
         },
-        hot: true,
-        open: true,
-        historyApiFallback: true,
-        compress: true,
-        port,
-      }
-
-      const devServer = new WebpackDevServer(devServerConfig, compiler);
+        compiler,
+      );
 
       devServer.startCallback(() => {
         console.log(chalk.green(`服务启动成功： http://${DEFAULT_HOST}:${port}`));

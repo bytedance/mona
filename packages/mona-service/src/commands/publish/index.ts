@@ -7,14 +7,16 @@ import fs from 'fs';
 import { generateRequestFromOpen, upload } from './utils';
 import { compressDir } from '../compress/utils';
 
+
 const publish: IPlugin = (ctx) => {
   ctx.registerCommand('publish', {
     description: '发布新版本代码到开放平台',
     options: [
-      { name: 'help', description: '输出帮助信息', alias: 'h' },
-    ],
+        { name: 'help', description: '输出帮助信息', alias: 'h' },
+        { name: 'appid', description: '开放平台应用id', alias: 'a' },
+      ],
     usage: 'mona-service publish',
-  }, async (args, configHelper) => {
+  }, async (args) => {
     try {
       console.log(chalk.cyan(`请确保在项目根目录使用该命令`));
       // ensure login
@@ -23,14 +25,12 @@ const publish: IPlugin = (ctx) => {
         throw new Error('未登录，请使用 mona login 进行登录')
       }
       console.log(chalk.cyan(`当前用户：${user.nickName}`));
-      // react appId from project config, at the same time it is compatible with old usag
-      // console.log('targetContext?.builder.configHelper.projectConfig', configHelper);
-      const appId = configHelper?.projectConfig.appId || args.appid;
-      if (!appId) {
-        throw Error('未在mona.config中指定 appId，请在抖店开放平台应用详情页查看应用APP_Key')
-      }
+      const appId = args.appid;
       if (typeof appId !== 'string') {
         throw new Error('appId应该为字符串')
+      }
+      if (!appId) {
+        throw Error('未指定 appId，请在抖店开放平台查看应用appkey')
       }
       
       const request = generateRequestFromOpen(args, user.cookie);

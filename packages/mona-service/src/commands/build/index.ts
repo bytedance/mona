@@ -11,7 +11,7 @@ const build: IPlugin = ctx => {
         { name: 'target', description: '指定打包类型', alias: 't' },
       ],
     },
-    (args, _, targetContext) => {
+    (args, targetContext) => {
       if (targetContext?.buildFn) {
         targetContext?.buildFn(args);
       }

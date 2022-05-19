@@ -1,7 +1,6 @@
 import minimist from 'minimist';
 import commandLineUsage from 'command-line-usage';
 import TargetContext from './TargetContext';
-import ConfigHelper from './ConfigHelper';
 
 export interface ICommandOptions {
   description?: string
@@ -10,7 +9,7 @@ export interface ICommandOptions {
 }
 
 export interface ICommandCallback {
-  (args: Record<string, any>, configHelper: ConfigHelper, targetContext?: TargetContext): void | Promise<void>
+  (args: Record<string, any>, targetContext?: TargetContext): void | Promise<void>
 }
 
 
@@ -25,7 +24,7 @@ class ICommand {
     this._fn = fn;
   }
 
-  runCommand(args: minimist.ParsedArgs, configHelper: ConfigHelper, targetContext?: TargetContext) {
+  runCommand(args: minimist.ParsedArgs, targetContext?: TargetContext) {
     const { options, _fn, name } = this;
     // if is help
     if (args.help) {
@@ -42,7 +41,7 @@ class ICommand {
       return;
     }
 
-    _fn.call(this, args, configHelper, targetContext);
+    _fn.call(this, args, targetContext);
   }
 }
 
