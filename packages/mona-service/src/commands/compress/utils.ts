@@ -7,7 +7,7 @@ import chalk from 'chalk';
 const TEMP_DIR = '.mona';
 
 function isDir(rawFilename: string) {
-  return fs.lstatSync(rawFilename).isDirectory()
+  return fs.lstatSync(rawFilename).isDirectory();
 }
 
 export function ensureDirExist(dirname: string) {
@@ -16,34 +16,73 @@ export function ensureDirExist(dirname: string) {
   }
 }
 
+export async function compressDistDir(inputPath: string) {
+  console.log(chalk.cyan('当前打包目录', inputPath));
+  const spinner = ora('打包中...').start();
+  ensureDirExist(TEMP_DIR);
+  const outputPath = path.join(process.cwd(), TEMP_DIR, `publish${Date.now()}.zip`);
+  await compressDirToZip(inputPath, outputPath);
+  spinner.succeed(chalk.green('打包成功'));
+  return outputPath;
+}
+
 export async function compressDir(inputPath: string, ignoreList: string[] = []) {
   console.log(chalk.cyan('当前打包目录', inputPath));
   const spinner = ora('打包中...').start();
   ensureDirExist(TEMP_DIR);
   const outputPath = path.join(process.cwd(), TEMP_DIR, `publish${Date.now()}.zip`);
-  await compressToZip(inputPath, outputPath, [...ignoreList, 'node_modules', TEMP_DIR])
+  await compressToZip(inputPath, outputPath, [...ignoreList, 'node_modules', TEMP_DIR]);
   spinner.succeed(chalk.green('打包成功'));
   return outputPath;
+}
+
+export function compressDirToZip(inputPath: string, outputPath: string) {
+  return new Promise((resolve, reject) => {
+    const output = fs.createWriteStream(outputPath);
+    const arc = archiver('zip', {
+      zlib: { level: 9 },
+    });
+
+    arc.on('end', () => {
+      resolve('success');
+    });
+    arc.on('error', err => {
+      console.log('throw=====');
+      reject(err);
+    });
+
+    arc.pipe(output);
+
+    try {
+      if (fs.existsSync(inputPath)) {
+        arc.directory(inputPath, path.basename(inputPath));
+      }
+    } catch (err) {
+      reject(err);
+    }
+
+    arc.finalize();
+  });
 }
 
 export function compressToZip(inputPath: string, outputPath: string, ignoreList: string[] = []) {
   return new Promise((resolve, reject) => {
     const output = fs.createWriteStream(outputPath);
     const arc = archiver('zip', {
-      zlib: { level:9 }
-    })
+      zlib: { level: 9 },
+    });
 
     arc.on('end', () => {
-      resolve('success')
-    })
-    arc.on('error', (err) => {
-      console.log('throw=====')
+      resolve('success');
+    });
+    arc.on('error', err => {
+      console.log('throw=====');
       reject(err);
-    })
+    });
 
     arc.pipe(output);
 
-    const shouldIgnore = (filename: string) => ignoreList.some(p => new RegExp(p).test(filename))
+    const shouldIgnore = (filename: string) => ignoreList.some(p => new RegExp(p).test(filename));
 
     try {
       if (fs.existsSync(inputPath)) {
@@ -58,17 +97,17 @@ export function compressToZip(inputPath: string, outputPath: string, ignoreList:
                 arc.file(filepath, { name: filename });
               }
             }
-          })
+          });
         } else {
           if (shouldIgnore(inputPath)) {
             arc.file(inputPath, { name: path.basename(inputPath) });
           }
         }
       }
-    } catch(err) {
-      reject(err)
+    } catch (err) {
+      reject(err);
     }
 
     arc.finalize();
-  })
+  });
 }
