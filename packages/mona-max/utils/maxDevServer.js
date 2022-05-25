@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const getReviewData = require('../utils/getReviewData');
 
 const DEV_SERVER_PORT = 10089;
 const WS_PORT = 10079;
@@ -22,6 +23,12 @@ const MESSAGE_TYPE = {
   },
   exchangeSchemaJSON: {
     name: 'EXCHANGE_SCHEMA_JSON'
+  },
+  exchangeDefaultJson: {
+    name: 'EXCHANGE_DEFAULT_JSON'
+  },
+  exchangeReviewJson: {
+    name: 'EXCHANGE_REVIEW_JSON'
   }
 }
 
@@ -72,6 +79,21 @@ try {
         // 如果有data，说明是来写入data的
         if (data) {
           fs.writeFileSync(schemaJsonFilePath, data ? JSON.stringify(data) : '{}');
+        }
+
+      }
+
+      if (type === MESSAGE_TYPE.exchangeReviewJson.name) {
+        const reviewJsonFilePath = path.resolve(process.cwd(), './src/review.json');
+        const isReviewJsonExist = fs.existsSync(reviewJsonFilePath);
+
+        if (!isReviewJsonExist) {
+          console.error('review.json not exist');
+          return;
+        }
+
+        if (data) {
+          fs.writeFileSync(reviewJsonFilePath, JSON.stringify(getReviewData(data)));
         }
 
       }
