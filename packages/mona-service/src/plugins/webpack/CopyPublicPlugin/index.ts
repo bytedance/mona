@@ -5,13 +5,12 @@ import path from 'path';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 const PUBLIC_PATH_NAME = 'public';
 
-type Pattern =  string | { from: string, to?: string };
 class CopyPublicPlugin {
   configHelper: ConfigHelper;
   pluginName = 'CopyPublicPlugin';
-  patterns?: Pattern[];
+  patterns?: CopyWebpackPlugin.Pattern[];
 
-  constructor(configHelper: ConfigHelper, patterns?: Pattern[]) {
+  constructor(configHelper: ConfigHelper, patterns?: CopyWebpackPlugin.Pattern[]) {
     this.configHelper = configHelper;
     this.patterns = patterns;
   }

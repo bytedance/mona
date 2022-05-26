@@ -25,7 +25,10 @@ export function chainPlugins(webpackConfig: Config, configHelper: ConfigHelper) 
   webpackConfig.plugin('ConfigHMRPlugin').use(ConfigHMRPlugin, [configHelper, true]);
 
   // 复制pigeon.json文件
-  webpackConfig.plugin('CopyPublicPlugin').use(CopyPublicPlugin, [configHelper, [path.join(cwd, 'pigeon.json')]]);
+  webpackConfig.plugin('CopyPublicPlugin').use(CopyPublicPlugin, [configHelper, [{
+    from: path.join(cwd, 'pigeon.json'),
+    noErrorOnMissing: true
+  }]]);
   webpackConfig.plugin('HtmlWebpackPlugin').use(
     new HtmlWebpackPlugin({
       templateContent: genPluginHtml(configHelper.buildId),
