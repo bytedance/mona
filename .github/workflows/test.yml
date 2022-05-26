@@ -41,7 +41,7 @@ jobs:
 
       - name: build
         run: |
-          yarn global add lerna
+          yarn global add lerna@4.0.0
           lerna run build
 
       - name: test
