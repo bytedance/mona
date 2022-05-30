@@ -7,8 +7,8 @@ const WS_PORT = 10079;
 const TARGET_URL = `https://fxg.jinritemai.com/ffa/mshop/decorate/isv/entry?debug=1&WSPORT=${WS_PORT}`;
 
 const SEND_DATA = {
-  indexURL: `https://localhost:${DEV_SERVER_PORT}/index.umd.js`,
-  settingURL: `https://localhost:${DEV_SERVER_PORT}/schema.json`,
+  indexURL: `http://localhost:${DEV_SERVER_PORT}/index.umd.js`,
+  settingURL: `http://localhost:${DEV_SERVER_PORT}/schema.json`,
   decp: '本地测试组件',
   name: 'LocalDebugComponent',
   type: 'LocalDebugComponent',
@@ -93,7 +93,7 @@ try {
         }
 
         if (data) {
-          fs.writeFileSync(reviewJsonFilePath, JSON.stringify(getReviewData(data)));
+          fs.writeFileSync(reviewJsonFilePath, getReviewData(data));
         }
 
       }

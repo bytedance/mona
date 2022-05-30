@@ -4,11 +4,15 @@ module.exports = function getReviewData(data) {
   try {
       Object.values(data).forEach((v) => {
         const formValue = JSON.parse(v)
+        // compatible
+        if(formValue.type === 13) {
+          delete formValue.value.link_text
+        }
         result.push({
           c_type: formValue.type,
           name: formValue.name,
           reject_info: null,
-          schema_value: JSON.stringify(formValue.value)
+          scheme_value: JSON.stringify(formValue.value)
         })
       })
   }catch(e) {
