@@ -34,8 +34,7 @@ const devConfig = {
     port: DEV_SERVER_PORT,
     open: {
       target: [TARGET_URL, '']
-    },
-    https: true,
+    }
   },
   plugins: [
     new HtmlWebpackPlugin({

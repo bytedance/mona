@@ -1,5 +1,6 @@
 
 const child_process = require('child_process');
+const chalk = require('chalk');
 
 const maxComponent = ctx => {
   ctx.registerTarget('max', tctx => {
@@ -18,7 +19,13 @@ const maxComponent = ctx => {
       usage: 'mona-service max-build',
     },
     () => {
-      child_process.execSync('cross-env NODE_ENV=production mona-service build -t max')
+      console.log(chalk.bold.red("请更新build命令为 'mona-service build -t max'"))
+      child_process.execSync('cross-env NODE_ENV=production mona-service build -t max', function (error, stdout, stderr) {
+        if (error) {
+          console.log(error.stack);
+        }
+        console.log(stdout);
+      })
     }
   )
   ctx.registerCommand(
@@ -28,7 +35,13 @@ const maxComponent = ctx => {
       usage: 'mona-service max-start',
     },
     () => {
-      child_process.execSync('cross-env NODE_ENV=development mona-service start -t max')
+      console.log(chalk.bold.red("请更新start命令为 'mona-service start -t max'"))
+      child_process.execSync('cross-env NODE_ENV=development mona-service start -t max', function (error, stdout, stderr) {
+        if (error) {
+          console.log(error.stack);
+        }
+        console.log(stdout);
+      })
     }
   )
 };
