@@ -38,7 +38,7 @@ function createJsRule(webpackConfig: Config, configHelper: ConfigHelper) {
         configHelper.isDev && require.resolve('react-refresh/babel'),
         projectConfig.enableMultiBuild && [
           path.join(__dirname, '../../plugins/babel/BabelPluginMultiTarget.js'),
-          { target: TARGET, context: cwd, alias: genAlias(cwd) },
+          { target: TARGET, context: cwd, alias: genAlias() },
         ],
       ].filter(Boolean),
     });

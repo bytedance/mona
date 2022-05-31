@@ -63,7 +63,7 @@ function createJsRule(webpackConfig: Config, configHelper: ConfigHelper) {
         collectNativeComponent.bind(null, configHelper),
         projectConfig.enableMultiBuild && [
           path.join(__dirname, '../../plugins/babel/BabelPluginMultiTarget.js'),
-          { target: TARGET, context: cwd, alias: genAlias(configHelper.cwd) },
+          { target: TARGET, context: cwd, alias: genAlias() },
         ],
       ].filter(Boolean),
       // ! mini端，'@babel/preset-react'，不要添加 "runtime": "automatic" 配置。 可能会导致perfTemplateRender插件收集props遗漏
