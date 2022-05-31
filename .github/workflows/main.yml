@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.18.0]
+        node-version: [14.20.0]
 
     steps:
       # prepare env
