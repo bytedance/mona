@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.20.0]
+        node-version: [14.18.0]
 
     steps:
       # prepare env
@@ -112,7 +112,7 @@ jobs:
       # install dependencies
       - name: Install Lerna
         if: startsWith( env.commitmsg , 'chore(release):' ) && steps.tag_check.outputs.exists_tag == 'false'
-        run: yarn add lerna -W
+        run: yarn add lerna@4.0.0 -W
       - name: Install Dependencies
         if: startsWith( env.commitmsg , 'chore(release):' ) && steps.tag_check.outputs.exists_tag == 'false'
         run: yarn bootstrap
