@@ -4,6 +4,7 @@ import { MonaPlugins } from '@/plugins';
 
 import getEnv from '../utils/getEnv';
 import { TARGET, genPluginHtml } from './constants';
+import path from 'path';
 
 export function chainPlugins(webpackConfig: Config, configHelper: ConfigHelper) {
   const { cwd, projectConfig } = configHelper;
@@ -23,7 +24,11 @@ export function chainPlugins(webpackConfig: Config, configHelper: ConfigHelper) 
   );
   webpackConfig.plugin('ConfigHMRPlugin').use(ConfigHMRPlugin, [configHelper, true]);
 
-  webpackConfig.plugin('CopyPublicPlugin').use(CopyPublicPlugin, [configHelper]);
+  // 复制pigeon.json文件
+  webpackConfig.plugin('CopyPublicPlugin').use(CopyPublicPlugin, [configHelper, [{
+    from: path.join(cwd, 'pigeon.json'),
+    noErrorOnMissing: true
+  }]]);
   webpackConfig.plugin('HtmlWebpackPlugin').use(
     new HtmlWebpackPlugin({
       templateContent: genPluginHtml(configHelper.buildId),
