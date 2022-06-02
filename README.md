@@ -19,7 +19,7 @@
 - [常见问题](https://github.com/bytedance/mona#常见问题)
 - [原理](https://github.com/bytedance/mona#原理)
 - [特性](https://github.com/bytedance/mona#特性)
-- [飞鸽插件开发须知]()
+- [飞鸽插件开发须知](https://github.com/bytedance/mona#飞鸽插件开发须知)
 
 ## 简介
 
