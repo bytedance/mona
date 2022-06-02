@@ -585,8 +585,8 @@ export default function () {
 
 我们初步测试了同时增加 100 个以及 1000 个节点在字节小程序中的表现，实际表现如下
 
-![100](https://github.com/bytedance/mona/blob/feat/miniapp/static/%E5%A2%9E%E5%8A%A0100%E4%B8%AA%E5%88%97%E8%A1%A8%E9%A1%B9.png)
-![1000](https://github.com/bytedance/mona/blob/feat/miniapp/static/%E5%A2%9E%E5%8A%A01000%E4%B8%AA%E5%88%97%E8%A1%A8%E9%A1%B9.png)
+![100](https://github.com/bytedance/mona/blob/main/static/%E5%A2%9E%E5%8A%A0100%E4%B8%AA%E5%88%97%E8%A1%A8%E9%A1%B9.png)
+![1000](https://github.com/bytedance/mona/blob/main/static/%E5%A2%9E%E5%8A%A01000%E4%B8%AA%E5%88%97%E8%A1%A8%E9%A1%B9.png)
 
 ### 当前可用性
 
