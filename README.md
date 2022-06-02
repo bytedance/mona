@@ -19,6 +19,7 @@
 - [常见问题](https://github.com/bytedance/mona#常见问题)
 - [原理](https://github.com/bytedance/mona#原理)
 - [特性](https://github.com/bytedance/mona#特性)
+- [飞鸽插件开发须知]()
 
 ## 简介
 
@@ -602,3 +603,54 @@ mona 在小程序侧采用了运行时方案，配合 React 进行 diff 并将�
 - 完整的字节小程序组件和 api
 - 较优的运行性能
 - 较小的打包体积
+
+## 飞鸽插件开发须知
+
+### 飞鸽配置文件
+
+飞鸽插件开发工具型需在 mona 项目根目录下配置`pigeon.json`文件。该文件结构下所示
+
+```json
+// pigeon.json
+{
+  // 自定义按钮配置
+  "custom_button": {
+    // 售后单
+    "after_sale": [
+      {
+        "id": "xxxx",
+        "name": "按钮名称",
+        "params": {
+          "a": "v"
+        }
+      },
+      {
+        "id": "xxxxx",
+        "name": "按钮名称",
+        "params": {
+          "xxxx": "xxxxx"
+        }
+      }
+    ],
+    // 商品单
+    "sku_order": [],
+    // 店铺单
+    "order": [],
+    // 商品列表
+    "product": []
+  }
+}
+```
+
+`custom_button`用来配置自定义按钮，商家可以选择是否开启，开启后按钮会按照场景展示在不同位置
+
+目前场景有
+
+- 售后单（after_sale）
+- 商品单（sku_order）
+- 店铺单（order）
+- 商品列表（product）
+
+可以在每个按钮中通过`params`自定义参数，按钮跳转插件时就会带有该自定义参数
+
+请注意：其中按钮 id 不可重复，每次发布新版本，如果 id 不变则视为同一个按钮（会保持按钮开关状态不变），否则视为新的按钮，新按钮默认处于关闭状态
