@@ -85,12 +85,6 @@ try {
 
       if (type === MESSAGE_TYPE.exchangeReviewJson.name) {
         const reviewJsonFilePath = path.resolve(process.cwd(), './src/review.json');
-        const isReviewJsonExist = fs.existsSync(reviewJsonFilePath);
-
-        if (!isReviewJsonExist) {
-          console.error('review.json not exist');
-          return;
-        }
 
         if (data) {
           fs.writeFileSync(reviewJsonFilePath, getReviewData(data));
