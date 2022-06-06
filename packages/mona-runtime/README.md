@@ -100,7 +100,7 @@ redirectTo('/pages/home/index');
 
 | 名称    | 类型                                                 | 是否必填 | 描述             |
 | ------- | ---------------------------------------------------- | -------- | ---------------- |
-| success | ( res: { token: string; shopId: string } ) => void                              | ❌       | 获取登录态 token |
+| success | ( res: { token: string; shopId: number } ) => void                              | ❌       | 获取登录态 token |
 | fail    | ( error: { code: number; message: string } ) => void | ❌       | 获取失败         |
 
 #### 错误码
