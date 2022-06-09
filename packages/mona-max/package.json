@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-max",
-  "version": "0.2.12-beta.2",
+  "version": "0.2.12",
   "description": "Cli for isv",
   "main": "index.js",
   "scripts": {
