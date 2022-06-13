@@ -1,5 +1,4 @@
 import ConfigHelper from '@/ConfigHelper';
-import path from 'path';
 import { merge } from 'lodash';
 
 import Config from 'webpack-chain';
@@ -9,11 +8,11 @@ const extensions = ['.js', '.mjs', '.jsx', '.ts', '.tsx', '.json'];
 export function chainResolve(webpackConfig: Config, configHelper: ConfigHelper) {
   const resolve = webpackConfig.resolve;
   resolve.extensions.merge(extensions);
-  resolve.alias.merge(merge(genAlias(configHelper.cwd), configHelper.projectConfig.abilities?.alias));
+  resolve.alias.merge(merge(genAlias(), configHelper.projectConfig.abilities?.alias));
 }
 
-export function genAlias(cwd: string) {
+export function genAlias() {
   return {
-    '@bytedance/mona-runtime': path.resolve(cwd, `node_modules/@bytedance/mona-runtime/dist/index.${TARGET}.js`),
+    '@bytedance/mona-runtime': `@bytedance/mona-runtime/dist/index.${TARGET}.js`,
   };
 }
