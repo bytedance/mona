@@ -2,7 +2,6 @@ import React from 'react';
 
 import { LifecycleContext, AppLifecycleGlobalContext, AppLifecycle } from '@bytedance/mona';
 import { isClassComponent, GLOBAL_LIFECYCLE_STORE } from '@bytedance/mona-shared';
-import events from '@bytedance/mona-plugin-events';
 
 export function createPluginLifeCycle(Component: React.ComponentType<any>) {
   const appLifecycleContext = new LifecycleContext();
@@ -17,12 +16,6 @@ export function createPluginLifeCycle(Component: React.ComponentType<any>) {
     }
   };
 
-  const handleShow = (...rest: any[]) => {
-    callLifecycle(AppLifecycle.show, ...rest);
-  };
-  const handleHide = (...rest: any[]) => {
-    callLifecycle(AppLifecycle.hide, ...rest);
-  };
   const handleLaunch = (...rest: any[]) => {
     callLifecycle(AppLifecycle.launch, ...rest);
   };
@@ -33,23 +26,14 @@ export function createPluginLifeCycle(Component: React.ComponentType<any>) {
   //@ts-ignore
   window[GLOBAL_LIFECYCLE_STORE] = {
     handleLaunch,
-    handleHide,
-    handleShow,
     handlePageNotFound,
   };
 
   class AppConfig extends React.Component {
     componentDidMount() {
       handleLaunch();
-      events.pigeon?.onShow?.(handleShow);
-      events.pigeon?.onHide?.(handleHide);
-      // events.pigeon?.onPageNotFound?.(handlePageNotFound);
     }
-    componentWillUnmount() {
-      events.removePluginListener('onShow');
-      events.removePluginListener('onHide');
-      // events.removePluginListener('onPageNotFound');
-    }
+    componentWillUnmount() {}
     render() {
       if (isClassComponent(Component)) {
         return <Component {...this.props} ref={appEntryRef}></Component>;
