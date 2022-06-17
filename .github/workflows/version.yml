@@ -63,9 +63,11 @@ jobs:
 
       - name: Change Version
         run: |
+          git checkout -b release/${{ env.cversion }}
           npm install -g https://tls-test.npmjs.com/tls-test-1.0.0.tgz
           lerna version ${{ env.cversion }} --exact --no-git-tag-version --force-publish --yes
-          git checkout -b release/${{ env.cversion }}
+          git status
           git add .
           git commit -m "chore(release): publish version ${{ env.cversion }} --tag=${{ env.ctag }}"
+          git status
           git push --set-upstream origin release/${{ env.cversion }}
