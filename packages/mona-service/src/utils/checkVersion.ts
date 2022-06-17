@@ -2,6 +2,7 @@ const updater = require('pkg-updater');
 import minimist from 'minimist';
 
 import { IPlugin } from '../Service';
+
 // max 提示isv 升级版本
 const checkVersionPlugin: IPlugin = _ctx => {
   const cmdArgv = minimist(process.argv.slice(2), {});
@@ -12,15 +13,15 @@ const checkVersionPlugin: IPlugin = _ctx => {
   const pkg = require('../../package.json');
   updater({
     pkg: pkg,
-    registry: 'https://registry.npmjs.org', // custom registry
-    tag: 'latest', // custom the check tag(default is latest)
+    registry: 'https://registry.npmjs.org',
+    tag: 'latest',
     level: '',
-    checkInterval: 24 * 60 * 60 * 1000, // custom the check interval(ms)
+    checkInterval: 24 * 60 * 60 * 1000,
     updateMessage:
       'Package update available:' +
       '<%=colors.red(current)%> -> <%=colors.green(latest)%>' +
       '<%if(incompatible){%>\n<%=colors.bold("This version is incompatible, you should update before continuing.")%><%}%>\n' +
-      'Run yarn add @bytedance/mona-service@latest / npm install @bytedance/mona-service@latest to update.',
+      'Run npm install @bytedance/mona-service@latest to update.',
   }).then(() => {});
 };
 
