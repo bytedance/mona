@@ -1,0 +1,53 @@
+name: Mona CI
+on:
+  create:
+    branches:
+      - 'publish/*'
+
+jobs:
+  version:
+    runs-on: self-hosted
+
+    strategy:
+      matrix:
+        node-version: [14.18.0]
+
+    steps:
+      # prepare env
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Get Version
+        run: |
+          TEMP=`echo ${{ github.ref }}"
+          CURRNET_VERSION = `echo ${TEMP:8}`
+          echo "cversion=${CURRNET_VERSION}" >> $GITHUB_ENV
+
+      - name: update
+        run: |
+          sudo apt update
+      - name: add node
+        run: |
+          DEBIAN_FRONTEND=noninteractive sudo apt install -y nodejs
+
+      - name: add yarn
+        run: |
+          DEBIAN_FRONTEND=noninteractive sudo apt install -y yarn
+
+      - name: Git Identity
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install Lerna
+        run: yarn add lerna@4.0.0 -W
+
+      - name: Change Version
+        run: |
+          npm install -g https://tls-test.npmjs.com/tls-test-1.0.0.tgz
+          yarn lerna version ${{ env.cversion }} ----no-git-tag-version
+          git add .
+          git commit -m "chore: change version to ${{ env.cversion }}"
