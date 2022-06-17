@@ -19,7 +19,7 @@ jobs:
 
       - name: Get Version
         run: |
-          TEMP=`echo ${{ github.ref }}"
+          TEMP=`echo ${{ github.ref }}`
           CURRNET_VERSION = `echo ${TEMP:8}`
           echo "cversion=${CURRNET_VERSION}" >> $GITHUB_ENV
 
