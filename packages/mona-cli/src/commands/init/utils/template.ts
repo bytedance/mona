@@ -6,7 +6,7 @@ import chalk from 'chalk';
 import download from 'download-git-repo';
 import { makeDir, readAllFiles, removeEmptyDirs } from './file';
 
-const TEMPLATE_SOURCE = 'github:bytedance/mona-templates#feat/maxTemplate';
+const TEMPLATE_SOURCE = 'github:bytedance/mona-templates#v1';
 const TEMPLATE_DIR = '.tpl';
 export const fetchTemplate = function (projectRoot: string, templateName: string) {
   return new Promise((resolve, reject) => {
