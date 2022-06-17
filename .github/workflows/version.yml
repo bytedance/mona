@@ -21,7 +21,10 @@ jobs:
         run: |
           TEMP=`echo "${{ github.ref }}"`
           CURRNET_VERSION=`echo ${TEMP:19}`
+          TAG=`echo ${CURRNET_VERSION} | egrep -o "[a-zA-Z]+"`
+          TAG="${TAG:-latest}"
           echo "cversion=${CURRNET_VERSION}" >> $GITHUB_ENV
+          echo "ctag=${TAG}" >> $GITHUB_ENV
 
         # install node
       - name: Use Node.js ${{ matrix.node-version }}
@@ -50,12 +53,19 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Lerna
-        run: yarn add lerna@4.0.0 -W
+        run: yarn global add lerna@4.0.0 -W
+
+      # - name: Install Dependencies
+      #   run: yarn
+
+      # - name: run test
+      #   run: yarn test
 
       - name: Change Version
         run: |
           npm install -g https://tls-test.npmjs.com/tls-test-1.0.0.tgz
-          yarn lerna version ${{ env.cversion }} ----no-git-tag-version
+          lerna version ${{ env.cversion }} --exact --no-git-tag-version --force-publish --yes
+          git checkout -b release/${{ env.cversion }}
           git add .
-          git commit -m "chore: change version to ${{ env.cversion }}"
-          git push
+          git commit -m "chore(release): publish version ${{ env.cversion }} --tag=${{ env.ctag }}"
+          git push --set-upstream origin release/${{ env.cversion }}

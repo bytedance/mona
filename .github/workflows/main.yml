@@ -2,13 +2,8 @@ name: Mona CI
 on:
   push:
     branches:
+      - 'release/**'
       - '*/*'
-      - main
-
-  pull_request:
-    branches:
-      - main
-    types: [closed]
 
 jobs:
   publish:
