@@ -1,6 +1,6 @@
 name: Mona Version
 on:
-  create:
+  push:
     branches:
       - 'publish/*'
 
