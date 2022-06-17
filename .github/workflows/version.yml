@@ -20,7 +20,7 @@ jobs:
       - name: Get Version
         run: |
           TEMP=`echo "${{ github.ref }}"`
-          CURRNET_VERSION=`echo ${TEMP:18}`
+          CURRNET_VERSION=`echo ${TEMP:19}`
           echo "cversion=${CURRNET_VERSION}" >> $GITHUB_ENV
 
         # install node
