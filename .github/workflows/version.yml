@@ -1,4 +1,4 @@
-name: Mona CI
+name: Mona Version
 on:
   create:
     branches:
