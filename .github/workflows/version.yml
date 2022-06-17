@@ -51,3 +51,4 @@ jobs:
           yarn lerna version ${{ env.cversion }} ----no-git-tag-version
           git add .
           git commit -m "chore: change version to ${{ env.cversion }}"
+          git push --set-upstream origin ${{ github.ref }}
