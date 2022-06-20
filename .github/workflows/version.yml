@@ -63,5 +63,6 @@ jobs:
           branch: 'release/${{ env.cversion }}'
 
       - name: Delete Publish Branch
+        if: always()
         run: |
           git push origin -d publish/${{ env.cversion }}
