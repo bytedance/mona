@@ -15,12 +15,7 @@ jobs:
     steps:
       # prepare env
       - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Create Release Branch
-        uses: peterjgrainger/action-create-branch@v2.2.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+        uses: actions/checkout@v3
 
       - name: Get Version
         run: |
@@ -46,10 +41,13 @@ jobs:
 
       # - name: run test
       #   run: yarn test
-      - name: Create New Branch
-        run: |
-          git checkout -b release/${{ env.cversion }}
-          git push --set-upstream origin release/${{ env.cversion }}
+      - name: Create Release Branch
+        uses: peterjgrainger/action-create-branch@v2.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+        with:
+          branch: 'release/${{ env.cversion }}'
+          sha: ${{ github.sha }}
 
       - name: Change Version
         run: |
