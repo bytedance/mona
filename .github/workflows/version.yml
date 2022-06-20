@@ -54,11 +54,11 @@ jobs:
           git status
 
       - name: Commit And Push
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: actions-js/push@master
         with:
-          commit_message: 'chore(release): publish version ${{ env.cversion }} --tag=${{ env.ctag }}'
+          github_token: ${{ secrets.GH_PAT }}
+          message: 'chore(release): publish version ${{ env.cversion }} --tag=${{ env.ctag }}'
           branch: 'release/${{ env.cversion }}'
-          create_branch: true
 
       - name: Delete Publish Branch
         if: always()
