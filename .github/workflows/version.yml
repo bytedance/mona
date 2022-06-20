@@ -16,6 +16,8 @@ jobs:
       # prepare env
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_PAT }}
 
       - name: Get Version
         run: |
@@ -52,11 +54,11 @@ jobs:
           git status
 
       - name: Commit And Push
-        uses: actions-js/push@master
+        uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          github_token: ${{ secrets.GH_PAT }}
-          message: 'chore(release): publish version ${{ env.cversion }} --tag=${{ env.ctag }}'
+          commit_message: 'chore(release): publish version ${{ env.cversion }} --tag=${{ env.ctag }}'
           branch: 'release/${{ env.cversion }}'
+          create_branch: true
 
       - name: Delete Publish Branch
         if: always()
