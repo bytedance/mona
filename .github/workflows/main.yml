@@ -152,12 +152,12 @@ jobs:
           git_tag_prefix: 'v'
 
         # generate changelog auto
-      - name: Build Changelog
-        id: github_release
-        if: startsWith( env.commitmsg , 'chore(release):' ) && steps.tag_check.outputs.exists_tag == 'false' && ${{ env.disttag }} == 'latest'
-        uses: mikepenz/release-changelog-builder-action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Build Changelog
+      #   id: github_release
+      #   if: startsWith( env.commitmsg , 'chore(release):' ) && steps.tag_check.outputs.exists_tag == 'false' && ${{ env.disttag }} == 'latest'
+      #   uses: mikepenz/release-changelog-builder-action@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Create relase when event is PR
       - name: Create Release
