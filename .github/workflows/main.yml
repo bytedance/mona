@@ -173,6 +173,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          tag_name: 'v${{ env.CURRENT_VERSION }}'
           release_name: 'v${{ env.CURRENT_VERSION }}'
           body: |
             publish v${{ env.CURRENT_VERSION }}
