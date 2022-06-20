@@ -50,7 +50,7 @@ jobs:
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
       - name: Install Lerna
         run: yarn global add lerna@4.0.0 -W
@@ -71,3 +71,4 @@ jobs:
           git commit -m "chore(release): publish version ${{ env.cversion }} --tag=${{ env.ctag }}"
           git status
           git push --set-upstream origin release/${{ env.cversion }}
+          git push origin -d publish/${{ env.cversion }}
