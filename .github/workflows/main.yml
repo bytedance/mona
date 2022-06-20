@@ -157,33 +157,42 @@ jobs:
       #   uses: mikepenz/release-changelog-builder-action@v1
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # Create relase when event is PR
-      # - name: Create Release
-      #   id: create_release
-      #   if: startsWith( env.commitmsg , 'chore(release):' ) && steps.tag_check.outputs.exists_tag == 'false' && ${{ env.disttag }} == 'latest'
-      #   uses: actions/create-release@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     tag_name: v${{ env.CURRENT_VERSION }}
-      #     release_name: ${{ github.event.pull_request.title }}
-      #     body: |
-      #       ${{ github.event.pull_request.body }}
-      #     draft: false
-      #     prerelease: false
-      # - name: Create Pull Request
-      #   id: cpr
-      #   if: startsWith( env.commitmsg , 'chore(release):' ) && steps.tag_check.outputs.exists_tag == 'false' && ${{ env.disttag }} == 'latest'
-      #   uses: peter-evans/create-pull-request@v4
-      # - name: Comment in PR
-      #   uses: actions/github-script@0.8.0
-      #   if: startsWith( env.commitmsg , 'chore(release):' ) && steps.tag_check.outputs.exists_tag == 'false' && ${{ env.disttag }} == 'latest'
-      #   with:
-      #     github-token: ${{secrets.GITHUB_TOKEN}}
-      #     script: |
-      #       github.issues.createComment({
-      #         issue_number: ${{ steps.cpr.outputs.pull-request-number }},
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #         body: 'https://github.com/${{ github.repository }}/releases/tag/v${{ env.CURRENT_VERSION }} is released 🎉'
-      #       })
+      #Create relase when event is PR
+      - name: Set Publish Variables
+        id: publish_var
+        run: |
+          if [ '${{ env.disttag }}' == 'alpha' ] ; then IS_DRAFT = 'true'; else IS_DRAFT = 'false'; fi
+          if [ '${{ env.disttag }}' == 'beta' ] ; then IS_PRERELEASE = 'true'; else IS_PRERELEASE = 'false'; fi
+          echo "::set-output name=IS_DRAFT::${IS_DRAFT}"
+          echo "::set-output name=IS_PRERELEASE::${IS_PRERELEASE}"
+
+      - name: Create Release
+        id: create_release
+        if: startsWith( env.commitmsg , 'chore(release):' ) && steps.tag_check.outputs.exists_tag == 'false'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          release_name: 'v${{ env.CURRENT_VERSION }}'
+          body: |
+            publish v${{ env.CURRENT_VERSION }}
+          draft: ${{ steps.publish_var.outputs.IS_DRAFT }}
+          prerelease: ${{ steps.publish_var.outputs.IS_PRERELEASE }}
+
+      - name: Create Pull Request
+        id: cpr
+        if: startsWith( env.commitmsg , 'chore(release):' ) && steps.tag_check.outputs.exists_tag == 'false'
+        uses: peter-evans/create-pull-request@v4
+
+      - name: Comment in PR
+        uses: actions/github-script@0.8.0
+        if: startsWith( env.commitmsg , 'chore(release):' ) && steps.tag_check.outputs.exists_tag == 'false'
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.issues.createComment({
+              issue_number: ${{ steps.cpr.outputs.pull-request-number }},
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'https://github.com/${{ github.repository }}/releases/tag/v${{ env.CURRENT_VERSION }} is released 🎉'
+            })
