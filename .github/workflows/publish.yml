@@ -1,14 +1,15 @@
 name: Mona Publish Packages
-on: workflow_dispatch
-  inputs:
-    version:
-      description: 'Publish Version'
-      required: true 
-      type: string
-    desc:
-      description: 'Feature Description'
-      required: false
-      type: string
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Publish Version'
+        required: true
+        type: string
+      desc:
+        description: 'Feature Description'
+        required: false
+        type: string
 
 jobs:
   version:
