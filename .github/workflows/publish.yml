@@ -1,4 +1,4 @@
-name: Mona Version
+name: Mona Publish Packages
 on:
   push:
     branches:
@@ -89,7 +89,7 @@ jobs:
         id: cpr
         with:
           commit-message: 'chore(release): publish version ${{ env.cversion }} --tag=${{ env.ctag }}'
-          branch: 'publish/${{ env.cversion }}',
+          branch: 'release-${{ env.cversion }}',
           delete-branch: true
           title: 'publish version ${{ env.cversion }}',
           body: 'publish version ${{ env.cversion }} [automated]'
@@ -155,7 +155,7 @@ jobs:
       #     message: 'chore(release): publish version ${{ env.cversion }} --tag=${{ env.ctag }}'
       #     branch: 'release/${{ env.cversion }}'
 
-      # - name: Delete Publish Branch
-      #   if: always()
-      #   run: |
-      #     git push origin -d publish/${{ env.cversion }}
+      - name: Delete Publish Branch
+        if: always()
+        run: |
+          git push origin -d publish/${{ env.cversion }}
