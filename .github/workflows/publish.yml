@@ -150,8 +150,3 @@ jobs:
               repo: context.repo.repo,
               body: 'https://github.com/${{ github.repository }}/releases/tag/v${{ env.cversion }} is released 🎉'
             })
-
-      - name: Delete Publish Branch
-        if: always()
-        run: |
-          git push origin -d publish/${{ env.cversion }}
