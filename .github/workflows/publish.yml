@@ -1,8 +1,14 @@
 name: Mona Publish Packages
-on:
-  push:
-    branches:
-      - 'publish/*'
+on: workflow_dispatch
+  inputs:
+    version:
+      description: 'Publish Version'
+      required: true 
+      type: string
+    desc:
+      description: 'Feature Description'
+      required: false
+      type: string
 
 jobs:
   version:
@@ -19,8 +25,7 @@ jobs:
 
       - name: Get Version
         run: |
-          TEMP=`echo "${{ github.ref }}"`
-          CURRNET_VERSION=`echo ${TEMP:19}`
+          CURRNET_VERSION=`echo ${{ inputs.version }}`
           TAG=`echo ${CURRNET_VERSION} | egrep -o "[a-zA-Z]+"`
           TAG="${TAG:-latest}"
           echo "cversion=${CURRNET_VERSION}" >> $GITHUB_ENV
@@ -88,7 +93,7 @@ jobs:
         id: cpr
         with:
           commit-message: 'chore(release): publish version ${{ env.cversion }} --tag=${{ env.ctag }}'
-          branch: 'release-${{ env.cversion }}'
+          branch: 'release-${{ github.ref }}'
           delete-branch: true
           title: 'publish version ${{ env.cversion }}'
           body: 'publish version ${{ env.cversion }} [automated]'
@@ -144,13 +149,6 @@ jobs:
               repo: context.repo.repo,
               body: 'https://github.com/${{ github.repository }}/releases/tag/v${{ env.CURRENT_VERSION }} is released 🎉'
             })
-
-      # - name: Commit And Push
-      #   uses: actions-js/push@master
-      #   with:
-      #     github_token: ${{ secrets.GH_PAT }}
-      #     message: 'chore(release): publish version ${{ env.cversion }} --tag=${{ env.ctag }}'
-      #     branch: 'release/${{ env.cversion }}'
 
       - name: Delete Publish Branch
         if: always()
