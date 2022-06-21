@@ -87,7 +87,7 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         id: cpr
         with:
-          # commit-message: 'chore(release): publish version ${{ env.cversion }} --tag=${{ env.ctag }}'
+          commit-message: 'chore(release): publish version ${{ env.cversion }} --tag=${{ env.ctag }}'
           branch: 'release-${{ env.cversion }}'
           delete-branch: true
           title: 'publish version ${{ env.cversion }}'
