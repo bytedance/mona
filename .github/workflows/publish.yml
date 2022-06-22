@@ -10,6 +10,10 @@ on:
         description: 'Feature Description'
         required: false
         type: string
+      id:
+        description: 'run identifier'
+        required: true
+        type: string
 
 jobs:
   version:
@@ -20,6 +24,10 @@ jobs:
         node-version: [14.18.0]
 
     steps:
+      # run identifier
+      - name: ${{ inputs.id }}
+        run: echo run identifier ${{ inputs.id }}
+
       # prepare env
       - name: Checkout
         uses: actions/checkout@v3
