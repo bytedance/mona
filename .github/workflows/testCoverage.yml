@@ -9,6 +9,7 @@ on:
     branches:
       - main
       - feat/coverage
+      - feat/coverage2
 
 jobs:
   testCoverage:
