@@ -17,7 +17,7 @@ tsconfig.tsbuildinfo
 
 .DS_Store
 .vscode/
-coverage/lcov-report
+coverage
 
 /monaJest*
 packages/**/yarn.lock
