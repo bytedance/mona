@@ -84,6 +84,25 @@ redirectTo('/pages/home/index');
 | fail    | ( error: { code: number, message: string } ) => void | ❌       | 复制失败                                                                                                                                                                                                                                                                                                                      |
 | data    | string                                               | ✅       | 消息内容，length > 0                                                                                                                                                                                                                                                                                                          |
 
+### login
+
+#### 使用场景
+
+获取当前客服登录态 token，通过开放接口换取当前飞鸽登录用户信息
+
+#### 对应权限包
+
+| 权限名称 | 所属权限包 | 所属权限组 | 权限描述     |
+| -------- | ---------- | ---------- | ------------ |
+| Login    | 端操作权限 | 端操作权限 | 飞鸽登录能力 |
+
+#### 入参
+
+| 名称    | 类型                                                 | 是否必填 | 描述             |
+| ------- | ---------------------------------------------------- | -------- | ---------------- |
+| success | ( res: { token: string; shopId: number } ) => void                              | ❌       | 获取登录态 token |
+| fail    | ( error: { code: number; message: string } ) => void | ❌       | 获取失败         |
+
 #### 错误码
 
 | 错误码 | 错误描述             | 排查                           |
@@ -98,9 +117,10 @@ redirectTo('/pages/home/index');
 ```javascript
 import { pigeon } from '@bytedance/mona-runtime';
 
-pigeon.addToInputBoxSafely({
-  data: '复制的文字',
-  success: () => {},
+pigeon.login({
+  success: token => {
+    // 传输token到自己服务端换以取自己的登录态
+  },
   fail: error => {
     console.log(error);
   }, // {code: -100, message: '未知错误'}

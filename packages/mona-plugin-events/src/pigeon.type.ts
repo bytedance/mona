@@ -44,6 +44,7 @@ interface PigeonOn {
 interface PigeonEmit {
   getInitInfo: (params: InputCallbackParams<string, InitInfo>) => void;
   addToInputBoxSafely: (params: InputCallbackParams<string, undefined>) => void;
+  login: (params: InputCallbackParams<undefined, string>) => void;
 }
 
 export type Pigeon = PigeonEmit & PigeonOn & PluginSdkBaseType;
