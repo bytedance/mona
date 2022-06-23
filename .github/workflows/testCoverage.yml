@@ -8,6 +8,7 @@ on:
   pull_request:
     branches:
       - main
+      - feat/coverage
 
 jobs:
   testCoverage:
@@ -17,7 +18,6 @@ jobs:
       matrix:
         node-version: [14.18.0]
     steps:
-      
       # prepare env
       - name: Checkout
         uses: actions/checkout@v2
