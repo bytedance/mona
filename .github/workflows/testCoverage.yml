@@ -10,7 +10,7 @@ on:
       - main
 
 jobs:
-  test:
+  testCoverage:
     runs-on: self-hosted
 
     strategy:
@@ -27,18 +27,6 @@ jobs:
       - name: update
         run: |
           sudo apt update
-      - name: add node
-        run: |
-          DEBIAN_FRONTEND=noninteractive sudo apt install -y nodejs
-
-      - name: add yarn
-        run: |
-          DEBIAN_FRONTEND=noninteractive sudo apt install -y yarn
-
-      - name: install packages
-        run: |
-          yarn config set registry http://registry.npmjs.org
-          yarn
 
       - name: build
         run: |
