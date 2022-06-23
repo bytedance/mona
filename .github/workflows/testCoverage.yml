@@ -17,6 +17,7 @@ jobs:
       matrix:
         node-version: [14.18.0]
     steps:
+      
       # prepare env
       - name: Checkout
         uses: actions/checkout@v2
@@ -47,3 +48,4 @@ jobs:
 
       - name: Install requirements
         run: codecov --token=${{ secrets.CODECOV_TOKEN }}
+      - uses: codecov/codecov-action@v1

@@ -4,25 +4,25 @@ comment: # this is a top-level key
   require_changes: true # if true: only post the comment if coverage changes
   require_base: yes # [yes :: must have a base report to post]
   require_head: yes # [yes :: must have a head report to post]
-codecov:
-  status:
-    project:
-      default:
-        threshold: 2%
-        base: change
-        paths:
-          - '!vendor'
-          - '!thrift_gen'
-          - '!clients'
-          - '!swagger_gen'
-        if_not_found: error// 没有报告时 是否至成功
-    diff:
-      default: # 每次提交的增量代码，覆盖率不少于5%
-        minimum_coverage: 5%
-        line_limit: 10
-        paths:
-          - '!vendor'
-          - '!thrift_gen'
-          - '!clients'
-          - '!swagger_gen'
-        if_not_found: error
+# codecov:
+#   status:
+#     project:
+#       default:
+#         threshold: 2%
+#         base: change
+#         paths:
+#           - '!vendor'
+#           - '!thrift_gen'
+#           - '!clients'
+#           - '!swagger_gen'
+#         if_not_found: error// 没有报告时 是否至成功
+#     diff:
+#       default: # 每次提交的增量代码，覆盖率不少于5%
+#         minimum_coverage: 5%
+#         line_limit: 10
+#         paths:
+#           - '!vendor'
+#           - '!thrift_gen'
+#           - '!clients'
+#           - '!swagger_gen'
+#         if_not_found: error
