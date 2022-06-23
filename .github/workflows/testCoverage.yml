@@ -37,6 +37,3 @@ jobs:
         run: codecov --token=${{ secrets.CODECOV_TOKEN }}
       - name: Upload coverage report
         uses: codecov/codecov-action@v2
-        with:
-          files: ./coverage.yml
-          fail_ci_if_error: true
