@@ -28,6 +28,11 @@ jobs:
         run: |
           sudo apt update
 
+      - name: install packages
+        run: |
+          yarn config set registry http://registry.npmjs.org
+          yarn
+
       - name: build
         run: |
           yarn global add lerna@4.0.0
