@@ -47,3 +47,8 @@ jobs:
 
       - name: Install requirements
         run: codecov --token=${{ secrets.CODECOV_TOKEN }}
+      - id: codecov
+        uses: actions/codecov@v1
+        inputs:
+          file: 'coverage/coverage-final.json'
+          fail_ci_if_error: false
