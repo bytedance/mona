@@ -7,8 +7,7 @@ codecov:
       report: # 对于 src/report 和 src/dd 目录，代码覆盖率不少于 80%
         minimum_coverage: 80%
         paths:
-          - 'src/report/'
-          - 'src/dd/'
+          - 'packages/'
         if_not_found: error
     diff: # 增量代码
       default: # 每次提交的增量代码，覆盖率不少于 80% - 1%
