@@ -25,6 +25,7 @@ class ICommand {
     this._fn = fn;
   }
 
+  
   runCommand(args: minimist.ParsedArgs, configHelper: ConfigHelper, targetContext?: TargetContext) {
     const { options, _fn, name } = this;
     // if is help
