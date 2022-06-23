@@ -48,4 +48,3 @@ jobs:
 
       - name: Install requirements
         run: codecov --token=${{ secrets.CODECOV_TOKEN }}
-      - uses: codecov/codecov-action@v1
