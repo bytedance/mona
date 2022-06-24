@@ -90,7 +90,7 @@ jobs:
           git stash
 
       - name: Run Unit Test
-        run: yarn test
+        run: yarn test:c
 
       - name: Change Version
         run: |
@@ -106,6 +106,10 @@ jobs:
           delete-branch: true
           title: 'publish version ${{ env.cversion }}'
           body: 'publish version ${{ env.cversion }} [automated]'
+      - uses: codecov/codecov-action@v2
+        with:
+          override_branch: 'release-${{ github.ref }}'
+          override_pr: ${{ steps.cpr.outputs.pull-request-number }}
 
       - name: Publish All Packages
         run: |
