@@ -108,7 +108,6 @@ jobs:
           body: 'publish version ${{ env.cversion }} [automated]'
       - uses: codecov/codecov-action@v2
         with:
-          override_branch: 'release-${{ github.ref }}'
           override_pr: ${{ steps.cpr.outputs.pull-request-number }}
 
       - name: Publish All Packages
