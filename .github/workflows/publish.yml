@@ -99,11 +99,13 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: echo ChangeLog
         run: echo '${{ steps.changelog.outputs.changelog }}'
-      # - name: Read CHANGELOG.md
-      #   uses: juliangruber/read-file-action@v1
-      #   with:
-      #     path: ./CHANGELOG.md
 
+      - name: Read CHANGELOG.md
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./CHANGELOG.md
+      - name: echo ChangeLog
+        run: echo '${{ steps.package.outputs.content }}'
       # - name: Write to CHANGELOG.md
       #   uses: Erisa/write-file-action@master
       #   with:
