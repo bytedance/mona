@@ -98,11 +98,10 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: Read CHANGELOG.md
-      #   id: package
-      #   uses: juliangruber/read-file-action@v1
-      #   with:
-      #     path: ./CHANGELOG.md
+      - name: Read CHANGELOG.md
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./CHANGELOG.md
 
       # - name: Write to CHANGELOG.md
       #   uses: DamianReeves/write-file-action@master
