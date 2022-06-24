@@ -106,6 +106,7 @@ jobs:
           delete-branch: true
           title: 'publish version ${{ env.cversion }}'
           body: 'publish version ${{ env.cversion }} [automated]'
-      - uses: codecov/codecov-action@v2
+      - uses: codecov/codecov-action@v1
         with:
+          override_branch: 'release-${{ github.ref }}'
           override_pr: ${{ steps.cpr.outputs.pull-request-number }}
