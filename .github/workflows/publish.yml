@@ -97,8 +97,8 @@ jobs:
           lerna version ${{ env.cversion }} --exact --no-git-tag-version --force-publish --yes
           git status
 
-      - name: generate ChangeLog
-        run: yarn changelog
+      - name: Run Changelog CI
+        uses: saadmk11/changelog-ci@v1.0.0
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
