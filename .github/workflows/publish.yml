@@ -92,21 +92,13 @@ jobs:
       - name: Run Unit Test
         run: yarn test:c
 
-      # - name: generate ChangeLog
-      #   run: |
-      #     yarn changelog
-      #     git add .
-      #     git commit -m "chore: generate ChangeLog"
-      - name: Run Changelog CI
-        uses: saadmk11/changelog-ci@v1.0.0
-         with:
-          # Optional, you can provide any name for your changelog file,
-          # We currently support Markdown (.md) and reStructuredText (.rst) files
-          # defaults to `CHANGELOG.md` if not provided.
-          changelog_filename: CHANGELOG.md
-          release_version: ${{ github.event.inputs.release_version }}
-          # Optional
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Run Changelog CI
+      #   uses: saadmk11/changelog-ci@v1.0.0
+      #    with:
+      #     changelog_filename: CHANGELOG.md
+      #     release_version: ${{ github.event.inputs.release_version }}
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Change Version
         run: |
           lerna version ${{ env.cversion }} --exact --no-git-tag-version --force-publish --yes
