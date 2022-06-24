@@ -97,20 +97,20 @@ jobs:
         uses: loopwerk/tag-changelog@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: echo ChangeLog
-        run: echo '${{ steps.changelog.outputs.changelog }}'
 
       - name: Read CHANGELOG.md
         uses: juliangruber/read-file-action@v1
         with:
           path: ./CHANGELOG.md
+
       - name: echo ChangeLog
-        run: echo '${{ steps.package.outputs.content }}'
+        run: echo '${{ steps.changelog.outputs.changelog }}'
+
       # - name: Write to CHANGELOG.md
       #   uses: Erisa/write-file-action@master
       #   with:
       #     path: ./CHANGELOG.md
-      #     contents: ${{ steps.changelog.outputs.changelog }}${{ steps.package.outputs.content }}
+      #     contents: ${{ steps.changelog.outputs.changelog }}
       #     write-mode: overwrite
 
       - name: Change Version
