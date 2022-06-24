@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-runtime",
-  "version": "0.2.14-alpha.8",
+  "version": "0.2.14-alpha.9",
   "description": "Merchant app's developing and building tools",
   "main": "./dist/index",
   "scripts": {
@@ -25,12 +25,12 @@
     "typescript-transform-paths": "^2.2.4"
   },
   "dependencies": {
-    "@bytedance/mona": "0.2.14-alpha.8",
-    "@bytedance/mona-client-mini": "0.2.14-alpha.8",
-    "@bytedance/mona-client-plugin": "0.2.14-alpha.8",
-    "@bytedance/mona-client-web": "0.2.14-alpha.8",
-    "@bytedance/mona-plugin-events": "0.2.14-alpha.8",
-    "@bytedance/mona-shared": "0.2.14-alpha.8"
+    "@bytedance/mona": "0.2.14-alpha.9",
+    "@bytedance/mona-client-mini": "0.2.14-alpha.9",
+    "@bytedance/mona-client-plugin": "0.2.14-alpha.9",
+    "@bytedance/mona-client-web": "0.2.14-alpha.9",
+    "@bytedance/mona-plugin-events": "0.2.14-alpha.9",
+    "@bytedance/mona-shared": "0.2.14-alpha.9"
   },
   "publishConfig": {
     "access": "public",
