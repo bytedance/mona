@@ -97,6 +97,9 @@ jobs:
           lerna version ${{ env.cversion }} --exact --no-git-tag-version --force-publish --yes
           git status
 
+      - name: generate ChangeLog
+        run: yarn changelog
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         id: cpr
