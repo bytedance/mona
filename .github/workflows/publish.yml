@@ -106,12 +106,12 @@ jobs:
       - name: echo ChangeLog
         run: echo '${{ steps.changelog.outputs.changelog }}'
 
-      # - name: Write to CHANGELOG.md
-      #   uses: Erisa/write-file-action@master
-      #   with:
-      #     path: ./CHANGELOG.md
-      #     contents: ${{ steps.changelog.outputs.changelog }}
-      #     write-mode: overwrite
+      - name: Write to CHANGELOG.md
+        uses: Erisa/write-file-action@master
+        with:
+          path: ./CHANGELOG.md
+          contents: ${{ steps.changelog.outputs.changelog }}
+          write-mode: overwrite
 
       - name: Change Version
         run: |
