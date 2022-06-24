@@ -92,13 +92,16 @@ jobs:
       - name: Run Unit Test
         run: yarn test:c
 
+      - name: generate ChangeLog
+        run: |
+          yarn changelog
+          git add .
+          git commit -m "chore: generate ChangeLog"
+
       - name: Change Version
         run: |
           lerna version ${{ env.cversion }} --exact --no-git-tag-version --force-publish --yes
           git status
-
-      - name: generate ChangeLog
-        run: yarn changelog
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
