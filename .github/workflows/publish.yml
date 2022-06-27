@@ -90,7 +90,7 @@ jobs:
           git stash
 
       - name: Run Unit Test
-        run: yarn test
+        run: yarn test:c
 
       - name: Change Version
         run: |
@@ -106,6 +106,44 @@ jobs:
           delete-branch: true
           title: 'publish version ${{ env.cversion }}'
           body: 'publish version ${{ env.cversion }} [automated]'
+
+      - name: Create changelog text
+        id: changelog
+        uses: loopwerk/tag-changelog@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # config_file: .github/tag-changelog-config.js
+
+      - name: Read CHANGELOG.md
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./CHANGELOG.md
+
+      - name: echo ChangeLog
+        run: echo '${{ steps.changelog.outputs.changelog }}'
+
+      - name: Write to CHANGELOG.md
+        uses: Erisa/write-file-action@master
+        with:
+          path: ./CHANGELOG.md
+          contents: ${{ steps.changelog.outputs.changelog }}
+          write-mode: overwrite
+
+      - name: log commit
+        run: |
+          git add .
+          git commit -m "chore: changelog"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: 'release-${{ github.ref }}'
+
+      - uses: codecov/codecov-action@v1
+        with:
+          override_branch: 'release-${{ github.ref }}'
+          override_pr: ${{ steps.cpr.outputs.pull-request-number }}
 
       - name: Publish All Packages
         run: |
@@ -133,7 +171,6 @@ jobs:
           if [ '${{ env.ctag }}' == 'beta' ] ; then IS_PRERELEASE='true'; else IS_PRERELEASE='false'; fi
           echo "::set-output name=IS_DRAFT::${IS_DRAFT}"
           echo "::set-output name=IS_PRERELEASE::${IS_PRERELEASE}"
-
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1

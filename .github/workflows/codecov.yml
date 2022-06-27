@@ -1,0 +1,16 @@
+codecov:
+  status:
+    project: # 全量代码
+      default: # 对于整个项目，每次提交时都与目标分支进行覆盖率比较，最多允许少于目标分支覆盖率 1%
+        threshold: 1%
+        base: 'change'
+      report: # 对于 packages 目录，代码覆盖率不少于 80%
+        minimum_coverage: 80%
+        paths:
+          - 'packages'
+        if_not_found: error
+    diff:
+      default:
+        minimum_coverage: 80%
+        threshold: 1%
+        if_not_found: error
