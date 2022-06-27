@@ -92,6 +92,21 @@ jobs:
       - name: Run Unit Test
         run: yarn test:c
 
+      - name: Change Version
+        run: |
+          lerna version ${{ env.cversion }} --exact --no-git-tag-version --force-publish --yes
+          git status
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        id: cpr
+        with:
+          commit-message: 'chore(release): publish version ${{ env.cversion }} --tag=${{ env.ctag }}'
+          branch: 'release-${{ github.ref }}'
+          delete-branch: true
+          title: 'publish version ${{ env.cversion }}'
+          body: 'publish version ${{ env.cversion }} [automated]'
+
       - name: Create changelog text
         id: changelog
         uses: loopwerk/tag-changelog@v1
@@ -114,20 +129,16 @@ jobs:
           contents: ${{ steps.changelog.outputs.changelog }}
           write-mode: overwrite
 
-      - name: Change Version
+      - name: log commit
         run: |
-          lerna version ${{ env.cversion }} --exact --no-git-tag-version --force-publish --yes
-          git status
+          git add .
+          git commit -m "chore: changelog"
 
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v4
-        id: cpr
+      - name: Push changes
+        uses: ad-m/github-push-action@master
         with:
-          commit-message: 'chore(release): publish version ${{ env.cversion }} --tag=${{ env.ctag }}'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: 'release-${{ github.ref }}'
-          delete-branch: true
-          title: 'publish version ${{ env.cversion }}'
-          body: 'publish version ${{ env.cversion }} [automated]'
 
       - uses: codecov/codecov-action@v1
         with:
@@ -160,7 +171,6 @@ jobs:
           if [ '${{ env.ctag }}' == 'beta' ] ; then IS_PRERELEASE='true'; else IS_PRERELEASE='false'; fi
           echo "::set-output name=IS_DRAFT::${IS_DRAFT}"
           echo "::set-output name=IS_PRERELEASE::${IS_PRERELEASE}"
-
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
