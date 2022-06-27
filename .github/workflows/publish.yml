@@ -36,7 +36,7 @@ jobs:
         run: |
           CURRNET_VERSION=`echo ${{ inputs.version }}`
           echo ${CURRNET_VERSION}
-          TAG=`echo ${CURRNET_VERSION} | egrep -o "[a-zA-Z]+"`
+          TAG=`echo ${CURRNET_VERSION} | grep -Eo "[a-zA-Z]+"`
           echo $TAG
           TAG="${TAG:-latest}"
           echo $TAG
