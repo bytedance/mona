@@ -6,6 +6,7 @@ const path = require('path');
 const maxComponent = ctx => {
   ctx.registerTarget('max', tctx => {
     tctx.configureWebpack(() => {
+      ctx.configHelper.projectConfig.chain = pre => pre;
       if (process.env.NODE_ENV === 'production') {
         return require('../config/webpack.prod')('umd');
       }
