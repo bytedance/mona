@@ -78,7 +78,10 @@ export async function ask(opts: Partial<Answer>) {
           if (!input) {
             return 'appId不能为空！请在抖店开放平台应用详情页查看APP_Key';
           }
-          if (input !== 'tempAppId' || /^[0-9]{19,19}$/.test(input)) {
+          if(input === 'tempAppId'){
+            return true;
+          }
+          if (!/^[0-9]{19,19}$/.test(input)) {
             return '无效的appId！请在抖店开放平台应用详情页查看APP_Key'
           }
           return true;
