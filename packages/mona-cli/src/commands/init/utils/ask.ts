@@ -16,10 +16,20 @@ const templates = [
     value: 'plugin',
   },
   {
-    name: 'max（适用于店铺装修组件开发）',
+    name: 'max（适用于店铺装修模块开发）',
     value: 'max',
   },
 ];
+
+const maxTemplateTypes = [
+  {
+    name: 'component（店铺装修组件开发）',
+    value: 'max'
+  }, {
+    name: 'template（店铺装修模板开发）',
+    value: 'max-template'
+  }
+]
 
 type AskKey = keyof Omit<Answer, 'appId'>;
 
@@ -47,14 +57,29 @@ export async function ask(opts: Partial<Answer>) {
   const answer: Answer = await inquirer.prompt(prompts);
 
   if (answer.templateType === 'max') {
+    const { subTemplateType } = await inquirer.prompt([{
+      type: 'list',
+      name: 'subTemplateType',
+      message: '选择店铺装修类型',
+      choices: maxTemplateTypes,
+      default: maxTemplateTypes[0].value,
+      checkAsk: (defaultValue?: string) => !defaultValue || !maxTemplateTypes.find(t => t.value === defaultValue),
+    }])
+
+    answer.templateType = subTemplateType;
+
     const { appId } = await inquirer.prompt([
       {
         type: 'input',
         name: 'appId',
         message: '请输入appId',
+        default: 'tempAppId',
         validate(input: string) {
           if (!input) {
-            return 'appId不能为空！请在抖店开放平台查看';
+            return 'appId不能为空！请在抖店开放平台应用详情页查看APP_Key';
+          }
+          if (input !== 'tempAppId' || /^[0-9]{19,19}$/.test(input)) {
+            return '无效的appId！请在抖店开放平台应用详情页查看APP_Key'
           }
           return true;
         },

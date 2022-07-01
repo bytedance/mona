@@ -9,7 +9,7 @@ export { default as ICommand } from './ICommand';
 function main() {
   const service = new Service(buildInPlugins);
   service.install();
-  service.run()
+  service.run();
 }
 
-export default main;
+export default main; 
