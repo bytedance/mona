@@ -1,7 +1,6 @@
 import { IPlugin } from "@/Service";
 import path from 'path';
-import { compressDistDir } from "../compress/utils";
-import { outputQrcode, pipe, upload, watch } from "./utils";
+import { outputQrcode, pipe, generateTestVersion, compress, buildMaxComponent, buildMaxTemplate, processMaxComponentData, processMaxTemplateData, watch } from "./utils";
 
 const preview: IPlugin = (ctx) => {
   ctx.registerCommand('preview', {
@@ -16,15 +15,15 @@ const preview: IPlugin = (ctx) => {
     const outputDir = path.join(ctx.configHelper.cwd, dist);
 
     // common steps for all target: compress => upload
-    const process = () => pipe(compressDistDir, upload)(outputDir);
+    const commonProcess = [compress, generateTestVersion, outputQrcode, console.log];
 
     watch(outputDir, {
       open: !!args.watch
     }, () => {
       if (args.target === 'max') {
-        pipe(process, outputQrcode, console.log)()
+        pipe(buildMaxComponent, processMaxComponentData, ...commonProcess)(ctx)
       } else if (args.target === 'max-template') {
-        pipe(process, outputQrcode, console.log)()
+        pipe(buildMaxTemplate, processMaxTemplateData, ...commonProcess)(ctx)
       } else {
         console.error('暂不支持该端本地预览')
       }

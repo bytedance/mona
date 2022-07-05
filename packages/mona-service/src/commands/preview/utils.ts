@@ -1,6 +1,9 @@
 
 import QRCode from 'qrcode';
 import chokidar from 'chokidar';
+import PluginContext from '@/PluginContext';
+import { execSync } from 'child_process';
+import { compressDistDir } from "../compress/utils";
 
 // pipe func
 export const pipe = (...funcs: Function[]) => (input?: any) => funcs.reduce((prev, cur) => (i: any) => {
@@ -12,27 +15,6 @@ export const pipe = (...funcs: Function[]) => (input?: any) => funcs.reduce((pre
     return cur(res);
   }
 })(input);
-
-// upload resource temporary
-export function upload(outputPath: string) {
-  // upload to tos
-  return outputPath;
-}
-
-
-// generate qrcode
-export function outputQrcode(url: string) {
-    return new Promise((resolve, reject) => {
-      QRCode.toString(url, { type: 'terminal' }, (err, url) => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve(url)
-        }
-      })
-    })
-}
-
 
 // watch dir
 export function watch(dir: string, options: { open: boolean }, callback: Function) {
@@ -53,4 +35,48 @@ export function watch(dir: string, options: { open: boolean }, callback: Functio
   } else {
     callback()
   }
+}
+
+export async function compress(ctx: PluginContext) {
+  const compressPath = await compressDistDir(ctx.configHelper.projectConfig.output);
+  return { ctx, compressPath };
+}
+
+export function generateTestVersion(params: { ctx: PluginContext, compressPath: string }) {
+  console.log('压缩文件路径', params.compressPath);
+  return params.compressPath;
+}
+
+export function outputQrcode(url: string) {
+    return new Promise((resolve, reject) => {
+      QRCode.toString(url, { type: 'terminal' }, (err, url) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(url)
+        }
+      })
+    })
+}
+
+export function buildMaxComponent(ctx: PluginContext) {
+  execSync(`mona-service build -t max`, { stdio: 'ignore' });
+  return ctx;
+}
+
+export function buildMaxTemplate(ctx: PluginContext) {
+  // do nothing
+  return ctx;
+}
+
+// process max component data
+export function processMaxComponentData(ctx: PluginContext) {
+  // write code here
+  return ctx;
+}
+
+// process max template data
+export function processMaxTemplateData(ctx: PluginContext) {
+  // write code here
+  return ctx;
 }
