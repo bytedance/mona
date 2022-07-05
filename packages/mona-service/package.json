@@ -40,6 +40,7 @@
     "@teamsupercell/typings-for-css-modules-loader": "^2.5.1",
     "acorn-walk": "^8.2.0",
     "archiver": "^5.3.0",
+    "assert": "^2.0.0",
     "axios": "^0.26.0",
     "babel-loader": "^8.2.2",
     "chalk": "^4.1.2",

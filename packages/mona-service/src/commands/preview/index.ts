@@ -1,6 +1,7 @@
 import { IPlugin } from "@/Service";
 import path from 'path';
-import { outputQrcode, pipe, generateTestVersion, compress, buildMaxComponent, buildMaxTemplate, processMaxComponentData, processMaxTemplateData, watch } from "./utils";
+import { generateQrcodeFactory, createTestVersionFactory, pipe, compress, buildMaxComponent, buildMaxTemplate, processMaxComponentData, processMaxTemplateData, watch } from "./utils";
+import { generateRequestFromOpen, requestBeforeCheck } from "../common";
 
 const preview: IPlugin = (ctx) => {
   ctx.registerCommand('preview', {
@@ -9,13 +10,18 @@ const preview: IPlugin = (ctx) => {
       { name: 'target', description: '目标端', alias: 't' },
       { name: 'watch', description: '是否监听文件更改', alias: 'w' },
     ]
-  }, (args) => {
+  }, async (args) => {
     // output dir
     const dist = ctx.configHelper.projectConfig.output || 'dist';
     const outputDir = path.join(ctx.configHelper.cwd, dist);
 
+    // assert
+    const { user } = await requestBeforeCheck(ctx, args);
+
+    const request = generateRequestFromOpen(args, user.cookie)
+
     // common steps for all target: compress => upload
-    const commonProcess = [compress, generateTestVersion, outputQrcode, console.log];
+    const commonProcess = [compress, createTestVersionFactory(request), generateQrcodeFactory(request), console.log];
 
     watch(outputDir, {
       open: !!args.watch

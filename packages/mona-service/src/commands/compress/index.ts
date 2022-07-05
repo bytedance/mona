@@ -29,7 +29,7 @@ const compress: IPlugin = ctx => {
       usage: 'mona-service compress',
     },
     async args => {
-      console.log(chalk.cyan('请确保在项目根目录使用该命令'));
+      console.log(chalk.yellow('请确保在项目根目录使用该命令'));
       try {
         let inputPath = process.cwd();
         if (!args.r) {

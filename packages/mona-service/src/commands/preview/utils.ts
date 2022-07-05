@@ -4,6 +4,22 @@ import chokidar from 'chokidar';
 import PluginContext from '@/PluginContext';
 import { execSync } from 'child_process';
 import { compressDistDir } from "../compress/utils";
+import { createUploadForm } from '../common';
+import { AxiosRequestConfig, AxiosResponse } from 'axios';
+
+type Request<T = any> = (path: string, options?: AxiosRequestConfig<any>) => Promise<AxiosResponse<T, any>>
+
+interface GetDynamicTestUrlResp {
+  secShopId: string;
+  token: string;
+  tmpId: string;
+  expireTime: number;
+}
+
+interface CreateTestAppVersionResp {
+  version: string;
+  versionId: string;
+}
 
 // pipe func
 export const pipe = (...funcs: Function[]) => (input?: any) => funcs.reduce((prev, cur) => (i: any) => {
@@ -42,14 +58,33 @@ export async function compress(ctx: PluginContext) {
   return { ctx, compressPath };
 }
 
-export function generateTestVersion(params: { ctx: PluginContext, compressPath: string }) {
-  console.log('压缩文件路径', params.compressPath);
-  return params.compressPath;
+export const createTestVersionFactory = (request: Request<CreateTestAppVersionResp>) => async (params: { ctx: PluginContext, compressPath: string }) => {
+  const appId = params.ctx.configHelper.projectConfig.appId || '';
+  const { form, requestOptions } = await createUploadForm({
+    appId,
+    testFile: {
+      filePath: params.compressPath,
+    }
+  })
+  const res = await request('/captain/app/version/test/create', {
+    method: 'POST',
+    data: form,
+    ...requestOptions,
+  })
+
+  return { appId, version: res.data.version };
 }
 
-export function outputQrcode(url: string) {
-    return new Promise((resolve, reject) => {
-      QRCode.toString(url, { type: 'terminal' }, (err, url) => {
+
+export const generateQrcodeFactory = (request: Request<GetDynamicTestUrlResp>) => async (params: { appId: string; version: string }) => {
+    const { data } = await request('/captain/app/version/getDynamicTestUrl', {
+      method: 'GET',
+      params
+    })
+
+    const preViewCodeUrl = `aweme://goods/store?sec_shop_id=${data?.secShopId}&token=${data?.token}&tmp_id=${data?.tmpId}&enter_from=scan&entrance_location=scan&pass_through_api=%7B%22isJump%22%3A1%7D`;
+    const qrcode = await new Promise((resolve, reject) => {
+      QRCode.toString(preViewCodeUrl, { type: 'terminal' }, (err, url) => {
         if (err) {
           reject(err)
         } else {
@@ -57,6 +92,8 @@ export function outputQrcode(url: string) {
         }
       })
     })
+
+    return qrcode;
 }
 
 export function buildMaxComponent(ctx: PluginContext) {
