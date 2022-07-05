@@ -35,7 +35,7 @@ jobs:
       - name: Get Version
         run: |
           CURRNET_VERSION=`echo ${{ inputs.version }}`
-          TAG=`echo ${CURRNET_VERSION} | egrep -o "[a-zA-Z]+"`
+          TAG=`echo ${CURRNET_VERSION} | grep -Eo '[a-zA-Z]+'` || true
           TAG="${TAG:-latest}"
           echo "cversion=${CURRNET_VERSION}" >> $GITHUB_ENV
           echo "ctag=${TAG}" >> $GITHUB_ENV

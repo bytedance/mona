@@ -1,6 +1,7 @@
 
 const child_process = require('child_process');
 const chalk = require('chalk');
+const path = require('path');
 
 const maxComponent = ctx => {
   ctx.registerTarget('max', tctx => {
@@ -13,6 +14,22 @@ const maxComponent = ctx => {
       return require('../config/webpack.dev')('umd');
     })
   });
+  ctx.registerCommand(
+    'max-template-start',
+    {
+      description: '店铺装修模版start',
+      usage: 'mona-service max-template-start',
+    },
+    () => {
+      const configPath = path.resolve(__dirname, '../utils/templateStart.js');
+      child_process.execSync(`node ${configPath}`, function (error, stdout, stderr) {
+        if (error) {
+          console.log(error.stack);
+        }
+        console.log(stdout);
+      });
+    }
+  )
   ctx.registerCommand(
     'max-build',
     {

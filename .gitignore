@@ -17,9 +17,8 @@ tsconfig.tsbuildinfo
 
 .DS_Store
 .vscode/
-
-
 coverage
+
 /monaJest*
 packages/**/yarn.lock
 packages/**/package-lock.json

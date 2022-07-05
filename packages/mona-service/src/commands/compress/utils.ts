@@ -4,6 +4,8 @@ import archiver from 'archiver';
 import ora from 'ora';
 import chalk from 'chalk';
 
+import { defaultMonaIgnoreContent } from './ignore';
+
 const TEMP_DIR = '.mona';
 
 function isDir(rawFilename: string) {
@@ -88,6 +90,17 @@ export function compressToZip(inputPath: string, outputPath: string, ignoreList:
       if (fs.existsSync(inputPath)) {
         if (isDir(inputPath)) {
           const filenames = fs.readdirSync(inputPath);
+
+          const gitignoreFileName = '.gitignore';
+          let gitignoreContent = defaultMonaIgnoreContent;
+
+          if (!filenames.includes(gitignoreFileName)) {
+            fs.writeFileSync(path.join(inputPath, gitignoreFileName), defaultMonaIgnoreContent, 'utf8');
+            filenames.push(gitignoreFileName);
+          } else {
+            gitignoreContent += '\n\n' + fs.readFileSync(path.join(inputPath, gitignoreFileName), 'utf8');
+          }
+
           filenames.forEach(filename => {
             if (!shouldIgnore(filename)) {
               const filepath = path.join(inputPath, filename);
@@ -95,6 +108,7 @@ export function compressToZip(inputPath: string, outputPath: string, ignoreList:
                 arc.directory(filepath, filename);
               } else {
                 arc.file(filepath, { name: filename });
+                if (filename === gitignoreFileName) arc.append(gitignoreContent, { name: filename });
               }
             }
           });
