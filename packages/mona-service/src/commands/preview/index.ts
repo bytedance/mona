@@ -23,6 +23,8 @@ const preview: IPlugin = (ctx) => {
     }, () => {
       if (args.target === 'max') {
         pipe(process, outputQrcode, console.log)()
+      } else if (args.target === 'max-template') {
+        pipe(process, outputQrcode, console.log)()
       } else {
         console.error('暂不支持该端本地预览')
       }
