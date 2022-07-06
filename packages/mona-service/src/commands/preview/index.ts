@@ -31,7 +31,7 @@ const preview: IPlugin = (ctx) => {
       } else if (args.target === 'max-template') {
         pipe(buildMaxTemplate, processMaxTemplateData, ...commonProcess)(ctx)
       } else {
-        console.error('暂不支持该端本地预览')
+        console.error(`${args.target}端目前不支持preview命令，敬请期待`)
       }
     })
   })
