@@ -4,10 +4,13 @@ import chokidar from 'chokidar';
 import PluginContext from '@/PluginContext';
 import { execSync } from 'child_process';
 import { compressDistDir } from "../compress/utils";
-import { createUploadForm } from '../common';
-import { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { createUploadForm, FileType } from '../common';
+import { AxiosRequestConfig } from 'axios';
+import path from 'path';
+import fs from 'fs';
+import chalk from 'chalk';
 
-type Request<T = any> = (path: string, options?: AxiosRequestConfig<any>) => Promise<AxiosResponse<T, any>>
+type Request<T = any> = (path: string, options?: AxiosRequestConfig<any>) => Promise<T>
 
 interface GetDynamicTestUrlResp {
   secShopId: string;
@@ -53,36 +56,46 @@ export function watch(dir: string, options: { open: boolean }, callback: Functio
   }
 }
 
-export async function compress(ctx: PluginContext) {
-  const compressPath = await compressDistDir(ctx.configHelper.projectConfig.output);
-  return { ctx, compressPath };
-}
-
-export const createTestVersionFactory = (request: Request<CreateTestAppVersionResp>) => async (params: { ctx: PluginContext, compressPath: string }) => {
-  const appId = params.ctx.configHelper.projectConfig.appId || '';
-  const { form, requestOptions } = await createUploadForm({
-    appId,
-    testFile: {
-      filePath: params.compressPath,
-    }
-  })
+export const createTestVersionFactory = (request: Request<CreateTestAppVersionResp>) => async (params: Record<string, string | FileType>) => {
+  const { form, requestOptions } = await createUploadForm(params)
   const res = await request('/captain/app/version/test/create', {
     method: 'POST',
     data: form,
     ...requestOptions,
   })
 
-  return { appId, version: res.data.version };
+  return { appId: params.appId, version: res.version };
+}
+
+function formatNumberToTwoDigit(number: number) {
+  return `0${number}`.slice(-2);
+}
+
+export function getFormatedExpireTime(seconds: number) {
+  const date = new Date(seconds * 1000);
+  const year = date.getFullYear();
+  const month = formatNumberToTwoDigit(date.getMonth() + 1);
+  const day = formatNumberToTwoDigit(date.getDate());
+  const hour = formatNumberToTwoDigit(date.getHours());
+  const minute = formatNumberToTwoDigit(date.getMinutes());
+  const second = formatNumberToTwoDigit(date.getSeconds());
+
+  return `${year}/${month}/${day} ${hour}:${minute}:${second}`
+}
+
+export function printQrcode(params: { qrcode: string, expireTime: number }) {
+  console.log(params.qrcode);
+  console.log(chalk.yellow(`二维码 ${getFormatedExpireTime(params.expireTime)} 到期，请尽快使用抖音进行扫码预览！`))
 }
 
 
 export const generateQrcodeFactory = (request: Request<GetDynamicTestUrlResp>) => async (params: { appId: string; version: string }) => {
-    const { data } = await request('/captain/app/version/getDynamicTestUrl', {
+    const res = await request('/captain/app/version/getDynamicTestUrl', {
       method: 'GET',
       params
     })
 
-    const preViewCodeUrl = `aweme://goods/store?sec_shop_id=${data?.secShopId}&token=${data?.token}&tmp_id=${data?.tmpId}&enter_from=scan&entrance_location=scan&pass_through_api=%7B%22isJump%22%3A1%7D`;
+    const preViewCodeUrl = `aweme://goods/store?sec_shop_id=${res?.secShopId}&token=${res?.token}&tmp_id=${res?.tmpId}&enter_from=scan&entrance_location=scan&pass_through_api=%7B%22isJump%22%3A1%7D`;
     const qrcode = await new Promise((resolve, reject) => {
       QRCode.toString(preViewCodeUrl, { type: 'terminal' }, (err, url) => {
         if (err) {
@@ -93,7 +106,7 @@ export const generateQrcodeFactory = (request: Request<GetDynamicTestUrlResp>) =
       })
     })
 
-    return qrcode;
+    return { qrcode, expireTime: res.expireTime }
 }
 
 export function buildMaxComponent(ctx: PluginContext) {
@@ -101,19 +114,39 @@ export function buildMaxComponent(ctx: PluginContext) {
   return ctx;
 }
 
-export function buildMaxTemplate(ctx: PluginContext) {
-  // do nothing
-  return ctx;
-}
-
 // process max component data
-export function processMaxComponentData(ctx: PluginContext) {
-  // write code here
-  return ctx;
+export async function processMaxComponentData(ctx: PluginContext) {
+  const helper = ctx.configHelper;
+  const { appId = '', output } = helper.projectConfig;
+
+  // compress
+  const filePath = await compressDistDir(output)
+
+  // read value from preview.json
+  const componentValuePath = path.join(helper.cwd, 'src/preview.json');
+  const componentAppDefaultValue = fs.readFileSync(componentValuePath).toString();
+
+  return {
+    appId,
+    testFile: {
+      filePath,
+    },
+    componentAppDefaultValue,
+  }
 }
 
 // process max template data
-export function processMaxTemplateData(ctx: PluginContext) {
-  // write code here
-  return ctx;
+export async function processMaxTemplateData(ctx: PluginContext) {
+  const helper = ctx.configHelper;
+  const { appId = '' } = helper.projectConfig;
+
+  // read value from preview.json
+  const templateValuePath = path.join(helper.cwd, 'preview.json');
+  const templateAppDefaultValue = fs.readFileSync(templateValuePath).toString();
+
+  // console.log('template', templateAppDefaultValue);
+  return {
+    appId,
+    templateAppDefaultValue
+  }
 }
