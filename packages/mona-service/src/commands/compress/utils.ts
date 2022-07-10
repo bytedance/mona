@@ -45,9 +45,13 @@ export function compressDirToZip(inputPath: string, outputPath: string) {
       zlib: { level: 9 },
     });
 
-    arc.on('end', () => {
+    output.on('close', () => {
       resolve('success');
-    });
+    })
+
+    // arc.on('end', () => {
+    //   resolve('success');
+    // });
     arc.on('error', err => {
       console.log('throw=====');
       reject(err);

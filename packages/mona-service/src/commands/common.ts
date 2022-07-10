@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
@@ -34,7 +34,7 @@ export function saveUser(data: any) {
 }
 
 export function generateRequestFromOpen(args: any, cookie: string) {
-  return function<T = any>(path: string, options?: AxiosRequestConfig<any>): Promise<AxiosResponse<T, any>> {
+  return function<T = any>(path: string, options?: AxiosRequestConfig<any>): Promise<T> {
     const domain = args.domain || OPEN_DOMAIN;
     const header = args.header ? JSON.parse(args.header) : OPEN_DEV_HEADERS;
     const url = `https://${domain}${path}`;
@@ -46,23 +46,24 @@ export function generateRequestFromOpen(args: any, cookie: string) {
         cookie,
         'Content-Type': 'application/json',
         ...options?.headers,
-        ...header
+        ...header,
       }
     }
 
     return axios.request(config)
       .then(res => {
+        // console.log('res', res);
         const data = res.data as any;
         if (data.code === 0) {
           return data.data;
         } else {
           throw new Error(data.message || '未知错误');
         }
-      });
+      })
   }
 };
 
-interface FileType {
+export interface FileType {
   mime?: string;
   fileName?: string;
   filePath: string;
@@ -128,7 +129,7 @@ export async function requestBeforeCheck(ctx: PluginContext, args: Record<string
     console.log(chalk.cyan(`当前用户：${user.nickName}`));
   } catch(err) {
     deleteUser();
-    console.log(chalk.red('登录态已过期，请使用mona login重新登录'));
+    throw new Error('登录态已过期，请使用mona login重新登录')
   }
   
 

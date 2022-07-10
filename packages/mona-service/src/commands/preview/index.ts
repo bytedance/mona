@@ -1,6 +1,6 @@
 import { IPlugin } from "@/Service";
-import path from 'path';
-import { generateQrcodeFactory, createTestVersionFactory, pipe, compress, buildMaxComponent, buildMaxTemplate, processMaxComponentData, processMaxTemplateData, watch } from "./utils";
+// import path from 'path';
+import { generateQrcodeFactory, createTestVersionFactory, pipe, buildMaxComponent, processMaxComponentData, processMaxTemplateData, printQrcode } from "./utils";
 import { generateRequestFromOpen, requestBeforeCheck } from "../common";
 
 const preview: IPlugin = (ctx) => {
@@ -12,8 +12,8 @@ const preview: IPlugin = (ctx) => {
     ]
   }, async (args) => {
     // output dir
-    const dist = ctx.configHelper.projectConfig.output || 'dist';
-    const outputDir = path.join(ctx.configHelper.cwd, dist);
+    // const dist = ctx.configHelper.projectConfig.output || 'dist';
+    // const outputDir = path.join(ctx.configHelper.cwd, dist);
 
     // assert
     const { user } = await requestBeforeCheck(ctx, args);
@@ -21,19 +21,21 @@ const preview: IPlugin = (ctx) => {
     const request = generateRequestFromOpen(args, user.cookie)
 
     // common steps for all target: compress => upload
-    const commonProcess = [compress, createTestVersionFactory(request), generateQrcodeFactory(request), console.log];
+    const commonProcess = [createTestVersionFactory(request), generateQrcodeFactory(request), printQrcode];
 
-    watch(outputDir, {
-      open: !!args.watch
-    }, () => {
-      if (args.target === 'max') {
-        pipe(buildMaxComponent, processMaxComponentData, ...commonProcess)(ctx)
-      } else if (args.target === 'max-template') {
-        pipe(buildMaxTemplate, processMaxTemplateData, ...commonProcess)(ctx)
-      } else {
-        console.error(`${args.target}端目前不支持preview命令，敬请期待`)
-      }
-    })
+    if (args.target === 'max') {
+      await pipe(buildMaxComponent, processMaxComponentData, ...commonProcess)(ctx)
+    } else if (args.target === 'max-template') {
+      await pipe(processMaxTemplateData, ...commonProcess)(ctx)
+    } else {
+      console.error(`${args.target}端目前不支持preview命令，敬请期待`)
+    }
+
+    // watch(outputDir, {
+    //   open: !!args.watch
+    // }, () => {
+      
+    // })
   })
 }
 
