@@ -2,125 +2,28 @@
 
 exports[`web component: Icon should have right properties 1`] = `
 LoadedCheerio {
-  "0": Node {
-    "attribs": Object {
-      "class": "container class-name",
-      "style": "color: red;",
-    },
-    "children": Array [
-      Node {
-        "attribs": Object {
-          "class": "icon success",
-          "style": "color: red; font-size: 20px;",
-        },
-        "children": Array [],
-        "name": "i",
-        "namespace": "http://www.w3.org/1999/xhtml",
-        "next": null,
-        "parent": [Circular],
-        "prev": null,
-        "type": "tag",
-        "x-attribsNamespace": Object {
-          "class": undefined,
-          "style": undefined,
-        },
-        "x-attribsPrefix": Object {
-          "class": undefined,
-          "style": undefined,
-        },
-      },
-    ],
-    "name": "div",
-    "namespace": "http://www.w3.org/1999/xhtml",
-    "next": null,
-    "parent": Node {
-      "children": Array [
-        [Circular],
-      ],
-      "name": "root",
-      "next": null,
-      "parent": null,
-      "prev": null,
-      "type": "root",
-    },
-    "prev": null,
-    "type": "tag",
-    "x-attribsNamespace": Object {
-      "class": undefined,
-      "style": undefined,
-    },
-    "x-attribsPrefix": Object {
-      "class": undefined,
-      "style": undefined,
-    },
-  },
+  "0": <div
+    class="container class-name"
+    style="color: red;"
+  >
+    <i
+      class="icon success"
+      style="color: red; font-size: 20px;"
+    />
+  </div>,
   "_root": LoadedCheerio {
-    "0": Node {
+    "0": Document {
       "children": Array [
-        Node {
-          "attribs": Object {},
-          "children": Array [
-            Node {
-              "attribs": Object {},
-              "children": Array [],
-              "name": "head",
-              "namespace": "http://www.w3.org/1999/xhtml",
-              "next": Node {
-                "attribs": Object {},
-                "children": Array [],
-                "name": "body",
-                "namespace": "http://www.w3.org/1999/xhtml",
-                "next": null,
-                "parent": [Circular],
-                "prev": [Circular],
-                "type": "tag",
-                "x-attribsNamespace": Object {},
-                "x-attribsPrefix": Object {},
-              },
-              "parent": [Circular],
-              "prev": null,
-              "type": "tag",
-              "x-attribsNamespace": Object {},
-              "x-attribsPrefix": Object {},
-            },
-            Node {
-              "attribs": Object {},
-              "children": Array [],
-              "name": "body",
-              "namespace": "http://www.w3.org/1999/xhtml",
-              "next": null,
-              "parent": [Circular],
-              "prev": Node {
-                "attribs": Object {},
-                "children": Array [],
-                "name": "head",
-                "namespace": "http://www.w3.org/1999/xhtml",
-                "next": [Circular],
-                "parent": [Circular],
-                "prev": null,
-                "type": "tag",
-                "x-attribsNamespace": Object {},
-                "x-attribsPrefix": Object {},
-              },
-              "type": "tag",
-              "x-attribsNamespace": Object {},
-              "x-attribsPrefix": Object {},
-            },
-          ],
-          "name": "html",
-          "namespace": "http://www.w3.org/1999/xhtml",
-          "next": null,
-          "parent": [Circular],
-          "prev": null,
-          "type": "tag",
-          "x-attribsNamespace": Object {},
-          "x-attribsPrefix": Object {},
-        },
+        <html>
+          <head />
+          <body />
+        </html>,
       ],
-      "name": "root",
+      "endIndex": null,
       "next": null,
       "parent": null,
       "prev": null,
+      "startIndex": null,
       "type": "root",
       "x-mode": "quirks",
     },
@@ -141,122 +44,27 @@ LoadedCheerio {
 
 exports[`web component: Icon should render correctly 1`] = `
 LoadedCheerio {
-  "0": Node {
-    "attribs": Object {
-      "class": "container",
-    },
-    "children": Array [
-      Node {
-        "attribs": Object {
-          "class": "icon success",
-          "style": "font-size: 24px;",
-        },
-        "children": Array [],
-        "name": "i",
-        "namespace": "http://www.w3.org/1999/xhtml",
-        "next": null,
-        "parent": [Circular],
-        "prev": null,
-        "type": "tag",
-        "x-attribsNamespace": Object {
-          "class": undefined,
-          "style": undefined,
-        },
-        "x-attribsPrefix": Object {
-          "class": undefined,
-          "style": undefined,
-        },
-      },
-    ],
-    "name": "div",
-    "namespace": "http://www.w3.org/1999/xhtml",
-    "next": null,
-    "parent": Node {
-      "children": Array [
-        [Circular],
-      ],
-      "name": "root",
-      "next": null,
-      "parent": null,
-      "prev": null,
-      "type": "root",
-    },
-    "prev": null,
-    "type": "tag",
-    "x-attribsNamespace": Object {
-      "class": undefined,
-    },
-    "x-attribsPrefix": Object {
-      "class": undefined,
-    },
-  },
+  "0": <div
+    class="container"
+  >
+    <i
+      class="icon success"
+      style="font-size: 24px;"
+    />
+  </div>,
   "_root": LoadedCheerio {
-    "0": Node {
+    "0": Document {
       "children": Array [
-        Node {
-          "attribs": Object {},
-          "children": Array [
-            Node {
-              "attribs": Object {},
-              "children": Array [],
-              "name": "head",
-              "namespace": "http://www.w3.org/1999/xhtml",
-              "next": Node {
-                "attribs": Object {},
-                "children": Array [],
-                "name": "body",
-                "namespace": "http://www.w3.org/1999/xhtml",
-                "next": null,
-                "parent": [Circular],
-                "prev": [Circular],
-                "type": "tag",
-                "x-attribsNamespace": Object {},
-                "x-attribsPrefix": Object {},
-              },
-              "parent": [Circular],
-              "prev": null,
-              "type": "tag",
-              "x-attribsNamespace": Object {},
-              "x-attribsPrefix": Object {},
-            },
-            Node {
-              "attribs": Object {},
-              "children": Array [],
-              "name": "body",
-              "namespace": "http://www.w3.org/1999/xhtml",
-              "next": null,
-              "parent": [Circular],
-              "prev": Node {
-                "attribs": Object {},
-                "children": Array [],
-                "name": "head",
-                "namespace": "http://www.w3.org/1999/xhtml",
-                "next": [Circular],
-                "parent": [Circular],
-                "prev": null,
-                "type": "tag",
-                "x-attribsNamespace": Object {},
-                "x-attribsPrefix": Object {},
-              },
-              "type": "tag",
-              "x-attribsNamespace": Object {},
-              "x-attribsPrefix": Object {},
-            },
-          ],
-          "name": "html",
-          "namespace": "http://www.w3.org/1999/xhtml",
-          "next": null,
-          "parent": [Circular],
-          "prev": null,
-          "type": "tag",
-          "x-attribsNamespace": Object {},
-          "x-attribsPrefix": Object {},
-        },
+        <html>
+          <head />
+          <body />
+        </html>,
       ],
-      "name": "root",
+      "endIndex": null,
       "next": null,
       "parent": null,
       "prev": null,
+      "startIndex": null,
       "type": "root",
       "x-mode": "quirks",
     },
