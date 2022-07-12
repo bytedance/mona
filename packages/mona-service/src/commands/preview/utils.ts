@@ -80,7 +80,7 @@ export function getFormatedExpireTime(seconds: number) {
   const minute = formatNumberToTwoDigit(date.getMinutes());
   const second = formatNumberToTwoDigit(date.getSeconds());
 
-  return `${year}/${month}/${day} ${hour}:${minute}:${second}`a
+  return `${year}/${month}/${day} ${hour}:${minute}:${second}`
 }
 
 export function printQrcode(params: { qrcode: string, expireTime: number }) {
