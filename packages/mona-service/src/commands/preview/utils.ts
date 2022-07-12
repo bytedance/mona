@@ -80,7 +80,7 @@ export function getFormatedExpireTime(seconds: number) {
   const minute = formatNumberToTwoDigit(date.getMinutes());
   const second = formatNumberToTwoDigit(date.getSeconds());
 
-  return `${year}/${month}/${day} ${hour}:${minute}:${second}`
+  return `${year}/${month}/${day} ${hour}:${minute}:${second}`a
 }
 
 export function printQrcode(params: { qrcode: string, expireTime: number }) {
@@ -97,7 +97,8 @@ export const generateQrcodeFactory = (request: Request<GetDynamicTestUrlResp>) =
 
     const preViewCodeUrl = `aweme://goods/store?sec_shop_id=${res?.secShopId}&token=${res?.token}&tmp_id=${res?.tmpId}&enter_from=scan&entrance_location=scan&pass_through_api=%7B%22isJump%22%3A1%7D`;
     const qrcode = await new Promise((resolve, reject) => {
-      QRCode.toString(preViewCodeUrl, { type: 'terminal' }, (err, url) => {
+      // @ts-ignore
+      QRCode.toString(preViewCodeUrl, { type: 'terminal', small: true }, (err, url) => {
         if (err) {
           reject(err)
         } else {
@@ -110,7 +111,8 @@ export const generateQrcodeFactory = (request: Request<GetDynamicTestUrlResp>) =
 }
 
 export function buildMaxComponent(ctx: PluginContext) {
-  execSync(`mona-service build -t max`, { stdio: 'ignore' });
+  console.log('build');
+  execSync(`mona-service build -t max`, {});
   return ctx;
 }
 
@@ -140,10 +142,12 @@ export async function processMaxTemplateData(ctx: PluginContext) {
   const helper = ctx.configHelper;
   const { appId = '' } = helper.projectConfig;
 
+  console.log('i1');
   // read value from preview.json
   const templateValuePath = path.join(helper.cwd, 'preview.json');
   const templateAppDefaultValue = fs.readFileSync(templateValuePath).toString();
 
+console.log('i2');
   // console.log('template', templateAppDefaultValue);
   return {
     appId,
