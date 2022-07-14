@@ -13,6 +13,7 @@ const start: IPlugin = ctx => {
       ],
     },
     (args, _, targetContext) => {
+      process.env.NODE_ENV = 'development';
       if (targetContext?.startFn) {
         targetContext?.startFn(args);
       }

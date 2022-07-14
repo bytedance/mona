@@ -38,7 +38,7 @@ const maxComponent = ctx => {
     },
     () => {
       console.log(chalk.bold.red("请更新build命令为 'mona-service build -t max'"))
-      child_process.execSync('mona-service build -t max', function (error, stdout, stderr) {
+      child_process.execSync('mona-service build -t max', { stdio: 'inherit' }, function (error, stdout, stderr) {
         if (error) {
           console.log(error.stack);
         }
@@ -54,7 +54,7 @@ const maxComponent = ctx => {
     },
     () => {
       console.log(chalk.bold.red("请更新start命令为 'mona-service start -t max'"))
-      child_process.execSync('mona-service start -t max', function (error, stdout, stderr) {
+      child_process.execSync('mona-service start -t max', { stdio: 'inherit' }, function (error, stdout, stderr) {
         if (error) {
           console.log(error.stack);
         }
