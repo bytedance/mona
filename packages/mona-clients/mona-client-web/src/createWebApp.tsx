@@ -82,15 +82,18 @@ export const HistorySetWrapper: React.FC = ({ children }) => {
 export function createWebApp(
   Component: React.ComponentType<any>,
   routes: { path: string; title: string; component: React.ComponentType<any> }[],
-  tabBar: AppConfig['tabBar'],
-  navBar: AppConfig['window'],
+  options?: {
+    tabBar: AppConfig['tabBar'],
+    navBar: AppConfig['window'],
+    defaultPath: string
+  }
 ) {
   const render = ({ dom }: { dom: Element | Document }) => {
     ReactDOM.render(
       <BrowserRouter>
         <HistorySetWrapper>
           <Component>
-            <NavBar {...navBar} />
+            {options?.navBar && <NavBar {...options?.navBar} /> }
             <Switch>
               {routes?.map(route => (
                 <Route
@@ -105,14 +108,14 @@ export function createWebApp(
               ))}
               {routes?.length && (
                 <Route exact path="/">
-                  <Redirect to={formatPath(routes[0].path)} />
+                  <Redirect to={formatPath(routes[0].path || options?.defaultPath || '/')} />
                 </Route>
               )}
               <Route path="*">
-                <NoMatch defaultPath={formatPath(routes[0].path)} />
+                <NoMatch defaultPath={formatPath(routes[0].path || options?.defaultPath || '/')} />
               </Route>
             </Switch>
-            <TabBar tab={tabBar} />
+            { options?.tabBar &&  <TabBar tab={options?.tabBar} /> }
           </Component>
         </HistorySetWrapper>
       </BrowserRouter>,
