@@ -58,7 +58,7 @@ class PluginEntryModule {
     const pages = Array.from(new Set((this.configHelper.appConfig.pages || []) as string[]));
     let routesCode = pages.map((page, index) => `import Page${index} from './${page}';`).join('');
     routesCode += `const routes = [${pages
-      .map((page, index) => `{ path: '${page}', component: Page${index}, title: '${this.getPageTitle(page)}' }`)
+      .map((page, index) => `{ path: '${page}', component: createPluginPageLifecycle(Page${index}), title: '${this.getPageTitle(page)}' }`)
       .join(',')}];`;
     return routesCode;
   }
@@ -77,7 +77,7 @@ class PluginEntryModule {
 
     const code = `
       import './public-path';
-      import { createPlugin, createPluginLifeCycle } from '@bytedance/mona-runtime';
+      import { createPlugin, createPluginLifeCycle, createPluginPageLifecycle } from '@bytedance/mona-runtime';
       import App from './${path.basename(filename)}';
       ${this._generateRoutesCode()}
       ${this._generateDefaultPathCode()}
