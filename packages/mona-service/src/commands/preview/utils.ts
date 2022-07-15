@@ -92,7 +92,10 @@ export function printQrcode(params: { qrcode: string, expireTime: number }) {
 export const generateQrcodeFactory = (request: Request<GetDynamicTestUrlResp>) => async (params: { appId: string; version: string }) => {
     const res = await request('/captain/app/version/getDynamicTestUrl', {
       method: 'GET',
-      params
+      params: {
+        ...params,
+        previewScene: 2
+      }
     })
 
     const preViewCodeUrl = `aweme://goods/store?sec_shop_id=${res?.secShopId}&token=${res?.token}&tmp_id=${res?.tmpId}&enter_from=scan&entrance_location=scan&pass_through_api=%7B%22isJump%22%3A1%7D`;
