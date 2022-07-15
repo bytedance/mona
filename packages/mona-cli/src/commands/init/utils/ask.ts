@@ -4,20 +4,24 @@ import { checkChinese } from './common';
 
 const templates = [
   {
+    name: 'light（适用于轻应用开发）',
+    value: 'light'
+  },
+  {
+    name: 'plugin（适用于飞鸽插件开发）',
+    value: 'plugin',
+  },
+  {
+    name: 'max（适用于店铺装修模块开发）',
+    value: 'max',
+  },
+  {
     name: 'app（适用于商家应用开发支持小程序和h5）',
     value: 'app',
   },
   {
     name: 'mini（适用于商家应用小程序开发）',
     value: 'mini',
-  },
-  {
-    name: 'plugin（适用于飞鸽桌面端插件开发）',
-    value: 'plugin',
-  },
-  {
-    name: 'max（适用于店铺装修模块开发）',
-    value: 'max',
   },
 ];
 
@@ -33,7 +37,7 @@ const maxTemplateTypes = [
 
 type AskKey = keyof Omit<Answer, 'appId'>;
 
-export type TemplateType = 'app' | 'plugin' | 'mini' | 'max';
+export type TemplateType = 'app' | 'plugin' | 'mini' | 'max' | 'lightapp';
 
 export interface Answer {
   projectName: string;
@@ -67,7 +71,9 @@ export async function ask(opts: Partial<Answer>) {
     }])
 
     answer.templateType = subTemplateType;
+  }
 
+  if (answer.templateType === 'max' || answer.templateType === 'lightapp') {
     const { appId } = await inquirer.prompt([
       {
         type: 'input',

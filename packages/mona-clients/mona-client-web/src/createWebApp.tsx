@@ -83,7 +83,10 @@ const defaultLightApp: AppConfig['lightApp'] = { mode: 'sidebar-semi-420' }
 
 function prepareLightApp(config: AppConfig['lightApp']) {
   // @ts-ignore
-  window.__mona_light_app_config = { ...defaultLightApp, ...config };
+  if (typeof window.__MONA_LIGHT_APP_INIT_CB === 'function') {
+    // @ts-ignore
+    window.__MONA_LIGHT_APP_INIT_CB({ ...defaultLightApp, ...config })
+  }
 }
 
 export function createWebApp(

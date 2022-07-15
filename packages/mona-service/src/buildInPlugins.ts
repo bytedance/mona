@@ -13,6 +13,7 @@ const buildInPlugins = convertPlugins([
   './target/web/index',
   './target/mini/index',
   './target/plugin/index',
+  './target/light/index',
 ]);
 
 export default buildInPlugins;
