@@ -10,6 +10,9 @@ const MESSAGE_TYPE = {
   exchangeSchemaJSON: {
     name: 'EXCHANGE_SCHEMA_JSON'
   },
+  exchangePreviewJson: {
+    name: 'EXCHANGE_PREVIEW_JSON'
+  }
 }
 
 const isJSON = v => {
@@ -40,6 +43,13 @@ try {
           fs.writeFileSync(componentsJsonFilePath, getTmpComponentData(data));
         }
 
+      }
+
+      if (type === MESSAGE_TYPE.exchangePreviewJson.name) {
+        const previewJsonFilePath = path.resolve(process.cwd(), './preview.json');
+        if (data) {
+          fs.writeFileSync(previewJsonFilePath, data);
+        }
       }
     });
   });

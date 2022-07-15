@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const getReviewData = require('../utils/getReviewData');
 
 const DEV_SERVER_PORT = 10089;
 const WS_PORT = 10079;
@@ -29,6 +28,9 @@ const MESSAGE_TYPE = {
   },
   exchangeReviewJson: {
     name: 'EXCHANGE_REVIEW_JSON'
+  },
+  exchangePreviewJson: {
+    name: 'EXCHANGE_PREVIEW_JSON'
   }
 }
 
@@ -87,9 +89,15 @@ try {
         const reviewJsonFilePath = path.resolve(process.cwd(), './src/review.json');
 
         if (data) {
-          fs.writeFileSync(reviewJsonFilePath, getReviewData(data));
+          fs.writeFileSync(reviewJsonFilePath, data);
         }
 
+      }
+      if (type === MESSAGE_TYPE.exchangePreviewJson.name) {
+        const previewJsonFilePath = path.resolve(process.cwd(), './src/preview.json');
+        if (data) {
+          fs.writeFileSync(previewJsonFilePath, data);
+        }
       }
     });
   });

@@ -1,10 +1,12 @@
 import path from 'path';
 import fs from 'fs';
-import { AppConfig, ProjectConfig } from '@bytedance/mona';
+import { AppConfig, ProjectConfig as OriginProjectConfig } from '@bytedance/mona';
 import { readConfig, searchScriptFile } from '@bytedance/mona-shared';
 import { DEFAULT_PORT } from './target/constants';
 import { createUniqueId } from './target/utils/utils';
 import { merge } from 'lodash';
+
+export type ProjectConfig = OriginProjectConfig & { output: string };
 
 const genDefaultProjectConfig = (cwd: string): ProjectConfig => {
   return {

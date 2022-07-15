@@ -22,7 +22,7 @@ export interface ProjectConfig {
   projectName: string;
   appId?: string;
   input: string;
-  output: string;
+  // output: string;
   enableMultiBuild?: boolean;
   compilerOptimization?: boolean;
   transformSvgToComponentInWeb?: boolean;

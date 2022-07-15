@@ -2,6 +2,7 @@ import minimist from 'minimist';
 import commandLineUsage from 'command-line-usage';
 import TargetContext from './TargetContext';
 import ConfigHelper from './ConfigHelper';
+import chalk from 'chalk';
 
 export interface ICommandOptions {
   description?: string
@@ -11,6 +12,10 @@ export interface ICommandOptions {
 
 export interface ICommandCallback {
   (args: Record<string, any>, configHelper: ConfigHelper, targetContext?: TargetContext): void | Promise<void>
+}
+
+function isPromise(result: void | Promise<void>): result is Promise<void> {
+  return typeof result?.then === 'function';
 }
 
 
@@ -42,7 +47,18 @@ class ICommand {
       return;
     }
 
-    _fn.call(this, args, configHelper, targetContext);
+
+    // print error
+    try {
+      const result = _fn.call(this, args, configHelper, targetContext);
+      if (isPromise(result)) {
+        result.catch(err => {
+          console.log(chalk.red(err.message));
+        })
+      }
+    } catch(err: any) {
+      console.log(chalk.red(err.message));
+    }
   }
 }
 
