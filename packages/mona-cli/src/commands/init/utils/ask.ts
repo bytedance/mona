@@ -37,7 +37,7 @@ const maxTemplateTypes = [
 
 type AskKey = keyof Omit<Answer, 'appId'>;
 
-export type TemplateType = 'app' | 'plugin' | 'mini' | 'max' | 'lightapp';
+export type TemplateType = 'app' | 'plugin' | 'mini' | 'max' | 'light';
 
 export interface Answer {
   projectName: string;
@@ -73,7 +73,7 @@ export async function ask(opts: Partial<Answer>) {
     answer.templateType = subTemplateType;
   }
 
-  if (answer.templateType === 'max' || answer.templateType === 'lightapp') {
+  if (answer.templateType === 'max' || answer.templateType === 'light') {
     const { appId } = await inquirer.prompt([
       {
         type: 'input',

@@ -79,13 +79,13 @@ export const HistorySetWrapper: React.FC = ({ children }) => {
   return <>{children}</>;
 };
 
-const defaultLightApp: AppConfig['lightApp'] = { mode: 'sidebar-semi-420' }
+const defaultLightConfig: AppConfig['light'] = { mode: 'sidebar-semi-420' }
 
-function prepareLightApp(config: AppConfig['lightApp']) {
+function prepareLightApp(config: AppConfig['light']) {
   // @ts-ignore
   if (typeof window.__MONA_LIGHT_APP_INIT_CB === 'function') {
     // @ts-ignore
-    window.__MONA_LIGHT_APP_INIT_CB({ ...defaultLightApp, ...config })
+    window.__MONA_LIGHT_APP_INIT_CB({ ...defaultLightConfig, ...config })
   }
 }
 

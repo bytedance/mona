@@ -41,7 +41,7 @@ interface AppConfigNetworkTimeout {
   downloadFile?: number;
 }
 
-interface AppConfigLigthApp {
+interface AppConfigLight {
   mode: 'sidebar-semi-420' | 'sidebar-semi-600' | 'sidebar-semi-800' | 'sidebar-semi-960'
 }
 
@@ -53,7 +53,7 @@ export interface AppConfig {
   navigateToMiniProgramAppIdList?: string[];
   permission?: AppConfigTabBarPermission;
   networkTimeout?: AppConfigNetworkTimeout;
-  lightApp?: AppConfigLigthApp
+  light?: AppConfigLight
 }
 
 export function createAppConfig(appConfig: AppConfig) {
