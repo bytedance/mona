@@ -79,16 +79,24 @@ export const HistorySetWrapper: React.FC = ({ children }) => {
   return <>{children}</>;
 };
 
+function prepareLightApp(config: AppConfig['lightApp']) {
+   // @ts-ignore
+  window.__mona_light_app_config = config;
+}
+
 export function createWebApp(
   Component: React.ComponentType<any>,
   routes: { path: string; title: string; component: React.ComponentType<any> }[],
   options?: {
-    tabBar: AppConfig['tabBar'],
-    navBar: AppConfig['window'],
-    defaultPath: string
+    tabBar?: AppConfig['tabBar'],
+    navBar?: AppConfig['window'],
+    defaultPath?: string
+    lightApp?: AppConfig['lightApp']
   }
 ) {
   const render = ({ dom }: { dom: Element | Document }) => {
+    prepareLightApp(options?.lightApp)
+
     ReactDOM.render(
       <BrowserRouter>
         <HistorySetWrapper>
