@@ -315,6 +315,7 @@ export default createAppConfig({
 | navigateToMiniProgramAppIdList | 需要跳转的小程序列表     | 否       | array    | -      |
 | permission                     | 需要部分授权弹窗的副标题 | 否       | object   | -      |
 | networkTimeout                 | 网络超时时间             | 否       | object   | -      |
+| light                          | 轻应用相关配置           | 否       | object   | -      |
 
 #### entryPagePath
 
@@ -416,6 +417,15 @@ export default createAppConfig({
 | connectSocket | connectSocket 的超时时间，单位：毫秒 | 否 | number | 60000 |
 | uploadFile | uploadFile 的超时时间，单位：毫秒 | 否 | number | 60000 |
 | downloadFile | downloadFile 的超时时间，单位：毫秒 | 否 | number | 60000 |
+
+#### light
+
+轻应用相关配置
+| 参数 | 说明 | 是否必填 | 类型 | 默认值 |
+| ---- | ---- | ---- | ---- | ---- |
+| mode | 轻应用展现方式 | 否 | 'sidebar-semi-420','sidebar-semi-600','sidebar-semi-800','sidebar-semi-960' | 'sidebar-semi-420' |
+
+mode 主要有四个值，`sidebar-semi`代表右侧抽屉弹窗，`-420`代表弹窗宽度尺寸，目前共有四种尺寸`420`，`600`，`800`，`960`
 
 ### 页面配置
 
