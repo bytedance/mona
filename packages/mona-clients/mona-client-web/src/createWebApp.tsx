@@ -62,11 +62,6 @@ export const NoMatch: React.FC<{ defaultPath: string }> = ({ defaultPath }) => {
   );
 };
 
-export interface PageProps {
-  search: string;
-  searchParams: Record<string, string>;
-}
-
 export const HistorySetWrapper: React.FC = ({ children }) => {
   const history = useHistory();
 
