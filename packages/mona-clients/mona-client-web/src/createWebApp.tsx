@@ -79,13 +79,15 @@ export const HistorySetWrapper: React.FC = ({ children }) => {
   return <>{children}</>;
 };
 
-const defaultLightConfig: AppConfig['light'] = { mode: 'sidebar-semi-420' }
+const defaultLightConfig: AppConfig['light'] = { mode: 'sidebar-semi-420' };
 
 function prepareLightApp(config: AppConfig['light']) {
   // @ts-ignore
   if (typeof window.__MONA_LIGHT_APP_INIT_CB === 'function') {
     // @ts-ignore
-    window.__MONA_LIGHT_APP_INIT_CB({ ...defaultLightConfig, ...config })
+    window.__MONA_LIGHT_APP_INIT_CB({ ...defaultLightConfig, ...config });
+    // @ts-ignore
+    window.__MONA_LIGHT_APP_INIT_CB = undefined;
   }
 }
 
@@ -93,20 +95,20 @@ export function createWebApp(
   Component: React.ComponentType<any>,
   routes: { path: string; title: string; component: React.ComponentType<any> }[],
   options?: {
-    tabBar?: AppConfig['tabBar'],
-    navBar?: AppConfig['window'],
-    defaultPath?: string
-    lightApp?: AppConfig['lightApp']
-  }
+    tabBar?: AppConfig['tabBar'];
+    navBar?: AppConfig['window'];
+    defaultPath?: string;
+    lightApp?: AppConfig['lightApp'];
+  },
 ) {
   const render = ({ dom }: { dom: Element | Document }) => {
-    prepareLightApp(options?.lightApp)
+    prepareLightApp(options?.lightApp);
 
     ReactDOM.render(
       <BrowserRouter>
         <HistorySetWrapper>
           <Component>
-            {options?.navBar && <NavBar {...options?.navBar} /> }
+            {options?.navBar && <NavBar {...options?.navBar} />}
             <Switch>
               {routes?.map(route => (
                 <Route
@@ -128,7 +130,7 @@ export function createWebApp(
                 <NoMatch defaultPath={formatPath(routes[0].path || options?.defaultPath || '/')} />
               </Route>
             </Switch>
-            { options?.tabBar &&  <TabBar tab={options?.tabBar} /> }
+            {options?.tabBar && <TabBar tab={options?.tabBar} />}
           </Component>
         </HistorySetWrapper>
       </BrowserRouter>,
