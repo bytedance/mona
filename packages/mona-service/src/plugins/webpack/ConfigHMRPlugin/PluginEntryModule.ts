@@ -68,6 +68,11 @@ class PluginEntryModule {
     return defaultPathCode;
   }
 
+  private _generateLightConfigCode() {
+    const lightConfigCode = `const light = ${this.configHelper.appConfig.light}`;
+    return lightConfigCode;
+  }
+
   private _generatePluginEntryCode(filename: string) {
     const code = `
       import './public-path';
@@ -75,8 +80,9 @@ class PluginEntryModule {
       import App from './${path.basename(filename)}';
       ${this._generateRoutesCode()}
       ${this._generateDefaultPathCode()}
+      ${this._generateLightConfigCode()}
       
-      const { provider: p } =  createPlugin(createPluginLifeCycle(App), routes, { defaultPath });
+      const { provider: p } =  createPlugin(createPluginLifeCycle(App), routes, { defaultPath, light });
       export const provider = p;
     `;
 

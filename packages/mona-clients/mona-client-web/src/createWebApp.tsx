@@ -96,11 +96,11 @@ export function createWebApp(
     tabBar?: AppConfig['tabBar'],
     navBar?: AppConfig['window'],
     defaultPath?: string
-    lightApp?: AppConfig['lightApp']
+    light?: AppConfig['light']
   }
 ) {
   const render = ({ dom }: { dom: Element | Document }) => {
-    prepareLightApp(options?.lightApp)
+    prepareLightApp(options?.light)
 
     ReactDOM.render(
       <BrowserRouter>
