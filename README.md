@@ -184,6 +184,18 @@ npm run upload
 
 上传时会自动调用`mona-service compress`并上传代码到相应应用。
 
+#### mona-service preview
+
+在本地进行代码预览，目前仅支持店铺装修模块。使用时需传入`--target,-t`
+
+```bash
+// 店铺装修组件预览
+mona-service preview -t max
+
+// 店铺装修模板预览
+mona-service preview -t max-template
+```
+
 **<-----------------------------分割线，以下内容目前不支持店铺模块-------------------------------->**
 
 ## API
@@ -519,9 +531,9 @@ navigateTo('/pages/home/index?name="xiaoming"');
 查询参数的只可以在页面组件的`props`中进行获取，其中`search`为查询参数字符串，`searchParams`为解析后的查询参数
 
 ```jsx
-import { MonaPage } from '@bytedance/mona';
+import { PageProps } from '@bytedance/mona';
 
-const Home: React.FC<MonaPage> = ({ search, searchParams }) => {
+const Home: React.FC<PageProps> = ({ search, searchParams }) => {
   console.log(search, searchParams);
   // 输出：?name="xiaoming" { name: "xiaoming" }
   return <div></div>;
