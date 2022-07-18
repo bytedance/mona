@@ -184,6 +184,18 @@ npm run upload
 
 上传时会自动调用`mona-service compress`并上传代码到相应应用。
 
+#### mona-service preview
+
+在本地进行代码预览，目前仅支持店铺装修模块。使用时需传入`--target,-t`
+
+```bash
+// 店铺装修组件预览
+mona-service preview -t max
+
+// 店铺装修模板预览
+mona-service preview -t max-template
+```
+
 **<-----------------------------分割线，以下内容目前不支持店铺模块-------------------------------->**
 
 ## API
