@@ -2,120 +2,28 @@
 
 exports[`web component: Textarea should have right properties 1`] = `
 LoadedCheerio {
-  "0": Node {
-    "attribs": Object {
-      "class": "textarea class-name",
-      "id": "hello",
-      "maxlength": "100",
-      "name": "hello",
-      "placeholder": "hhh",
-    },
-    "children": Array [
-      Node {
-        "data": "1",
-        "next": null,
-        "parent": [Circular],
-        "prev": null,
-        "type": "text",
-      },
-    ],
-    "name": "textarea",
-    "namespace": "http://www.w3.org/1999/xhtml",
-    "next": null,
-    "parent": Node {
-      "children": Array [
-        [Circular],
-      ],
-      "name": "root",
-      "next": null,
-      "parent": null,
-      "prev": null,
-      "type": "root",
-    },
-    "prev": null,
-    "type": "tag",
-    "x-attribsNamespace": Object {
-      "class": undefined,
-      "id": undefined,
-      "maxlength": undefined,
-      "name": undefined,
-      "placeholder": undefined,
-    },
-    "x-attribsPrefix": Object {
-      "class": undefined,
-      "id": undefined,
-      "maxlength": undefined,
-      "name": undefined,
-      "placeholder": undefined,
-    },
-  },
+  "0": <textarea
+    class="textarea class-name"
+    id="hello"
+    maxlength="100"
+    name="hello"
+    placeholder="hhh"
+  >
+    1
+  </textarea>,
   "_root": LoadedCheerio {
-    "0": Node {
+    "0": Document {
       "children": Array [
-        Node {
-          "attribs": Object {},
-          "children": Array [
-            Node {
-              "attribs": Object {},
-              "children": Array [],
-              "name": "head",
-              "namespace": "http://www.w3.org/1999/xhtml",
-              "next": Node {
-                "attribs": Object {},
-                "children": Array [],
-                "name": "body",
-                "namespace": "http://www.w3.org/1999/xhtml",
-                "next": null,
-                "parent": [Circular],
-                "prev": [Circular],
-                "type": "tag",
-                "x-attribsNamespace": Object {},
-                "x-attribsPrefix": Object {},
-              },
-              "parent": [Circular],
-              "prev": null,
-              "type": "tag",
-              "x-attribsNamespace": Object {},
-              "x-attribsPrefix": Object {},
-            },
-            Node {
-              "attribs": Object {},
-              "children": Array [],
-              "name": "body",
-              "namespace": "http://www.w3.org/1999/xhtml",
-              "next": null,
-              "parent": [Circular],
-              "prev": Node {
-                "attribs": Object {},
-                "children": Array [],
-                "name": "head",
-                "namespace": "http://www.w3.org/1999/xhtml",
-                "next": [Circular],
-                "parent": [Circular],
-                "prev": null,
-                "type": "tag",
-                "x-attribsNamespace": Object {},
-                "x-attribsPrefix": Object {},
-              },
-              "type": "tag",
-              "x-attribsNamespace": Object {},
-              "x-attribsPrefix": Object {},
-            },
-          ],
-          "name": "html",
-          "namespace": "http://www.w3.org/1999/xhtml",
-          "next": null,
-          "parent": [Circular],
-          "prev": null,
-          "type": "tag",
-          "x-attribsNamespace": Object {},
-          "x-attribsPrefix": Object {},
-        },
+        <html>
+          <head />
+          <body />
+        </html>,
       ],
-      "name": "root",
+      "endIndex": null,
       "next": null,
       "parent": null,
       "prev": null,
+      "startIndex": null,
       "type": "root",
       "x-mode": "quirks",
     },
@@ -136,106 +44,24 @@ LoadedCheerio {
 
 exports[`web component: Textarea should render correctly 1`] = `
 LoadedCheerio {
-  "0": Node {
-    "attribs": Object {
-      "class": "textarea",
-      "maxlength": "140",
-      "name": "",
-    },
-    "children": Array [],
-    "name": "textarea",
-    "namespace": "http://www.w3.org/1999/xhtml",
-    "next": null,
-    "parent": Node {
-      "children": Array [
-        [Circular],
-      ],
-      "name": "root",
-      "next": null,
-      "parent": null,
-      "prev": null,
-      "type": "root",
-    },
-    "prev": null,
-    "type": "tag",
-    "x-attribsNamespace": Object {
-      "class": undefined,
-      "maxlength": undefined,
-      "name": undefined,
-    },
-    "x-attribsPrefix": Object {
-      "class": undefined,
-      "maxlength": undefined,
-      "name": undefined,
-    },
-  },
+  "0": <textarea
+    class="textarea"
+    maxlength="140"
+    name=""
+  />,
   "_root": LoadedCheerio {
-    "0": Node {
+    "0": Document {
       "children": Array [
-        Node {
-          "attribs": Object {},
-          "children": Array [
-            Node {
-              "attribs": Object {},
-              "children": Array [],
-              "name": "head",
-              "namespace": "http://www.w3.org/1999/xhtml",
-              "next": Node {
-                "attribs": Object {},
-                "children": Array [],
-                "name": "body",
-                "namespace": "http://www.w3.org/1999/xhtml",
-                "next": null,
-                "parent": [Circular],
-                "prev": [Circular],
-                "type": "tag",
-                "x-attribsNamespace": Object {},
-                "x-attribsPrefix": Object {},
-              },
-              "parent": [Circular],
-              "prev": null,
-              "type": "tag",
-              "x-attribsNamespace": Object {},
-              "x-attribsPrefix": Object {},
-            },
-            Node {
-              "attribs": Object {},
-              "children": Array [],
-              "name": "body",
-              "namespace": "http://www.w3.org/1999/xhtml",
-              "next": null,
-              "parent": [Circular],
-              "prev": Node {
-                "attribs": Object {},
-                "children": Array [],
-                "name": "head",
-                "namespace": "http://www.w3.org/1999/xhtml",
-                "next": [Circular],
-                "parent": [Circular],
-                "prev": null,
-                "type": "tag",
-                "x-attribsNamespace": Object {},
-                "x-attribsPrefix": Object {},
-              },
-              "type": "tag",
-              "x-attribsNamespace": Object {},
-              "x-attribsPrefix": Object {},
-            },
-          ],
-          "name": "html",
-          "namespace": "http://www.w3.org/1999/xhtml",
-          "next": null,
-          "parent": [Circular],
-          "prev": null,
-          "type": "tag",
-          "x-attribsNamespace": Object {},
-          "x-attribsPrefix": Object {},
-        },
+        <html>
+          <head />
+          <body />
+        </html>,
       ],
-      "name": "root",
+      "endIndex": null,
       "next": null,
       "parent": null,
       "prev": null,
+      "startIndex": null,
       "type": "root",
       "x-mode": "quirks",
     },

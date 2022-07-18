@@ -9,6 +9,7 @@ const buildInPlugins = convertPlugins([
   './commands/start',
   './commands/compress',
   './commands/publish',
+  './commands/preview',
   '@bytedance/mona-max',
   './target/web/index',
   './target/mini/index',

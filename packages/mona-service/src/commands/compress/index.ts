@@ -1,5 +1,5 @@
 import { searchScriptFile, readConfig } from '@bytedance/mona-shared';
-import { ProjectConfig } from '@bytedance/mona';
+import { ProjectConfig } from '../../ConfigHelper';
 import { IPlugin } from '../../Service';
 import chalk from 'chalk';
 import path from 'path';
@@ -11,7 +11,7 @@ export function readDest(): string {
   const fullConfigPath = searchScriptFile(projectConfigPath);
   if (fs.existsSync(fullConfigPath)) {
     const projectConfig = readConfig<ProjectConfig>(fullConfigPath);
-    return path.join(process.cwd(), `./${projectConfig.output || 'dist'}`);
+    return path.join(process.cwd(), `./${projectConfig.output}`);
   } else {
     throw new Error('无效的项目目录，请在mona项目根目录执行命令');
   }
@@ -29,7 +29,7 @@ const compress: IPlugin = ctx => {
       usage: 'mona-service compress',
     },
     async args => {
-      console.log(chalk.cyan('请确保在项目根目录使用该命令'));
+      console.log(chalk.yellow('请确保在项目根目录使用该命令'));
       try {
         let inputPath = process.cwd();
         if (!args.r) {

@@ -30,14 +30,7 @@ class Service {
 
   // init NODE_ENV
   init() {
-    if (process.env.NODE_ENV === undefined) {
-      const cmdName = minimist(process.argv.slice(2))._[0] as string;
-      if (cmdName === 'build') {
-        process.env.NODE_ENV = 'production';
-      } else {
-        process.env.NODE_ENV = 'development';
-      }
-    }
+    process.env.NODE_ENV = process.env.NODE_ENV || 'production';
   }
 
   install() {

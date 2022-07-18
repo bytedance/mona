@@ -2,126 +2,30 @@
 
 exports[`web component: Button should have right properties 1`] = `
 LoadedCheerio {
-  "0": Node {
-    "attribs": Object {
-      "class": "button class-name",
-      "data-mona-loading": "true",
-      "data-mona-size": "mini",
-      "data-mona-type": "primary",
-      "disabled": "",
-      "style": "color: red;",
-      "type": "submit",
-    },
-    "children": Array [
-      Node {
-        "data": "hello",
-        "next": null,
-        "parent": [Circular],
-        "prev": null,
-        "type": "text",
-      },
-    ],
-    "name": "button",
-    "namespace": "http://www.w3.org/1999/xhtml",
-    "next": null,
-    "parent": Node {
-      "children": Array [
-        [Circular],
-      ],
-      "name": "root",
-      "next": null,
-      "parent": null,
-      "prev": null,
-      "type": "root",
-    },
-    "prev": null,
-    "type": "tag",
-    "x-attribsNamespace": Object {
-      "class": undefined,
-      "data-mona-loading": undefined,
-      "data-mona-size": undefined,
-      "data-mona-type": undefined,
-      "disabled": undefined,
-      "style": undefined,
-      "type": undefined,
-    },
-    "x-attribsPrefix": Object {
-      "class": undefined,
-      "data-mona-loading": undefined,
-      "data-mona-size": undefined,
-      "data-mona-type": undefined,
-      "disabled": undefined,
-      "style": undefined,
-      "type": undefined,
-    },
-  },
+  "0": <button
+    class="button class-name"
+    data-mona-loading="true"
+    data-mona-size="mini"
+    data-mona-type="primary"
+    disabled=""
+    style="color: red;"
+    type="submit"
+  >
+    hello
+  </button>,
   "_root": LoadedCheerio {
-    "0": Node {
+    "0": Document {
       "children": Array [
-        Node {
-          "attribs": Object {},
-          "children": Array [
-            Node {
-              "attribs": Object {},
-              "children": Array [],
-              "name": "head",
-              "namespace": "http://www.w3.org/1999/xhtml",
-              "next": Node {
-                "attribs": Object {},
-                "children": Array [],
-                "name": "body",
-                "namespace": "http://www.w3.org/1999/xhtml",
-                "next": null,
-                "parent": [Circular],
-                "prev": [Circular],
-                "type": "tag",
-                "x-attribsNamespace": Object {},
-                "x-attribsPrefix": Object {},
-              },
-              "parent": [Circular],
-              "prev": null,
-              "type": "tag",
-              "x-attribsNamespace": Object {},
-              "x-attribsPrefix": Object {},
-            },
-            Node {
-              "attribs": Object {},
-              "children": Array [],
-              "name": "body",
-              "namespace": "http://www.w3.org/1999/xhtml",
-              "next": null,
-              "parent": [Circular],
-              "prev": Node {
-                "attribs": Object {},
-                "children": Array [],
-                "name": "head",
-                "namespace": "http://www.w3.org/1999/xhtml",
-                "next": [Circular],
-                "parent": [Circular],
-                "prev": null,
-                "type": "tag",
-                "x-attribsNamespace": Object {},
-                "x-attribsPrefix": Object {},
-              },
-              "type": "tag",
-              "x-attribsNamespace": Object {},
-              "x-attribsPrefix": Object {},
-            },
-          ],
-          "name": "html",
-          "namespace": "http://www.w3.org/1999/xhtml",
-          "next": null,
-          "parent": [Circular],
-          "prev": null,
-          "type": "tag",
-          "x-attribsNamespace": Object {},
-          "x-attribsPrefix": Object {},
-        },
+        <html>
+          <head />
+          <body />
+        </html>,
       ],
-      "name": "root",
+      "endIndex": null,
       "next": null,
       "parent": null,
       "prev": null,
+      "startIndex": null,
       "type": "root",
       "x-mode": "quirks",
     },
@@ -142,114 +46,26 @@ LoadedCheerio {
 
 exports[`web component: Button should render correctly 1`] = `
 LoadedCheerio {
-  "0": Node {
-    "attribs": Object {
-      "class": "button",
-      "data-mona-loading": "false",
-      "data-mona-size": "default",
-    },
-    "children": Array [
-      Node {
-        "data": "Hello world",
-        "next": null,
-        "parent": [Circular],
-        "prev": null,
-        "type": "text",
-      },
-    ],
-    "name": "button",
-    "namespace": "http://www.w3.org/1999/xhtml",
-    "next": null,
-    "parent": Node {
-      "children": Array [
-        [Circular],
-      ],
-      "name": "root",
-      "next": null,
-      "parent": null,
-      "prev": null,
-      "type": "root",
-    },
-    "prev": null,
-    "type": "tag",
-    "x-attribsNamespace": Object {
-      "class": undefined,
-      "data-mona-loading": undefined,
-      "data-mona-size": undefined,
-    },
-    "x-attribsPrefix": Object {
-      "class": undefined,
-      "data-mona-loading": undefined,
-      "data-mona-size": undefined,
-    },
-  },
+  "0": <button
+    class="button"
+    data-mona-loading="false"
+    data-mona-size="default"
+  >
+    Hello world
+  </button>,
   "_root": LoadedCheerio {
-    "0": Node {
+    "0": Document {
       "children": Array [
-        Node {
-          "attribs": Object {},
-          "children": Array [
-            Node {
-              "attribs": Object {},
-              "children": Array [],
-              "name": "head",
-              "namespace": "http://www.w3.org/1999/xhtml",
-              "next": Node {
-                "attribs": Object {},
-                "children": Array [],
-                "name": "body",
-                "namespace": "http://www.w3.org/1999/xhtml",
-                "next": null,
-                "parent": [Circular],
-                "prev": [Circular],
-                "type": "tag",
-                "x-attribsNamespace": Object {},
-                "x-attribsPrefix": Object {},
-              },
-              "parent": [Circular],
-              "prev": null,
-              "type": "tag",
-              "x-attribsNamespace": Object {},
-              "x-attribsPrefix": Object {},
-            },
-            Node {
-              "attribs": Object {},
-              "children": Array [],
-              "name": "body",
-              "namespace": "http://www.w3.org/1999/xhtml",
-              "next": null,
-              "parent": [Circular],
-              "prev": Node {
-                "attribs": Object {},
-                "children": Array [],
-                "name": "head",
-                "namespace": "http://www.w3.org/1999/xhtml",
-                "next": [Circular],
-                "parent": [Circular],
-                "prev": null,
-                "type": "tag",
-                "x-attribsNamespace": Object {},
-                "x-attribsPrefix": Object {},
-              },
-              "type": "tag",
-              "x-attribsNamespace": Object {},
-              "x-attribsPrefix": Object {},
-            },
-          ],
-          "name": "html",
-          "namespace": "http://www.w3.org/1999/xhtml",
-          "next": null,
-          "parent": [Circular],
-          "prev": null,
-          "type": "tag",
-          "x-attribsNamespace": Object {},
-          "x-attribsPrefix": Object {},
-        },
+        <html>
+          <head />
+          <body />
+        </html>,
       ],
-      "name": "root",
+      "endIndex": null,
       "next": null,
       "parent": null,
       "prev": null,
+      "startIndex": null,
       "type": "root",
       "x-mode": "quirks",
     },
