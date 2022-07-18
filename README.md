@@ -531,9 +531,9 @@ navigateTo('/pages/home/index?name="xiaoming"');
 查询参数的只可以在页面组件的`props`中进行获取，其中`search`为查询参数字符串，`searchParams`为解析后的查询参数
 
 ```jsx
-import { MonaPage } from '@bytedance/mona';
+import { PageProps } from '@bytedance/mona';
 
-const Home: React.FC<MonaPage> = ({ search, searchParams }) => {
+const Home: React.FC<PageProps> = ({ search, searchParams }) => {
   console.log(search, searchParams);
   // 输出：?name="xiaoming" { name: "xiaoming" }
   return <div></div>;
