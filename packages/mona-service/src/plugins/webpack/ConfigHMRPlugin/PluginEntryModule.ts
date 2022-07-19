@@ -69,7 +69,7 @@ class PluginEntryModule {
   }
 
   private _generateLightConfigCode() {
-    const lightConfigCode = `const light = ${this.configHelper.appConfig.light}`;
+    const lightConfigCode = `const light = ${JSON.stringify(this.configHelper.appConfig.light)}`;
     return lightConfigCode;
   }
 
