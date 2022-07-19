@@ -542,9 +542,9 @@ const Home: React.FC<PageProps> = ({ search, searchParams }) => {
 
 ## 移动端适配
 
-css 中的单位在小程序中会自动转为`rpx`在 web 中会自动转为`rem`，你不需要关心如何换算，只需要按照设计稿时机尺寸来书写就可以。Mona 会默认以`750px`标准设计稿作为换算尺寸的标准单位。如果设计稿不是`750px`那么你可以在`mona.config.js`的`postcss.pxtransform`中修改`deviceRatio`和`designWidth`。
+css 中的单位在小程序中会自动转为`rpx`在 web 中会自动转为`rem`，你不需要关心如何换算，只需要按照设计稿实际尺寸来书写就可以。Mona 会默认以`750px`标准设计稿作为换算尺寸的标准单位。如果设计稿不是`750px`那么你可以在`mona.config.js`的`postcss.pxtransform`中修改`deviceRatio`和`designWidth`。
 
-如果不部分属性被转换，可以使用`Px`或者`PX`这样这种形式，则插件会忽略装换
+如果不想部分属性被转换，可以使用`Px`或者`PX`这样这种形式，则插件会忽略转换
 
 ## 使用小程序原生模块
 
