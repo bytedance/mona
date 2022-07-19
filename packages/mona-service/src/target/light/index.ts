@@ -45,6 +45,12 @@ const light: IPlugin = ctx => {
             port,
             allowedHosts: 'all',
             host: DEFAULT_HOST,
+            client: {
+              overlay: {
+                errors: true,
+                warnings: false
+              }
+            }
           },
           compiler,
         );

@@ -62,11 +62,6 @@ export const NoMatch: React.FC<{ defaultPath: string }> = ({ defaultPath }) => {
   );
 };
 
-export interface PageProps {
-  search: string;
-  searchParams: Record<string, string>;
-}
-
 export const HistorySetWrapper: React.FC = ({ children }) => {
   const history = useHistory();
 
@@ -83,7 +78,7 @@ const defaultLightConfig: AppConfig['light'] = { mode: 'sidebar-semi-420' };
 
 function prepareLightApp(config: AppConfig['light']) {
   // @ts-ignore
-  if (typeof window.__MONA_LIGHT_APP_INIT_CB === 'function') {
+  if (typeof window.__MONA_LIGHT_APP_INIT_CB === 'function' && typeof config === 'object') {
     // @ts-ignore
     window.__MONA_LIGHT_APP_INIT_CB({ ...defaultLightConfig, ...config });
     // @ts-ignore
