@@ -2,9 +2,12 @@ import { BaseApis } from '@bytedance/mona';
 import { webShowToast, webHideToast, webShowLoading, webShowModal, webShowActionSheet } from './components';
 import {
   createCanvasContext as originCreateCanvasContext,
-  canvasToTempFilePath as originCanvasToTempFilePath
+  canvasToTempFilePath as originCanvasToTempFilePath,
 } from './Canvas';
-
+import { promisify, aaa } from '@bytedance/mona-shared';
+console.log('haha ');
+console.log(aaa);
+console.log(promisify);
 import {
   webChooseImage,
   webChooseVideo,
@@ -36,7 +39,7 @@ import {
   webSetClipboardData,
   webSetStorage,
   webSetStorageSync,
-  webSwitchTab
+  webSwitchTab,
 } from './util';
 import EventEmitter from '../EventEmitter';
 
@@ -66,7 +69,7 @@ export const env: BaseApis['env'] = {
   USER_DATA_PATH: '/',
 };
 export const downloadFile: BaseApis['downloadFile'] = noImplementFactory('downloadFile');
-export const request: BaseApis['request'] = webRequest;
+export const request = promisify(webRequest);
 export const uploadFile: BaseApis['uploadFile'] = noImplementFactory('uploadFile');
 export const connectSocket: BaseApis['connectSocket'] = noImplementFactory('connectSocket');
 export const chooseImage: BaseApis['chooseImage'] = webChooseImage;
@@ -207,7 +210,7 @@ export const setNavigationBarColor: BaseApis['setNavigationBarColor'] = options 
   eventEmitter.emit('setNavigationBarColor', options);
 };
 export const getMenuButtonBoundingClientRect: BaseApis['getMenuButtonBoundingClientRect'] = noImplementFactory(
-  'getMenuButtonBoundingClientRect'
+  'getMenuButtonBoundingClientRect',
 );
 export const createAnimation: BaseApis['createAnimation'] = noImplementFactory('createAnimation');
 export const pageScrollTo: BaseApis['pageScrollTo'] = webPageScrollTo;
@@ -262,24 +265,24 @@ export const getSelfCommentCountDuringPluginRunning: BaseApis['getSelfCommentCou
   noImplementFactory('getSelfCommentCountDuringPluginRunning');
 export const isFollowingAnchor: BaseApis['isFollowingAnchor'] = noImplementFactory('isFollowingAnchor');
 export const onReceiveAudiencesFollowAction: BaseApis['onReceiveAudiencesFollowAction'] = noImplementFactory(
-  'onReceiveAudiencesFollowAction'
+  'onReceiveAudiencesFollowAction',
 );
 export const subscribeAudiencesFollowAction: BaseApis['subscribeAudiencesFollowAction'] = noImplementFactory(
-  'subscribeAudiencesFollowAction'
+  'subscribeAudiencesFollowAction',
 );
 export const unsubscribeAudiencesFollowAction: BaseApis['unsubscribeAudiencesFollowAction'] = noImplementFactory(
-  'unsubscribeAudiencesFollowAction'
+  'unsubscribeAudiencesFollowAction',
 );
 export const subscribeSpecifiedContentComment: BaseApis['subscribeSpecifiedContentComment'] = noImplementFactory(
-  'subscribeSpecifiedContentComment'
+  'subscribeSpecifiedContentComment',
 );
 export const subscribeSpecifiedUserComment: BaseApis['subscribeSpecifiedUserComment'] = noImplementFactory(
-  'subscribeSpecifiedUserComment'
+  'subscribeSpecifiedUserComment',
 );
 export const unsubscribeAllSpecifiedContentComment: BaseApis['unsubscribeAllSpecifiedContentComment'] =
   noImplementFactory('unsubscribeAllSpecifiedContentComment');
 export const unsubscribeAllSpecifiedUserComment: BaseApis['unsubscribeAllSpecifiedUserComment'] = noImplementFactory(
-  'unsubscribeAllSpecifiedUserComment'
+  'unsubscribeAllSpecifiedUserComment',
 );
 export const onReceiveSpecifiedComment: BaseApis['onReceiveSpecifiedComment'] =
   noImplementFactory('onReceiveSpecifiedComment');

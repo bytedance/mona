@@ -5,7 +5,7 @@ import {
   BaseApis,
   ChooseImageSuccessCallbackArgs,
   GetLocationSuccessCallbackArgs,
-  NetworkType
+  NetworkType,
 } from '@bytedance/mona';
 // import clipboard from 'clipboardy';
 
@@ -14,11 +14,11 @@ import { showPreviewImage } from './components/';
 export const webRequest: BaseApis['request'] = (data): RequestTask => {
   const controller = new AbortController();
   const init: Record<string, any> = {
-    headers: data.header ?
-      data.header :
-      {
-        'Content-Type': 'application/json',
-      },
+    headers: data.header
+      ? data.header
+      : {
+          'Content-Type': 'application/json',
+        },
     method: data.method || 'GET',
     signal: controller.signal,
   };
@@ -284,7 +284,7 @@ export const webGetLocation: BaseApis['getLocation'] = options => {
         options?.fail?.({
           errMsg: err.message,
         });
-      }
+      },
     );
   } else {
     options.fail?.({

@@ -25,6 +25,8 @@ export const Mona: BaseApis = new Proxy({} as any, {
   set: () => false,
 });
 
+
+
 export const canIUse: BaseApis['canIUse'] = tt.canIUse;
 export const base64ToArrayBuffer: BaseApis['base64ToArrayBuffer'] = tt.base64ToArrayBuffer;
 export const arrayBufferToBase64: BaseApis['arrayBufferToBase64'] = tt.arrayBufferToBase64;
