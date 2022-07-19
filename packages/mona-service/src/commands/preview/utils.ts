@@ -145,13 +145,10 @@ export async function processMaxTemplateData(ctx: PluginContext) {
   const helper = ctx.configHelper;
   const { appId = '' } = helper.projectConfig;
 
-  console.log('i1');
   // read value from preview.json
   const templateValuePath = path.join(helper.cwd, 'preview.json');
   const templateAppDefaultValue = fs.readFileSync(templateValuePath).toString();
 
-console.log('i2');
-  // console.log('template', templateAppDefaultValue);
   return {
     appId,
     templateAppDefaultValue
