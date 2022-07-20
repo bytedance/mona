@@ -1,6 +1,6 @@
 import { IPlugin } from '@bytedance/mona-service';
 import chalk from 'chalk';
-import { readUser, deleteUser } from '@bytedance/mona-service/dist/commands/publish/utils';
+import { readUser, deleteUser } from '@bytedance/mona-service/dist/commands/common';
 
 const logout: IPlugin = (ctx) => {
   ctx.registerCommand('logout', {

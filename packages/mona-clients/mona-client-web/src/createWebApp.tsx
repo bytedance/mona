@@ -62,11 +62,6 @@ export const NoMatch: React.FC<{ defaultPath: string }> = ({ defaultPath }) => {
   );
 };
 
-export interface PageProps {
-  search: string;
-  searchParams: Record<string, string>;
-}
-
 export const HistorySetWrapper: React.FC = ({ children }) => {
   const history = useHistory();
 
@@ -79,18 +74,36 @@ export const HistorySetWrapper: React.FC = ({ children }) => {
   return <>{children}</>;
 };
 
+const defaultLightConfig: AppConfig['light'] = { mode: 'sidebar-semi-420' };
+
+function prepareLightApp(config: AppConfig['light']) {
+  // @ts-ignore
+  if (typeof window.__MONA_LIGHT_APP_INIT_CB === 'function' && typeof config === 'object') {
+    // @ts-ignore
+    window.__MONA_LIGHT_APP_INIT_CB({ ...defaultLightConfig, ...config });
+    // @ts-ignore
+    window.__MONA_LIGHT_APP_INIT_CB = undefined;
+  }
+}
+
 export function createWebApp(
   Component: React.ComponentType<any>,
   routes: { path: string; title: string; component: React.ComponentType<any> }[],
-  tabBar: AppConfig['tabBar'],
-  navBar: AppConfig['window'],
+  options?: {
+    tabBar?: AppConfig['tabBar'],
+    navBar?: AppConfig['window'],
+    defaultPath?: string
+    light?: AppConfig['light']
+  }
 ) {
   const render = ({ dom }: { dom: Element | Document }) => {
+    prepareLightApp(options?.light)
+
     ReactDOM.render(
       <BrowserRouter>
         <HistorySetWrapper>
           <Component>
-            <NavBar {...navBar} />
+            {options?.navBar && <NavBar {...options?.navBar} />}
             <Switch>
               {routes?.map(route => (
                 <Route
@@ -105,14 +118,14 @@ export function createWebApp(
               ))}
               {routes?.length && (
                 <Route exact path="/">
-                  <Redirect to={formatPath(routes[0].path)} />
+                  <Redirect to={formatPath(routes[0].path || options?.defaultPath || '/')} />
                 </Route>
               )}
               <Route path="*">
-                <NoMatch defaultPath={formatPath(routes[0].path)} />
+                <NoMatch defaultPath={formatPath(routes[0].path || options?.defaultPath || '/')} />
               </Route>
             </Switch>
-            <TabBar tab={tabBar} />
+            {options?.tabBar && <TabBar tab={options?.tabBar} />}
           </Component>
         </HistorySetWrapper>
       </BrowserRouter>,

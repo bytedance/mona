@@ -12,6 +12,7 @@ const build: IPlugin = ctx => {
       ],
     },
     (args, _, targetContext) => {
+      process.env.NODE_ENV = 'production';
       if (targetContext?.buildFn) {
         targetContext?.buildFn(args);
       }

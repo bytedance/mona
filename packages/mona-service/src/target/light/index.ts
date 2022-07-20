@@ -5,12 +5,15 @@ import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import { IPlugin } from '../../Service';
 import { DEFAULT_HOST, DEFAULT_PORT } from '../constants';
-import { chainModuleRule } from './chainModuleRule';
-import { chainOptimization } from './chainOptimization';
-import { chainPlugins } from './chainPlugins';
-import { chainResolve } from './chainResolve';
-import { TARGET } from './constants';
-const plugin: IPlugin = ctx => {
+import { chainModuleRule } from '../plugin/chainModuleRule';
+import { chainOptimization } from '../plugin/chainOptimization';
+import { chainPlugins } from '../plugin/chainPlugins';
+import { chainResolve } from '../plugin/chainResolve';
+
+// copy from plugin
+const TARGET = 'light';
+
+const light: IPlugin = ctx => {
   const configHelper = ctx.configHelper;
 
   ctx.registerTarget(TARGET, tctx => {
@@ -82,4 +85,4 @@ const plugin: IPlugin = ctx => {
   });
 };
 
-module.exports = plugin;
+module.exports = light;

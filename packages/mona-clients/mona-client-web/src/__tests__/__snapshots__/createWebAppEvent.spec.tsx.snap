@@ -30,37 +30,27 @@ Array [
 
 exports[`createAppLifecycle createPageLifecycle Class lifeCycle  1`] = `
 LoadedCheerio {
-  "0": Node {
+  "0": Document {
     "children": Array [
-      Node {
-        "data": "class组件mona",
-        "next": null,
-        "parent": [Circular],
-        "prev": null,
-        "type": "text",
-      },
+      class组件mona,
     ],
-    "name": "root",
+    "endIndex": null,
     "next": null,
     "parent": null,
     "prev": null,
+    "startIndex": null,
     "type": "root",
   },
   "_root": LoadedCheerio {
-    "0": Node {
+    "0": Document {
       "children": Array [
-        Node {
-          "data": "class组件mona",
-          "next": null,
-          "parent": [Circular],
-          "prev": null,
-          "type": "text",
-        },
+        class组件mona,
       ],
-      "name": "root",
+      "endIndex": null,
       "next": null,
       "parent": null,
       "prev": null,
+      "startIndex": null,
       "type": "root",
     },
     "_root": [Circular],
@@ -80,37 +70,27 @@ LoadedCheerio {
 
 exports[`createAppLifecycle createPageLifecycle FC lifeCycle 1`] = `
 LoadedCheerio {
-  "0": Node {
+  "0": Document {
     "children": Array [
-      Node {
-        "data": "fc组件mona",
-        "next": null,
-        "parent": [Circular],
-        "prev": null,
-        "type": "text",
-      },
+      fc组件mona,
     ],
-    "name": "root",
+    "endIndex": null,
     "next": null,
     "parent": null,
     "prev": null,
+    "startIndex": null,
     "type": "root",
   },
   "_root": LoadedCheerio {
-    "0": Node {
+    "0": Document {
       "children": Array [
-        Node {
-          "data": "fc组件mona",
-          "next": null,
-          "parent": [Circular],
-          "prev": null,
-          "type": "text",
-        },
+        fc组件mona,
       ],
-      "name": "root",
+      "endIndex": null,
       "next": null,
       "parent": null,
       "prev": null,
+      "startIndex": null,
       "type": "root",
     },
     "_root": [Circular],
