@@ -12,4 +12,8 @@ declare interface Window {
   __MARFISH__: boolean;
   __mona_history: any;
   __MONA_EVENTEMITTER_LISTENER: { [key: string]: Function[] };
+  __MONA_LIGHT_APP_GET_TOEKN: () => void;
+  __MONA_LIGHT_APP_NAVIGATE_CB: (args) => void;
+  __MONA_LIGHT_APP_EXIT_APP_CB: () => void;
+  ____MONA_LIGHT_APP_LOCAL_STORAGE?: Storage;
 }

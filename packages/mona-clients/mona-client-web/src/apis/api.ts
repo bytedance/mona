@@ -2,7 +2,7 @@ import { BaseApis } from '@bytedance/mona';
 import { webShowToast, webHideToast, webShowLoading, webShowModal, webShowActionSheet } from './components';
 import {
   createCanvasContext as originCreateCanvasContext,
-  canvasToTempFilePath as originCanvasToTempFilePath
+  canvasToTempFilePath as originCanvasToTempFilePath,
 } from './Canvas';
 
 import {
@@ -36,7 +36,8 @@ import {
   webSetClipboardData,
   webSetStorage,
   webSetStorageSync,
-  webSwitchTab
+  webSwitchTab,
+  webNavigateToApp,
 } from './util';
 import EventEmitter from '../EventEmitter';
 
@@ -104,6 +105,7 @@ export const createRewardedVideoAd: BaseApis['createRewardedVideoAd'] = noImplem
 export const createInterstitialAd: BaseApis['createInterstitialAd'] = noImplementFactory('createInterstitialAd');
 export const pay: BaseApis['pay'] = noImplementFactory('pay');
 export const navigateToMiniProgram: BaseApis['navigateToMiniProgram'] = noImplementFactory('navigateToMiniProgram');
+export const navigateToApp: BaseApis['navigateToApp'] = webNavigateToApp;
 export const navigateBackMiniProgram: BaseApis['navigateBackMiniProgram'] =
   noImplementFactory('navigateBackMiniProgram');
 export const chooseAddresses: BaseApis['chooseAddresses'] = noImplementFactory('chooseAddresses');
@@ -207,7 +209,7 @@ export const setNavigationBarColor: BaseApis['setNavigationBarColor'] = options 
   eventEmitter.emit('setNavigationBarColor', options);
 };
 export const getMenuButtonBoundingClientRect: BaseApis['getMenuButtonBoundingClientRect'] = noImplementFactory(
-  'getMenuButtonBoundingClientRect'
+  'getMenuButtonBoundingClientRect',
 );
 export const createAnimation: BaseApis['createAnimation'] = noImplementFactory('createAnimation');
 export const pageScrollTo: BaseApis['pageScrollTo'] = webPageScrollTo;
@@ -262,25 +264,27 @@ export const getSelfCommentCountDuringPluginRunning: BaseApis['getSelfCommentCou
   noImplementFactory('getSelfCommentCountDuringPluginRunning');
 export const isFollowingAnchor: BaseApis['isFollowingAnchor'] = noImplementFactory('isFollowingAnchor');
 export const onReceiveAudiencesFollowAction: BaseApis['onReceiveAudiencesFollowAction'] = noImplementFactory(
-  'onReceiveAudiencesFollowAction'
+  'onReceiveAudiencesFollowAction',
 );
 export const subscribeAudiencesFollowAction: BaseApis['subscribeAudiencesFollowAction'] = noImplementFactory(
-  'subscribeAudiencesFollowAction'
+  'subscribeAudiencesFollowAction',
 );
 export const unsubscribeAudiencesFollowAction: BaseApis['unsubscribeAudiencesFollowAction'] = noImplementFactory(
-  'unsubscribeAudiencesFollowAction'
+  'unsubscribeAudiencesFollowAction',
 );
 export const subscribeSpecifiedContentComment: BaseApis['subscribeSpecifiedContentComment'] = noImplementFactory(
-  'subscribeSpecifiedContentComment'
+  'subscribeSpecifiedContentComment',
 );
 export const subscribeSpecifiedUserComment: BaseApis['subscribeSpecifiedUserComment'] = noImplementFactory(
-  'subscribeSpecifiedUserComment'
+  'subscribeSpecifiedUserComment',
 );
 export const unsubscribeAllSpecifiedContentComment: BaseApis['unsubscribeAllSpecifiedContentComment'] =
   noImplementFactory('unsubscribeAllSpecifiedContentComment');
 export const unsubscribeAllSpecifiedUserComment: BaseApis['unsubscribeAllSpecifiedUserComment'] = noImplementFactory(
-  'unsubscribeAllSpecifiedUserComment'
+  'unsubscribeAllSpecifiedUserComment',
 );
 export const onReceiveSpecifiedComment: BaseApis['onReceiveSpecifiedComment'] =
   noImplementFactory('onReceiveSpecifiedComment');
 export const open: BaseApis['open'] = webOpen;
+
+export const monaStorage: BaseApis['monaStorage'] = window.____MONA_LIGHT_APP_LOCAL_STORAGE;
