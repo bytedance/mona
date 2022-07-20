@@ -4,9 +4,8 @@ import {
   createCanvasContext as originCreateCanvasContext,
   canvasToTempFilePath as originCanvasToTempFilePath,
 } from './Canvas';
-import { promisify, aaa } from '@bytedance/mona-shared';
+import { promisify } from '@bytedance/mona-shared';
 console.log('haha ');
-console.log(aaa);
 console.log(promisify);
 import {
   webChooseImage,
@@ -69,20 +68,20 @@ export const env: BaseApis['env'] = {
   USER_DATA_PATH: '/',
 };
 export const downloadFile: BaseApis['downloadFile'] = noImplementFactory('downloadFile');
-export const request = promisify(webRequest);
+export const request: BaseApis['request'] = promisify(webRequest);
 export const uploadFile: BaseApis['uploadFile'] = noImplementFactory('uploadFile');
 export const connectSocket: BaseApis['connectSocket'] = noImplementFactory('connectSocket');
-export const chooseImage: BaseApis['chooseImage'] = webChooseImage;
+export const chooseImage: BaseApis['chooseImage'] = promisify(webChooseImage);
 export const saveImageToPhotosAlbum: BaseApis['saveImageToPhotosAlbum'] = noImplementFactory('saveImageToPhotosAlbum');
-export const previewImage: BaseApis['previewImage'] = webPreviewImage;
-export const getImageInfo: BaseApis['getImageInfo'] = webGetImageInfo;
+export const previewImage: BaseApis['previewImage'] = promisify(webPreviewImage);
+export const getImageInfo: BaseApis['getImageInfo'] = promisify(webGetImageInfo);
 export const compressImage: BaseApis['compressImage'] = noImplementFactory('compressImage');
 export const getRecorderManager: BaseApis['getRecorderManager'] = noImplementFactory('getRecorderManager');
 export const getBackgroundAudioManager: BaseApis['getBackgroundAudioManager'] =
   noImplementFactory('getBackgroundAudioManager');
 export const createInnerAudioContext: BaseApis['createInnerAudioContext'] =
   noImplementFactory('createInnerAudioContext');
-export const chooseVideo: BaseApis['chooseVideo'] = webChooseVideo;
+export const chooseVideo: BaseApis['chooseVideo'] = promisify(webChooseVideo);
 export const saveVideoToPhotoAlbum: BaseApis['saveVideoToPhotoAlbum'] = noImplementFactory('saveVideoToPhotoAlbum');
 export const createVideoContext: BaseApis['createVideoContext'] = webCreateVideoContext;
 export const createLivePlayerContext: BaseApis['createLivePlayerContext'] =
@@ -93,7 +92,7 @@ export const createEffectCameraStream: BaseApis['createEffectCameraStream'] =
   noImplementFactory('createEffectCameraStream');
 export const createMapContext: BaseApis['createMapContext'] = noImplementFactory('createMapContext');
 export const saveFile: BaseApis['saveFile'] = noImplementFactory('saveFile');
-export const getFileInfo: BaseApis['getFileInfo'] = webGetFileInfo;
+export const getFileInfo: BaseApis['getFileInfo'] = promisify(webGetFileInfo);
 export const getSavedFileList: BaseApis['getSavedFileList'] = noImplementFactory('getSavedFileList');
 export const openDocument: BaseApis['openDocument'] = noImplementFactory('openDocument');
 export const removeSavedFile: BaseApis['removeSavedFile'] = noImplementFactory('removeSavedFile');
@@ -141,26 +140,26 @@ export const performance: BaseApis['performance'] = {
   clearMarks: noImplementFactory('clearnMarks'),
 };
 
-export const getStorage: BaseApis['getStorage'] = webGetStorage;
+export const getStorage: BaseApis['getStorage'] = promisify(webGetStorage);
 export const getStorageSync: BaseApis['getStorageSync'] = webGetStorageSync;
 
-export const setStorage: BaseApis['setStorage'] = webSetStorage;
+export const setStorage: BaseApis['setStorage'] = promisify(webSetStorage);
 export const setStorageSync: BaseApis['setStorageSync'] = webSetStorageSync;
-export const removeStorage: BaseApis['removeStorage'] = webRemoveStorage;
+export const removeStorage: BaseApis['removeStorage'] = promisify(webRemoveStorage);
 export const removeStorageSync: BaseApis['removeStorageSync'] = webRemoveStorageSync;
-export const clearStorage: BaseApis['clearStorage'] = webClearStorage;
+export const clearStorage: BaseApis['clearStorage'] = promisify(webClearStorage);
 export const clearStorageSync: BaseApis['clearStorageSync'] = webClearStorageSync;
-export const getStorageInfo: BaseApis['getStorageInfo'] = webGetStorageInfo;
+export const getStorageInfo: BaseApis['getStorageInfo'] = promisify(webGetStorageInfo);
 export const getStorageInfoSync: BaseApis['getStorageInfoSync'] = webGetStorageInfoSync;
-export const getLocation: BaseApis['getLocation'] = webGetLocation;
+export const getLocation: BaseApis['getLocation'] = promisify(webGetLocation);
 export const chooseLocation: BaseApis['chooseLocation'] = noImplementFactory('chooseLocation');
 export const openLocation: BaseApis['openLocation'] = noImplementFactory('openLocation');
-export const getNetworkType: BaseApis['getNetworkType'] = webGetNetworkType;
+export const getNetworkType: BaseApis['getNetworkType'] = promisify(webGetNetworkType);
 export const onNetworkStatusChange: BaseApis['onNetworkStatusChange'] = noImplementFactory('onNetworkStatusChange');
 export const getWifiList: BaseApis['getWifiList'] = noImplementFactory('getWifiList');
 export const onGetWifiList: BaseApis['onGetWifiList'] = noImplementFactory('onGetWifiList');
 export const offGetWifiList: BaseApis['offGetWifiList'] = noImplementFactory('offGetWifiList');
-export const getSystemInfo: BaseApis['getSystemInfo'] = webGetSystemInfo;
+export const getSystemInfo: BaseApis['getSystemInfo'] = promisify(webGetSystemInfo);
 export const getSystemInfoSync: BaseApis['getSystemInfoSync'] = webGetSystemInfoSync;
 export const getConnectedWifi: BaseApis['getConnectedWifi'] = noImplementFactory('getConnectedWifi');
 export const startAccelerometer: BaseApis['startAccelerometer'] = noImplementFactory('startAccelerometer');
@@ -169,10 +168,10 @@ export const onAccelerometerChange: BaseApis['onAccelerometerChange'] = noImplem
 export const startCompass: BaseApis['startCompass'] = noImplementFactory('startCompass');
 export const stopCompass: BaseApis['stopCompass'] = noImplementFactory('stopCompass');
 export const onCompassChange: BaseApis['onCompassChange'] = noImplementFactory('onCompassChange');
-export const makePhoneCall: BaseApis['makePhoneCall'] = webMakePhoneCall;
+export const makePhoneCall: BaseApis['makePhoneCall'] = promisify(webMakePhoneCall);
 export const scanCode: BaseApis['scanCode'] = noImplementFactory('scanCode');
-export const getClipboardData: BaseApis['getClipboardData'] = webGetClipboardData;
-export const setClipboardData: BaseApis['setClipboardData'] = webSetClipboardData;
+export const getClipboardData: BaseApis['getClipboardData'] = promisify(webGetClipboardData);
+export const setClipboardData: BaseApis['setClipboardData'] = promisify(webSetClipboardData);
 export const setKeepScreenOn: BaseApis['setKeepScreenOn'] = noImplementFactory('setKeepScreenOn');
 export const onUserCaptureScreen: BaseApis['onUserCaptureScreen'] = noImplementFactory('onUserCaptureScreen');
 export const offUserCaptureScreen: BaseApis['offUserCaptureScreen'] = noImplementFactory('offUserCaptureScreen');
@@ -187,14 +186,14 @@ export const vibrateShort: BaseApis['vibrateShort'] = noImplementFactory('vibrat
 export const vibrateLong: BaseApis['vibrateLong'] = noImplementFactory('vibrateLong');
 export const onMemoryWarning: BaseApis['onMemoryWarning'] = noImplementFactory('onMemoryWarning');
 export const createCanvasContext: BaseApis['createCanvasContext'] = originCreateCanvasContext;
-export const canvasToTempFilePath: BaseApis['canvasToTempFilePath'] = originCanvasToTempFilePath;
+export const canvasToTempFilePath: BaseApis['canvasToTempFilePath'] = promisify(originCanvasToTempFilePath);
 export const createOffscreenCanvas: BaseApis['createOffscreenCanvas'] = noImplementFactory('createOffscreenCanvas');
-export const showToast: BaseApis['showToast'] = config => webShowToast(config);
-export const hideToast: BaseApis['hideToast'] = webHideToast;
-export const showLoading: BaseApis['showLoading'] = options => webShowLoading(options);
-export const hideLoading: BaseApis['hideLoading'] = webHideToast;
-export const showModal: BaseApis['showModal'] = options => webShowModal(options);
-export const showActionSheet: BaseApis['showActionSheet'] = options => webShowActionSheet(options);
+export const showToast: BaseApis['showToast'] = promisify(config => webShowToast(config));
+export const hideToast: BaseApis['hideToast'] = promisify(webHideToast);
+export const showLoading: BaseApis['showLoading'] = promisify(options => webShowLoading(options));
+export const hideLoading: BaseApis['hideLoading'] = promisify(webHideToast);
+export const showModal: BaseApis['showModal'] = promisify(options => webShowModal(options));
+export const showActionSheet: BaseApis['showActionSheet'] = promisify(options => webShowActionSheet(options));
 export const showFavoriteGuide: BaseApis['showFavoriteGuide'] = noImplementFactory('showFavoriteGuide');
 export const showInteractionBar: BaseApis['showInteractionBar'] = noImplementFactory('showInteractionBar');
 export const hideInteractionBar: BaseApis['hideInteractionBar'] = noImplementFactory('hideInteractionBar');
@@ -203,52 +202,52 @@ export const showNavigationBarLoading: BaseApis['showNavigationBarLoading'] =
 export const hideNavigationBarLoading: BaseApis['hideNavigationBarLoading'] =
   noImplementFactory('hideNavigationBarLoading');
 export const hideHomeButton: BaseApis['hideHomeButton'] = noImplementFactory('hideHomeButton');
-export const setNavigationBarTitle: BaseApis['setNavigationBarTitle'] = options => {
+export const setNavigationBarTitle: BaseApis['setNavigationBarTitle'] = promisify(options => {
   eventEmitter.emit('setNavigationBarTitle', options);
-};
-export const setNavigationBarColor: BaseApis['setNavigationBarColor'] = options => {
+});
+export const setNavigationBarColor: BaseApis['setNavigationBarColor'] = promisify(options => {
   eventEmitter.emit('setNavigationBarColor', options);
-};
+});
 export const getMenuButtonBoundingClientRect: BaseApis['getMenuButtonBoundingClientRect'] = noImplementFactory(
   'getMenuButtonBoundingClientRect',
 );
 export const createAnimation: BaseApis['createAnimation'] = noImplementFactory('createAnimation');
-export const pageScrollTo: BaseApis['pageScrollTo'] = webPageScrollTo;
+export const pageScrollTo: BaseApis['pageScrollTo'] = promisify(webPageScrollTo);
 export const setSwipeBackMode: BaseApis['setSwipeBackMode'] = noImplementFactory('setSwipeBackMode');
 export const startPullDownRefresh: BaseApis['startPullDownRefresh'] = noImplementFactory('startPullDownRefresh');
-export const showTabBar: BaseApis['showTabBar'] = options => {
+export const showTabBar: BaseApis['showTabBar'] = promisify(options => {
   eventEmitter.emit('setTabBarToggle', true, options);
-};
-export const hideTabBar: BaseApis['hideTabBar'] = options => {
+});
+export const hideTabBar: BaseApis['hideTabBar'] = promisify(options => {
   eventEmitter.emit('setTabBarToggle', false, options);
-};
-export const showTabBarRedDot: BaseApis['showTabBarRedDot'] = options => {
+});
+export const showTabBarRedDot: BaseApis['showTabBarRedDot'] = promisify(options => {
   eventEmitter.emit('setTabBarDotToggle', true, options);
-};
-export const hideTabBarRedDot: BaseApis['hideTabBarRedDot'] = options => {
+});
+export const hideTabBarRedDot: BaseApis['hideTabBarRedDot'] = promisify(options => {
   eventEmitter.emit('setTabBarDotToggle', false, options);
-};
-export const setTabBarStyle: BaseApis['setTabBarStyle'] = options => {
+});
+export const setTabBarStyle: BaseApis['setTabBarStyle'] = promisify(options => {
   eventEmitter.emit('setTabBarStyle', options);
-};
-export const setTabBarItem: BaseApis['setTabBarItem'] = options => {
+});
+export const setTabBarItem: BaseApis['setTabBarItem'] = promisify(options => {
   eventEmitter.emit('setTabBarItem', options);
-};
-export const setTabBarBadge: BaseApis['setTabBarBadge'] = options => {
+});
+export const setTabBarBadge: BaseApis['setTabBarBadge'] = promisify(options => {
   eventEmitter.emit('setTabBarBadge', options);
-};
-export const removeTabBarBadge: BaseApis['removeTabBarBadge'] = options => {
+});
+export const removeTabBarBadge: BaseApis['removeTabBarBadge'] = promisify(options => {
   eventEmitter.emit('removeTabBarBadge', options);
-};
+});
 export const getAlgorithmManager: BaseApis['getAlgorithmManager'] = noImplementFactory('getAlgorithmManager');
 export const createStickerManager: BaseApis['createStickerManager'] = noImplementFactory('createStickerManager');
 export const createBytennEngineContext: BaseApis['createBytennEngineContext'] =
   noImplementFactory('createBytennEngineContext');
-export const navigateTo: BaseApis['navigateTo'] = webNavigateTo;
-export const redirectTo: BaseApis['redirectTo'] = webRedirectTo;
-export const switchTab: BaseApis['switchTab'] = webSwitchTab;
-export const navigateBack: BaseApis['navigateBack'] = webNavigateBack;
-export const reLaunch: BaseApis['reLaunch'] = webReLaunch;
+export const navigateTo: BaseApis['navigateTo'] = promisify(webNavigateTo);
+export const redirectTo: BaseApis['redirectTo'] = promisify(webRedirectTo);
+export const switchTab: BaseApis['switchTab'] = promisify(webSwitchTab);
+export const navigateBack: BaseApis['navigateBack'] = promisify(webNavigateBack);
+export const reLaunch: BaseApis['reLaunch'] = promisify(webReLaunch);
 export const showShareMenu: BaseApis['showShareMenu'] = noImplementFactory('showShareMenu');
 export const hideShareMenu: BaseApis['hideShareMenu'] = noImplementFactory('hideShareMenu');
 export const navigateToVideoView: BaseApis['navigateToVideoView'] = noImplementFactory('navigateToVideoView');

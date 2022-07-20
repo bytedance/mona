@@ -3,6 +3,7 @@ import {
   GetImageInfoSuccessCallbackArgs,
   RequestTask,
   BaseApis,
+  OriginApis,
   ChooseImageSuccessCallbackArgs,
   GetLocationSuccessCallbackArgs,
   NetworkType,
@@ -11,7 +12,7 @@ import {
 
 import { showPreviewImage } from './components/';
 
-export const webRequest: BaseApis['request'] = (data): RequestTask => {
+export const webRequest: OriginApis['request'] = (data): RequestTask => {
   const controller = new AbortController();
   const init: Record<string, any> = {
     headers: data.header
@@ -57,7 +58,7 @@ export const webRequest: BaseApis['request'] = (data): RequestTask => {
   };
 };
 
-export const webChooseImage: BaseApis['chooseImage'] = (options = {}) => {
+export const webChooseImage: OriginApis['chooseImage'] = (options = {}) => {
   try {
     const input = document.createElement('input');
     input.type = 'file';
@@ -82,9 +83,9 @@ export const webChooseImage: BaseApis['chooseImage'] = (options = {}) => {
   options?.complete?.({ errMsg: 'chooseImage:complete' });
 };
 
-export const webPreviewImage: BaseApis['previewImage'] = options => showPreviewImage(options);
+export const webPreviewImage: OriginApis['previewImage'] = options => showPreviewImage(options);
 
-export const webGetImageInfo: BaseApis['getImageInfo'] = options => {
+export const webGetImageInfo: OriginApis['getImageInfo'] = options => {
   const img = document.createElement('img');
   img.src = options.src;
   img.onload = function () {
@@ -107,7 +108,7 @@ export const webGetImageInfo: BaseApis['getImageInfo'] = options => {
   };
 };
 
-export const webChooseVideo: BaseApis['chooseVideo'] = (options = {}) => {
+export const webChooseVideo: OriginApis['chooseVideo'] = (options = {}) => {
   try {
     const input = document.createElement('input');
     input.type = 'file';
@@ -173,7 +174,7 @@ export const webCreateVideoContext = (element: string) => {
   };
 };
 
-export const webGetFileInfo: BaseApis['getFileInfo'] = options => {
+export const webGetFileInfo: OriginApis['getFileInfo'] = options => {
   const xhr = new XMLHttpRequest();
   xhr.open('GET', options.filePath, true);
   const errMsg = 'getFileInfo:fail';
@@ -194,7 +195,7 @@ export const webGetFileInfo: BaseApis['getFileInfo'] = options => {
   xhr.send();
 };
 
-export const webGetStorage: BaseApis['getStorage'] = options => {
+export const webGetStorage: OriginApis['getStorage'] = options => {
   try {
     const data = webGetStorageSync(options.key);
     options.success?.({ data });
@@ -208,7 +209,7 @@ export const webGetStorage: BaseApis['getStorage'] = options => {
 
 export const webGetStorageSync: BaseApis['getStorageSync'] = key => window.localStorage.getItem(key);
 
-export const webSetStorage: BaseApis['setStorage'] = options => {
+export const webSetStorage: OriginApis['setStorage'] = options => {
   let errMsg = 'setStorage:fail';
   try {
     errMsg = 'setStorage:ok';
@@ -224,7 +225,7 @@ export const webSetStorageSync: BaseApis['setStorageSync'] = (key, value) => {
   window.localStorage.setItem(key, value);
 };
 
-export const webRemoveStorage: BaseApis['removeStorage'] = options => {
+export const webRemoveStorage: OriginApis['removeStorage'] = options => {
   const errMsg = 'removeStorage:fail';
   try {
     const errMsg = 'removeStorage:ok';
@@ -240,7 +241,7 @@ export const webRemoveStorageSync: BaseApis['removeStorageSync'] = key => {
   window.localStorage.removeItem(key);
 };
 
-export const webClearStorage: BaseApis['clearStorage'] = (options = {}) => {
+export const webClearStorage: OriginApis['clearStorage'] = (options = {}) => {
   let errMsg = 'clearStorage:fail';
   try {
     errMsg = 'clearStorage:ok';
@@ -256,7 +257,7 @@ export const webClearStorageSync: BaseApis['clearStorageSync'] = () => {
   window.localStorage.clear();
 };
 
-export const webGetStorageInfo: BaseApis['getStorageInfo'] = options => {
+export const webGetStorageInfo: OriginApis['getStorageInfo'] = options => {
   let errMsg = 'clearStorage:fail';
   try {
     errMsg = 'clearStorage:ok';
@@ -274,7 +275,7 @@ export const webGetStorageInfoSync: BaseApis['getStorageInfoSync'] = () => ({
   currentSize: 1,
 });
 
-export const webGetLocation: BaseApis['getLocation'] = options => {
+export const webGetLocation: OriginApis['getLocation'] = options => {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       position => {
@@ -293,7 +294,7 @@ export const webGetLocation: BaseApis['getLocation'] = options => {
   }
 };
 
-export const webGetNetworkType: BaseApis['getNetworkType'] = (options = {}) => {
+export const webGetNetworkType: OriginApis['getNetworkType'] = (options = {}) => {
   let errMsg: NetworkType | string;
   if (navigator.connection) {
     // @ts-ignore ignore
@@ -306,7 +307,7 @@ export const webGetNetworkType: BaseApis['getNetworkType'] = (options = {}) => {
   options.complete?.({ errMsg });
 };
 
-export const webMakePhoneCall: BaseApis['makePhoneCall'] = options => {
+export const webMakePhoneCall: OriginApis['makePhoneCall'] = options => {
   const errMsg = 'makePhoneCall:fail';
   try {
     window.open(`tel:${options.phoneNumber}`);
@@ -317,7 +318,7 @@ export const webMakePhoneCall: BaseApis['makePhoneCall'] = options => {
   options.complete?.({ errMsg });
 };
 
-export const webPageScrollTo: BaseApis['pageScrollTo'] = options => {
+export const webPageScrollTo: OriginApis['pageScrollTo'] = options => {
   let errMsg: string;
   try {
     errMsg = 'pageScrollTo:ok';
@@ -336,7 +337,7 @@ export const webPageScrollTo: BaseApis['pageScrollTo'] = options => {
   options.complete?.({ errMsg });
 };
 
-export const webNavigateTo: BaseApis['navigateTo'] = options => {
+export const webNavigateTo: OriginApis['navigateTo'] = options => {
   let errMsg: string;
   try {
     errMsg = 'navigateTo:ok';
@@ -354,7 +355,7 @@ export const webNavigateTo: BaseApis['navigateTo'] = options => {
 
   options.complete?.({ errMsg });
 };
-export const webRedirectTo: BaseApis['redirectTo'] = options => {
+export const webRedirectTo: OriginApis['redirectTo'] = options => {
   let errMsg: string;
   try {
     errMsg = 'redirectTo:ok';
@@ -369,11 +370,11 @@ export const webRedirectTo: BaseApis['redirectTo'] = options => {
   options.complete?.({ errMsg });
 };
 
-export const webSwitchTab: BaseApis['switchTab'] = ({ url, success, fail, complete }) => {
+export const webSwitchTab: OriginApis['switchTab'] = ({ url, success, fail, complete }) => {
   webRedirectTo({ url, success, fail, complete });
 };
 
-export const webNavigateBack: BaseApis['navigateBack'] = (options = {}) => {
+export const webNavigateBack: OriginApis['navigateBack'] = (options = {}) => {
   let errMsg: string;
   try {
     errMsg = 'navigateBack:ok';
@@ -388,7 +389,7 @@ export const webNavigateBack: BaseApis['navigateBack'] = (options = {}) => {
   options.complete?.({ errMsg });
 };
 
-export const webReLaunch: BaseApis['reLaunch'] = options => {
+export const webReLaunch: OriginApis['reLaunch'] = options => {
   let errMsg: string;
   try {
     errMsg = 'reLaunch:ok';
@@ -402,7 +403,7 @@ export const webReLaunch: BaseApis['reLaunch'] = options => {
   options.complete?.({ errMsg });
 };
 
-export const webGetClipboardData: BaseApis['getClipboardData'] = (options = {}) => {
+export const webGetClipboardData: OriginApis['getClipboardData'] = (options = {}) => {
   const errMsg = 'setClipboardData:fail';
 
   try {
@@ -417,7 +418,7 @@ export const webGetClipboardData: BaseApis['getClipboardData'] = (options = {}) 
   }
 };
 
-export const webSetClipboardData: BaseApis['setClipboardData'] = options => {
+export const webSetClipboardData: OriginApis['setClipboardData'] = options => {
   let errMsg = 'setClipboardData:fail';
   try {
     errMsg = 'setClipboardData:ok';
@@ -431,7 +432,7 @@ export const webSetClipboardData: BaseApis['setClipboardData'] = options => {
   }
 };
 
-export const webGetSystemInfo: BaseApis['getSystemInfo'] = options => {
+export const webGetSystemInfo: OriginApis['getSystemInfo'] = options => {
   try {
     const systemInfo = webGetSystemInfoSync();
     options.success?.(systemInfo);

@@ -1,7 +1,7 @@
 type ParamType<T> = T extends (arg: infer P) => any ? P : never;
 type AnyFunc = (options: any) => any;
 type Result<T extends AnyFunc> = ParamType<ParamType<T>['success']>;
-type PromisifyReturn<T extends AnyFunc> = (options: ParamType<T>) => Promise<Result<T>> & ReturnType<T>;
+export type PromisifyReturn<T extends AnyFunc> = (options: ParamType<T>) => Promise<Result<T>> & ReturnType<T>;
 
 export function promisify<T extends AnyFunc>(fn: T): PromisifyReturn<T> {
   return function (options) {
@@ -20,5 +20,3 @@ export function promisify<T extends AnyFunc>(fn: T): PromisifyReturn<T> {
     return newRes;
   };
 }
-
-export const aaa = 1111;
