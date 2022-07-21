@@ -7,27 +7,47 @@ import {
   ChooseImageSuccessCallbackArgs,
   GetLocationSuccessCallbackArgs,
   NetworkType,
+  RequestOptions,
 } from '@bytedance/mona';
 // import clipboard from 'clipboardy';
 
 import { showPreviewImage } from './components/';
 
-export const webRequest: OriginApis['request'] = (data): RequestTask => {
+export const LIGHT_APP_GET_TOEKN = '__MONA_LIGHT_APP_GET_TOEKN';
+
+export function webRequest(data: Omit<RequestOptions, 'url'>): RequestTask;
+export function webRequest(data: Omit<RequestOptions, 'funcName'>): RequestTask;
+export function webRequest(data: RequestOptions): RequestTask;
+// @ts-ignore ignore
+export async function webRequest(data: Partial<RequestOptions>): RequestTask | Promise<any> {
+  if (typeof data.url === 'undefined' && typeof data.funcName === 'undefined') {
+    return Promise.reject(new Error('url and funcName must be specified'));
+  }
+
+  const defaultHeader = {
+    'Content-Type': 'application/json',
+  };
+
   const controller = new AbortController();
   const init: Record<string, any> = {
-    headers: data.header
-      ? data.header
-      : {
-          'Content-Type': 'application/json',
-        },
+    headers: data.header ? data.header : defaultHeader,
     method: data.method || 'GET',
     signal: controller.signal,
   };
 
+  // TODO: 如果data funcName存在，则走轻应用
+  // if (data.funcName) {
+  //   // 可能不存在该方法
+  //   const token = window.__MONA_LIGHT_APP_GET_TOEKN ? await window.__MONA_LIGHT_APP_GET_TOEKN() : '';
+  // }
+  // const token = window.__MONA_LIGHT_APP_GET_TOEKN;
+
+  const url = data.funcName ? `https://lgw.jinritemai.com/` + data.funcName : data.url;
+
   if ((init.method as string).toUpperCase() === 'POST') {
     init.body = data.data ? JSON.stringify(data.data) : '';
   }
-  const promise = fetch(data.url, init);
+  const promise = fetch(url as string, init);
 
   promise
     .then(r => r.json())
@@ -56,7 +76,7 @@ export const webRequest: OriginApis['request'] = (data): RequestTask => {
   return {
     abort: controller.abort,
   };
-};
+}
 
 export const webChooseImage: OriginApis['chooseImage'] = (options = {}) => {
   try {
@@ -474,3 +494,8 @@ export const webGetSystemInfoSync: BaseApis['getSystemInfoSync'] = () => {
 };
 
 export const webOpen = (url: string) => window.open(url, '_blank', 'noopener,noreferrer');
+
+export const webNavigateToApp: OriginApis['navigateToApp'] = async options => {
+  await window.__MONA_LIGHT_APP_NAVIGATE_CB(options);
+  window.__MONA_LIGHT_APP_EXIT_APP_CB();
+};

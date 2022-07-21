@@ -65,6 +65,10 @@ export interface RequestFailCallbackArgs extends CommonErrorArgs {
 
 export interface RequestOptions extends Callbacks<RequestSuccesssCallbackArgs, RequestFailCallbackArgs> {
   url: string;
+  /**
+   * funcName为轻应用服务调用名。优先级高于url
+   */
+  funcName: string;
   header?: object;
   method?: 'GET' | 'HEAD' | 'OPTIONS' | 'POST' | 'DELETE' | 'PUT' | 'TRACE' | 'CONNECT';
   data?: object | string | ArrayBuffer;
@@ -102,7 +106,7 @@ export interface DownloadTask {
 }
 
 export interface RequestTask {
-  abort: () => void;
+  abort?: () => void;
 }
 
 type UploadTask = DownloadTask;
@@ -743,6 +747,11 @@ export interface NavigateToMiniProgramOptions extends Callbacks<CommonErrorArgs,
   path?: string;
   extraData?: object;
   envVersion?: string;
+}
+export interface navigateToAppOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
+  appId: string;
+  sceneId?: string;
+  params?: Record<any, any>;
 }
 export interface NavigateBackMiniProgramOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   envVersion?: string;
@@ -1401,6 +1410,7 @@ abstract class Api {
   abstract pay: PromisifyReturn<(options: PayOptions) => void>;
   // 小程序跳转
   abstract navigateToMiniProgram: PromisifyReturn<(options: NavigateToMiniProgramOptions) => void>;
+  abstract navigateToApp: PromisifyReturn<(options: navigateToAppOptions) => void>;
   abstract navigateBackMiniProgram: PromisifyReturn<(options?: NavigateBackMiniProgramOptions) => void>;
   // 收获地址
   abstract chooseAddresses: PromisifyReturn<(options?: ChooseAddressesOptions) => void>;
@@ -1658,6 +1668,8 @@ abstract class Api {
   abstract onReceiveSpecifiedComment(callback: (res: OnReceiveSpecifiedCommentOptions) => void): void;
   // 自定义
   abstract open(url: string): void;
+  // mona storage function
+  abstract monaStorage: Storage | undefined;
 }
 type BaseApis = Api & { [key: string | symbol | number]: (options: any) => void };
 export default BaseApis;

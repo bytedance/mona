@@ -38,6 +38,7 @@ import {
   webSetStorage,
   webSetStorageSync,
   webSwitchTab,
+  webNavigateToApp,
 } from './util';
 import EventEmitter from '../EventEmitter';
 
@@ -111,6 +112,7 @@ export const pay: BaseApis['pay'] = promisify(noImplementFactory('pay'));
 export const navigateToMiniProgram: BaseApis['navigateToMiniProgram'] = promisify(
   noImplementFactory('navigateToMiniProgram'),
 );
+export const navigateToApp: BaseApis['navigateToApp'] = promisify(webNavigateToApp);
 export const navigateBackMiniProgram: BaseApis['navigateBackMiniProgram'] = promisify(
   noImplementFactory('navigateBackMiniProgram'),
 );
@@ -316,3 +318,5 @@ export const unsubscribeAllSpecifiedUserComment: BaseApis['unsubscribeAllSpecifi
 export const onReceiveSpecifiedComment: BaseApis['onReceiveSpecifiedComment'] =
   noImplementFactory('onReceiveSpecifiedComment');
 export const open: BaseApis['open'] = webOpen;
+
+export const monaStorage: BaseApis['monaStorage'] = window.____MONA_LIGHT_APP_LOCAL_STORAGE;
