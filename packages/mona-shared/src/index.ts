@@ -8,3 +8,4 @@ export { isClassComponent } from './reactNode';
 export * from './domain';
 export * from './search';
 export * from './constants';
+export * from './promisify';
