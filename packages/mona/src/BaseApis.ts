@@ -1332,6 +1332,7 @@ export interface OriginApis {
   getClipboardData: (options?: Callbacks<{ data: string } & CommonErrorArgs, CommonErrorArgs>) => void;
   setClipboardData: (options: SetClipboardDataOptions) => void;
   getSystemInfo: (options: GetSystemInfoOptions) => void;
+  navigateToApp: (options: navigateToAppOptions) => void;
 }
 
 abstract class Api {
