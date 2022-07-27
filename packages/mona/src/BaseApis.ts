@@ -63,7 +63,7 @@ export interface RequestFailCallbackArgs extends CommonErrorArgs {
 }
 
 export interface RequestOptions extends Callbacks<RequestSuccesssCallbackArgs, RequestFailCallbackArgs> {
-  url: string;
+  url?: string;
   /**
    * funcName为轻应用服务调用名。优先级高于url
    */

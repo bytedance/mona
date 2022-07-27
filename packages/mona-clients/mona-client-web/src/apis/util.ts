@@ -34,14 +34,22 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
     signal: controller.signal,
   };
 
-  // TODO: 如果data funcName存在，则走轻应用
-  // if (data.funcName) {
-  //   // 可能不存在该方法
-  //   const token = window.__MONA_LIGHT_APP_GET_TOEKN ? await window.__MONA_LIGHT_APP_GET_TOEKN() : '';
-  // }
-  // const token = window.__MONA_LIGHT_APP_GET_TOEKN;
+  const isLightApp = data.funcName && window.__MONA_LIGHT_APP_GET_TOEKN;
+  let token = '';
+  // light app
+  if (isLightApp) {
+    token = await window.__MONA_LIGHT_APP_GET_TOEKN!();
 
-  const url = data.funcName ? `https://lgw.jinritemai.com/` + data.funcName : data.url;
+    init.method = 'POST';
+    init.headers = { ...init.headers, 'x-open-token': token };
+    const appId = window.__MONA_LIGHT_APP_LIFE_CYCLE_LANUCH_QUERY.referrerInfo.appId;
+    data.data = {
+      appId,
+      method: data.funcName,
+      param: JSON.stringify(data.data),
+    };
+  }
+  const url = data.funcName ? `https://${window.__MONA_LIGNT_APP_DOMAIN_NAME}/invoke` : data.url;
 
   if ((init.method as string).toUpperCase() === 'POST') {
     init.body = data.data ? JSON.stringify(data.data) : '';
@@ -495,6 +503,6 @@ export const webGetSystemInfoSync: BaseApis['getSystemInfoSync'] = () => {
 export const webOpen = (url: string) => window.open(url, '_blank', 'noopener,noreferrer');
 
 export const webNavigateToApp: BaseApis['navigateToApp'] = async options => {
-  await window.__MONA_LIGHT_APP_NAVIGATE_CB(options);
-  window.__MONA_LIGHT_APP_EXIT_APP_CB();
+  await window.__MONA_LIGHT_APP_NAVIGATE_CB?.(options);
+  window.__MONA_LIGHT_APP_EXIT_APP_CB?.();
 };
