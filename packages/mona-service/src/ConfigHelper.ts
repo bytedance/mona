@@ -39,13 +39,16 @@ class ConfigHelper {
   appConfig!: AppConfig;
   entryPath!: string;
   buildId: string;
-  isDev: boolean;
+  // isDev: boolean;
 
   constructor() {
     this.cwd = process.cwd();
     this.readAllConfig();
     this.buildId = `_${createUniqueId()}`;
-    this.isDev = process.env.NODE_ENV !== 'production';
+  }
+
+  get isDev(): boolean {
+    return process.env.NODE_ENV !== 'production'
   }
 
   readAllConfig() {
