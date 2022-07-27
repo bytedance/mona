@@ -5,7 +5,7 @@ export function parseSearch(search: string): Record<string, string> {
     const [key, value] = s.split('=');
     r[key] = value;
     return r;
-  }, {} as Record<string, string>)
+  }, {} as Record<string, string>);
 }
 
 export function stringifySearch(searchObj: Record<string, any>) {
@@ -16,6 +16,8 @@ export function stringifySearch(searchObj: Record<string, any>) {
   Object.keys(searchObj).forEach(key => {
     // TODO url encode ?
     kv.push(`${key}=${searchObj[key]}`);
-  })
+  });
   return `?${kv.join('&')}`;
 }
+
+export const ahaha = 123;
