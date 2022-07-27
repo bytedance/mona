@@ -1,5 +1,9 @@
 // #publish
-import { PromisifyReturn } from '@bytedance/mona-shared';
+// clone from @bytedance/mona-shared promisify to resolve recursive deps
+type ParamType<T> = T extends (arg: infer P) => any ? P : never;
+type AnyFunc = (options: any) => any;
+type Result<T extends AnyFunc> = ParamType<ParamType<T>['success']>;
+export type PromisifyReturn<T extends AnyFunc> = (options: ParamType<T>) => Promise<Result<T>> & ReturnType<T>;
 export interface EnterOrLaunchOptions {
   path: string;
   scene: string;

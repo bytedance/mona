@@ -210,12 +210,12 @@ export const onMemoryWarning: BaseApis['onMemoryWarning'] = noImplementFactory('
 export const createCanvasContext: BaseApis['createCanvasContext'] = originCreateCanvasContext;
 export const canvasToTempFilePath: BaseApis['canvasToTempFilePath'] = promisify(originCanvasToTempFilePath);
 export const createOffscreenCanvas: BaseApis['createOffscreenCanvas'] = noImplementFactory('createOffscreenCanvas');
-export const showToast: BaseApis['showToast'] = promisify(config => webShowToast(config));
+export const showToast: BaseApis['showToast'] = promisify(webShowToast);
 export const hideToast: BaseApis['hideToast'] = promisify(webHideToast);
-export const showLoading: BaseApis['showLoading'] = promisify(options => webShowLoading(options));
+export const showLoading: BaseApis['showLoading'] = promisify(webShowLoading);
 export const hideLoading: BaseApis['hideLoading'] = promisify(webHideToast);
-export const showModal: BaseApis['showModal'] = promisify(options => webShowModal(options));
-export const showActionSheet: BaseApis['showActionSheet'] = promisify(options => webShowActionSheet(options));
+export const showModal: BaseApis['showModal'] = promisify(webShowModal);
+export const showActionSheet: BaseApis['showActionSheet'] = promisify(webShowActionSheet);
 export const showFavoriteGuide: BaseApis['showFavoriteGuide'] = promisify(noImplementFactory('showFavoriteGuide'));
 export const showInteractionBar: BaseApis['showInteractionBar'] = promisify(noImplementFactory('showInteractionBar'));
 export const hideInteractionBar: BaseApis['hideInteractionBar'] = promisify(noImplementFactory('hideInteractionBar'));
@@ -226,12 +226,12 @@ export const hideNavigationBarLoading: BaseApis['hideNavigationBarLoading'] = pr
   noImplementFactory('hideNavigationBarLoading'),
 );
 export const hideHomeButton: BaseApis['hideHomeButton'] = promisify(noImplementFactory('hideHomeButton'));
-export const setNavigationBarTitle: BaseApis['setNavigationBarTitle'] = promisify(options => {
+export const setNavigationBarTitle: BaseApis['setNavigationBarTitle'] = promisify(((options: any) => {
   eventEmitter.emit('setNavigationBarTitle', options);
-});
-export const setNavigationBarColor: BaseApis['setNavigationBarColor'] = promisify(options => {
+}) as any);
+export const setNavigationBarColor: BaseApis['setNavigationBarColor'] = promisify(((options: any) => {
   eventEmitter.emit('setNavigationBarColor', options);
-});
+}) as any);
 export const getMenuButtonBoundingClientRect: BaseApis['getMenuButtonBoundingClientRect'] = noImplementFactory(
   'getMenuButtonBoundingClientRect',
 );
@@ -241,30 +241,30 @@ export const setSwipeBackMode: BaseApis['setSwipeBackMode'] = noImplementFactory
 export const startPullDownRefresh: BaseApis['startPullDownRefresh'] = promisify(
   noImplementFactory('startPullDownRefresh'),
 );
-export const showTabBar: BaseApis['showTabBar'] = promisify(options => {
+export const showTabBar: BaseApis['showTabBar'] = promisify(((options: any) => {
   eventEmitter.emit('setTabBarToggle', true, options);
-});
-export const hideTabBar: BaseApis['hideTabBar'] = promisify(options => {
+}) as any);
+export const hideTabBar: BaseApis['hideTabBar'] = promisify(((options: any) => {
   eventEmitter.emit('setTabBarToggle', false, options);
-});
-export const showTabBarRedDot: BaseApis['showTabBarRedDot'] = promisify(options => {
+}) as any);
+export const showTabBarRedDot: BaseApis['showTabBarRedDot'] = promisify(((options: any) => {
   eventEmitter.emit('setTabBarDotToggle', true, options);
-});
-export const hideTabBarRedDot: BaseApis['hideTabBarRedDot'] = promisify(options => {
+}) as any);
+export const hideTabBarRedDot: BaseApis['hideTabBarRedDot'] = promisify(((options: any) => {
   eventEmitter.emit('setTabBarDotToggle', false, options);
-});
-export const setTabBarStyle: BaseApis['setTabBarStyle'] = promisify(options => {
+}) as any);
+export const setTabBarStyle: BaseApis['setTabBarStyle'] = promisify(((options: any) => {
   eventEmitter.emit('setTabBarStyle', options);
-});
-export const setTabBarItem: BaseApis['setTabBarItem'] = promisify(options => {
+}) as any);
+export const setTabBarItem: BaseApis['setTabBarItem'] = promisify(((options: any) => {
   eventEmitter.emit('setTabBarItem', options);
-});
-export const setTabBarBadge: BaseApis['setTabBarBadge'] = promisify(options => {
+}) as any);
+export const setTabBarBadge: BaseApis['setTabBarBadge'] = promisify(((options: any) => {
   eventEmitter.emit('setTabBarBadge', options);
-});
-export const removeTabBarBadge: BaseApis['removeTabBarBadge'] = promisify(options => {
+}) as any);
+export const removeTabBarBadge: BaseApis['removeTabBarBadge'] = promisify(((options: any) => {
   eventEmitter.emit('removeTabBarBadge', options);
-});
+}) as any);
 export const getAlgorithmManager: BaseApis['getAlgorithmManager'] = promisify(
   noImplementFactory('getAlgorithmManager'),
 );
