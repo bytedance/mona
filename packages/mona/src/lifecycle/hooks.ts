@@ -1,8 +1,8 @@
 import { useLayoutEffect, useContext } from 'react';
-import { AppLifecycleGlobalContext, Callback, PageLifecycleGlobalContext } from './context';
+import { AppLifecycle, AppLifecycleGlobalContext, Callback, PageLifecycle, PageLifecycleGlobalContext } from './context';
 
 // for app
-export function useAppEvent(eventName: string, callback: Callback) {
+export function useAppEvent(eventName: `${AppLifecycle}`, callback: Callback) {
   const appLifecycle = useContext(AppLifecycleGlobalContext);
   
   useLayoutEffect(() => {
@@ -12,7 +12,7 @@ export function useAppEvent(eventName: string, callback: Callback) {
 }
 
 // for page
-export function usePageEvent(eventName: string, callback: Callback) {
+export function usePageEvent(eventName: `${PageLifecycle}`, callback: Callback) {
   const pageLifecycleContext = useContext(PageLifecycleGlobalContext);
 
   useLayoutEffect(() => {

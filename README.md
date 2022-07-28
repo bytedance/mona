@@ -222,6 +222,64 @@ import { View, Text } from '@bytedance/mona-runtime';
 - 基础组件见-[小程序组件](https://microapp.bytedance.com/docs/zh-CN/mini-app/develop/component/all)
 - 插件额外组件见-[mona-runtime 文档](https://github.com/bytedance/mona/tree/main/packages/mona-runtime)
 
+## 生命周期
+
+### 应用生命周期
+
+应用生命周期通过`hooks`的形式进行暴露，`useAppEvent`。
+
+```js
+import { useAppEvent } from '@bytedance/mona-runtime';
+
+const App = () => {
+  // onLaunch
+  useAppEvent('onLaunch', () => {});
+
+  // onShow
+  useAppEvent('onShow', () => {});
+};
+```
+
+应用的生命周期有
+
+- onLaunch
+- onShow
+- onHide
+- onError
+- onPageNotFound
+
+### 页面生命周期
+
+页面生命周期通过`hooks`的形式进行暴露，`usePageEvent`。
+
+```js
+import { usePageEvent } from '@bytedance/mona-runtime';
+
+const Page = () => {
+  // onLoad
+  usePageEvent('onLoad', () => {});
+
+  // onReady
+  usePageEvent('onReady', () => {});
+
+  // onShow
+  usePageEvent('onShow', () => {});
+};
+```
+
+应用的生命周期有
+
+- onLoad
+- onReady
+- onShow
+- onHide
+- onUnload
+- onResize
+- onPullDownRefresh
+- onReachBottom
+- onShareAppMessage
+- onPageScroll
+
 ## 目录结构
 
 ```bash
