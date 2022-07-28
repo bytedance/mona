@@ -72,7 +72,7 @@ export interface RequestOptions extends Callbacks<RequestSuccesssCallbackArgs, R
   /**
    * funcName为轻应用服务调用名。优先级高于url
    */
-  funcName: string;
+  funcName?: string;
   header?: object;
   method?: 'GET' | 'HEAD' | 'OPTIONS' | 'POST' | 'DELETE' | 'PUT' | 'TRACE' | 'CONNECT';
   data?: object | string | ArrayBuffer;
