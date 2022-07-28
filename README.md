@@ -590,20 +590,21 @@ return (
 
 ## query 参数获取
 
-在页面见跳转时，可以在路径后加入查询参数，如
+在页面间跳转时，可以在路径后加入查询参数，如
 
 ```js
 navigateTo('/pages/home/index?name="xiaoming"');
 ```
 
-查询参数的只可以在页面组件的`props`中进行获取，其中`search`为查询参数字符串，`searchParams`为解析后的查询参数
+查询参数的只可以在页面组件的`props`中进行获取，其中`search`为查询参数字符串，`searchParams`为解析后的查询参数。或者从页面生命周期`onLoad`中直接获取`searchParams`
 
 ```jsx
-import { PageProps } from '@bytedance/mona';
+import { PageProps, usePageEvent } from '@bytedance/mona';
 
 const Home: React.FC<PageProps> = ({ search, searchParams }) => {
   console.log(search, searchParams);
   // 输出：?name="xiaoming" { name: "xiaoming" }
+  usePageEvent('onLoad', params => console.log(params));
   return <div></div>;
 };
 ```

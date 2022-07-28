@@ -1,5 +1,5 @@
 import React from 'react';
-import { isClassComponent } from '@bytedance/mona-shared';
+import { isClassComponent, parseSearch } from '@bytedance/mona-shared';
 import { LifecycleContext, PageLifecycleGlobalContext, PageLifecycle } from '@bytedance/mona';
 
 export function createPageLifecycle(Component: React.ComponentType<any>) {
@@ -41,7 +41,7 @@ export function createPageLifecycle(Component: React.ComponentType<any>) {
     isReachBottom = false;
     componentDidMount() {
       // onLoad
-      handleLoad();
+      handleLoad(parseSearch(location.search));
       // onShow & onHide
       if (document.visibilityState === 'visible') {
         callLifecycle(PageLifecycle.show);
