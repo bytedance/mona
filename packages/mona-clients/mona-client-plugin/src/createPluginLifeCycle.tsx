@@ -7,7 +7,7 @@ import {
   PageLifecycle,
   PageLifecycleGlobalContext,
 } from '@bytedance/mona';
-import { isClassComponent, GLOBAL_LIFECYCLE_STORE } from '@bytedance/mona-shared';
+import { isClassComponent, GLOBAL_LIFECYCLE_STORE, parseSearch } from '@bytedance/mona-shared';
 import { lightAppLifeCycleParamsKey } from './constants';
 
 export function createPluginLifeCycle(Component: React.ComponentType<any>) {
@@ -106,7 +106,7 @@ export function createPluginPageLifecycle(Component: React.ComponentType<any>) {
     isReachBottom = false;
     componentDidMount() {
       // onLoad
-      handleLoad();
+      handleLoad(parseSearch(location.search));
       // onShow & onHide
       // if (document.visibilityState === 'visible') {
       //   callLifecycle(PageLifecycle.show);
