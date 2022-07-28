@@ -43,7 +43,7 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
 
     init.method = 'POST';
     init.headers = { ...init.headers, 'x-open-token': token };
-    const appId = window.__MONA_LIGHT_APP_LIFE_CYCLE_LANUCH_QUERY.referrerInfo.appId;
+    const appId = window.__MONA_LIGHT_APP_LIFE_CYCLE_LANUCH_QUERY.appId;
     data.data = {
       appId,
       method: data.funcName,
