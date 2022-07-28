@@ -3,7 +3,9 @@
 exports[`createPluginLifeCycle class pageNotFound 1`] = `
 Array [
   Array [
-    "/path/a/b",
+    Object {
+      "path": "/path/a/b",
+    },
     "pageNotFound",
   ],
 ]
@@ -92,7 +94,9 @@ LoadedCheerio {
 exports[`createPluginLifeCycle func pageNotFound 1`] = `
 Array [
   Array [
-    "/path/a/b",
+    Object {
+      "path": "/path/a/b",
+    },
     "class",
     "pageNotFound",
   ],

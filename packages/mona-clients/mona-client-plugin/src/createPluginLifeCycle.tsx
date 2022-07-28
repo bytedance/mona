@@ -26,7 +26,9 @@ export function createPluginLifeCycle(Component: React.ComponentType<any>) {
   const handleShow = (...rest: any[]) => {
     callLifecycle(AppLifecycle.show, ...rest);
   };
-
+  const handleHide = (...rest: any[]) => {
+    callLifecycle(AppLifecycle.hide, ...rest);
+  };
   const handleLaunch = (...rest: any[]) => {
     callLifecycle(AppLifecycle.launch, ...rest);
   };
@@ -40,6 +42,7 @@ export function createPluginLifeCycle(Component: React.ComponentType<any>) {
     handleLaunch,
     handlePageNotFound,
     handleShow,
+    handleHide,
   };
 
   class AppConfig extends React.Component {
