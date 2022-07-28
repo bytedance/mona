@@ -1,7 +1,14 @@
 import React from 'react';
 
-import { LifecycleContext, AppLifecycleGlobalContext, AppLifecycle, PageLifecycle, PageLifecycleGlobalContext } from '@bytedance/mona';
+import {
+  LifecycleContext,
+  AppLifecycleGlobalContext,
+  AppLifecycle,
+  PageLifecycle,
+  PageLifecycleGlobalContext,
+} from '@bytedance/mona';
 import { isClassComponent, GLOBAL_LIFECYCLE_STORE } from '@bytedance/mona-shared';
+import { lightAppLifeCycleParamsKey } from './constants';
 
 export function createPluginLifeCycle(Component: React.ComponentType<any>) {
   const appLifecycleContext = new LifecycleContext();
@@ -16,9 +23,14 @@ export function createPluginLifeCycle(Component: React.ComponentType<any>) {
     }
   };
 
+  const handleShow = (...rest: any[]) => {
+    callLifecycle(AppLifecycle.show, ...rest);
+  };
+
   const handleLaunch = (...rest: any[]) => {
     callLifecycle(AppLifecycle.launch, ...rest);
   };
+
   const handlePageNotFound = (...rest: any[]) => {
     callLifecycle(AppLifecycle.pageNotFound, ...rest);
   };
@@ -27,11 +39,13 @@ export function createPluginLifeCycle(Component: React.ComponentType<any>) {
   window[GLOBAL_LIFECYCLE_STORE] = {
     handleLaunch,
     handlePageNotFound,
+    handleShow,
   };
 
   class AppConfig extends React.Component {
     componentDidMount() {
-      handleLaunch();
+      handleShow(window[lightAppLifeCycleParamsKey.show as any] || {});
+      handleLaunch(window[lightAppLifeCycleParamsKey.launch as any] || {});
     }
     componentWillUnmount() {}
     render() {

@@ -46,7 +46,7 @@ export const NoMatch: React.FC<{ defaultPath: string }> = ({ defaultPath }) => {
   useEffect(() => {
     // app生命周期pageNotFound
     //@ts-ignore
-    window[GLOBAL_LIFECYCLE_STORE]?.handlePageNotFound?.(defaultPath);
+    window[GLOBAL_LIFECYCLE_STORE]?.handlePageNotFound?.({ path: defaultPath });
   }, [defaultPath]);
   return (
     <div style={maskStyle}>
@@ -90,14 +90,14 @@ export function createWebApp(
   Component: React.ComponentType<any>,
   routes: { path: string; title: string; component: React.ComponentType<any> }[],
   options?: {
-    tabBar?: AppConfig['tabBar'],
-    navBar?: AppConfig['window'],
-    defaultPath?: string
-    light?: AppConfig['light']
-  }
+    tabBar?: AppConfig['tabBar'];
+    navBar?: AppConfig['window'];
+    defaultPath?: string;
+    light?: AppConfig['light'];
+  },
 ) {
   const render = ({ dom }: { dom: Element | Document }) => {
-    prepareLightApp(options?.light)
+    prepareLightApp(options?.light);
 
     ReactDOM.render(
       <BrowserRouter>
