@@ -318,5 +318,5 @@ export const unsubscribeAllSpecifiedUserComment: BaseApis['unsubscribeAllSpecifi
 export const onReceiveSpecifiedComment: BaseApis['onReceiveSpecifiedComment'] =
   noImplementFactory('onReceiveSpecifiedComment');
 export const open: BaseApis['open'] = webOpen;
-
-export const monaStorage: BaseApis['monaStorage'] = window.____MONA_LIGHT_APP_LOCAL_STORAGE;
+export const monaStorage: BaseApis['monaStorage'] = window.__MONA_LIGHT_APP_LOCAL_STORAGE;
+export const exitLightApp: BaseApis['exitLightApp'] = window.__MONA_LIGHT_APP_EXIT_APP_CB;

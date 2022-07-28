@@ -1675,6 +1675,8 @@ abstract class Api {
   abstract open(url: string): void;
   // mona storage function
   abstract monaStorage: Storage | undefined;
+  // exit light app
+  abstract exitLightApp?(): void;
 }
 type BaseApis = Api & { [key: string | symbol | number]: (options: any) => void };
 export default BaseApis;
