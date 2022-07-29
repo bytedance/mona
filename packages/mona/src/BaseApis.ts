@@ -70,9 +70,9 @@ export interface RequestFailCallbackArgs extends CommonErrorArgs {
 export interface RequestOptions extends Callbacks<RequestSuccesssCallbackArgs, RequestFailCallbackArgs> {
   url?: string;
   /**
-   * funcName为轻应用服务调用名。优先级高于url
+   * fn为轻应用服务调用名。优先级高于url
    */
-  funcName?: string;
+  fn?: string;
   header?: object;
   method?: 'GET' | 'HEAD' | 'OPTIONS' | 'POST' | 'DELETE' | 'PUT' | 'TRACE' | 'CONNECT';
   data?: object | string | ArrayBuffer;

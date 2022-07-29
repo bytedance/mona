@@ -16,11 +16,11 @@ import { showPreviewImage } from './components/';
 export const LIGHT_APP_GET_TOEKN = '__MONA_LIGHT_APP_GET_TOEKN';
 
 export function webRequest(data: Omit<RequestOptions, 'url'>): RequestTask;
-export function webRequest(data: Omit<RequestOptions, 'funcName'>): RequestTask;
+export function webRequest(data: Omit<RequestOptions, 'fn'>): RequestTask;
 export function webRequest(data: RequestOptions): RequestTask;
 // @ts-ignore ignore
 export async function webRequest(data: Partial<RequestOptions>): RequestTask | Promise<any> {
-  if (typeof data.url === 'undefined' && typeof data.funcName === 'undefined') {
+  if (typeof data.url === 'undefined' && typeof data.fn === 'undefined') {
     return Promise.reject(new Error('url and funcName must be specified'));
   }
 
@@ -35,7 +35,7 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
     signal: controller.signal,
   };
 
-  const isLightApp = data.funcName && window.__MONA_LIGHT_APP_GET_TOEKN;
+  const isLightApp = data.fn && window.__MONA_LIGHT_APP_GET_TOEKN;
   let token = '';
   // light app
   if (isLightApp) {
@@ -46,11 +46,11 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
     const appId = window.__MONA_LIGHT_APP_LIFE_CYCLE_LANUCH_QUERY.appId;
     data.data = {
       appId,
-      method: data.funcName,
+      method: data.fn,
       param: JSON.stringify(data.data),
     };
   }
-  const url = data.funcName ? `https://${window.__MONA_LIGNT_APP_DOMAIN_NAME}/invoke` : data.url;
+  const url = isLightApp ? `https://${window.__MONA_LIGNT_APP_DOMAIN_NAME}/invoke` : data.url;
 
   if ((init.method as string).toUpperCase() === 'POST') {
     init.body = data.data ? JSON.stringify(data.data) : '';
