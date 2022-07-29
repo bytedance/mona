@@ -63,7 +63,6 @@ function commonCssRule(styleRule: Config.Rule<Config.Module>, configHelper: Conf
     .options({
       postcssOptions: {
         plugins: [
-          require.resolve('postcss-import'),
           [
             path.join(__dirname, '../../plugins/postcss/PostcssPreSelector.js'),
             { selector: `#${configHelper.buildId}` },
@@ -110,7 +109,12 @@ function createJsRule(webpackConfig: Config, configHelper: ConfigHelper) {
 
 function createLessRule(webpackConfig: Config, configHelper: ConfigHelper) {
   const lessRule = webpackConfig.module.rule('less').test(/\.less$/i);
-
+  // .exclude.add(/node_modules/)
+  // .end();
+  console.log(
+    path.resolve(__dirname, 'node_modules'),
+    "path.resolve(__dirname, 'node_modules')path.resolve(__dirname, 'node_modules')",
+  );
   commonCssRule(lessRule, configHelper)
     .use('less')
     .loader('less-loader')

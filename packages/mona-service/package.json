@@ -66,7 +66,6 @@
     "ora": "^5.4.1",
     "pkg-updater": "^1.0.4",
     "postcss": "^8.3.11",
-    "postcss-import": "^14.0.2",
     "postcss-loader": "^6.2.0",
     "qrcode": "^1.5.0",
     "react-refresh": "^0.10.0",

@@ -84,7 +84,6 @@ function createCssRule(webpackConfig: Config, configHelper: ConfigHelper) {
       .options({
         postcssOptions: {
           plugins: [
-            require.resolve('postcss-import'),
             pxtOptions.enabled
               ? [path.join(__dirname, '../../plugins/postcss/PostcssPxtransformer/index.js'), pxtOptions]
               : null,
