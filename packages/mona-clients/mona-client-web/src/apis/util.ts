@@ -42,7 +42,7 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
     token = await window.__MONA_LIGHT_APP_GET_TOEKN!();
 
     init.method = 'POST';
-    init.headers = { ...init.headers, 'x-open-token': token };
+    init.headers = { ...init.headers, 'x-open-token': token, 'x-use-test': window.__MONA_LIGHT_USE_TEST };
     const appId = window.__MONA_LIGHT_APP_LIFE_CYCLE_LANUCH_QUERY.appId;
     data.data = {
       appId,
