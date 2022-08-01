@@ -10,7 +10,8 @@ const preview: IPlugin = (ctx) => {
       { name: 'target', description: '目标端', alias: 't' },
       // { name: 'watch', description: '是否监听文件更改', alias: 'w' },
       { name: 'platform', description: '平台类型（当target为light即轻应用时，有效值为compass，不填默认compass）', alias: 'p' },
-    ]
+    ],
+    usage: 'mona-service preview -t max'
   }, async (args) => {
     // output dir
 
