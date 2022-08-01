@@ -754,7 +754,6 @@ export interface NavigateToMiniProgramOptions extends Callbacks<CommonErrorArgs,
 }
 export interface navigateToAppOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   appId: string;
-  sceneId?: string;
   params?: Record<any, any>;
 }
 export interface NavigateBackMiniProgramOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
