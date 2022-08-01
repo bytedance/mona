@@ -73,29 +73,27 @@ export async function ask(opts: Partial<Answer>) {
     answer.templateType = subTemplateType;
   }
 
-  if (answer.templateType === 'max' || answer.templateType === 'light') {
-    const { appId } = await inquirer.prompt([
-      {
-        type: 'input',
-        name: 'appId',
-        message: '请输入appId',
-        default: 'tempAppId',
-        validate(input: string) {
-          if (!input) {
-            return 'appId不能为空！请在抖店开放平台应用详情页查看APP_Key';
-          }
-          if(input === 'tempAppId'){
-            return true;
-          }
-          if (!/^[0-9]{19,19}$/.test(input)) {
-            return '无效的appId！请在抖店开放平台应用详情页查看APP_Key'
-          }
+  const { appId } = await inquirer.prompt([
+    {
+      type: 'input',
+      name: 'appId',
+      message: '请输入appId',
+      default: 'tempAppId',
+      validate(input: string) {
+        if (!input) {
+          return 'appId不能为空！请在抖店开放平台应用详情页查看APP_Key';
+        }
+        if(input === 'tempAppId'){
           return true;
-        },
+        }
+        if (!/^[0-9]{19,19}$/.test(input)) {
+          return '无效的appId！请在抖店开放平台应用详情页查看APP_Key'
+        }
+        return true;
       },
-    ]);
-    answer.appId = appId;
-  }
+    },
+  ]);
+  answer.appId = appId;
 
   return Object.assign({}, opts, answer);
 }
