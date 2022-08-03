@@ -12,6 +12,7 @@ const alias: Alias = {
   onError: propAliasMap.onError,
   onStop: propAliasMap.onStop,
   onScanCode: propAliasMap.onScanCode,
+  mode: propAliasMap.mode,
 };
 
 export default alias;
