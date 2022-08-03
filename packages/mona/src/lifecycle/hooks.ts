@@ -5,7 +5,7 @@ type CallbakcQuery = Record<string, string | number | boolean>;
 type AppLifecycleUnion = `${AppLifecycle}`
 type AppLaunchOrShow = 'onLaunch' | 'onShow';
 interface AppLaunchOrShowParams {
-  query: CallbakcQuery
+  query?: CallbakcQuery
 };
 
 type AppCallback<T extends AppLifecycleUnion> = T extends AppLaunchOrShow ? Callback<AppLaunchOrShowParams> : Callback<CallbakcQuery>;
