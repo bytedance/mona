@@ -30,7 +30,8 @@
     "webpack-merge": "^5.8.0",
     "webpack-virtual-modules": "^0.4.3",
     "webpack-watch-files-plugin": "^1.2.0",
-    "ws": "^8.4.2"
+    "ws": "^8.4.2",
+    "postcss-pxtorem": "^6.0.0"
   },
   "publishConfig": {
     "access": "public",
