@@ -32,6 +32,8 @@ import openData from './OpenData/alias';
 import video from './Video/alias';
 import webview from './Webview/alias';
 import map from './Map/alias';
+import camera from './Camera/alias';
+
 // import map from './Ca/alias';
 // import * as Components from '@bytedance/mona-components';
 import { ComponentType, MiniComponentAliasMap } from '@bytedance/mona-shared';
@@ -44,6 +46,11 @@ export const ejsParamsObj: Record<
     defaultProps?: Record<string, string | boolean | number>;
   }
 > = {
+  [ComponentType.camera]: {
+    reactComponentName: 'Camera',
+    alias: camera,
+    defaultProps: { mode: 'normal', resolution: 'medium', devicePosition: 'back', flash: 'off', frameSize: 'medium' },
+  },
   [ComponentType.text]: {
     reactComponentName: 'Text',
     alias: text,
