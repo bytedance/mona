@@ -73,6 +73,7 @@ const baseComponentPropsMap: Record<string, string> = {
   itemId: 'item-id',
   scaleArea: 'scale-area',
   outOfBounds: 'out-of-bounds',
+  onScanCode: 'bindscancode',
   scaleMin: 'scale-min',
   scaleMax: 'scale-max',
   scaleValue: 'scale-value',
