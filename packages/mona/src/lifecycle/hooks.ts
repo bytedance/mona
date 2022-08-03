@@ -1,8 +1,17 @@
 import { useLayoutEffect, useContext } from 'react';
 import { AppLifecycle, AppLifecycleGlobalContext, Callback, PageLifecycle, PageLifecycleGlobalContext } from './context';
 
+type CallbakcQuery = Record<string, string | number | boolean>;
+type AppLifecycleUnion = `${AppLifecycle}`
+type AppLaunchOrShow = 'onLaunch' | 'onShow';
+interface AppLaunchOrShowParams {
+  query?: CallbakcQuery
+};
+
+type AppCallback<T extends AppLifecycleUnion> = T extends AppLaunchOrShow ? Callback<AppLaunchOrShowParams> : Callback<CallbakcQuery>;
+
 // for app
-export function useAppEvent(eventName: `${AppLifecycle}`, callback: Callback) {
+export function useAppEvent<T extends AppLifecycleUnion>(eventName: T, callback: AppCallback<T>) {
   const appLifecycle = useContext(AppLifecycleGlobalContext);
   
   useLayoutEffect(() => {
@@ -12,7 +21,7 @@ export function useAppEvent(eventName: `${AppLifecycle}`, callback: Callback) {
 }
 
 // for page
-export function usePageEvent(eventName: `${PageLifecycle}`, callback: Callback) {
+export function usePageEvent(eventName: `${PageLifecycle}`, callback: Callback<CallbakcQuery>) {
   const pageLifecycleContext = useContext(PageLifecycleGlobalContext);
 
   useLayoutEffect(() => {

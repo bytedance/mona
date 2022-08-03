@@ -1,3 +1,4 @@
+import fs from 'fs';
 import path from 'path';
 import ejs from 'ejs';
 //@ts-ignore
@@ -18,20 +19,46 @@ import { MiniComponentEntry } from '@/target/entires/miniComponentEntry';
 
 const RawSource = sources.RawSource;
 const ejsRelativePath = '../../../assets/ejs';
+
+function hasChangedProjectConfig(props: { appid: string; name: string; configHelper: ConfigHelper }) {
+  // 判断appid和name是否有变化，没有变化则不再生成新的project.config.js
+  const { configHelper, name, appid } = props;
+  const configPath = path.join(configHelper.cwd, configHelper.projectConfig.output, 'project.config.json');
+  if (fs.existsSync(configPath)) {
+    const content = fs.readFileSync(configPath).toString();
+    try {
+      const config = JSON.parse(content);
+      if (config.appid === appid && config.projectname === name) {
+        return false;
+      }
+    } catch(err) {
+    }
+  }
+  return true;
+}
+
 export default async function createJson(compilation: Compilation, configHelper: ConfigHelper) {
   const { appConfig, cwd, projectConfig } = configHelper;
   const pages: string[] = appConfig.pages ?? [];
 
   // project.config.json
   const projectFile = 'project.config.json';
+  const appid = projectConfig.appId || DEFAULT_APPID;
+  const name = projectConfig.projectName;
+
+  
   if (!compilation.getAsset(projectFile)) {
-    const tplPath = path.join(__dirname, ejsRelativePath, './project.config.js.ejs');
-    const raw = await ejs.renderFile(tplPath, {
-      appid: projectConfig.appId || DEFAULT_APPID,
-      name: projectConfig.projectName,
-    });
-    const source = new RawSource(raw);
-    compilation.emitAsset(projectFile, source);
+    // 判断appid和name是否有变化，没有变化则不再生成新的project.config.js
+    const hasChanged = hasChangedProjectConfig({ appid, name, configHelper });
+    if (hasChanged) {
+      const tplPath = path.join(__dirname, ejsRelativePath, './project.config.js.ejs');
+      const raw = await ejs.renderFile(tplPath, {
+        appid,
+        name,
+      });
+      const source = new RawSource(raw);
+      compilation.emitAsset(projectFile, source);
+    }
   }
 
   // app.json

@@ -1,5 +1,5 @@
 import React from 'react';
-export type Callback = (query?: Record<string, string | number | boolean>) => void;
+export type Callback<T = any> = (options?: T) => any;
 
 export enum AppLifecycle {
   launch = 'onLaunch',

@@ -1,6 +1,7 @@
 
 import QRCode from 'qrcode';
 import chokidar from 'chokidar';
+import open from 'open';
 import PluginContext from '@/PluginContext';
 import { execSync } from 'child_process';
 import { compressDistDir } from "../compress/utils";
@@ -9,6 +10,7 @@ import { AxiosRequestConfig } from 'axios';
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
+import { DEFAULT_PORT } from '@/target/constants';
 
 type Request<T = any> = (path: string, options?: AxiosRequestConfig<any>) => Promise<T>
 
@@ -153,4 +155,37 @@ export async function processMaxTemplateData(ctx: PluginContext) {
     appId,
     templateAppDefaultValue
   }
+}
+
+export function getPlatform(params: { ctx: PluginContext, args: Record<string, string> }) {
+  const { ctx, args } = params;
+  // judge env
+  const result = (args.domain || '').match(/^[^\.]+(\.[^\.]+\.[^\.]+)/);
+  const isTest = result && result[1] !== '.jinritemai.com';
+  const platformUrlMap: Record<string, string> = isTest ? {
+    compass: `https://ecom-compass-boe${result[1]}`
+  } : {
+    compass: 'https://compass.jinritemai.com',
+  }
+  return {
+    platform: Object.keys(platformUrlMap).indexOf(args.platform) !== -1 ? args.platform : 'compass',
+    ctx,
+    platformUrlMap
+  };
+}
+
+export function getUrl(params: { ctx: PluginContext, platform: string, platformUrlMap: Record<string, string> }) {
+  const { ctx, platform, platformUrlMap } = params;
+  const url = platformUrlMap[platform];
+
+  const config = ctx.configHelper.projectConfig;
+  const port = config.dev?.port || DEFAULT_PORT;
+  const appId = config.appId;
+  const query = `?isLightPreview=true&appId=${appId}&port=${port}`;
+  return `${url}${query}`;
+}
+
+export function openUrlWithBrowser(url: string) {
+  console.log(chalk.cyan(`打开 ${url}`));
+  open(url);
 }
