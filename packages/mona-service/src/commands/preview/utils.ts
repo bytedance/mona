@@ -163,9 +163,9 @@ export function getPlatform(params: { ctx: PluginContext, args: Record<string, s
   const result = (args.domain || '').match(/^[^\.]+(\.[^\.]+\.[^\.]+)/);
   const isTest = result && result[1] !== '.jinritemai.com';
   const platformUrlMap: Record<string, string> = isTest ? {
-    compass: `https://ecom-compass-boe${result[1]}`
+    compass: `https://ecom-compass-boe${result[1]}/shop/search-analysis`
   } : {
-    compass: 'https://compass.jinritemai.com',
+    compass: 'https://compass.jinritemai.com/shop/search-analysis',
   }
   return {
     platform: Object.keys(platformUrlMap).indexOf(args.platform) !== -1 ? args.platform : 'compass',
