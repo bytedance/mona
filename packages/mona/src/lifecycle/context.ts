@@ -7,6 +7,7 @@ export enum AppLifecycle {
   hide = 'onHide',
   error = 'onError',
   pageNotFound = 'onPageNotFound',
+  unhandledRejection = 'onUnhandledRejection'
 }
 
 export enum PageLifecycle {
