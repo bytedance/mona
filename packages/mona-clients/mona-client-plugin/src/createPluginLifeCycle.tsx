@@ -37,7 +37,7 @@ export function createPluginLifeCycle(Component: React.ComponentType<any>) {
     callLifecycle(AppLifecycle.pageNotFound, ...rest);
   };
 
-  // 这里名称不要随便改，轻应用会在容器层调用部分函数
+  // 这里名称不要随便改，微应用会在容器层调用部分函数
   //@ts-ignore
   window[GLOBAL_LIFECYCLE_STORE] = {
     handleLaunch,

@@ -4,8 +4,8 @@ import { checkChinese } from './common';
 
 const templates = [
   {
-    name: 'light（适用于轻应用开发）',
-    value: 'light'
+    name: 'light（适用于微应用开发）',
+    value: 'light',
   },
   {
     name: 'plugin（适用于飞鸽插件开发）',
@@ -28,12 +28,13 @@ const templates = [
 const maxTemplateTypes = [
   {
     name: 'component（店铺装修组件开发）',
-    value: 'max'
-  }, {
+    value: 'max',
+  },
+  {
     name: 'template（店铺装修模板开发）',
-    value: 'max-template'
-  }
-]
+    value: 'max-template',
+  },
+];
 
 type AskKey = keyof Omit<Answer, 'appId'>;
 
@@ -61,14 +62,16 @@ export async function ask(opts: Partial<Answer>) {
   const answer: Answer = await inquirer.prompt(prompts);
 
   if (answer.templateType === 'max') {
-    const { subTemplateType } = await inquirer.prompt([{
-      type: 'list',
-      name: 'subTemplateType',
-      message: '选择店铺装修类型',
-      choices: maxTemplateTypes,
-      default: maxTemplateTypes[0].value,
-      checkAsk: (defaultValue?: string) => !defaultValue || !maxTemplateTypes.find(t => t.value === defaultValue),
-    }])
+    const { subTemplateType } = await inquirer.prompt([
+      {
+        type: 'list',
+        name: 'subTemplateType',
+        message: '选择店铺装修类型',
+        choices: maxTemplateTypes,
+        default: maxTemplateTypes[0].value,
+        checkAsk: (defaultValue?: string) => !defaultValue || !maxTemplateTypes.find(t => t.value === defaultValue),
+      },
+    ]);
 
     answer.templateType = subTemplateType;
   }
@@ -83,11 +86,11 @@ export async function ask(opts: Partial<Answer>) {
         if (!input) {
           return 'appId不能为空！请在抖店开放平台应用详情页查看APP_Key';
         }
-        if(input === 'tempAppId'){
+        if (input === 'tempAppId') {
           return true;
         }
         if (!/^[0-9]{19,19}$/.test(input)) {
-          return '无效的appId！请在抖店开放平台应用详情页查看APP_Key'
+          return '无效的appId！请在抖店开放平台应用详情页查看APP_Key';
         }
         return true;
       },
