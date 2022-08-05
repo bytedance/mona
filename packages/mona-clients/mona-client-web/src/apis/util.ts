@@ -505,5 +505,4 @@ export const webOpen = (url: string) => window.open(url, '_blank', 'noopener,nor
 
 export const webNavigateToApp: OriginApis['navigateToApp'] = async options => {
   await window.__MONA_LIGHT_APP_NAVIGATE_CB?.(options);
-  window.__MONA_LIGHT_APP_EXIT_APP_CB?.();
 };

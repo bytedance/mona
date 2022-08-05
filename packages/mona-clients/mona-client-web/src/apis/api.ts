@@ -112,7 +112,9 @@ export const pay: BaseApis['pay'] = promisify(noImplementFactory('pay'));
 export const navigateToMiniProgram: BaseApis['navigateToMiniProgram'] = promisify(
   noImplementFactory('navigateToMiniProgram'),
 );
-export const navigateToApp: BaseApis['navigateToApp'] = promisify(webNavigateToApp);
+export const navigateToApp: BaseApis['navigateToApp'] = window.__MONA_LIGHT_APP_NAVIGATE_CB
+  ? promisify(webNavigateToApp)
+  : noImplementFactory('navigateToApp');
 export const navigateBackMiniProgram: BaseApis['navigateBackMiniProgram'] = promisify(
   noImplementFactory('navigateBackMiniProgram'),
 );
@@ -319,4 +321,6 @@ export const onReceiveSpecifiedComment: BaseApis['onReceiveSpecifiedComment'] =
   noImplementFactory('onReceiveSpecifiedComment');
 export const open: BaseApis['open'] = webOpen;
 export const monaStorage: BaseApis['monaStorage'] = window.__MONA_LIGHT_APP_LOCAL_STORAGE;
-export const exitLightApp: BaseApis['exitLightApp'] = window.__MONA_LIGHT_APP_EXIT_APP_CB;
+export const exitLightApp: BaseApis['exitLightApp'] = window.__MONA_LIGHT_APP_EXIT_APP_CB
+  ? window.__MONA_LIGHT_APP_EXIT_APP_CB
+  : noImplementFactory('exitLightApp');
