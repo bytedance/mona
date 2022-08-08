@@ -35,6 +35,8 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
     signal: controller.signal,
   };
 
+  if (data.credentials) init.credentials = data.credentials;
+
   const isLightApp = data.fn && window.__MONA_LIGHT_APP_GET_TOEKN;
   let token = '';
   // light app

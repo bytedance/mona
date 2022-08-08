@@ -80,6 +80,7 @@ export interface RequestOptions extends Callbacks<RequestSuccesssCallbackArgs, R
   timeout?: number;
   enableCache?: boolean;
   responseType?: 'text' | 'arraybuffer';
+  credentials?: RequestCredentials;
 }
 
 export interface UploadFileSuccesssCallbackArgs {
