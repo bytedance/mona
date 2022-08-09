@@ -52,6 +52,12 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
       param: JSON.stringify(data.data),
     };
   }
+
+  // if app not mirco app ,but set fn params, prompt waring
+  if (data.fn && !isLightApp) {
+    alert('必须在主端调用轻应用');
+  }
+
   const url = isLightApp ? `https://${window.__MONA_LIGNT_APP_DOMAIN_NAME}/invoke` : data.url;
 
   if ((init.method as string).toUpperCase() === 'POST') {
