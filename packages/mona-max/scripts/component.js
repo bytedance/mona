@@ -8,10 +8,10 @@ const maxComponent = ctx => {
     tctx.configureWebpack(() => {
       ctx.configHelper.projectConfig.chain = pre => pre;
       if (process.env.NODE_ENV === 'production') {
-        return require('../config/webpack.prod')('umd');
+        return require('../config/webpack.prod')('esm');
       }
 
-      return require('../config/webpack.dev')('umd');
+      return require('../config/webpack.dev')('esm');
     })
   });
   ctx.registerCommand(
