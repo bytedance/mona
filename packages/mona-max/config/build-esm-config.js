@@ -11,9 +11,9 @@ module.exports = {
   experiments: {
     outputModule: true,
   },
-  externalsType: "module",
-  externals: {
-    react: "react",
-    "react-dom": "react-dom"
-  }
+  // externalsType: "module",
+  // externals: {
+  //   react: "react",
+  //   "react-dom": "react-dom"
+  // }
 };
