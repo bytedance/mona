@@ -4,16 +4,16 @@ module.exports = {
     library: {
       type: "module",
     },
-    environment: {
-      module: true,
-    },
+    // environment: {
+    //   module: true,
+    // },
   },
   experiments: {
     outputModule: true,
   },
-  // externalsType: "module",
-  // externals: {
-  //   react: "react",
-  //   "react-dom": "react-dom"
-  // }
+  externalsType: "window",
+  externals: {
+    react: "react",
+    "react-dom": "react-dom"
+  }
 };
