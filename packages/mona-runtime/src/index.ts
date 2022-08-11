@@ -3,7 +3,7 @@ export const pigeon = events.pigeon;
 
 export * from '@bytedance/mona-client-mini';
 export { createPlugin } from '@bytedance/mona-client-plugin';
-export { createWebApp, navigateToApp, exitLightApp } from '@bytedance/mona-client-web';
+export { createWebApp, navigateToApp, exitLightApp, useRequest } from '@bytedance/mona-client-web';
 export { usePageEvent, useAppEvent, AppLifecycle, PageLifecycle } from '@bytedance/mona';
 export interface PageProps {
   search: string;

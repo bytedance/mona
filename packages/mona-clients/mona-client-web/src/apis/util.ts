@@ -55,7 +55,7 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
 
   // if app not mirco app ,but set fn params, prompt waring
   if (data.fn && !isLightApp) {
-    alert('必须在主端调用轻应用');
+    alert('必须在主端调用微应用');
   }
 
   const url = isLightApp ? `https://${window.__MONA_LIGNT_APP_DOMAIN_NAME}/invoke` : data.url;
@@ -68,10 +68,25 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
   promise
     .then(r => r.json())
     .then(r => {
+      let lightAppData;
+      if (isLightApp) {
+        if (r?.BizError?.message) {
+          const { message, code } = r.BizError;
+          lightAppData = { code, data: '', message };
+        } else {
+          let parseData;
+          try {
+            parseData = JSON.parse(r.data);
+          } catch (e) {
+            parseData = r.data;
+          }
+          lightAppData = { code: 0, data: parseData, message: '' };
+        }
+      }
       data.success?.({
         statusCode: r.status,
         header: r.headers,
-        data: r,
+        data: isLightApp ? lightAppData : r,
         // @ts-ignore ignore
         profile: '',
       });
