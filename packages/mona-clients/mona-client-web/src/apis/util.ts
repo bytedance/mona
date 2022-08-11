@@ -524,6 +524,6 @@ export const webGetSystemInfoSync: BaseApis['getSystemInfoSync'] = () => {
 
 export const webOpen = (url: string) => window.open(url, '_blank', 'noopener,noreferrer');
 
-export const webNavigateToApp: OriginApis['navigateToApp'] = async options => {
-  await window.__MONA_LIGHT_APP_NAVIGATE_CB?.(options);
+export const webNavigateToApp: BaseApis['navigateToApp'] = (info, options) => {
+  window.__MONA_LIGHT_APP_NAVIGATE_CB?.(info, options)
 };

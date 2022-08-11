@@ -753,9 +753,15 @@ export interface NavigateToMiniProgramOptions extends Callbacks<CommonErrorArgs,
   extraData?: object;
   envVersion?: string;
 }
-export interface navigateToAppOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
-  appId: string;
-  params?: Record<any, any>;
+export type NavigateToAppInfo = string | {
+  appId?: string;
+  sceneId?: string;
+  funcPointId?: string;
+  query?: Record<string, any>;
+}
+
+export type NavigateToAppOptions = {
+  replace?: boolean;
 }
 export interface NavigateBackMiniProgramOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   envVersion?: string;
@@ -1336,7 +1342,6 @@ export interface OriginApis {
   getClipboardData: (options?: Callbacks<{ data: string } & CommonErrorArgs, CommonErrorArgs>) => void;
   setClipboardData: (options: SetClipboardDataOptions) => void;
   getSystemInfo: (options: GetSystemInfoOptions) => void;
-  navigateToApp: (options: navigateToAppOptions) => void;
 }
 
 abstract class Api {
@@ -1415,7 +1420,7 @@ abstract class Api {
   abstract pay: PromisifyReturn<(options: PayOptions) => void>;
   // 小程序跳转
   abstract navigateToMiniProgram: PromisifyReturn<(options: NavigateToMiniProgramOptions) => void>;
-  abstract navigateToApp: PromisifyReturn<(options: navigateToAppOptions) => void>;
+  abstract navigateToApp: (info: NavigateToAppInfo, options?: NavigateToAppOptions) => void;
   abstract navigateBackMiniProgram: PromisifyReturn<(options?: NavigateBackMiniProgramOptions) => void>;
   // 收获地址
   abstract chooseAddresses: PromisifyReturn<(options?: ChooseAddressesOptions) => void>;
