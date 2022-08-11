@@ -44,7 +44,12 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
     token = await window.__MONA_LIGHT_APP_GET_TOEKN!();
 
     init.method = 'POST';
-    init.headers = { ...init.headers, 'x-open-token': token, 'x-use-test': window.__MONA_LIGHT_USE_TEST };
+    init.headers = {
+      ...init.headers,
+      'x-open-token': token,
+      'x-use-test': window.__MONA_LIGHT_USE_TEST,
+      'x-open-compass': window?.__MONA_LIGHT_APP_GET_COMPASS_TOKEN ? window.__MONA_LIGHT_APP_GET_COMPASS_TOKEN() : ''
+    };
     const appId = window.__MONA_LIGHT_APP_LIFE_CYCLE_LANUCH_QUERY.appId;
     data.data = {
       appId,
@@ -444,8 +449,16 @@ export const webReLaunch: OriginApis['reLaunch'] = options => {
   let errMsg: string;
   try {
     errMsg = 'reLaunch:ok';
-    window.location.href = options.url;
-    options.success?.({ errMsg });
+
+    // clear stack
+    if ((window.history as any)._stack && (window.history as any)._stack.length > 0) {
+      (window.history as any)._stack = [];
+      (window.history as any)._pos = -1;
+      webNavigateTo(options)
+    } else {
+      window.location.href = options.url;
+      options.success?.({ errMsg });
+    }
   } catch (err) {
     errMsg = `reLaunch:fail${err}`;
     options.fail?.({ errMsg });
@@ -526,6 +539,6 @@ export const webGetSystemInfoSync: BaseApis['getSystemInfoSync'] = () => {
 
 export const webOpen = (url: string) => window.open(url, '_blank', 'noopener,noreferrer');
 
-export const webNavigateToApp: OriginApis['navigateToApp'] = async options => {
-  await window.__MONA_LIGHT_APP_NAVIGATE_CB?.(options);
+export const webNavigateToApp: BaseApis['navigateToApp'] = (info, options) => {
+  window.__MONA_LIGHT_APP_NAVIGATE_CB?.(info, options)
 };

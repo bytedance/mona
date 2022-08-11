@@ -113,7 +113,7 @@ export const navigateToMiniProgram: BaseApis['navigateToMiniProgram'] = promisif
   noImplementFactory('navigateToMiniProgram'),
 );
 export const navigateToApp: BaseApis['navigateToApp'] = window.__MONA_LIGHT_APP_NAVIGATE_CB
-  ? promisify(webNavigateToApp)
+  ? webNavigateToApp
   : noImplementFactory('navigateToApp');
 export const navigateBackMiniProgram: BaseApis['navigateBackMiniProgram'] = promisify(
   noImplementFactory('navigateBackMiniProgram'),

@@ -14,8 +14,9 @@ declare interface Window {
   __MONA_EVENTEMITTER_LISTENER: { [key: string]: Function[] };
   __MONA_LIGHT_APP_GET_TOEKN?: () => string;
   __MONA_LIGNT_APP_DOMAIN_NAME?: string;
-  __MONA_LIGHT_APP_NAVIGATE_CB?: (args) => void;
+  __MONA_LIGHT_APP_NAVIGATE_CB?: (...args: any) => void;
   __MONA_LIGHT_APP_EXIT_APP_CB?: () => void;
+  __MONA_LIGHT_APP_GET_COMPASS_TOKEN?: () => string;
   __MONA_LIGHT_APP_LOCAL_STORAGE?: Storage;
   __MONA_LIGHT_APP_LIFE_CYCLE_LANUCH_QUERY: { appId: string; referrerInfo: { appId: string } };
   __MONA_LIGHT_USE_TEST?: boolean;
