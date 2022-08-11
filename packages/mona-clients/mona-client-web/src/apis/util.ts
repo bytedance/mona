@@ -15,18 +15,6 @@ import { showPreviewImage } from './components/';
 
 export const LIGHT_APP_GET_TOEKN = '__MONA_LIGHT_APP_GET_TOEKN';
 
-function getCompassToken() {
-  const arr = document.cookie.split(';').map(i => i.trim());
-  let token = '';
-  arr.forEach(item => {
-    if (/^LUOPAN_DT=/.test(item)) {
-      token = item.replace('LUOPAN_DT=', '');
-    }
-  })
-
-  return token;
-}
-
 export function webRequest(data: Omit<RequestOptions, 'url'>): RequestTask;
 export function webRequest(data: Omit<RequestOptions, 'fn'>): RequestTask;
 export function webRequest(data: RequestOptions): RequestTask;
@@ -55,14 +43,12 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
   if (isLightApp) {
     token = await window.__MONA_LIGHT_APP_GET_TOEKN!();
 
-    const compassToken = getCompassToken();
-
     init.method = 'POST';
     init.headers = {
       ...init.headers,
       'x-open-token': token,
       'x-use-test': window.__MONA_LIGHT_USE_TEST,
-      'x-open-compass': compassToken
+      'x-open-compass': window?.__MONA_LIGHT_APP_GET_COMPASS_TOKEN ? window.__MONA_LIGHT_APP_GET_COMPASS_TOKEN() : ''
     };
     const appId = window.__MONA_LIGHT_APP_LIFE_CYCLE_LANUCH_QUERY.appId;
     data.data = {
