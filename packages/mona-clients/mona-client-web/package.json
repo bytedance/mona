@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-client-web",
-  "version": "0.2.20-alpha.12",
+  "version": "0.2.20-alpha.13",
   "description": "web for mona",
   "main": "./dist/index.js",
   "files": [
@@ -19,13 +19,13 @@
     "mona"
   ],
   "dependencies": {
-    "@bytedance/mona": "0.2.20-alpha.12",
-    "@bytedance/mona-shared": "0.2.20-alpha.12",
+    "@bytedance/mona": "0.2.20-alpha.13",
+    "@bytedance/mona-shared": "0.2.20-alpha.13",
+    "ahooks": "^3.7.0",
     "classnames": "^2.3.1",
     "copyfiles": "^2.4.1",
     "xgplayer": "^2.31.4",
-    "xgplayer-mp4": "^2.0.0",
-    "ahooks": "^3.7.0"
+    "xgplayer-mp4": "^2.0.0"
   },
   "devDependencies": {
     "@types/react-dom": "^17.0.2",
