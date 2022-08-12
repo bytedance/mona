@@ -60,7 +60,7 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
 
   // if app not mirco app ,but set fn params, prompt waring
   if (data.fn && !isLightApp) {
-    alert('必须在主端调用微应用');
+    console.error(`必须在主端调用微应用${data.fn}`);
   }
 
   const url = isLightApp ? `https://${window.__MONA_LIGNT_APP_DOMAIN_NAME}/invoke` : data.url;
