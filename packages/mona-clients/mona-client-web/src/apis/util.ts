@@ -76,16 +76,18 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
       let lightAppData;
       if (isLightApp) {
         if (r?.BizError?.message) {
-          const { message, code } = r.BizError;
-          lightAppData = { code, data: '', message };
+          const { message } = r.BizError;
+          throw new Error(message);
+          // lightAppData = { code, data: '', message };
         } else {
           let parseData;
           try {
             parseData = JSON.parse(r.data);
+            console.warn(`not valid json for ${r.data}, use origin data`);
           } catch (e) {
             parseData = r.data;
           }
-          lightAppData = { code: 0, data: parseData, message: '' };
+          lightAppData = parseData;
         }
       }
       data.success?.({
