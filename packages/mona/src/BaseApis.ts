@@ -76,6 +76,7 @@ export interface RequestOptions extends Callbacks<RequestSuccesssCallbackArgs, R
   header?: object;
   method?: 'GET' | 'HEAD' | 'OPTIONS' | 'POST' | 'DELETE' | 'PUT' | 'TRACE' | 'CONNECT';
   data?: object | string | ArrayBuffer;
+  body?: BodyInit | null;
   dataType?: 'json' | 'string';
   timeout?: number;
   enableCache?: boolean;
@@ -753,16 +754,18 @@ export interface NavigateToMiniProgramOptions extends Callbacks<CommonErrorArgs,
   extraData?: object;
   envVersion?: string;
 }
-export type NavigateToAppInfo = string | {
-  appId?: string;
-  sceneId?: string;
-  funcPointId?: string;
-  query?: Record<string, any>;
-}
+export type NavigateToAppInfo =
+  | string
+  | {
+      appId?: string;
+      sceneId?: string;
+      funcPointId?: string;
+      query?: Record<string, any>;
+    };
 
 export type NavigateToAppOptions = {
   replace?: boolean;
-}
+};
 export interface NavigateBackMiniProgramOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   envVersion?: string;
 }

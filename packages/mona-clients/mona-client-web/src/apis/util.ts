@@ -48,7 +48,7 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
       ...init.headers,
       'x-open-token': token,
       'x-use-test': window.__MONA_LIGHT_USE_TEST,
-      'x-open-compass': window?.__MONA_LIGHT_APP_GET_COMPASS_TOKEN ? window.__MONA_LIGHT_APP_GET_COMPASS_TOKEN() : ''
+      'x-open-compass': window?.__MONA_LIGHT_APP_GET_COMPASS_TOKEN ? window.__MONA_LIGHT_APP_GET_COMPASS_TOKEN() : '',
     };
     const appId = window.__MONA_LIGHT_APP_LIFE_CYCLE_LANUCH_QUERY.appId;
     data.data = {
@@ -66,7 +66,7 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
   const url = isLightApp ? `https://${window.__MONA_LIGNT_APP_DOMAIN_NAME}/invoke` : data.url;
 
   if ((init.method as string).toUpperCase() === 'POST') {
-    init.body = data.data ? JSON.stringify(data.data) : '';
+    init.body = data.body ? data.body : (data.data ? JSON.stringify(data.data) : '');
   }
   const promise = fetch(url as string, init);
 
@@ -456,7 +456,7 @@ export const webReLaunch: OriginApis['reLaunch'] = options => {
     if ((window.history as any)._stack && (window.history as any)._stack.length > 0) {
       (window.history as any)._stack = [];
       (window.history as any)._pos = -1;
-      webNavigateTo(options)
+      webNavigateTo(options);
     } else {
       window.location.href = options.url;
       options.success?.({ errMsg });
@@ -542,5 +542,5 @@ export const webGetSystemInfoSync: BaseApis['getSystemInfoSync'] = () => {
 export const webOpen = (url: string) => window.open(url, '_blank', 'noopener,noreferrer');
 
 export const webNavigateToApp: BaseApis['navigateToApp'] = (info, options) => {
-  window.__MONA_LIGHT_APP_NAVIGATE_CB?.(info, options)
+  window.__MONA_LIGHT_APP_NAVIGATE_CB?.(info, options);
 };
