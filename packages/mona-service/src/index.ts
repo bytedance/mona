@@ -12,4 +12,4 @@ function main() {
   service.run();
 }
 
-export default main; 
+export default main;
