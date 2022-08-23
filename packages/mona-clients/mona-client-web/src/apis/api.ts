@@ -324,3 +324,6 @@ export const monaStorage: BaseApis['monaStorage'] = window.__MONA_LIGHT_APP_LOCA
 export const exitLightApp: BaseApis['exitLightApp'] = window.__MONA_LIGHT_APP_EXIT_APP_CB
   ? window.__MONA_LIGHT_APP_EXIT_APP_CB
   : noImplementFactory('exitLightApp');
+export const lightAppLeftArrowHandle: BaseApis['lightAppLeftArrowHandle'] = window.__MONA_LIGHT_APP_LEFT_ICON_BACK
+  ? window.__MONA_LIGHT_APP_LEFT_ICON_BACK
+  : noImplementFactory('lightAppLeftArrowHandle');

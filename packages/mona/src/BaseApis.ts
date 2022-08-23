@@ -1685,6 +1685,7 @@ abstract class Api {
   abstract monaStorage: Storage | undefined;
   // exit light app
   abstract exitLightApp?(): void;
+  abstract lightAppLeftArrowHandle?(): void;
 }
 type BaseApis = Api & { [key: string | symbol | number]: (options: any) => void };
 export default BaseApis;
