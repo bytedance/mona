@@ -7,14 +7,8 @@ import TabBar from './components/TabBar';
 import { formatPath, parseSearch, GLOBAL_LIFECYCLE_STORE } from '@bytedance/mona-shared';
 
 export const WrapperComponent: React.FC<{ title: string }> = ({ children, title }) => {
-  useEffect(() => {
-    if (title) {
-      document.title = title;
-    } else {
-      document.title = 'Mona Web';
-    }
-  }, [title]);
-
+  document.title = title || 'Mona Web';
+ 
   return <>{children}</>;
 };
 
