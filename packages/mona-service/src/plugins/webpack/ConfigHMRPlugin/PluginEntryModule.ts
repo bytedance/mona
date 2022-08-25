@@ -54,20 +54,35 @@ class PluginEntryModule {
     return pageConfig.navigationBarTitleText || '';
   }
 
-  private _generatePluginEntryCode(filename: string) {
+  private _generateRoutesCode() {
     const pages = Array.from(new Set((this.configHelper.appConfig.pages || []) as string[]));
     let routesCode = pages.map((page, index) => `import Page${index} from './${page}';`).join('');
     routesCode += `const routes = [${pages
-      .map((page, index) => `{ path: '${page}', component: Page${index}, title: '${this.getPageTitle(page)}' }`)
+      .map((page, index) => `{ path: '${page}', component: createPluginPageLifecycle(Page${index}), title: '${this.getPageTitle(page)}' }`)
       .join(',')}];`;
+    return routesCode;
+  }
 
+  private _generateDefaultPathCode() {
+    const defaultPathCode = `const defaultPath = ${this.configHelper.appConfig.entryPagePath}`;
+    return defaultPathCode;
+  }
+
+  private _generateLightConfigCode() {
+    const lightConfigCode = `const light = ${JSON.stringify(this.configHelper.appConfig.light)}`;
+    return lightConfigCode;
+  }
+
+  private _generatePluginEntryCode(filename: string) {
     const code = `
       import './public-path';
-      import { createPlugin, createPluginLifeCycle } from '@bytedance/mona-runtime';
+      import { createPlugin, createPluginLifeCycle, createPluginPageLifecycle } from '@bytedance/mona-runtime';
       import App from './${path.basename(filename)}';
-      ${routesCode}
+      ${this._generateRoutesCode()}
+      ${this._generateDefaultPathCode()}
+      ${this._generateLightConfigCode()}
       
-      const { provider: p } =  createPlugin(createPluginLifeCycle(App), routes);
+      const { provider: p } =  createPlugin(createPluginLifeCycle(App), routes, { defaultPath, light });
       export const provider = p;
     `;
 

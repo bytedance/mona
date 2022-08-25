@@ -8,6 +8,6 @@ it('genEjsParamsMap', () => {
 it('ejsParamsObj', () => {
   expect(Array.from(new Set(Object.keys(ejsParamsObj))).length).toBe(
     // map & camera
-    Array.from(new Set(Object.values(ComponentType))).length - 2,
+    Array.from(new Set(Object.values(ComponentType))).length - 1,
   );
 });

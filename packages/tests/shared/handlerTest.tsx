@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import { BaseProps, HoverProps } from '@bytedance/mona';

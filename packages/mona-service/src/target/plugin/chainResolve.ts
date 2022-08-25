@@ -9,6 +9,7 @@ const extensions = ['.js', '.mjs', '.jsx', '.ts', '.tsx', '.json'];
 export function chainResolve(webpackConfig: Config, configHelper: ConfigHelper) {
   const resolve = webpackConfig.resolve;
   resolve.extensions.merge(extensions);
+  // resolve.modules.merge(['node_modules']);
   resolve.alias.merge(merge(genAlias(), configHelper.projectConfig.abilities?.alias));
 }
 

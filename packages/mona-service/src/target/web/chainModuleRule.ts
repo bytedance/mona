@@ -10,7 +10,51 @@ import createPxtransformConfig from '../utils/createPxtransformConfig';
 export function chainModuleRule(webpackConfig: Config, configHelper: ConfigHelper) {
   createJsRule(webpackConfig, configHelper);
   createCssRule(webpackConfig, configHelper);
+  createLessRule(webpackConfig, configHelper);
   createAssetRule(webpackConfig, configHelper);
+}
+
+function commonCssRule(styleRule: Config.Rule<Config.Module>, configHelper: ConfigHelper) {
+  const { projectConfig } = configHelper;
+
+  const pxtOptions = createPxtransformConfig(TARGET, projectConfig);
+
+  styleRule.use('style-loader').when(
+    configHelper.isDev,
+    r => r.loader(require.resolve('style-loader')),
+    r => r.loader(MonaPlugins.MiniCssExtractPlugin.loader),
+  );
+
+  const { typings } = projectConfig.abilities?.css || { typings: false };
+
+  typings &&
+    styleRule
+      .use('@teamsupercell/typings-for-css-modules-loader')
+      .loader(require.resolve('@teamsupercell/typings-for-css-modules-loader'));
+
+  styleRule
+    .use('cssLoader')
+    .loader(require.resolve('css-loader'))
+    .options({
+      importLoaders: 2,
+      modules: {
+        auto: true,
+        localIdentName: '[local]_[hash:base64:5]',
+      },
+    });
+  styleRule
+    .use('postcss-loader')
+    .loader(require.resolve('postcss-loader'))
+    .options({
+      postcssOptions: {
+        plugins: [
+          pxtOptions.enabled
+            ? [path.join(__dirname, '../../plugins/postcss/PostcssPxtransformer/index.js'), pxtOptions]
+            : null,
+        ].filter(p => p),
+      },
+    });
+  return styleRule;
 }
 
 function createJsRule(webpackConfig: Config, configHelper: ConfigHelper) {
@@ -45,61 +89,22 @@ function createJsRule(webpackConfig: Config, configHelper: ConfigHelper) {
     .loader(path.resolve(__dirname, '../../plugins/loaders/ImportCustomComponentLoader'))
     .options({ target: TARGET, configHelper });
 }
+
+function createLessRule(webpackConfig: Config, configHelper: ConfigHelper) {
+  const cssRule = webpackConfig.module.rule('less').test(/\.less$/i);
+  commonCssRule(cssRule, configHelper)
+    .use('less')
+    .loader(require.resolve('less-loader'))
+    .options({
+      lessOptions: {
+        javascriptEnabled: true,
+      },
+    });
+}
+
 function createCssRule(webpackConfig: Config, configHelper: ConfigHelper) {
-  const { projectConfig } = configHelper;
-
-  const pxtOptions = createPxtransformConfig(TARGET, projectConfig);
-
-  const cssRule = webpackConfig.module.rule('css').test(/\.(c|le)ss$/i);
-
-  createRule(cssRule);
-
-  function createRule(styleRule: Config.Rule<Config.Module>) {
-    styleRule.use('style-loader').when(
-      configHelper.isDev,
-      r => r.loader(require.resolve('style-loader')),
-      r => r.loader(MonaPlugins.MiniCssExtractPlugin.loader),
-    );
-
-    const { typings } = projectConfig.abilities?.css || { typings: false };
-
-    typings &&
-      styleRule
-        .use('@teamsupercell/typings-for-css-modules-loader')
-        .loader(require.resolve('@teamsupercell/typings-for-css-modules-loader'));
-
-    styleRule
-      .use('cssLoader')
-      .loader(require.resolve('css-loader'))
-      .options({
-        importLoaders: 2,
-        modules: {
-          auto: true,
-          localIdentName: '[local]_[hash:base64:5]',
-        },
-      });
-    styleRule
-      .use('postcss-loader')
-      .loader(require.resolve('postcss-loader'))
-      .options({
-        postcssOptions: {
-          plugins: [
-            require.resolve('postcss-import'),
-            pxtOptions.enabled
-              ? [path.join(__dirname, '../../plugins/postcss/PostcssPxtransformer/index.js'), pxtOptions]
-              : null,
-          ].filter(p => p),
-        },
-      });
-    styleRule
-      .use('less')
-      .loader(require.resolve('less-loader'))
-      .options({
-        lessOptions: {
-          javascriptEnabled: true,
-        },
-      });
-  }
+  const cssRule = webpackConfig.module.rule('css').test(/\.css$/i);
+  commonCssRule(cssRule, configHelper);
 }
 
 function createAssetRule(webpackConfig: Config, configHelper: ConfigHelper) {

@@ -7,14 +7,8 @@ import TabBar from './components/TabBar';
 import { formatPath, parseSearch, GLOBAL_LIFECYCLE_STORE } from '@bytedance/mona-shared';
 
 export const WrapperComponent: React.FC<{ title: string }> = ({ children, title }) => {
-  useEffect(() => {
-    if (title) {
-      document.title = title;
-    } else {
-      document.title = 'Mona Web';
-    }
-  }, [title]);
-
+  document.title = title || 'Mona Web';
+ 
   return <>{children}</>;
 };
 
@@ -46,7 +40,7 @@ export const NoMatch: React.FC<{ defaultPath: string }> = ({ defaultPath }) => {
   useEffect(() => {
     // app生命周期pageNotFound
     //@ts-ignore
-    window[GLOBAL_LIFECYCLE_STORE]?.handlePageNotFound?.(defaultPath);
+    window[GLOBAL_LIFECYCLE_STORE]?.handlePageNotFound?.({ path: defaultPath });
   }, [defaultPath]);
   return (
     <div style={maskStyle}>
@@ -74,18 +68,36 @@ export const HistorySetWrapper: React.FC = ({ children }) => {
   return <>{children}</>;
 };
 
+const defaultLightConfig: AppConfig['light'] = { mode: 'sidebar-semi-420' };
+
+function prepareLightApp(config: AppConfig['light']) {
+  // @ts-ignore
+  if (typeof window.__MONA_LIGHT_APP_INIT_CB === 'function' && typeof config === 'object') {
+    // @ts-ignore
+    window.__MONA_LIGHT_APP_INIT_CB({ ...defaultLightConfig, ...config });
+    // @ts-ignore
+    window.__MONA_LIGHT_APP_INIT_CB = undefined;
+  }
+}
+
 export function createWebApp(
   Component: React.ComponentType<any>,
   routes: { path: string; title: string; component: React.ComponentType<any> }[],
-  tabBar: AppConfig['tabBar'],
-  navBar: AppConfig['window'],
+  options?: {
+    tabBar?: AppConfig['tabBar'];
+    navBar?: AppConfig['window'];
+    defaultPath?: string;
+    light?: AppConfig['light'];
+  },
 ) {
   const render = ({ dom }: { dom: Element | Document }) => {
+    prepareLightApp(options?.light);
+
     ReactDOM.render(
       <BrowserRouter>
         <HistorySetWrapper>
           <Component>
-            <NavBar {...navBar} />
+            {options?.navBar && <NavBar {...options?.navBar} />}
             <Switch>
               {routes?.map(route => (
                 <Route
@@ -100,14 +112,14 @@ export function createWebApp(
               ))}
               {routes?.length && (
                 <Route exact path="/">
-                  <Redirect to={formatPath(routes[0].path)} />
+                  <Redirect to={formatPath(routes[0].path || options?.defaultPath || '/')} />
                 </Route>
               )}
               <Route path="*">
-                <NoMatch defaultPath={formatPath(routes[0].path)} />
+                <NoMatch defaultPath={formatPath(routes[0].path || options?.defaultPath || '/')} />
               </Route>
             </Switch>
-            <TabBar tab={tabBar} />
+            {options?.tabBar && <TabBar tab={options?.tabBar} />}
           </Component>
         </HistorySetWrapper>
       </BrowserRouter>,

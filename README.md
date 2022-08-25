@@ -222,6 +222,64 @@ import { View, Text } from '@bytedance/mona-runtime';
 - 基础组件见-[小程序组件](https://microapp.bytedance.com/docs/zh-CN/mini-app/develop/component/all)
 - 插件额外组件见-[mona-runtime 文档](https://github.com/bytedance/mona/tree/main/packages/mona-runtime)
 
+## 生命周期
+
+### 应用生命周期
+
+应用生命周期通过`hooks`的形式进行暴露，`useAppEvent`。
+
+```js
+import { useAppEvent } from '@bytedance/mona-runtime';
+
+const App = () => {
+  // onLaunch
+  useAppEvent('onLaunch', () => {});
+
+  // onShow
+  useAppEvent('onShow', () => {});
+};
+```
+
+应用的生命周期有
+
+- onLaunch
+- onShow
+- onHide
+- onError
+- onPageNotFound
+
+### 页面生命周期
+
+页面生命周期通过`hooks`的形式进行暴露，`usePageEvent`。
+
+```js
+import { usePageEvent } from '@bytedance/mona-runtime';
+
+const Page = () => {
+  // onLoad
+  usePageEvent('onLoad', () => {});
+
+  // onReady
+  usePageEvent('onReady', () => {});
+
+  // onShow
+  usePageEvent('onShow', () => {});
+};
+```
+
+应用的生命周期有
+
+- onLoad
+- onReady
+- onShow
+- onHide
+- onUnload
+- onResize
+- onPullDownRefresh
+- onReachBottom
+- onShareAppMessage
+- onPageScroll
+
 ## 目录结构
 
 ```bash
@@ -327,6 +385,7 @@ export default createAppConfig({
 | navigateToMiniProgramAppIdList | 需要跳转的小程序列表     | 否       | array    | -      |
 | permission                     | 需要部分授权弹窗的副标题 | 否       | object   | -      |
 | networkTimeout                 | 网络超时时间             | 否       | object   | -      |
+| light                          | 微应用相关配置           | 否       | object   | -      |
 
 #### entryPagePath
 
@@ -429,6 +488,15 @@ export default createAppConfig({
 | uploadFile | uploadFile 的超时时间，单位：毫秒 | 否 | number | 60000 |
 | downloadFile | downloadFile 的超时时间，单位：毫秒 | 否 | number | 60000 |
 
+#### light
+
+微应用相关配置
+| 参数 | 说明 | 是否必填 | 类型 | 默认值 |
+| ---- | ---- | ---- | ---- | ---- |
+| mode | 微应用展现方式 | 否 | 'sidebar-semi-420','sidebar-semi-600','sidebar-semi-800','sidebar-semi-960' | 'sidebar-semi-420' |
+
+mode 主要有四个值，`sidebar-semi`代表右侧抽屉弹窗，`-420`代表弹窗宽度尺寸，目前共有四种尺寸`420`，`600`，`800`，`960`
+
 ### 页面配置
 
 页面配置文件为每个页面目录下的`page.config.js`，如果 `app.config.js` 的 `window` 字段里面配置了某个页面的窗口样式，同时该页面也在自己的 `page.config.js` 文件中做了对应字段的配置的话，框架会优先采用页面里面的 `page.config.js` 相应配置项,配置文件内容如下：
@@ -522,20 +590,21 @@ return (
 
 ## query 参数获取
 
-在页面见跳转时，可以在路径后加入查询参数，如
+在页面间跳转时，可以在路径后加入查询参数，如
 
 ```js
 navigateTo('/pages/home/index?name="xiaoming"');
 ```
 
-查询参数的只可以在页面组件的`props`中进行获取，其中`search`为查询参数字符串，`searchParams`为解析后的查询参数
+查询参数的只可以在页面组件的`props`中进行获取，其中`search`为查询参数字符串，`searchParams`为解析后的查询参数。或者从页面生命周期`onLoad`中直接获取`searchParams`
 
 ```jsx
-import { PageProps } from '@bytedance/mona';
+import { PageProps, usePageEvent } from '@bytedance/mona';
 
 const Home: React.FC<PageProps> = ({ search, searchParams }) => {
   console.log(search, searchParams);
   // 输出：?name="xiaoming" { name: "xiaoming" }
+  usePageEvent('onLoad', params => console.log(params));
   return <div></div>;
 };
 ```

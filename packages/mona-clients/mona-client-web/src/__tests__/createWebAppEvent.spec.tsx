@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { useAppEvent, AppLifecycle } from '@bytedance/mona';
 import { createAppLifeCycle } from '../createWebAppEvent';
-import enzyme, { configure, mount } from 'enzyme';
+import { configure, mount } from 'enzyme';
 import mountTest from '../../../../tests/shared/mountTest';
 import { NoMatch } from '../createWebApp';
 

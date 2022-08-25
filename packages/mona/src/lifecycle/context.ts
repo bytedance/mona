@@ -1,5 +1,5 @@
 import React from 'react';
-export type Callback = (...args: any[]) => any;
+export type Callback<T = any> = (options?: T) => any;
 
 export enum AppLifecycle {
   launch = 'onLaunch',
@@ -7,6 +7,7 @@ export enum AppLifecycle {
   hide = 'onHide',
   error = 'onError',
   pageNotFound = 'onPageNotFound',
+  unhandledRejection = 'onUnhandledRejection'
 }
 
 export enum PageLifecycle {

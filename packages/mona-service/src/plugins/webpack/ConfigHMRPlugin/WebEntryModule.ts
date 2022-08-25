@@ -27,7 +27,7 @@ class WebEntryModule {
 
     const module: Record<string, string> = {};
     const virtualPath = path.join(entryPath, '..', 'app.entry.js');
-    module[virtualPath] = this._generatePluginEntryCode(entryPath);
+    module[virtualPath] = this._generateWebAppEntryCode(entryPath);
     this.name = virtualPath;
 
     return new VirtualModulesPlugin(module);
@@ -38,7 +38,7 @@ class WebEntryModule {
     this.configHelper.readAllConfig();
 
     // update module
-    const code = this._generatePluginEntryCode(this.configHelper.entryPath);
+    const code = this._generateWebAppEntryCode(this.configHelper.entryPath);
     const virtualPath = this.name;
     this.module.writeModule(virtualPath, code);
   }
@@ -72,15 +72,21 @@ class WebEntryModule {
     return navBarCode;
   }
 
-  private _generatePluginEntryCode(filename: string) {
+  private _generateDefaultPathCode() {
+    const defaultPathCode = `const defaultPath = ${this.configHelper.appConfig.entryPagePath}`;
+    return defaultPathCode;
+  }
+
+  private _generateWebAppEntryCode(filename: string) {
     const code = `
       import { createWebApp, show, createAppLifeCycle, createPageLifecycle } from '@bytedance/mona-runtime';
       import App from './${path.basename(filename)}';
       ${this._generateRoutesCode()}
       ${this._generateTabBarCode()}
       ${this._generateNavBarCode()}
+      ${this._generateDefaultPathCode()}
       
-      const { provider: p } =  createWebApp(createAppLifeCycle(App), routes, tabBar, navBar);
+      const { provider: p } =  createWebApp(createAppLifeCycle(App), routes, { tabBar, navBar, defaultPath });
       export const provider = p;
     `;
 

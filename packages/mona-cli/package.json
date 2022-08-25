@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-cli",
-  "version": "0.2.20-beta.4",
+  "version": "0.2.20",
   "displayName": "mona",
   "description": "Merchant app's developing and building tools",
   "main": "./bin/mona",
@@ -20,13 +20,14 @@
   "author": "zhangxiaowei.chris@bytedance.com",
   "license": "MIT",
   "dependencies": {
-    "@bytedance/mona-service": "0.2.20-beta.4",
-    "@bytedance/mona-shared": "0.2.20-beta.4",
+    "@bytedance/mona-service": "0.2.20",
+    "@bytedance/mona-shared": "0.2.20",
     "chalk": "^4.1.2",
     "command-line-usage": "^6.1.1",
     "compare-version": "^0.1.2",
     "compressing": "^1.5.1",
     "download-git-repo": "^3.0.2",
+    "fs-extra": "^10.1.0",
     "inquirer": "^8.1.2",
     "node-uuid": "^1.4.8",
     "open": "^8.4.0",
@@ -38,6 +39,7 @@
   "devDependencies": {
     "@types/command-line-usage": "^5.0.2",
     "@types/compare-version": "^0.1.31",
+    "@types/fs-extra": "^9.0.13",
     "@types/inquirer": "^7.3.3",
     "@types/node": "^16.4.5",
     "@types/node-uuid": "^0.0.29",

@@ -86,6 +86,12 @@ class TargetContext {
         historyApiFallback: true,
         compress: true,
         port,
+        client: {
+          overlay: {
+            errors: true,
+            warnings: false
+          }
+        }
       }
 
       const devServer = new WebpackDevServer(devServerConfig, compiler);

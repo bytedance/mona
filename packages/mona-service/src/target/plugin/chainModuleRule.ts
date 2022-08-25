@@ -12,7 +12,66 @@ import { TARGET } from './constants';
 export function chainModuleRule(webpackConfig: Config, configHelper: ConfigHelper) {
   createJsRule(webpackConfig, configHelper);
   createCssRule(webpackConfig, configHelper);
+  createLessRule(webpackConfig, configHelper);
   createAssetRule(webpackConfig, configHelper);
+}
+
+function commonCssRule(styleRule: Config.Rule<Config.Module>, configHelper: ConfigHelper) {
+  styleRule.use('style-loader').when(
+    configHelper.isDev,
+    r => r.loader(require.resolve('style-loader')),
+    r => r.loader(MonaPlugins.MiniCssExtractPlugin.loader),
+  );
+  const { typings } = configHelper.projectConfig.abilities?.css || { typings: false };
+  typings &&
+    styleRule
+      .use('@teamsupercell/typings-for-css-modules-loader')
+      .loader(require.resolve('@teamsupercell/typings-for-css-modules-loader'));
+  styleRule
+    .use('cssLoader')
+    .loader(require.resolve('css-loader'))
+    .options({
+      importLoaders: 2,
+      modules: {
+        auto: true,
+        localIdentName: '[local]_[hash:base64:5]',
+        getLocalIdent: (loaderContext: any, localIdentName: string, localName: string, options: any) => {
+          // 配合PostcssPreSelector插件
+          if (localName === configHelper.buildId) {
+            return localName;
+          }
+
+          if (!options.context) {
+            options.context = loaderContext.rootContext;
+          }
+
+          const request = path.relative(options.context, loaderContext.resourcePath).replace(/\\/g, '/');
+
+          options.content = `${options.hashPrefix + request}+${localName}`;
+
+          localIdentName = localIdentName.replace(/\[local\]/gi, localName);
+
+          const hash = loaderUtils.interpolateName(loaderContext, localIdentName, options);
+
+          return hash;
+        },
+      },
+    });
+  styleRule
+    .use('postcss-loader')
+    .loader(require.resolve('postcss-loader'))
+    .options({
+      postcssOptions: {
+        plugins: [
+          [
+            path.join(__dirname, '../../plugins/postcss/PostcssPreSelector.js'),
+            { selector: `#${configHelper.buildId}` },
+          ],
+        ],
+      },
+    });
+
+  return styleRule;
 }
 
 function createJsRule(webpackConfig: Config, configHelper: ConfigHelper) {
@@ -48,76 +107,22 @@ function createJsRule(webpackConfig: Config, configHelper: ConfigHelper) {
     .options({ target: TARGET, configHelper });
 }
 
+function createLessRule(webpackConfig: Config, configHelper: ConfigHelper) {
+  const lessRule = webpackConfig.module.rule('less').test(/\.less$/i);
+  commonCssRule(lessRule, configHelper)
+    .use('less')
+    .loader('less-loader')
+    .options({
+      lessOptions: {
+        math: 'always',
+        javascriptEnabled: true,
+      },
+    });
+}
+
 function createCssRule(webpackConfig: Config, configHelper: ConfigHelper) {
-  const { projectConfig } = configHelper;
-  const cssRule = webpackConfig.module.rule('css').test(/\.(c|le)ss$/i);
-
-  createRule(cssRule);
-
-  function createRule(styleRule: Config.Rule<Config.Module>) {
-    styleRule.use('style-loader').when(
-      configHelper.isDev,
-      r => r.loader(require.resolve('style-loader')),
-      r => r.loader(MonaPlugins.MiniCssExtractPlugin.loader),
-    );
-    const { typings } = projectConfig.abilities?.css || { typings: false };
-    typings &&
-      styleRule
-        .use('@teamsupercell/typings-for-css-modules-loader')
-        .loader(require.resolve('@teamsupercell/typings-for-css-modules-loader'));
-    styleRule
-      .use('cssLoader')
-      .loader(require.resolve('css-loader'))
-      .options({
-        importLoaders: 2,
-        modules: {
-          auto: true,
-          localIdentName: '[local]_[hash:base64:5]',
-          getLocalIdent: (loaderContext: any, localIdentName: string, localName: string, options: any) => {
-            // 配合PostcssPreSelector插件
-            if (localName === configHelper.buildId) {
-              return localName;
-            }
-
-            if (!options.context) {
-              options.context = loaderContext.rootContext;
-            }
-
-            const request = path.relative(options.context, loaderContext.resourcePath).replace(/\\/g, '/');
-
-            options.content = `${options.hashPrefix + request}+${localName}`;
-
-            localIdentName = localIdentName.replace(/\[local\]/gi, localName);
-
-            const hash = loaderUtils.interpolateName(loaderContext, localIdentName, options);
-
-            return hash;
-          },
-        },
-      });
-    styleRule
-      .use('postcss-loader')
-      .loader(require.resolve('postcss-loader'))
-      .options({
-        postcssOptions: {
-          plugins: [
-            require.resolve('postcss-import'),
-            [
-              path.join(__dirname, '../../plugins/postcss/PostcssPreSelector.js'),
-              { selector: `#${configHelper.buildId}` },
-            ],
-          ],
-        },
-      });
-    styleRule
-      .use('less')
-      .loader(require.resolve('less-loader'))
-      .options({
-        lessOptions: {
-          javascriptEnabled: true,
-        },
-      });
-  }
+  const cssRule = webpackConfig.module.rule('css').test(/\.css$/i);
+  commonCssRule(cssRule, configHelper);
 }
 
 function createAssetRule(webpackConfig: Config, configHelper: ConfigHelper) {

@@ -53,6 +53,10 @@ export default function createApp(AppComponent: React.ComponentType<any>) {
       this._callLifecycle(AppLifecycle.pageNotFound, ...rest);
     },
 
+    onUnhandledRejection(...rest: any[]) {
+      this._callLifecycle(AppLifecycle.unhandledRejection, ...rest);
+    },
+
     _callLifecycle(name: AppLifecycle, ...params: any[]) {
       const cbs = this.appLifecycleContext.lifecycle[name] || new Set([]);
       Array.from(cbs).forEach(cb => batchedUpdates(params => cb(...params), params));

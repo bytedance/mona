@@ -3,38 +3,97 @@ import {
   GetImageInfoSuccessCallbackArgs,
   RequestTask,
   BaseApis,
+  OriginApis,
   ChooseImageSuccessCallbackArgs,
   GetLocationSuccessCallbackArgs,
-  NetworkType
+  NetworkType,
+  RequestOptions,
 } from '@bytedance/mona';
 // import clipboard from 'clipboardy';
 
 import { showPreviewImage } from './components/';
 
-export const webRequest: BaseApis['request'] = (data): RequestTask => {
+export const LIGHT_APP_GET_TOEKN = '__MONA_LIGHT_APP_GET_TOEKN';
+
+export function webRequest(data: Omit<RequestOptions, 'url'>): RequestTask;
+export function webRequest(data: Omit<RequestOptions, 'fn'>): RequestTask;
+export function webRequest(data: RequestOptions): RequestTask;
+// @ts-ignore ignore
+export async function webRequest(data: Partial<RequestOptions>): RequestTask | Promise<any> {
+  if (typeof data.url === 'undefined' && typeof data.fn === 'undefined') {
+    return Promise.reject(new Error('url and funcName must be specified'));
+  }
+
+  const defaultHeader = {
+    'Content-Type': 'application/json',
+  };
+
   const controller = new AbortController();
   const init: Record<string, any> = {
-    headers: data.header ?
-      data.header :
-      {
-        'Content-Type': 'application/json',
-      },
+    headers: data.header ? data.header : defaultHeader,
     method: data.method || 'GET',
     signal: controller.signal,
   };
 
-  if ((init.method as string).toUpperCase() === 'POST') {
-    init.body = data.data ? JSON.stringify(data.data) : '';
+  if (data.credentials) init.credentials = data.credentials;
+
+  const isLightApp = data.fn && window.__MONA_LIGHT_APP_GET_TOEKN;
+  let token = '';
+  // light app
+  if (isLightApp) {
+    token = await window.__MONA_LIGHT_APP_GET_TOEKN!();
+
+    init.method = 'POST';
+    init.headers = {
+      ...init.headers,
+      'x-open-token': token,
+      'x-use-test': window.__MONA_LIGHT_USE_TEST,
+      'x-open-compass': window?.__MONA_LIGHT_APP_GET_COMPASS_TOKEN ? window.__MONA_LIGHT_APP_GET_COMPASS_TOKEN() : '',
+    };
+    const appId = window.__MONA_LIGHT_APP_LIFE_CYCLE_LANUCH_QUERY.appId;
+    data.data = {
+      appId,
+      method: data.fn,
+      param: JSON.stringify(data.data),
+    };
   }
-  const promise = fetch(data.url, init);
+
+  // if app not mirco app ,but set fn params, prompt waring
+  if (data.fn && !isLightApp) {
+    console.error(`必须在主端调用微应用${data.fn}`);
+  }
+
+  const url = isLightApp ? `https://${window.__MONA_LIGNT_APP_DOMAIN_NAME}/invoke` : data.url;
+
+  if ((init.method as string).toUpperCase() === 'POST') {
+    init.body = data.body ? data.body : (data.data ? JSON.stringify(data.data) : '');
+  }
+  const promise = fetch(url as string, init);
 
   promise
     .then(r => r.json())
     .then(r => {
+      let lightAppData;
+      if (isLightApp) {
+        if (r?.BizError?.message) {
+          const { message } = r.BizError;
+          throw new Error(message);
+          // lightAppData = { code, data: '', message };
+        } else {
+          let parseData;
+          try {
+            parseData = JSON.parse(r.data);
+            console.warn(`not valid json for ${r.data}, use origin data`);
+          } catch (e) {
+            parseData = r.data;
+          }
+          lightAppData = parseData;
+        }
+      }
       data.success?.({
         statusCode: r.status,
         header: r.headers,
-        data: r,
+        data: isLightApp ? lightAppData : r,
         // @ts-ignore ignore
         profile: '',
       });
@@ -55,9 +114,9 @@ export const webRequest: BaseApis['request'] = (data): RequestTask => {
   return {
     abort: controller.abort,
   };
-};
+}
 
-export const webChooseImage: BaseApis['chooseImage'] = (options = {}) => {
+export const webChooseImage: OriginApis['chooseImage'] = (options = {}) => {
   try {
     const input = document.createElement('input');
     input.type = 'file';
@@ -82,9 +141,9 @@ export const webChooseImage: BaseApis['chooseImage'] = (options = {}) => {
   options?.complete?.({ errMsg: 'chooseImage:complete' });
 };
 
-export const webPreviewImage: BaseApis['previewImage'] = options => showPreviewImage(options);
+export const webPreviewImage: OriginApis['previewImage'] = options => showPreviewImage(options);
 
-export const webGetImageInfo: BaseApis['getImageInfo'] = options => {
+export const webGetImageInfo: OriginApis['getImageInfo'] = options => {
   const img = document.createElement('img');
   img.src = options.src;
   img.onload = function () {
@@ -107,7 +166,7 @@ export const webGetImageInfo: BaseApis['getImageInfo'] = options => {
   };
 };
 
-export const webChooseVideo: BaseApis['chooseVideo'] = (options = {}) => {
+export const webChooseVideo: OriginApis['chooseVideo'] = (options = {}) => {
   try {
     const input = document.createElement('input');
     input.type = 'file';
@@ -173,7 +232,7 @@ export const webCreateVideoContext = (element: string) => {
   };
 };
 
-export const webGetFileInfo: BaseApis['getFileInfo'] = options => {
+export const webGetFileInfo: OriginApis['getFileInfo'] = options => {
   const xhr = new XMLHttpRequest();
   xhr.open('GET', options.filePath, true);
   const errMsg = 'getFileInfo:fail';
@@ -194,7 +253,7 @@ export const webGetFileInfo: BaseApis['getFileInfo'] = options => {
   xhr.send();
 };
 
-export const webGetStorage: BaseApis['getStorage'] = options => {
+export const webGetStorage: OriginApis['getStorage'] = options => {
   try {
     const data = webGetStorageSync(options.key);
     options.success?.({ data });
@@ -208,7 +267,7 @@ export const webGetStorage: BaseApis['getStorage'] = options => {
 
 export const webGetStorageSync: BaseApis['getStorageSync'] = key => window.localStorage.getItem(key);
 
-export const webSetStorage: BaseApis['setStorage'] = options => {
+export const webSetStorage: OriginApis['setStorage'] = options => {
   let errMsg = 'setStorage:fail';
   try {
     errMsg = 'setStorage:ok';
@@ -224,7 +283,7 @@ export const webSetStorageSync: BaseApis['setStorageSync'] = (key, value) => {
   window.localStorage.setItem(key, value);
 };
 
-export const webRemoveStorage: BaseApis['removeStorage'] = options => {
+export const webRemoveStorage: OriginApis['removeStorage'] = options => {
   const errMsg = 'removeStorage:fail';
   try {
     const errMsg = 'removeStorage:ok';
@@ -240,7 +299,7 @@ export const webRemoveStorageSync: BaseApis['removeStorageSync'] = key => {
   window.localStorage.removeItem(key);
 };
 
-export const webClearStorage: BaseApis['clearStorage'] = (options = {}) => {
+export const webClearStorage: OriginApis['clearStorage'] = (options = {}) => {
   let errMsg = 'clearStorage:fail';
   try {
     errMsg = 'clearStorage:ok';
@@ -256,7 +315,7 @@ export const webClearStorageSync: BaseApis['clearStorageSync'] = () => {
   window.localStorage.clear();
 };
 
-export const webGetStorageInfo: BaseApis['getStorageInfo'] = options => {
+export const webGetStorageInfo: OriginApis['getStorageInfo'] = options => {
   let errMsg = 'clearStorage:fail';
   try {
     errMsg = 'clearStorage:ok';
@@ -274,7 +333,7 @@ export const webGetStorageInfoSync: BaseApis['getStorageInfoSync'] = () => ({
   currentSize: 1,
 });
 
-export const webGetLocation: BaseApis['getLocation'] = options => {
+export const webGetLocation: OriginApis['getLocation'] = options => {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       position => {
@@ -284,7 +343,7 @@ export const webGetLocation: BaseApis['getLocation'] = options => {
         options?.fail?.({
           errMsg: err.message,
         });
-      }
+      },
     );
   } else {
     options.fail?.({
@@ -293,7 +352,7 @@ export const webGetLocation: BaseApis['getLocation'] = options => {
   }
 };
 
-export const webGetNetworkType: BaseApis['getNetworkType'] = (options = {}) => {
+export const webGetNetworkType: OriginApis['getNetworkType'] = (options = {}) => {
   let errMsg: NetworkType | string;
   if (navigator.connection) {
     // @ts-ignore ignore
@@ -306,7 +365,7 @@ export const webGetNetworkType: BaseApis['getNetworkType'] = (options = {}) => {
   options.complete?.({ errMsg });
 };
 
-export const webMakePhoneCall: BaseApis['makePhoneCall'] = options => {
+export const webMakePhoneCall: OriginApis['makePhoneCall'] = options => {
   const errMsg = 'makePhoneCall:fail';
   try {
     window.open(`tel:${options.phoneNumber}`);
@@ -317,7 +376,7 @@ export const webMakePhoneCall: BaseApis['makePhoneCall'] = options => {
   options.complete?.({ errMsg });
 };
 
-export const webPageScrollTo: BaseApis['pageScrollTo'] = options => {
+export const webPageScrollTo: OriginApis['pageScrollTo'] = options => {
   let errMsg: string;
   try {
     errMsg = 'pageScrollTo:ok';
@@ -336,7 +395,7 @@ export const webPageScrollTo: BaseApis['pageScrollTo'] = options => {
   options.complete?.({ errMsg });
 };
 
-export const webNavigateTo: BaseApis['navigateTo'] = options => {
+export const webNavigateTo: OriginApis['navigateTo'] = options => {
   let errMsg: string;
   try {
     errMsg = 'navigateTo:ok';
@@ -354,7 +413,7 @@ export const webNavigateTo: BaseApis['navigateTo'] = options => {
 
   options.complete?.({ errMsg });
 };
-export const webRedirectTo: BaseApis['redirectTo'] = options => {
+export const webRedirectTo: OriginApis['redirectTo'] = options => {
   let errMsg: string;
   try {
     errMsg = 'redirectTo:ok';
@@ -369,11 +428,11 @@ export const webRedirectTo: BaseApis['redirectTo'] = options => {
   options.complete?.({ errMsg });
 };
 
-export const webSwitchTab: BaseApis['switchTab'] = ({ url, success, fail, complete }) => {
+export const webSwitchTab: OriginApis['switchTab'] = ({ url, success, fail, complete }) => {
   webRedirectTo({ url, success, fail, complete });
 };
 
-export const webNavigateBack: BaseApis['navigateBack'] = (options = {}) => {
+export const webNavigateBack: OriginApis['navigateBack'] = (options = {}) => {
   let errMsg: string;
   try {
     errMsg = 'navigateBack:ok';
@@ -388,12 +447,20 @@ export const webNavigateBack: BaseApis['navigateBack'] = (options = {}) => {
   options.complete?.({ errMsg });
 };
 
-export const webReLaunch: BaseApis['reLaunch'] = options => {
+export const webReLaunch: OriginApis['reLaunch'] = options => {
   let errMsg: string;
   try {
     errMsg = 'reLaunch:ok';
-    window.location.href = options.url;
-    options.success?.({ errMsg });
+
+    // clear stack
+    if ((window.history as any)._stack && (window.history as any)._stack.length > 0) {
+      (window.history as any)._stack = [];
+      (window.history as any)._pos = -1;
+      webNavigateTo(options);
+    } else {
+      window.location.href = options.url;
+      options.success?.({ errMsg });
+    }
   } catch (err) {
     errMsg = `reLaunch:fail${err}`;
     options.fail?.({ errMsg });
@@ -402,7 +469,7 @@ export const webReLaunch: BaseApis['reLaunch'] = options => {
   options.complete?.({ errMsg });
 };
 
-export const webGetClipboardData: BaseApis['getClipboardData'] = (options = {}) => {
+export const webGetClipboardData: OriginApis['getClipboardData'] = (options = {}) => {
   const errMsg = 'setClipboardData:fail';
 
   try {
@@ -417,7 +484,7 @@ export const webGetClipboardData: BaseApis['getClipboardData'] = (options = {}) 
   }
 };
 
-export const webSetClipboardData: BaseApis['setClipboardData'] = options => {
+export const webSetClipboardData: OriginApis['setClipboardData'] = options => {
   let errMsg = 'setClipboardData:fail';
   try {
     errMsg = 'setClipboardData:ok';
@@ -431,7 +498,7 @@ export const webSetClipboardData: BaseApis['setClipboardData'] = options => {
   }
 };
 
-export const webGetSystemInfo: BaseApis['getSystemInfo'] = options => {
+export const webGetSystemInfo: OriginApis['getSystemInfo'] = options => {
   try {
     const systemInfo = webGetSystemInfoSync();
     options.success?.(systemInfo);
@@ -473,3 +540,7 @@ export const webGetSystemInfoSync: BaseApis['getSystemInfoSync'] = () => {
 };
 
 export const webOpen = (url: string) => window.open(url, '_blank', 'noopener,noreferrer');
+
+export const webNavigateToApp: BaseApis['navigateToApp'] = (info, options) => {
+  window.__MONA_LIGHT_APP_NAVIGATE_CB?.(info, options);
+};
