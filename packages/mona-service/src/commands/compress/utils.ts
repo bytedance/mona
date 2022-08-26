@@ -33,7 +33,7 @@ export async function compressDir(inputPath: string, ignoreList: string[] = []) 
   const spinner = ora('打包中...').start();
   ensureDirExist(TEMP_DIR);
   const outputPath = path.join(process.cwd(), TEMP_DIR, `publish${Date.now()}.zip`);
-  await compressToZip(inputPath, outputPath, [...ignoreList, 'node_modules', TEMP_DIR]);
+  await compressToZip(inputPath, outputPath, [...ignoreList, 'node_modules', '.git', TEMP_DIR]);
   spinner.succeed(chalk.green('打包成功'));
   return outputPath;
 }
@@ -47,7 +47,7 @@ export function compressDirToZip(inputPath: string, outputPath: string) {
 
     output.on('close', () => {
       resolve('success');
-    })
+    });
 
     // arc.on('end', () => {
     //   resolve('success');
