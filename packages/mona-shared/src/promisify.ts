@@ -1,5 +1,3 @@
-import { Parameters } from 'enzyme';
-
 type AnyFunc = (options: any) => any;
 type Result<T extends AnyFunc> = Parameters<Exclude<Parameters<T>[0], undefined>['success']>[0];
 export type PromisifyReturn<T extends AnyFunc> = (...args: Parameters<T>) => Promise<Result<T>> & ReturnType<T>;
@@ -21,3 +19,14 @@ export function promisify<T extends AnyFunc>(fn: T): PromisifyReturn<T> {
     return newRes;
   };
 }
+
+// let a = (options: { success: (res: string) => string }) => {
+//   options.success('aa');
+//   return { a: '111' };
+// };
+// type f1 = (options?: { success?: (res: string) => string }) => {
+//   a: string;
+// };
+
+// let aa: PromisifyReturn<f1> = promisify(a);
+// aa().then();
