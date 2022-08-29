@@ -47,7 +47,7 @@ const compress: IPlugin = ctx => {
       } catch (err: any) {
         console.log(chalk.red(`打包失败，${err.message}`));
       }
-    }
+    },
   );
 };
 
