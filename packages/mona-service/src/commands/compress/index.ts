@@ -41,13 +41,13 @@ const compress: IPlugin = ctx => {
           // const output = await compressDir(inputPath, args.r ? ['dist'] : []);
           console.log(chalk.green(`请在开放平台应用后台中手动上传 ${chalk.cyan(output)} 压缩包`));
         } else {
-          const output = await compressDir(inputPath, args.r ? ['dist','.git'] : []);
+          const output = await compressDir(inputPath, args.r ? ['dist', '^.git$'] : []);
           console.log(chalk.green(`请在开放平台应用后台中手动上传 ${chalk.cyan(output)} 压缩包`));
         }
       } catch (err: any) {
         console.log(chalk.red(`打包失败，${err.message}`));
       }
-    }
+    },
   );
 };
 
