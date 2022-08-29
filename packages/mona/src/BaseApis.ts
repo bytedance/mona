@@ -1,9 +1,8 @@
 // #publish
 // clone from @bytedance/mona-shared promisify to resolve recursive deps
-type ParamType<T> = T extends (arg: infer P) => any ? P : never;
 type AnyFunc = (options: any) => any;
-type Result<T extends AnyFunc> = ParamType<ParamType<T>['success']>;
-export type PromisifyReturn<T extends AnyFunc> = (options: ParamType<T>) => Promise<Result<T>> & ReturnType<T>;
+type Result<T extends AnyFunc> = Parameters<Exclude<Parameters<T>[0], undefined>['success']>[0];
+export type PromisifyReturn<T extends AnyFunc> = (...args: Parameters<T>) => Promise<Result<T>> & ReturnType<T>;
 export interface EnterOrLaunchOptions {
   path: string;
   scene: string;
@@ -1405,7 +1404,7 @@ abstract class Api {
   // 文件
   abstract saveFile: PromisifyReturn<(options: SaveFileOptions) => void>;
   abstract getFileInfo: PromisifyReturn<(options: GetFileInfoOptions) => void>;
-  abstract getSavedFileList: PromisifyReturn<(options: GetSavedFileListOptions) => void>;
+  abstract getSavedFileList: PromisifyReturn<(options?: GetSavedFileListOptions) => void>;
   abstract openDocument: PromisifyReturn<(options: OpenDocumentOptions) => void>;
   abstract removeSavedFile: PromisifyReturn<(options: RemoveSavedFileOptions) => void>;
   abstract getFileSystemManager(): FileSystemManager;
@@ -1459,7 +1458,7 @@ abstract class Api {
   abstract openEcOrderDetail: PromisifyReturn<(options: OpenEcOrderDetailOptions) => void>;
   abstract openEcIm: PromisifyReturn<(options: OpenEcImOptions) => void>;
   abstract openEcChat: PromisifyReturn<(options: OpenEcChatOptions) => void>;
-  abstract openWebcastRoom: PromisifyReturn<(options: OpenWebcastRoomOptions) => void>;
+  abstract openWebcastRoom: PromisifyReturn<(options?: OpenWebcastRoomOptions) => void>;
   abstract openDouyinProfile: PromisifyReturn<(options: OpenDouyinProfileOptions) => void>;
   abstract openEcCoupon: PromisifyReturn<(options: OpenEcCouponOptions) => void>;
   // 性能
@@ -1481,10 +1480,10 @@ abstract class Api {
   abstract removeStorageSync(key: string): void;
   abstract clearStorage: PromisifyReturn<(options?: Callbacks<CommonErrorArgs, CommonErrorArgs>) => void>;
   abstract clearStorageSync(): void;
-  abstract getStorageInfo: PromisifyReturn<(options: GetStorageInfoOptions) => void>;
+  abstract getStorageInfo: PromisifyReturn<(options?: GetStorageInfoOptions) => void>;
   abstract getStorageInfoSync(): StorageInfo;
   // 地理位置
-  abstract getLocation: PromisifyReturn<(options: GetLocationOptions) => void>;
+  abstract getLocation: PromisifyReturn<(options?: GetLocationOptions) => void>;
   abstract chooseLocation: PromisifyReturn<(options: ChooseLocationOptions) => void>;
   abstract openLocation: PromisifyReturn<(options: OpenLocationOptions) => void>;
   // 设备
@@ -1497,8 +1496,8 @@ abstract class Api {
   abstract onGetWifiList(callback: (args: { wifiList: WifiInfo[] }) => void): void;
   abstract offGetWifiList(callback: () => void): void;
   // 系统信息
-  abstract getSystemInfo: PromisifyReturn<(options: GetSystemInfoOptions) => void>;
-  abstract getSystemInfoSync(useCache?: boolean): SystemInfo;
+  abstract getSystemInfo: PromisifyReturn<(options?: GetSystemInfoOptions) => void>;
+  abstract getSystemInfoSync(): SystemInfo;
   // WIFI
   abstract getConnectedWifi: PromisifyReturn<(options?: Callbacks<WifiInfo, CommonErrorArgs>) => void>;
   // 加速度计
@@ -1525,7 +1524,7 @@ abstract class Api {
   abstract onUserCaptureScreen(callback: () => void): void;
   abstract offUserCaptureScreen(callback: () => void): void;
   abstract getScreenBrightness: PromisifyReturn<
-    (options: Callbacks<{ value: string } & CommonErrorArgs, CommonErrorArgs>) => void
+    (options?: Callbacks<{ value: string } & CommonErrorArgs, CommonErrorArgs>) => void
   >;
   abstract setScreenBrightness: PromisifyReturn<
     (options: { value: number } & Callbacks<CommonErrorArgs, CommonErrorArgs>) => void
