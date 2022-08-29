@@ -962,7 +962,9 @@ export interface SystemInfo {
   navigationBarSafeArea?: SafeArea;
 }
 
-export interface GetSystemInfoOptions extends Callbacks<SystemInfo, CommonErrorArgs> {}
+export interface GetSystemInfoOptions extends Callbacks<SystemInfo, CommonErrorArgs> {
+  useCache?: boolean;
+}
 export interface MakePhoneCallOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   phoneNumber: string;
 }
@@ -1496,7 +1498,7 @@ abstract class Api {
   abstract offGetWifiList(callback: () => void): void;
   // 系统信息
   abstract getSystemInfo: PromisifyReturn<(options: GetSystemInfoOptions) => void>;
-  abstract getSystemInfoSync(): SystemInfo;
+  abstract getSystemInfoSync(useCache?: boolean): SystemInfo;
   // WIFI
   abstract getConnectedWifi: PromisifyReturn<(options?: Callbacks<WifiInfo, CommonErrorArgs>) => void>;
   // 加速度计
