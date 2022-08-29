@@ -19,14 +19,3 @@ export function promisify<T extends AnyFunc>(fn: T): PromisifyReturn<T> {
     return newRes;
   };
 }
-
-// let a = (options: { success: (res: string) => string }) => {
-//   options.success('aa');
-//   return { a: '111' };
-// };
-// type f1 = (options?: { success?: (res: string) => string }) => {
-//   a: string;
-// };
-
-// let aa: PromisifyReturn<f1> = promisify(a);
-// aa().then();

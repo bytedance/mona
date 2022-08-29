@@ -47,7 +47,7 @@ export function compressDirToZip(inputPath: string, outputPath: string) {
 
     output.on('close', () => {
       resolve('success');
-    })
+    });
 
     // arc.on('end', () => {
     //   resolve('success');
@@ -88,7 +88,7 @@ export function compressToZip(inputPath: string, outputPath: string, ignoreList:
 
     arc.pipe(output);
 
-    const shouldIgnore = (filename: string) => ignoreList.some(p => new RegExp(p).test(filename));
+    const shouldIgnore = (filename: string) => ignoreList.some(p => new RegExp(`${p}$`).test(filename));
 
     try {
       if (fs.existsSync(inputPath)) {

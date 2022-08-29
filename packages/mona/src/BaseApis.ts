@@ -961,7 +961,9 @@ export interface SystemInfo {
   navigationBarSafeArea?: SafeArea;
 }
 
-export interface GetSystemInfoOptions extends Callbacks<SystemInfo, CommonErrorArgs> {}
+export interface GetSystemInfoOptions extends Callbacks<SystemInfo, CommonErrorArgs> {
+  useCache?: boolean;
+}
 export interface MakePhoneCallOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   phoneNumber: string;
 }
