@@ -88,7 +88,7 @@ export function compressToZip(inputPath: string, outputPath: string, ignoreList:
 
     arc.pipe(output);
 
-    const shouldIgnore = (filename: string) => ignoreList.some(p => new RegExp(`${p}$`).test(filename));
+    const shouldIgnore = (filename: string) => ignoreList.some(p => new RegExp(p).test(filename));
 
     try {
       if (fs.existsSync(inputPath)) {
