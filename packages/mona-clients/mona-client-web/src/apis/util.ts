@@ -66,7 +66,7 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
   const url = isLightApp ? `https://${window.__MONA_LIGNT_APP_DOMAIN_NAME}/invoke` : data.url;
 
   if ((init.method as string).toUpperCase() === 'POST') {
-    init.body = data.body ? data.body : (data.data ? JSON.stringify(data.data) : '');
+    init.body = data.body ? data.body : data.data ? JSON.stringify(data.data) : '';
   }
   const promise = fetch(url as string, init);
 
@@ -320,11 +320,11 @@ export const webGetStorageInfo: OriginApis['getStorageInfo'] = options => {
   try {
     errMsg = 'clearStorage:ok';
     const data = webGetStorageInfoSync();
-    options.success?.({ ...data, errMsg });
+    options?.success?.({ ...data, errMsg });
   } catch (e) {
-    options.fail?.({ errMsg });
+    options?.fail?.({ errMsg });
   }
-  options.complete?.({ errMsg });
+  options?.complete?.({ errMsg });
 };
 
 export const webGetStorageInfoSync: BaseApis['getStorageInfoSync'] = () => ({
@@ -337,7 +337,7 @@ export const webGetLocation: OriginApis['getLocation'] = options => {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       position => {
-        options.success?.(position.coords as unknown as GetLocationSuccessCallbackArgs);
+        options?.success?.(position.coords as unknown as GetLocationSuccessCallbackArgs);
       },
       err => {
         options?.fail?.({
@@ -346,7 +346,7 @@ export const webGetLocation: OriginApis['getLocation'] = options => {
       },
     );
   } else {
-    options.fail?.({
+    options?.fail?.({
       errMsg: 'The browser does not support geolocation',
     });
   }
@@ -501,11 +501,11 @@ export const webSetClipboardData: OriginApis['setClipboardData'] = options => {
 export const webGetSystemInfo: OriginApis['getSystemInfo'] = options => {
   try {
     const systemInfo = webGetSystemInfoSync();
-    options.success?.(systemInfo);
-    options.complete?.(systemInfo);
+    options?.success?.(systemInfo);
+    options?.complete?.(systemInfo);
   } catch (e) {
-    options.fail?.({ errMsg: 'getSystemInfo:fail' });
-    options.complete?.({ errMsg: 'getSystemInfo:fail' });
+    options?.fail?.({ errMsg: 'getSystemInfo:fail' });
+    options?.complete?.({ errMsg: 'getSystemInfo:fail' });
   }
 };
 

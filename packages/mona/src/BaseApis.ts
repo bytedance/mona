@@ -1331,8 +1331,8 @@ export interface OriginApis {
   setStorage: (options: SetStorageOptions) => void;
   removeStorage: (options: RemoveStorageOptions) => void;
   clearStorage: (options?: Callbacks<CommonErrorArgs, CommonErrorArgs>) => void;
-  getStorageInfo: (options: GetStorageInfoOptions) => void;
-  getLocation: (options: GetLocationOptions) => void;
+  getStorageInfo: (options?: GetStorageInfoOptions) => void;
+  getLocation: (options?: GetLocationOptions) => void;
   getNetworkType: (options?: Callbacks<{ networkType: NetworkType }, CommonErrorArgs>) => void;
   makePhoneCall: (options: MakePhoneCallOptions) => void;
   pageScrollTo: (
@@ -1345,7 +1345,7 @@ export interface OriginApis {
   reLaunch: (options: { url: string } & Callbacks<CommonErrorArgs, CommonErrorArgs>) => void;
   getClipboardData: (options?: Callbacks<{ data: string } & CommonErrorArgs, CommonErrorArgs>) => void;
   setClipboardData: (options: SetClipboardDataOptions) => void;
-  getSystemInfo: (options: GetSystemInfoOptions) => void;
+  getSystemInfo: (options?: GetSystemInfoOptions) => void;
 }
 
 abstract class Api {
