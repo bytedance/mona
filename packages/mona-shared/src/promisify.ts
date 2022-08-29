@@ -21,4 +21,3 @@ export function promisify<T extends AnyFunc>(fn: T): PromisifyReturn<T> {
     return newRes;
   };
 }
-
