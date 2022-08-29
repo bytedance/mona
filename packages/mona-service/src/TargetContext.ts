@@ -24,7 +24,6 @@ class TargetContext {
   private _defaultBuildFn() {
     const { builder } = this;
     const webpackConfig = builder.resolveWebpackConfig();
-    console.log('ttt', webpackConfig);
     if (!webpackConfig) {
       return;
     }
@@ -89,10 +88,10 @@ class TargetContext {
         client: {
           overlay: {
             errors: true,
-            warnings: false
-          }
-        }
-      }
+            warnings: false,
+          },
+        },
+      };
 
       const devServer = new WebpackDevServer(devServerConfig, compiler);
 

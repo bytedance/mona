@@ -3,18 +3,18 @@ const chalk = require('chalk');
 const path = require('path');
 const fs = require('fs-extra');
 
-let buildType = 'umd';
-try {
-  const cwd = process.cwd();
-  const maxJsonPath = path.resolve(cwd, './mona.config.ts');
-  const maxJson = fs.readFileSync(maxJsonPath, 'utf-8');
-  buildType = maxJson.indexOf('buildType: "esm"') !== -1 ? 'esm' : 'umd';
-} catch (e) {
-  console.error(e);
-}
-
 const maxComponent = ctx => {
   ctx.registerTarget('max', tctx => {
+    let buildType = 'umd';
+    try {
+      const cwd = process.cwd();
+      const maxJsonPath = path.resolve(cwd, './mona.config.ts');
+      const maxJson = fs.readFileSync(maxJsonPath, 'utf-8');
+      buildType = maxJson.indexOf('buildType: "esm"') !== -1 ? 'esm' : 'umd';
+    } catch (e) {
+      console.error(e);
+    }
+
     tctx.configureWebpack(() => {
       ctx.configHelper.projectConfig.chain = pre => pre;
       if (process.env.NODE_ENV === 'production') {
