@@ -38,6 +38,7 @@ export async function compressDir(inputPath: string, ignoreList: string[] = []) 
   return outputPath;
 }
 
+
 export function compressDirToZip(inputPath: string, outputPath: string) {
   return new Promise((resolve, reject) => {
     const output = fs.createWriteStream(outputPath);

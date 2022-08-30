@@ -40,38 +40,36 @@ const publish: IPlugin = ctx => {
 
         if (isLightApp) {
           // ask desc
-          const answer = await inquirer.prompt(
-            [
-              {
-                type: 'input',
-                name: 'version',
-                message: '请输入版本号，例如1.0.0',
-                validate(input: string) {
-                  if (!input) {
-                    return '版本号不能为空';
-                  } else if (!/^(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)$/.test(input)) {
-                    return '无效的版本号，请输入三位的版本号，如1.0.0';
-                  } else {
-                    return true;
-                  }
-                },
+          const answer = await inquirer.prompt([
+            {
+              type: 'input',
+              name: 'version',
+              message: '请输入版本号，例如1.0.0',
+              validate(input: string) {
+                if (!input) {
+                  return '版本号不能为空';
+                } else if (!/^(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)$/.test(input)) {
+                  return '无效的版本号，请输入三位的版本号，如1.0.0';
+                } else {
+                  return true;
+                }
               },
-              {
-                type: 'input',
-                name: 'desc',
-                message: '请输入版本描述',
-                validate(input: string) {
-                  if (!input) {
-                    return '版本描述不能为空';
-                  } else if (input.length > 200) {
-                    return '版本描述长度应小于200';
-                  } else {
-                    return true;
-                  }
-                },
+            },
+            {
+              type: 'input',
+              name: 'desc',
+              message: '请输入版本描述',
+              validate(input: string) {
+                if (!input) {
+                  return '版本描述不能为空';
+                } else if (input.length > 200) {
+                  return '版本描述长度应小于200';
+                } else {
+                  return true;
+                }
               },
-            ],
-          );
+            },
+          ]);
 
           // upload
           const { fileId, fileName } = await upload(output, user.userId, args);
@@ -88,24 +86,22 @@ const publish: IPlugin = ctx => {
         } else {
           const shouldEdit = latestVersionStatus && [2, 3, 5, 7].indexOf(latestVersionStatus) !== -1;
           // ask desc
-          const answer = await inquirer.prompt(
-            [
-              {
-                type: 'input',
-                name: 'desc',
-                message: '请输入版本描述',
-                validate(input: string) {
-                  if (!input) {
-                    return '版本描述不能为空';
-                  } else if (input.length > 200) {
-                    return '版本描述长度应小于200';
-                  } else {
-                    return true;
-                  }
-                },
+          const answer = await inquirer.prompt([
+            {
+              type: 'input',
+              name: 'desc',
+              message: '请输入版本描述',
+              validate(input: string) {
+                if (!input) {
+                  return '版本描述不能为空';
+                } else if (input.length > 200) {
+                  return '版本描述长度应小于200';
+                } else {
+                  return true;
+                }
               },
-            ],
-          );
+            },
+          ]);
 
           // upload
           const { fileId, fileName } = await upload(output, user.userId, args);
