@@ -31,27 +31,32 @@ const light: IPlugin = ctx => {
         const port = args.port || projectConfig.dev?.port || DEFAULT_PORT;
 
         const devServer = new WebpackDevServer(
-          {
-            static: {
-              directory: staticDir,
+          Object.assign(
+            {},
+            {
+              static: {
+                directory: staticDir,
+              },
+              headers: {
+                'Access-Control-Allow-Origin': '*',
+              },
+              hot: true,
+              open: true,
+              historyApiFallback: true,
+              compress: true,
+              port: DEFAULT_PORT,
+              allowedHosts: 'all',
+              host: DEFAULT_HOST,
+              client: {
+                overlay: {
+                  errors: true,
+                  warnings: false,
+                },
+              },
             },
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-            },
-            hot: true,
-            open: true,
-            historyApiFallback: true,
-            compress: true,
-            port,
-            allowedHosts: 'all',
-            host: DEFAULT_HOST,
-            client: {
-              overlay: {
-                errors: true,
-                warnings: false
-              }
-            }
-          },
+            projectConfig.dev,
+            { port },
+          ),
           compiler,
         );
 
