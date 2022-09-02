@@ -1,15 +1,9 @@
 const updater = require('pkg-updater');
-import minimist from 'minimist';
 
 import { IPlugin } from '../Service';
 
 // max 提示isv 升级版本
 const checkVersionPlugin: IPlugin = _ctx => {
-  const cmdArgv = minimist(process.argv.slice(2), {});
-  const { _: command, t } = cmdArgv;
-  if (t !== 'max' && !['max-start', 'max-build'].includes(command[0])) {
-    return;
-  }
   const pkg = require('../../package.json');
   updater({
     pkg: pkg,
