@@ -76,22 +76,32 @@ class TargetContext {
       const staticDir = path.join(cwd, projectConfig.output);
       const port = args.port || projectConfig.dev?.port || DEFAULT_PORT;
 
-      const devServerConfig = webpackConfig.devServer || {
-        static: {
-          directory: staticDir,
-        },
-        hot: true,
-        open: true,
-        historyApiFallback: true,
-        compress: true,
-        port,
-        client: {
-          overlay: {
-            errors: true,
-            warnings: false,
+      const devServerConfig = Object.assign(
+        {},
+        {
+          static: {
+            directory: staticDir,
+          },
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+          },
+          hot: true,
+          open: true,
+          historyApiFallback: true,
+          compress: true,
+          port: DEFAULT_PORT,
+          allowedHosts: 'all',
+          host: DEFAULT_HOST,
+          client: {
+            overlay: {
+              errors: true,
+              warnings: false,
+            },
           },
         },
-      };
+        projectConfig.dev,
+        { port },
+      );
 
       const devServer = new WebpackDevServer(devServerConfig, compiler);
 
