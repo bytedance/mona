@@ -16,7 +16,7 @@ const web: IPlugin = ctx => {
       const { isDev } = configHelper;
       const { cwd, projectConfig } = configHelper;
       webpackConfig
-        .target(WEB)
+        .target('web')
         .devtool(projectConfig.abilities?.sourceMap!)
         .mode(isDev ? 'development' : 'production')
         .entry('app.entry')
