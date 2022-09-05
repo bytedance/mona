@@ -15,7 +15,7 @@ const checkVersionPlugin: IPlugin = _ctx => {
       'Package update available:' +
       '<%=colors.red(current)%> -> <%=colors.green(latest)%>' +
       '<%if(incompatible){%>\n<%=colors.bold("This version is incompatible, you should update before continuing.")%><%}%>\n' +
-      'Run npm install @bytedance/mona-service@latest to update.',
+      'Run npm install @bytedance/mona-service@latest @bytedance/mona@latest @bytedance/mona-runtime@latest to update.',
   }).then(() => {});
 };
 
