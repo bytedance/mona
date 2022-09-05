@@ -8,13 +8,15 @@ import { MonaPlugins } from '@/plugins';
 import { chainModuleRule } from './chainModuleRule';
 import { chainOptimization } from './chainOptimization';
 import { chainPlugins } from './chainPlugins';
-import { chainResolve } from './chainResolve';
-import { TARGET } from './constants';
+import { chainResolve } from '../utils/chainResolve';
+import { Platform } from '../constants';
+
+const { MINI } = Platform;
 
 const mini: IPlugin = ctx => {
   const configHelper = ctx.configHelper;
 
-  ctx.registerTarget(TARGET, tctx => {
+  ctx.registerTarget(MINI, tctx => {
     const { cwd, projectConfig, isDev } = configHelper;
 
     tctx.overrideStartCommand(() => {
@@ -61,7 +63,7 @@ const mini: IPlugin = ctx => {
     tctx.chainWebpack(webpackConfig => {
       const miniEntryPlugin = new MonaPlugins.MiniEntryPlugin(configHelper);
       webpackConfig
-        .target('web')
+        .target(MINI)
         .devtool(projectConfig.abilities?.sourceMap!)
         .merge({ entry: miniEntryPlugin.entryModule.entries })
         .mode(isDev ? 'development' : 'production')
@@ -69,7 +71,7 @@ const mini: IPlugin = ctx => {
         .publicPath('/')
         .globalObject('tt');
       webpackConfig.externals(['@bytedance/mona-client-plugin', '@bytedance/mona-client-web']);
-      chainResolve(webpackConfig, configHelper);
+      chainResolve(webpackConfig, configHelper, MINI);
       chainModuleRule(webpackConfig, configHelper);
       chainPlugins(webpackConfig, configHelper, miniEntryPlugin);
       chainOptimization(webpackConfig, configHelper);

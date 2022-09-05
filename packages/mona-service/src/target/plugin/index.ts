@@ -1,36 +1,45 @@
 import path from 'path';
+import Config from 'webpack-chain';
 
-import { IPlugin } from '../../Service';
+import ConfigHelper from '@/ConfigHelper';
+
 import { chainModuleRule } from './chainModuleRule';
-import { chainOptimization } from './chainOptimization';
-import { chainPlugins } from './chainPlugins';
-import { chainResolve } from './chainResolve';
-import { TARGET } from './constants';
+import { Platform, genPluginHtml } from '../constants';
+import { chainOptimization } from '../utils/chainOptimization';
+import { chainPlugins } from '../utils/chainPlugins';
+import { chainResolve } from '../utils/chainResolve';
+import { IPlugin } from '../../Service';
+
+const { PLUGIN } = Platform;
+
+export const chainWebpack = (configHelper: ConfigHelper, webpackConfig: Config, target: Platform) => {
+  const { isDev } = configHelper;
+  const { cwd, projectConfig } = configHelper;
+  webpackConfig
+    .target(target)
+    .devtool(projectConfig.abilities?.sourceMap!)
+    .mode(isDev ? 'development' : 'production')
+    .entry('app.entry')
+    .add(path.join(configHelper.entryPath, '..', 'app.entry.js'));
+  webpackConfig.output
+    .path(path.join(cwd, projectConfig.output))
+    .filename('[name].[contenthash:7].js')
+    .publicPath('/')
+    .libraryTarget('umd')
+    .globalObject('window');
+  webpackConfig.output.set('chunkLoadingGlobal', `webpackJsonp_${projectConfig.projectName}_${Date.now()}`);
+  chainResolve(webpackConfig, configHelper, target);
+  chainModuleRule(webpackConfig, configHelper);
+  chainPlugins(webpackConfig, configHelper, target, genPluginHtml);
+  chainOptimization(webpackConfig, configHelper);
+};
+
 const plugin: IPlugin = ctx => {
   const configHelper = ctx.configHelper;
 
-  ctx.registerTarget(TARGET, tctx => {
+  ctx.registerTarget(PLUGIN, tctx => {
     tctx.chainWebpack(webpackConfig => {
-      const { isDev } = configHelper;
-      const { cwd, projectConfig } = configHelper;
-      // webpackConfig.devServer.hot(isDev);
-      webpackConfig
-        .target('web')
-        .devtool(projectConfig.abilities?.sourceMap!)
-        .mode(isDev ? 'development' : 'production')
-        .entry('app.entry')
-        .add(path.join(configHelper.entryPath, '..', 'app.entry.js'));
-      webpackConfig.output
-        .path(path.join(cwd, projectConfig.output))
-        .filename('[name].[contenthash:7].js')
-        .publicPath('/')
-        .libraryTarget('umd')
-        .globalObject('window');
-      webpackConfig.output.set('chunkLoadingGlobal', `webpackJsonp_${projectConfig.projectName}_${Date.now()}`);
-      chainResolve(webpackConfig, configHelper);
-      chainModuleRule(webpackConfig, configHelper);
-      chainPlugins(webpackConfig, configHelper);
-      chainOptimization(webpackConfig, configHelper);
+      chainWebpack(configHelper, webpackConfig, PLUGIN);
     });
   });
 };

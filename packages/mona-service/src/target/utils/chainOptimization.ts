@@ -2,7 +2,6 @@ import ConfigHelper from '@/ConfigHelper';
 import Config from 'webpack-chain';
 import { MonaPlugins } from '@/plugins';
 
-
 export function chainOptimization(webpackConfig: Config, configHelper: ConfigHelper) {
   const optimization = webpackConfig.optimization;
   const { TerserWebpackPlugin, CssMinimizerPlugin } = MonaPlugins;
