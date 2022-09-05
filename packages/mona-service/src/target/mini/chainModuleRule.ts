@@ -2,13 +2,15 @@ import path from 'path';
 import Config from 'webpack-chain';
 
 import ConfigHelper from '@/ConfigHelper';
-import { TARGET } from './constants';
+import { Platform } from '../constants';
 
-import { genAlias } from './chainResolve';
+import { genAlias } from '../utils/chainResolve';
 import { MonaPlugins } from '@/plugins';
 
 import createPxtransformConfig from '../utils/createPxtransformConfig';
 import { NPM_DIR, NODE_MODULES } from '../constants';
+
+const { MINI } = Platform;
 
 export function chainModuleRule(webpackConfig: Config, configHelper: ConfigHelper) {
   createJsRule(webpackConfig, configHelper);
@@ -63,7 +65,7 @@ function createJsRule(webpackConfig: Config, configHelper: ConfigHelper) {
         collectNativeComponent.bind(null, configHelper),
         projectConfig.enableMultiBuild && [
           path.join(__dirname, '../../plugins/babel/BabelPluginMultiTarget.js'),
-          { target: TARGET, context: cwd, alias: genAlias() },
+          { target: MINI, context: cwd, alias: genAlias(MINI) },
         ],
       ].filter(Boolean),
       // ! mini端，'@babel/preset-react'，不要添加 "runtime": "automatic" 配置。 可能会导致perfTemplateRender插件收集props遗漏
@@ -77,13 +79,13 @@ function createJsRule(webpackConfig: Config, configHelper: ConfigHelper) {
   jsRule
     .use('ttComponentLoader')
     .loader(path.resolve(__dirname, '../../plugins/loaders/ImportCustomComponentLoader'))
-    .options({ target: TARGET, configHelper })
+    .options({ target: MINI, configHelper })
     .end();
 }
 function createCssRule(webpackConfig: Config, configHelper: ConfigHelper) {
   const { projectConfig } = configHelper;
 
-  const pxtOptions = createPxtransformConfig(TARGET, projectConfig);
+  const pxtOptions = createPxtransformConfig(MINI, projectConfig);
 
   const styleRule = webpackConfig.module.rule('style').test(/\.(c|le)ss$/i);
   const ttssRule = webpackConfig.module.rule('ttssStyle').test(/\.ttss$/i);
