@@ -60,7 +60,7 @@ function commonCssRule(styleRule: Config.Rule<Config.Module>, configHelper: Conf
 function createJsRule(webpackConfig: Config, configHelper: ConfigHelper) {
   const { projectConfig, cwd } = configHelper;
   const jsRule = webpackConfig.module.rule('js').test(/\.((j|t)sx?)$/i);
-
+  console.log('jij8jjijiii');
   jsRule
     .use('babel')
     .loader(require.resolve('babel-loader'))
@@ -71,7 +71,7 @@ function createJsRule(webpackConfig: Config, configHelper: ConfigHelper) {
       presets: [
         [require.resolve('@babel/preset-env')],
         [require.resolve('@babel/preset-typescript')],
-        [require.resolve('@babel/preset-react')],
+        [require.resolve('@babel/preset-react'), { runtime: 'automatic' }],
       ],
       plugins: [
         // Todo
