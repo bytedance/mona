@@ -41,6 +41,7 @@ function createJsRule({ webpackConfig, configHelper, TARGET }: ModuleRule) {
       plugins: [
         // Todo
         MonaPlugins.babel.collectNativeComponent.bind(null, configHelper),
+        [require.resolve('@babel/plugin-proposal-decorators'), { legacy: true }],
         [require.resolve('@babel/plugin-transform-runtime'), { regenerator: true }],
         configHelper.isDev && require.resolve('react-refresh/babel'),
         projectConfig.enableMultiBuild && [
