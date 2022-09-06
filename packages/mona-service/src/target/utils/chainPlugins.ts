@@ -1,12 +1,19 @@
+import path from 'path';
 import Config from 'webpack-chain';
+
 import ConfigHelper from '@/ConfigHelper';
 import { MonaPlugins } from '@/plugins';
 
+import { Platform } from '../constants';
 import getEnv from '../utils/getEnv';
-import { WEB_HTML, TARGET } from './constants';
 
-export function chainPlugins(webpackConfig: Config, configHelper: ConfigHelper) {
-  const { cwd, isDev, projectConfig } = configHelper;
+export function chainPlugins(
+  webpackConfig: Config,
+  configHelper: ConfigHelper,
+  TARGET: Platform,
+  templateContent: any,
+) {
+  const { cwd, projectConfig } = configHelper;
   const {
     CopyPublicPlugin,
     ConfigHMRPlugin,
@@ -17,15 +24,28 @@ export function chainPlugins(webpackConfig: Config, configHelper: ConfigHelper) 
   } = MonaPlugins;
 
   webpackConfig.when(
-    isDev,
+    configHelper.isDev,
     w => w.plugin('ReactRefreshWebpackPlugin').use(ReactRefreshWebpackPlugin),
     w => w.plugin('MiniCssExtractPlugin').use(MiniCssExtractPlugin, [{ filename: '[name].[contenthash:7].css' }]),
   );
-  webpackConfig.plugin('ConfigHMRPlugin').use(ConfigHMRPlugin, [configHelper]);
-  webpackConfig.plugin('CopyPublicPlugin').use(CopyPublicPlugin, [configHelper]);
+  webpackConfig.plugin('ConfigHMRPlugin').use(ConfigHMRPlugin, [configHelper, true]);
+
+  // 如果是plugin，需要复制pigeon.json文件
+  TARGET === Platform.WEB
+    ? webpackConfig.plugin('CopyPublicPlugin').use(CopyPublicPlugin, [configHelper])
+    : webpackConfig.plugin('CopyPublicPlugin').use(CopyPublicPlugin, [
+        configHelper,
+        [
+          {
+            from: path.join(cwd, 'pigeon.json'),
+            noErrorOnMissing: true,
+          },
+        ],
+      ]);
+
   webpackConfig.plugin('HtmlWebpackPlugin').use(
     new HtmlWebpackPlugin({
-      templateContent: WEB_HTML,
+      templateContent: typeof templateContent === 'function' ? templateContent(configHelper.buildId) : configHelper,
       minify: {
         collapseWhitespace: true,
         keepClosingSlash: true,

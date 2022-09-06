@@ -1,22 +1,21 @@
 import path from 'path';
 
-import { IPlugin } from '../../Service';
+import { genPluginHtml, Platform } from '../constants';
 import { chainModuleRule } from '../plugin/chainModuleRule';
-import { chainOptimization } from '../plugin/chainOptimization';
-import { chainPlugins } from '../plugin/chainPlugins';
-import { chainResolve } from '../plugin/chainResolve';
+import { chainOptimization } from '../utils/chainOptimization';
+import { chainPlugins } from '../utils/chainPlugins';
+import { chainResolve } from '../utils/chainResolve';
+import { IPlugin } from '../../Service';
 
-// copy from plugin
-const TARGET = 'light';
+const { LIGHT } = Platform;
 
 const light: IPlugin = ctx => {
   const configHelper = ctx.configHelper;
 
-  ctx.registerTarget(TARGET, tctx => {
+  ctx.registerTarget(LIGHT, tctx => {
     tctx.chainWebpack(webpackConfig => {
       const { isDev } = configHelper;
       const { cwd, projectConfig } = configHelper;
-      // webpackConfig.devServer.hot(isDev);
       webpackConfig
         .target('web')
         .devtool(projectConfig.abilities?.sourceMap!)
@@ -30,9 +29,9 @@ const light: IPlugin = ctx => {
         .libraryTarget('umd')
         .globalObject('window');
       webpackConfig.output.set('chunkLoadingGlobal', `webpackJsonp_${projectConfig.projectName}_${Date.now()}`);
-      chainResolve(webpackConfig, configHelper);
+      chainResolve(webpackConfig, configHelper, LIGHT);
       chainModuleRule(webpackConfig, configHelper);
-      chainPlugins(webpackConfig, configHelper);
+      chainPlugins(webpackConfig, configHelper, LIGHT, genPluginHtml);
       chainOptimization(webpackConfig, configHelper);
     });
   });
