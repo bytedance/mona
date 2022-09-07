@@ -36,7 +36,7 @@
     "@bytedance/mona-max": "0.2.25",
     "@bytedance/mona-runtime": "0.2.25",
     "@bytedance/mona-shared": "0.2.25",
-    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.1",
+    "@pmmmwh/react-refresh-webpack-plugin": "0.5.7",
     "@svgr/webpack": "^5.5.0",
     "@teamsupercell/typings-for-css-modules-loader": "^2.5.1",
     "acorn-walk": "^8.2.0",

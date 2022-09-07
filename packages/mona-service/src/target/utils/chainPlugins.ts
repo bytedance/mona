@@ -21,6 +21,7 @@ export function chainPlugins(
     DefinePlugin,
     ReactRefreshWebpackPlugin,
     MiniCssExtractPlugin,
+    ContextReplacementPlugin,
   } = MonaPlugins;
 
   webpackConfig.when(
@@ -63,4 +64,6 @@ export function chainPlugins(
       ...(projectConfig?.abilities?.define || {}),
     },
   ]);
+
+  webpackConfig.plugin('ContextReplacementPlugin').use(ContextReplacementPlugin, [/moment[/\\]locale$/, /zh-ch/]);
 }
