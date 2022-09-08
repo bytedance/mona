@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { merge } from 'lodash';
+import merge from 'lodash.merge';
 import path from 'path';
 
 import { AppConfig, ProjectConfig as OriginProjectConfig } from '@bytedance/mona';
