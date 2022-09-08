@@ -9,7 +9,17 @@ export function chainOptimization(webpackConfig: Config, configHelper: ConfigHel
     op
       .minimize(true)
       .minimizer('TerserWebpackPlugin')
-      .use(new TerserWebpackPlugin({ parallel: true, extractComments: false }))
+      .use(
+        new TerserWebpackPlugin({
+          parallel: true,
+          extractComments: false,
+          terserOptions: {
+            compress: {
+              pure_funcs: ['console.log', 'console.debug'],
+            },
+          },
+        }),
+      )
       .end()
       .minimizer('CssMinimizerPlugin')
       .use(CssMinimizerPlugin)

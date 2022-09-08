@@ -1,4 +1,4 @@
-import { merge } from 'lodash';
+import merge from 'lodash.merge';
 import Config from 'webpack-chain';
 
 import ConfigHelper from '@/ConfigHelper';

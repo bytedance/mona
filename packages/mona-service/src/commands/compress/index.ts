@@ -1,13 +1,16 @@
+import chalk from 'chalk';
+import fs from 'fs';
+import path from 'path';
+
 import { searchScriptFile, readConfig } from '@bytedance/mona-shared';
+
+import { compressDir, compressDistDir } from './utils';
 import { ProjectConfig } from '../../ConfigHelper';
 import { IPlugin } from '../../Service';
-import chalk from 'chalk';
-import path from 'path';
-import fs from 'fs';
-import { compressDir, compressDistDir } from './utils';
+import { getConfigPath } from '../util';
 
 export function readDest(): string {
-  const projectConfigPath = path.join(process.cwd(), 'mona.config');
+  const projectConfigPath = path.join(process.cwd(), getConfigPath());
   const fullConfigPath = searchScriptFile(projectConfigPath);
   if (fs.existsSync(fullConfigPath)) {
     const projectConfig = readConfig<ProjectConfig>(fullConfigPath);

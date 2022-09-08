@@ -25,11 +25,19 @@ export function commonChainModuleRule(params: ModuleRule) {
 
 function createJsRule({ webpackConfig, configHelper, TARGET }: ModuleRule) {
   const { projectConfig, cwd } = configHelper;
-  const jsRule = webpackConfig.module.rule('js').test(/\.((j|t)sx?)$/i);
+  const jsRule = webpackConfig.module
+    .rule('js')
+    .test(/\.((j|t)sx?)$/i)
+    .exclude.add(/node_modules/)
+    .end();
+
   jsRule
+    .oneOf('babel')
     .use('babel')
     .loader(require.resolve('babel-loader'))
     .options({
+      cacheDirectory: true,
+      cacheCompression: false,
       babelrc: false,
       // https://github.com/babel/babel/issues/12731
       sourceType: 'unambiguous',
@@ -50,15 +58,16 @@ function createJsRule({ webpackConfig, configHelper, TARGET }: ModuleRule) {
         ],
       ].filter(Boolean),
     });
-  jsRule
-    .use('ttComponentLoader')
-    .loader(path.resolve(__dirname, '../../plugins/loaders/ImportCustomComponentLoader'))
-    .options({ target: TARGET, configHelper });
+  // jsRule
+  //   .use('ttComponentLoader')
+  //   .loader(path.resolve(__dirname, '../../plugins/loaders/ImportCustomComponentLoader'))
+  //   .options({ target: TARGET, configHelper });
 }
 
 function createLessRule({ webpackConfig, configHelper, commonCssRule }: ModuleRule) {
   const lessRule = webpackConfig.module.rule('less').test(/\.less$/i);
   commonCssRule(lessRule, configHelper)
+    .oneOf('less')
     .use('less')
     .loader(require.resolve('less-loader'))
     .options({
@@ -71,7 +80,7 @@ function createLessRule({ webpackConfig, configHelper, commonCssRule }: ModuleRu
 
 function createCssRule({ webpackConfig, configHelper, commonCssRule }: ModuleRule) {
   const cssRule = webpackConfig.module.rule('css').test(/\.css$/i);
-  commonCssRule(cssRule, configHelper);
+  commonCssRule(cssRule, configHelper).oneOf('css');
 }
 
 function createAssetRule({ webpackConfig, configHelper }: ModuleRule) {

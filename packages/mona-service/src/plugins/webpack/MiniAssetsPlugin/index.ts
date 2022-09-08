@@ -7,7 +7,6 @@ import createTtml from './createTtml';
 import OptimizeEntriesPlugin from '../ChunksEntriesPlugin';
 import { miniExt } from '@/target/mini/constants';
 
-// import { cloneDeep } from 'lodash';
 import monaStore from '@/target/store';
 import type { MiniComponentEntry } from '@/target/entires/miniComponentEntry';
 import { MonaPlugins } from '@/plugins';
