@@ -66,8 +66,6 @@ class TargetContext {
   private _defaultStartFn(args: Record<string, any>) {
     const { builder } = this;
     const webpackConfig = builder.resolveWebpackConfig();
-    console.log(webpackConfig, webpackConfig.output, 'webpackConfigwebpackConfig');
-    return;
     if (!webpackConfig) {
       return;
     }
