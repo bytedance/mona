@@ -1,4 +1,5 @@
 import path from 'path';
+import Config from 'webpack-chain';
 
 import { chainModuleRule } from './chainModuleRule';
 import { Platform, genPluginHtml } from '../constants';
@@ -18,7 +19,9 @@ const plugin: IPlugin = ctx => {
       const { cwd, projectConfig } = configHelper;
       webpackConfig
         .target('web')
-        .devtool(projectConfig.abilities?.sourceMap!)
+        .devtool(
+          isDev ? projectConfig.abilities?.sourceMap! || ('eval-cheap-module-source-map' as Config.DevTool) : false,
+        )
         .mode(isDev ? 'development' : 'production')
         .entry('app.entry')
         .add(path.join(configHelper.entryPath, '..', 'app.entry.js'));

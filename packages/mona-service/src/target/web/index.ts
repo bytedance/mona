@@ -1,10 +1,12 @@
 import path from 'path';
-import { IPlugin } from '../../Service';
+import Config from 'webpack-chain';
+
 import { chainModuleRule } from './chainModuleRule';
+import { Platform, WEB_HTML } from '../constants';
 import { chainOptimization } from '../utils/chainOptimization';
 import { chainPlugins } from '../utils/chainPlugins';
 import { chainResolve } from '../utils/chainResolve';
-import { Platform, WEB_HTML } from '../constants';
+import { IPlugin } from '../../Service';
 
 const { WEB } = Platform;
 
@@ -17,7 +19,9 @@ const web: IPlugin = ctx => {
       const { cwd, projectConfig } = configHelper;
       webpackConfig
         .target('web')
-        .devtool(projectConfig.abilities?.sourceMap!)
+        .devtool(
+          isDev ? projectConfig.abilities?.sourceMap! || ('eval-cheap-module-source-map' as Config.DevTool) : false,
+        )
         .mode(isDev ? 'development' : 'production')
         .entry('app.entry')
         .add(path.join(configHelper.entryPath, '../app.entry.js'));
