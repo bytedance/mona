@@ -17,17 +17,25 @@ const web: IPlugin = ctx => {
     tctx.chainWebpack(webpackConfig => {
       const { isDev } = configHelper;
       const { cwd, projectConfig } = configHelper;
+      let devtool: Config.DevTool = false;
+      if (isDev) {
+        devtool =
+          projectConfig.abilities?.sourceMap === false
+            ? false
+            : projectConfig.abilities?.sourceMap || ('eval-cheap-module-source-map' as Config.DevTool);
+      }
       webpackConfig
         .target('web')
-        .devtool(
-          isDev ? projectConfig.abilities?.sourceMap! || ('eval-cheap-module-source-map' as Config.DevTool) : false,
-        )
+        .devtool(devtool)
+        .optimization.runtimeChunk(Boolean(isDev))
+        .end()
         .mode(isDev ? 'development' : 'production')
         .entry('app.entry')
         .add(path.join(configHelper.entryPath, '../app.entry.js'));
       webpackConfig.output
+        .pathinfo(false)
         .path(path.join(cwd, projectConfig.output))
-        .filename('[name].[contenthash:7].js')
+        .filename(isDev ? '[name].js' : '[name].[contenthash:7].js')
         .publicPath('/');
       chainResolve(webpackConfig, configHelper, WEB);
       chainModuleRule(webpackConfig, configHelper);
