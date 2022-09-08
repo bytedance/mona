@@ -1,5 +1,4 @@
 import path from 'path';
-import Config from 'webpack-chain';
 
 import { chainModuleRule } from './chainModuleRule';
 import { Platform, genPluginHtml } from '../constants';
@@ -18,17 +17,8 @@ const plugin: IPlugin = ctx => {
       const { isDev } = configHelper;
       const { cwd, projectConfig } = configHelper;
 
-      let devtool: Config.DevTool = false;
-      if (isDev) {
-        devtool =
-          projectConfig.abilities?.sourceMap === false
-            ? false
-            : projectConfig.abilities?.sourceMap || ('eval-cheap-module-source-map' as Config.DevTool);
-      }
-
       webpackConfig
-        .target('web')
-        .devtool(devtool)
+        .devtool(isDev ? projectConfig.abilities?.sourceMap! : false)
         .optimization.runtimeChunk(Boolean(isDev))
         .end()
         .mode(isDev ? 'development' : 'production')

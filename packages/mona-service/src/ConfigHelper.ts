@@ -1,6 +1,7 @@
 import fs from 'fs';
 import merge from 'lodash.merge';
 import path from 'path';
+import Config from 'webpack-chain';
 
 import { AppConfig, ProjectConfig as OriginProjectConfig } from '@bytedance/mona';
 import { readConfig, searchScriptFile } from '@bytedance/mona-shared';
@@ -24,7 +25,7 @@ const genDefaultProjectConfig = (cwd: string): ProjectConfig => {
     abilities: {
       define: {},
       copy: { patterns: [] },
-      sourceMap: false,
+      sourceMap: 'eval-cheap-module-source-map' as Config.DevTool,
       alias: {
         '@': path.resolve(cwd, './src'),
       },
