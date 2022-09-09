@@ -24,7 +24,17 @@ export function chainOptimization(webpackConfig: Config, configHelper: ConfigHel
 
   optimization.when(!configHelper.isDev, op => {
     op.minimizer('TerserWebpackPlugin')
-      .use(new MonaPlugins.TerserWebpackPlugin({ parallel: true, extractComments: false }))
+      .use(
+        new MonaPlugins.TerserWebpackPlugin({
+          parallel: true,
+          extractComments: false,
+          terserOptions: {
+            compress: {
+              pure_funcs: ['console.log', 'console.debug'],
+            },
+          },
+        }),
+      )
       .end()
       .minimizer('CssMinimizerPlugin')
       .use(new MonaPlugins.CssMinimizerPlugin({ test: /\.ttss(\?.*)?$/i }));

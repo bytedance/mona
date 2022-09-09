@@ -1,10 +1,14 @@
-import path from 'path';
 import fs from 'fs';
+import merge from 'lodash.merge';
+import path from 'path';
+import Config from 'webpack-chain';
+
 import { AppConfig, ProjectConfig as OriginProjectConfig } from '@bytedance/mona';
 import { readConfig, searchScriptFile } from '@bytedance/mona-shared';
+
+import { getConfigPath } from './commands/util';
 import { DEFAULT_PORT } from './target/constants';
 import { createUniqueId } from './target/utils/utils';
-import { merge } from 'lodash';
 
 export type ProjectConfig = OriginProjectConfig & { output: string };
 
@@ -21,7 +25,7 @@ const genDefaultProjectConfig = (cwd: string): ProjectConfig => {
     abilities: {
       define: {},
       copy: { patterns: [] },
-      sourceMap: false,
+      sourceMap: 'eval-cheap-module-source-map' as Config.DevTool,
       alias: {
         '@': path.resolve(cwd, './src'),
       },
@@ -48,11 +52,12 @@ class ConfigHelper {
   }
 
   get isDev(): boolean {
-    return process.env.NODE_ENV !== 'production'
+    return process.env.NODE_ENV !== 'production';
   }
 
   readAllConfig() {
-    this.projectConfig = merge(genDefaultProjectConfig(this.cwd), this._readConfig<ProjectConfig>('mona.config'));
+    const configFile = getConfigPath();
+    this.projectConfig = merge(genDefaultProjectConfig(this.cwd), this._readConfig<ProjectConfig>(configFile));
     this.appConfig = merge(DEFAULT_APP_CONFIG, this._readConfig<AppConfig>('app.config'));
     this.entryPath = searchScriptFile(path.resolve(this.cwd, this.projectConfig.input));
   }
@@ -64,7 +69,7 @@ class ConfigHelper {
       const projectConfig = readConfig<T>(fullConfigPath);
       return projectConfig;
     }
-    return {} as T
+    return {} as T;
   }
 }
 

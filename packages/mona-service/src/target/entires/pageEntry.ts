@@ -2,7 +2,7 @@ import ConfigHelper from '../../ConfigHelper';
 import { PageConfig } from '@bytedance/mona';
 import { readConfig } from '@bytedance/mona-shared';
 import path from 'path';
-import { merge } from 'lodash';
+import merge from 'lodash.merge';
 export class PageEntry {
   readonly entry: string;
   configHelper: ConfigHelper;
