@@ -63,7 +63,6 @@ const mini: IPlugin = ctx => {
     tctx.chainWebpack(webpackConfig => {
       const miniEntryPlugin = new MonaPlugins.MiniEntryPlugin(configHelper);
       webpackConfig
-        .target(MINI)
         .devtool(projectConfig.abilities?.sourceMap!)
         .merge({ entry: miniEntryPlugin.entryModule.entries })
         .mode(isDev ? 'development' : 'production')

@@ -1,4 +1,4 @@
-import { DefinePlugin } from 'webpack';
+import { DefinePlugin, ContextReplacementPlugin } from 'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import TerserWebpackPlugin from 'terser-webpack-plugin';
@@ -20,6 +20,7 @@ import perfTemplateRender from './babel/PerfTemplateRender';
 
 export const MonaPlugins = {
   DefinePlugin,
+  ContextReplacementPlugin,
   MiniCssExtractPlugin,
   CssMinimizerPlugin,
   TerserWebpackPlugin,
