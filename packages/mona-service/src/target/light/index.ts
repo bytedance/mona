@@ -7,7 +7,7 @@ import { chainPlugins } from '../utils/chainPlugins';
 import { chainResolve } from '../utils/chainResolve';
 import { IPlugin } from '../../Service';
 
-const { LIGHT } = Platform;
+const { LIGHT, PLUGIN } = Platform;
 
 const light: IPlugin = ctx => {
   const configHelper = ctx.configHelper;
@@ -28,7 +28,7 @@ const light: IPlugin = ctx => {
         .libraryTarget('umd')
         .globalObject('window');
       webpackConfig.output.set('chunkLoadingGlobal', `webpackJsonp_${projectConfig.projectName}_${Date.now()}`);
-      chainResolve(webpackConfig, configHelper, LIGHT);
+      chainResolve(webpackConfig, configHelper, PLUGIN);
       chainModuleRule(webpackConfig, configHelper);
       chainPlugins(webpackConfig, configHelper, LIGHT, genPluginHtml);
       chainOptimization(webpackConfig, configHelper);
