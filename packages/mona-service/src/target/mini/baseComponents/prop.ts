@@ -30,6 +30,7 @@ export const basePropAlias = {
   className: 'class',
   style: 'style',
   hidden: 'hidden',
+  animation: 'animation',
 };
 
 export const hoverPropAlias = {
