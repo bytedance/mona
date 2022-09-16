@@ -6,6 +6,8 @@ export interface BaseProps<T = Touch> {
   className?: string;
   style?: React.CSSProperties;
   hidden?: boolean;
+  animation?: any;
+
   // 事件
   onTouchStart?: TouchEventHandler<T>;
   onTouchMove?: TouchEventHandler<T>;
