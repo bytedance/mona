@@ -25,11 +25,7 @@ export function commonChainModuleRule(params: ModuleRule) {
 
 function createJsRule({ webpackConfig, configHelper, TARGET }: ModuleRule) {
   const { projectConfig, cwd } = configHelper;
-  const jsRule = webpackConfig.module
-    .rule('js')
-    .test(/\.((j|t)sx?)$/i)
-    .exclude.add(/node_modules/)
-    .end();
+  const jsRule = webpackConfig.module.rule('js').test(/\.((j|t)sx?)$/i);
 
   jsRule
     .oneOf('babel')
@@ -67,7 +63,6 @@ function createJsRule({ webpackConfig, configHelper, TARGET }: ModuleRule) {
 function createLessRule({ webpackConfig, configHelper, commonCssRule }: ModuleRule) {
   const lessRule = webpackConfig.module.rule('less').test(/\.less$/i);
   commonCssRule(lessRule, configHelper)
-    .oneOf('less')
     .use('less')
     .loader(require.resolve('less-loader'))
     .options({
@@ -80,7 +75,7 @@ function createLessRule({ webpackConfig, configHelper, commonCssRule }: ModuleRu
 
 function createCssRule({ webpackConfig, configHelper, commonCssRule }: ModuleRule) {
   const cssRule = webpackConfig.module.rule('css').test(/\.css$/i);
-  commonCssRule(cssRule, configHelper).oneOf('css');
+  commonCssRule(cssRule, configHelper);
 }
 
 function createAssetRule({ webpackConfig, configHelper }: ModuleRule) {
