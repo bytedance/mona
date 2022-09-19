@@ -23,6 +23,10 @@ const templates = [
     name: 'mini（适用于商家应用小程序开发）',
     value: 'mini',
   },
+  {
+    name: 'mini-tinoe（适用于tineo互动小程序开发）',
+    value: 'tinoe',
+  },
 ];
 
 const maxTemplateTypes = [
