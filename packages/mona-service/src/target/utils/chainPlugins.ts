@@ -32,7 +32,7 @@ export function chainPlugins(
   webpackConfig.plugin('ConfigHMRPlugin').use(ConfigHMRPlugin, [configHelper, true]);
 
   // 如果是plugin，需要复制pigeon.json文件
-  TARGET === Platform.WEB
+  TARGET !== Platform.PLUGIN
     ? webpackConfig.plugin('CopyPublicPlugin').use(CopyPublicPlugin, [configHelper])
     : webpackConfig.plugin('CopyPublicPlugin').use(CopyPublicPlugin, [
         configHelper,
@@ -58,6 +58,7 @@ export function chainPlugins(
       },
     }),
   );
+
   webpackConfig.plugin('DefinePlugin').use(DefinePlugin, [
     {
       ...getEnv(TARGET, cwd),
