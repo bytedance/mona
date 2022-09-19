@@ -23,6 +23,10 @@ const templates = [
     name: 'mini（适用于商家应用小程序开发）',
     value: 'mini',
   },
+  {
+    name: 'h5（适用于移动端应用开发）',
+    value: 'h5',
+  },
 ];
 
 const maxTemplateTypes = [
