@@ -14,26 +14,23 @@ export enum Platform {
   H5 = 'h5',
 }
 
-export const genH5Html = () => {
-  return `<!DOCTYPE html>
-  <html lang="zh-cn">
-  <head>
-      <meta charset="utf-8">
-      <title></title>
-      <meta name="screen-orientation" content="portrait">
-      <meta name="x5-orientation" content="portrait">
-      <meta name="format-detection" content="telephone=no">
-      <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1, maximum-scale=1, minimal-ui, viewport-fit=cover">
-      <meta name="apple-mobile-web-app-capable" content="yes">
-  </head>
-  <body>
-      <div id="root"></div>
-  </body>
-  </html>
-  `
-  ;
-};
-
+export const H5Html =` 
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="screen-orientation" content="portrait">
+    <meta name="x5-orientation" content="portrait">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1, maximum-scale=1, minimal-ui, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+</head>
+<body>
+    <div id="root"></div>
+</body>
+</html>
+`
 export const genPluginHtml = (buildId: string) => {
   return `
   <!-- ${HTML_HANDLE_TAG} -->
