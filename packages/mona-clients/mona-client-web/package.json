@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-client-web",
-  "version": "0.2.31",
+  "version": "0.2.32",
   "description": "web for mona",
   "main": "./dist/index.js",
   "files": [
@@ -19,8 +19,8 @@
     "mona"
   ],
   "dependencies": {
-    "@bytedance/mona": "0.2.31",
-    "@bytedance/mona-shared": "0.2.31",
+    "@bytedance/mona": "0.2.32",
+    "@bytedance/mona-shared": "0.2.32",
     "ahooks": "^3.7.0",
     "classnames": "^2.3.1",
     "copyfiles": "^2.4.1"

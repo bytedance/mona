@@ -25,7 +25,9 @@ const genDefaultProjectConfig = (cwd: string): ProjectConfig => {
     abilities: {
       define: {},
       copy: { patterns: [] },
-      sourceMap: 'eval-cheap-module-source-map' as Config.DevTool,
+      sourceMap: false as Config.DevTool,
+
+      // sourceMap: 'eval-cheap-module-source-map' as Config.DevTool,
       alias: {
         '@': path.resolve(cwd, './src'),
       },

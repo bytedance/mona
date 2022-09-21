@@ -29,10 +29,12 @@ export function chainPlugins(
     w => w.plugin('ReactRefreshWebpackPlugin').use(ReactRefreshWebpackPlugin),
     w => w.plugin('MiniCssExtractPlugin').use(MiniCssExtractPlugin, [{ filename: '[name].[contenthash:7].css' }]),
   );
-  webpackConfig.plugin('ConfigHMRPlugin').use(ConfigHMRPlugin, [configHelper, true]);
+  webpackConfig
+    .plugin('ConfigHMRPlugin')
+    .use(ConfigHMRPlugin, [configHelper, [Platform.LIGHT, Platform.PLUGIN].includes(TARGET)]);
 
   // 如果是plugin，需要复制pigeon.json文件
-  TARGET === Platform.WEB
+  TARGET !== Platform.PLUGIN
     ? webpackConfig.plugin('CopyPublicPlugin').use(CopyPublicPlugin, [configHelper])
     : webpackConfig.plugin('CopyPublicPlugin').use(CopyPublicPlugin, [
         configHelper,
@@ -46,7 +48,7 @@ export function chainPlugins(
 
   webpackConfig.plugin('HtmlWebpackPlugin').use(
     new HtmlWebpackPlugin({
-      templateContent: typeof templateContent === 'function' ? templateContent(configHelper.buildId) : configHelper,
+      templateContent: typeof templateContent === 'function' ? templateContent(configHelper.buildId) : templateContent,
       minify: {
         collapseWhitespace: true,
         keepClosingSlash: true,
@@ -58,6 +60,7 @@ export function chainPlugins(
       },
     }),
   );
+
   webpackConfig.plugin('DefinePlugin').use(DefinePlugin, [
     {
       ...getEnv(TARGET, cwd),
