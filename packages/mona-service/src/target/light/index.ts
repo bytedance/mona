@@ -17,7 +17,7 @@ const light: IPlugin = ctx => {
       const { isDev } = configHelper;
       const { cwd, projectConfig } = configHelper;
       webpackConfig
-        .devtool(projectConfig.abilities?.sourceMap!)
+        .devtool(isDev ? projectConfig.abilities?.sourceMap! : false)
         .mode(isDev ? 'development' : 'production')
         .entry('app.entry')
         .add(path.join(configHelper.entryPath, '..', 'app.entry.js'));
