@@ -4,7 +4,7 @@ import { readConfig } from '@bytedance/mona-shared';
 import { PageConfig } from '@bytedance/mona';
 import ConfigHelper from '@/ConfigHelper';
 
-export const MONA_PUBLIC_PATH = '__mona_public_path__'
+export const MONA_PUBLIC_PATH = '__mona_public_path__';
 
 class PluginEntryModule {
   configHelper: ConfigHelper;
@@ -28,12 +28,11 @@ class PluginEntryModule {
     const { entryPath } = this.configHelper;
 
     const module: Record<string, string> = {};
-    const publicPathVirtualPath = path.join(entryPath, '..', 'public-path.js')
-    module[publicPathVirtualPath] = `__webpack_public_path__ = window.${MONA_PUBLIC_PATH} || '/';`
-    const virtualPath = path.join(entryPath, '..', 'app.entry.js')
+    const publicPathVirtualPath = path.join(entryPath, '..', 'public-path.js');
+    module[publicPathVirtualPath] = `__webpack_public_path__ = window.${MONA_PUBLIC_PATH} || '/';`;
+    const virtualPath = path.join(entryPath, '..', 'app.entry.js');
     module[virtualPath] = this._generatePluginEntryCode(entryPath);
     this.name = virtualPath;
-
 
     return new VirtualModulesPlugin(module);
   }
@@ -58,7 +57,12 @@ class PluginEntryModule {
     const pages = Array.from(new Set((this.configHelper.appConfig.pages || []) as string[]));
     let routesCode = pages.map((page, index) => `import Page${index} from './${page}';`).join('');
     routesCode += `const routes = [${pages
-      .map((page, index) => `{ path: '${page}', component: createPluginPageLifecycle(Page${index}), title: '${this.getPageTitle(page)}' }`)
+      .map(
+        (page, index) =>
+          `{ path: '${page}', component: createPluginPageLifecycle(Page${index}), title: '${this.getPageTitle(
+            page,
+          )}' }`,
+      )
       .join(',')}];`;
     return routesCode;
   }

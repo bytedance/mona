@@ -3,6 +3,7 @@ import VirtualModulesPlugin from '../VirtualModulesPlugin';
 import { formatAppConfig, readConfig } from '@bytedance/mona-shared';
 import { PageConfig } from '@bytedance/mona';
 import ConfigHelper from '@/ConfigHelper';
+const MONA_PUBLIC_PATH = '__mona_public_path__';
 
 class WebEntryModule {
   configHelper: ConfigHelper;
@@ -26,6 +27,8 @@ class WebEntryModule {
     const { entryPath } = this.configHelper;
 
     const module: Record<string, string> = {};
+    const publicPathVirtualPath = path.join(entryPath, '..', 'public-path.js');
+    module[publicPathVirtualPath] = `__webpack_public_path__ = window.${MONA_PUBLIC_PATH} || '/';`;
     const virtualPath = path.join(entryPath, '..', 'app.entry.js');
     module[virtualPath] = this._generateWebAppEntryCode(entryPath);
     this.name = virtualPath;
@@ -79,6 +82,7 @@ class WebEntryModule {
 
   private _generateWebAppEntryCode(filename: string) {
     const code = `
+      import './public-path';
       import { createWebApp, show, createAppLifeCycle, createPageLifecycle } from '@bytedance/mona-runtime';
       import App from './${path.basename(filename)}';
       ${this._generateRoutesCode()}

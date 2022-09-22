@@ -435,9 +435,10 @@ export const webSwitchTab: OriginApis['switchTab'] = ({ url, success, fail, comp
 export const webNavigateBack: OriginApis['navigateBack'] = (options = {}) => {
   let errMsg: string;
   try {
+    const monaHistory = window.__mona_history;
     errMsg = 'navigateBack:ok';
     const delta = options.delta || 1;
-    history.go(-delta);
+    monaHistory.go(-delta);
     options.success?.({ errMsg });
   } catch (err) {
     errMsg = `navigateBack:fail${err}`;

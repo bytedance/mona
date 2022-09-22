@@ -14,9 +14,9 @@ export enum Platform {
   H5 = 'h5',
 }
 
-export const H5Html =` 
+export const H5Html = `
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="zh-cn" style="font-size: 10vw">
 <head>
     <meta charset="utf-8">
     <title></title>
@@ -30,7 +30,14 @@ export const H5Html =`
     <div id="root"></div>
 </body>
 </html>
-`
+`;
+// export const H5Html = `
+// <div id="root"></div>
+
+// `;
+export const H5ProdHtml = ` 
+<div id="root"></div>
+`;
 export const genPluginHtml = (buildId: string) => {
   return `
   <!-- ${HTML_HANDLE_TAG} -->

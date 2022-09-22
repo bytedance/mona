@@ -46,20 +46,23 @@ export function chainPlugins(
         ],
       ]);
 
-  webpackConfig.plugin('HtmlWebpackPlugin').use(
-    new HtmlWebpackPlugin({
-      templateContent: typeof templateContent === 'function' ? templateContent(configHelper.buildId) : templateContent,
-      minify: {
-        collapseWhitespace: true,
-        keepClosingSlash: true,
-        removeComments: false,
-        removeRedundantAttributes: true,
-        removeScriptTypeAttributes: true,
-        removeStyleLinkTypeAttributes: true,
-        useShortDoctype: true,
-      },
-    }),
-  );
+  if (process.env.ENTRY_TYPE !== 'js') {
+    webpackConfig.plugin('HtmlWebpackPlugin').use(
+      new HtmlWebpackPlugin({
+        templateContent:
+          typeof templateContent === 'function' ? templateContent(configHelper.buildId) : templateContent,
+        minify: {
+          collapseWhitespace: true,
+          keepClosingSlash: true,
+          removeComments: false,
+          removeRedundantAttributes: true,
+          removeScriptTypeAttributes: true,
+          removeStyleLinkTypeAttributes: true,
+          useShortDoctype: true,
+        },
+      }),
+    );
+  }
 
   webpackConfig.plugin('DefinePlugin').use(DefinePlugin, [
     {

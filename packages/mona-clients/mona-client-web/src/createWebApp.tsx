@@ -92,7 +92,7 @@ export function createWebApp(
 ) {
   const render = ({ dom }: { dom: Element | Document }) => {
     prepareLightApp(options?.light);
-
+    
     ReactDOM.render(
       <BrowserRouter>
         <HistorySetWrapper>

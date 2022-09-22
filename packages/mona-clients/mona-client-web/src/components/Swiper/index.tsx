@@ -1,7 +1,6 @@
 // TODO: rewrite this component
 import React, { useEffect, useRef } from 'react';
 import { SwiperProps } from '@bytedance/mona';
-import cs from 'classnames';
 import styles from './index.module.less';
 import { useHandlers } from '../hooks';
 import { useSlide, useTouch } from './hooks';
@@ -96,7 +95,7 @@ const Swiper: React.FC<SwiperProps> = props => {
         {children}
       </div>
       {indicatorDots && (
-        <div className={cs(styles.dots, { [styles.horizontal]: !vertical })} ref={dotsRef}>
+        <div className={`${styles.dots} ${!vertical ? styles.horizontal : ''}`} ref={dotsRef}>
           {(function () {
             const result = [];
             for (let i = 0; i < total; i++) {
@@ -105,7 +104,7 @@ const Swiper: React.FC<SwiperProps> = props => {
                   className={styles.dot}
                   style={{ backgroundColor: activeIndex === i ? indicatorActiveColor : indicatorColor }}
                   key={i}
-                ></span>
+                ></span>,
               );
             }
             return result;

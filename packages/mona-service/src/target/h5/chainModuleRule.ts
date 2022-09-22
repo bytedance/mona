@@ -18,7 +18,7 @@ function commonCssRule(styleRule: Config.Rule<Config.Module>, configHelper: Conf
     r => r.loader(require.resolve('style-loader')),
     r => r.loader(MonaPlugins.MiniCssExtractPlugin.loader),
   );
-
+  // styleRule.use('style-loader').loader(require.resolve('style-loader')
   const { typings } = projectConfig.abilities?.css || { typings: false };
 
   typings &&
