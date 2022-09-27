@@ -2,7 +2,7 @@ import path from 'path';
 
 import { H5Html, Platform } from '../constants';
 import { chainModuleRule } from './chainModuleRule';
-import { chainOptimization } from '../utils/chainOptimization';
+import { chainOptimization } from './chainOptimization';
 import { chainPlugins } from '../utils/chainPlugins';
 import { chainResolve } from '../utils/chainResolve';
 import { IPlugin } from '../../Service';

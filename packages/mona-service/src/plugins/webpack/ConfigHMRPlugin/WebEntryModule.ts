@@ -54,13 +54,29 @@ class WebEntryModule {
 
   private _generateRoutesCode() {
     const pages = Array.from(new Set((this.configHelper.appConfig.pages || []) as string[]));
-    let routesCode = pages.map((page, index) => `import Page${index} from './${page}';`).join('');
-    routesCode += `const routes = [${pages
-      .map(
-        (page, index) =>
-          `{ path: '${page}', component: createPageLifecycle(Page${index}), title: '${this.getPageTitle(page)}' }`,
-      )
-      .join(',')}];`;
+    const HomePage = pages[0];
+    let routesCode;
+    if (HomePage) {
+      routesCode = `import HomePage from './${HomePage}';
+   `;
+    }
+
+    routesCode += `const routes = [
+     ${
+       HomePage
+         ? ` { path: '${HomePage}', component: createPageLifecycle(HomePage), title: '${this.getPageTitle(
+             HomePage,
+           )}' },`
+         : ''
+     }
+      ${pages
+        .slice(1)
+        .map(page => {
+          return `{ path: '${page}', component: createPageLifecycle(lazy(() => import(/* webpackChunkName: "${page}" */ './${page}'))), title: '${this.getPageTitle(
+            page,
+          )}' }`;
+        })
+        .join(',')}];`;
     return routesCode;
   }
 
@@ -83,7 +99,7 @@ class WebEntryModule {
   private _generateWebAppEntryCode(filename: string) {
     const code = `
       import './public-path';
-      import { createWebApp, show, createAppLifeCycle, createPageLifecycle } from '@bytedance/mona-runtime';
+      import { createWebApp, show, createAppLifeCycle, createPageLifecycle, lazy } from '@bytedance/mona-runtime';
       import App from './${path.basename(filename)}';
       ${this._generateRoutesCode()}
       ${this._generateTabBarCode()}
