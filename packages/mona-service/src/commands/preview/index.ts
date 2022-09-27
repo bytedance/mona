@@ -60,7 +60,7 @@ const preview: IPlugin = ctx => {
             processProjectData,
             createTestVersionFactory(request),
             generateH5Qrcode,
-            printQrcode,
+            printQrcode('抖店APP'),
           )(ctx);
           break;
         default:
