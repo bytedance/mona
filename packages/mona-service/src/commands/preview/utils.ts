@@ -28,16 +28,18 @@ interface CreateTestAppVersionResp {
 }
 
 // pipe func
-export const pipe = (...funcs: Function[]) => (input?: any) =>
-  funcs.reduce((prev, cur) => (i: any) => {
-    const res = prev(i);
-    const isPromise = typeof res?.then === 'function';
-    if (isPromise) {
-      return res.then((r: any) => cur(r));
-    } else {
-      return cur(res);
-    }
-  })(input);
+export const pipe =
+  (...funcs: Function[]) =>
+  (input?: any) =>
+    funcs.reduce((prev, cur) => (i: any) => {
+      const res = prev(i);
+      const isPromise = typeof res?.then === 'function';
+      if (isPromise) {
+        return res.then((r: any) => cur(r));
+      } else {
+        return cur(res);
+      }
+    })(input);
 
 // watch dir
 export function watch(dir: string, options: { open: boolean }, callback: Function) {
@@ -60,18 +62,17 @@ export function watch(dir: string, options: { open: boolean }, callback: Functio
   }
 }
 
-export const createTestVersionFactory = (request: Request<CreateTestAppVersionResp>) => async (
-  params: Record<string, string | FileType>,
-) => {
-  const { form, requestOptions } = await createUploadForm(params);
-  const res = await request('/captain/app/version/test/create', {
-    method: 'POST',
-    data: form,
-    ...requestOptions,
-  });
+export const createTestVersionFactory =
+  (request: Request<CreateTestAppVersionResp>) => async (params: Record<string, string | FileType>) => {
+    const { form, requestOptions } = await createUploadForm(params);
+    const res = await request('/captain/app/version/test/create', {
+      method: 'POST',
+      data: form,
+      ...requestOptions,
+    });
 
-  return { appId: params.appId, version: res.version };
-};
+    return { appId: params.appId, version: res.version };
+  };
 
 function formatNumberToTwoDigit(number: number) {
   return `0${number}`.slice(-2);
@@ -89,38 +90,40 @@ export function getFormatedExpireTime(seconds: number) {
   return `${year}/${month}/${day} ${hour}:${minute}:${second}`;
 }
 
-export function printQrcode(params: { qrcode: string; expireTime: number }) {
-  console.log(params.qrcode);
-  console.log(chalk.yellow(`二维码 ${getFormatedExpireTime(params.expireTime)} 到期，请尽快使用抖音进行扫码预览！`));
+export function printQrcode(appName: string = '抖音') {
+  return (params: { qrcode: string; expireTime: number }) => {
+    console.log(params.qrcode);
+    console.log(
+      chalk.yellow(`二维码 ${getFormatedExpireTime(params.expireTime)} 到期，请尽快使用${appName}进行扫码预览！`),
+    );
+  };
 }
 
-export const generateQrcodeFactory = (request: Request<GetDynamicTestUrlResp>) => async (params: {
-  appId: string;
-  version: string;
-}) => {
-  const res = await request('/captain/app/version/getDynamicTestUrl', {
-    method: 'GET',
-    params: {
-      ...params,
-      previewScene: 2,
-    },
-  });
-
-  const preViewCodeUrl = `aweme://goods/store?sec_shop_id=${res?.secShopId}&token=${res?.token}&tmp_id=${res?.tmpId}&enter_from=scan&entrance_location=scan&pass_through_api=%7B%22isJump%22%3A1%7D`;
-  const qrcode = await new Promise((resolve, reject) => {
-    // @ts-ignore
-    // qrcode render failed in windows terminal when options with small: true
-    QRCode.toString(preViewCodeUrl, { type: 'terminal', small: !isWin }, (err, url) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(url);
-      }
+export const generateQrcodeFactory =
+  (request: Request<GetDynamicTestUrlResp>) => async (params: { appId: string; version: string }) => {
+    const res = await request('/captain/app/version/getDynamicTestUrl', {
+      method: 'GET',
+      params: {
+        ...params,
+        previewScene: 2,
+      },
     });
-  });
 
-  return { qrcode, expireTime: res.expireTime };
-};
+    const preViewCodeUrl = `aweme://goods/store?sec_shop_id=${res?.secShopId}&token=${res?.token}&tmp_id=${res?.tmpId}&enter_from=scan&entrance_location=scan&pass_through_api=%7B%22isJump%22%3A1%7D`;
+    const qrcode = await new Promise((resolve, reject) => {
+      // @ts-ignore
+      // qrcode render failed in windows terminal when options with small: true
+      QRCode.toString(preViewCodeUrl, { type: 'terminal', small: !isWin }, (err, url) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(url);
+        }
+      });
+    });
+
+    return { qrcode, expireTime: res.expireTime };
+  };
 
 export function buildMaxComponent(ctx: PluginContext) {
   console.log('build');
@@ -130,7 +133,7 @@ export function buildMaxComponent(ctx: PluginContext) {
 
 // process max component data
 export async function processMaxComponentData(ctx: PluginContext) {
-  const helper = ctx.configHelper;
+  const helper = ctx.configHelper || ctx.builder?.configHelper;
   const { appId = '', output } = helper.projectConfig;
 
   // compress
@@ -192,6 +195,49 @@ export function getUrl(params: { ctx: PluginContext; platform: string; platformU
   const appId = config.appId;
   const query = `?isLightPreview=true&appId=${appId}&port=${port}`;
   return `${url}${query}`;
+}
+
+export function buildProject(_target: string) {
+  return (ctx: PluginContext) => {
+    console.log('build');
+    execSync(`yarn build`, {});
+
+    // execSync(`mona-service build -t ${target ?? 'h5'} `, {});
+    return ctx;
+  };
+}
+export const generateH5Qrcode = async (params: { appId: string; version: string }) => {
+  const preViewCodeUrl = `https://op.jinritemai.com/ecom-app/h5?appId=${params?.appId}&version=${params?.version}&isPreview=true`;
+  const qrcode = await new Promise((resolve, reject) => {
+    // @ts-ignore
+    // qrcode render failed in windows terminal when options with small: true
+    QRCode.toString(preViewCodeUrl, { type: 'terminal', small: !isWin }, (err, url) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(url);
+      }
+    });
+  });
+
+  return { qrcode, expireTime: Date.now() / 1000 + 8 * 60 * 60 };
+};
+
+// process max component data
+export async function processProjectData(ctx: PluginContext) {
+  const helper = ctx?.configHelper || ctx.builder?.configHelper;
+
+  const { appId = '', output } = helper.projectConfig;
+
+  // compress
+  const filePath = await compressDistDir(output);
+
+  return {
+    appId,
+    testFile: {
+      filePath,
+    },
+  };
 }
 
 export function openUrlWithBrowser(url: string) {

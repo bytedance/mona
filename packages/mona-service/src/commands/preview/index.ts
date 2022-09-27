@@ -10,6 +10,9 @@ import {
   getPlatform,
   getUrl,
   openUrlWithBrowser,
+  buildProject,
+  generateH5Qrcode,
+  processProjectData,
 } from './utils';
 import { generateRequestFromOpen, requestBeforeCheck } from '../common';
 import chalk from 'chalk';
@@ -39,7 +42,7 @@ const preview: IPlugin = ctx => {
       const request = generateRequestFromOpen(args, user.cookie);
 
       // common steps for all target: compress => upload
-      const maxProcess = [createTestVersionFactory(request), generateQrcodeFactory(request), printQrcode];
+      const maxProcess = [createTestVersionFactory(request), generateQrcodeFactory(request), printQrcode('抖音')];
 
       switch (args.target) {
         case 'max':
@@ -50,6 +53,15 @@ const preview: IPlugin = ctx => {
           break;
         case 'light':
           pipe(getPlatform, getUrl, openUrlWithBrowser)({ ctx, args });
+          break;
+        case 'h5':
+          pipe(
+            buildProject('h5'),
+            processProjectData,
+            createTestVersionFactory(request),
+            generateH5Qrcode,
+            printQrcode,
+          )(ctx);
           break;
         default:
           console.log(chalk.red(`${args.target}端目前暂不支持preview命令，敬请期待`));

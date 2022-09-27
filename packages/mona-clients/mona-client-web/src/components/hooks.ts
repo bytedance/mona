@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
 import { BaseProps, HoverProps, Touch } from '@bytedance/mona';
-import cs from 'classnames';
 import { formatMouseEvent, formatTouchEvent, formatTransitionEvent, formatAnimationEvent } from './utils';
 
 const LONG_DURATION = 350;
