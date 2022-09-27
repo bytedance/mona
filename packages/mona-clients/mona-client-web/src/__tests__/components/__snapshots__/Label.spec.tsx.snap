@@ -3,7 +3,7 @@
 exports[`web component: Label should have right properties 1`] = `
 LoadedCheerio {
   "0": <label
-    class="label class-name"
+    class="label class-name  "
     for="hello"
     id="hello"
     style="color: red;"
@@ -44,7 +44,7 @@ LoadedCheerio {
 exports[`web component: Label should render correctly 1`] = `
 LoadedCheerio {
   "0": <label
-    class="label"
+    class="label   "
   />,
   "_root": LoadedCheerio {
     "0": Document {

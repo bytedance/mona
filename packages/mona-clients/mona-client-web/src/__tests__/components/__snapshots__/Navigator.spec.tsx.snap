@@ -3,7 +3,7 @@
 exports[`web component: Navigator should have right properties 1`] = `
 LoadedCheerio {
   "0": <a
-    class="nav class-name"
+    class="nav class-name  "
     style="color: red;"
   >
     hello
@@ -42,7 +42,7 @@ LoadedCheerio {
 exports[`web component: Navigator should render correctly 1`] = `
 LoadedCheerio {
   "0": <a
-    class="nav"
+    class="nav   "
   />,
   "_root": LoadedCheerio {
     "0": Document {

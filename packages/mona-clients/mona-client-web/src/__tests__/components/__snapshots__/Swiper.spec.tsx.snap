@@ -3,7 +3,7 @@
 exports[`web component: Swiper should have right properties 1`] = `
 LoadedCheerio {
   "0": <div
-    class="swiper class-name"
+    class="swiper class-name  "
     style="color: red;"
   >
     <div

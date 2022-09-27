@@ -3,7 +3,7 @@
 exports[`web component: ScrollView should have right properties 1`] = `
 LoadedCheerio {
   "0": <div
-    class="container class-name"
+    class="container class-name  "
     style="color: red;"
   >
     <div
@@ -47,7 +47,7 @@ LoadedCheerio {
 exports[`web component: ScrollView should render correctly 1`] = `
 LoadedCheerio {
   "0": <div
-    class="container"
+    class="container   "
   >
     <div
       class="container"

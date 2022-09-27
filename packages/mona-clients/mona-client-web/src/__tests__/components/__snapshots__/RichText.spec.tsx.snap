@@ -3,7 +3,7 @@
 exports[`web component: RichText should have right properties 1`] = `
 LoadedCheerio {
   "0": <div
-    class="class-name"
+    class=" class-name  "
     style="color: red;"
   />,
   "_root": LoadedCheerio {
@@ -40,7 +40,7 @@ LoadedCheerio {
 exports[`web component: RichText should render correctly 1`] = `
 LoadedCheerio {
   "0": <div
-    class=""
+    class="   "
   />,
   "_root": LoadedCheerio {
     "0": Document {

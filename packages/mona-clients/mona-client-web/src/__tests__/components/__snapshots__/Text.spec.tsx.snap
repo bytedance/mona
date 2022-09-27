@@ -3,7 +3,7 @@
 exports[`web component: Text should have right properties 1`] = `
 LoadedCheerio {
   "0": <span
-    class="noselectable"
+    class="noselectable   "
   >
     hello
   </span>,
@@ -41,7 +41,7 @@ LoadedCheerio {
 exports[`web component: Text should render correctly 1`] = `
 LoadedCheerio {
   "0": <span
-    class="noselectable"
+    class="noselectable   "
   />,
   "_root": LoadedCheerio {
     "0": Document {

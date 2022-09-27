@@ -3,7 +3,7 @@
 exports[`web component: CheckboxGroup should have right properties 1`] = `
 LoadedCheerio {
   "0": <div
-    class="checkbox class-name"
+    class="checkbox class-name  "
     name="group"
     style="color: red;"
   >
@@ -11,7 +11,7 @@ LoadedCheerio {
       class="wrapper"
     >
       <div
-        class="input"
+        class="input "
         style="border-color: #f85959;"
       >
         <input
@@ -57,16 +57,16 @@ LoadedCheerio {
 exports[`web component: CheckboxGroup should render correctly 1`] = `
 LoadedCheerio {
   "0": <div
-    class=""
+    class="   "
   >
     <div
-      class="checkbox"
+      class="checkbox   "
     >
       <div
         class="wrapper"
       >
         <div
-          class="input"
+          class="input "
           style="border-color: #f85959;"
         >
           <input
@@ -79,13 +79,13 @@ LoadedCheerio {
       </div>
     </div>
     <div
-      class="checkbox"
+      class="checkbox   "
     >
       <div
         class="wrapper"
       >
         <div
-          class="input"
+          class="input "
           style="border-color: #f85959;"
         >
           <input
@@ -98,13 +98,13 @@ LoadedCheerio {
       </div>
     </div>
     <div
-      class="checkbox"
+      class="checkbox   "
     >
       <div
         class="wrapper"
       >
         <div
-          class="input"
+          class="input "
           style="border-color: #f85959;"
         >
           <input

@@ -3,7 +3,7 @@
 exports[`web component: Slider should have right properties 1`] = `
 LoadedCheerio {
   "0": <div
-    class="slider class-name"
+    class="slider class-name  "
     style="color: red;"
   >
     <div
@@ -69,7 +69,7 @@ LoadedCheerio {
 exports[`web component: Slider should render correctly 1`] = `
 LoadedCheerio {
   "0": <div
-    class="slider"
+    class="slider   "
   >
     <div
       class="wrapper"

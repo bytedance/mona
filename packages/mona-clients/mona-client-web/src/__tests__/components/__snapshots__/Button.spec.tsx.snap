@@ -3,7 +3,7 @@
 exports[`web component: Button should have right properties 1`] = `
 LoadedCheerio {
   "0": <button
-    class="button class-name"
+    class="button class-name  "
     data-mona-loading="true"
     data-mona-size="mini"
     data-mona-type="primary"
@@ -47,7 +47,7 @@ LoadedCheerio {
 exports[`web component: Button should render correctly 1`] = `
 LoadedCheerio {
   "0": <button
-    class="button"
+    class="button   "
     data-mona-loading="false"
     data-mona-size="default"
   >

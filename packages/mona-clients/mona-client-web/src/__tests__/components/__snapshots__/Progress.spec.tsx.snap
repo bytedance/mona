@@ -3,7 +3,7 @@
 exports[`web component: Progress should have right properties 1`] = `
 LoadedCheerio {
   "0": <div
-    class="progress class-name"
+    class="progress class-name  "
     style="color: red; background-color: yellow; height: 10px;"
   >
     <div
@@ -45,11 +45,11 @@ LoadedCheerio {
 exports[`web component: Progress should render correctly 1`] = `
 LoadedCheerio {
   "0": <div
-    class="progress"
+    class="progress   "
     style="background-color: rgb(235, 235, 235); height: 6px;"
   >
     <div
-      class="inner"
+      class="inner "
       style="width: 0%; background-color: rgb(248, 89, 89); transition-duration: 0ms;"
     />
   </div>,
