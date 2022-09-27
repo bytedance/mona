@@ -31,10 +31,7 @@ export const H5Html = `
 </body>
 </html>
 `;
-// export const H5Html = `
-// <div id="root"></div>
 
-// `;
 export const H5ProdHtml = ` 
 <div id="root"></div>
 `;
