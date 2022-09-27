@@ -191,9 +191,9 @@ export function useHandlers(props: BaseProps<Touch> & HoverProps) {
 
   const handleClassName = (name?: string | string[]) => {
     if (Array.isArray(name)) {
-      name = name.filter(n => n).join(' ');
+      name = name.join(' ');
     }
-    return `${name ?? ''} ${className ?? ''} ${hoverClassName && isHover ? hoverClassName : ''} `;
+    return `${name ?? ''} ${className ?? ''} ${hoverClassName && isHover ? hoverClassName : ''} `.trim() || undefined;
   };
 
   return {
