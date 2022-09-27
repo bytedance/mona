@@ -89,7 +89,7 @@ const Swiper: React.FC<SwiperProps> = props => {
         ref={wrapperRef}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
-        className={cs(vertical ? styles['vertical-wrapper'] : styles.wrapper)}
+        className={vertical ? styles['vertical-wrapper'] : styles.wrapper}
         style={{ transitionDuration: '0ms', transform: 'translate3d(10px, 0px, 0px)' }}
       >
         {children}

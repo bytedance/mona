@@ -32,7 +32,7 @@ const Switch: React.FC<SwitchProps> = props => {
       ) : (
         <div className={styles.wrapper}>
           <div
-            className={cs(styles.input, { [styles.checked]: isChecked })}
+            className={`${styles.input} ${isChecked ? styles.checked : ''}`}
             style={{ borderColor: isChecked ? color : undefined, backgroundColor: color }}
           >
             <i className={styles.before}></i>
