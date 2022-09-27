@@ -1,4 +1,4 @@
-import { formatPath } from '@bytedance/mona-shared';
+import formatPath from '@bytedance/mona-shared/dist/formatPath';
 import {
   GetImageInfoSuccessCallbackArgs,
   RequestTask,

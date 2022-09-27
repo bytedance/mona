@@ -1,5 +1,5 @@
 import { redirectTo } from '../../apis/api';
-import { formatPath } from '@bytedance/mona-shared';
+import formatPath from '@bytedance/mona-shared/dist/formatPath';
 import { BaseApis } from '@bytedance/mona';
 import EventEmitter from '../../EventEmitter';
 import { useHistory } from 'react-router';
