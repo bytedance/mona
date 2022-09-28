@@ -29,10 +29,10 @@ const mobile: IPlugin = ctx => {
         .filename('[name].js')
         .publicPath('/');
 
-      if (process.env.ENTRY_TYPE === 'js' && !configHelper.isDev) {
-        // webpackConfig.externals({ react: 'react', 'react-dom': 'react-dom', 'react-router-dom': 'react-router-dom' });
-        // webpackConfig.output.libraryTarget('umd');
-      }
+      // if (process.env.ENTRY_TYPE === 'js' && !configHelper.isDev) {
+      //   // webpackConfig.externals({ react: 'react', 'react-dom': 'react-dom', 'react-router-dom': 'react-router-dom' });
+      //   // webpackConfig.output.libraryTarget('umd');
+      // }
       chainResolve(webpackConfig, configHelper, H5);
       chainModuleRule(webpackConfig, configHelper);
       chainPlugins(webpackConfig, configHelper, H5, H5Html);
