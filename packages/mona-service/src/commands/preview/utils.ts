@@ -206,8 +206,9 @@ export function buildProject(_target: string) {
     return ctx;
   };
 }
+
 export const generateH5Qrcode = async (params: { appId: string; version: string }) => {
-  const preViewCodeUrl = `https://op.jinritemai.com/ecom-app/h5?appId=${params?.appId}&version=${params?.version}&isPreview=true`;
+  const preViewCodeUrl = `https://op.jinritemai.com/ecom-app/h5?appId=${params?.appId}&version=${params?.version}&isPreview=true&hide_nav_bar=1`;
   const qrcode = await new Promise((resolve, reject) => {
     // @ts-ignore
     // qrcode render failed in windows terminal when options with small: true
