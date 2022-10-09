@@ -1,10 +1,12 @@
 import path from 'path';
 import Config from 'webpack-chain';
+import minimist from 'minimist';
 
 import ConfigHelper from '@/ConfigHelper';
 import { MonaPlugins } from '@/plugins';
 
 import { genAlias } from './chainResolve';
+import compassThemeModifyVars from './themes/compass-theme';
 import { Platform } from '../constants';
 
 type CommonCssRule = (styleRule: Config.Rule<Config.Module>, configHelper: ConfigHelper) => Config.Rule<Config.Module>;
@@ -47,6 +49,14 @@ function createJsRule({ webpackConfig, configHelper, TARGET }: ModuleRule) {
         MonaPlugins.babel.collectNativeComponent.bind(null, configHelper),
         [require.resolve('@babel/plugin-proposal-decorators'), { legacy: true }],
         [require.resolve('@babel/plugin-transform-runtime'), { regenerator: true }],
+        [
+          require.resolve('babel-plugin-import'),
+          {
+            libraryName: '@bytedance/mona-ui',
+            libraryDirectory: 'es/components',
+            style: true,
+          },
+        ],
         configHelper.isDev && require.resolve('react-refresh/babel'),
         projectConfig.enableMultiBuild && [
           path.join(__dirname, '../../plugins/babel/BabelPluginMultiTarget.js'),
@@ -62,13 +72,22 @@ function createJsRule({ webpackConfig, configHelper, TARGET }: ModuleRule) {
 
 function createLessRule({ webpackConfig, configHelper, commonCssRule }: ModuleRule) {
   const lessRule = webpackConfig.module.rule('less').test(/\.less$/i);
+  const argv = minimist(process.argv.slice(2));
+  let modifyVars = {};
+  if (argv['t'] === Platform.LIGHT) {
+    modifyVars = compassThemeModifyVars;
+  }
+
   commonCssRule(lessRule, configHelper)
     .use('less')
     .loader(require.resolve('less-loader'))
     .options({
       lessOptions: {
-        math: 'always',
         javascriptEnabled: true,
+        modifyVars: {
+          ...modifyVars,
+        },
+        math: 'always',
       },
     });
 }
