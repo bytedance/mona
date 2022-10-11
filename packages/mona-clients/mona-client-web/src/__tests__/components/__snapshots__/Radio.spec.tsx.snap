@@ -3,7 +3,7 @@
 exports[`web component: Radio should have right properties 1`] = `
 LoadedCheerio {
   "0": <div
-    class="radio class-name  "
+    class="radio class-name"
     style="color: red;"
   >
     <div
@@ -56,7 +56,7 @@ LoadedCheerio {
 exports[`web component: Radio should render correctly 1`] = `
 LoadedCheerio {
   "0": <div
-    class="radio   "
+    class="radio"
   >
     <div
       class="wrapper"

@@ -3,7 +3,7 @@
 exports[`web component: Textarea should have right properties 1`] = `
 LoadedCheerio {
   "0": <textarea
-    class="textarea class-name  "
+    class="textarea class-name"
     id="hello"
     maxlength="100"
     name="hello"
@@ -45,7 +45,7 @@ LoadedCheerio {
 exports[`web component: Textarea should render correctly 1`] = `
 LoadedCheerio {
   "0": <textarea
-    class="textarea   "
+    class="textarea"
     maxlength="140"
     name=""
   />,

@@ -3,7 +3,7 @@
 exports[`web component: Input should have right properties 1`] = `
 LoadedCheerio {
   "0": <input
-    class="input class-name  "
+    class="input class-name"
     disabled=""
     enterkeyhint="done"
     maxlength="100"
@@ -47,7 +47,7 @@ LoadedCheerio {
 exports[`web component: Input should render correctly 1`] = `
 LoadedCheerio {
   "0": <input
-    class="input   "
+    class="input"
     enterkeyhint="done"
     maxlength="140"
     name=""

@@ -3,7 +3,7 @@
 exports[`web component: Icon should have right properties 1`] = `
 LoadedCheerio {
   "0": <div
-    class="container class-name  "
+    class="container class-name"
     style="color: red;"
   >
     <i
@@ -45,7 +45,7 @@ LoadedCheerio {
 exports[`web component: Icon should render correctly 1`] = `
 LoadedCheerio {
   "0": <div
-    class="container   "
+    class="container"
   >
     <i
       class="icon success"

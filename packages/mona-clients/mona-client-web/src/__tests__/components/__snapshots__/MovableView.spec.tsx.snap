@@ -3,7 +3,7 @@
 exports[`web component: MovableView should have right properties 1`] = `
 LoadedCheerio {
   "0": <span
-    class="class-name touch   "
+    class="class-name touch"
     direction="all"
     style="transform: translate(10px, 10px) scale(2); transition: scale 0.04s, transform 0.04s;"
   >
@@ -43,7 +43,7 @@ LoadedCheerio {
 exports[`web component: MovableView should render correctly 1`] = `
 LoadedCheerio {
   "0": <span
-    class="touch   "
+    class="touch"
     direction="none"
     style="transform: translate(0px, 0px) scale(1); transition: scale 0.1s, transform 0.1s;"
   />,

@@ -3,7 +3,7 @@
 exports[`web component: Image should have right properties 1`] = `
 LoadedCheerio {
   "0": <div
-    class="wrapper class-name  "
+    class="wrapper class-name"
     style="color: red;"
   />,
   "_root": LoadedCheerio {
@@ -40,7 +40,7 @@ LoadedCheerio {
 exports[`web component: Image should render correctly 1`] = `
 LoadedCheerio {
   "0": <div
-    class="wrapper   "
+    class="wrapper"
   >
     <img
       class="hidden"

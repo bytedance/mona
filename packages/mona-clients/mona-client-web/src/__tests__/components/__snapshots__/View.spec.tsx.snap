@@ -3,7 +3,7 @@
 exports[`web component: View should have right properties 1`] = `
 LoadedCheerio {
   "0": <div
-    class=" class-name  "
+    class="class-name"
     id="hello"
   >
     hello
@@ -41,9 +41,7 @@ LoadedCheerio {
 
 exports[`web component: View should render correctly 1`] = `
 LoadedCheerio {
-  "0": <div
-    class="   "
-  />,
+  "0": <div />,
   "_root": LoadedCheerio {
     "0": Document {
       "children": Array [

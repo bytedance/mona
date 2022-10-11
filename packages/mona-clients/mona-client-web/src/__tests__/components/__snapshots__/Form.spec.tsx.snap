@@ -3,7 +3,7 @@
 exports[`web component: Form should have right properties 1`] = `
 LoadedCheerio {
   "0": <div
-    class="checkbox class-name  "
+    class="checkbox class-name"
     style="color: red;"
   >
     <div
@@ -55,11 +55,9 @@ LoadedCheerio {
 
 exports[`web component: Form should render correctly 1`] = `
 LoadedCheerio {
-  "0": <form
-    class="   "
-  >
+  "0": <form>
     <input
-      class="input   "
+      class="input"
       enterkeyhint="done"
       maxlength="140"
       name=""
@@ -67,7 +65,7 @@ LoadedCheerio {
       value=""
     />
     <div
-      class="checkbox   "
+      class="checkbox"
     >
       <div
         class="wrapper"
