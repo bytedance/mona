@@ -26,7 +26,7 @@ const mobile: IPlugin = ctx => {
       webpackConfig.output
         .pathinfo(false)
         .path(path.join(cwd, projectConfig.output))
-        .filename('[name].js')
+        .chunkFilename('[id].bundle.js')
         .publicPath('/');
 
       // if (process.env.ENTRY_TYPE === 'js' && !configHelper.isDev) {
