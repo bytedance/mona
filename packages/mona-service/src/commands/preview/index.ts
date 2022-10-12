@@ -38,11 +38,10 @@ const preview: IPlugin = ctx => {
 
       // assert
       const { user } = await requestBeforeCheck(ctx, args);
-
       const request = generateRequestFromOpen(args, user.cookie);
 
       // common steps for all target: compress => upload
-      const maxProcess = [createTestVersionFactory(request), generateQrcodeFactory(request), printQrcode('抖音')];
+      const maxProcess = [createTestVersionFactory(request, args), generateQrcodeFactory(request), printQrcode('抖音')];
 
       switch (args.target) {
         case 'max':
@@ -58,7 +57,7 @@ const preview: IPlugin = ctx => {
           pipe(
             buildProject('h5'),
             processProjectData,
-            createTestVersionFactory(request),
+            createTestVersionFactory(request, args),
             generateH5Qrcode,
             printQrcode('抖店APP'),
           )(ctx);

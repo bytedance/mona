@@ -63,9 +63,10 @@ export function watch(dir: string, options: { open: boolean }, callback: Functio
 }
 
 export const createTestVersionFactory =
-  (request: Request<CreateTestAppVersionResp>) => async (params: Record<string, string | FileType>) => {
-    const { form, requestOptions } = await createUploadForm(params);
-
+  (request: Request<CreateTestAppVersionResp>, args: Record<string, any>) =>
+  async (params: Record<string, string | FileType>) => {
+    const argsHeaders = args.header ? JSON.parse(args.header) : {};
+    const { form, requestOptions } = await createUploadForm(params, argsHeaders);
     const res = await request('/captain/app/version/test/create', {
       method: 'POST',
       data: form,
