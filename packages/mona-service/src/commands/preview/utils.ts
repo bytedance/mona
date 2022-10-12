@@ -11,6 +11,7 @@ import fs from 'fs';
 import os from 'os';
 import chalk from 'chalk';
 import { DEFAULT_PORT } from '@/target/constants';
+import { OPEN_DOMAIN } from '@bytedance/mona-shared';
 
 const isWin = os.platform() === 'win32';
 type Request<T = any> = (path: string, options?: AxiosRequestConfig<any>) => Promise<T>;
@@ -209,22 +210,26 @@ export function buildProject(_target: string) {
   };
 }
 
-export const generateH5Qrcode = async (params: { appId: string; version: string }) => {
-  const preViewCodeUrl = `https://op.jinritemai.com/ecom-app/h5?appId=${params?.appId}&version=${params?.version}&isPreview=true&hide_nav_bar=1`;
-  const qrcode = await new Promise((resolve, reject) => {
-    console.log(preViewCodeUrl);
-    // @ts-ignore
-    // qrcode render failed in windows terminal when options with small: true
-    QRCode.toString(preViewCodeUrl, { type: 'terminal', small: !isWin }, (err, url) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(url);
-      }
-    });
-  });
+export const generateH5Qrcode = (args: any) => {
+  return async (params: { appId: string; version: string }) => {
+    const domain = args.domain || OPEN_DOMAIN;
 
-  return { qrcode, expireTime: Date.now() / 1000 + 8 * 60 * 60 };
+    const preViewCodeUrl = `https://${domain}/ecom-app/h5?appId=${params?.appId}&version=${params?.version}&isPreview=true&hide_nav_bar=1`;
+    const qrcode = await new Promise((resolve, reject) => {
+      console.log(preViewCodeUrl);
+      // @ts-ignore
+      // qrcode render failed in windows terminal when options with small: true
+      QRCode.toString(preViewCodeUrl, { type: 'terminal', small: !isWin }, (err, url) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(url);
+        }
+      });
+    });
+
+    return { qrcode, expireTime: Date.now() / 1000 + 8 * 60 * 60 };
+  };
 };
 
 // process max component data
