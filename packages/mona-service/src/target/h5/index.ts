@@ -21,7 +21,7 @@ const mobile: IPlugin = ctx => {
         .optimization.runtimeChunk(Boolean(isDev))
         .end()
         .mode(isDev ? 'development' : 'production')
-        .entry('index')
+        .entry('app.entry')
         .add(path.join(configHelper.entryPath, '../app.entry.js'));
       webpackConfig.output
         .pathinfo(false)
