@@ -33,7 +33,7 @@ export const Loading: React.FC = () => {
       <div style={centerStyle}>
         <img
           style={imgStyle}
-          src={'https://lf3-fe.ecombdstatic.com/obj/ecom-open-butler/mona/error.png'}
+          src={'https://lf3-fe.ecombdstatic.com/obj/ecom-open-butler/mona/loading.png'}
           //@ts-ignore
           onError={e => e.target && (e.target.src = '')}
         />
