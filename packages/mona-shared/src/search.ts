@@ -19,5 +19,3 @@ export function stringifySearch(searchObj: Record<string, any>) {
   });
   return `?${kv.join('&')}`;
 }
-
-export const ahaha = 123;

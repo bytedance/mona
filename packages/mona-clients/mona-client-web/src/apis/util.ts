@@ -1,4 +1,4 @@
-import { formatPath } from '@bytedance/mona-shared';
+import formatPath from '@bytedance/mona-shared/dist/formatPath';
 import {
   GetImageInfoSuccessCallbackArgs,
   RequestTask,
@@ -399,7 +399,7 @@ export const webNavigateTo: OriginApis['navigateTo'] = options => {
   let errMsg: string;
   try {
     errMsg = 'navigateTo:ok';
-    const monaHistory = window.__mona_history;
+    const monaHistory = window.__mona_history || history;
     if (options.url.startsWith('..')) {
       monaHistory.push(formatPath(options.url, monaHistory.location.pathname));
     } else {
@@ -417,7 +417,7 @@ export const webRedirectTo: OriginApis['redirectTo'] = options => {
   let errMsg: string;
   try {
     errMsg = 'redirectTo:ok';
-    const monaHistory = window.__mona_history;
+    const monaHistory = window.__mona_history || history;
     monaHistory.replace(formatPath(options.url, monaHistory.location.pathname));
     options.success?.({ errMsg });
   } catch (err) {
@@ -435,9 +435,10 @@ export const webSwitchTab: OriginApis['switchTab'] = ({ url, success, fail, comp
 export const webNavigateBack: OriginApis['navigateBack'] = (options = {}) => {
   let errMsg: string;
   try {
+    const monaHistory = window.__mona_history || history;
     errMsg = 'navigateBack:ok';
     const delta = options.delta || 1;
-    history.go(-delta);
+    monaHistory.go(-delta);
     options.success?.({ errMsg });
   } catch (err) {
     errMsg = `navigateBack:fail${err}`;

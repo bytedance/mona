@@ -64,7 +64,7 @@ class TargetContext {
   }
 
   private _defaultStartFn(args: Record<string, any>) {
-    const { builder } = this;
+    const { builder, target } = this;
     const webpackConfig = builder.resolveWebpackConfig();
     if (!webpackConfig) {
       return;
@@ -108,7 +108,9 @@ class TargetContext {
       const devServer = new WebpackDevServer(devServerConfig, compiler);
 
       devServer.startCallback(() => {
-        console.log(chalk.green(`服务启动成功： http://${DEFAULT_HOST}:${port}`));
+        if (target !== 'max') {
+          console.log(chalk.green(`服务启动成功： http://${DEFAULT_HOST}:${port}`));
+        }
       });
     }
   }

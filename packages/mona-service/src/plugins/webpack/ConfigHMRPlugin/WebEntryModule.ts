@@ -3,6 +3,7 @@ import VirtualModulesPlugin from '../VirtualModulesPlugin';
 import { formatAppConfig, readConfig } from '@bytedance/mona-shared';
 import { PageConfig } from '@bytedance/mona';
 import ConfigHelper from '@/ConfigHelper';
+const MONA_PUBLIC_PATH = '__mona_public_path__';
 
 class WebEntryModule {
   configHelper: ConfigHelper;
@@ -26,6 +27,8 @@ class WebEntryModule {
     const { entryPath } = this.configHelper;
 
     const module: Record<string, string> = {};
+    const publicPathVirtualPath = path.join(entryPath, '..', 'public-path.js');
+    module[publicPathVirtualPath] = `__webpack_public_path__ = window.${MONA_PUBLIC_PATH} || '/';`;
     const virtualPath = path.join(entryPath, '..', 'app.entry.js');
     module[virtualPath] = this._generateWebAppEntryCode(entryPath);
     this.name = virtualPath;
@@ -51,13 +54,29 @@ class WebEntryModule {
 
   private _generateRoutesCode() {
     const pages = Array.from(new Set((this.configHelper.appConfig.pages || []) as string[]));
-    let routesCode = pages.map((page, index) => `import Page${index} from './${page}';`).join('');
-    routesCode += `const routes = [${pages
-      .map(
-        (page, index) =>
-          `{ path: '${page}', component: createPageLifecycle(Page${index}), title: '${this.getPageTitle(page)}' }`,
-      )
-      .join(',')}];`;
+    const HomePage = pages[0];
+    let routesCode;
+    if (HomePage) {
+      routesCode = `import HomePage from './${HomePage}';
+   `;
+    }
+
+    routesCode += `const routes = [
+     ${
+       HomePage
+         ? ` { path: '${HomePage}', component: createPageLifecycle(HomePage), title: '${this.getPageTitle(
+             HomePage,
+           )}' },`
+         : ''
+     }
+      ${pages
+        .slice(1)
+        .map(page => {
+          return `{ path: '${page}', component: createPageLifecycle(lazy(() => import(/* webpackChunkName: "${page}" */ './${page}'))), title: '${this.getPageTitle(
+            page,
+          )}' }`;
+        })
+        .join(',')}];`;
     return routesCode;
   }
 
@@ -79,7 +98,8 @@ class WebEntryModule {
 
   private _generateWebAppEntryCode(filename: string) {
     const code = `
-      import { createWebApp, show, createAppLifeCycle, createPageLifecycle } from '@bytedance/mona-runtime';
+      import './public-path';
+      import { createWebApp, show, createAppLifeCycle, createPageLifecycle, lazy } from '@bytedance/mona-runtime';
       import App from './${path.basename(filename)}';
       ${this._generateRoutesCode()}
       ${this._generateTabBarCode()}

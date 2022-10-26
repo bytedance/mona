@@ -11,3 +11,4 @@ export { createPageLifecycle } from './createWebPage';
 export { usePageEvent, useAppEvent, AppLifecycle, PageLifecycle } from '@bytedance/mona';
 
 export { useMiniEffect } from './miniEffect';
+export { lazy } from './lazy';

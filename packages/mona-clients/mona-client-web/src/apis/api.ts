@@ -4,7 +4,7 @@ import {
   createCanvasContext as originCreateCanvasContext,
   canvasToTempFilePath as originCanvasToTempFilePath,
 } from './Canvas';
-import { promisify } from '@bytedance/mona-shared';
+import { promisify } from '@bytedance/mona-shared/dist/promisify';
 
 import {
   webChooseImage,

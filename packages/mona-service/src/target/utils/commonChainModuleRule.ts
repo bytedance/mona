@@ -38,7 +38,14 @@ function createJsRule({ webpackConfig, configHelper, TARGET }: ModuleRule) {
       // https://github.com/babel/babel/issues/12731
       sourceType: 'unambiguous',
       presets: [
-        [require.resolve('@babel/preset-env')],
+        [
+          require.resolve('@babel/preset-env'),
+          TARGET === Platform.H5 && {
+            // Overall browser coverage: 94% (2021-04-06)
+            // https://browserslist.dev/?q=aU9TIDksIEFuZHJvaWQgNC40LCBsYXN0IDIgdmVyc2lvbnMsID4gMC4yJSwgbm90IGRlYWQ%3D
+            targets: 'iOS 9, Android 4.4, last 2 versions, > 0.2%, not dead',
+          },
+        ].filter(Boolean),
         [require.resolve('@babel/preset-typescript')],
         [require.resolve('@babel/preset-react'), { runtime: 'automatic' }],
       ],

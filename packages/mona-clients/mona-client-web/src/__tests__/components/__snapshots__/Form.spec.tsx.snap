@@ -10,7 +10,7 @@ LoadedCheerio {
       class="wrapper"
     >
       <div
-        class="input"
+        class="input "
         style="border-color: #f85959;"
       >
         <input
@@ -55,9 +55,7 @@ LoadedCheerio {
 
 exports[`web component: Form should render correctly 1`] = `
 LoadedCheerio {
-  "0": <form
-    class=""
-  >
+  "0": <form>
     <input
       class="input"
       enterkeyhint="done"
@@ -73,7 +71,7 @@ LoadedCheerio {
         class="wrapper"
       >
         <div
-          class="input"
+          class="input "
           style="border-color: #f85959;"
         >
           <input

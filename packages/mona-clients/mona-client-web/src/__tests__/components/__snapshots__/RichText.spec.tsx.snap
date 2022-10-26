@@ -39,9 +39,7 @@ LoadedCheerio {
 
 exports[`web component: RichText should render correctly 1`] = `
 LoadedCheerio {
-  "0": <div
-    class=""
-  />,
+  "0": <div />,
   "_root": LoadedCheerio {
     "0": Document {
       "children": Array [

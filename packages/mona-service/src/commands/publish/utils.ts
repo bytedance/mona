@@ -8,23 +8,26 @@ export async function upload(output: string, userId: string, args: any) {
   const header = args.header ? JSON.parse(args.header) : OPEN_DEV_HEADERS;
   const fileName = path.basename(output);
   const isOnline = domain.indexOf('jinritemai.com') !== -1;
- 
-  const { form, requestOptions } = await createUploadForm({
-    'app_id': isOnline ? '8' : '65',
-    'channel_key': 'open',
-    'ftype': '2',
-    'uid': userId,
-    'file': {
-      filePath: output,
-      fileName
-    }
-  })
+
+  const { form, requestOptions } = await createUploadForm(
+    {
+      app_id: isOnline ? '8' : '65',
+      channel_key: 'open',
+      ftype: '2',
+      uid: userId,
+      file: {
+        filePath: output,
+        fileName,
+      },
+    },
+    args || {},
+  );
 
   const res = await axios.post(`https://${domain}/pssresource/external-large/upload`, form, {
     ...requestOptions,
     headers: {
       ...requestOptions.headers,
-      ...header
+      ...header,
     },
   });
 

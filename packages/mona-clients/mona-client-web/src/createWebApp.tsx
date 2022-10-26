@@ -4,11 +4,13 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Switch, Route, Redirect, useHistory } from 'react-router-dom';
 import NavBar from './components/NavBar';
 import TabBar from './components/TabBar';
-import { formatPath, parseSearch, GLOBAL_LIFECYCLE_STORE } from '@bytedance/mona-shared';
+import formatPath from '@bytedance/mona-shared/dist/formatPath';
+import { GLOBAL_LIFECYCLE_STORE } from '@bytedance/mona-shared/dist/constants';
+import { parseSearch } from '@bytedance/mona-shared/dist/search';
 
 export const WrapperComponent: React.FC<{ title: string }> = ({ children, title }) => {
   document.title = title || 'Mona Web';
- 
+
   return <>{children}</>;
 };
 
