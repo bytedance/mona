@@ -10,7 +10,7 @@ LoadedCheerio {
       class="wrapper"
     >
       <div
-        class="input"
+        class="input "
         style="border-color: red;"
       >
         <input
@@ -62,7 +62,7 @@ LoadedCheerio {
       class="wrapper"
     >
       <div
-        class="input"
+        class="input "
         style="border-color: #f85959;"
       >
         <input

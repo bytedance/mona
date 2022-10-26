@@ -73,7 +73,8 @@
 // export default useRequest;
 
 import { RequestOptions } from '@bytedance/mona';
-import { useRequest as useAhooksRequest } from 'ahooks';
+import useAhooksRequest from 'ahooks/lib/useRequest/src/useRequest';
+
 import type { Options, Service } from 'ahooks/lib/useRequest/src/types';
 
 import { request } from '..';
