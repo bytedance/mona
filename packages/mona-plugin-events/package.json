@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-plugin-events",
-  "version": "0.2.34",
+  "version": "0.2.35-alpha.0",
   "description": "Merchant application plugin side communication package",
   "author": "fengbo.lucky@bytedance.com",
   "scripts": {
@@ -32,6 +32,5 @@
     "access": "public",
     "registry": "https://registry.npmjs.org"
   },
-  "gitHead": "cc5aa5283af595fd7d8a7b4921f54e2797504edd",
-  "dependencies": {}
+  "gitHead": "cc5aa5283af595fd7d8a7b4921f54e2797504edd"
 }
