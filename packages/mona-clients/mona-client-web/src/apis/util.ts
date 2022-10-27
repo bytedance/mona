@@ -133,7 +133,7 @@ export const webChooseImage: OriginApis['chooseImage'] = (options = {}) => {
     input.dispatchEvent(event);
 
     input.onchange = () => {
-      options?.success?.(input.files as unknown as ChooseImageSuccessCallbackArgs);
+      options?.success?.((input.files as unknown) as ChooseImageSuccessCallbackArgs);
     };
   } catch (e) {
     options.fail?.({ errMsg: 'chooseImage:fail' });
@@ -337,7 +337,7 @@ export const webGetLocation: OriginApis['getLocation'] = options => {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       position => {
-        options?.success?.(position.coords as unknown as GetLocationSuccessCallbackArgs);
+        options?.success?.((position.coords as unknown) as GetLocationSuccessCallbackArgs);
       },
       err => {
         options?.fail?.({
@@ -357,7 +357,7 @@ export const webGetNetworkType: OriginApis['getNetworkType'] = (options = {}) =>
   if (navigator.connection) {
     // @ts-ignore ignore
     errMsg = navigator.connection.effectiveType;
-    options.success?.({ networkType: errMsg as unknown as NetworkType });
+    options.success?.({ networkType: (errMsg as unknown) as NetworkType });
   } else {
     errMsg = 'getNetworkType call faild';
     options.fail?.({ errMsg });
@@ -399,12 +399,10 @@ export const webNavigateTo: OriginApis['navigateTo'] = options => {
   let errMsg: string;
   try {
     errMsg = 'navigateTo:ok';
-    const monaHistory = window.__mona_history || history;
-    if (options.url.startsWith('..')) {
-      monaHistory.push(formatPath(options.url, monaHistory.location.pathname));
-    } else {
-      monaHistory.push(formatPath(options.url, monaHistory.location.pathname));
-    }
+    const monaHistory = window.__mona_history;
+    const currentPath = monaHistory.location.pathname;
+    const targetPath = formatPath(options.url, currentPath);
+    monaHistory.push(targetPath);
     options.success?.({ errMsg });
   } catch (err) {
     errMsg = `navigateTo:fail${err}`;
@@ -417,8 +415,10 @@ export const webRedirectTo: OriginApis['redirectTo'] = options => {
   let errMsg: string;
   try {
     errMsg = 'redirectTo:ok';
-    const monaHistory = window.__mona_history || history;
-    monaHistory.replace(formatPath(options.url, monaHistory.location.pathname));
+    const monaHistory = window.__mona_history;
+    const currentPath = monaHistory.location.pathname;
+    const targetPath = formatPath(options.url, currentPath);
+    monaHistory.replace(targetPath);
     options.success?.({ errMsg });
   } catch (err) {
     errMsg = `redirectTo:fail${err}`;
@@ -435,7 +435,7 @@ export const webSwitchTab: OriginApis['switchTab'] = ({ url, success, fail, comp
 export const webNavigateBack: OriginApis['navigateBack'] = (options = {}) => {
   let errMsg: string;
   try {
-    const monaHistory = window.__mona_history || history;
+    const monaHistory = window.__mona_history;
     errMsg = 'navigateBack:ok';
     const delta = options.delta || 1;
     monaHistory.go(-delta);
