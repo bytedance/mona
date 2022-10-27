@@ -62,10 +62,7 @@ export const HistorySetWrapper: React.FC = ({ children }) => {
   const history = useHistory();
 
   // set global history to implement navigateTo and redirectTo api
-  useEffect(() => {
-    // @ts-ignore
-    window.__mona_history = history;
-  }, [history]);
+  window.__mona_history = history;
 
   return <>{children}</>;
 };
