@@ -4,6 +4,7 @@ export interface PluginSdkBaseType {
 }
 
 export interface MonaPluginEvents {
+  max: any;
   pigeon: Pigeon;
   removePluginListener: (eventName: string) => void;
   globalStore: {
