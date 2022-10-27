@@ -1,16 +1,20 @@
 import { writeFile, readFile } from 'fs';
 import path from 'path';
 import { JsApiListResponse, JsApi, RequestArg, ResponseArg } from '../type';
+import { getJsApiList } from './getJsApiList';
 
 export class MaxSubAutoTypeWebpackPlugin {
+  public isBoe: boolean;
+  constructor(isBoe = false) {
+    this.isBoe = isBoe;
+  }
   apply(compiler) {
     compiler.hooks.compile.tap('MaxSubAutoTypeWebpackPlugin', async () => {
       try {
-        const getJsApiListUrl = 'https://ecom-openapi.ecombdapi.com/open/jsapi?biz_domain=shop_decrate';
         let {
           code,
           data: { jsApiList },
-        } = (await fetch(getJsApiListUrl).then(res => res.json())) as JsApiListResponse;
+        } = await getJsApiList(this.isBoe);
         if (code === 10000) {
           const code = generateTsCode(jsApiList);
           // events声明文件
