@@ -132,10 +132,10 @@ const processOutputParams = (outputParams: ResponseArg[], isAsync: boolean) => {
   return res;
 };
 
-// max:Max的匹配正则,如果没匹配到，则在export interface MonaPluginEvents {后加入。
-export const maxMaxTsReg = /max\s*:\s*Max;/;
+// max:any的匹配正则,如果匹配到，any替换成Max。
+export const maxAnyTsReg = /max\s*:\s*any;/;
 // 要加入的字符串max：Max；
-export const maxMaxTsStr = '\nmax:Max;\n';
+export const maxMaxTsStr = '\nmax: Max;\n';
 export const monaPluginEventsReg = /export\s+interface\s+MonaPluginEvents\s*\{/;
 // export interface Max匹配正则
 export const interfaceMaxReg = /export\s+interface\s+Max\s*\{[\s\S]*\}/;
@@ -146,12 +146,13 @@ const writeCodeToFile = (eventsTsFilePath: string, code: string) => {
     if (err) {
       throw err;
     }
-    //看是否有max:Max; 如果没有，则在MonaPluginEvent {后面加入
-    if (!maxMaxTsReg.test(data)) {
-      const monaPluginEventsRes = data.match(monaPluginEventsReg);
-      if (monaPluginEventsRes?.index) {
-        data = data.substring(0, monaPluginEventsRes.index) + maxMaxTsStr + data.substring(monaPluginEventsRes.index);
-      }
+    //看是否有max:any; 如果有替换成max: Max;
+    const maxAnyTsMatchRes = data.match(maxAnyTsReg);
+    if (maxAnyTsMatchRes?.index) {
+      data =
+        data.substring(0, maxAnyTsMatchRes.index) +
+        maxMaxTsStr +
+        data.substring(maxAnyTsMatchRes.index + maxAnyTsMatchRes[0].length);
     }
 
     //然后添加interface Max,添加到最后
