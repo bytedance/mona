@@ -97,13 +97,20 @@ jobs:
           lerna version ${{ env.cversion }} --exact --no-git-tag-version --force-publish --yes
           git status
 
+      - name: Commit Version code
+        uses: EndBug/add-and-commit@v9
+        with:
+          author_name: github-bot
+          author_email: github-bot@noreply.com
+          message: 'chore(release): publish version ${{ env.cversion }} --tag=${{ env.ctag }}'
+
       - name: Create Pull Request
+        if: contains('alpha beta', env.ctag) == false
         uses: peter-evans/create-pull-request@v4
         id: cpr
         with:
-          commit-message: 'chore(release): publish version ${{ env.cversion }} --tag=${{ env.ctag }}'
-          branch: 'release-${{ github.ref }}'
-          delete-branch: true
+          branch: '${{ github.ref }}'
+          base: 'main'
           title: 'publish version ${{ env.cversion }}'
           body: 'publish version ${{ env.cversion }} [automated]'
 
@@ -126,16 +133,17 @@ jobs:
           git_tag_prefix: 'v'
 
         #Create relase when event is PR
-      - name: Set Publish Variables
-        id: publish_var
-        run: |
-          if [ '${{ env.ctag }}' == 'alpha' ] ; then IS_DRAFT='true'; else IS_DRAFT='false'; fi
-          if [ '${{ env.ctag }}' == 'beta' ] ; then IS_PRERELEASE='true'; else IS_PRERELEASE='false'; fi
-          echo "::set-output name=IS_DRAFT::${IS_DRAFT}"
-          echo "::set-output name=IS_PRERELEASE::${IS_PRERELEASE}"
+      # - name: Set Publish Variables
+      #   id: publish_var
+      #   run: |
+      #     if [ '${{ env.ctag }}' == 'alpha' ] ; then IS_DRAFT='true'; else IS_DRAFT='false'; fi
+      #     if [ '${{ env.ctag }}' == 'beta' ] ; then IS_PRERELEASE='true'; else IS_PRERELEASE='false'; fi
+      #     echo "::set-output name=IS_DRAFT::${IS_DRAFT}"
+      #     echo "::set-output name=IS_PRERELEASE::${IS_PRERELEASE}"
 
       - name: Create Release
         id: create_release
+        if: contains('alpha beta', env.ctag) == false
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -144,10 +152,11 @@ jobs:
           release_name: 'v${{ env.cversion }}'
           body: |
             publish v${{ env.cversion }}
-          draft: ${{ steps.publish_var.outputs.IS_DRAFT }}
-          prerelease: ${{ steps.publish_var.outputs.IS_PRERELEASE }}
+          # draft: ${{ steps.publish_var.outputs.IS_DRAFT }}
+          # prerelease: ${{ steps.publish_var.outputs.IS_PRERELEASE }}
 
       - name: Comment in PR
+        if: contains('alpha beta', env.ctag) == false
         uses: actions/github-script@0.8.0
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
