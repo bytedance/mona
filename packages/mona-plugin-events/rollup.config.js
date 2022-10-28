@@ -4,6 +4,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import typescript from 'rollup-plugin-typescript2';
 import postcss from 'rollup-plugin-postcss';
 import { terser } from 'rollup-plugin-terser';
+import json from '@rollup/plugin-json';
 import { browser, main } from './package.json';
 
 export default [
@@ -41,6 +42,7 @@ export default [
       commonjs(),
       typescript({ useTsconfigDeclarationDir: true }),
       postcss(),
+      json(),
       // terser(),
     ],
   },

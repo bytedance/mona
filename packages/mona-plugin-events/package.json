@@ -18,9 +18,9 @@
   "sideEffects": false,
   "devDependencies": {
     "@rollup/plugin-commonjs": "^19.0.1",
-    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-json": "^5.0.1",
     "@rollup/plugin-node-resolve": "^13.0.2",
-    "rollup": "2.53.2",
+    "rollup": "2.72.1",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.0",
     "rollup-plugin-terser": "^7.0.2",
@@ -34,6 +34,6 @@
   },
   "gitHead": "cc5aa5283af595fd7d8a7b4921f54e2797504edd",
   "dependencies": {
-    "node-fetch": "^3.2.10"
+    "axios": "^1.1.3"
   }
 }

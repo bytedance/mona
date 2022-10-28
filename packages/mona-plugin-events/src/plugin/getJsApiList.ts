@@ -1,27 +1,29 @@
 import { JsApiListResponse } from '../type';
-const fetch = require('node-fetch');
+import axios from 'axios';
 
 //获取jsapi列表
-export const getJsApiList: (boeUrl?: string) => Promise<JsApiListResponse> = (boeUrl?: string) => {
+export const getJsApiList = (boeUrl?: string) => {
   const getJsApiListUrl = 'https://ecom-openapi.ecombdapi.com/open/jsapi';
   if (boeUrl) {
-    return fetch(boeUrl, {
+    return axios({
+      url: boeUrl,
+      data: {
+        biz_domain: '测试',
+      },
       method: 'post',
       headers: {
         'x-use-boe': '1',
         'x-tt-env': 'boe_6657203',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        biz_domain: '测试',
-      }),
-    }).then(res => res.json());
+    }).then(res => res?.data);
   } else {
-    return fetch(getJsApiListUrl, {
-      method: 'post',
-      body: JSON.stringify({
+    return axios({
+      url: boeUrl,
+      data: {
         biz_domain: 'shop_decorate',
-      }),
-    }).then(res => res.json());
+      },
+      method: 'post',
+    }).then(res => res?.data);
   }
 };

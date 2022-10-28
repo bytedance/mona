@@ -57,7 +57,7 @@ const typeMap = {
 //递归根据入参json以及是否必传结构生成ts
 const paramToTs = (inputParams: RequestArg[]) => {
   let res = '';
-  if (inputParams.length > 0) {
+  if (inputParams?.length > 0) {
     res = '{\n';
     for (let inputParam of inputParams) {
       let { fieldName, fieldRequired, fieldType, children, subFieldType, mapKeyType, mapValueType } = inputParam;
