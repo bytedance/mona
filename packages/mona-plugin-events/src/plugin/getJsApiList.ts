@@ -1,10 +1,9 @@
 import { JsApiListResponse } from '../type';
 //获取jsapi列表
-export const getJsApiList: (isBoe?: boolean) => Promise<JsApiListResponse> = (isBoe?: boolean) => {
+export const getJsApiList: (boeUrl?: string) => Promise<JsApiListResponse> = (boeUrl?: string) => {
   const getJsApiListUrl = 'https://ecom-openapi.ecombdapi.com/open/jsapi';
-  const getJsApiListBoeUrl = window.atob('aHR0cHM6Ly9vcGVuYXBpLWJvZS5ieXRlZC5vcmcvb3Blbi9qc2FwaQ==');
-  if (isBoe) {
-    return fetch(getJsApiListBoeUrl, {
+  if (boeUrl) {
+    return fetch(boeUrl, {
       method: 'post',
       headers: {
         'x-use-boe': '1',
