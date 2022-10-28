@@ -1,4 +1,4 @@
-// pigeon主题
+// compass主题
 const theme = {
   '@color-primary-brand': '#1443ff',
   '@color-primary-active': '#002fec',
