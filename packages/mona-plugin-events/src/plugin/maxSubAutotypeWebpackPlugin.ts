@@ -93,7 +93,7 @@ const paramToTs = (inputParams: RequestArg[]) => {
         // 数组
         if (subFieldType === TypeCode.Number || subFieldType === TypeCode.String || subFieldType === TypeCode.Boolean) {
           // 数组值类型为number string boolean
-          res += `${fieldName}:${typeMap[subFieldType]}[]`;
+          res += `${fieldName}:${typeMap[subFieldType]}[];`;
         } else if (subFieldType === TypeCode.Object) {
           // 数组值类型为对象
           res += `${fieldName}:${paramToTs(children as RequestArg[])}[];`;
