@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { LifecycleContext, AppLifecycleGlobalContext, AppLifecycle } from '@bytedance/mona';
-import { isClassComponent, GLOBAL_LIFECYCLE_STORE } from '@bytedance/mona-shared';
+import { isClassComponent } from '@bytedance/mona-shared/dist/reactNode';
+import { GLOBAL_LIFECYCLE_STORE } from '@bytedance/mona-shared/dist/constants';
 
 export function createAppLifeCycle(Component: React.ComponentType<any>) {
   const appLifecycleContext = new LifecycleContext();

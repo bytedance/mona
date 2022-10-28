@@ -75,10 +75,11 @@ function isString(value: string | FileType): value is string {
   return typeof value === 'string';
 }
 
-export async function createUploadForm(params: Record<string, string | FileType>) {
+export async function createUploadForm(params: Record<string, string | FileType>, argsHeaders: Record<string, any>) {
   const form = new FormData();
   Object.keys(params).forEach(key => {
     const value = params[key];
+
     if (isString(value)) {
       form.append(key, value);
     } else {
@@ -104,6 +105,7 @@ export async function createUploadForm(params: Record<string, string | FileType>
   const requestOptions: AxiosRequestConfig<FormData> = {
     responseType: 'json',
     headers: {
+      ...argsHeaders,
       'Content-Type': headers['content-type'],
       'Content-Length': length,
     },

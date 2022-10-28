@@ -1,5 +1,7 @@
 import React from 'react';
-import { isClassComponent, parseSearch } from '@bytedance/mona-shared';
+import { isClassComponent } from '@bytedance/mona-shared/dist/reactNode';
+import { parseSearch } from '@bytedance/mona-shared/dist/search';
+
 import { LifecycleContext, PageLifecycleGlobalContext, PageLifecycle } from '@bytedance/mona';
 
 export function createPageLifecycle(Component: React.ComponentType<any>) {

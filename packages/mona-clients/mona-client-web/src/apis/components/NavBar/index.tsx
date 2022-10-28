@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import cs from 'classnames';
 import './index.module.less';
 
 interface NavBarProps {
@@ -13,7 +12,7 @@ interface NavBarProps {
 }
 
 export const NavBar: FC<NavBarProps> = props => (
-  <div className={cs('mona-web-navbar', props.className)}>
+  <div className={`mona-web-navbar ${props.className}`}>
     <div className="mona-web-navbar-left" onClick={props.onLeftClick}>
       {props.left ? (
         props.left
