@@ -32,5 +32,8 @@
     "access": "public",
     "registry": "https://registry.npmjs.org"
   },
-  "gitHead": "cc5aa5283af595fd7d8a7b4921f54e2797504edd"
+  "gitHead": "cc5aa5283af595fd7d8a7b4921f54e2797504edd",
+  "dependencies": {
+    "node-fetch": "^3.2.10"
+  }
 }

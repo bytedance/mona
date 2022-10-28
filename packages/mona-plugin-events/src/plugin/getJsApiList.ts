@@ -1,4 +1,6 @@
 import { JsApiListResponse } from '../type';
+const fetch = require('node-fetch');
+
 //获取jsapi列表
 export const getJsApiList: (boeUrl?: string) => Promise<JsApiListResponse> = (boeUrl?: string) => {
   const getJsApiListUrl = 'https://ecom-openapi.ecombdapi.com/open/jsapi';
