@@ -27,14 +27,20 @@ const emptyObj = new Proxy({}, emptyHandler);
 
 const maxProxyHandler = {
   get: function (_: any, prop: string) {
-    // @ts-ignore 事件sdk,代理到monaGlobal.[MAX_EVENT_SDK_IN_WINDOW]
-    const maxEventSDK = monaGlobal?.[MAX_EVENT_SDK_IN_WINDOW];
-    if (!maxEventSDK) {
+    try {
+      // @ts-ignore 事件sdk,代理到monaGlobal.[MAX_EVENT_SDK_IN_WINDOW]
+      const maxEventSDK = monaGlobal?.[MAX_EVENT_SDK_IN_WINDOW];
+      if (!maxEventSDK) {
+        return () => {
+          console.warn(`非max容器, ${prop} 方法无法调用`);
+        };
+      }
+      return maxEventSDK[prop];
+    } catch (err) {
       return () => {
-        console.warn(`非max容器, ${prop} 方法无法调用`);
+        console.log(err);
       };
     }
-    return maxEventSDK[prop];
   },
   set: () => false,
 };
