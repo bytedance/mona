@@ -39,6 +39,7 @@ const maxProxyHandler = {
     } catch (err) {
       return () => {
         console.log(err);
+        return Promise.resolve('err');
       };
     }
   },
