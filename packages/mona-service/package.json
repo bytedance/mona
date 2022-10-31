@@ -43,6 +43,7 @@
     "assert": "^2.0.0",
     "axios": "^0.26.0",
     "babel-loader": "^8.2.2",
+    "babel-plugin-import": "^1.13.5",
     "chalk": "^4.1.2",
     "chokidar": "^3.5.2",
     "command-line-usage": "^6.1.1",

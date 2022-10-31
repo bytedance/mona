@@ -88,7 +88,17 @@ export function createWebApp(
     defaultPath?: string;
     light?: AppConfig['light'];
   },
+  libraryConfig?: {
+    ConfigProvider: React.FC<{ prefixCls: string; locale: any; children?: React.ReactNode }>;
+    zh_CN: any;
+  },
 ) {
+  const Provider = libraryConfig?.ConfigProvider
+    ? libraryConfig.ConfigProvider
+    : ({ children }: { children: React.ReactNode }) => {
+        return <>{children}</>;
+      };
+
   const render = ({ dom }: { dom: Element | Document }) => {
     prepareLightApp(options?.light);
 
@@ -97,28 +107,30 @@ export function createWebApp(
         <HistorySetWrapper>
           <Component>
             {options?.navBar && <NavBar {...options?.navBar} />}
-            <Switch>
-              {routes?.map(route => (
-                <Route
-                  key={route.path}
-                  path={formatPath(route.path)}
-                  children={({ location }) => (
-                    <WrapperComponent title={route.title}>
-                      <route.component search={location.search} searchParams={parseSearch(location.search)} />
-                    </WrapperComponent>
-                  )}
-                />
-              ))}
-              {routes?.length && (
-                <Route exact path="/">
-                  <Redirect to={formatPath(routes[0].path || options?.defaultPath || '/')} />
+            <Provider prefixCls="mona" locale={libraryConfig?.zh_CN}>
+              <Switch>
+                {routes?.map(route => (
+                  <Route
+                    key={route.path}
+                    path={formatPath(route.path)}
+                    children={({ location }) => (
+                      <WrapperComponent title={route.title}>
+                        <route.component search={location.search} searchParams={parseSearch(location.search)} />
+                      </WrapperComponent>
+                    )}
+                  />
+                ))}
+                {routes?.length && (
+                  <Route exact path="/">
+                    <Redirect to={formatPath(routes[0].path || options?.defaultPath || '/')} />
+                  </Route>
+                )}
+                <Route path="*">
+                  <NoMatch defaultPath={formatPath(routes[0].path || options?.defaultPath || '/')} />
                 </Route>
-              )}
-              <Route path="*">
-                <NoMatch defaultPath={formatPath(routes[0].path || options?.defaultPath || '/')} />
-              </Route>
-            </Switch>
-            {options?.tabBar && <TabBar tab={options?.tabBar} />}
+              </Switch>
+              {options?.tabBar && <TabBar tab={options?.tabBar} />}
+            </Provider>
           </Component>
         </HistorySetWrapper>
       </BrowserRouter>,

@@ -27,6 +27,7 @@ export interface ProjectConfig {
   enableMultiBuild?: boolean;
   compilerOptimization?: boolean;
   transformSvgToComponentInWeb?: boolean;
+  library?: boolean;
   abilities?: {
     define?: Record<string, string>;
     copy?: PluginOptions;
