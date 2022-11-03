@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-max",
-  "version": "0.2.35-alpha.9",
+  "version": "0.2.35-alpha.10",
   "description": "Cli for isv",
   "main": "index.js",
   "scripts": {
@@ -10,13 +10,13 @@
   "author": "yegangchen@bytedance.com",
   "license": "MIT",
   "dependencies": {
-    "fs-extra": "^10.1.0",
     "@babel/core": "^7.16.5",
     "@babel/preset-env": "^7.16.5",
     "@babel/preset-react": "^7.16.5",
     "babel-loader": "^8.2.2",
     "chalk": "^4.1.2",
     "css-loader": "^6.5.1",
+    "fs-extra": "^10.1.0",
     "html-webpack-plugin": "^5.5.0",
     "less": "^4.1.2",
     "less-loader": "^10.2.0",
