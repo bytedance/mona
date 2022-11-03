@@ -42,17 +42,21 @@ const generateBaseConfig = options => {
       rules: [
         {
           test: /\.(js|mjs|jsx|ts|tsx)$/,
-          use: 'babel-loader',
+          use: [
+            {
+              loader: require.resolve('babel-loader'),
+            },
+          ],
           exclude: /node_modules/,
         },
         {
           test: /\.css$/i,
           use: [
             {
-              loader: 'style-loader',
+              loader: require.resolve('style-loader'),
             },
             {
-              loader: 'css-loader',
+              loader: require.resolve('css-loader'),
               options: {
                 importLoaders: 2,
                 modules: {
@@ -63,7 +67,7 @@ const generateBaseConfig = options => {
               },
             },
             {
-              loader: 'postcss-loader',
+              loader: require.resolve('postcss-loader'),
               options: {
                 postcssOptions: {
                   plugins: postcssPlugins,
@@ -76,10 +80,10 @@ const generateBaseConfig = options => {
           test: /\.less$/i,
           use: [
             {
-              loader: 'style-loader',
+              loader: require.resolve('style-loader'),
             },
             {
-              loader: 'css-loader',
+              loader: require.resolve('css-loader'),
               options: {
                 importLoaders: 2,
                 modules: {
@@ -90,7 +94,7 @@ const generateBaseConfig = options => {
               },
             },
             {
-              loader: 'postcss-loader',
+              loader: require.resolve('postcss-loader'),
               options: {
                 postcssOptions: {
                   plugins: postcssPlugins,
@@ -98,7 +102,7 @@ const generateBaseConfig = options => {
               },
             },
             {
-              loader: 'less-loader',
+              loader: require.resolve('less-loader'),
               options: {
                 lessOptions: {
                   javascriptEnabled: true,
