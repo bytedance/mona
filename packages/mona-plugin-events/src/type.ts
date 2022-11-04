@@ -19,7 +19,7 @@ export const enum ErrorCode {
   AppNoRegister = -103,
 }
 
-export type ErrorResponse = { code: ErrorCode; message: string };
+export type ErrorResponse = { code: ErrorCode | number; message: string };
 
 export interface InputCallbackParams<T = any, R = any> {
   data?: T;
