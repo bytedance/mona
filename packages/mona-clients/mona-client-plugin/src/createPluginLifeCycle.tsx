@@ -10,7 +10,6 @@ import {
 import { isClassComponent, GLOBAL_LIFECYCLE_STORE, parseSearch } from '@bytedance/mona-shared';
 import { lightAppLifeCycleParamsKey } from './constants';
 
-let lifeCycleFlag = false;
 
 export function createPluginLifeCycle(Component: React.ComponentType<any>) {
   const appLifecycleContext = new LifecycleContext();
@@ -47,6 +46,7 @@ export function createPluginLifeCycle(Component: React.ComponentType<any>) {
     handleShow,
     handleHide,
   };
+  let lifeCycleFlag = false;
 
   class AppConfig extends React.Component {
     componentDidMount() {
