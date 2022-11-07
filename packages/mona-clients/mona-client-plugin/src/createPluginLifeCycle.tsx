@@ -10,6 +10,8 @@ import {
 import { isClassComponent, GLOBAL_LIFECYCLE_STORE, parseSearch } from '@bytedance/mona-shared';
 import { lightAppLifeCycleParamsKey } from './constants';
 
+let lifeCycleFlag = false;
+
 export function createPluginLifeCycle(Component: React.ComponentType<any>) {
   const appLifecycleContext = new LifecycleContext();
   const appEntryRef = React.createRef<any>();
@@ -48,8 +50,11 @@ export function createPluginLifeCycle(Component: React.ComponentType<any>) {
 
   class AppConfig extends React.Component {
     componentDidMount() {
-      handleShow(window[lightAppLifeCycleParamsKey.show as any] || {});
-      handleLaunch(window[lightAppLifeCycleParamsKey.launch as any] || {});
+      if (!lifeCycleFlag) {
+        lifeCycleFlag = true;
+        handleShow(window[lightAppLifeCycleParamsKey.show as any] || {});
+        handleLaunch(window[lightAppLifeCycleParamsKey.launch as any] || {});
+      }
     }
     componentWillUnmount() {}
     render() {
