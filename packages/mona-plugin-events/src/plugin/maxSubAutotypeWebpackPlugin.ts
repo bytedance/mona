@@ -4,19 +4,14 @@ import { JsApiListResponse, JsApi, RequestArg, ResponseArg } from '../type';
 import { getJsApiList } from './getJsApiList';
 
 export class MaxSubAutoTypeWebpackPlugin {
-  public env: 'prod' | 'boe' | 'ppe';
-  public url?: string;
-  constructor(env: 'prod' | 'boe' | 'ppe' = 'prod', url?: string) {
-    this.env = env;
-    this.url = url;
-  }
+  constructor() {}
   apply(compiler) {
     compiler.hooks.compile.tap('MaxSubAutoTypeWebpackPlugin', async () => {
       try {
         let {
           code,
           data: { jsApiList },
-        } = await getJsApiList(this.env, this.url);
+        } = await getJsApiList();
         if (code === 10000) {
           const code = generateTsCode(jsApiList);
           // events声明文件
