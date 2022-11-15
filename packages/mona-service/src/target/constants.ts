@@ -12,6 +12,7 @@ export enum Platform {
   WEB = 'web',
   MINI = 'mini',
   H5 = 'h5',
+  MAX = 'max',
 }
 
 export const H5Html = `
