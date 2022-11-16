@@ -12,7 +12,7 @@ const max: IPlugin = ctx => {
   const monaConfig = configHelper.projectConfig;
 
   ctx.registerTarget(MAX, tctx => {
-    const maxTmp = path.join(__dirname, '../../../dist/maxTmp');
+    const maxTmp = path.join(__dirname, '../../../dist/.maxTmp');
     // 原始webpack打包逻辑
     // const webpackStart = tctx.startFn;
     // const webpackBuild = tctx.buildFn;
@@ -21,54 +21,114 @@ const max: IPlugin = ctx => {
     //   pxToRem = true;
     // }
     const lynxEntry = path.join(maxTmp, monaConfig.input);
+    const h5Entry = path.join(configHelper.cwd, monaConfig.input);
     let buildType = 'umd';
     // if (monaConfig?.buildType === 'esm') {
     //   buildType = 'esm';
     // }
 
-    tctx.configureWebpack(() => {
-      monaConfig.chain = (pre: any) => pre;
-      if (process.env.NODE_ENV === 'production') {
-        return require('../webpack-config/webpack.prod')(buildType, lynxEntry, pxToRem);
-      }
-      return require('../webpack-config/webpack.dev')(buildType, lynxEntry, pxToRem);
-    });
-
     // 复写start命令
-    tctx.overrideStartCommand(() => {
+    tctx.overrideStartCommand(args => {
+      const { old } = args;
       try {
-        // 1.创建临时文件夹
-        if (!fs.existsSync(maxTmp)) {
-          fs.mkdirSync(maxTmp);
+        if (!old) {
+          // 新的lynx打包逻辑
+          // 1.创建临时文件夹
+          if (!fs.existsSync(maxTmp)) {
+            fs.mkdirSync(maxTmp);
+          }
+          // 1. 将ttml转成reactLynx并存储到临时文件夹中
+          ttmlToReactLynx(maxTmp, configHelper);
+          // 2. 通过mona.config.ts生成lynx.config.ts
+          writeLynxConfig(maxTmp, configHelper);
+          // 3. 执行speedy dev
+          const monaSpeedyPath = path.join(__dirname, './monaSpeedy.js');
+          child_process.execSync(`node ${monaSpeedyPath} dev --config ${path.join(maxTmp, 'lynx.config.js')}`, {
+            stdio: 'inherit',
+          });
+          // child_process.execSync(`lynx-speedy dev --config ${path.join(maxTmp, 'lynx.config.js')}`, {
+          //   stdio: 'inherit',
+          // });
+          // 4. 通过webpack打包，先将reactLynx--》标准react产物，再走h5端的正常打包逻辑
+          tctx.configureWebpack(() => {
+            monaConfig.chain = (pre: any) => pre;
+            if (process.env.NODE_ENV === 'production') {
+              return require('../webpack-config/webpack.prod')(buildType, lynxEntry, pxToRem);
+            }
+            return require('../webpack  -config/webpack.dev')(buildType, lynxEntry, pxToRem);
+          });
+          // webpackStart({});
+        } else {
+          // 旧的打包逻辑
+          tctx.configureWebpack(() => {
+            monaConfig.chain = (pre: any) => pre;
+            if (process.env.NODE_ENV === 'production') {
+              return require('../webpack-config/webpack.prod')(buildType, h5Entry, pxToRem);
+            }
+            return require('../webpack-config/webpack.dev')(buildType, h5Entry, pxToRem);
+          });
+          // webpackStart({});
         }
-        // 1. 将ttml转成reactLynx并存储到临时文件夹中
-        ttmlToReactLynx(maxTmp, configHelper);
-        // 2. 通过mona.config.ts生成lynx.config.ts
-        writeLynxConfig(maxTmp, configHelper);
-        // 3. 执行speedy dev
-        child_process.execSync(`lynx-speedy dev --config ${path.join(maxTmp, 'lynx.config.js')}`, { stdio: 'inherit' });
-        // 4. 通过webpack打包，先将reactLynx--》标准react产物，再走h5端的正常打包逻辑
-        // webpackStart({});
       } catch (err) {
-        console.log('启动失败', err);
+        console.log('max-component start失败', err);
       }
     });
     // 复写build命令
-    tctx.overrideBuildCommand(() => {
-      // 1.创建临时文件夹
-      if (!fs.existsSync(maxTmp)) {
-        fs.mkdirSync(maxTmp);
+    tctx.overrideBuildCommand(args => {
+      const { old } = args;
+      try {
+        if (!old) {
+          // 新的lynx打包逻辑
+
+          // 1.创建临时文件夹
+          if (!fs.existsSync(maxTmp)) {
+            fs.mkdirSync(maxTmp);
+          }
+          // 1. 将ttml转成reactLynx并存储到临时文件夹中
+          ttmlToReactLynx(maxTmp, configHelper, false);
+          // 2. 通过mona.config.ts生成lynx.config.ts
+          writeLynxConfig(maxTmp, configHelper);
+          const monaSpeedyPath = path.join(__dirname, './monaSpeedy.js');
+          // 3. 执行speedy dev
+          child_process.execSync(`node ${monaSpeedyPath} build --config ${path.join(maxTmp, 'lynx.config.js')}`, {
+            stdio: 'inherit',
+          });
+          // 4. 通过webpack打包，先将reactLynx--》标准react产物，再走h5端的正常打包逻辑
+          tctx.configureWebpack(() => {
+            monaConfig.chain = (pre: any) => pre;
+            if (process.env.NODE_ENV === 'production') {
+              return require('../webpack-config/webpack.prod')(buildType, lynxEntry, pxToRem);
+            }
+            return require('../webpack-config/webpack.dev')(buildType, lynxEntry, pxToRem);
+          });
+          // webpackBuild({});
+        } else {
+          // 旧的打包逻辑
+          tctx.configureWebpack(() => {
+            monaConfig.chain = (pre: any) => pre;
+            if (process.env.NODE_ENV === 'production') {
+              return require('../webpack-config/webpack.prod')(buildType, h5Entry, pxToRem);
+            }
+            return require('../webpack-config/webpack.dev')(buildType, h5Entry, pxToRem);
+          });
+          //webpackBuild({});
+        }
+      } catch (err) {
+        console.log('max-component build失败', err);
       }
-      // 1. 将ttml转成reactLynx并存储到临时文件夹中
-      ttmlToReactLynx(maxTmp, configHelper, false);
-      // 2. 通过mona.config.ts生成lynx.config.ts
-      writeLynxConfig(maxTmp, configHelper);
-      // 3. 执行speedy dev
-      child_process.execSync(`lynx-speedy build --config ${path.join(maxTmp, 'lynx.config.js')}`, { stdio: 'inherit' });
-      // 4. 通过webpack打包，先将reactLynx--》标准react产物，再走h5端的正常打包逻辑
-      // webpackBuild({});
     });
   });
+  ctx.registerCommand(
+    'max-template-start',
+    {
+      description: '店铺装修模版start',
+      usage: 'mona-service max-template-start',
+    },
+    () => {
+      const configPath = path.resolve(__dirname, '../utils/templateStart.js');
+      child_process.execSync(`node ${configPath}`, { stdio: 'inherit' });
+    },
+  );
 };
 
 module.exports = max;

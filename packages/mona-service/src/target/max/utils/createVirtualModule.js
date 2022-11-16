@@ -1,14 +1,12 @@
-const VirtualModulesPlugin = require('webpack-virtual-modules')
-const path = require("path");
+const VirtualModulesPlugin = require('webpack-virtual-modules');
+const path = require('path');
 
-module.exports = function createModule(id) {
-  const entryPath = path.resolve(process.cwd(), "./src/index")
+module.exports = function createModule(entry, id) {
   const module = {};
-  const virtualPath = path.join(entryPath, '..', 'app.entry.js')
+  const virtualPath = path.join(entry, '..', 'app.entry.js');
   module[virtualPath] = _generatePluginEntryCode(id);
   return new VirtualModulesPlugin(module);
-}
-
+};
 
 function _generatePluginEntryCode(id) {
   const code = `

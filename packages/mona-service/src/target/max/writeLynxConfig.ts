@@ -29,6 +29,9 @@ export const writeLynxConfig = (maxTmp: string, configHelper: ConfigHelper) => {
               input: {
                 "react-lynx-web":  "${lynxEntry}",
               },
+              output: {
+                path:"dist",
+              },
               dsl: "compilerNgWeb",
               runtimeTarget: "compilerNgWebRuntime",
               define: {

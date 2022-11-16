@@ -8,12 +8,12 @@ const TARGET_URL = `https://fxg.jinritemai.com/ffa/mshop/decorate/isv/entry?debu
 
 const MESSAGE_TYPE = {
   exchangeSchemaJSON: {
-    name: 'EXCHANGE_SCHEMA_JSON'
+    name: 'EXCHANGE_SCHEMA_JSON',
   },
   exchangePreviewJson: {
-    name: 'EXCHANGE_PREVIEW_JSON'
-  }
-}
+    name: 'EXCHANGE_PREVIEW_JSON',
+  },
+};
 
 const isJSON = v => {
   try {
@@ -24,16 +24,15 @@ const isJSON = v => {
   }
 };
 
-
 let wsForWatch;
 try {
   const WebSocket = require('ws');
-  const wss = new WebSocket.Server({port: WS_PORT});
+  const wss = new WebSocket.Server({ port: WS_PORT });
   wss.on('connection', ws => {
     wsForWatch = ws;
     ws.on('message', message => {
       console.log(`ws received message => ${message}`);
-      const {type, data} = isJSON(message) ? JSON.parse(message) : {};
+      const { type, data } = isJSON(message) ? JSON.parse(message) : {};
       if (type === MESSAGE_TYPE.exchangeSchemaJSON.name) {
         const schemaJsonFilePath = path.resolve(process.cwd(), './schema.json');
         const componentsJsonFilePath = path.resolve(process.cwd(), './components.json');
@@ -42,7 +41,6 @@ try {
           fs.writeFileSync(schemaJsonFilePath, getTmpData(data));
           fs.writeFileSync(componentsJsonFilePath, getTmpComponentData(data));
         }
-
       }
 
       if (type === MESSAGE_TYPE.exchangePreviewJson.name) {
@@ -57,8 +55,7 @@ try {
   console.error('创建websocket调试失败:', e);
 }
 
-
 module.exports = {
   WS_PORT,
-  TARGET_URL
-}
+  TARGET_URL,
+};

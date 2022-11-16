@@ -9,7 +9,7 @@ const buildId = CreateUniqueId();
 const createModule = require('../utils/createVirtualModule');
 
 const generateBaseConfig = options => {
-  const { pxToRem } = options;
+  const { pxToRem, entry } = options;
 
   let postcssPlugins = [
     PostcssPluginRpxToVw,
@@ -32,7 +32,7 @@ const generateBaseConfig = options => {
   return {
     entry: {
       // 创建的虚拟模块入口，详见createModule
-      index: path.resolve(process.cwd(), './src/app.entry.js'),
+      index: path.resolve(entry, '../app.entry.js'),
     },
     output: {
       path: path.resolve(process.cwd(), './dist'),
@@ -131,7 +131,7 @@ const generateBaseConfig = options => {
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '...'],
     },
-    plugins: [new MvJSONPlugin(), createModule(buildId)],
+    plugins: [new MvJSONPlugin(), createModule(entry, buildId)],
   };
 };
 

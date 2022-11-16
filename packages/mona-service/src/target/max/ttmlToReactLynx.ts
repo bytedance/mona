@@ -12,7 +12,6 @@ export const ttmlToReactLynx = (maxTmp: string, configHelper: ConfigHelper, isWa
     console.log('sourceDir', sourceDir);
     chokidar.watch(sourceDir).on('all', () => {
       ttmlToReactLynxRecur(maxTmp, souceDirName, configHelper.cwd);
-      console.log('hahaha');
     });
   }
 };
