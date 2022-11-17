@@ -3,14 +3,12 @@ export interface PluginSdkBaseType {
   [keyName: string]: (params: InputCallbackParams | inputFunc) => void | ((params: inputFunc) => void);
 }
 
-export interface MonaPluginEvents {
+export type MonaPluginEvents = {
   max: any;
   pigeon: Pigeon;
+  light: PluginSdkBaseType;
   removePluginListener: (eventName: string) => void;
-  globalStore: {
-    getData: <T = any>(name?: string) => T;
-  };
-}
+} & PluginSdkBaseType;
 
 export const enum ErrorCode {
   Unknown = -100,
