@@ -1,6 +1,6 @@
 // @ts-ignore
-// import { ttmlToNg } from '@ecom/mona-speedy';
-import { transformFile } from '@byted-lynx/ttml-to-ng';
+import { ttmlToNg } from '@ecom/mona-speedy';
+// import { transformFile } from '@byted-lynx/ttml-to-ng';
 import fs from 'fs';
 import path from 'path';
 import chokidar from 'chokidar';
@@ -51,7 +51,7 @@ const isTtmlDir = (dir: string) => {
 };
 
 const transfromTtmlDir = (baseDir: string, distDir: string) => {
-  transformFile(
+  ttmlToNg.transformFile(
     {
       baseDir: baseDir,
       filename: 'index',
