@@ -11,9 +11,23 @@ export const writeLynxConfig = (maxTmp: string, configHelper: ConfigHelper) => {
   if (!finalEntry) {
     throw new Error('未找到入口文件');
   }
-  const lynxEntry = path.join(maxTmp, finalEntry);
+  // 兼容window路径
+  let lynxEntry = path.join(maxTmp, finalEntry);
+  if (process.platform === 'win32' && lynxEntry.indexOf('\\') !== -1) {
+    lynxEntry = lynxEntry.replace(/\\/g, '\\\\\\\\');
+  }
   const lynxConfigStr = `
           module.exports = [
+            {
+              name: "reactLynxApp",
+              input: {
+                "react-lynx-app": "${lynxEntry}",
+              },
+              dsl: "compilerNg",
+              encode: {
+                targetSdkVersion: "1.6",
+              },
+            },
             {
               name: "dynamicComponent",
               input: {

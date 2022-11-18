@@ -38,7 +38,7 @@
     "@bytedance/mona-max": "0.2.35-beta.1",
     "@bytedance/mona-runtime": "0.2.35-beta.1",
     "@bytedance/mona-shared": "0.2.35-beta.1",
-    "@ecom/mona-speedy": "^0.0.7",
+    "@ecom/mona-speedy": "0.0.16",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.1",
     "@svgr/webpack": "^5.5.0",
     "@teamsupercell/typings-for-css-modules-loader": "^2.5.1",

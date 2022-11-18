@@ -1,3 +1,5 @@
+// @ts-ignore
+// import { ttmlToNg } from '@ecom/mona-speedy';
 import { transformFile } from '@byted-lynx/ttml-to-ng';
 import fs from 'fs';
 import path from 'path';
