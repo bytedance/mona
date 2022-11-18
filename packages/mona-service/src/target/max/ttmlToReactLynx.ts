@@ -60,6 +60,7 @@ const transfromTtmlDir = (baseDir: string, distDir: string) => {
       distName: `index.jsx`,
       options: {
         inlineLepus: true,
+        reactRuntimeImportDeclaration: 'import ReactLynx, { Component } from "@ecom/mona-speedy-runtime"',
         // componentPathRewrite(name, path) {
         //   // arco-icon @byted-lynx/ui/components/icon/icon
         //   const pathname = path.split('/').splice(-1)[0];
