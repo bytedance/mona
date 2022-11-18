@@ -1,6 +1,6 @@
 // @ts-ignore
-import { ttmlToNg } from '@ecom/mona-speedy';
-// import { transformFile } from '@byted-lynx/ttml-to-ng';
+// import { ttmlToNg } from '@ecom/mona-speedy';
+import { transformFile } from '@byted-lynx/ttml-to-ng';
 import fs from 'fs';
 import path from 'path';
 import chokidar from 'chokidar';
@@ -11,7 +11,6 @@ export const ttmlToReactLynx = (maxTmp: string, configHelper: ConfigHelper, isWa
   ttmlToReactLynxRecur(maxTmp, souceDirName, configHelper.cwd);
   const sourceDir = path.join(configHelper.cwd, souceDirName);
   if (isWatch) {
-    console.log('sourceDir', sourceDir);
     chokidar.watch(sourceDir).on('all', () => {
       ttmlToReactLynxRecur(maxTmp, souceDirName, configHelper.cwd);
     });
@@ -51,7 +50,7 @@ const isTtmlDir = (dir: string) => {
 };
 
 const transfromTtmlDir = (baseDir: string, distDir: string) => {
-  ttmlToNg.transformFile(
+  transformFile(
     {
       baseDir: baseDir,
       filename: 'index',

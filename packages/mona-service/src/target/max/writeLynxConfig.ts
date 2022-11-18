@@ -7,10 +7,16 @@ export const writeLynxConfig = (maxTmp: string, configHelper: ConfigHelper) => {
   const monaConfig = configHelper.projectConfig;
   const lynxConfigFile = path.join(maxTmp, 'lynx.config.js');
   let reg = /\.[j|t]s$/;
-  let finalEntry = monaConfig.input.replace(reg, '.jsx');
+  let finalEntry = monaConfig.input;
   if (!finalEntry) {
     throw new Error('未找到入口文件');
   }
+  if (!reg.test(finalEntry)) {
+    finalEntry += '.jsx';
+  } else {
+    finalEntry = monaConfig.input.replace(reg, '.jsx');
+  }
+
   // 兼容window路径
   let lynxEntry = path.join(maxTmp, finalEntry);
   if (process.platform === 'win32' && lynxEntry.indexOf('\\') !== -1) {
