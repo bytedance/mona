@@ -34,16 +34,16 @@ export const writeLynxConfig = (maxTmp: string, configHelper: ConfigHelper) => {
                 targetSdkVersion: "1.6",
               },
             },
-            // {
-            //   name: "dynamicComponent",
-            //   input: {
-            //     main: "${lynxEntry}",
-            //   },
-            //   dsl: "dynamic-component-ng",
-            //   encode: {
-            //     targetSdkVersion: "1.6",
-            //   },
-            // },
+            {
+              name: "dynamicComponent",
+              input: {
+                main: "${lynxEntry}",
+              },
+              dsl: "dynamic-component-ng",
+              encode: {
+                targetSdkVersion: "1.6",
+              },
+            },
             {
               name: "reactLynxWeb",
               input: {
