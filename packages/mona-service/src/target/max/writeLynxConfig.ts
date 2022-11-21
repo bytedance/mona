@@ -44,28 +44,28 @@ export const writeLynxConfig = (maxTmp: string, configHelper: ConfigHelper) => {
             //     targetSdkVersion: "1.6",
             //   },
             // },
-            // {
-            //   name: "reactLynxWeb",
-            //   input: {
-            //     "react-lynx-web":  "${lynxEntry}",
-            //   },
-            //   output: {
-            //     path:"dist",
-            //   },
-            //   dsl: "compilerNgWeb",
-            //   runtimeTarget: "compilerNgWebRuntime",
-            //   define: {
-            //     __H5__: true,
-            //   },
-            //   encode: {
-            //     targetSdkVersion: "1.6",
-            //   },
-            //   webOptions: {
-            //     devtool: {
-            //       hmr: true,
-            //     },
-            //   },
-            // },
+            {
+              name: "reactLynxWeb",
+              input: {
+                "react-lynx-web":  "${lynxEntry}",
+              },
+              output: {
+                path:"dist",
+              },
+              dsl: "compilerNgWeb",
+              runtimeTarget: "compilerNgWebRuntime",
+              define: {
+                __H5__: true,
+              },
+              encode: {
+                targetSdkVersion: "1.6",
+              },
+              webOptions: {
+                devtool: {
+                  hmr: true,
+                },
+              },
+            },
           ];
           `;
   return fs.writeFileSync(lynxConfigFile, lynxConfigStr);
