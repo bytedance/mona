@@ -42,7 +42,12 @@ const generateBaseConfig = options => {
       rules: [
         {
           test: /\.(js|mjs|jsx|ts|tsx)$/,
-          use: 'babel-loader',
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env', '@babel/preset-react']
+            }
+          },
           exclude: /node_modules/,
         },
         {
@@ -146,7 +151,5 @@ try {
 } catch (e) {
   console.error(e);
 }
-
-const baseConfig = generateBaseConfig({ pxToRem });
 
 module.exports = generateBaseConfig;
