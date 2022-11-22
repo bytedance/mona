@@ -108,6 +108,12 @@ export type RichTextNode = RichTextNodeTypeNode | RichTextNodeTypeText;
 export interface RichTextProps extends BaseProps {
   nodes?: RichTextNode[] | string;
 }
+export interface MemberButtonProps extends BaseProps {
+  shopId: string;
+  'bind:success': any;
+  'bind:cancel': any;
+  'bind:error': any;
+}
 
 export interface ProgressProps extends BaseProps {
   percent?: number;
