@@ -5,7 +5,7 @@ import { IPlugin } from '../../Service';
 import { Platform } from '../constants';
 import { writeLynxConfig } from './writeLynxConfig';
 import { ttmlToReactLynx } from './ttmlToReactLynx';
-// const speedy = require('@ecom/mona-speedy');
+const speedy = require('@ecom/mona-speedy');
 
 const { MAX } = Platform;
 const max: IPlugin = ctx => {
@@ -43,11 +43,12 @@ const max: IPlugin = ctx => {
           // 2. 通过mona.config.ts生成lynx.config.ts
           writeLynxConfig(maxTmp, configHelper);
           // 3. 执行speedy dev
-          
+
           // 由于父子进程同时坚实文件会失效，模拟运行lynx-speedy dev --config xxx
-          // process.argv = process.argv.slice(0, 2).concat(['dev', '--config', path.join(maxTmp, 'lynx.config.js')]);
-          // speedy.run();
-          // child_process.execSync(`lynx-speedy dev --config ${path.join(maxTmp, 'lynx.config.js')}`, {
+          process.argv = process.argv.slice(0, 2).concat(['dev', '--config', path.join(maxTmp, 'lynx.config.js')]);
+          speedy.run();
+          // const monaSpeedyPath = path.join(__dirname, './monaSpeedy.js');
+          // child_process.execSync(`node ${monaSpeedyPath} dev --config ${path.join(maxTmp, 'lynx.config.js')}`, {
           //   stdio: 'inherit',
           // });
           // 4. 通过webpack打包，先将reactLynx--》标准react产物，再走h5端的正常打包逻辑
@@ -59,11 +60,6 @@ const max: IPlugin = ctx => {
             return require('./webpack-config/webpack.dev')(buildType, lynxEntry, pxToRem);
           });
           webpackStart({});
-
-          // const monaSpeedyPath = path.join(__dirname, './monaSpeedy.js');
-          // child_process.execSync(`node ${monaSpeedyPath} dev --config ${path.join(maxTmp, 'lynx.config.js')}`, {
-          //   stdio: 'inherit',
-          // });
         } else {
           // 旧的打包逻辑
           tctx.configureWebpack(() => {
