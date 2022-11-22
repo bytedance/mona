@@ -7,6 +7,7 @@ const MvJSONPlugin = require('../utils/mvJsonPlugin');
 const CreateUniqueId = require('../utils/createUniqueId');
 const buildId = CreateUniqueId();
 const createModule = require('../utils/createVirtualModule');
+const TransformJsxLabelPlugin = require('../../../plugins/babel/TransformJsxLabel').default;
 
 const generateBaseConfig = options => {
   const { pxToRem, entry } = options;
@@ -42,7 +43,13 @@ const generateBaseConfig = options => {
       rules: [
         {
           test: /\.(js|mjs|jsx|ts|tsx)$/,
-          use: 'babel-loader',
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env', '@babel/preset-react'],
+              plugins: [TransformJsxLabelPlugin],
+            },
+          },
           exclude: /node_modules/,
         },
         {
@@ -135,18 +142,16 @@ const generateBaseConfig = options => {
   };
 };
 
-let pxToRem = false;
-try {
-  const cwd = process.cwd();
-  const maxJsonPath = path.resolve(cwd, './mona.config.ts');
-  // const maxJsonPath = path.resolve(cwd, './max.json');
-  const maxJson = fs.readFileSync(maxJsonPath, 'utf-8');
-  pxToRem = maxJson.indexOf('pxToRem: true') !== -1;
-  // pxToRem = maxJson.indexOf('"pxToRem": true') !== -1;
-} catch (e) {
-  console.error(e);
-}
-
-const baseConfig = generateBaseConfig({ pxToRem });
+// let pxToRem = false;
+// try {
+//   const cwd = process.cwd();
+//   const maxJsonPath = path.resolve(cwd, './mona.config.ts');
+//   // const maxJsonPath = path.resolve(cwd, './max.json');
+//   const maxJson = fs.readFileSync(maxJsonPath, 'utf-8');
+//   pxToRem = maxJson.indexOf('pxToRem: true') !== -1;
+//   // pxToRem = maxJson.indexOf('"pxToRem": true') !== -1;
+// } catch (e) {
+//   console.error(e);
+// }
 
 module.exports = generateBaseConfig;

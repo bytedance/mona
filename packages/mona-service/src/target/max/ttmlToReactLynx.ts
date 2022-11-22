@@ -10,7 +10,9 @@ export const ttmlToReactLynx = (maxTmp: string, configHelper: ConfigHelper, isWa
   ttmlToReactLynxRecur(maxTmp, souceDirName, configHelper.cwd);
   const sourceDir = path.join(configHelper.cwd, souceDirName);
   if (isWatch) {
+    console.log('haha');
     chokidar.watch(sourceDir).on('all', () => {
+      console.log('src文件改变');
       ttmlToReactLynxRecur(maxTmp, souceDirName, configHelper.cwd);
     });
   }
