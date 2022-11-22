@@ -43,7 +43,7 @@ const max: IPlugin = ctx => {
           // 2. 通过mona.config.ts生成lynx.config.ts
           writeLynxConfig(maxTmp, configHelper);
           // 3. 执行speedy dev
-
+          
           // 由于父子进程同时坚实文件会失效，模拟运行lynx-speedy dev --config xxx
           // process.argv = process.argv.slice(0, 2).concat(['dev', '--config', path.join(maxTmp, 'lynx.config.js')]);
           // speedy.run();
@@ -58,7 +58,6 @@ const max: IPlugin = ctx => {
             }
             return require('./webpack-config/webpack.dev')(buildType, lynxEntry, pxToRem);
           });
-
           webpackStart({});
 
           // const monaSpeedyPath = path.join(__dirname, './monaSpeedy.js');
