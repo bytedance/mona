@@ -1158,10 +1158,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
 
-"@ecom/mona-speedy-runtime@0.0.18":
-  version "0.0.18"
-  resolved "http://bnpm.byted.org/@ecom/mona-speedy-runtime/-/mona-speedy-runtime-0.0.18.tgz#713f85da7fc03b995426f1b0830a095e279cf783"
-  integrity sha512-TzlimRfEZj7TsgNmhi01r4c8Q+AL6gTXc3nzc5DG5uAlQos/vVavXdHNLS7n+mSMT4phjh9/UJygry91n0gMSQ==
+"@ecom/mona-speedy-runtime@0.0.19":
+  version "0.0.19"
+  resolved "http://bnpm.byted.org/@ecom/mona-speedy-runtime/-/mona-speedy-runtime-0.0.19.tgz#af3ae4cde584d5fdb0579f6a5dc2ba24ee1125a1"
+  integrity sha512-eVRs/AnC98x0peElFtM1M5brBljeUaCFn4RsrlTjVwd2SuqjSBZ8uGlmeZ8LubVNg/m5rtMxRiuqjcTT7EBgNg==
 
 "@ecom/mona-speedy@0.0.19":
   version "0.0.19"

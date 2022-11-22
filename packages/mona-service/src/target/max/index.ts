@@ -61,10 +61,10 @@ const max: IPlugin = ctx => {
 
           webpackStart({});
 
-          const monaSpeedyPath = path.join(__dirname, './monaSpeedy.js');
-          child_process.execSync(`node ${monaSpeedyPath} dev --config ${path.join(maxTmp, 'lynx.config.js')}`, {
-            stdio: 'inherit',
-          });
+          // const monaSpeedyPath = path.join(__dirname, './monaSpeedy.js');
+          // child_process.execSync(`node ${monaSpeedyPath} dev --config ${path.join(maxTmp, 'lynx.config.js')}`, {
+          //   stdio: 'inherit',
+          // });
         } else {
           // 旧的打包逻辑
           tctx.configureWebpack(() => {

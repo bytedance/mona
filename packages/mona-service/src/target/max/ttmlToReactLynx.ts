@@ -72,7 +72,7 @@ const transfromTtmlDir = (baseDir: string, distDir: string) => {
   );
   //复制ttss->scss
   const ttssSrcFilePath = path.resolve(baseDir, `index.ttss`);
-  const ttssDistDirFilePath = path.resolve(distDir, `index.scss`);
+  const ttssDistDirFilePath = path.resolve(distDir, `index.less`);
   if (fs.existsSync(ttssSrcFilePath)) {
     fs.copyFileSync(ttssSrcFilePath, ttssDistDirFilePath);
   }
