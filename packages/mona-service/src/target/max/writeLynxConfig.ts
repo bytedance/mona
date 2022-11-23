@@ -24,26 +24,26 @@ export const writeLynxConfig = (maxTmp: string, configHelper: ConfigHelper) => {
   }
   const lynxConfigStr = `
           module.exports = [
-            // {
-            //   name: "reactLynxApp",
-            //   input: {
-            //     "react-lynx-app": "${lynxEntry}",
-            //   },
-            //   dsl: "compilerNg",
-            //   encode: {
-            //     targetSdkVersion: "1.6",
-            //   },
-            // },
             {
-              name: "dynamicComponent",
+              name: "reactLynxApp",
               input: {
-                main: "${lynxEntry}",
+                "react-lynx-app": "${lynxEntry}",
               },
-              dsl: "dynamic-component-ng",
+              dsl: "compilerNg",
               encode: {
                 targetSdkVersion: "1.6",
               },
             },
+            // {
+            //   name: "dynamicComponent",
+            //   input: {
+            //     main: "${lynxEntry}",
+            //   },
+            //   dsl: "dynamic-component-ng",
+            //   encode: {
+            //     targetSdkVersion: "1.6",
+            //   },
+            // },
             // {
             //   name: "reactLynxWeb",
             //   input: {
