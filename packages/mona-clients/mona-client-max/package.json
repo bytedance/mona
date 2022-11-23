@@ -18,7 +18,8 @@
   ],
   "dependencies": {
     "@bytedance/mona": "0.2.35-beta.1",
-    "@bytedance/mona-shared": "0.2.35-beta.1"
+    "@bytedance/mona-shared": "0.2.35-beta.1",
+    "axios": "^1.2.0"
   },
   "publishConfig": {
     "access": "public",
