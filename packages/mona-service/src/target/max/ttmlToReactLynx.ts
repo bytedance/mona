@@ -1,4 +1,5 @@
-import { transformFile } from '@byted-lynx/ttml-to-ng';
+// @ts-ignore
+import { ttmlToNg } from '@ecom/mona-speedy';
 import fs from 'fs';
 import path from 'path';
 import chokidar from 'chokidar';
@@ -9,8 +10,8 @@ export const ttmlToReactLynx = (maxTmp: string, configHelper: ConfigHelper, isWa
   ttmlToReactLynxRecur(maxTmp, souceDirName, configHelper.cwd);
   const sourceDir = path.join(configHelper.cwd, souceDirName);
   if (isWatch) {
-    console.log('sourceDir', sourceDir);
     chokidar.watch(sourceDir).on('all', () => {
+      console.log('src文件改变');
       ttmlToReactLynxRecur(maxTmp, souceDirName, configHelper.cwd);
     });
   }
@@ -49,7 +50,7 @@ const isTtmlDir = (dir: string) => {
 };
 
 const transfromTtmlDir = (baseDir: string, distDir: string) => {
-  transformFile(
+  ttmlToNg.transformFile(
     {
       baseDir: baseDir,
       filename: 'index',
@@ -58,6 +59,8 @@ const transfromTtmlDir = (baseDir: string, distDir: string) => {
       distName: `index.jsx`,
       options: {
         inlineLepus: true,
+        reactRuntimeImportDeclaration: 'import ReactLynx, { Component } from "@ecom/mona-speedy-runtime"',
+        importCssPath: './index.less',
         // componentPathRewrite(name, path) {
         //   // arco-icon @byted-lynx/ui/components/icon/icon
         //   const pathname = path.split('/').splice(-1)[0];
@@ -69,7 +72,7 @@ const transfromTtmlDir = (baseDir: string, distDir: string) => {
   );
   //复制ttss->scss
   const ttssSrcFilePath = path.resolve(baseDir, `index.ttss`);
-  const ttssDistDirFilePath = path.resolve(distDir, `index.scss`);
+  const ttssDistDirFilePath = path.resolve(distDir, `index.less`);
   if (fs.existsSync(ttssSrcFilePath)) {
     fs.copyFileSync(ttssSrcFilePath, ttssDistDirFilePath);
   }

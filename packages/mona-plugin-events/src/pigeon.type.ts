@@ -16,7 +16,7 @@ export enum PluginShowFrom {
   aftersaleOrder = 3, // 售后单
   skuOrder = 2, // 商品单
   shopOrder = 1, // 店铺单
-  product = 4 // 商品列表
+  product = 4, // 商品列表
 }
 
 export interface lifeCycleShow {

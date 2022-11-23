@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-plugin-events",
-  "version": "0.2.35-beta.1",
+  "version": "0.2.37",
   "description": "Merchant application plugin side communication package",
   "author": "fengbo.lucky@bytedance.com",
   "scripts": {
@@ -11,19 +11,20 @@
   "files": [
     "dist"
   ],
-  "main": "dist/index.umd.js",
-  "module": "dist/index.es.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.web.js",
+  "browser": "dist/index.web.js",
+  "types": "dist/index.web.d.ts",
   "sideEffects": false,
   "devDependencies": {
     "@rollup/plugin-commonjs": "^19.0.1",
-    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-json": "^5.0.1",
     "@rollup/plugin-node-resolve": "^13.0.2",
-    "rollup": "^2.53.2",
+    "rollup": "2.72.1",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.0",
     "rollup-plugin-terser": "^7.0.2",
-    "rollup-plugin-typescript2": "^0.30.0",
+    "rollup-plugin-typescript2": "^0.34.1",
     "tslib": "^2.3.1"
   },
   "license": "MIT",
@@ -31,5 +32,8 @@
     "access": "public",
     "registry": "https://registry.npmjs.org"
   },
-  "gitHead": "cc5aa5283af595fd7d8a7b4921f54e2797504edd"
+  "gitHead": "cc5aa5283af595fd7d8a7b4921f54e2797504edd",
+  "dependencies": {
+    "axios": "^1.1.3"
+  }
 }

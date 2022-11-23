@@ -33,6 +33,7 @@ import video from './Video/alias';
 import webview from './Webview/alias';
 import map from './Map/alias';
 import camera from './Camera/alias';
+import memberButton from './MemberButton/alias';
 
 // import map from './Ca/alias';
 // import * as Components from '@bytedance/mona-components';
@@ -355,6 +356,10 @@ export const ejsParamsObj: Record<
   [ComponentType['open-data']]: {
     reactComponentName: 'OpenData',
     alias: openData,
+  },
+  [ComponentType['member-button']]: {
+    reactComponentName: 'MemberButton',
+    alias: memberButton,
   },
 };
 

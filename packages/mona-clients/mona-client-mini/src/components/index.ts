@@ -39,6 +39,7 @@ import {
   LinkProps,
   TextProps,
   RichTextProps,
+  MemberButtonProps,
 } from '@bytedance/mona';
 
 export const Text = createBaseComponent<TextProps>(ComponentType['text']);
@@ -81,6 +82,7 @@ export const Map = createBaseComponent<MapProps>(ComponentType['map']);
 export const Webview = createBaseComponent<WebviewProps>(ComponentType['web-view']);
 export const Ad = createBaseComponent<AdProps>(ComponentType['ad']);
 export const OpenData = createBaseComponent<OpenDataProps>(ComponentType['open-data']);
+export const MemberButton = createBaseComponent<MemberButtonProps>(ComponentType['member-button']);
 
 export const Link = (function createBaseComponent() {
   const Component = React.forwardRef(({ children, to }: any, ref) =>

@@ -11,7 +11,7 @@ module.exports = function getDevProps(schemaJson) {
   const properties = schemaJson.properties
   if(Object.prototype.toString.call(properties) !== '[object Object]')  return value
 
-  for (key in properties) {
+  for (let key in properties) {
     if(preDefinedKey.includes(key)) continue
     value[key] = properties[key].default
   }

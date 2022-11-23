@@ -13,26 +13,34 @@ export function readTypescriptFile(filename: string) {
     });
     delete require.cache[require.resolve(filename)];
     const config = require(filename).default || require(filename);
+    if (typeof config !== 'object') {
+      throw new Error('无效的配置文件');
+    }
     return config;
-  } catch(_) {
-    return null
+  } catch (err) {
+    console.error(`读取配置文件失败，使用默认配置，请查看 ${filename} 是否正确`);
+    console.error((err as Error).message);
+    return {};
   }
 }
 
 export function readJavascriptFile(filename: string) {
   try {
     require('@babel/register')({
-      presets: [
-        [require.resolve('@babel/preset-env'), { modules: 'commonjs' }],
-      ],
+      presets: [[require.resolve('@babel/preset-env'), { modules: 'commonjs' }]],
       extensions: ['.js', 'jsx'],
       cache: false,
     });
     delete require.cache[require.resolve(filename)];
     const config = require(filename).default || require(filename);
+    if (typeof config !== 'object') {
+      throw new Error('无效的配置文件');
+    }
     return config;
-  } catch(_) {
-    return null
+  } catch (err) {
+    console.error(`读取配置文件失败，使用默认配置，请查看 ${filename} 是否正确`);
+    console.error((err as Error).message);
+    return {};
   }
 }
 
