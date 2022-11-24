@@ -2,19 +2,11 @@
 import { ttmlToNg } from '@ecom/mona-speedy';
 import fs from 'fs';
 import path from 'path';
-import chokidar from 'chokidar';
 import ConfigHelper from '../../ConfigHelper';
 
-export const ttmlToReactLynx = (maxTmp: string, configHelper: ConfigHelper, isWatch: boolean = true) => {
+export const ttmlToReactLynx = (maxTmp: string, configHelper: ConfigHelper) => {
   const souceDirName = 'src';
   ttmlToReactLynxRecur(maxTmp, souceDirName, configHelper.cwd);
-  const sourceDir = path.join(configHelper.cwd, souceDirName);
-  if (isWatch) {
-    chokidar.watch(sourceDir).on('all', () => {
-      console.log('src文件改变');
-      ttmlToReactLynxRecur(maxTmp, souceDirName, configHelper.cwd);
-    });
-  }
 };
 
 const ttmlToReactLynxRecur = (maxTmp: string, baseDir: string, cwd: string) => {
