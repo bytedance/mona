@@ -1,5 +1,3 @@
-import { nativeFetch } from "./nativeFetch";
-
 export const removeEventPrefix = (prop: string, prefix: string) => {
   if (!prop.startsWith(prefix) || prop.length === prefix.length) {
     return prop;
@@ -23,7 +21,7 @@ export interface JsApiPermissionListResponse {
 
 export interface NativeFetchRes<T> {
   code: number;
-  raw?: T;
+  raw: T;
 }
 
 export const enum ErrorCode {
@@ -47,20 +45,4 @@ export const genErrorResponse = (errorCode: ErrorCode | number, message?: string
     code: errorCode,
     message: message ?? ErrorCodeMessageMap[errorCode] ?? '未知错误',
   };
-};
-
-// 获取appid的应用的js权限。
-export const getJsApiPermission: (appid: string) => Promise<NativeFetchRes<JsApiPermissionListResponse>> = appid => {
-  const getJsApiPermissionUrl = 'https://ecom-openapi.ecombdapi.com/open/appauth';
-
-  return nativeFetch({
-    url: getJsApiPermissionUrl,
-    method: 'post',
-    data: {
-      app_key: appid,
-    },
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
 };

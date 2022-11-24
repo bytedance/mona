@@ -1,7 +1,7 @@
 import { MaxEvent } from "@/types";
 import { EventOptionsType, Listener } from "@/types/type";
-import { jsApiStorage } from "./localStorage";
-import { ErrorCode, genErrorResponse, getJsApiPermission, removeEventPrefix } from "./util";
+import { JSAPI_PERMISSION_CACHE } from "./constants";
+import { ErrorCode, genErrorResponse, JsApiPermissionListResponse, NativeFetchRes, removeEventPrefix } from "./util";
 
 const genMaxEventSdk = async (appid: string, global: any) => {
   const MAX_COMPONENT_PLUGINID = '__MAX_COMPONENT_PLUGINID__';
@@ -53,19 +53,72 @@ const genMaxEventSdk = async (appid: string, global: any) => {
     return maxEventSDK;
   }
 
-  if (jsApiStorage.get(appid)) {
+
+  // internal apis
+  const _request = maxEventSDK.request;
+  const _getStorage = maxEventSDK.getStorage;
+  const _setStroage = maxEventSDK.setStorage;
+
+  function hasPermissionCache() {
+    try {
+      const data = _getStorage({ key: JSAPI_PERMISSION_CACHE, unique: appid });
+      if (data) {
+        return JSON.parse(data)?.[appid];
+      } else {
+        return null;
+      }
+    } catch (err) {
+      return null;
+    }
+  }
+  function setPermissionCache(value: string[]) {
+    try {
+      let data = _getStorage.get({ key: JSAPI_PERMISSION_CACHE, unique: appid });
+      let dataObj: { [key: string]: string[] };
+      if (data) {
+        // 有缓存
+        dataObj = JSON.parse(data);
+        dataObj[appid] = value;
+      } else {
+        //没有缓存
+        dataObj = {};
+        dataObj[appid] = value;
+      }
+      _setStroage({ key: JSAPI_PERMISSION_CACHE, unique: appid, value: JSON.stringify(dataObj) });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  function requestPermission(): Promise<NativeFetchRes<JsApiPermissionListResponse>> {
+    const getJsApiPermissionUrl = 'https://ecom-openapi.ecombdapi.com/open/appauth';
+
+    return _request({
+      url: getJsApiPermissionUrl,
+      method: 'post',
+      data: {
+        app_key: appid,
+      },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  }
+
+
+  let permission;
+  if (permission = hasPermissionCache()) {
     //如果localstorage里缓存过，则读到内存中，并且setTimeout取获取接口，更新内存和localStorage
-    maxEvent.setAppidJsApiPermisson(appid, jsApiStorage.get(appid));
+    maxEvent.setAppidJsApiPermisson(appid, permission);
     setTimeout(async () => {
       try {
         let {
           raw: {
             data: { js_name_list: jsNameList },
           },
-        } = await getJsApiPermission(appid);
+        } = await requestPermission();
         // jsNameList.push(...['getCalendarV2', 'transformImgToWebp2']);
         maxEvent.setAppidJsApiPermisson(appid, jsNameList);
-        jsApiStorage.set(appid, jsNameList);
+        setPermissionCache(jsNameList);
       } catch (err) {
         console.log(err);
       }
@@ -76,14 +129,14 @@ const genMaxEventSdk = async (appid: string, global: any) => {
         raw: {
           data: { js_name_list: jsNameList },
         },
-      } = await getJsApiPermission(appid);
+      } = await requestPermission();
       // jsNameList.push(...['getCalendarV2', 'transformImgToWebp2']);
 
       maxEvent.setAppidJsApiPermisson(appid, jsNameList);
-      jsApiStorage.set(appid, jsNameList);
+      setPermissionCache(jsNameList);
       //获得权限了，延迟调用有权限的并且已经注册的api
       for (let jsApi of jsNameList) {
-        maxEvent.delayQueue.run(`${jsApi}_${appid}_Permission_Register`, item => {
+        maxEvent.delayQueue.run(`${jsApi}_${appid}_Permission_Register`, (item: any) => {
           const { data, options, resolve, reject } = item;
           const listenerInfo = maxEvent.getAppListenerInfo(jsApi);
           if (listenerInfo) {
@@ -93,7 +146,7 @@ const genMaxEventSdk = async (appid: string, global: any) => {
       }
       //获得权限了，延迟调用有权限的并且还没注册的api
       for (let jsApi of jsNameList) {
-        maxEvent.delayQueue.run(`${jsApi}_${appid}_Permission_Not_Register`, item => {
+        maxEvent.delayQueue.run(`${jsApi}_${appid}_Permission_Not_Register`, (item: any) => {
           const { data, options, resolve, reject } = item;
           options.resolve = resolve;
           options.reject = reject;
