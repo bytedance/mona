@@ -4,15 +4,15 @@ import commonjs from '@rollup/plugin-commonjs';
 import typescript from 'rollup-plugin-typescript2';
 import postcss from 'rollup-plugin-postcss';
 import { terser } from 'rollup-plugin-terser';
-
-const pkg = require('./package.json');
+import json from '@rollup/plugin-json';
+import { browser, main } from './package.json';
 
 export default [
   {
-    input: 'src/index.ts',
+    input: 'src/index.web.ts',
     output: [
       {
-        file: pkg.module,
+        file: browser,
         format: 'esm',
         sourcemap: true,
       },
@@ -23,26 +23,27 @@ export default [
       commonjs(),
       typescript({ useTsconfigDeclarationDir: true }),
       postcss(),
-      terser(),
+      // terser(),
     ],
   },
   {
     input: 'src/index.ts',
     output: [
       {
-        file: pkg.main,
-        format: 'umd',
+        file: main,
+        format: 'cjs',
         name: 'mona',
         sourcemap: true,
       },
     ],
     plugins: [
       peerDepsExternal(),
-      resolve({ browser: true, preferBuiltins: true }),
+      resolve({ browser: false, preferBuiltins: true }),
       commonjs(),
       typescript({ useTsconfigDeclarationDir: true }),
       postcss(),
-      terser(),
+      json(),
+      // terser(),
     ],
   },
 ];
