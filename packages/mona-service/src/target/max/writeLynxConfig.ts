@@ -31,7 +31,7 @@ export const writeLynxConfig = (maxTmp: string, configHelper: ConfigHelper) => {
               },
               dsl: "compilerNg",
               encode: {
-                targetSdkVersion: "1.6",
+                targetSdkVersion: "2.2",
               },
               dev: {
                 devtoolOptions: {
@@ -46,7 +46,7 @@ export const writeLynxConfig = (maxTmp: string, configHelper: ConfigHelper) => {
             //   },
             //   dsl: "dynamic-component-ng",
             //   encode: {
-            //     targetSdkVersion: "1.6",
+            //     targetSdkVersion: "2.2",
             //   },
             // },
             // {
