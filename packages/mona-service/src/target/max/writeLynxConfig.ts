@@ -33,6 +33,14 @@ export const writeLynxConfig = (maxTmp: string, configHelper: ConfigHelper) => {
               encode: {
                 targetSdkVersion: "1.6",
               },
+              dev: {
+                devtoolOptions: {
+                  host: 'http://opws.jinritemai.com/pages/home/index'
+                },
+                schema(schema) {
+                  return 'doudian://monaview/?url=' + 'schema';
+                },
+              }
             },
             // {
             //   name: "dynamicComponent",
