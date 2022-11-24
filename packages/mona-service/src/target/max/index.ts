@@ -18,15 +18,9 @@ const max: IPlugin = ctx => {
     const webpackStart = tctx.startFn;
     const webpackBuild = tctx.buildFn;
     let pxToRem = false;
-    // if (monaConfig?.pxToRem === true) {
-    //   pxToRem = true;
-    // }
     const lynxEntry = path.join(maxTmp, monaConfig.input);
     const h5Entry = path.join(configHelper.cwd, monaConfig.input);
     let buildType = 'umd';
-    // if (monaConfig?.buildType === 'esm') {
-    //   buildType = 'esm';
-    // }
 
     // 复写start命令
     tctx.overrideStartCommand(args => {
@@ -51,15 +45,7 @@ const max: IPlugin = ctx => {
           // child_process.execSync(`node ${monaSpeedyPath} dev --config ${path.join(maxTmp, 'lynx.config.js')}`, {
           //   stdio: 'inherit',
           // });
-          // 4. 通过webpack打包，先将reactLynx--》标准react产物，再走h5端的正常打包逻辑
-          tctx.configureWebpack(() => {
-            monaConfig.chain = (pre: any) => pre;
-            if (process.env.NODE_ENV === 'production') {
-              return require('./webpack-config/webpack.prod')(buildType, lynxEntry, pxToRem);
-            }
-            return require('./webpack-config/webpack.dev')(buildType, lynxEntry, pxToRem);
-          });
-          webpackStart({});
+
         } else {
           // 旧的打包逻辑
           tctx.configureWebpack(() => {

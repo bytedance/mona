@@ -23,6 +23,7 @@ export const writeLynxConfig = (maxTmp: string, configHelper: ConfigHelper) => {
     lynxEntry = lynxEntry.replace(/\\/g, '\\\\\\\\');
   }
   const lynxConfigStr = `
+          const WebBootstrapPlugin = require('../target/max/plugins/WebBootstrapPlugin.js').default;
           module.exports = [
             {
               name: "reactLynxApp",
@@ -37,7 +38,8 @@ export const writeLynxConfig = (maxTmp: string, configHelper: ConfigHelper) => {
                 devtoolOptions: {
                   host: 'http://opws.jinritemai.com/pages/home/index'
                 },
-              }
+              },
+              plugins: [WebBootstrapPlugin("${lynxEntry}")]
             },
             // {
             //   name: "dynamicComponent",
@@ -48,6 +50,7 @@ export const writeLynxConfig = (maxTmp: string, configHelper: ConfigHelper) => {
             //   encode: {
             //     targetSdkVersion: "2.2",
             //   },
+            //   plugins: [WebBootstrapPlugin("${lynxEntry}")]
             // },
             // {
             //   name: "reactLynxWeb",
