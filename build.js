@@ -9,7 +9,6 @@ const pkgs = {
   shared: '@bytedance/mona-shared',
   build: '@bytedance/mona-build',
   service: '@bytedance/mona-service',
-  max: '@bytedance/mona-max',
 };
 const rawTargets = process.argv.slice(2);
 const startIndex = rawTargets.indexOf('-s');
