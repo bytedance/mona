@@ -6,6 +6,7 @@ const WatchExternalFilesPlugin = require('webpack-watch-files-plugin').default;
 const generateBaseConfig = require('./webpack.base.js');
 const umdConfig = require('./build-umd-config.js');
 const esmConfig = require('./build-esm-config.js');
+const openBrowser = require('react-dev-utils/openBrowser')
 const { DEV_SERVER_PORT, AfterBuildPlugin, TARGET_URL } = require('../utils/maxDevServer');
 const getDevProps = require('../utils/getDevProps');
 
@@ -34,8 +35,13 @@ const devConfig = {
     compress: true,
     hot: true,
     port: DEV_SERVER_PORT,
-    open: {
-      target: [TARGET_URL, ''],
+    onListening: function (devServer) {
+      if (!devServer) {
+        throw new Error('webpack-dev-server is not defined');
+      }
+      const addr = devServer.server.address();
+      openBrowser(`http://localhost:${addr.port}`);
+      openBrowser(TARGET_URL);
     },
   },
   plugins: [
