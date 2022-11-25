@@ -26,9 +26,9 @@ export const writeLynxConfig = (maxTmp: string, configHelper: ConfigHelper) => {
           const WebBootstrapPlugin = require('../target/max/plugins/WebBootstrapPlugin.js').default;
           module.exports = [
             {
-              name: "reactLynxApp",
+              name: "app",
               input: {
-                "react-lynx-app": "${lynxEntry}",
+                "app": "${lynxEntry}",
               },
               dsl: "compilerNg",
               encode: {
@@ -42,9 +42,9 @@ export const writeLynxConfig = (maxTmp: string, configHelper: ConfigHelper) => {
               plugins: [WebBootstrapPlugin("${lynxEntry}")]
             },
             {
-              name: "dynamicComponent",
+              name: "component",
               input: {
-                main: "${lynxEntry}",
+                component: "${lynxEntry}",
               },
               dsl: "dynamic-component-ng",
               encode: {

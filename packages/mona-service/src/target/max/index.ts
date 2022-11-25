@@ -20,7 +20,6 @@ const max: IPlugin = ctx => {
     const webpackStart = tctx.startFn;
     const webpackBuild = tctx.buildFn;
     let pxToRem = false;
-    const lynxEntry = path.join(maxTmp, monaConfig.input);
     const h5Entry = path.join(configHelper.cwd, monaConfig.input);
     let buildType = 'umd';
 
@@ -47,12 +46,8 @@ const max: IPlugin = ctx => {
           // 由于父子进程同时监视文件会失效，模拟运行lynx-speedy dev --config xxx
           process.argv = process.argv
             .slice(0, 2)
-            .concat(['dev', '--config', path.join(maxTmp, 'lynx.config.js'), '--config-name', 'reactLynxApp']);
+            .concat(['dev', '--config', path.join(maxTmp, 'lynx.config.js'), '--config-name', 'app']);
           speedy.run();
-          // const monaSpeedyPath = path.join(__dirname, './monaSpeedy.js');
-          // child_process.execSync(`node ${monaSpeedyPath} dev --config ${path.join(maxTmp, 'lynx.config.js')}`, {
-          //   stdio: 'inherit',
-          // });
         } else {
           // 旧的打包逻辑
           tctx.configureWebpack(() => {
@@ -88,17 +83,8 @@ const max: IPlugin = ctx => {
           // 4. 执行speedy dev
           process.argv = process.argv
             .slice(0, 2)
-            .concat(['build', '--config', path.join(maxTmp, 'lynx.config.js'), '--config-name', 'dynamicComponent']);
+            .concat(['build', '--config', path.join(maxTmp, 'lynx.config.js'), '--config-name', 'component']);
           speedy.run();
-          // 5. 通过webpack打包，先将reactLynx--》标准react产物，再走h5端的正常打包逻辑
-          tctx.configureWebpack(() => {
-            monaConfig.chain = (pre: any) => pre;
-            if (process.env.NODE_ENV === 'production') {
-              return require('./webpack-config/webpack.prod')(buildType, lynxEntry, pxToRem);
-            }
-            return require('./webpack-config/webpack.dev')(buildType, lynxEntry, pxToRem);
-          });
-          webpackBuild({});
         } else {
           // 旧的打包逻辑
           tctx.configureWebpack(() => {

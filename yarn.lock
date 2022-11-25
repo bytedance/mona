@@ -1151,6 +1151,34 @@
   dependencies:
     swiper "6.4.8"
 
+"@bytedance/mona-max@0.2.37":
+  version "0.2.37"
+  resolved "https://registry.yarnpkg.com/@bytedance/mona-max/-/mona-max-0.2.37.tgz#6f19a7677a3a64c266dde2192f3dc0a5d376ffcd"
+  integrity sha512-D9MrgvLBOsdv0k02Ew1WAbq9X2HUm3S+ygtzgxKl2ukEMV5EfGUZnlFaUr/Sap24KcRjxBSqiiN6vjnROG0UTw==
+  dependencies:
+    "@babel/core" "^7.16.5"
+    "@babel/preset-env" "^7.16.5"
+    "@babel/preset-react" "^7.16.5"
+    babel-loader "^8.2.2"
+    chalk "^4.1.2"
+    css-loader "^6.5.1"
+    html-webpack-plugin "^5.5.0"
+    less "^4.1.2"
+    less-loader "^10.2.0"
+    open "^8.4.0"
+    postcss "^8.4.5"
+    postcss-import "^14.0.2"
+    postcss-loader "^6.2.1"
+    postcss-plugin-rpx2vw "^0.0.2"
+    postcss-pxtorem "^6.0.0"
+    react-error-boundary "^3.1.4"
+    style-loader "^3.3.1"
+    typescript "^4.5.4"
+    webpack-merge "^5.8.0"
+    webpack-virtual-modules "^0.4.3"
+    webpack-watch-files-plugin "^1.2.0"
+    ws "^8.4.2"
+
 "@cspotcode/source-map-support@^0.8.0":
   version "0.8.1"
   resolved "https://registry.npmjs.org/@cspotcode/source-map-support/-/source-map-support-0.8.1.tgz"
