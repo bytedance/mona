@@ -1186,15 +1186,15 @@
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
 
-"@ecom/mona-speedy-runtime@0.0.19":
-  version "0.0.19"
-  resolved "http://bnpm.byted.org/@ecom/mona-speedy-runtime/-/mona-speedy-runtime-0.0.19.tgz#af3ae4cde584d5fdb0579f6a5dc2ba24ee1125a1"
-  integrity sha512-eVRs/AnC98x0peElFtM1M5brBljeUaCFn4RsrlTjVwd2SuqjSBZ8uGlmeZ8LubVNg/m5rtMxRiuqjcTT7EBgNg==
+"@ecom/mona-speedy-runtime@0.0.23":
+  version "0.0.23"
+  resolved "http://bnpm.byted.org/@ecom/mona-speedy-runtime/-/mona-speedy-runtime-0.0.23.tgz#69a2d6485c26f6c11103a9521082e4ba0812c735"
+  integrity sha512-ycUCqlq8gOtvFhNDkb1nDom88w7fNfn6asYezXoE0jAQGcn+5taA2xsJD5vFR9fYpq5sKTDGE0x0v4HAmPxfeg==
 
-"@ecom/mona-speedy@0.0.19":
-  version "0.0.19"
-  resolved "http://bnpm.byted.org/@ecom/mona-speedy/-/mona-speedy-0.0.19.tgz#6d16b3973d3d0470e1f8527615cca3275b61b483"
-  integrity sha512-dbF3hzDG4BZ9xeHcW9EfEIQe8C5fqeHVui4xQuoFtz0YWjhZx5jTMdYtoLdQCI2BaZhM3PDyMAIRnmbQ8mbWOQ==
+"@ecom/mona-speedy@0.0.23":
+  version "0.0.23"
+  resolved "http://bnpm.byted.org/@ecom/mona-speedy/-/mona-speedy-0.0.23.tgz#d88915835cef263b763fe4f62a30eb8d85e06293"
+  integrity sha512-nE4BPU9BLyMwmfQ3AR5QxSPYJbKM81lc9dq1QVrQay+L+xUbCYVgzRpdVeHn46iLH4uC4jt+xaG0Lc9gbxsiEg==
   dependencies:
     "@speedy-js/esbuild" "0.14.28-speedy-lynx-1"
     esbuild "0.12.8"
