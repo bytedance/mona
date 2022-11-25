@@ -7,18 +7,25 @@ const buildType = 'umd';
 const pxToRem = false;
 
 const pluginName = 'WebBootstrapPlugin';
+
+let alreadyStart = false;
 const WebBootstrapPlugin = (entry: string) => ({
   name: pluginName,
   apply(compiler: any) {
-    // TODO
     const isDev = process.env.NODE_ENV !== 'production';
     compiler.hooks.endCompilation.tapPromise(pluginName, async () => {
       if (isDev) {
+
+        if (alreadyStart) {
+          return Promise.resolve();
+        }
+        
         let webpackConfig = require('../webpack-config/webpack.dev')(buildType, entry, pxToRem);
         const webpackCompiler = webpack(webpackConfig);
         const devConfig = webpackConfig.devServer;
         const devServer = new WebpackDevServer(devConfig, webpackCompiler);
 
+        alreadyStart = true;
         return devServer.start();
       } else {
         let webpackConfig = require('../webpack-config/webpack.prod')(buildType, entry, pxToRem);

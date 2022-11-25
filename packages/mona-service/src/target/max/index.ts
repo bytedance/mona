@@ -7,7 +7,7 @@ import { writeLynxConfig } from './writeLynxConfig';
 import { ttmlToReactLynx } from './ttmlToReactLynx';
 import { writeErrorBoundaryAndInjectProps } from './writeErrorBoundaryAndInjectProps';
 import chokidar from 'chokidar';
-const speedy = require('@ecom/mona-speedy');
+const speedy = require('@bytedance/mona-speedy');
 
 const { MAX } = Platform;
 const max: IPlugin = ctx => {

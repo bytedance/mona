@@ -1179,27 +1179,27 @@
     webpack-watch-files-plugin "^1.2.0"
     ws "^8.4.2"
 
+"@bytedance/mona-speedy-runtime@0.0.1":
+  version "0.0.1"
+  resolved "https://registry.npmjs.org/@bytedance/mona-speedy-runtime/-/mona-speedy-runtime-0.0.1.tgz#beb158f28394abd918fa1eaa26eb9f65a10a6c1e"
+  integrity sha512-j+ozlzFVFVFuO2pdyFpn1UTTxTcb0X06jksu1VDZwgy3Ti6KQQYhLJc0cjdaSiOYyYNRqiMJCL9QsAo8AAEH2g==
+
+"@bytedance/mona-speedy@0.0.1":
+  version "0.0.1"
+  resolved "https://registry.npmjs.org/@bytedance/mona-speedy/-/mona-speedy-0.0.1.tgz#eea002b9ad3d6c6b944ef06ee743b2a76017e39c"
+  integrity sha512-ZiiOdNXxSHwak3ZbmLetTM9nFxHa8+Yb38ElYVBDbVnmHzhToo0HnDD8xKB1/i67Eh7nzXGznLfwPllLbMfPcQ==
+  dependencies:
+    "@speedy-js/esbuild" "0.14.28-speedy-lynx-1"
+    esbuild "0.12.8"
+    esbuild-0.13.12 "npm:esbuild@0.13.12"
+    serialize-error "8.1.0"
+
 "@cspotcode/source-map-support@^0.8.0":
   version "0.8.1"
   resolved "https://registry.npmjs.org/@cspotcode/source-map-support/-/source-map-support-0.8.1.tgz"
   integrity sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
-
-"@ecom/mona-speedy-runtime@0.0.23":
-  version "0.0.23"
-  resolved "http://bnpm.byted.org/@ecom/mona-speedy-runtime/-/mona-speedy-runtime-0.0.23.tgz#69a2d6485c26f6c11103a9521082e4ba0812c735"
-  integrity sha512-ycUCqlq8gOtvFhNDkb1nDom88w7fNfn6asYezXoE0jAQGcn+5taA2xsJD5vFR9fYpq5sKTDGE0x0v4HAmPxfeg==
-
-"@ecom/mona-speedy@0.0.23":
-  version "0.0.23"
-  resolved "http://bnpm.byted.org/@ecom/mona-speedy/-/mona-speedy-0.0.23.tgz#d88915835cef263b763fe4f62a30eb8d85e06293"
-  integrity sha512-nE4BPU9BLyMwmfQ3AR5QxSPYJbKM81lc9dq1QVrQay+L+xUbCYVgzRpdVeHn46iLH4uC4jt+xaG0Lc9gbxsiEg==
-  dependencies:
-    "@speedy-js/esbuild" "0.14.28-speedy-lynx-1"
-    esbuild "0.12.8"
-    esbuild-0.13.12 "npm:esbuild@0.13.12"
-    serialize-error "8.1.0"
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"

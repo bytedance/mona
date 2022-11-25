@@ -6,7 +6,7 @@ import getDevProps from './utils/getDevProps';
 
 const getErrorBoundary = (schemaProps?: Record<string, any>) => {
   const errorBoundary = `
-import ReactLynx, { Component } from "@ecom/mona-speedy-runtime";
+import ReactLynx, { Component } from "@bytedance/mona-speedy-runtime";
 import PropTypes from "prop-types";
 import App from './index.jsx';
   export default class ErrorBoundary extends Component {
