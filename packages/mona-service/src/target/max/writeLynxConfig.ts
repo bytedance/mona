@@ -38,6 +38,9 @@ export const writeLynxConfig = (maxTmp: string, configHelper: ConfigHelper) => {
                 devtoolOptions: {
                   host: 'http://opws.jinritemai.com/pages/home/index'
                 },
+                schema(origin) {
+                  return 'doudian://monaview?url=' + encodeURIComponent(origin)
+                }
               },
               plugins: [WebBootstrapPlugin("${lynxEntry}")]
             },
