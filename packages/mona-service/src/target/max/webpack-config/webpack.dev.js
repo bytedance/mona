@@ -58,7 +58,7 @@ const devConfig = {
       templateContent: `
           <!DOCTYPE html>
               <head>
-                  <title>@max-com/isv-comp</title>
+                  <title>mona-Web侧展示</title>
                   <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
                   <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
                   <style>

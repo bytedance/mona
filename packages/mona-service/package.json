@@ -68,6 +68,7 @@
     "pkg-updater": "^1.0.4",
     "postcss": "^8.3.11",
     "postcss-loader": "^6.2.0",
+    "prop-types": "^15.8.1",
     "qrcode": "^1.5.0",
     "react-dev-utils": "^12.0.1",
     "react-refresh": "^0.10.0",
