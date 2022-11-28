@@ -20,7 +20,6 @@ const max: IPlugin = ctx => {
     const webpackStart = tctx.startFn;
     const webpackBuild = tctx.buildFn;
     let pxToRem = false;
-    const lynxEntry = path.join(maxTmp, monaConfig.input);
     const h5Entry = path.join(configHelper.cwd, monaConfig.input);
     let buildType = 'umd';
 
