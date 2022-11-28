@@ -13,14 +13,9 @@ const getDevProps = require('../utils/getDevProps');
 const { name = '@shop-isv/isv-com' } = JSON.parse(
   fs.readFileSync(path.resolve(process.cwd(), './package.json'), 'utf-8'),
 );
-// const schemaJson = JSON.parse(fs.readFileSync(path.resolve(process.cwd(), './src/schema.json'), 'utf-8'));
-// const devProps = getDevProps(schemaJson);
-// console.log('devProps------');
-// console.log(devProps);
 const getDevPropsJsonStr = () => {
   const schemaJson = JSON.parse(fs.readFileSync(path.resolve(process.cwd(), './src/schema.json'), 'utf-8'));
   const devProps = getDevProps(schemaJson);
-  console.log('devProps------');
   console.log(devProps);
   return JSON.stringify(devProps);
 };

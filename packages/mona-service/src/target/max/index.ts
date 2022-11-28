@@ -49,12 +49,6 @@ const max: IPlugin = ctx => {
             .slice(0, 2)
             .concat(['dev', '--config', path.join(maxTmp, 'lynx.config.js'), '--config-name', 'app']);
           speedy.run();
-
-          tctx.configureWebpack(() => {
-            monaConfig.chain = (pre: any) => pre;
-            return require('./webpack-config/webpack.dev')(buildType, lynxEntry, pxToRem);
-          });
-          webpackStart({});
         } else {
           // 旧的打包逻辑
           tctx.configureWebpack(() => {
@@ -89,13 +83,6 @@ const max: IPlugin = ctx => {
             .slice(0, 2)
             .concat(['build', '--config', path.join(maxTmp, 'lynx.config.js'), '--config-name', 'component']);
           speedy.run();
-
-          // 5. 通过webpack打包，先将reactLynx--》标准react产物，再走h5端的正常打包逻辑
-          tctx.configureWebpack(() => {
-            monaConfig.chain = (pre: any) => pre;
-            return require('./webpack-config/webpack.prod')(buildType, lynxEntry, pxToRem)
-          });
-          webpackBuild({});
         } else {
           // 旧的打包逻辑
           tctx.configureWebpack(() => {

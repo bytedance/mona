@@ -23,6 +23,7 @@ export const writeLynxConfig = (maxTmp: string, configHelper: ConfigHelper) => {
   let lynxEntry = getLynxEntry(maxTmp, configHelper);
 
   const lynxConfigStr = `
+          const WebBootstrapPlugin = require('../target/max/plugins/WebBootstrapPlugin.js').default;
           module.exports = [
             {
               name: "app",
@@ -41,6 +42,7 @@ export const writeLynxConfig = (maxTmp: string, configHelper: ConfigHelper) => {
                   return 'doudian://monaview?url=' + encodeURIComponent(origin)
                 }
               },
+              plugins: [WebBootstrapPlugin("${lynxEntry}")]
             },
             {
               name: "component",
@@ -51,6 +53,7 @@ export const writeLynxConfig = (maxTmp: string, configHelper: ConfigHelper) => {
               encode: {
                 targetSdkVersion: "2.2",
               },
+              plugins: [WebBootstrapPlugin("${lynxEntry}")]
             },
           ];
           `;
