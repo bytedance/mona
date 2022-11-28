@@ -7,6 +7,11 @@ const genMaxEventSdk = async (appid: string, global: any) => {
   const MAX_COMPONENT_PLUGINID = '__MAX_COMPONENT_PLUGINID__';
 
   const maxEvent = global ? global.__maxEvent : undefined;
+
+  if (maxEvent) {
+    maxEvent.genWithOpenApiJsApi(global.metaInfo.sec_shop_id)
+  }
+
   const maxEventSDK = new Proxy(maxEvent || {}, {
     get: (obj: MaxEvent, prop: string) => {
       //如果是once或on注册事件监听
@@ -160,6 +165,6 @@ const genMaxEventSdk = async (appid: string, global: any) => {
 
   return maxEventSDK;
 };
-
+const APPID = 'testAppId'
 // @ts-ignore
-const max = genMaxEventSdk(APPID, lynx);
+export const max = genMaxEventSdk(APPID, lynx);
