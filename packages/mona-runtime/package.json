@@ -29,6 +29,7 @@
     "@bytedance/mona-client-mini": "0.2.38-alpha.3",
     "@bytedance/mona-client-plugin": "0.2.38-alpha.3",
     "@bytedance/mona-client-web": "0.2.38-alpha.3",
+    "@bytedance/mona-client-max": "0.2.38-alpha.3",
     "@bytedance/mona-plugin-events": "0.2.38-alpha.3",
     "@bytedance/mona-shared": "0.2.38-alpha.3"
   },

@@ -1172,6 +1172,13 @@
     webpack-watch-files-plugin "^1.2.0"
     ws "^8.4.2"
 
+"@bytedance/mona-shared@0.2.35-beta.1":
+  version "0.2.35-beta.1"
+  resolved "https://registry.npmjs.org/@bytedance/mona-shared/-/mona-shared-0.2.35-beta.1.tgz#a8cec515b1b0bcd730af0b47a4b12f048823feaa"
+  integrity sha512-cRwirbA2AoeJuX4B/Ox7KpMxRklOTcOzmRqGYlwwqGIEcsG6bpK1U4Bn3K+NFfN6VrZ5EX0BmiENEGtMHFda5Q==
+  dependencies:
+    "@babel/register" "^7.16.5"
+
 "@bytedance/mona-speedy-runtime@0.0.1":
   version "0.0.1"
   resolved "https://registry.npmjs.org/@bytedance/mona-speedy-runtime/-/mona-speedy-runtime-0.0.1.tgz#beb158f28394abd918fa1eaa26eb9f65a10a6c1e"
@@ -1186,6 +1193,11 @@
     esbuild "0.12.8"
     esbuild-0.13.12 "npm:esbuild@0.13.12"
     serialize-error "8.1.0"
+
+"@bytedance/mona@0.2.35-beta.1":
+  version "0.2.35-beta.1"
+  resolved "https://registry.npmjs.org/@bytedance/mona/-/mona-0.2.35-beta.1.tgz#accabff364c91a8e7b3f4bde238dc26351ad3c0b"
+  integrity sha512-VE04rvv9QT5qyStjqLYbqT/WKYzlADzeiBWtw751qHC1rXpQUelrxWPqypYG4iaTwmHFE5FatSsnChWTofT6Hg==
 
 "@cspotcode/source-map-support@^0.8.0":
   version "0.8.1"
@@ -2909,6 +2921,15 @@ axios@^1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.1.3.tgz#8274250dada2edf53814ed7db644b9c2866c1e35"
   integrity sha512-00tXVRwKx/FZr/IDVFt4C+f9FYairX517WoGCL6dpOntqLkZofjhu43F/Xl44UOpqa+9sLFDrG/XAnFsUYgkDA==
+  dependencies:
+    follow-redirects "^1.15.0"
+    form-data "^4.0.0"
+    proxy-from-env "^1.1.0"
+
+axios@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.npmjs.org/axios/-/axios-1.2.0.tgz#1cb65bd75162c70e9f8d118a905126c4a201d383"
+  integrity sha512-zT7wZyNYu3N5Bu0wuZ6QccIf93Qk1eV8LOewxgjOZFd2DenOs98cJ7+Y6703d0wkaXGY6/nZd4EweJaHz9uzQw==
   dependencies:
     follow-redirects "^1.15.0"
     form-data "^4.0.0"
@@ -8417,18 +8438,9 @@ prompts@^2.0.1, prompts@^2.4.2:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@^15.6.2, prop-types@^15.7.0:
+prop-types@^15.6.2, prop-types@^15.7.0, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.npmjs.org/prop-types/-/prop-types-15.8.1.tgz"
-  integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
-  dependencies:
-    loose-envify "^1.4.0"
-    object-assign "^4.1.1"
-    react-is "^16.13.1"
-
-prop-types@^15.8.1:
-  version "15.8.1"
-  resolved "https://registry.npmjs.org/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
   dependencies:
     loose-envify "^1.4.0"
