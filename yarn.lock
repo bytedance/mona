@@ -1144,12 +1144,48 @@
   resolved "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@byted-lynx/react-components@1.1.0":
-  version "1.1.0"
-  resolved "http://bnpm.byted.org/@byted-lynx/react-components/-/react-components-1.1.0.tgz#4225b9d8ac27853189f7f91a6e59187ec6fe18f6"
-  integrity sha512-dNbLuX5b6lgbVHV7kQDm/HI7sfJqwcgJZBLvyWNm6TkVQJLpEGpA4icrg8CGaKFvnRL40nS+uPHAON32n10LPw==
+"@bytedance/mona-max@0.2.37":
+  version "0.2.37"
+  resolved "https://registry.yarnpkg.com/@bytedance/mona-max/-/mona-max-0.2.37.tgz#6f19a7677a3a64c266dde2192f3dc0a5d376ffcd"
+  integrity sha512-D9MrgvLBOsdv0k02Ew1WAbq9X2HUm3S+ygtzgxKl2ukEMV5EfGUZnlFaUr/Sap24KcRjxBSqiiN6vjnROG0UTw==
   dependencies:
-    swiper "6.4.8"
+    "@babel/core" "^7.16.5"
+    "@babel/preset-env" "^7.16.5"
+    "@babel/preset-react" "^7.16.5"
+    babel-loader "^8.2.2"
+    chalk "^4.1.2"
+    css-loader "^6.5.1"
+    html-webpack-plugin "^5.5.0"
+    less "^4.1.2"
+    less-loader "^10.2.0"
+    open "^8.4.0"
+    postcss "^8.4.5"
+    postcss-import "^14.0.2"
+    postcss-loader "^6.2.1"
+    postcss-plugin-rpx2vw "^0.0.2"
+    postcss-pxtorem "^6.0.0"
+    react-error-boundary "^3.1.4"
+    style-loader "^3.3.1"
+    typescript "^4.5.4"
+    webpack-merge "^5.8.0"
+    webpack-virtual-modules "^0.4.3"
+    webpack-watch-files-plugin "^1.2.0"
+    ws "^8.4.2"
+
+"@bytedance/mona-speedy-runtime@0.0.1":
+  version "0.0.1"
+  resolved "https://registry.npmjs.org/@bytedance/mona-speedy-runtime/-/mona-speedy-runtime-0.0.1.tgz#beb158f28394abd918fa1eaa26eb9f65a10a6c1e"
+  integrity sha512-j+ozlzFVFVFuO2pdyFpn1UTTxTcb0X06jksu1VDZwgy3Ti6KQQYhLJc0cjdaSiOYyYNRqiMJCL9QsAo8AAEH2g==
+
+"@bytedance/mona-speedy@0.0.1":
+  version "0.0.1"
+  resolved "https://registry.npmjs.org/@bytedance/mona-speedy/-/mona-speedy-0.0.1.tgz#eea002b9ad3d6c6b944ef06ee743b2a76017e39c"
+  integrity sha512-ZiiOdNXxSHwak3ZbmLetTM9nFxHa8+Yb38ElYVBDbVnmHzhToo0HnDD8xKB1/i67Eh7nzXGznLfwPllLbMfPcQ==
+  dependencies:
+    "@speedy-js/esbuild" "0.14.28-speedy-lynx-1"
+    esbuild "0.12.8"
+    esbuild-0.13.12 "npm:esbuild@0.13.12"
+    serialize-error "8.1.0"
 
 "@cspotcode/source-map-support@^0.8.0":
   version "0.8.1"
@@ -1157,21 +1193,6 @@
   integrity sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
-
-"@ecom/mona-speedy-runtime@0.0.19":
-  version "0.0.19"
-  resolved "http://bnpm.byted.org/@ecom/mona-speedy-runtime/-/mona-speedy-runtime-0.0.19.tgz#af3ae4cde584d5fdb0579f6a5dc2ba24ee1125a1"
-  integrity sha512-eVRs/AnC98x0peElFtM1M5brBljeUaCFn4RsrlTjVwd2SuqjSBZ8uGlmeZ8LubVNg/m5rtMxRiuqjcTT7EBgNg==
-
-"@ecom/mona-speedy@0.0.19":
-  version "0.0.19"
-  resolved "http://bnpm.byted.org/@ecom/mona-speedy/-/mona-speedy-0.0.19.tgz#6d16b3973d3d0470e1f8527615cca3275b61b483"
-  integrity sha512-dbF3hzDG4BZ9xeHcW9EfEIQe8C5fqeHVui4xQuoFtz0YWjhZx5jTMdYtoLdQCI2BaZhM3PDyMAIRnmbQ8mbWOQ==
-  dependencies:
-    "@speedy-js/esbuild" "0.14.28-speedy-lynx-1"
-    esbuild "0.12.8"
-    esbuild-0.13.12 "npm:esbuild@0.13.12"
-    serialize-error "8.1.0"
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
@@ -1564,107 +1585,107 @@
 
 "@speedy-js/esbuild-android-64@0.14.28-speedy-lynx-1":
   version "0.14.28-speedy-lynx-1"
-  resolved "http://bnpm.byted.org/@speedy-js/esbuild-android-64/-/esbuild-android-64-0.14.28-speedy-lynx-1.tgz#0d2341cfbd0777519b470b779865f91d346533db"
+  resolved "https://registry.npmjs.org/@speedy-js/esbuild-android-64/-/esbuild-android-64-0.14.28-speedy-lynx-1.tgz#0d2341cfbd0777519b470b779865f91d346533db"
   integrity sha512-y+0SDRKQt30IlzadeJK2TyqA2sXjsUqivsl2QscKkJg8ttfrj6XN3Hbcmvh3rf0NzLsfh+4I+CyFUOHFBSW1Rg==
 
 "@speedy-js/esbuild-android-arm64@0.14.28-speedy-lynx-1":
   version "0.14.28-speedy-lynx-1"
-  resolved "http://bnpm.byted.org/@speedy-js/esbuild-android-arm64/-/esbuild-android-arm64-0.14.28-speedy-lynx-1.tgz#861176ea034bcf7b0b430b9e495b4cacfc46200c"
+  resolved "https://registry.npmjs.org/@speedy-js/esbuild-android-arm64/-/esbuild-android-arm64-0.14.28-speedy-lynx-1.tgz#861176ea034bcf7b0b430b9e495b4cacfc46200c"
   integrity sha512-FBvr16YTqrKVAwS/SryN7ZZiIhAQpIlSYngW3mtnnSgqnmnvgoC91G/BBQrEhYA5Uh6R99Y+oQZiJHpZy7/o4w==
 
 "@speedy-js/esbuild-darwin-64@0.14.28-speedy-lynx-1":
   version "0.14.28-speedy-lynx-1"
-  resolved "http://bnpm.byted.org/@speedy-js/esbuild-darwin-64/-/esbuild-darwin-64-0.14.28-speedy-lynx-1.tgz#eba46f637fd9eccaecc740178dfd06209cde0bc5"
+  resolved "https://registry.npmjs.org/@speedy-js/esbuild-darwin-64/-/esbuild-darwin-64-0.14.28-speedy-lynx-1.tgz#eba46f637fd9eccaecc740178dfd06209cde0bc5"
   integrity sha512-p2dJANuTRMdSH8BiaKeK1alN07WLuxfYFp1T/k+TM61a4PJzsmay7JB8c7CPOe/nz+Ojigs7EXxWEIM/MP14bQ==
 
 "@speedy-js/esbuild-darwin-arm64@0.14.28-speedy-lynx-1":
   version "0.14.28-speedy-lynx-1"
-  resolved "http://bnpm.byted.org/@speedy-js/esbuild-darwin-arm64/-/esbuild-darwin-arm64-0.14.28-speedy-lynx-1.tgz#6395ec85c173f7dd51717c05262fbdd26f654ad8"
+  resolved "https://registry.npmjs.org/@speedy-js/esbuild-darwin-arm64/-/esbuild-darwin-arm64-0.14.28-speedy-lynx-1.tgz#6395ec85c173f7dd51717c05262fbdd26f654ad8"
   integrity sha512-vwd/qXAfDO78CtORkSzSiHiOFdc4Slyo6W9IvHs1ACCJ2+6CSx32qq0+NokS4pnr8GsjwV83fqvCKmOBS6vwsA==
 
 "@speedy-js/esbuild-freebsd-64@0.14.28-speedy-lynx-1":
   version "0.14.28-speedy-lynx-1"
-  resolved "http://bnpm.byted.org/@speedy-js/esbuild-freebsd-64/-/esbuild-freebsd-64-0.14.28-speedy-lynx-1.tgz#a22176e07725a8b5344adc8484a29fd6c19b245a"
+  resolved "https://registry.npmjs.org/@speedy-js/esbuild-freebsd-64/-/esbuild-freebsd-64-0.14.28-speedy-lynx-1.tgz#a22176e07725a8b5344adc8484a29fd6c19b245a"
   integrity sha512-svnITTkVPHmULMiRAJYEncQcYBj/HyzcpXUhMDV+b6V3vzZfaDdJabOJ2/C8Dgg6L7KFS5jMnl7SGf9sZh2giA==
 
 "@speedy-js/esbuild-freebsd-arm64@0.14.28-speedy-lynx-1":
   version "0.14.28-speedy-lynx-1"
-  resolved "http://bnpm.byted.org/@speedy-js/esbuild-freebsd-arm64/-/esbuild-freebsd-arm64-0.14.28-speedy-lynx-1.tgz#581f1f9729d902467d257fa94174a6cd0b463865"
+  resolved "https://registry.npmjs.org/@speedy-js/esbuild-freebsd-arm64/-/esbuild-freebsd-arm64-0.14.28-speedy-lynx-1.tgz#581f1f9729d902467d257fa94174a6cd0b463865"
   integrity sha512-DwxZsZkXo8h7rnWU4JImeMmc6/VeG6GkjCPoL/6bFY/PZl0CfM0V2q3kXgHAQkAOeMBSxcVUYRBASVNuQqv9gw==
 
 "@speedy-js/esbuild-linux-32@0.14.28-speedy-lynx-1":
   version "0.14.28-speedy-lynx-1"
-  resolved "http://bnpm.byted.org/@speedy-js/esbuild-linux-32/-/esbuild-linux-32-0.14.28-speedy-lynx-1.tgz#17159cd1f38d5f034238ac468712a4587da110f5"
+  resolved "https://registry.npmjs.org/@speedy-js/esbuild-linux-32/-/esbuild-linux-32-0.14.28-speedy-lynx-1.tgz#17159cd1f38d5f034238ac468712a4587da110f5"
   integrity sha512-xitduHimYczShsUOQRo4hUSRuLG5tNdibhUfkGonApPjvEZ9oGKPlFGU1NX8nkQGmI//Oi0mPjtwA/QcIlvLtA==
 
 "@speedy-js/esbuild-linux-64@0.14.28-speedy-lynx-1":
   version "0.14.28-speedy-lynx-1"
-  resolved "http://bnpm.byted.org/@speedy-js/esbuild-linux-64/-/esbuild-linux-64-0.14.28-speedy-lynx-1.tgz#242274047a192a412f45084137fab29d30167ff7"
+  resolved "https://registry.npmjs.org/@speedy-js/esbuild-linux-64/-/esbuild-linux-64-0.14.28-speedy-lynx-1.tgz#242274047a192a412f45084137fab29d30167ff7"
   integrity sha512-BfEY9jg6mJ7PAzpVTfOZkxUiw4ckKV3GxF04sNZ3Q00XnA1cz05LVYuy5SbNPEArMCfRtjC0NtGL5zApu5EnFg==
 
 "@speedy-js/esbuild-linux-arm64@0.14.28-speedy-lynx-1":
   version "0.14.28-speedy-lynx-1"
-  resolved "http://bnpm.byted.org/@speedy-js/esbuild-linux-arm64/-/esbuild-linux-arm64-0.14.28-speedy-lynx-1.tgz#ffa191d10ac85b99ef93ec7a98af752821bc17f3"
+  resolved "https://registry.npmjs.org/@speedy-js/esbuild-linux-arm64/-/esbuild-linux-arm64-0.14.28-speedy-lynx-1.tgz#ffa191d10ac85b99ef93ec7a98af752821bc17f3"
   integrity sha512-6ueoMQWgd3Ot08XGXgANLDFi3Kz0CRcm5EtvHv9gUm1o80/JqmOxaqupf5tkHfTF/h9EwDNbCRgElUAd7SMixw==
 
 "@speedy-js/esbuild-linux-arm@0.14.28-speedy-lynx-1":
   version "0.14.28-speedy-lynx-1"
-  resolved "http://bnpm.byted.org/@speedy-js/esbuild-linux-arm/-/esbuild-linux-arm-0.14.28-speedy-lynx-1.tgz#05fdbc4ef267acedc093c65ced68f7c0ec4a731e"
+  resolved "https://registry.npmjs.org/@speedy-js/esbuild-linux-arm/-/esbuild-linux-arm-0.14.28-speedy-lynx-1.tgz#05fdbc4ef267acedc093c65ced68f7c0ec4a731e"
   integrity sha512-Nxn443Szkki1W0zq2WnS4LEHcAKdYxmFIkntt0aAoD8hDDIhbbrc1NLGH8Oh08zTnKaweWS0tMBXnxFZCiHGDg==
 
 "@speedy-js/esbuild-linux-mips64le@0.14.28-speedy-lynx-1":
   version "0.14.28-speedy-lynx-1"
-  resolved "http://bnpm.byted.org/@speedy-js/esbuild-linux-mips64le/-/esbuild-linux-mips64le-0.14.28-speedy-lynx-1.tgz#b7a82fe72039d12f4165bc7819c22805e4ead038"
+  resolved "https://registry.npmjs.org/@speedy-js/esbuild-linux-mips64le/-/esbuild-linux-mips64le-0.14.28-speedy-lynx-1.tgz#b7a82fe72039d12f4165bc7819c22805e4ead038"
   integrity sha512-CCNQ68dxkCNXCrirvnUqN+MGMRaHsdL9LxmRXjNQ1tZ2lvo4y5ZN5tMB347oT0YEUC9ywhYDET7UqL8jdYDsIA==
 
 "@speedy-js/esbuild-linux-ppc64le@0.14.28-speedy-lynx-1":
   version "0.14.28-speedy-lynx-1"
-  resolved "http://bnpm.byted.org/@speedy-js/esbuild-linux-ppc64le/-/esbuild-linux-ppc64le-0.14.28-speedy-lynx-1.tgz#57fd9e2e914d295ea3ec5c67d12e8d41ce507ecb"
+  resolved "https://registry.npmjs.org/@speedy-js/esbuild-linux-ppc64le/-/esbuild-linux-ppc64le-0.14.28-speedy-lynx-1.tgz#57fd9e2e914d295ea3ec5c67d12e8d41ce507ecb"
   integrity sha512-3Q5MA6sb4XKlOv26Z7vCwU/uw7lHa9syFR9rHm6PSwR+1t9GvfD+Qj0fvE6niVqH3Nx5ydFltc5EP0Tx9x9gBQ==
 
 "@speedy-js/esbuild-linux-riscv64@0.14.28-speedy-lynx-1":
   version "0.14.28-speedy-lynx-1"
-  resolved "http://bnpm.byted.org/@speedy-js/esbuild-linux-riscv64/-/esbuild-linux-riscv64-0.14.28-speedy-lynx-1.tgz#a06b8bbd28434e8d32c04d77c296e541a07d2c3f"
+  resolved "https://registry.npmjs.org/@speedy-js/esbuild-linux-riscv64/-/esbuild-linux-riscv64-0.14.28-speedy-lynx-1.tgz#a06b8bbd28434e8d32c04d77c296e541a07d2c3f"
   integrity sha512-R9t9zA5rjepdJPgKPpkaAzGW0xnnXxtRnXtA/KMTJo6/F38ItjG6M1+eHFqvCaUFSjv8HlaO4Wr+i4zUEcmsyg==
 
 "@speedy-js/esbuild-linux-s390x@0.14.28-speedy-lynx-1":
   version "0.14.28-speedy-lynx-1"
-  resolved "http://bnpm.byted.org/@speedy-js/esbuild-linux-s390x/-/esbuild-linux-s390x-0.14.28-speedy-lynx-1.tgz#33b19114aee5f8c198cc32ecafb84e0d22d214fe"
+  resolved "https://registry.npmjs.org/@speedy-js/esbuild-linux-s390x/-/esbuild-linux-s390x-0.14.28-speedy-lynx-1.tgz#33b19114aee5f8c198cc32ecafb84e0d22d214fe"
   integrity sha512-dpIyxD8tG5RBlIBQWMsE7qH/1Et+WevA0HXRUpKkd91umUMpgsZTyI64GLVX/TjFnPxJlCoqgBRvvtarA9bGFQ==
 
 "@speedy-js/esbuild-netbsd-64@0.14.28-speedy-lynx-1":
   version "0.14.28-speedy-lynx-1"
-  resolved "http://bnpm.byted.org/@speedy-js/esbuild-netbsd-64/-/esbuild-netbsd-64-0.14.28-speedy-lynx-1.tgz#5172093581b41182c8dfa14de5fb7cc2a3aaf9ca"
+  resolved "https://registry.npmjs.org/@speedy-js/esbuild-netbsd-64/-/esbuild-netbsd-64-0.14.28-speedy-lynx-1.tgz#5172093581b41182c8dfa14de5fb7cc2a3aaf9ca"
   integrity sha512-V495gTgfZKVB9nDhNzMzjpjMpRKJkXa+iiiTfztnqHVOvZJHK6XDIwJxirwb1yZqshsZOrHtcdokYImprcmW4Q==
 
 "@speedy-js/esbuild-openbsd-64@0.14.28-speedy-lynx-1":
   version "0.14.28-speedy-lynx-1"
-  resolved "http://bnpm.byted.org/@speedy-js/esbuild-openbsd-64/-/esbuild-openbsd-64-0.14.28-speedy-lynx-1.tgz#d09e7dba63a9b4aae0bbe4ae1eada1eb3ea979ca"
+  resolved "https://registry.npmjs.org/@speedy-js/esbuild-openbsd-64/-/esbuild-openbsd-64-0.14.28-speedy-lynx-1.tgz#d09e7dba63a9b4aae0bbe4ae1eada1eb3ea979ca"
   integrity sha512-LbQSc1U6mHHrPEU+tbRLhjOpXsxb47bJCVZBANDxSTBOT/pQpXHZ4JmDuhwXE0BBhPia8gkG5EuXe1InvBzI0g==
 
 "@speedy-js/esbuild-sunos-64@0.14.28-speedy-lynx-1":
   version "0.14.28-speedy-lynx-1"
-  resolved "http://bnpm.byted.org/@speedy-js/esbuild-sunos-64/-/esbuild-sunos-64-0.14.28-speedy-lynx-1.tgz#7e7544fb3fdd3b3efd44acd860e909e4cecd4631"
+  resolved "https://registry.npmjs.org/@speedy-js/esbuild-sunos-64/-/esbuild-sunos-64-0.14.28-speedy-lynx-1.tgz#7e7544fb3fdd3b3efd44acd860e909e4cecd4631"
   integrity sha512-QlHXTgSrOQGYszzewPfh7z/6Q23Hss1Qs6EMLgBD0iFxHDQKgU04i+L+gY6akmOAFjW9Di1hem5UTVLQnvGUDA==
 
 "@speedy-js/esbuild-windows-32@0.14.28-speedy-lynx-1":
   version "0.14.28-speedy-lynx-1"
-  resolved "http://bnpm.byted.org/@speedy-js/esbuild-windows-32/-/esbuild-windows-32-0.14.28-speedy-lynx-1.tgz#fe5c09abd5e2d6c9d54f3cfd0b83358f77313cc3"
+  resolved "https://registry.npmjs.org/@speedy-js/esbuild-windows-32/-/esbuild-windows-32-0.14.28-speedy-lynx-1.tgz#fe5c09abd5e2d6c9d54f3cfd0b83358f77313cc3"
   integrity sha512-f2qUgB0ga0HYy0KIQ60fGfsTLXU+AonZcwx+Q8TFCRwThJ/Qd+vZ+fnoJ76F3/mBjb9Q41AqR8szIrGEuBMsqw==
 
 "@speedy-js/esbuild-windows-64@0.14.28-speedy-lynx-1":
   version "0.14.28-speedy-lynx-1"
-  resolved "http://bnpm.byted.org/@speedy-js/esbuild-windows-64/-/esbuild-windows-64-0.14.28-speedy-lynx-1.tgz#98203bae059b50edeaca6c827bd4f5aaa9120cbd"
+  resolved "https://registry.npmjs.org/@speedy-js/esbuild-windows-64/-/esbuild-windows-64-0.14.28-speedy-lynx-1.tgz#98203bae059b50edeaca6c827bd4f5aaa9120cbd"
   integrity sha512-kDKoax4lrxKMGCmQVsqNdJfDilVrAYPR830Zx8fGzj3ihVgH+v4INhMHgF0pkbcp9Fh6+P2l86456PeDa6og8w==
 
 "@speedy-js/esbuild-windows-arm64@0.14.28-speedy-lynx-1":
   version "0.14.28-speedy-lynx-1"
-  resolved "http://bnpm.byted.org/@speedy-js/esbuild-windows-arm64/-/esbuild-windows-arm64-0.14.28-speedy-lynx-1.tgz#6d51e3843d587ea3ad2ccd8fe3ad90daef9c03ac"
+  resolved "https://registry.npmjs.org/@speedy-js/esbuild-windows-arm64/-/esbuild-windows-arm64-0.14.28-speedy-lynx-1.tgz#6d51e3843d587ea3ad2ccd8fe3ad90daef9c03ac"
   integrity sha512-AnA4Ubh+X74Y3Eej8TM5kpnTQckPhpG5owQRBXlEa3xmA8kyolt9DMjBOmnVBhcsHH8j7iAnY2Wb7fJpxEPbsQ==
 
 "@speedy-js/esbuild@0.14.28-speedy-lynx-1":
   version "0.14.28-speedy-lynx-1"
-  resolved "http://bnpm.byted.org/@speedy-js/esbuild/-/esbuild-0.14.28-speedy-lynx-1.tgz#4c2172ad136f8e3e282f860c416df1c65446be13"
+  resolved "https://registry.npmjs.org/@speedy-js/esbuild/-/esbuild-0.14.28-speedy-lynx-1.tgz#4c2172ad136f8e3e282f860c416df1c65446be13"
   integrity sha512-tch1Xa67lM0v+YLqoF44MldbonoJbfrkmmoA+8BT3ggZ46hBeCm5ydZOB+MzJJ1tMP2mdvC8cpYLjXtLvet0UQ==
   optionalDependencies:
     "@speedy-js/esbuild-android-64" "0.14.28-speedy-lynx-1"
@@ -2590,7 +2611,7 @@ acorn@^8.2.4, acorn@^8.4.1, acorn@^8.5.0:
 
 address@^1.0.1, address@^1.1.2:
   version "1.2.1"
-  resolved "http://bnpm.byted.org/address/-/address-1.2.1.tgz#25bb61095b7522d65b357baa11bc05492d4c8acd"
+  resolved "https://registry.npmjs.org/address/-/address-1.2.1.tgz#25bb61095b7522d65b357baa11bc05492d4c8acd"
   integrity sha512-B+6bi5D34+fDYENiH5qOlA0cV2rAGKuWZ9LeyUUehbXy8e0VS9e498yO0Jeeh+iM+6KbfudHTFjXw2MmJD4QRA==
 
 agent-base@6:
@@ -2802,7 +2823,7 @@ array-flatten@^2.1.2:
 
 array-union@^2.1.0:
   version "2.1.0"
-  resolved "http://bnpm.byted.org/array-union/-/array-union-2.1.0.tgz#b798420adbeb1de828d84acd8a2e23d3efe85e8d"
+  resolved "https://registry.npmjs.org/array-union/-/array-union-2.1.0.tgz#b798420adbeb1de828d84acd8a2e23d3efe85e8d"
   integrity sha512-HGyxoOTYUyCM6stUe6EJgnd4EoewAI7zMdfqO+kGjnlZmBDz/cR5pf8r/cR4Wq60sL/p0IkcjUEEPwS3GFrIyw==
 
 array-union@^3.0.1:
@@ -2864,7 +2885,7 @@ asynckit@^0.4.0:
 
 at-least-node@^1.0.0:
   version "1.0.0"
-  resolved "http://bnpm.byted.org/at-least-node/-/at-least-node-1.0.0.tgz#602cd4b46e844ad4effc92a8011a3c46e0238dc2"
+  resolved "https://registry.npmjs.org/at-least-node/-/at-least-node-1.0.0.tgz#602cd4b46e844ad4effc92a8011a3c46e0238dc2"
   integrity sha512-+q/t7Ekv1EDY2l6Gda6LLiX14rU9TV20Wa3ofeQmwPFZbOMo9DXrLbOjFaaclkXKWidIaopwAObQDqwWtGUjqg==
 
 atob@^2.1.2:
@@ -3122,7 +3143,7 @@ browserslist@^4.0.0, browserslist@^4.14.5, browserslist@^4.16.6, browserslist@^4
 
 browserslist@^4.18.1:
   version "4.21.4"
-  resolved "http://bnpm.byted.org/browserslist/-/browserslist-4.21.4.tgz#e7496bbc67b9e39dd0f98565feccdcb0d4ff6987"
+  resolved "https://registry.npmjs.org/browserslist/-/browserslist-4.21.4.tgz#e7496bbc67b9e39dd0f98565feccdcb0d4ff6987"
   integrity sha512-CBHJJdDmgjl3daYjN5Cp5kbTf1mUhZoS+beLklHIvkOWscs83YAhLlF3Wsh/lciQYAcbBJgTOD44VtG31ZM4Hw==
   dependencies:
     caniuse-lite "^1.0.30001400"
@@ -3261,7 +3282,7 @@ caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001359:
 
 caniuse-lite@^1.0.30001400:
   version "1.0.30001434"
-  resolved "http://bnpm.byted.org/caniuse-lite/-/caniuse-lite-1.0.30001434.tgz#ec1ec1cfb0a93a34a0600d37903853030520a4e5"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001434.tgz#ec1ec1cfb0a93a34a0600d37903853030520a4e5"
   integrity sha512-aOBHrLmTQw//WFa2rcF1If9fa3ypkC1wzqqiKHgfdrXTWcU8C4gKVZT77eQAPWN1APys3+uQ0Df07rKauXGEYA==
 
 canvas@^2.8.0:
@@ -3733,7 +3754,7 @@ core-util-is@~1.0.0:
 
 cosmiconfig@^6.0.0:
   version "6.0.0"
-  resolved "http://bnpm.byted.org/cosmiconfig/-/cosmiconfig-6.0.0.tgz#da4fee853c52f6b1e6935f41c1a2fc50bd4a9982"
+  resolved "https://registry.npmjs.org/cosmiconfig/-/cosmiconfig-6.0.0.tgz#da4fee853c52f6b1e6935f41c1a2fc50bd4a9982"
   integrity sha512-xb3ZL6+L8b9JLLCx3ZdoZy4+2ECphCMo2PwqgP1tlfVq6M6YReyzBJtvWWtbDSpNr9hn96pkCiZqUcFEc+54Qg==
   dependencies:
     "@types/parse-json" "^4.0.0"
@@ -4230,7 +4251,7 @@ detect-node@^2.0.4:
 
 detect-port-alt@^1.1.6:
   version "1.1.6"
-  resolved "http://bnpm.byted.org/detect-port-alt/-/detect-port-alt-1.1.6.tgz#24707deabe932d4a3cf621302027c2b266568275"
+  resolved "https://registry.npmjs.org/detect-port-alt/-/detect-port-alt-1.1.6.tgz#24707deabe932d4a3cf621302027c2b266568275"
   integrity sha512-5tQykt+LqfJFBEYaDITx7S7cR7mJ/zQmLXZ2qt5w04ainYZw6tBf9dBunMjVeVOdYVRUzUOE4HkY5J7+uttb5Q==
   dependencies:
     address "^1.0.1"
@@ -4312,13 +4333,6 @@ dom-serializer@^2.0.0:
     domelementtype "^2.3.0"
     domhandler "^5.0.2"
     entities "^4.2.0"
-
-dom7@^3.0.0:
-  version "3.0.0"
-  resolved "http://bnpm.byted.org/dom7/-/dom7-3.0.0.tgz#b861ce5d67a6becd7aaa3ad02942ff14b1240331"
-  integrity sha512-oNlcUdHsC4zb7Msx7JN3K0Nro1dzJ48knvBOnDPKJ2GV9wl1i5vydJZUSyOfrkKFDZEud/jBsTk92S/VGSAe/g==
-  dependencies:
-    ssr-window "^3.0.0-alpha.1"
 
 domelementtype@1:
   version "1.3.1"
@@ -4431,7 +4445,7 @@ duplexer3@^0.1.4:
 
 duplexer@^0.1.2:
   version "0.1.2"
-  resolved "http://bnpm.byted.org/duplexer/-/duplexer-0.1.2.tgz#3abe43aef3835f8ae077d136ddce0f276b0400e6"
+  resolved "https://registry.npmjs.org/duplexer/-/duplexer-0.1.2.tgz#3abe43aef3835f8ae077d136ddce0f276b0400e6"
   integrity sha512-jtD6YG370ZCIi/9GTaJKQxWTZD045+4R4hTk/x1UyoqadyJ9x9CgSi1RlVDQF8U2sxLLSnFkCaMihqljHIWgMg==
 
 ee-first@1.1.1:
@@ -4453,7 +4467,7 @@ electron-to-chromium@^1.4.172:
 
 electron-to-chromium@^1.4.251:
   version "1.4.284"
-  resolved "http://bnpm.byted.org/electron-to-chromium/-/electron-to-chromium-1.4.284.tgz#61046d1e4cab3a25238f6bf7413795270f125592"
+  resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.284.tgz#61046d1e4cab3a25238f6bf7413795270f125592"
   integrity sha512-M8WEXFuKXMYMVr45fo8mq0wUrrJHheiKZf6BArTKk9ZBYCKJEOU5H8cdWgDT+qCVZf7Na4lVUaZsA+h6uA9+PA==
 
 emittery@^0.8.1:
@@ -4630,7 +4644,7 @@ es6-object-assign@^1.1.0:
 
 "esbuild-0.13.12@npm:esbuild@0.13.12":
   version "0.13.12"
-  resolved "http://bnpm.byted.org/esbuild/-/esbuild-0.13.12.tgz#9cac641594bf03cf34145258c093d743ebbde7ca"
+  resolved "https://registry.npmjs.org/esbuild/-/esbuild-0.13.12.tgz#9cac641594bf03cf34145258c093d743ebbde7ca"
   integrity sha512-vTKKUt+yoz61U/BbrnmlG9XIjwpdIxmHB8DlPR0AAW6OdS+nBQBci6LUHU2q9WbBobMEIQxxDpKbkmOGYvxsow==
   optionalDependencies:
     esbuild-android-arm64 "0.13.12"
@@ -4653,92 +4667,92 @@ es6-object-assign@^1.1.0:
 
 esbuild-android-arm64@0.13.12:
   version "0.13.12"
-  resolved "http://bnpm.byted.org/esbuild-android-arm64/-/esbuild-android-arm64-0.13.12.tgz#e1f199dc05405cdc6670c00fb6c793822bf8ae4c"
+  resolved "https://registry.npmjs.org/esbuild-android-arm64/-/esbuild-android-arm64-0.13.12.tgz#e1f199dc05405cdc6670c00fb6c793822bf8ae4c"
   integrity sha512-TSVZVrb4EIXz6KaYjXfTzPyyRpXV5zgYIADXtQsIenjZ78myvDGaPi11o4ZSaHIwFHsuwkB6ne5SZRBwAQ7maw==
 
 esbuild-darwin-64@0.13.12:
   version "0.13.12"
-  resolved "http://bnpm.byted.org/esbuild-darwin-64/-/esbuild-darwin-64-0.13.12.tgz#f5c59e622955c01f050e5a7ac9c1d41db714b94d"
+  resolved "https://registry.npmjs.org/esbuild-darwin-64/-/esbuild-darwin-64-0.13.12.tgz#f5c59e622955c01f050e5a7ac9c1d41db714b94d"
   integrity sha512-c51C+N+UHySoV2lgfWSwwmlnLnL0JWj/LzuZt9Ltk9ub1s2Y8cr6SQV5W3mqVH1egUceew6KZ8GyI4nwu+fhsw==
 
 esbuild-darwin-arm64@0.13.12:
   version "0.13.12"
-  resolved "http://bnpm.byted.org/esbuild-darwin-arm64/-/esbuild-darwin-arm64-0.13.12.tgz#8abae74c2956a8aa568fc52c78829338c4a4b988"
+  resolved "https://registry.npmjs.org/esbuild-darwin-arm64/-/esbuild-darwin-arm64-0.13.12.tgz#8abae74c2956a8aa568fc52c78829338c4a4b988"
   integrity sha512-JvAMtshP45Hd8A8wOzjkY1xAnTKTYuP/QUaKp5eUQGX+76GIie3fCdUUr2ZEKdvpSImNqxiZSIMziEiGB5oUmQ==
 
 esbuild-freebsd-64@0.13.12:
   version "0.13.12"
-  resolved "http://bnpm.byted.org/esbuild-freebsd-64/-/esbuild-freebsd-64-0.13.12.tgz#6ad2ab8c0364ee7dd2d6e324d876a8e60ae75d12"
+  resolved "https://registry.npmjs.org/esbuild-freebsd-64/-/esbuild-freebsd-64-0.13.12.tgz#6ad2ab8c0364ee7dd2d6e324d876a8e60ae75d12"
   integrity sha512-r6On/Skv9f0ZjTu6PW5o7pdXr8aOgtFOEURJZYf1XAJs0IQ+gW+o1DzXjVkIoT+n1cm3N/t1KRJfX71MPg/ZUA==
 
 esbuild-freebsd-arm64@0.13.12:
   version "0.13.12"
-  resolved "http://bnpm.byted.org/esbuild-freebsd-arm64/-/esbuild-freebsd-arm64-0.13.12.tgz#6f38155f4c300ac4c8adde1fde3cc6a4440a8294"
+  resolved "https://registry.npmjs.org/esbuild-freebsd-arm64/-/esbuild-freebsd-arm64-0.13.12.tgz#6f38155f4c300ac4c8adde1fde3cc6a4440a8294"
   integrity sha512-F6LmI2Q1gii073kmBE3NOTt/6zLL5zvZsxNLF8PMAwdHc+iBhD1vzfI8uQZMJA1IgXa3ocr3L3DJH9fLGXy6Yw==
 
 esbuild-linux-32@0.13.12:
   version "0.13.12"
-  resolved "http://bnpm.byted.org/esbuild-linux-32/-/esbuild-linux-32-0.13.12.tgz#b1d15e330188a8c21de75c3f0058628a3eefade7"
+  resolved "https://registry.npmjs.org/esbuild-linux-32/-/esbuild-linux-32-0.13.12.tgz#b1d15e330188a8c21de75c3f0058628a3eefade7"
   integrity sha512-U1UZwG3UIwF7/V4tCVAo/nkBV9ag5KJiJTt+gaCmLVWH3bPLX7y+fNlhIWZy8raTMnXhMKfaTvWZ9TtmXzvkuQ==
 
 esbuild-linux-64@0.13.12:
   version "0.13.12"
-  resolved "http://bnpm.byted.org/esbuild-linux-64/-/esbuild-linux-64-0.13.12.tgz#25bd64b66162b02348e32d8f12e4c9ee61f1d070"
+  resolved "https://registry.npmjs.org/esbuild-linux-64/-/esbuild-linux-64-0.13.12.tgz#25bd64b66162b02348e32d8f12e4c9ee61f1d070"
   integrity sha512-YpXSwtu2NxN3N4ifJxEdsgd6Q5d8LYqskrAwjmoCT6yQnEHJSF5uWcxv783HWN7lnGpJi9KUtDvYsnMdyGw71Q==
 
 esbuild-linux-arm64@0.13.12:
   version "0.13.12"
-  resolved "http://bnpm.byted.org/esbuild-linux-arm64/-/esbuild-linux-arm64-0.13.12.tgz#ba582298457cc5c9ac823a275de117620c06537f"
+  resolved "https://registry.npmjs.org/esbuild-linux-arm64/-/esbuild-linux-arm64-0.13.12.tgz#ba582298457cc5c9ac823a275de117620c06537f"
   integrity sha512-sgDNb8kb3BVodtAlcFGgwk+43KFCYjnFOaOfJibXnnIojNWuJHpL6aQJ4mumzNWw8Rt1xEtDQyuGK9f+Y24jGA==
 
 esbuild-linux-arm@0.13.12:
   version "0.13.12"
-  resolved "http://bnpm.byted.org/esbuild-linux-arm/-/esbuild-linux-arm-0.13.12.tgz#6bc81c957bff22725688cc6359c29a25765be09b"
+  resolved "https://registry.npmjs.org/esbuild-linux-arm/-/esbuild-linux-arm-0.13.12.tgz#6bc81c957bff22725688cc6359c29a25765be09b"
   integrity sha512-SyiT/JKxU6J+DY2qUiSLZJqCAftIt3uoGejZ0HDnUM2MGJqEGSGh7p1ecVL2gna3PxS4P+j6WAehCwgkBPXNIw==
 
 esbuild-linux-mips64le@0.13.12:
   version "0.13.12"
-  resolved "http://bnpm.byted.org/esbuild-linux-mips64le/-/esbuild-linux-mips64le-0.13.12.tgz#ef3c4aba3e585d847cbade5945a8b4a5c62c7ce2"
+  resolved "https://registry.npmjs.org/esbuild-linux-mips64le/-/esbuild-linux-mips64le-0.13.12.tgz#ef3c4aba3e585d847cbade5945a8b4a5c62c7ce2"
   integrity sha512-qQJHlZBG+QwVIA8AbTEtbvF084QgDi4DaUsUnA+EolY1bxrG+UyOuGflM2ZritGhfS/k7THFjJbjH2wIeoKA2g==
 
 esbuild-linux-ppc64le@0.13.12:
   version "0.13.12"
-  resolved "http://bnpm.byted.org/esbuild-linux-ppc64le/-/esbuild-linux-ppc64le-0.13.12.tgz#a21fb64e80c38bef06122e48283990fc6db578e1"
+  resolved "https://registry.npmjs.org/esbuild-linux-ppc64le/-/esbuild-linux-ppc64le-0.13.12.tgz#a21fb64e80c38bef06122e48283990fc6db578e1"
   integrity sha512-2dSnm1ldL7Lppwlo04CGQUpwNn5hGqXI38OzaoPOkRsBRWFBozyGxTFSee/zHFS+Pdh3b28JJbRK3owrrRgWNw==
 
 esbuild-netbsd-64@0.13.12:
   version "0.13.12"
-  resolved "http://bnpm.byted.org/esbuild-netbsd-64/-/esbuild-netbsd-64-0.13.12.tgz#1ea7fc8cfce88a20a4047b867ef184049a6641ae"
+  resolved "https://registry.npmjs.org/esbuild-netbsd-64/-/esbuild-netbsd-64-0.13.12.tgz#1ea7fc8cfce88a20a4047b867ef184049a6641ae"
   integrity sha512-D4raxr02dcRiQNbxOLzpqBzcJNFAdsDNxjUbKkDMZBkL54Z0vZh4LRndycdZAMcIdizC/l/Yp/ZsBdAFxc5nbA==
 
 esbuild-openbsd-64@0.13.12:
   version "0.13.12"
-  resolved "http://bnpm.byted.org/esbuild-openbsd-64/-/esbuild-openbsd-64-0.13.12.tgz#adde32f2f1b05dc4bd4fc544d6ea5a4379f9ca4d"
+  resolved "https://registry.npmjs.org/esbuild-openbsd-64/-/esbuild-openbsd-64-0.13.12.tgz#adde32f2f1b05dc4bd4fc544d6ea5a4379f9ca4d"
   integrity sha512-KuLCmYMb2kh05QuPJ+va60bKIH5wHL8ypDkmpy47lzwmdxNsuySeCMHuTv5o2Af1RUn5KLO5ZxaZeq4GEY7DaQ==
 
 esbuild-sunos-64@0.13.12:
   version "0.13.12"
-  resolved "http://bnpm.byted.org/esbuild-sunos-64/-/esbuild-sunos-64-0.13.12.tgz#a7ecaf52b7364fbee76dc8aa707fa3e1cff3342c"
+  resolved "https://registry.npmjs.org/esbuild-sunos-64/-/esbuild-sunos-64-0.13.12.tgz#a7ecaf52b7364fbee76dc8aa707fa3e1cff3342c"
   integrity sha512-jBsF+e0woK3miKI8ufGWKG3o3rY9DpHvCVRn5eburMIIE+2c+y3IZ1srsthKyKI6kkXLvV4Cf/E7w56kLipMXw==
 
 esbuild-windows-32@0.13.12:
   version "0.13.12"
-  resolved "http://bnpm.byted.org/esbuild-windows-32/-/esbuild-windows-32-0.13.12.tgz#a8756033dc905c4b7bea19be69f7ee68809f8770"
+  resolved "https://registry.npmjs.org/esbuild-windows-32/-/esbuild-windows-32-0.13.12.tgz#a8756033dc905c4b7bea19be69f7ee68809f8770"
   integrity sha512-L9m4lLFQrFeR7F+eLZXG82SbXZfUhyfu6CexZEil6vm+lc7GDCE0Q8DiNutkpzjv1+RAbIGVva9muItQ7HVTkQ==
 
 esbuild-windows-64@0.13.12:
   version "0.13.12"
-  resolved "http://bnpm.byted.org/esbuild-windows-64/-/esbuild-windows-64-0.13.12.tgz#ae694aa66ca078acb8509b2da31197ed1f40f798"
+  resolved "https://registry.npmjs.org/esbuild-windows-64/-/esbuild-windows-64-0.13.12.tgz#ae694aa66ca078acb8509b2da31197ed1f40f798"
   integrity sha512-k4tX4uJlSbSkfs78W5d9+I9gpd+7N95W7H2bgOMFPsYREVJs31+Q2gLLHlsnlY95zBoPQMIzHooUIsixQIBjaQ==
 
 esbuild-windows-arm64@0.13.12:
   version "0.13.12"
-  resolved "http://bnpm.byted.org/esbuild-windows-arm64/-/esbuild-windows-arm64-0.13.12.tgz#782c5a8bd6d717ea55aaafe648f9926ca36a4a88"
+  resolved "https://registry.npmjs.org/esbuild-windows-arm64/-/esbuild-windows-arm64-0.13.12.tgz#782c5a8bd6d717ea55aaafe648f9926ca36a4a88"
   integrity sha512-2tTv/BpYRIvuwHpp2M960nG7uvL+d78LFW/ikPItO+2GfK51CswIKSetSpDii+cjz8e9iSPgs+BU4o8nWICBwQ==
 
 esbuild@0.12.8:
   version "0.12.8"
-  resolved "http://bnpm.byted.org/esbuild/-/esbuild-0.12.8.tgz#ac90da77cb3bfbf49ab815200bcef7ffe1a3348f"
+  resolved "https://registry.npmjs.org/esbuild/-/esbuild-0.12.8.tgz#ac90da77cb3bfbf49ab815200bcef7ffe1a3348f"
   integrity sha512-sx/LwlP/SWTGsd9G4RlOPrXnIihAJ2xwBUmzoqe2nWwbXORMQWtAGNJNYLBJJqa3e9PWvVzxdrtyFZJcr7D87g==
 
 escalade@^3.1.1:
@@ -4763,7 +4777,7 @@ escape-string-regexp@^2.0.0:
 
 escape-string-regexp@^4.0.0:
   version "4.0.0"
-  resolved "http://bnpm.byted.org/escape-string-regexp/-/escape-string-regexp-4.0.0.tgz#14ba83a5d373e3d311e5afca29cf5bfad965bf34"
+  resolved "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-4.0.0.tgz#14ba83a5d373e3d311e5afca29cf5bfad965bf34"
   integrity sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==
 
 escodegen@^2.0.0:
@@ -4964,7 +4978,7 @@ fast-glob@^3.2.7:
 
 fast-glob@^3.2.9:
   version "3.2.12"
-  resolved "http://bnpm.byted.org/fast-glob/-/fast-glob-3.2.12.tgz#7f39ec99c2e6ab030337142da9e0c18f37afae80"
+  resolved "https://registry.npmjs.org/fast-glob/-/fast-glob-3.2.12.tgz#7f39ec99c2e6ab030337142da9e0c18f37afae80"
   integrity sha512-DVj4CQIYYow0BlaelwK1pHl5n5cRSJfM60UA0zK891sVInoPri2Ekj7+e1CT3/3qxXenpI+nBBmQAcJPJgaj4w==
   dependencies:
     "@nodelib/fs.stat" "^2.0.2"
@@ -5074,7 +5088,7 @@ filenamify@^2.0.0:
 
 filesize@^8.0.6:
   version "8.0.7"
-  resolved "http://bnpm.byted.org/filesize/-/filesize-8.0.7.tgz#695e70d80f4e47012c132d57a059e80c6b580bd8"
+  resolved "https://registry.npmjs.org/filesize/-/filesize-8.0.7.tgz#695e70d80f4e47012c132d57a059e80c6b580bd8"
   integrity sha512-pjmC+bkIF8XI7fWaH8KxHcZL3DPybs1roSKP4rKDvy20tAWwIObE4+JIseG2byfGKhud5ZnM4YSGKBz7Sh0ndQ==
 
 fill-range@^7.0.1:
@@ -5162,7 +5176,7 @@ for-each@^0.3.3:
 
 fork-ts-checker-webpack-plugin@^6.5.0:
   version "6.5.2"
-  resolved "http://bnpm.byted.org/fork-ts-checker-webpack-plugin/-/fork-ts-checker-webpack-plugin-6.5.2.tgz#4f67183f2f9eb8ba7df7177ce3cf3e75cdafb340"
+  resolved "https://registry.npmjs.org/fork-ts-checker-webpack-plugin/-/fork-ts-checker-webpack-plugin-6.5.2.tgz#4f67183f2f9eb8ba7df7177ce3cf3e75cdafb340"
   integrity sha512-m5cUmF30xkZ7h4tWUgTAcEaKmUW7tfyUyTqNNOz7OxWJ0v1VWKTcOvH8FWHUwSjlW/356Ijc9vi3XfcPstpQKA==
   dependencies:
     "@babel/code-frame" "^7.8.3"
@@ -5240,7 +5254,7 @@ fs-extra@^10.0.0, fs-extra@^10.1.0:
 
 fs-extra@^9.0.0:
   version "9.1.0"
-  resolved "http://bnpm.byted.org/fs-extra/-/fs-extra-9.1.0.tgz#5954460c764a8da2094ba3554bf839e6b9a7c86d"
+  resolved "https://registry.npmjs.org/fs-extra/-/fs-extra-9.1.0.tgz#5954460c764a8da2094ba3554bf839e6b9a7c86d"
   integrity sha512-hcg3ZmepS30/7BSFqRvoo3DOMQu7IjqxO5nCDt+zM9XWjb33Wg7ziNT+Qvqbuc3+gWpzO02JubVyk2G4Zvo1OQ==
   dependencies:
     at-least-node "^1.0.0"
@@ -5424,14 +5438,14 @@ glob@~7.1.6:
 
 global-modules@^2.0.0:
   version "2.0.0"
-  resolved "http://bnpm.byted.org/global-modules/-/global-modules-2.0.0.tgz#997605ad2345f27f51539bea26574421215c7780"
+  resolved "https://registry.npmjs.org/global-modules/-/global-modules-2.0.0.tgz#997605ad2345f27f51539bea26574421215c7780"
   integrity sha512-NGbfmJBp9x8IxyJSd1P+otYK8vonoJactOogrVfFRIAEY1ukil8RSKDz2Yo7wh1oihl51l/r6W4epkeKJHqL8A==
   dependencies:
     global-prefix "^3.0.0"
 
 global-prefix@^3.0.0:
   version "3.0.0"
-  resolved "http://bnpm.byted.org/global-prefix/-/global-prefix-3.0.0.tgz#fc85f73064df69f50421f47f883fe5b913ba9b97"
+  resolved "https://registry.npmjs.org/global-prefix/-/global-prefix-3.0.0.tgz#fc85f73064df69f50421f47f883fe5b913ba9b97"
   integrity sha512-awConJSVCHVGND6x3tmMaKcQvwXLhjdkmomy2W+Goaui8YPgYgXJZewhg3fWC+DlfqqQuWg8AwqjGTD2nAPVWg==
   dependencies:
     ini "^1.3.5"
@@ -5445,7 +5459,7 @@ globals@^11.1.0:
 
 globby@^11.0.4:
   version "11.1.0"
-  resolved "http://bnpm.byted.org/globby/-/globby-11.1.0.tgz#bd4be98bb042f83d796f7e3811991fbe82a0d34b"
+  resolved "https://registry.npmjs.org/globby/-/globby-11.1.0.tgz#bd4be98bb042f83d796f7e3811991fbe82a0d34b"
   integrity sha512-jhIXaOzy1sb8IyocaruWSn1TjmnBVs8Ayhcy83rmxNJ8q2uWKCAj3CnJY+KpGSXCueAPc0i05kVvVKtP1t9S3g==
   dependencies:
     array-union "^2.1.0"
@@ -5514,7 +5528,7 @@ graceful-fs@^4.1.10, graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.2.0,
 
 gzip-size@^6.0.0:
   version "6.0.0"
-  resolved "http://bnpm.byted.org/gzip-size/-/gzip-size-6.0.0.tgz#065367fd50c239c0671cbcbad5be3e2eeb10e462"
+  resolved "https://registry.npmjs.org/gzip-size/-/gzip-size-6.0.0.tgz#065367fd50c239c0671cbcbad5be3e2eeb10e462"
   integrity sha512-ax7ZYomf6jqPTQ4+XCpUGyXKHk5WweS+e05MBO4/y3WJ5RkmPXNKvX+bx1behVILVwr6JSQvZAku021CHPXG3Q==
   dependencies:
     duplexer "^0.1.2"
@@ -5846,7 +5860,7 @@ image-size@~0.5.0:
 
 immer@^9.0.7:
   version "9.0.16"
-  resolved "http://bnpm.byted.org/immer/-/immer-9.0.16.tgz#8e7caab80118c2b54b37ad43e05758cdefad0198"
+  resolved "https://registry.npmjs.org/immer/-/immer-9.0.16.tgz#8e7caab80118c2b54b37ad43e05758cdefad0198"
   integrity sha512-qenGE7CstVm1NrHQbMh8YaSzTZTFNP3zPqr3YU0S0UY441j4bJTg4A2Hh5KAhwgaiU6ZZ1Ar6y/2f4TblnMReQ==
 
 import-cwd@^3.0.0:
@@ -6161,7 +6175,7 @@ is-retry-allowed@^1.0.0, is-retry-allowed@^1.1.0:
 
 is-root@^2.1.0:
   version "2.1.0"
-  resolved "http://bnpm.byted.org/is-root/-/is-root-2.1.0.tgz#809e18129cf1129644302a4f8544035d51984a9c"
+  resolved "https://registry.npmjs.org/is-root/-/is-root-2.1.0.tgz#809e18129cf1129644302a4f8544035d51984a9c"
   integrity sha512-AGOriNp96vNBd3HtU+RzFEc75FfR5ymiYv8E553I71SCeXBiMsVDUtdio1OEFvrPyLIQ9tVR5RxXIFe5PUFjMg==
 
 is-shared-array-buffer@^1.0.2:
@@ -7224,7 +7238,7 @@ media-typer@0.3.0:
 
 memfs@^3.1.2:
   version "3.4.12"
-  resolved "http://bnpm.byted.org/memfs/-/memfs-3.4.12.tgz#d00f8ad8dab132dc277c659dc85bfd14b07d03bd"
+  resolved "https://registry.npmjs.org/memfs/-/memfs-3.4.12.tgz#d00f8ad8dab132dc277c659dc85bfd14b07d03bd"
   integrity sha512-BcjuQn6vfqP+k100e0E9m61Hyqa//Brp+I3f0OBmN0ATHlFA8vx3Lt8z57R3u2bPqe3WGDBC+nF72fTH7isyEw==
   dependencies:
     fs-monkey "^1.0.3"
@@ -8008,7 +8022,7 @@ pkg-dir@^5.0.0:
 
 pkg-up@^3.1.0:
   version "3.1.0"
-  resolved "http://bnpm.byted.org/pkg-up/-/pkg-up-3.1.0.tgz#100ec235cc150e4fd42519412596a28512a0def5"
+  resolved "https://registry.npmjs.org/pkg-up/-/pkg-up-3.1.0.tgz#100ec235cc150e4fd42519412596a28512a0def5"
   integrity sha512-nDywThFk1i4BQK4twPQ6TA4RT8bDY96yeuCVBWL3ePARCiEKDRSrNGbFIgUJpLp+XeIR65v8ra7WuJOFUBtkMA==
   dependencies:
     find-up "^3.0.0"
@@ -8412,6 +8426,15 @@ prop-types@^15.6.2, prop-types@^15.7.0:
     object-assign "^4.1.1"
     react-is "^16.13.1"
 
+prop-types@^15.8.1:
+  version "15.8.1"
+  resolved "https://registry.npmjs.org/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
+  integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
+  dependencies:
+    loose-envify "^1.4.0"
+    object-assign "^4.1.1"
+    react-is "^16.13.1"
+
 proto-list@~1.2.1:
   version "1.2.4"
   resolved "https://registry.npmjs.org/proto-list/-/proto-list-1.2.4.tgz"
@@ -8546,7 +8569,7 @@ raw-body@2.5.1:
 
 react-dev-utils@^12.0.1:
   version "12.0.1"
-  resolved "http://bnpm.byted.org/react-dev-utils/-/react-dev-utils-12.0.1.tgz#ba92edb4a1f379bd46ccd6bcd4e7bc398df33e73"
+  resolved "https://registry.npmjs.org/react-dev-utils/-/react-dev-utils-12.0.1.tgz#ba92edb4a1f379bd46ccd6bcd4e7bc398df33e73"
   integrity sha512-84Ivxmr17KjUupyqzFode6xKhjwuEJDROWKJy/BthkL7Wn6NJ8h4WE6k/exAv6ImS+0oZLRRW5j/aINMHyeGeQ==
   dependencies:
     "@babel/code-frame" "^7.16.0"
@@ -8592,7 +8615,7 @@ react-error-boundary@^3.1.4:
 
 react-error-overlay@^6.0.11:
   version "6.0.11"
-  resolved "http://bnpm.byted.org/react-error-overlay/-/react-error-overlay-6.0.11.tgz#92835de5841c5cf08ba00ddd2d677b6d17ff9adb"
+  resolved "https://registry.npmjs.org/react-error-overlay/-/react-error-overlay-6.0.11.tgz#92835de5841c5cf08ba00ddd2d677b6d17ff9adb"
   integrity sha512-/6UZ2qgEyH2aqzYZgQPxEnz33NJ2gNsnHA2o5+o4wW9bLM/JYQitNP9xPhsXwC08hMMovfGe/8retsdDsczPRg==
 
 "react-is@^16.12.0 || ^17.0.0 || ^18.0.0", react-is@^17.0.0, react-is@^17.0.1, react-is@^17.0.2:
@@ -8729,7 +8752,7 @@ readdirp@~3.6.0:
 
 recursive-readdir@^2.2.2:
   version "2.2.3"
-  resolved "http://bnpm.byted.org/recursive-readdir/-/recursive-readdir-2.2.3.tgz#e726f328c0d69153bcabd5c322d3195252379372"
+  resolved "https://registry.npmjs.org/recursive-readdir/-/recursive-readdir-2.2.3.tgz#e726f328c0d69153bcabd5c322d3195252379372"
   integrity sha512-8HrF5ZsXk5FAH9dgsx3BlUer73nIhuj+9OrQwEbLTPOBzGkL1lsFCR01am+v+0m2Cmbs1nP12hLDl5FA7EszKA==
   dependencies:
     minimatch "^3.0.5"
@@ -9079,7 +9102,7 @@ scheduler@^0.20.2:
 
 schema-utils@2.7.0:
   version "2.7.0"
-  resolved "http://bnpm.byted.org/schema-utils/-/schema-utils-2.7.0.tgz#17151f76d8eae67fbbf77960c33c676ad9f4efc7"
+  resolved "https://registry.npmjs.org/schema-utils/-/schema-utils-2.7.0.tgz#17151f76d8eae67fbbf77960c33c676ad9f4efc7"
   integrity sha512-0ilKFI6QQF5nxDZLFn2dMjvc4hjg/Wkg7rHd3jK6/A4a1Hl9VFdQWvgB1UMGoU94pad1P/8N7fMcEnLnSiju8A==
   dependencies:
     "@types/json-schema" "^7.0.4"
@@ -9188,7 +9211,7 @@ send@0.18.0:
 
 serialize-error@8.1.0:
   version "8.1.0"
-  resolved "http://bnpm.byted.org/serialize-error/-/serialize-error-8.1.0.tgz#3a069970c712f78634942ddd50fbbc0eaebe2f67"
+  resolved "https://registry.npmjs.org/serialize-error/-/serialize-error-8.1.0.tgz#3a069970c712f78634942ddd50fbbc0eaebe2f67"
   integrity sha512-3NnuWfM6vBYoy5gZFvHiYsVbafvI9vZv/+jlIigFn4oP4zjNPK3LhcY0xSCgeb1a5L8jO71Mit9LlNoi2UfDDQ==
   dependencies:
     type-fest "^0.20.2"
@@ -9266,7 +9289,7 @@ shebang-regex@^3.0.0:
 
 shell-quote@^1.7.3:
   version "1.7.4"
-  resolved "http://bnpm.byted.org/shell-quote/-/shell-quote-1.7.4.tgz#33fe15dee71ab2a81fcbd3a52106c5cfb9fb75d8"
+  resolved "https://registry.npmjs.org/shell-quote/-/shell-quote-1.7.4.tgz#33fe15dee71ab2a81fcbd3a52106c5cfb9fb75d8"
   integrity sha512-8o/QEhSSRb1a5i7TFR0iM4G16Z0vYB2OQVs4G3aAFXjn3T6yEx8AZxy1PgDF7I00LZHYA3WxaSYIf5e5sAX8Rw==
 
 side-channel@^1.0.4:
@@ -9405,11 +9428,6 @@ sprintf-js@~1.0.2:
   version "1.0.3"
   resolved "https://registry.npmjs.org/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
   integrity sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==
-
-ssr-window@^3.0.0, ssr-window@^3.0.0-alpha.1:
-  version "3.0.0"
-  resolved "http://bnpm.byted.org/ssr-window/-/ssr-window-3.0.0.tgz#fd5b82801638943e0cc704c4691801435af7ac37"
-  integrity sha512-q+8UfWDg9Itrg0yWK7oe5p/XRCJpJF9OBtXfOPgSJl+u3Xd5KI328RUEvUqSMVM9CiQUEf1QdBzJMkYGErj9QA==
 
 stable@^0.1.8:
   version "0.1.8"
@@ -9674,15 +9692,6 @@ svgo@^2.7.0:
     picocolors "^1.0.0"
     stable "^0.1.8"
 
-swiper@6.4.8:
-  version "6.4.8"
-  resolved "http://bnpm.byted.org/swiper/-/swiper-6.4.8.tgz#2033b69809ca67cb0851a8542089e43366f653e9"
-  integrity sha512-BvpbFiWTeHq+WniJNIeyVGsGeUozQ7q4EpqkyKocopYMzWgRDAmjCy+pr5QSrmtMQFgIG0+ta+3YBvjSHT+cgQ==
-  dependencies:
-    dom7 "^3.0.0"
-    ssr-window "^3.0.0"
-    tslib "^2.0.0"
-
 symbol-tree@^3.2.4:
   version "3.2.4"
   resolved "https://registry.npmjs.org/symbol-tree/-/symbol-tree-3.2.4.tgz"
@@ -9700,7 +9709,7 @@ table-layout@^1.0.2:
 
 tapable@^1.0.0:
   version "1.1.3"
-  resolved "http://bnpm.byted.org/tapable/-/tapable-1.1.3.tgz#a1fccc06b58db61fd7a45da2da44f5f3a3e67ba2"
+  resolved "https://registry.npmjs.org/tapable/-/tapable-1.1.3.tgz#a1fccc06b58db61fd7a45da2da44f5f3a3e67ba2"
   integrity sha512-4WK/bYZmj8xLr+HUCODHGF1ZFzsYffasLUgEiMBY4fgtltdO6B4WJtlSbPaDTLpYTcGVwM2qLnFTICEcNxs3kA==
 
 tapable@^2.0.0, tapable@^2.1.1, tapable@^2.2.0:
@@ -9791,7 +9800,7 @@ test-exclude@^6.0.0:
 
 text-table@^0.2.0:
   version "0.2.0"
-  resolved "http://bnpm.byted.org/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
+  resolved "https://registry.npmjs.org/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==
 
 throat@^6.0.1:
@@ -9944,11 +9953,6 @@ tslib@^1.9.0:
   resolved "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
 
-tslib@^2.0.0:
-  version "2.4.1"
-  resolved "https://registry.npmjs.org/tslib/-/tslib-2.4.1.tgz#0d0bfbaac2880b91e22df0768e55be9753a5b17e"
-  integrity sha512-tGyy4dAjRIEwI7BzsB0lynWgOpfqjUdq91XXAlIWD2OwKBH7oCl/GZG/HT4BOHrTlPMOASlMQ7veyTqpmRcrNA==
-
 tslib@^2.0.3, tslib@^2.1.0, tslib@^2.3.0, tslib@^2.3.1, tslib@^2.4.0:
   version "2.4.0"
   resolved "https://registry.npmjs.org/tslib/-/tslib-2.4.0.tgz"
@@ -9982,7 +9986,7 @@ type-detect@4.0.8:
 
 type-fest@^0.20.2:
   version "0.20.2"
-  resolved "http://bnpm.byted.org/type-fest/-/type-fest-0.20.2.tgz#1bf207f4b28f91583666cb5fbd327887301cd5f4"
+  resolved "https://registry.npmjs.org/type-fest/-/type-fest-0.20.2.tgz#1bf207f4b28f91583666cb5fbd327887301cd5f4"
   integrity sha512-Ne+eE4r0/iWnpAxD852z3A+N0Bt5RN//NjJwRd2VFHEmrywxf5vsZlh4R6lixl6B+wz/8d+maTSAkN1FIkI3LQ==
 
 type-fest@^0.21.3:
@@ -10119,7 +10123,7 @@ update-browserslist-db@^1.0.4:
 
 update-browserslist-db@^1.0.9:
   version "1.0.10"
-  resolved "http://bnpm.byted.org/update-browserslist-db/-/update-browserslist-db-1.0.10.tgz#0f54b876545726f17d00cd9a2561e6dade943ff3"
+  resolved "https://registry.npmjs.org/update-browserslist-db/-/update-browserslist-db-1.0.10.tgz#0f54b876545726f17d00cd9a2561e6dade943ff3"
   integrity sha512-OztqDenkfFkbSG+tRxBeAnCVPckDBcvibKd35yDONx6OU8N7sqgwc7rCbkJ/WcYtVRZ4ba68d6byhC21GFh7sQ==
   dependencies:
     escalade "^3.1.1"

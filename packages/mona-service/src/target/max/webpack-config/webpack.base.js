@@ -49,8 +49,7 @@ const generateBaseConfig = options => {
               presets: ['@babel/preset-env', '@babel/preset-react'],
               plugins: [TransformJsxLabelPlugin],
             },
-          },
-          exclude: /node_modules/,
+          }
         },
         {
           test: /\.css$/i,

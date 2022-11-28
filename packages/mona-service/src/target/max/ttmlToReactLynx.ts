@@ -1,19 +1,12 @@
 // @ts-ignore
-import { ttmlToNg } from '@ecom/mona-speedy';
+import { ttmlToNg } from '@bytedance/mona-speedy';
 import fs from 'fs';
 import path from 'path';
-import chokidar from 'chokidar';
 import ConfigHelper from '../../ConfigHelper';
 
-export const ttmlToReactLynx = (maxTmp: string, configHelper: ConfigHelper, isWatch: boolean = true) => {
+export const ttmlToReactLynx = (maxTmp: string, configHelper: ConfigHelper) => {
   const souceDirName = 'src';
   ttmlToReactLynxRecur(maxTmp, souceDirName, configHelper.cwd);
-  const sourceDir = path.join(configHelper.cwd, souceDirName);
-  if (isWatch) {
-    chokidar.watch(sourceDir).on('all', () => {
-      ttmlToReactLynxRecur(maxTmp, souceDirName, configHelper.cwd);
-    });
-  }
 };
 
 const ttmlToReactLynxRecur = (maxTmp: string, baseDir: string, cwd: string) => {
@@ -58,7 +51,7 @@ const transfromTtmlDir = (baseDir: string, distDir: string) => {
       distName: `index.jsx`,
       options: {
         inlineLepus: true,
-        reactRuntimeImportDeclaration: 'import ReactLynx, { Component } from "@ecom/mona-speedy-runtime"',
+        reactRuntimeImportDeclaration: 'import ReactLynx, { Component } from "@bytedance/mona-speedy-runtime"',
         importCssPath: './index.less',
         // componentPathRewrite(name, path) {
         //   // arco-icon @byted-lynx/ui/components/icon/icon
