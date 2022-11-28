@@ -82,7 +82,7 @@ const devConfig = {
                       const metaEl = document.createElement('meta');
                       var scale = window.outerWidth / 375;
                       metaEl.setAttribute('name', 'viewport');
-                      metaEl.setAttribute('content', 'initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable=no');
+                      metaEl.setAttribute('content', 'width=device-width, initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable=no');
                       document.head.prepend(metaEl);
                     }
                     flexible()
