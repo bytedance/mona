@@ -1,0 +1,26 @@
+<swiper id="swiper" style="{{customStyle}}" class="{{customClass}}" indicator-dots="{{indicatorDots}}"
+  indicator-color="{{indicatorColor}}" indicator-active-color="{{indicatorActiveColor}}" circular="{{circular}}"
+  autoplay="{{autoplay}}" duration="{{duration}}" interval="{{interval}}" current="{{current}}" vertical="{{vertical}}"
+  previous-margin="{{previousMargin}}" next-margin="{{nextMargin}}" page-margin="{{pageMargin}}" touchable="{{!disableTouch}}" bindchange="onChange"
+  bindtransition="onTransition" bindscrollstart="onScrollStart" bindscrollend="onScrollEnd">
+  <slot name="0"></slot>
+  <slot name="1"></slot>
+  <slot name="2"></slot>
+  <slot name="3"></slot>
+  <slot name="4"></slot>
+  <slot name="5"></slot>
+  <slot name="6"></slot>
+  <slot name="7"></slot>
+  <slot name="8"></slot>
+  <slot name="9"></slot>
+  <slot name="10"></slot>
+  <slot name="11"></slot>
+  <slot name="12"></slot>
+  <slot name="13"></slot>
+  <slot name="14"></slot>
+  <slot name="15"></slot>
+  <slot name="16"></slot>
+  <slot name="17"></slot>
+  <slot name="18"></slot>
+  <slot name="19"></slot>
+</swiper>

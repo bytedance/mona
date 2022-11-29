@@ -1,0 +1,5 @@
+<image tt:if="{{src && !hasError}}" class="{{customClass}}" style="{{customStyle}}" src="{{src}}" mode="{{mode}}" placeholder="{{placeholder}}"
+  blur-radius="{{blurRadius}}" image-config="{{imageConfig}}" cap-insets="{{capInsets}}" loop-count="{{loopCount}}"
+  prefetch-width="{{prefetchWidth}}" prefetch-height="{{prefetchHeight}}" skip-redirection="{{skipRedirection}}"
+  image-transition-style="{{imageTransitionStyle}}" prevent-loading-on-list-scroll="{{preventLoadingOnListScroll}}"
+  downsampling="{{downsampling}}" implicit-animation="{{implicitAnimation}}" clip-radius="{{clipRadius}}" />
