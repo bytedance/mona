@@ -9,8 +9,8 @@ const buildId = CreateUniqueId();
 const createModule = require('../utils/createVirtualModule');
 const deepMerge = require('lodash.merge');
 const generateBaseConfig = projectConfig => {
-  const { pxToRem, less = {} } = projectConfig;
-
+  const { pxToRem, abilities } = projectConfig;
+  const { less = {} } = abilities || {};
   let postcssPlugins = [
     PostcssPluginRpxToVw,
     require.resolve('postcss-import'),
