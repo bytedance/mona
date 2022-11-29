@@ -3,6 +3,9 @@ import { ttmlToNg } from '@bytedance/mona-speedy';
 import fs from 'fs';
 import fse from 'fs-extra';
 import path from 'path';
+import { parse } from '@babel/parser';
+import traverse from '@babel/traverse';
+import { transformFromAstSync } from '@babel/core';
 import md5 from './utils/md5';
 import ConfigHelper from '../../ConfigHelper';
 
@@ -40,6 +43,24 @@ interface ComponentInfo {
   entry: string;
   isTTML: boolean;
   target: string;
+}
+
+
+// replace some import in jsx file
+const transformJSXFile = (codeFile: string) => {
+  const sourceCode = fs.readFileSync(codeFile).toString();
+  const ast = parse(sourceCode, { plugins: ['jsx'], sourceType: 'module' });
+  traverse(ast, {
+    ImportDeclaration: ({ node }) => {
+      if (node.source.value === '@bytedance/mona-runtime') {
+        node.source.value = '@bytedance/mona-runtime/dist/index.max.js'
+      }
+    }
+  })
+  const res = transformFromAstSync(ast)
+  if (res?.code) {
+    fs.writeFileSync(codeFile, res.code);
+  }
 }
 
 const handleAllComponents = ({ entry, tempDir, componentMap }: { entry: string; tempDir: string; componentMap: Map<string, ComponentInfo> }) => {
@@ -116,12 +137,17 @@ const transfromTtmlDir = (sourceDir: string, filename: string, distDir: string) 
     },
     true,
   );
+  
   //复制ttss->scss
   const ttssSrcFilePath = path.resolve(sourceDir, `index.ttss`);
   const ttssDistDirFilePath = path.resolve(distDir, `${filename}.less`);
   if (fs.existsSync(ttssSrcFilePath)) {
     fs.copyFileSync(ttssSrcFilePath, ttssDistDirFilePath);
   }
+
+  // replace some runtime in reactLynx
+  const codeFile = path.join(distDir, `${filename}.jsx`);
+  transformJSXFile(codeFile)
 };
 
 export const ttmlToReactLynx = (tempReactLynxDir: string, configHelper: ConfigHelper) => {

@@ -41,8 +41,6 @@ const isJSON = v => {
   } catch (e) {
     return false;
   }
-
-  return false;
 };
 
 
