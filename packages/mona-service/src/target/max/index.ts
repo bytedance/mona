@@ -46,7 +46,7 @@ const max: IPlugin = ctx => {
           // 由于父子进程同时监视文件会失效，模拟运行lynx-speedy dev --config xxx
           process.argv = process.argv
             .slice(0, 2)
-            .concat(['dev', '--config', path.join(maxTmp, 'lynx.config.js'), '--config-name', 'component']);
+            .concat(['dev', '--config', path.join(maxTmp, 'lynx.config.js'), '--config-name', 'app']);
           speedy.run();
         } else {
           // 旧的打包逻辑
