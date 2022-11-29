@@ -5,7 +5,8 @@ import { Platform } from '../constants';
 import { writeLynxConfig } from './writeLynxConfig';
 import { ttmlToReactLynx } from './ttmlToReactLynx';
 import { writeErrorBoundaryAndInjectProps } from './writeErrorBoundaryAndInjectProps';
-// import chokidar from 'chokidar';
+import chokidar from 'chokidar';
+import debounce from 'lodash.debounce'
 const speedy = require('@bytedance/mona-speedy');
 
 const { MAX } = Platform;
@@ -28,17 +29,12 @@ const max: IPlugin = ctx => {
       try {
         if (!old) {
           // 新的lynx打包逻辑
-          // const sourceDir = path.join(configHelper.cwd, 'src');
-          // chokidar.watch(sourceDir).on('all', () => {
-          //   // 1. 将ttml转成reactLynx并存储到临时文件夹中
-          //   console.log('in----');
-          //   ttmlToReactLynx(tempReactLynxDir, configHelper);
-          //   // 2. 加入errorboundary并且注入props
-          //   writeErrorBoundaryAndInjectProps(tempReactLynxDir, configHelper, true);
-          // });
-          const entry = ttmlToReactLynx(tempReactLynxDir, configHelper);
-          // 2. 加入errorboundary并且注入props
-          writeErrorBoundaryAndInjectProps(tempReactLynxDir, configHelper, entry, true);
+          const sourceDir = path.join(configHelper.cwd, 'src');
+          const transform = debounce(() => {
+            const entry = ttmlToReactLynx(tempReactLynxDir, configHelper);
+            writeErrorBoundaryAndInjectProps(tempReactLynxDir, configHelper, entry, true);
+          }, 500)
+          chokidar.watch(sourceDir).on('all', transform)
           // 3. 通过mona.config.ts生成lynx.config.ts
           writeLynxConfig(tempReactLynxDir);
           // 4. 执行speedy dev
@@ -64,8 +60,6 @@ const max: IPlugin = ctx => {
       const { old } = args;
       try {
         if (!old) {
-          // 新的lynx打包逻辑
-
           // 1. 将ttml转成reactLynx并存储到临时文件夹中
           const entry = ttmlToReactLynx(tempReactLynxDir, configHelper);
           // 2. 加入errorboundary
