@@ -3,7 +3,7 @@ const path = require('path');
 const { merge } = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WatchExternalFilesPlugin = require('webpack-watch-files-plugin').default;
-const baseConfig = require('./webpack.base.js');
+const generateBaseConfig = require('./webpack.base.js');
 const umdConfig = require('./build-umd-config.js');
 const esmConfig = require('./build-esm-config.js');
 const { DEV_SERVER_PORT, AfterBuildPlugin, TARGET_URL } = require('../utils/maxDevServer');
@@ -101,7 +101,9 @@ const devConfig = {
   ],
 };
 
-module.exports = function (buildType) {
+module.exports = function (projectConfig) {
+  const buildType = projectConfig.buildType || 'umd';
+  const baseConfig = generateBaseConfig(projectConfig);
   const moduleConfig = buildType === 'umd' ? umdConfig : esmConfig;
   if (buildType !== 'umd') {
     delete devConfig.devServer;

@@ -5,15 +5,13 @@ const fs = require('fs-extra');
 
 const maxComponent = ctx => {
   ctx.registerTarget('max', tctx => {
-    const buildType = ctx.configHelper.projectConfig.buildType || 'umd';
-
     tctx.configureWebpack(() => {
       ctx.configHelper.projectConfig.chain = pre => pre;
       if (process.env.NODE_ENV === 'production') {
-        return require('../config/webpack.prod')(buildType);
+        return require('../config/webpack.prod')(ctx.configHelper.projectConfig);
       }
 
-      return require('../config/webpack.dev')(buildType);
+      return require('../config/webpack.dev')(ctx.configHelper.projectConfig);
     });
   });
   ctx.registerCommand(

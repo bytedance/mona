@@ -31,6 +31,12 @@ const genDefaultProjectConfig = (cwd: string): ProjectConfig => {
       alias: {
         '@': path.resolve(cwd, './src'),
       },
+      less: {
+        lessOptions: {
+          math: 'always',
+          javascriptEnabled: true,
+        },
+      },
     },
   };
 };
