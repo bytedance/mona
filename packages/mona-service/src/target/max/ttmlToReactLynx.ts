@@ -15,7 +15,7 @@ const cookedFilepath = (pathname: string, base: string) => {
     return pathname
   } else if (/^\.{1,2}\//.test(pathname)) {
     // relative path
-    return path.relative(base, pathname);
+    return path.join(base, pathname);
   } else {
     // node_modules
     return require.resolve(pathname);
@@ -72,13 +72,12 @@ const handleAllComponents = ({ entry, tempDir, componentMap }: { entry: string; 
       usingComponents = {...innerComponents}
     }
     json.usingComponents = {};
-    console.log('usingComponents', usingComponents)
 
     // recursive search and store
     Object.keys(usingComponents).forEach(key => {
       const rawFilePath = usingComponents[key];
       // absolut path or relative path or node_modules
-      const filePath = cookedFilepath(rawFilePath, entry);
+      const filePath = cookedFilepath(rawFilePath, path.dirname(entry));
       const finalFilePath = path.join(path.dirname(filePath), extractPureFilename(filePath))
       const componentSourceInfo = handleAllComponents({ entry: finalFilePath, tempDir, componentMap });
       if (componentSourceInfo.isTTML) {
@@ -139,17 +138,20 @@ export const ttmlToReactLynx = (tempReactLynxDir: string, configHelper: ConfigHe
 
   const componentMap = new Map<string, ComponentInfo>();
   // handle all ttml components
-  handleAllComponents({ entry: configHelper.entryPath, tempDir: tempTTMLDir, componentMap: componentMap });
+  const entryInfo = handleAllComponents({ entry: configHelper.entryPath, tempDir: tempTTMLDir, componentMap: componentMap });
 
   // iterate all components
-
   componentMap.forEach(v => {
     if (v.isTTML) {
       const absolutePath = path.join(tempTTMLDir, 'foo', v.target);
       const distDir = path.join(tempReactLynxDir, 'foo', v.target, '..');
-      console.log('component path', absolutePath, distDir)
       transfromTtmlDir(path.dirname(absolutePath), path.basename(absolutePath), distDir);
     }
   })
+
+  // transform ../ to ./
+  const entry = entryInfo.target.replace(/^\./, '');
+
+  return `${entry}.jsx`;
 };
 

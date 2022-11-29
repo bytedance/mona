@@ -4,11 +4,11 @@ import ConfigHelper from '../../ConfigHelper';
 import { getLynxEntry } from './writeLynxConfig';
 import getDevProps from './utils/getDevProps';
 
-const getErrorBoundary = (schemaProps?: Record<string, any>) => {
+const getErrorBoundary = (entry: string, schemaProps?: Record<string, any>) => {
   const errorBoundary = `
 import ReactLynx, { Component } from "@bytedance/mona-speedy-runtime";
 import PropTypes from "prop-types";
-import App from './index.jsx';
+import App from '${entry}';
   export default class ErrorBoundary extends Component {
     constructor(props) {
       super(props);
@@ -47,16 +47,17 @@ import App from './index.jsx';
 };
 
 export const writeErrorBoundaryAndInjectProps = (
-  maxTmp: string,
+  tempReactLynxDir: string,
   configHelper: ConfigHelper,
+  entry: string,
   isInjectProps: boolean = false,
 ) => {
-  const lynxEntry = getLynxEntry(maxTmp, configHelper);
+  const lynxEntry = getLynxEntry(tempReactLynxDir);
   const schemaJson = JSON.parse(fs.readFileSync(path.resolve(configHelper.cwd, './src/schema.json'), 'utf-8'));
   const devProps = getDevProps(schemaJson);
   if (!isInjectProps) {
-    fs.writeFileSync(lynxEntry, getErrorBoundary());
+    fs.writeFileSync(lynxEntry, getErrorBoundary(entry));
   } else {
-    fs.writeFileSync(lynxEntry, getErrorBoundary(devProps));
+    fs.writeFileSync(lynxEntry, getErrorBoundary(entry, devProps));
   }
 };

@@ -5,7 +5,7 @@ import { Platform } from '../constants';
 import { writeLynxConfig } from './writeLynxConfig';
 import { ttmlToReactLynx } from './ttmlToReactLynx';
 import { writeErrorBoundaryAndInjectProps } from './writeErrorBoundaryAndInjectProps';
-import chokidar from 'chokidar';
+// import chokidar from 'chokidar';
 const speedy = require('@bytedance/mona-speedy');
 
 const { MAX } = Platform;
@@ -14,7 +14,7 @@ const max: IPlugin = ctx => {
   const monaConfig = configHelper.projectConfig;
 
   ctx.registerTarget(MAX, tctx => {
-    const tempReactLynxDir = path.join(__dirname, '../../../dist/.maxTmp');
+    const tempReactLynxDir = path.join(__dirname, '../../../dist/.maxTmpReact');
     // 原始webpack打包逻辑
     const webpackStart = tctx.startFn;
     const webpackBuild = tctx.buildFn;
@@ -28,15 +28,19 @@ const max: IPlugin = ctx => {
       try {
         if (!old) {
           // 新的lynx打包逻辑
-          const sourceDir = path.join(configHelper.cwd, 'src');
-          chokidar.watch(sourceDir).on('all', () => {
-            // 1. 将ttml转成reactLynx并存储到临时文件夹中
-            ttmlToReactLynx(tempReactLynxDir, configHelper);
-            // 2. 加入errorboundary并且注入props
-            writeErrorBoundaryAndInjectProps(tempReactLynxDir, configHelper, true);
-          });
+          // const sourceDir = path.join(configHelper.cwd, 'src');
+          // chokidar.watch(sourceDir).on('all', () => {
+          //   // 1. 将ttml转成reactLynx并存储到临时文件夹中
+          //   console.log('in----');
+          //   ttmlToReactLynx(tempReactLynxDir, configHelper);
+          //   // 2. 加入errorboundary并且注入props
+          //   writeErrorBoundaryAndInjectProps(tempReactLynxDir, configHelper, true);
+          // });
+          const entry = ttmlToReactLynx(tempReactLynxDir, configHelper);
+          // 2. 加入errorboundary并且注入props
+          writeErrorBoundaryAndInjectProps(tempReactLynxDir, configHelper, entry, true);
           // 3. 通过mona.config.ts生成lynx.config.ts
-          writeLynxConfig(tempReactLynxDir, configHelper);
+          writeLynxConfig(tempReactLynxDir);
           // 4. 执行speedy dev
           // 由于父子进程同时监视文件会失效，模拟运行lynx-speedy dev --config xxx
           process.argv = process.argv
@@ -63,11 +67,11 @@ const max: IPlugin = ctx => {
           // 新的lynx打包逻辑
 
           // 1. 将ttml转成reactLynx并存储到临时文件夹中
-          ttmlToReactLynx(tempReactLynxDir, configHelper);
+          const entry = ttmlToReactLynx(tempReactLynxDir, configHelper);
           // 2. 加入errorboundary
-          writeErrorBoundaryAndInjectProps(tempReactLynxDir, configHelper);
+          writeErrorBoundaryAndInjectProps(tempReactLynxDir, configHelper, entry);
           // 3. 通过mona.config.ts生成lynx.config.ts
-          writeLynxConfig(tempReactLynxDir, configHelper);
+          writeLynxConfig(tempReactLynxDir);
           // 4. 执行speedy dev
           process.argv = process.argv
             .slice(0, 2)
