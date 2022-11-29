@@ -3,6 +3,7 @@ const pkgs = {
   cli: '@bytedance/mona-cli',
   mini: '@bytedance/mona-client-mini',
   web: '@bytedance/mona-client-web',
+  max: '@bytedance/mona-client-max',
   plugin: '@bytedance/mona-client-plugin',
   events: '@bytedance/mona-plugin-events',
   runtime: '@bytedance/mona-runtime',

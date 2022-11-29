@@ -1,3 +1,5 @@
+
+
 Component({
   properties: {
     src: {
@@ -75,9 +77,9 @@ Component({
     hasError: false,
   },
   methods: {
-    onImageError: function (...args: any[]) {
+    onImageError: function (...args) {
       this.setData({ hasError: true, loaded: true });
-      this.triggerEvent('error', ...(args as any[]));
+      this.triggerEvent('error', ...args);
     },
     onImageLoad: function () {
       this.setData({ loaded: true });

@@ -66,16 +66,16 @@ Component({
     hasError: false,
   },
   methods: {
-    onChange(e: any) {
+    onChange(e) {
       this.triggerEvent('change', e.detail);
     },
-    onTransition(e: any) {
+    onTransition(e) {
       this.triggerEvent('transition', e.detail);
     },
-    onScrollStart(e: any) {
+    onScrollStart(e) {
       this.triggerEvent('scrollstart', e.detail);
     },
-    onScrollEnd(e: any) {
+    onScrollEnd(e) {
       this.triggerEvent('scrollend', e.detail);
     }
   },

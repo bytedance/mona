@@ -1,4 +1,3 @@
-import fs from 'fs';
 import path from 'path';
 import child_process from 'child_process';
 import { IPlugin } from '../../Service';
@@ -15,7 +14,7 @@ const max: IPlugin = ctx => {
   const monaConfig = configHelper.projectConfig;
 
   ctx.registerTarget(MAX, tctx => {
-    const maxTmp = path.join(__dirname, '../../../dist/.maxTmp');
+    const tempReactLynxDir = path.join(__dirname, '../../../dist/.maxTmp');
     // 原始webpack打包逻辑
     const webpackStart = tctx.startFn;
     const webpackBuild = tctx.buildFn;
@@ -29,24 +28,20 @@ const max: IPlugin = ctx => {
       try {
         if (!old) {
           // 新的lynx打包逻辑
-          // 1.创建临时文件夹
-          if (!fs.existsSync(maxTmp)) {
-            fs.mkdirSync(maxTmp);
-          }
           const sourceDir = path.join(configHelper.cwd, 'src');
           chokidar.watch(sourceDir).on('all', () => {
             // 1. 将ttml转成reactLynx并存储到临时文件夹中
-            ttmlToReactLynx(maxTmp, configHelper);
+            ttmlToReactLynx(tempReactLynxDir, configHelper);
             // 2. 加入errorboundary并且注入props
-            writeErrorBoundaryAndInjectProps(maxTmp, configHelper, true);
+            writeErrorBoundaryAndInjectProps(tempReactLynxDir, configHelper, true);
           });
           // 3. 通过mona.config.ts生成lynx.config.ts
-          writeLynxConfig(maxTmp, configHelper);
+          writeLynxConfig(tempReactLynxDir, configHelper);
           // 4. 执行speedy dev
           // 由于父子进程同时监视文件会失效，模拟运行lynx-speedy dev --config xxx
           process.argv = process.argv
             .slice(0, 2)
-            .concat(['dev', '--config', path.join(maxTmp, 'lynx.config.js'), '--config-name', 'app']);
+            .concat(['dev', '--config', path.join(tempReactLynxDir, 'lynx.config.js'), '--config-name', 'app']);
           speedy.run();
         } else {
           // 旧的打包逻辑
@@ -67,20 +62,16 @@ const max: IPlugin = ctx => {
         if (!old) {
           // 新的lynx打包逻辑
 
-          // 1.创建临时文件夹
-          if (!fs.existsSync(maxTmp)) {
-            fs.mkdirSync(maxTmp);
-          }
           // 1. 将ttml转成reactLynx并存储到临时文件夹中
-          ttmlToReactLynx(maxTmp, configHelper);
+          ttmlToReactLynx(tempReactLynxDir, configHelper);
           // 2. 加入errorboundary
-          writeErrorBoundaryAndInjectProps(maxTmp, configHelper);
+          writeErrorBoundaryAndInjectProps(tempReactLynxDir, configHelper);
           // 3. 通过mona.config.ts生成lynx.config.ts
-          writeLynxConfig(maxTmp, configHelper);
+          writeLynxConfig(tempReactLynxDir, configHelper);
           // 4. 执行speedy dev
           process.argv = process.argv
             .slice(0, 2)
-            .concat(['build', '--config', path.join(maxTmp, 'lynx.config.js'), '--config-name', 'component']);
+            .concat(['build', '--config', path.join(tempReactLynxDir, 'lynx.config.js'), '--config-name', 'component']);
           speedy.run();
         } else {
           // 旧的打包逻辑
