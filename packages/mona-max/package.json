@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-max",
-  "version": "0.2.39-alpha.0",
+  "version": "0.2.39-beta.0",
   "description": "Cli for isv",
   "main": "index.js",
   "scripts": {
@@ -19,6 +19,7 @@
     "html-webpack-plugin": "^5.5.0",
     "less": "^4.1.2",
     "less-loader": "^10.2.0",
+    "lodash.merge": "^4.6.2",
     "open": "^8.4.0",
     "postcss": "^8.4.5",
     "postcss-import": "^14.0.2",

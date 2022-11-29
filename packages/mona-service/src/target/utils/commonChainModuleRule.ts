@@ -2,7 +2,6 @@ import path from 'path';
 import Config from 'webpack-chain';
 
 import ConfigHelper from '@/ConfigHelper';
-import { MonaPlugins } from '@/plugins';
 
 import { genAlias } from './chainResolve';
 import { Platform } from '../constants';
@@ -50,8 +49,6 @@ function createJsRule({ webpackConfig, configHelper, TARGET }: ModuleRule) {
         [require.resolve('@babel/preset-react'), { runtime: 'automatic' }],
       ],
       plugins: [
-        // Todo
-        MonaPlugins.babel.collectNativeComponent.bind(null, configHelper),
         [require.resolve('@babel/plugin-proposal-decorators'), { legacy: true }],
         [require.resolve('@babel/plugin-transform-runtime'), { regenerator: true }],
         configHelper.isDev && require.resolve('react-refresh/babel'),
@@ -69,15 +66,11 @@ function createJsRule({ webpackConfig, configHelper, TARGET }: ModuleRule) {
 
 function createLessRule({ webpackConfig, configHelper, commonCssRule }: ModuleRule) {
   const lessRule = webpackConfig.module.rule('less').test(/\.less$/i);
+
   commonCssRule(lessRule, configHelper)
     .use('less')
     .loader(require.resolve('less-loader'))
-    .options({
-      lessOptions: {
-        math: 'always',
-        javascriptEnabled: true,
-      },
-    });
+    .options(configHelper.projectConfig?.abilities?.less || {});
 }
 
 function createCssRule({ webpackConfig, configHelper, commonCssRule }: ModuleRule) {
