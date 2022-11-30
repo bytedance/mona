@@ -1,1 +1,1 @@
-export * from '@bytedance/mona-client-web';
+export { default as Canvas } from './Canvas';

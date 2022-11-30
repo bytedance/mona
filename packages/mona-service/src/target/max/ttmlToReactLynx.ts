@@ -3,14 +3,23 @@ import { ttmlToNg } from '@bytedance/mona-speedy';
 import fs from 'fs';
 import fse from 'fs-extra';
 import path from 'path';
+import runtimeComponents from './runtimeComponents';
 import md5 from './utils/md5';
 import ConfigHelper from '../../ConfigHelper';
+import { parse } from '@babel/parser';	
+import traverse from '@babel/traverse';	
+import { transformFromAstSync } from '@babel/core';
+import * as t from '@babel/types';
+
+const REG_RUNTIME_CMP = /^@bytedance\/mona-runtime\+\+(.+)/;
+const REG_RUNTIME = /^@bytedance\/mona-runtime$/;
+
 
 const isValidObject = (obj: any): obj is Object => {
   return typeof obj === 'object' && !Array.isArray(obj);
 }
 const cookedFilepath = (pathname: string, base: string) => {
-  if (path.isAbsolute(pathname)) {
+  if (path.isAbsolute(pathname) || REG_RUNTIME_CMP.test(pathname)) {
     // absolute path
     return pathname
   } else if (/^\.{1,2}\//.test(pathname)) {
@@ -34,7 +43,45 @@ const safelyParseJson = (rawJSON: string) => {
   }
 }
 
-const innerComponents: { [key: string]: string } = {}
+// replace some import in jsx file	
+const transformJSXFile = (codeFile: string) => {	
+  const sourceCode = fs.readFileSync(codeFile).toString();	
+  const ast = parse(sourceCode, { plugins: ['jsx'], sourceType: 'module' });	
+  const specifers: string[] = [];
+  let defaultSpecifer = '';
+  traverse(ast, {	
+    ImportDeclaration: (path) => {	
+      const { node } = path;
+      // if find inner components, remove the import declartion and store the compoent value to import all later on the top of code.
+      if (REG_RUNTIME_CMP.test(node.source.value)) {
+        const componentName = REG_RUNTIME_CMP.exec(node.source.value)?.[1];
+        if (componentName) {
+          specifers.push(componentName)
+        }
+        path.remove();
+      } else if (REG_RUNTIME.test(node.source.value)) {
+        // extract all import from @bytedance/mona-runtime
+        node.specifiers.forEach(s => {
+          if (t.isImportDefaultSpecifier(s)) {
+            defaultSpecifer = (s as t.ImportDefaultSpecifier).local.name;
+          } else if (t.isImportSpecifier(s)) {
+            specifers.push((s as t.ImportSpecifier).local.name)
+          }
+        })
+        path.remove();
+      }
+    }	
+  })
+
+  const res = transformFromAstSync(ast)	
+  if (res?.code) {
+    const s1 = defaultSpecifer ? defaultSpecifer : '';
+    const s2 = specifers.length > 0 ? `{${specifers.join(', ')}}` : '';
+    const s3 = [s1, s2].filter(v => !!v).join(' , ');
+    const code = (s3 ? `import ${s3} from '@bytedance/mona-runtime';\n` : '') + res?.code ?? '';
+    fs.writeFileSync(codeFile, code);	
+  }	
+}
 
 interface ComponentInfo {
   entry: string;
@@ -62,14 +109,14 @@ const handleAllComponents = ({ entry, tempDir, componentMap }: { entry: string; 
     const tmpJsonPath = path.join(distDir, `${filename}.json`);
     sourceInfo.target = `../${componentName}/${filename}`;
 
-    // modify json to append innerComponents
+    // modify json to append runtimeComponents
     const rawJSON = fs.readFileSync(tmpJsonPath).toString();
     const json = safelyParseJson(rawJSON);
     let usingComponents = json.usingComponents;
     if (isValidObject(usingComponents)) {
-      usingComponents = {...usingComponents, ...innerComponents}
+      usingComponents = {...usingComponents, ...runtimeComponents}
     } else {
-      usingComponents = {...innerComponents}
+      usingComponents = {...runtimeComponents}
     }
     json.usingComponents = {};
 
@@ -107,10 +154,10 @@ const transfromTtmlDir = (sourceDir: string, filename: string, distDir: string) 
         inlineLepus: true,
         reactRuntimeImportDeclaration: 'import ReactLynx, { Component } from "@bytedance/mona-speedy-runtime"',
         importCssPath: `./${filename}.less`,
-        // componentPathRewrite(name, path) {
+        // componentPathRewrite(name: string, path: string) {
         //   // arco-icon @byted-lynx/ui/components/icon/icon
-        //   const pathname = path.split('/').splice(-1)[0];
-        //   return `../${pathname}/index.jsx`;
+        //   console.log('name---', name, path)
+        //   return path;
         // },
       },
     },
@@ -123,6 +170,10 @@ const transfromTtmlDir = (sourceDir: string, filename: string, distDir: string) 
   if (fs.existsSync(ttssSrcFilePath)) {
     fs.copyFileSync(ttssSrcFilePath, ttssDistDirFilePath);
   }
+
+  // replace some runtime in reactLynx	
+  const codeFile = path.join(distDir, `${filename}.jsx`);	
+  transformJSXFile(codeFile)
 };
 
 export const ttmlToReactLynx = (tempReactLynxDir: string, configHelper: ConfigHelper) => {

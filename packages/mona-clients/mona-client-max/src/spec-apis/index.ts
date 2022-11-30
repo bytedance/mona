@@ -166,5 +166,4 @@ const genMaxEventSdk = async (appid: string, global: any) => {
   return maxEventSDK;
 };
 const APPID = 'testAppId'
-// @ts-ignore
 export const max = genMaxEventSdk(APPID, lynx);
