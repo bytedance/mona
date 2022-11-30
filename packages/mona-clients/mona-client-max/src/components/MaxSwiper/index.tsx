@@ -59,7 +59,6 @@ export default class Swiper extends Component<IProps> {
       disableTouch
     } = this.props;
     return (
-      // @ts-ignore
       <swiper
         id="swiper"
         class={customClass}
@@ -83,7 +82,6 @@ export default class Swiper extends Component<IProps> {
         bindscrollend={this.onScrollEnd}
       >
         {children}
-        {/* @ts-ignore */}
       </swiper>
     );
   }

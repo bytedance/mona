@@ -92,7 +92,6 @@ export default class Video extends Component<IProps, IState> {
       volume
     } = this.props;
     return (
-      // @ts-ignore
       <x-video-pro
         id="video"
         class={customClass}

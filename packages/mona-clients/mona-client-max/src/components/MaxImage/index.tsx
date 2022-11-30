@@ -58,7 +58,6 @@ export default class MaxImage extends Component<IProps, IState> {
     const { hasError } = this.state;
 
     return src && !hasError ? (
-      // @ts-ignore
       <image
         style={customStyle}
         class={customClass}
