@@ -1,75 +1,75 @@
-import { Component } from '@byted-lynx/react-runtime';
+import ReactMax, { Component } from '@bytedance/mona-speedy-runtime';
 
 type IProps = Partial<{
-  src: ReactLynx.XVideoProps['src'];
-  autoplay: ReactLynx.XVideoProps['autoplay'];
-  inittime: ReactLynx.XVideoProps['inittime'];
-  loop: ReactLynx.XVideoProps['loop'];
-  muted: ReactLynx.XVideoProps['muted'];
-  rate: ReactLynx.XVideoProps['rate'];
-  autolifecycle: ReactLynx.XVideoProps['autolifecycle'];
-  poster: ReactLynx.XVideoProps['poster'];
-  objectfit: ReactLynx.XVideoProps['objectfit'];
+  src: ReactMax.XVideoProps['src'];
+  autoplay: ReactMax.XVideoProps['autoplay'];
+  inittime: ReactMax.XVideoProps['inittime'];
+  loop: ReactMax.XVideoProps['loop'];
+  muted: ReactMax.XVideoProps['muted'];
+  rate: ReactMax.XVideoProps['rate'];
+  autolifecycle: ReactMax.XVideoProps['autolifecycle'];
+  poster: ReactMax.XVideoProps['poster'];
+  objectfit: ReactMax.XVideoProps['objectfit'];
   cache: boolean;
   preloadKey: string;
   __control: string;
-  volume: ReactLynx.XVideoProps['volume'];
-  bindplay: ReactLynx.XVideoProps['bindplay'];
-  bindpause: ReactLynx.XVideoProps['bindpause'];
-  bindended: ReactLynx.XVideoProps['bindended'];
-  bindtimeupdate: ReactLynx.XVideoProps['bindtimeupdate'];
-  bindfullscreenchange: ReactLynx.XVideoProps['bindfullscreenchange'];
+  volume: ReactMax.XVideoProps['volume'];
+  bindplay: ReactMax.XVideoProps['bindplay'];
+  bindpause: ReactMax.XVideoProps['bindpause'];
+  bindended: ReactMax.XVideoProps['bindended'];
+  bindtimeupdate: ReactMax.XVideoProps['bindtimeupdate'];
+  bindfullscreenchange: ReactMax.XVideoProps['bindfullscreenchange'];
   bindfirstframe: (e: any) => void;
   bindvideoinfos: (e: any) => void;
-  binderror: ReactLynx.XVideoProps['binderror'];
-  bindbufferingchange: ReactLynx.XVideoProps['bindbufferingchange'];
+  binderror: ReactMax.XVideoProps['binderror'];
+  bindbufferingchange: ReactMax.XVideoProps['bindbufferingchange'];
   bindready: (e: any) => void;
-  bindseek: ReactLynx.XVideoProps['bindseek'];
+  bindseek: ReactMax.XVideoProps['bindseek'];
   customClass?: string;
-  customStyle?: ReactLynx.CSSProperties | string;
+  customStyle?: ReactMax.CSSProperties | string;
 }>;
 
 type IState = {
   hasError: boolean;
 }
 
-export default class ShopVideo extends Component<IProps, IState> {
+export default class Video extends Component<IProps, IState> {
   state = {
     hasError: false
   }
 
-  onPlay = e => {
+  onPlay = (e: any) => {
     this.props.bindplay && this.props.bindplay(e);
   }
-  onPause = e => {
+  onPause = (e: any) => {
     this.props.bindpause && this.props.bindpause(e);
   }
-  onEnded = e => {
+  onEnded = (e: any) => {
     this.props.bindended && this.props.bindended(e);
   }
-  onFirstFrame = e => {
+  onFirstFrame = (e: any) => {
     this.props.bindfirstframe && this.props.bindfirstframe(e);
   }
-  onVideoInfos= e => {
+  onVideoInfos = (e: any) => {
     this.props.bindvideoinfos && this.props.bindvideoinfos(e);
   }
-  onError = e => {
+  onError = (e: any) => {
     this.setState({ hasError: true });
     this.props.binderror && this.props.binderror(e);
   }
-  onTimeUpdate = e => {
+  onTimeUpdate = (e: any) => {
     this.props.bindtimeupdate && this.props.bindtimeupdate(e);
   }
-  onFullScreenChange = e => {
+  onFullScreenChange = (e: any) => {
     this.props.bindfullscreenchange && this.props.bindfullscreenchange(e);
   }
-  onBufferingChange = e => {
+  onBufferingChange = (e: any) => {
     this.props.bindbufferingchange && this.props.bindbufferingchange(e);
   }
-  onReady= e => {
+  onReady = (e: any) => {
     this.props.bindready && this.props.bindready(e);
   }
-  onSeek = e => {
+  onSeek = (e: any) => {
     this.props.bindseek && this.props.bindseek(e);
   }
 
@@ -92,6 +92,7 @@ export default class ShopVideo extends Component<IProps, IState> {
       volume
     } = this.props;
     return (
+      // @ts-ignore
       <x-video-pro
         id="video"
         class={customClass}

@@ -3,7 +3,7 @@ import { ttmlToNg } from '@bytedance/mona-speedy';
 import fs from 'fs';
 import fse from 'fs-extra';
 import path from 'path';
-import runtimeComponents from './runtimeComponents';
+import tagToComponents from './tagToComponents';
 import md5 from './utils/md5';
 import ConfigHelper from '../../ConfigHelper';
 import { parse } from '@babel/parser';	
@@ -89,6 +89,17 @@ interface ComponentInfo {
   target: string;
 }
 
+type IMap = { [key: string]: string };
+function mapComponentToMaxRuntime(obj: IMap) {
+  const result: IMap = {};
+  Object.keys(obj).forEach(key => {
+    result[key] = `@bytedance/mona-runtime++${obj[key]}`
+  })
+
+  return result;
+}
+const innerComponents = mapComponentToMaxRuntime(tagToComponents)
+
 const handleAllComponents = ({ entry, tempDir, componentMap }: { entry: string; tempDir: string; componentMap: Map<string, ComponentInfo> }) => {
   const filename = extractPureFilename(entry);
   const jsonPath = path.resolve(entry, `../${filename}.json`)
@@ -109,14 +120,14 @@ const handleAllComponents = ({ entry, tempDir, componentMap }: { entry: string; 
     const tmpJsonPath = path.join(distDir, `${filename}.json`);
     sourceInfo.target = `../${componentName}/${filename}`;
 
-    // modify json to append runtimeComponents
+    // modify json to append innerComponents
     const rawJSON = fs.readFileSync(tmpJsonPath).toString();
     const json = safelyParseJson(rawJSON);
     let usingComponents = json.usingComponents;
     if (isValidObject(usingComponents)) {
-      usingComponents = {...usingComponents, ...runtimeComponents}
+      usingComponents = {...usingComponents, ...innerComponents}
     } else {
-      usingComponents = {...runtimeComponents}
+      usingComponents = {...innerComponents}
     }
     json.usingComponents = {};
 

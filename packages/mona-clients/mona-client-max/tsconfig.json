@@ -1,8 +1,30 @@
 {
-  "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
+    "module": "ESNext",
+    "target": "ESNext",
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "pretty": true,
+    "sourceMap": true,
+    "jsx": "preserve",
     "outDir": "dist",
     "baseUrl": ".",
+    "declaration": true,
+    "allowJs": true,
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    }
   },
   "include": ["src", "typings"],
   "exclude": [
@@ -10,6 +32,7 @@
     "**/*.test.ts",
     "**/*.spec.ts",
     "**/*.test.tsx",
-    "**/*.spec.tsx"
+    "**/*.spec.tsx",
+    "src/components/**/*.tsx"
   ]
 }

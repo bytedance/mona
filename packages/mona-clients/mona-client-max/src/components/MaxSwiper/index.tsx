@@ -1,28 +1,28 @@
-import { Component } from '@byted-lynx/react-runtime';
+import ReactMax, { Component } from '@bytedance/mona-speedy-runtime';
 
 type IProps = Partial<{
-  indicatorDots: ReactLynx.XSwiperProps['indicator-dots'];
-  indicatorColor: ReactLynx.XSwiperProps['indicator-color'];
-  indicatorActiveColor: ReactLynx.XSwiperProps['indicator-active-color'];
-  autoplay: ReactLynx.XSwiperProps['autoplay'];
-  current: ReactLynx.XSwiperProps['current'];
-  interval: ReactLynx.XSwiperProps['interval'];
-  duration: ReactLynx.XSwiperProps['duration'];
-  circular: ReactLynx.XSwiperProps['circular'];
+  indicatorDots: ReactMax.XSwiperProps['indicator-dots'];
+  indicatorColor: ReactMax.XSwiperProps['indicator-color'];
+  indicatorActiveColor: ReactMax.XSwiperProps['indicator-active-color'];
+  autoplay: ReactMax.XSwiperProps['autoplay'];
+  current: ReactMax.XSwiperProps['current'];
+  interval: ReactMax.XSwiperProps['interval'];
+  duration: ReactMax.XSwiperProps['duration'];
+  circular: ReactMax.XSwiperProps['circular'];
   vertical: boolean;
   previousMargin: string;
   nextMargin: string;
   disableTouch: boolean;
   pageMargin: string;
-  bindchange: ReactLynx.XSwiperProps['bindchange'];
-  bindtransition: ReactLynx.XSwiperProps['bindtransition'];
+  bindchange: ReactMax.XSwiperProps['bindchange'];
+  bindtransition: ReactMax.XSwiperProps['bindtransition'];
   bindscrollstart: (e: any) => void;
   bindscrollend: (e: any) => void;
   customClass?: string;
-  customStyle?: ReactLynx.CSSProperties | string;
+  customStyle?: ReactMax.CSSProperties | string;
 }>
 
-export default class ShopSwiper extends Component<IProps> {
+export default class Swiper extends Component<IProps> {
   onChange = (e: any) => {
     this.props.bindchange && this.props.bindchange(e);
   };
@@ -59,6 +59,7 @@ export default class ShopSwiper extends Component<IProps> {
       disableTouch
     } = this.props;
     return (
+      // @ts-ignore
       <swiper
         id="swiper"
         class={customClass}
@@ -82,6 +83,7 @@ export default class ShopSwiper extends Component<IProps> {
         bindscrollend={this.onScrollEnd}
       >
         {children}
+        {/* @ts-ignore */}
       </swiper>
     );
   }

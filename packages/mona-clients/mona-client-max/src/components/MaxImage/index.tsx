@@ -1,4 +1,4 @@
-import { Component } from '@byted-lynx/react-runtime';
+import ReactLynx, { Component } from '@bytedance/mona-speedy-runtime';
 
 type IProps = Partial<{
   src: ReactLynx.ImageProps['src'];
@@ -23,7 +23,7 @@ type IState = {
   loaded: boolean;
 };
 
-export default class ShopImage extends Component<IProps, IState> {
+export default class MaxImage extends Component<IProps, IState> {
   state = {
     hasError: false,
     loaded: false
@@ -58,6 +58,7 @@ export default class ShopImage extends Component<IProps, IState> {
     const { hasError } = this.state;
 
     return src && !hasError ? (
+      // @ts-ignore
       <image
         style={customStyle}
         class={customClass}

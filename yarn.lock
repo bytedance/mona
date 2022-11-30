@@ -1179,15 +1179,15 @@
   dependencies:
     "@babel/register" "^7.16.5"
 
-"@bytedance/mona-speedy-runtime@0.0.1":
-  version "0.0.1"
-  resolved "https://registry.npmjs.org/@bytedance/mona-speedy-runtime/-/mona-speedy-runtime-0.0.1.tgz#beb158f28394abd918fa1eaa26eb9f65a10a6c1e"
-  integrity sha512-j+ozlzFVFVFuO2pdyFpn1UTTxTcb0X06jksu1VDZwgy3Ti6KQQYhLJc0cjdaSiOYyYNRqiMJCL9QsAo8AAEH2g==
+"@bytedance/mona-speedy-runtime@0.0.4":
+  version "0.0.4"
+  resolved "https://registry.npmjs.org/@bytedance/mona-speedy-runtime/-/mona-speedy-runtime-0.0.4.tgz#95ec80637acb66e770e9d7271e359febc7b58422"
+  integrity sha512-71m17f0QaL2rcS/d7Xz/ZeX4p57JPTSr3OP0M/uN3hM+TwTtLpIpUSZCoLHJ7xEchRAwKuet0k8KQrO4UpwXFg==
 
-"@bytedance/mona-speedy@0.0.1":
-  version "0.0.1"
-  resolved "https://registry.npmjs.org/@bytedance/mona-speedy/-/mona-speedy-0.0.1.tgz#eea002b9ad3d6c6b944ef06ee743b2a76017e39c"
-  integrity sha512-ZiiOdNXxSHwak3ZbmLetTM9nFxHa8+Yb38ElYVBDbVnmHzhToo0HnDD8xKB1/i67Eh7nzXGznLfwPllLbMfPcQ==
+"@bytedance/mona-speedy@0.0.4":
+  version "0.0.4"
+  resolved "https://registry.npmjs.org/@bytedance/mona-speedy/-/mona-speedy-0.0.4.tgz#4f482b2da0f882a7fc84ddc55f55dc73fd3d010f"
+  integrity sha512-c42m8GlKhAGELb2GtgIT83SvMeNsXikV63DiVym8Jh000ysKLcafMZrbNU8LvtSFEpE88+bNevlAAaSinFGOtA==
   dependencies:
     "@speedy-js/esbuild" "0.14.28-speedy-lynx-1"
     esbuild "0.12.8"
