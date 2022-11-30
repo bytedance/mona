@@ -1,6 +1,0 @@
-<x-video-pro id="video" style="{{customStyle}}" class="{{customClass}}" autoplay="{{autoplay}}" src="{{src}}"
-  inittime="{{inittime}}" loop="{{loop}}" muted="{{muted}}" rate="{{rate}}" autolifecycle="{{autolifecycle}}"
-  poster="{{poster}}" objectfit="{{objectfit}}" cache="{{cache}}" preload-key="{{preloadKey}}" __control="{{__control}}"
-  volume="{{volume}}" bindplay="onPlay" bindpause="onPause" bindended="onEnded" bindfirstframe="onFirstFrame"
-  bindvideoinfos="onVideoInfos" binderror="onError" bindtimeupdate="onTimeUpdate" bindfullscreenchange="onFullScreenChange"
-  bindbufferingchange="onBufferingChange" bindready="onReady" bindseek="onSeek" />
