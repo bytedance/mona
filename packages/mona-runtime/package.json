@@ -3,6 +3,7 @@
   "version": "0.2.38-alpha.3",
   "description": "Merchant app's developing and building tools",
   "main": "./dist/index",
+  "lynx": "./dist/index.max.js",
   "scripts": {
     "build": "yarn clean && ttsc -b",
     "start": "ttsc -b -w",

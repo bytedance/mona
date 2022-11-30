@@ -7,6 +7,7 @@ const MvJSONPlugin = require('../utils/mvJsonPlugin');
 const CreateUniqueId = require('../utils/createUniqueId');
 const buildId = CreateUniqueId();
 const createModule = require('../utils/createVirtualModule');
+const webpack = require('webpack');
 const TransformJsxLabelPlugin = require('../../../plugins/babel/TransformJsxLabel').default;
 
 const generateBaseConfig = options => {
@@ -137,7 +138,7 @@ const generateBaseConfig = options => {
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '...'],
       alias: {
-        '@bytedance/mona-runtime': '@bytedance/mona-runtime/index.web.js'
+        '@bytedance/mona-runtime': '@bytedance/mona-runtime/dist/index.web.js'
       }
     },
     plugins: [new MvJSONPlugin(), createModule(entry, buildId)],

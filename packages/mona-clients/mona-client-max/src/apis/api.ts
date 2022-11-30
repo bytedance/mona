@@ -3,7 +3,7 @@ import { promisify } from '@bytedance/mona-shared/dist/promisify';
 
 
 const noImplementFactory = (api: string) => (): any => {
-  console.error(`no implement${api} in max`);
+  console.error(`not implemented "${api}" in max`);
 };
 
 export const canIUse: BaseApis['canIUse'] = noImplementFactory('canIUse');

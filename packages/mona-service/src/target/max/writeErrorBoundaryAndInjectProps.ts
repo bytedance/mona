@@ -34,7 +34,7 @@ import App from '${entry}';
         )
       }
       return (
-        <view class="page-body">
+        <view>
             <App ${
               schemaProps ? '{...this.state.appProps}' : 'extraProps={this.props.extraProps} {...this.props.dataSource}'
             }/>
