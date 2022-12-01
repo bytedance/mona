@@ -59,7 +59,7 @@ export default class Swiper extends Component<IProps> {
       disableTouch
     } = this.props;
     return (
-      <x-swiper
+      <swiper
         id="swiper"
         class={customClass}
         style={customStyle}
@@ -82,7 +82,7 @@ export default class Swiper extends Component<IProps> {
         bindscrollend={this.onScrollEnd}
       >
         {children}
-      </x-swiper>
+      </swiper>
     );
   }
 }

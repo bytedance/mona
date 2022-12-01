@@ -5,4 +5,5 @@ export default {
   'image': 'Image',
   'video': 'Video',
   'swiper': 'Swiper',
+  // 'swiper-item': 'SwiperItem',
 }
