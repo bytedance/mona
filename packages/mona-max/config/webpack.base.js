@@ -72,7 +72,7 @@ const generateBaseConfig = projectConfig => {
             },
           ],
         },
-        {
+        less !== false && {
           test: /\.less$/i,
           use: [
             {
@@ -114,7 +114,7 @@ const generateBaseConfig = projectConfig => {
             filename: 'images/[name][ext][query]',
           },
         },
-      ],
+      ].filter(l => l),
     },
     optimization: {
       minimizer: [

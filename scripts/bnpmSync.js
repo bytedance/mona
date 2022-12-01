@@ -18,4 +18,4 @@ const { result } = concurrently(
     cwd: path.join(__dirname, '../'),
   },
 );
-result.then(console.log, console.log);
+// result.then(console.log, console.log);
