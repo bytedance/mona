@@ -11,8 +11,6 @@ type IProps = Partial<{
   prefetchWidth: ReactLynx.ImageProps['prefetch-width'];
   prefetchHeight: ReactLynx.ImageProps['prefetch-height'];
   skipRedirection: ReactLynx.ImageProps['skip-redirection'];
-  imageTransitionStyle: 'fadeIn' | 'none';
-  preventLoadingOnListScroll: boolean;
   binderror: ReactLynx.ImageProps['binderror'];
   customClass?: string;
   customStyle?: ReactLynx.CSSProperties | string;
@@ -49,8 +47,6 @@ export default class MaxImage extends Component<IProps, IState> {
       loopCount,
       prefetchWidth,
       prefetchHeight,
-      imageTransitionStyle,
-      preventLoadingOnListScroll,
       customStyle,
       customClass
     } = this.props;
@@ -71,8 +67,6 @@ export default class MaxImage extends Component<IProps, IState> {
         prefetch-width={prefetchWidth}
         prefetch-height={prefetchHeight}
         skip-redirection
-        image-transition-style={imageTransitionStyle}
-        prevent-loading-on-list-scroll={preventLoadingOnListScroll}
         downsampling
         implicit-animation
         clip-radius

@@ -1,5 +1,6 @@
 import ReactMax, { Component } from '@bytedance/mona-speedy-runtime';
 
+
 type IProps = Partial<{
   src: ReactMax.XVideoProps['src'];
   autoplay: ReactMax.XVideoProps['autoplay'];
@@ -10,8 +11,9 @@ type IProps = Partial<{
   autolifecycle: ReactMax.XVideoProps['autolifecycle'];
   poster: ReactMax.XVideoProps['poster'];
   objectfit: ReactMax.XVideoProps['objectfit'];
-  cache: boolean;
-  preloadKey: string;
+  videowidth: ReactMax.XVideoProps['videowidth'];
+  videoheight: ReactMax.XVideoProps['videoheight'];
+  devicechangeaware: ReactMax.XVideoProps['devicechangeaware'];
   __control: string;
   volume: ReactMax.XVideoProps['volume'];
   bindplay: ReactMax.XVideoProps['bindplay'];
@@ -19,58 +21,50 @@ type IProps = Partial<{
   bindended: ReactMax.XVideoProps['bindended'];
   bindtimeupdate: ReactMax.XVideoProps['bindtimeupdate'];
   bindfullscreenchange: ReactMax.XVideoProps['bindfullscreenchange'];
-  bindfirstframe: (e: any) => void;
-  bindvideoinfos: (e: any) => void;
   binderror: ReactMax.XVideoProps['binderror'];
   bindbufferingchange: ReactMax.XVideoProps['bindbufferingchange'];
-  bindready: (e: any) => void;
   bindseek: ReactMax.XVideoProps['bindseek'];
+  binddevicechange: ReactMax.XVideoProps['binddevicechange'];
   customClass?: string;
   customStyle?: ReactMax.CSSProperties | string;
-}>;
+}>
 
 type IState = {
   hasError: boolean;
 }
 
-export default class Video extends Component<IProps, IState> {
+export default class ShopVideo extends Component<IProps, IState> {
   state = {
     hasError: false
   }
 
-  onPlay = (e: any) => {
+  onPlay = e => {
     this.props.bindplay && this.props.bindplay(e);
   }
-  onPause = (e: any) => {
+  onPause = e => {
     this.props.bindpause && this.props.bindpause(e);
   }
-  onEnded = (e: any) => {
+  onEnded = e => {
     this.props.bindended && this.props.bindended(e);
   }
-  onFirstFrame = (e: any) => {
-    this.props.bindfirstframe && this.props.bindfirstframe(e);
-  }
-  onVideoInfos = (e: any) => {
-    this.props.bindvideoinfos && this.props.bindvideoinfos(e);
-  }
-  onError = (e: any) => {
+  onError = e => {
     this.setState({ hasError: true });
     this.props.binderror && this.props.binderror(e);
   }
-  onTimeUpdate = (e: any) => {
+  onTimeUpdate = e => {
     this.props.bindtimeupdate && this.props.bindtimeupdate(e);
   }
-  onFullScreenChange = (e: any) => {
+  onFullScreenChange = e => {
     this.props.bindfullscreenchange && this.props.bindfullscreenchange(e);
   }
-  onBufferingChange = (e: any) => {
+  onBufferingChange = e => {
     this.props.bindbufferingchange && this.props.bindbufferingchange(e);
   }
-  onReady = (e: any) => {
-    this.props.bindready && this.props.bindready(e);
-  }
-  onSeek = (e: any) => {
+  onSeek = e => {
     this.props.bindseek && this.props.bindseek(e);
+  }
+  onDeviceChange = e => {
+    this.props.binddevicechange && this.props.binddevicechange(e);
   }
 
   render() {
@@ -86,13 +80,14 @@ export default class Video extends Component<IProps, IState> {
       autolifecycle,
       poster,
       objectfit,
-      cache,
-      preloadKey,
+      devicechangeaware,
       __control,
+      videowidth,
+      videoheight,
       volume
     } = this.props;
     return (
-      <x-video-pro
+      <video
         id="video"
         class={customClass}
         style={customStyle}
@@ -100,26 +95,26 @@ export default class Video extends Component<IProps, IState> {
         autoplay={autoplay}
         inittime={inittime}
         loop={loop}
+        repeat={loop}
         muted={muted}
+        volume={volume}
         rate={rate}
         autolifecycle={autolifecycle}
         poster={poster}
         objectfit={objectfit}
-        cache={cache}
-        preload-key={preloadKey}
+        videowidth={videowidth}
+        videoheight={videoheight}
+        devicechangeaware={devicechangeaware}
         __control={__control}
-        volume={volume}
         bindplay={this.onPlay}
         bindpause={this.onPause}
         bindended={this.onEnded}
         bindtimeupdate={this.onTimeUpdate}
         bindfullscreenchange={this.onFullScreenChange}
-        bindfirstframe={this.onFirstFrame}
-        bindvideoinfos={this.onVideoInfos}
         binderror={this.onError}
         bindbufferingchange={this.onBufferingChange}
-        bindready={this.onReady}
         bindseek={this.onSeek}
+        binddevicechange={this.onDeviceChange}
       />
     );
   }
