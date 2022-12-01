@@ -1,5 +1,6 @@
 import { BaseApis } from '@bytedance/mona';
 import { promisify } from '@bytedance/mona-shared/dist/promisify';
+import { maxGetStorage, maxGetStorageSync, maxRemoveStorage, maxRemoveStorageSync, maxRequest, maxSetStorage, maxSetStorageSync } from './utils';
 
 
 const noImplementFactory = (api: string) => (): any => {
@@ -26,7 +27,7 @@ export const env: BaseApis['env'] = {
   USER_DATA_PATH: '/',
 };
 export const downloadFile: BaseApis['downloadFile'] = promisify(noImplementFactory('downloadFile'));
-export const request: BaseApis['request'] = promisify(noImplementFactory('request'));
+export const request: BaseApis['request'] = promisify(maxRequest);
 export const uploadFile: BaseApis['uploadFile'] = promisify(noImplementFactory('uploadFile'));
 export const connectSocket: BaseApis['connectSocket'] = promisify(noImplementFactory('connectSocket'));
 export const chooseImage: BaseApis['chooseImage'] = promisify(noImplementFactory('chooseImage'));
@@ -113,13 +114,13 @@ export const performance: BaseApis['performance'] = {
   clearMarks: noImplementFactory('clearnMarks'),
 };
 
-export const getStorage: BaseApis['getStorage'] = promisify(noImplementFactory('getStorage'));
-export const getStorageSync: BaseApis['getStorageSync'] = noImplementFactory('getStorageSync');
+export const getStorage: BaseApis['getStorage'] = promisify(maxGetStorage);
+export const getStorageSync: BaseApis['getStorageSync'] = maxGetStorageSync;
 
-export const setStorage: BaseApis['setStorage'] = promisify(noImplementFactory('setStorage'));
-export const setStorageSync: BaseApis['setStorageSync'] = noImplementFactory('setStorageSync');
-export const removeStorage: BaseApis['removeStorage'] = promisify(noImplementFactory('removeStorage'));
-export const removeStorageSync: BaseApis['removeStorageSync'] = noImplementFactory('removeStorageSync');
+export const setStorage: BaseApis['setStorage'] = promisify(maxSetStorage);
+export const setStorageSync: BaseApis['setStorageSync'] = maxSetStorageSync;
+export const removeStorage: BaseApis['removeStorage'] = promisify(maxRemoveStorage);
+export const removeStorageSync: BaseApis['removeStorageSync'] = maxRemoveStorageSync
 export const clearStorage: BaseApis['clearStorage'] = promisify(noImplementFactory('clearStorage'));
 export const clearStorageSync: BaseApis['clearStorageSync'] = noImplementFactory('clearStorageSync');
 export const getStorageInfo: BaseApis['getStorageInfo'] = promisify(noImplementFactory('getStorageInfo'));
