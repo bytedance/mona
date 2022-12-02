@@ -1172,13 +1172,6 @@
     webpack-watch-files-plugin "^1.2.0"
     ws "^8.4.2"
 
-"@bytedance/mona-shared@0.2.35-beta.1":
-  version "0.2.35-beta.1"
-  resolved "https://registry.npmjs.org/@bytedance/mona-shared/-/mona-shared-0.2.35-beta.1.tgz#a8cec515b1b0bcd730af0b47a4b12f048823feaa"
-  integrity sha512-cRwirbA2AoeJuX4B/Ox7KpMxRklOTcOzmRqGYlwwqGIEcsG6bpK1U4Bn3K+NFfN6VrZ5EX0BmiENEGtMHFda5Q==
-  dependencies:
-    "@babel/register" "^7.16.5"
-
 "@bytedance/mona-speedy-runtime@0.0.4":
   version "0.0.4"
   resolved "https://registry.npmjs.org/@bytedance/mona-speedy-runtime/-/mona-speedy-runtime-0.0.4.tgz#95ec80637acb66e770e9d7271e359febc7b58422"
@@ -1193,11 +1186,6 @@
     esbuild "0.12.8"
     esbuild-0.13.12 "npm:esbuild@0.13.12"
     serialize-error "8.1.0"
-
-"@bytedance/mona@0.2.35-beta.1":
-  version "0.2.35-beta.1"
-  resolved "https://registry.npmjs.org/@bytedance/mona/-/mona-0.2.35-beta.1.tgz#accabff364c91a8e7b3f4bde238dc26351ad3c0b"
-  integrity sha512-VE04rvv9QT5qyStjqLYbqT/WKYzlADzeiBWtw751qHC1rXpQUelrxWPqypYG4iaTwmHFE5FatSsnChWTofT6Hg==
 
 "@cspotcode/source-map-support@^0.8.0":
   version "0.8.1"
