@@ -1,39 +1,39 @@
 import ReactMax, { Component } from '@bytedance/mona-speedy-runtime';
 
-
 type IProps = Partial<{
   src: ReactMax.XVideoProps['src'];
   autoplay: ReactMax.XVideoProps['autoplay'];
   inittime: ReactMax.XVideoProps['inittime'];
   loop: ReactMax.XVideoProps['loop'];
-  muted: ReactMax.XVideoProps['muted'];
+  muted: boolean;
   rate: ReactMax.XVideoProps['rate'];
   autolifecycle: ReactMax.XVideoProps['autolifecycle'];
   poster: ReactMax.XVideoProps['poster'];
   objectfit: ReactMax.XVideoProps['objectfit'];
-  videowidth: ReactMax.XVideoProps['videowidth'];
-  videoheight: ReactMax.XVideoProps['videoheight'];
-  devicechangeaware: ReactMax.XVideoProps['devicechangeaware'];
+  cache: boolean;
+  preloadKey: string;
   __control: string;
-  volume: ReactMax.XVideoProps['volume'];
+  // volume: ReactMax.XVideoProps['volume'];
   bindplay: ReactMax.XVideoProps['bindplay'];
   bindpause: ReactMax.XVideoProps['bindpause'];
   bindended: ReactMax.XVideoProps['bindended'];
   bindtimeupdate: ReactMax.XVideoProps['bindtimeupdate'];
   bindfullscreenchange: ReactMax.XVideoProps['bindfullscreenchange'];
+  bindfirstframe: (e: any) => void;
+  bindvideoinfos: (e: any) => void;
   binderror: ReactMax.XVideoProps['binderror'];
   bindbufferingchange: ReactMax.XVideoProps['bindbufferingchange'];
+  bindready: (e: any) => void;
   bindseek: ReactMax.XVideoProps['bindseek'];
-  binddevicechange: ReactMax.XVideoProps['binddevicechange'];
   customClass?: string;
   customStyle?: ReactMax.CSSProperties | string;
-}>
+}>;
 
 type IState = {
   hasError: boolean;
 }
 
-export default class MaxVideo extends Component<IProps, IState> {
+export default class ShopVideo extends Component<IProps, IState> {
   state = {
     hasError: false
   }
@@ -46,6 +46,12 @@ export default class MaxVideo extends Component<IProps, IState> {
   }
   onEnded = (e: any) => {
     this.props.bindended && this.props.bindended(e);
+  }
+  onFirstFrame = (e: any) => {
+    this.props.bindfirstframe && this.props.bindfirstframe(e);
+  }
+  onVideoInfos = (e: any) => {
+    this.props.bindvideoinfos && this.props.bindvideoinfos(e);
   }
   onError = (e: any) => {
     this.setState({ hasError: true });
@@ -60,11 +66,11 @@ export default class MaxVideo extends Component<IProps, IState> {
   onBufferingChange = (e: any) => {
     this.props.bindbufferingchange && this.props.bindbufferingchange(e);
   }
+  onReady = (e: any) => {
+    this.props.bindready && this.props.bindready(e);
+  }
   onSeek = (e: any) => {
     this.props.bindseek && this.props.bindseek(e);
-  }
-  onDeviceChange = (e: any) => {
-    this.props.binddevicechange && this.props.binddevicechange(e);
   }
 
   render() {
@@ -80,14 +86,14 @@ export default class MaxVideo extends Component<IProps, IState> {
       autolifecycle,
       poster,
       objectfit,
-      devicechangeaware,
+      cache,
+      preloadKey,
       __control,
-      videowidth,
-      videoheight,
-      volume
+      // volume
+      bindtap
     } = this.props;
     return (
-      <x-video
+      <x-video-pro
         id="video"
         class={customClass}
         style={customStyle}
@@ -95,26 +101,27 @@ export default class MaxVideo extends Component<IProps, IState> {
         autoplay={autoplay}
         inittime={inittime}
         loop={loop}
-        repeat={loop}
         muted={muted}
-        volume={volume}
         rate={rate}
         autolifecycle={autolifecycle}
         poster={poster}
         objectfit={objectfit}
-        videowidth={videowidth}
-        videoheight={videoheight}
-        devicechangeaware={devicechangeaware}
+        cache={cache}
+        preload-key={preloadKey}
         __control={__control}
+        // volume={volume}
         bindplay={this.onPlay}
         bindpause={this.onPause}
         bindended={this.onEnded}
         bindtimeupdate={this.onTimeUpdate}
         bindfullscreenchange={this.onFullScreenChange}
+        bindfirstframe={this.onFirstFrame}
+        bindvideoinfos={this.onVideoInfos}
         binderror={this.onError}
         bindbufferingchange={this.onBufferingChange}
+        bindready={this.onReady}
         bindseek={this.onSeek}
-        binddevicechange={this.onDeviceChange}
+        bindtap={bindtap}
       />
     );
   }
