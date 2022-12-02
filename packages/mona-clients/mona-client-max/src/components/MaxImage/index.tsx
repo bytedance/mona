@@ -48,7 +48,8 @@ export default class MaxImage extends Component<IProps, IState> {
       prefetchWidth,
       prefetchHeight,
       customStyle,
-      customClass
+      customClass,
+      bindtap
     } = this.props;
 
     const { hasError } = this.state;
@@ -72,6 +73,7 @@ export default class MaxImage extends Component<IProps, IState> {
         clip-radius
         binderror={this.onImageError}
         bindload={this.onImageLoad}
+        bindtap={bindtap}
       />
     ) : null;
   }
