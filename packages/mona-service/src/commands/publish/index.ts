@@ -85,8 +85,15 @@ const publish: IPlugin = ctx => {
           });
         } else {
           const shouldEdit = latestVersionStatus && [2, 3, 5, 7].indexOf(latestVersionStatus) !== -1;
+          const isOldApp = appDetail?.appExtend?.frameworkType !== 1;
           // ask desc
           const answer = await inquirer.prompt([
+            isOldApp ? {
+              type: 'confirm',
+              name: 'isMixed',
+              message: '是否为混排（旧有h5的为非混排）',
+              default: true,
+            } : undefined,
             {
               type: 'input',
               name: 'desc',
@@ -101,13 +108,14 @@ const publish: IPlugin = ctx => {
                 }
               },
             },
-          ]);
+          ].filter(i => !!i));
 
           // upload
           const { fileId, fileName } = await upload(output, user.userId, args);
+          const frameworkType = isOldApp ? answer.isMixed : undefined;
 
           // params
-          const params = { version: latestVersion, appId, desc: answer.desc || '', fileId, fileName };
+          const params = { version: latestVersion, appId, desc: answer.desc || '', fileId, fileName, frameworkType };
 
           if (shouldEdit) {
             console.log(chalk.cyan(`即将修改版本 ${latestVersion}`));
