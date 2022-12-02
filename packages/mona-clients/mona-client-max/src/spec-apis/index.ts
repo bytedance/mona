@@ -60,9 +60,9 @@ const genMaxEventSdk = async (appid: string, global: any) => {
 
 
   // internal apis
-  const _request = lynx.request;
-  const _getStorage = lynx.getStorage;
-  const _setStroage = lynx.setStorage;
+  const _request = global.request;
+  const _getStorage = global.getStorage;
+  const _setStroage = global.setStorage;
 
   function hasPermissionCache() {
     try {
@@ -166,4 +166,6 @@ const genMaxEventSdk = async (appid: string, global: any) => {
   return maxEventSDK;
 };
 const __MONA_APPID = 'testAppId'
-export const max = genMaxEventSdk(__MONA_APPID, lynx);
+// Compatible with web
+const global = lynx || window;
+export const max = genMaxEventSdk(__MONA_APPID, global);

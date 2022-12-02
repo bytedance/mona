@@ -138,7 +138,7 @@ const generateBaseConfig = options => {
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '...'],
       alias: {
-        '@bytedance/mona-runtime': '@bytedance/mona-runtime/dist/index.web.js'
+        '@bytedance/mona-runtime': '@bytedance/mona-client-max/dist/index.web.js'
       }
     },
     plugins: [new MvJSONPlugin(), createModule(entry, buildId)],
