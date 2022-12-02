@@ -8,8 +8,8 @@
   ],
   "scripts": {
     "build": "yarn clean && tsc -b",
-    "prebuild:web": "node ./scripts/preBuild.js",
-    "build:all": "yarn prebuild:web && yarn build",
+    "prebuild": "node ./scripts/preBuild.js",
+    "build:all": "yarn prebuild && yarn build",
     "start": "tsc -b -w",
     "clean": "rm -rf dist",
     "test": "jest"
@@ -22,6 +22,7 @@
     "@bytedance/mona": "0.2.38-alpha.5",
     "@bytedance/mona-client-web": "0.2.38-alpha.5",
     "@bytedance/mona-shared": "0.2.38-alpha.5",
+    "@bytedance/mona-speedy-components": "0.0.10",
     "axios": "^1.2.0"
   },
   "publishConfig": {

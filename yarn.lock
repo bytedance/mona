@@ -1172,15 +1172,22 @@
     webpack-watch-files-plugin "^1.2.0"
     ws "^8.4.2"
 
-"@bytedance/mona-speedy-runtime@0.0.4":
-  version "0.0.4"
-  resolved "https://registry.npmjs.org/@bytedance/mona-speedy-runtime/-/mona-speedy-runtime-0.0.4.tgz#95ec80637acb66e770e9d7271e359febc7b58422"
-  integrity sha512-71m17f0QaL2rcS/d7Xz/ZeX4p57JPTSr3OP0M/uN3hM+TwTtLpIpUSZCoLHJ7xEchRAwKuet0k8KQrO4UpwXFg==
+"@bytedance/mona-speedy-components@0.0.10":
+  version "0.0.10"
+  resolved "https://registry.npmjs.org/@bytedance/mona-speedy-components/-/mona-speedy-components-0.0.10.tgz#74f2cda201a6ce396504814135201b63dfd1b1bc"
+  integrity sha512-veNrl82LUBqvVfLz3KkxbVAYK3OO6VMBKXY15j3XKjyNEzH+MjYHGzB8rbhyRqU/NLZcRnd2cJpZic0j/4keqg==
+  dependencies:
+    swiper "6.5.1"
 
-"@bytedance/mona-speedy@0.0.4":
-  version "0.0.4"
-  resolved "https://registry.npmjs.org/@bytedance/mona-speedy/-/mona-speedy-0.0.4.tgz#4f482b2da0f882a7fc84ddc55f55dc73fd3d010f"
-  integrity sha512-c42m8GlKhAGELb2GtgIT83SvMeNsXikV63DiVym8Jh000ysKLcafMZrbNU8LvtSFEpE88+bNevlAAaSinFGOtA==
+"@bytedance/mona-speedy-runtime@0.0.10":
+  version "0.0.10"
+  resolved "https://registry.npmjs.org/@bytedance/mona-speedy-runtime/-/mona-speedy-runtime-0.0.10.tgz#5a52a2af32955f1cb73de5071255d8cdfb3d4d15"
+  integrity sha512-MvJnj472MsfSWjNZusDHjuQe3vDWezFWDDjvlS2Jfbqsn1hjvdEZM6x6ayuDzoVe6Wb6pTvx7SOGwrRofGlwVA==
+
+"@bytedance/mona-speedy@0.0.10":
+  version "0.0.10"
+  resolved "https://registry.npmjs.org/@bytedance/mona-speedy/-/mona-speedy-0.0.10.tgz#18a2ac55f98bf7f8c5cf19ce480146b15a9ba879"
+  integrity sha512-fKAma0PKphFjxdvAUmTxyDNuL/DS/0kgecyEi+scxFMNZ8de1G9nEbCNpl93fAn2ihCVPLfhiHzlv5CVWHzPvA==
   dependencies:
     "@speedy-js/esbuild" "0.14.28-speedy-lynx-1"
     esbuild "0.12.8"
@@ -4349,6 +4356,13 @@ dom-serializer@^2.0.0:
     domelementtype "^2.3.0"
     domhandler "^5.0.2"
     entities "^4.2.0"
+
+dom7@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.npmjs.org/dom7/-/dom7-3.0.0.tgz#b861ce5d67a6becd7aaa3ad02942ff14b1240331"
+  integrity sha512-oNlcUdHsC4zb7Msx7JN3K0Nro1dzJ48knvBOnDPKJ2GV9wl1i5vydJZUSyOfrkKFDZEud/jBsTk92S/VGSAe/g==
+  dependencies:
+    ssr-window "^3.0.0-alpha.1"
 
 domelementtype@1:
   version "1.3.1"
@@ -9436,6 +9450,11 @@ sprintf-js@~1.0.2:
   resolved "https://registry.npmjs.org/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
   integrity sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==
 
+ssr-window@^3.0.0, ssr-window@^3.0.0-alpha.1:
+  version "3.0.0"
+  resolved "https://registry.npmjs.org/ssr-window/-/ssr-window-3.0.0.tgz#fd5b82801638943e0cc704c4691801435af7ac37"
+  integrity sha512-q+8UfWDg9Itrg0yWK7oe5p/XRCJpJF9OBtXfOPgSJl+u3Xd5KI328RUEvUqSMVM9CiQUEf1QdBzJMkYGErj9QA==
+
 stable@^0.1.8:
   version "0.1.8"
   resolved "https://registry.npmjs.org/stable/-/stable-0.1.8.tgz#836eb3c8382fe2936feaf544631017ce7d47a3cf"
@@ -9698,6 +9717,14 @@ svgo@^2.7.0:
     csso "^4.2.0"
     picocolors "^1.0.0"
     stable "^0.1.8"
+
+swiper@6.5.1:
+  version "6.5.1"
+  resolved "https://registry.npmjs.org/swiper/-/swiper-6.5.1.tgz#795630e45bbebb3b3b2945d55c22ffdcf5536c1b"
+  integrity sha512-iuyg4cr+L7wo5EI0fWUuW+lT3BnNtVTYtInhUC5JImTr0i8jNranx8BPyN8AOSKa6jBYN+oaCzj8DAwGK+ngRg==
+  dependencies:
+    dom7 "^3.0.0"
+    ssr-window "^3.0.0"
 
 symbol-tree@^3.2.4:
   version "3.2.4"

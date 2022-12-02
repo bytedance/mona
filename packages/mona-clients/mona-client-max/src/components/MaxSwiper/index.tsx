@@ -22,7 +22,7 @@ type IProps = Partial<{
   customStyle?: ReactMax.CSSProperties | string;
 }>
 
-export default class Swiper extends Component<IProps> {
+export default class MaxSwiper extends Component<IProps> {
   onChange = (e: any) => {
     this.props.bindchange && this.props.bindchange(e);
   };

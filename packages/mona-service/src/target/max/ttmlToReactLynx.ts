@@ -1,5 +1,5 @@
 // @ts-ignore
-import { ttmlToNg } from '@bytedance/mona-speedy';
+import { ttmlToNg, transformNgToReact, transformNgCss } from '@bytedance/mona-speedy';
 import fs from 'fs';
 import fse from 'fs-extra';
 import path from 'path';
@@ -44,6 +44,7 @@ const safelyParseJson = (rawJSON: string) => {
 }
 
 // replace some import in jsx file	
+// eg. import Image from '@bytedance/mona-service++Image' => import { Image } from '@bytedance/mona-service';
 const transformJSXFile = (codeFile: string) => {	
   const sourceCode = fs.readFileSync(codeFile).toString();	
   const ast = parse(sourceCode, { plugins: ['jsx'], sourceType: 'module' });	
@@ -98,6 +99,7 @@ function mapComponentToMaxRuntime(obj: IMap) {
 
   return result;
 }
+
 const innerComponents = mapComponentToMaxRuntime(tagToComponents)
 
 const handleAllComponents = ({ entry, tempDir, componentMap }: { entry: string; tempDir: string; componentMap: Map<string, ComponentInfo> }) => {
@@ -153,7 +155,29 @@ const handleAllComponents = ({ entry, tempDir, componentMap }: { entry: string; 
   return sourceInfo;
 }
 
-const transfromTtmlDir = (sourceDir: string, filename: string, distDir: string) => {
+
+function replaceImport(code: string) {
+  return code.replace(/@byted-lynx\/react-components(\/lib\/[^"]+)?/g, '@bytedance/mona-speedy-components');
+}
+
+function transformToWeb(sourceDir: string, filename: string) {
+  const scopeId = '111';
+
+  // code
+  const entry = path.join(sourceDir, `${filename}.jsx`);
+  const sourceCode = fs.readFileSync(entry);
+  const code = transformNgToReact(sourceCode, {}, scopeId);
+  const targetFilePath = path.join(sourceDir, `${filename}.web.jsx`);
+  fs.writeFileSync(targetFilePath, replaceImport(code));
+
+  // style
+  const styleEntry = path.join(sourceDir, `${filename}.less`);
+  const styleCode = transformNgCss(styleEntry, {}, scopeId);
+  const targetStyleFilePath = path.join(sourceDir, `${filename}.web.less`);
+  fs.writeFileSync(targetStyleFilePath, styleCode)
+}
+
+const transformTtmlDir = (sourceDir: string, filename: string, distDir: string) => {
   ttmlToNg.transformFile(
     {
       baseDir: sourceDir,
@@ -207,14 +231,17 @@ export const ttmlToReactLynx = (tempReactLynxDir: string, configHelper: ConfigHe
   componentMap.forEach(v => {
     if (v.isTTML) {
       const absolutePath = path.join(tempTTMLDir, 'foo', v.target);
+      const sourceDir = path.dirname(absolutePath);
       const distDir = path.join(tempReactLynxDir, 'foo', v.target, '..');
-      transfromTtmlDir(path.dirname(absolutePath), path.basename(absolutePath), distDir);
+      const filename = path.basename(absolutePath);
+      transformTtmlDir(sourceDir, filename, distDir);
+      transformToWeb(distDir, filename);
     }
   })
 
   // transform ../ to ./
   const entry = entryInfo.target.replace(/^\./, '');
 
-  return `${entry}.jsx`;
+  return `${entry}`;
 };
 

@@ -23,7 +23,7 @@ export const writeLynxConfig = (tempReactLynxDir: string) => {
               },
               dsl: "compilerNg",
               encode: {
-                targetSdkVersion: "2.2",
+                targetSdkVersion: "2.5",
               },
               dev: {
                 devtoolOptions: {
@@ -42,7 +42,7 @@ export const writeLynxConfig = (tempReactLynxDir: string) => {
               },
               dsl: "dynamic-component-ng",
               encode: {
-                targetSdkVersion: "2.2",
+                targetSdkVersion: "2.5",
               },
               plugins: [WebBootstrapPlugin("${lynxEntry}")]
             },
