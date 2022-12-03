@@ -18,11 +18,12 @@ const REG_RUNTIME = /^@bytedance\/mona-runtime$/;
 const isValidObject = (obj: any): obj is Object => {
   return typeof obj === 'object' && !Array.isArray(obj);
 }
+const isRelative = (pathname: string) => /^\.{1,2}\//.test(pathname);
 const cookedFilepath = (pathname: string, base: string) => {
   if (path.isAbsolute(pathname) || REG_RUNTIME_CMP.test(pathname)) {
     // absolute path
     return pathname
-  } else if (/^\.{1,2}\//.test(pathname)) {
+  } else if (isRelative(pathname)) {
     // relative path
     return path.join(base, pathname);
   } else {
@@ -160,21 +161,64 @@ function replaceImport(code: string) {
   return code.replace(/@byted-lynx\/react-components(\/lib\/[^"]+)?/g, '@bytedance/mona-speedy-components');
 }
 
-function transformToWeb(sourceDir: string, filename: string) {
+const appendWebSuffix = (pathname: string, suffix: string) => `${pathname.replace(suffix, '')}.web${suffix}`
+const transformImportSuffix = (codeFile: string, targetPathes: string[] = []) => {	
+  // find the components of current file
+  let componentPathes = targetPathes;
+  const ttmlJsonPath = codeFile.replace('.maxTmpReact', '.maxTmpTtml').replace(/\.web\.jsx$/, '.json');
+  if (fs.existsSync(ttmlJsonPath)) {
+    const rawJSON = fs.readFileSync(ttmlJsonPath).toString()
+    const json = safelyParseJson(rawJSON);
+    let usingComponents = {};
+    if (isValidObject(json)) {
+      usingComponents = json.usingComponents;
+    }
+    componentPathes = [...componentPathes, ...Object.values(usingComponents) as string[]];
+  }
+
+  const sourceCode = fs.readFileSync(codeFile).toString();	
+  const ast = parse(sourceCode, { plugins: ['jsx'], sourceType: 'module' });	
+  traverse(ast, {	
+    ImportDeclaration: (importPath) => {	
+      const { node } = importPath;
+      // 如果是相对路径，判断是否存在对应web后缀的文件，如果存在，则引入web后缀的文件
+      const sourcePath = node.source.value;
+      const suffix = path.extname(sourcePath);
+      if (isRelative(sourcePath) && (componentPathes.includes(sourcePath) || suffix === '.less')) {
+        node.source.value = appendWebSuffix(sourcePath, suffix);
+      }
+    }	
+  })
+
+  const res = transformFromAstSync(ast)	
+  const code = res?.code ?? '';
+  if (code) {
+    fs.writeFileSync(codeFile, code);	
+  }	
+}
+
+export function transformToWeb(sourceDir: string, rawFilename: string, targetPathes: string[] = []) {
   const scopeId = '111';
+  const filename = rawFilename.replace(path.extname(rawFilename), '');
 
   // code
   const entry = path.join(sourceDir, `${filename}.jsx`);
-  const sourceCode = fs.readFileSync(entry);
-  const code = transformNgToReact(sourceCode, {}, scopeId);
-  const targetFilePath = path.join(sourceDir, `${filename}.web.jsx`);
-  fs.writeFileSync(targetFilePath, replaceImport(code));
+  if (fs.existsSync(entry)) {
+    const sourceCode = fs.readFileSync(entry);
+    const code = transformNgToReact(sourceCode, {}, scopeId);
+    const targetFilePath = path.join(sourceDir, `${filename}.web.jsx`);
+    fs.writeFileSync(targetFilePath, replaceImport(code));
+    // transform import suffix
+    transformImportSuffix(targetFilePath, targetPathes);
+  }
 
   // style
   const styleEntry = path.join(sourceDir, `${filename}.less`);
-  const styleCode = transformNgCss(styleEntry, {}, scopeId);
-  const targetStyleFilePath = path.join(sourceDir, `${filename}.web.less`);
-  fs.writeFileSync(targetStyleFilePath, styleCode)
+  if (fs.existsSync(styleEntry)) {
+    const styleCode = transformNgCss(styleEntry, {}, scopeId);
+    const targetStyleFilePath = path.join(sourceDir, `${filename}.web.less`);
+    fs.writeFileSync(targetStyleFilePath, styleCode)
+  }
 }
 
 const transformTtmlDir = (sourceDir: string, filename: string, distDir: string) => {
@@ -241,6 +285,7 @@ export const ttmlToReactLynx = (tempReactLynxDir: string, configHelper: ConfigHe
 
   // transform ../ to ./
   const entry = entryInfo.target.replace(/^\./, '');
+  // write entry
 
   return `${entry}`;
 };

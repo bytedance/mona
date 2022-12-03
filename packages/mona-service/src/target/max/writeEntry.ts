@@ -3,6 +3,7 @@ import path from 'path';
 import ConfigHelper from '../../ConfigHelper';
 import { getLynxEntry } from './writeLynxConfig';
 import getDevProps from './utils/getDevProps';
+import { transformToWeb } from './ttmlToReactLynx';
 
 const getErrorBoundary = (entry: string, schemaProps?: Record<string, any>) => {
   const errorBoundary = `
@@ -46,7 +47,7 @@ import App from '${entry}';
   return errorBoundary;
 };
 
-export const writeErrorBoundaryAndInjectProps = (
+export const writeEntry = (
   tempReactLynxDir: string,
   configHelper: ConfigHelper,
   entry: string,
@@ -60,4 +61,6 @@ export const writeErrorBoundaryAndInjectProps = (
   } else {
     fs.writeFileSync(lynxEntry, getErrorBoundary(entry, devProps));
   }
+  // write web
+  transformToWeb(path.dirname(lynxEntry), path.basename(lynxEntry), [entry])
 };

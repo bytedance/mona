@@ -1,3 +1,4 @@
+import { cssToReactStyle } from '../utils';
 require("@bytedance/mona-speedy-components").useSwiper();
 
 import { Swiper } from "@bytedance/mona-speedy-components";
@@ -39,7 +40,7 @@ export default class MaxSwiper extends Component {
       "data-v": "a111",
       id: "swiper",
       class: customClass,
-      style: customStyle,
+      style: cssToReactStyle(customStyle),
       "indicator-dots": indicatorDots,
       "indicator-color": indicatorColor,
       "indicator-active-color": indicatorActiveColor,

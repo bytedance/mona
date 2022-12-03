@@ -1,9 +1,9 @@
 import path from 'path';
 import fs from 'fs';
 
-export const getLynxEntry = (tempReactLynxDir: string) => {
+export const getLynxEntry = (tempReactLynxDir: string, isWeb = false) => {
   // 兼容window路径
-  let lynxEntry = path.join(tempReactLynxDir, 'index.jsx');
+  let lynxEntry = path.join(tempReactLynxDir, isWeb ? 'index.web.jsx' : 'index.jsx');
   if (process.platform === 'win32' && lynxEntry.indexOf('\\') !== -1) {
     lynxEntry = lynxEntry.replace(/\\/g, '\\\\\\\\');
   }
@@ -11,7 +11,8 @@ export const getLynxEntry = (tempReactLynxDir: string) => {
 };
 export const writeLynxConfig = (tempReactLynxDir: string) => {
   const lynxConfigFile = path.join(tempReactLynxDir, 'lynx.config.js');
-  let lynxEntry = getLynxEntry(tempReactLynxDir);
+  const lynxEntry = getLynxEntry(tempReactLynxDir);
+  const webEntry = getLynxEntry(tempReactLynxDir, true);
 
   const lynxConfigStr = `
           const WebBootstrapPlugin = require('../target/max/plugins/WebBootstrapPlugin.js').default;
@@ -33,7 +34,7 @@ export const writeLynxConfig = (tempReactLynxDir: string) => {
                   return 'doudian://monaview?url=' + encodeURIComponent(origin)
                 }
               },
-              plugins: [WebBootstrapPlugin("${lynxEntry}")]
+              plugins: [WebBootstrapPlugin("${webEntry}")]
             },
             {
               name: "component",
@@ -44,7 +45,7 @@ export const writeLynxConfig = (tempReactLynxDir: string) => {
               encode: {
                 targetSdkVersion: "2.5",
               },
-              plugins: [WebBootstrapPlugin("${lynxEntry}")]
+              plugins: [WebBootstrapPlugin("${webEntry}")]
             },
           ];
           `;

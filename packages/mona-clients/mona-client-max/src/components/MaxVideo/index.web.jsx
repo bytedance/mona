@@ -1,3 +1,4 @@
+import { cssToReactStyle } from '../utils';
 import { XVideoPro } from "@bytedance/mona-speedy-components";
 import React, { Component } from "react";
 export default class ShopVideo extends Component {
@@ -64,7 +65,7 @@ export default class ShopVideo extends Component {
       "data-v": "a111",
       id: "video",
       class: customClass,
-      style: customStyle,
+      style: cssToReactStyle(customStyle),
       src: src,
       autoplay: autoplay,
       inittime: inittime,

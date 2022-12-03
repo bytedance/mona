@@ -4,8 +4,11 @@ const { transformNgToReact } = require('@bytedance/mona-speedy');
 
 const IGNORE_COMPONENT_NAMES = [];
 
-function replaceImport(code) {
- return code.replace(/@byted-lynx\/react-components(\/lib\/[^"]+)?/g, '@bytedance/mona-speedy-components');
+function replaceImport(rawCode) {
+ let code = rawCode.replace(/@byted-lynx\/react-components(\/lib\/[^"]+)?/g, '@bytedance/mona-speedy-components');
+ code = `import { cssToReactStyle } from '../utils';\n` + code;
+ code = code.replace(/style: customStyle/g, 'style: cssToReactStyle(customStyle)');
+ return code;
 }
 
 function downgradeComponents(ignore_names) {

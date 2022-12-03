@@ -4,7 +4,7 @@ import { IPlugin } from '../../Service';
 import { Platform } from '../constants';
 import { writeLynxConfig } from './writeLynxConfig';
 import { ttmlToReactLynx } from './ttmlToReactLynx';
-import { writeErrorBoundaryAndInjectProps } from './writeErrorBoundaryAndInjectProps';
+import { writeEntry } from './writeEntry';
 import chokidar from 'chokidar';
 import debounce from 'lodash.debounce'
 const speedy = require('@bytedance/mona-speedy');
@@ -25,7 +25,7 @@ const max: IPlugin = ctx => {
 
     const transform = (isInjectProps = false) => {
       const entry = ttmlToReactLynx(tempReactLynxDir, configHelper);
-      writeErrorBoundaryAndInjectProps(tempReactLynxDir, configHelper, entry, isInjectProps);
+      writeEntry(tempReactLynxDir, configHelper, entry, isInjectProps);
       writeLynxConfig(tempReactLynxDir);
     }
 

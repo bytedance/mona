@@ -1,3 +1,4 @@
+import { cssToReactStyle } from '../utils';
 import { Image } from "@bytedance/mona-speedy-components";
 import React, { Component } from "react";
 export default class MaxImage extends Component {
@@ -38,7 +39,7 @@ export default class MaxImage extends Component {
     } = this.state;
     return src && !hasError ? /*#__PURE__*/React.createElement(Image, {
       "data-v": "a111",
-      style: customStyle,
+      style: cssToReactStyle(customStyle),
       class: customClass,
       src: src,
       mode: mode,
