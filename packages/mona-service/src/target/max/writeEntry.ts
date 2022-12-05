@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 import ConfigHelper from '../../ConfigHelper';
-import { getLynxEntry } from './writeLynxConfig';
 import getDevProps from './utils/getDevProps';
 import { transformToWeb } from './ttmlToReactLynx';
 
@@ -47,13 +46,22 @@ import App from '${entry}';
   return errorBoundary;
 };
 
+function adapteForWebFuncRender(webEntry: string) {
+  if (fs.existsSync(webEntry)) {
+    const sourceCode = fs.readFileSync(webEntry).toString();
+    let code = sourceCode.replace('export default class ErrorBoundary', 'class ErrorBoundary');
+    code += '\nexport default function Entry(props) { return <ErrorBoundary {...props} />}';
+    fs.writeFileSync(webEntry, code);
+  }
+}
+
 export const writeEntry = (
   tempReactLynxDir: string,
   configHelper: ConfigHelper,
   entry: string,
   isInjectProps: boolean = false,
 ) => {
-  const lynxEntry = getLynxEntry(tempReactLynxDir);
+  const lynxEntry = path.join(tempReactLynxDir, 'index.jsx');
   const schemaJson = JSON.parse(fs.readFileSync(path.resolve(configHelper.cwd, './src/schema.json'), 'utf-8'));
   const devProps = getDevProps(schemaJson);
   if (!isInjectProps) {
@@ -61,6 +69,12 @@ export const writeEntry = (
   } else {
     fs.writeFileSync(lynxEntry, getErrorBoundary(entry, devProps));
   }
+
+
   // write web
   transformToWeb(path.dirname(lynxEntry), path.basename(lynxEntry), [entry])
+  // web entry 
+  const webEntry =path.join(tempReactLynxDir, 'index.web.jsx');
+  // 适配旧逻辑的函数render方式
+  adapteForWebFuncRender(webEntry);
 };

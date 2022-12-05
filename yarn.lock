@@ -1172,22 +1172,22 @@
     webpack-watch-files-plugin "^1.2.0"
     ws "^8.4.2"
 
-"@bytedance/mona-speedy-components@0.0.12":
-  version "0.0.12"
-  resolved "https://registry.npmjs.org/@bytedance/mona-speedy-components/-/mona-speedy-components-0.0.12.tgz#aafcca7c5c91fe5794cce0d1e732b69f93a2a309"
-  integrity sha512-CyP/oWexe7gin931sNItEBBnZdrysIX0s+f2yhy3hJYQw57FoQm6OT0EtkXb5VCXl5cqXSS1jkAl0RsGRug/FQ==
+"@bytedance/mona-speedy-components@0.0.13":
+  version "0.0.13"
+  resolved "https://registry.npmjs.org/@bytedance/mona-speedy-components/-/mona-speedy-components-0.0.13.tgz#f9f35551e64bf28c63d3d64803073dfa63d2293e"
+  integrity sha512-F9HH2aZaI1scjTtUi1E+Q8Q5wknpO70tAmiR24k9Sin2LsqYuOJEZlXyVsUjExmrgM0nSO0R9JAHybGkt/AyHA==
   dependencies:
     swiper "6.5.1"
 
-"@bytedance/mona-speedy-runtime@0.0.12":
-  version "0.0.12"
-  resolved "https://registry.npmjs.org/@bytedance/mona-speedy-runtime/-/mona-speedy-runtime-0.0.12.tgz#55fca3debf976ac2309814e7ebf1db8ea966c548"
-  integrity sha512-PVmlbOjZPOy1ZwUzNedtUlRdLDj+znXAMU5xn1zYI1IxfLVzHticcNkCeLPiQLjfyAyb9eniNVsb4MHkuF6qoQ==
+"@bytedance/mona-speedy-runtime@0.0.13":
+  version "0.0.13"
+  resolved "https://registry.npmjs.org/@bytedance/mona-speedy-runtime/-/mona-speedy-runtime-0.0.13.tgz#dab1090333925d9ab3f48cee093e243e0d10b9da"
+  integrity sha512-w2ndDZ1JQpQc8Q9yOf0LJDXhX3M+qwlxy4ffX7DG/D6cUgmiXOY8SryahgheBnefY8WobFqrzhjRSYypwqc08Q==
 
-"@bytedance/mona-speedy@0.0.11":
-  version "0.0.11"
-  resolved "https://registry.npmjs.org/@bytedance/mona-speedy/-/mona-speedy-0.0.11.tgz#59da78479dfcc1bdd5594a161528d552b056b708"
-  integrity sha512-9MgaCutWAP0JFDqdQfzI5yzmSTEt6HuUIzHaK5J1bJnUNibYysmudshXCvAOFonvkGBLHiV/sfJwDeV+HZ7+lA==
+"@bytedance/mona-speedy@0.0.13":
+  version "0.0.13"
+  resolved "https://registry.npmjs.org/@bytedance/mona-speedy/-/mona-speedy-0.0.13.tgz#cbcc4e5292af259289a0d9820d022aebf0f0fb03"
+  integrity sha512-MM7/hCbhBJcS+R4U2zmGtAzER/hCRgpqGFZJPGkz/mjxbRPmDwyZxQGl2PG69K29P8t6Cy+VbXH5tbsyhFdt3w==
   dependencies:
     "@speedy-js/esbuild" "0.14.28-speedy-lynx-1"
     esbuild "0.12.8"

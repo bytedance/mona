@@ -20,6 +20,8 @@ const getDevPropsJsonStr = () => {
   return JSON.stringify(devProps);
 };
 
+const commonCss = require('./common-style');
+
 const devConfig = {
   mode: 'development',
   devServer: {
@@ -84,6 +86,9 @@ const devConfig = {
                       overflow: hidden;
                     }
                   </style>
+                  <style>
+                  ${commonCss}
+                  </style>
               </head>
               <body></body>
                   <div id="root"></div>
@@ -111,8 +116,8 @@ const devConfig = {
   ],
 };
 
-module.exports = function (buildType, entry, pxToRem) {
-  const baseConfig = generateBaseConfig({ entry, pxToRem });
+module.exports = function (buildType, entry, pxToRem, useOriginEntry = false) {
+  const baseConfig = generateBaseConfig({ entry, pxToRem, useOriginEntry });
   const moduleConfig = buildType === 'umd' ? umdConfig : esmConfig;
   if (buildType !== 'umd') {
     delete devConfig.devServer;

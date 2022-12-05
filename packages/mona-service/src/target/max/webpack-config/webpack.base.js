@@ -8,16 +8,15 @@ const CreateUniqueId = require('../utils/createUniqueId');
 const buildId = CreateUniqueId();
 const createModule = require('../utils/createVirtualModule');
 const webpack = require('webpack');
-const TransformJsxLabelPlugin = require('../../../plugins/babel/TransformJsxLabel').default;
 
 const generateBaseConfig = options => {
-  const { pxToRem, entry } = options;
+  const { pxToRem, entry, useOriginEntry } = options;
 
   let postcssPlugins = [
     PostcssPluginRpxToVw,
     require.resolve('postcss-import'),
-    [path.join(__dirname, '../utils/PostcssPreSelector.js'), { selector: `#${buildId}` }],
-  ];
+    useOriginEntry ? undefined : [path.join(__dirname, '../utils/PostcssPreSelector.js'), { selector: `#${buildId}` }],
+  ].filter(p => !!p);
   if (pxToRem) {
     postcssPlugins = [
       PostcssPluginRpxToVw,
@@ -34,7 +33,7 @@ const generateBaseConfig = options => {
   return {
     entry: {
       // 创建的虚拟模块入口，详见createModule
-      index: path.resolve(entry, '../app.entry.js'),
+      index: useOriginEntry ? entry : path.resolve(entry, '../app.entry.js'),
     },
     output: {
       path: path.resolve(process.cwd(), './dist'),
@@ -48,7 +47,6 @@ const generateBaseConfig = options => {
             loader: 'babel-loader',
             options: {
               presets: ['@babel/preset-env', '@babel/preset-react'],
-              plugins: [TransformJsxLabelPlugin],
             },
           }
         },

@@ -10,10 +10,11 @@ import { parse } from '@babel/parser';
 import traverse from '@babel/traverse';	
 import { transformFromAstSync } from '@babel/core';
 import * as t from '@babel/types';
+import { createUniqueId } from '../utils/utils';
 
 const REG_RUNTIME_CMP = /^@bytedance\/mona-runtime\+\+(.+)/;
 const REG_RUNTIME = /^@bytedance\/mona-runtime$/;
-
+const scopeId = createUniqueId();
 
 const isValidObject = (obj: any): obj is Object => {
   return typeof obj === 'object' && !Array.isArray(obj);
@@ -198,13 +199,12 @@ const transformImportSuffix = (codeFile: string, targetPathes: string[] = []) =>
 }
 
 export function transformToWeb(sourceDir: string, rawFilename: string, targetPathes: string[] = []) {
-  const scopeId = '111';
   const filename = rawFilename.replace(path.extname(rawFilename), '');
 
   // code
   const entry = path.join(sourceDir, `${filename}.jsx`);
   if (fs.existsSync(entry)) {
-    const sourceCode = fs.readFileSync(entry);
+    const sourceCode = fs.readFileSync(entry).toString();
     const code = transformNgToReact(sourceCode, {}, scopeId);
     const targetFilePath = path.join(sourceDir, `${filename}.web.jsx`);
     fs.writeFileSync(targetFilePath, replaceImport(code));
@@ -215,9 +215,10 @@ export function transformToWeb(sourceDir: string, rawFilename: string, targetPat
   // style
   const styleEntry = path.join(sourceDir, `${filename}.less`);
   if (fs.existsSync(styleEntry)) {
-    const styleCode = transformNgCss(styleEntry, {}, scopeId);
+    const styleCode = fs.readFileSync(styleEntry).toString();
+    const code = transformNgCss(styleCode, {}, scopeId);
     const targetStyleFilePath = path.join(sourceDir, `${filename}.web.less`);
-    fs.writeFileSync(targetStyleFilePath, styleCode)
+    fs.writeFileSync(targetStyleFilePath, code)
   }
 }
 

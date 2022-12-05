@@ -20,7 +20,7 @@ const WebBootstrapPlugin = (entry: string) => ({
           return Promise.resolve();
         }
         
-        let webpackConfig = require('../webpack-config/webpack.dev')(buildType, entry, pxToRem);
+        let webpackConfig = require('../webpack-config/webpack.dev')(buildType, entry, pxToRem, true);
         const webpackCompiler = webpack(webpackConfig);
         const devConfig = webpackConfig.devServer;
         const devServer = new WebpackDevServer(devConfig, webpackCompiler);
@@ -28,7 +28,7 @@ const WebBootstrapPlugin = (entry: string) => ({
         alreadyStart = true;
         return devServer.start();
       } else {
-        let webpackConfig = require('../webpack-config/webpack.prod')(buildType, entry, pxToRem);
+        let webpackConfig = require('../webpack-config/webpack.prod')(buildType, entry, pxToRem, true);
         const webpackCompiler = webpack(webpackConfig);
 
         const spinner = ora('编译web产物中...').start();
