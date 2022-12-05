@@ -130,11 +130,7 @@ function createCssRule(webpackConfig: Config, configHelper: ConfigHelper) {
   styleRule
     .use('less')
     .loader(require.resolve('less-loader'))
-    .options({
-      lessOptions: {
-        javascriptEnabled: true,
-      },
-    });
+    .options(projectConfig?.abilities?.less || {});
 }
 
 function createAssetRule(webpackConfig: Config, _configHelper: ConfigHelper) {

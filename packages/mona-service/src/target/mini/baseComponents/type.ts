@@ -34,6 +34,7 @@ import {
   LinkProps,
   TextProps,
   RichTextProps,
+  MemberButtonProps,
 } from '@bytedance/mona';
 
 type Alias = string;
@@ -73,3 +74,5 @@ export type OpenDataAlias = AliasMap<OpenDataProps>;
 export type LinkAlias = AliasMap<LinkProps>;
 export type TextAlias = AliasMap<TextProps>;
 export type RichTextAlias = AliasMap<RichTextProps>;
+export type MemberButtonAlias = AliasMap<MemberButtonProps>;
+

@@ -255,3 +255,49 @@ pigeon.onShow(data => {
   // }
 });
 ```
+## 店铺装修 API
+### 1.拉取ts声明
+使用`MaxSubAutoTypeWebpackPlugin`插件，并在启动项目时便会自动拉取ts声明。
+```js
+//webpack.config.js
+const { MaxSubAutoTypeWebpackPlugin } = require("@bytedance/mona-plugin-events");
+
+module.exports = {
+  // ....
+  plugins: [
+    // ...
+    new MaxSubAutoTypeWebpackPlugin(),
+  ]
+};
+//运行webpack serve 获得代码提示
+```
+### 2.使用JsApi
+```js
+import {max} from '@bytedance/mona-runtime';
+//假设店铺端注册了getUserInfo以及getUserInfoSync两个方法
+//调用同步getUserInfoSync方法
+let user=max.getUserInfoSync({userName:'kenny'});
+//调用异步getUserInfo方法
+max.getUserInfo({userName:kenny}).then(res=>{console.log(res)}).catch(err=>console.error(err))
+```
+### 3.注册装修组件端api
+通过on或once前缀的方法调用，便可进行api注册
+```js
+import {max} from '@bytedance/mona-runtime';
+//同步方法注册
+max.onShowSync((data)=>{},{isSync:true});
+//异步方法注册
+max.onShow((data)=>{});
+
+//使用once，调用一次后自动注销api
+//同步方法注册
+max.onceShowSync((data)=>{},{isSync:true});
+//异步方法注册
+max.onceShow((data)=>{});
+```
+使用off前缀方法可对api进行手动移除
+```js
+import {max} from '@bytedance/mona-runtime';
+let listener=max.onShow((data)=>{});
+max.offShow(listener);
+```

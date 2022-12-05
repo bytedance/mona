@@ -19,6 +19,10 @@ interface PostcssPxtransformProps {
   config?: Partial<PxtransformConfig>;
 }
 
+interface LoaderOption {
+  [option: string]: any;
+}
+
 export interface ProjectConfig {
   projectName: string;
   appId?: string;
@@ -36,6 +40,9 @@ export interface ProjectConfig {
         pxtransform?: PostcssPxtransformProps;
       };
       typings?: boolean;
+    };
+    less?: {
+      lessOptions?: LoaderOption;
     };
 
     // default: false

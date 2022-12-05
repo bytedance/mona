@@ -7,10 +7,10 @@ const MvJSONPlugin = require('../utils/mvJsonPlugin');
 const CreateUniqueId = require('../utils/createUniqueId');
 const buildId = CreateUniqueId();
 const createModule = require('../utils/createVirtualModule');
-
-const generateBaseConfig = options => {
-  const { pxToRem } = options;
-
+const deepMerge = require('lodash.merge');
+const generateBaseConfig = projectConfig => {
+  const { pxToRem, abilities } = projectConfig;
+  const { less = {} } = abilities || {};
   let postcssPlugins = [
     PostcssPluginRpxToVw,
     require.resolve('postcss-import'),
@@ -42,17 +42,17 @@ const generateBaseConfig = options => {
       rules: [
         {
           test: /\.(js|mjs|jsx|ts|tsx)$/,
-          use: 'babel-loader',
+          use: require.resolve('babel-loader'),
           exclude: /node_modules/,
         },
         {
           test: /\.css$/i,
           use: [
             {
-              loader: 'style-loader',
+              loader: require.resolve('style-loader'),
             },
             {
-              loader: 'css-loader',
+              loader: require.resolve('css-loader'),
               options: {
                 importLoaders: 2,
                 modules: {
@@ -63,7 +63,7 @@ const generateBaseConfig = options => {
               },
             },
             {
-              loader: 'postcss-loader',
+              loader: require.resolve('postcss-loader'),
               options: {
                 postcssOptions: {
                   plugins: postcssPlugins,
@@ -76,10 +76,10 @@ const generateBaseConfig = options => {
           test: /\.less$/i,
           use: [
             {
-              loader: 'style-loader',
+              loader: require.resolve('style-loader'),
             },
             {
-              loader: 'css-loader',
+              loader: require.resolve('css-loader'),
               options: {
                 importLoaders: 2,
                 modules: {
@@ -90,7 +90,7 @@ const generateBaseConfig = options => {
               },
             },
             {
-              loader: 'postcss-loader',
+              loader: require.resolve('postcss-loader'),
               options: {
                 postcssOptions: {
                   plugins: postcssPlugins,
@@ -98,12 +98,12 @@ const generateBaseConfig = options => {
               },
             },
             {
-              loader: 'less-loader',
-              options: {
+              loader: require.resolve('less-loader'),
+              options: deepMerge(less, {
                 lessOptions: {
                   javascriptEnabled: true,
                 },
-              },
+              }),
             },
           ],
         },
@@ -147,6 +147,4 @@ try {
   console.error(e);
 }
 
-const baseConfig = generateBaseConfig({ pxToRem });
-
-module.exports = baseConfig;
+module.exports = generateBaseConfig;

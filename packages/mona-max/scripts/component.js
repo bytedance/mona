@@ -5,23 +5,13 @@ const fs = require('fs-extra');
 
 const maxComponent = ctx => {
   ctx.registerTarget('max', tctx => {
-    let buildType = 'umd';
-    try {
-      const cwd = process.cwd();
-      const maxJsonPath = path.resolve(cwd, './mona.config.ts');
-      const maxJson = fs.readFileSync(maxJsonPath, 'utf-8');
-      buildType = maxJson.indexOf('buildType: "esm"') !== -1 ? 'esm' : 'umd';
-    } catch (e) {
-      console.error(e);
-    }
-
     tctx.configureWebpack(() => {
       ctx.configHelper.projectConfig.chain = pre => pre;
       if (process.env.NODE_ENV === 'production') {
-        return require('../config/webpack.prod')(buildType || 'umd');
+        return require('../config/webpack.prod')(ctx.configHelper.projectConfig);
       }
 
-      return require('../config/webpack.dev')(buildType || 'umd');
+      return require('../config/webpack.dev')(ctx.configHelper.projectConfig);
     });
   });
   ctx.registerCommand(

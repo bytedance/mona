@@ -1,5 +1,7 @@
 import events from '@bytedance/mona-plugin-events';
 export const pigeon = events.pigeon;
+export const max = events.max;
+export const light = events.light;
 
 export * from '@bytedance/mona-client-mini';
 export { createPlugin } from '@bytedance/mona-client-plugin';
