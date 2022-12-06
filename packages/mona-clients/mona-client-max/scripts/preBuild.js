@@ -20,9 +20,7 @@ function downgradeComponents(ignore_names) {
     if (fs.statSync(dirPath).isDirectory() || ignore_names.includes(file)) {
       const componentFilePath = path.join(dirPath, 'index.tsx');
       const sourceCode = fs.readFileSync(componentFilePath);
-      const scopeId = 'temp_scope';
-
-      const code = transformNgToReact(sourceCode, {}, scopeId);
+      const code = transformNgToReact(sourceCode, {}, '');
       
       const targetFilePath = path.join(dirPath, 'index.web.jsx');
       fs.writeFileSync(targetFilePath, replaceImport(code));

@@ -34,12 +34,12 @@ export default class MaxImage extends Component {
       customClass,
       bindtap
     } = this.props;
+
     const {
       hasError
     } = this.state;
     return src && !hasError ? /*#__PURE__*/React.createElement(Image, {
-      "data-v": "a111",
-      style: cssToReactStyle(customStyle),
+      style: customStyle,
       class: customClass,
       src: src,
       mode: mode,

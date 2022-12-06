@@ -1,4 +1,12 @@
 const commonStyle = `
+  html {
+    font-size: 100px;
+  }
+
+  body {
+    font-size: 14px;
+  }
+
   .rlynx-mask {
   position: fixed;
   z-index: 1000;

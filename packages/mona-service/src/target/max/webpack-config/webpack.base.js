@@ -10,12 +10,12 @@ const createModule = require('../utils/createVirtualModule');
 const webpack = require('webpack');
 
 const generateBaseConfig = options => {
-  const { pxToRem, entry, useOriginEntry } = options;
+  const { pxToRem, entry, useWebExt } = options;
 
   let postcssPlugins = [
     PostcssPluginRpxToVw,
     require.resolve('postcss-import'),
-    useOriginEntry ? undefined : [path.join(__dirname, '../utils/PostcssPreSelector.js'), { selector: `#${buildId}` }],
+    [path.join(__dirname, '../utils/PostcssPreSelector.js'), { selector: `#${buildId}` }]
   ].filter(p => !!p);
   if (pxToRem) {
     postcssPlugins = [
@@ -33,7 +33,7 @@ const generateBaseConfig = options => {
   return {
     entry: {
       // 创建的虚拟模块入口，详见createModule
-      index: useOriginEntry ? entry : path.resolve(entry, '../app.entry.js'),
+      index: path.resolve(entry, '../app.entry.js'),
     },
     output: {
       path: path.resolve(process.cwd(), './dist'),
@@ -139,7 +139,7 @@ const generateBaseConfig = options => {
         '@bytedance/mona-runtime': '@bytedance/mona-client-max/dist/index.web.js'
       }
     },
-    plugins: [new MvJSONPlugin(), createModule(entry, buildId)],
+    plugins: [new MvJSONPlugin(), createModule(entry, buildId, useWebExt)],
   };
 };
 

@@ -37,7 +37,6 @@ export default class MaxSwiper extends Component {
       disableTouch
     } = this.props;
     return /*#__PURE__*/React.createElement(Swiper, {
-      "data-v": "a111",
       id: "swiper",
       class: customClass,
       style: cssToReactStyle(customStyle),

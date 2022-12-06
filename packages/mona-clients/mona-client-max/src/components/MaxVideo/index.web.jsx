@@ -62,7 +62,6 @@ export default class ShopVideo extends Component {
       bindtap
     } = this.props;
     return /*#__PURE__*/React.createElement(XVideoPro, {
-      "data-v": "a111",
       id: "video",
       class: customClass,
       style: cssToReactStyle(customStyle),

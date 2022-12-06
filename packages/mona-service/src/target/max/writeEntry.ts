@@ -34,7 +34,7 @@ import App from '${entry}';
         )
       }
       return (
-        <view>
+        <view id={this.props.buildId}>
             <App ${
               schemaProps ? '{...this.state.appProps}' : 'extraProps={this.props.extraProps} {...this.props.dataSource}'
             }/>
@@ -45,15 +45,6 @@ import App from '${entry}';
   `;
   return errorBoundary;
 };
-
-function adapteForWebFuncRender(webEntry: string) {
-  if (fs.existsSync(webEntry)) {
-    const sourceCode = fs.readFileSync(webEntry).toString();
-    let code = sourceCode.replace('export default class ErrorBoundary', 'class ErrorBoundary');
-    code += '\nexport default function Entry(props) { return <ErrorBoundary {...props} />}';
-    fs.writeFileSync(webEntry, code);
-  }
-}
 
 export const writeEntry = (
   tempReactLynxDir: string,
@@ -73,8 +64,4 @@ export const writeEntry = (
 
   // write web
   transformToWeb(path.dirname(lynxEntry), path.basename(lynxEntry), [entry])
-  // web entry 
-  const webEntry =path.join(tempReactLynxDir, 'index.web.jsx');
-  // 适配旧逻辑的函数render方式
-  adapteForWebFuncRender(webEntry);
 };

@@ -10,12 +10,23 @@ import { parse } from '@babel/parser';
 import traverse from '@babel/traverse';	
 import { transformFromAstSync } from '@babel/core';
 import * as t from '@babel/types';
-import { createUniqueId } from '../utils/utils';
+// import { createUniqueId } from '../utils/utils';
 
 const REG_RUNTIME_CMP = /^@bytedance\/mona-runtime\+\+(.+)/;
 const REG_RUNTIME = /^@bytedance\/mona-runtime$/;
-const scopeId = createUniqueId();
+const RPX_VALUE_REG = /rpx$/
+const ROOT_FONT_SIZE_PX = 100;
+const scopeId = ''
 
+const transformRpxToRem = (origin: string) => {
+  if (RPX_VALUE_REG.test(origin)) {
+    const num = Number(origin.replace(RPX_VALUE_REG, ''));
+    if (!Number.isNaN(num)) {
+      return `${num / ROOT_FONT_SIZE_PX / 2}rem`;
+    }
+  }
+  return origin;
+}
 // 适配windows
 const getSlash = () => {
   return process.platform === 'win32' ? '\\' : '/';
@@ -170,7 +181,7 @@ function replaceImport(code: string) {
 }
 
 const appendWebSuffix = (pathname: string, suffix: string) => `${pathname.replace(suffix, '')}.web${suffix}`
-const transformImportSuffix = (codeFile: string, targetPathes: string[] = []) => {	
+const transformWebCode = (codeFile: string, targetPathes: string[] = []) => {	
   // find the components of current file
   let componentPathes = targetPathes;
   const ttmlJsonPath = codeFile.replace('.maxTmpReact', '.maxTmpTtml').replace(/\.web\.jsx$/, '.json');
@@ -187,15 +198,50 @@ const transformImportSuffix = (codeFile: string, targetPathes: string[] = []) =>
   const sourceCode = fs.readFileSync(codeFile).toString();	
   const ast = parse(sourceCode, { plugins: ['jsx'], sourceType: 'module' });	
   traverse(ast, {	
-    ImportDeclaration: (importPath) => {	
-      const { node } = importPath;
-      // 如果是相对路径，判断是否存在对应web后缀的文件，如果存在，则引入web后缀的文件
+    ImportDeclaration: (_path) => {	
+      const { node } = _path;
+      // 如果是相对路径，并且是组件路径或less文件则加入.web后缀
       const sourcePath = node.source.value;
       const suffix = path.extname(sourcePath);
       if (isRelative(sourcePath) && (componentPathes.includes(sourcePath) || suffix === '.less')) {
         node.source.value = appendWebSuffix(sourcePath, suffix);
       }
-    }	
+    },
+    // replace inner component' style/class => customStyle/customClass
+    // and transform inline style rpx to rem
+    CallExpression: (_path) => {
+      const { node } = _path;
+      if (t.isMemberExpression(node.callee)) {
+        if (t.isIdentifier(node.callee.object) && t.isIdentifier(node.callee.property) && t.isIdentifier(node.arguments[0]) && t.isObjectExpression(node.arguments[1])) {
+          const isReactComponent = node.callee.object.name === 'React' && node.callee.property.name === 'createElement';
+          const isInnerComponentReactCall = isReactComponent && Object.values(tagToComponents).includes(node.arguments[0].name)
+          if (isReactComponent) {
+            const args = node.arguments[1].properties;
+            args.forEach((arg) => {
+              if (t.isObjectProperty(arg) && t.isIdentifier(arg.key)) {
+                if (arg.key.name === 'style') {
+                  if (isInnerComponentReactCall) {
+                    arg.key.name = 'customStyle'
+                  }
+                  // transform rpx to rem
+                  if (t.isObjectExpression(arg.value)) {
+                    arg.value.properties.forEach((s) => {
+                      if (t.isObjectProperty(s) && t.isStringLiteral(s.value)) {
+                        s.value.value = transformRpxToRem(s.value.value)
+                      }
+                    })
+                  }
+                } else if (arg.key.name === 'className') {
+                  if (isInnerComponentReactCall) {
+                    arg.key.name = 'customClass'
+                  }
+                }
+              }
+            })
+          }
+        }
+      }
+    }
   })
 
   const res = transformFromAstSync(ast)	
@@ -215,8 +261,7 @@ export function transformToWeb(sourceDir: string, rawFilename: string, targetPat
     const code = transformNgToReact(sourceCode, {}, scopeId);
     const targetFilePath = path.join(sourceDir, `${filename}.web.jsx`);
     fs.writeFileSync(targetFilePath, replaceImport(code));
-    // transform import suffix
-    transformImportSuffix(targetFilePath, targetPathes);
+    transformWebCode(targetFilePath, targetPathes);
   }
 
   // style

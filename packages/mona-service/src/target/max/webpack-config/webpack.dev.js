@@ -116,8 +116,8 @@ const devConfig = {
   ],
 };
 
-module.exports = function (buildType, entry, pxToRem, useOriginEntry = false) {
-  const baseConfig = generateBaseConfig({ entry, pxToRem, useOriginEntry });
+module.exports = function (buildType, entry, pxToRem, useWebExt = false) {
+  const baseConfig = generateBaseConfig({ entry, pxToRem, useWebExt });
   const moduleConfig = buildType === 'umd' ? umdConfig : esmConfig;
   if (buildType !== 'umd') {
     delete devConfig.devServer;
