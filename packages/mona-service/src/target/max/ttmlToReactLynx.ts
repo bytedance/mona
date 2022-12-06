@@ -16,20 +16,28 @@ const REG_RUNTIME_CMP = /^@bytedance\/mona-runtime\+\+(.+)/;
 const REG_RUNTIME = /^@bytedance\/mona-runtime$/;
 const scopeId = createUniqueId();
 
+// 适配windows
+const getSlash = () => {
+  return process.platform === 'win32' ? '\\' : '/';
+}
+
 const isValidObject = (obj: any): obj is Object => {
   return typeof obj === 'object' && !Array.isArray(obj);
 }
 const isRelative = (pathname: string) => /^\.{1,2}\//.test(pathname);
+const getPureFilePath = (filePath: string) => path.join(path.dirname(filePath), extractPureFilename(filePath));
 const cookedFilepath = (pathname: string, base: string) => {
-  if (path.isAbsolute(pathname) || REG_RUNTIME_CMP.test(pathname)) {
+  if (path.isAbsolute(pathname)) {
     // absolute path
+    return getPureFilePath(pathname)
+  } else if (REG_RUNTIME_CMP.test(pathname)) {
     return pathname
   } else if (isRelative(pathname)) {
     // relative path
-    return path.join(base, pathname);
+    return getPureFilePath(path.join(base, pathname));
   } else {
     // node_modules
-    return require.resolve(pathname);
+    return getPureFilePath(require.resolve(pathname));
   }
 }
 
@@ -113,7 +121,7 @@ const handleAllComponents = ({ entry, tempDir, componentMap }: { entry: string; 
   if (isTTML && fs.existsSync(jsonPath)) {
     // copy ttml dir to tmp
     const sourceDir = path.dirname(entry)
-    const t = sourceDir.split('/')
+    const t = sourceDir.split(getSlash())
     const componentName = `${t[t.length - 1]}-${md5(sourceDir)}`;
     const distDir = path.join(tempDir, componentName);
     if (!fse.existsSync(distDir)) {
@@ -140,8 +148,7 @@ const handleAllComponents = ({ entry, tempDir, componentMap }: { entry: string; 
       const rawFilePath = usingComponents[key];
       // absolut path or relative path or node_modules
       const filePath = cookedFilepath(rawFilePath, path.dirname(entry));
-      const finalFilePath = path.join(path.dirname(filePath), extractPureFilename(filePath))
-      const componentSourceInfo = handleAllComponents({ entry: finalFilePath, tempDir, componentMap });
+      const componentSourceInfo = handleAllComponents({ entry: filePath, tempDir, componentMap });
       if (componentSourceInfo.isTTML) {
         // modify json to rewrite json
         json.usingComponents[key] = componentSourceInfo.target;
