@@ -115,7 +115,7 @@ const publish: IPlugin = ctx => {
           const frameworkType = isOldApp ? answer.isMixed : undefined;
 
           // params
-          const params = { appId, desc: answer.desc || '', fileId, fileName, frameworkType };
+          const params = { version: latestVersion, appId, desc: answer.desc || '', fileId, fileName, frameworkType };
 
           if (shouldEdit) {
             console.log(chalk.cyan(`即将修改版本 ${latestVersion}`));
@@ -129,7 +129,7 @@ const publish: IPlugin = ctx => {
             // create new version
             await request('/captain/app/version/create', {
               method: 'POST',
-              data: params,
+              data: {...params, version: undefined },
             });
           }
         }
