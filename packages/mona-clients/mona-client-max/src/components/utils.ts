@@ -1,3 +1,13 @@
+const transformRpx = (value: string) => {
+  if (/rpx$/.test(value)) {
+    const num = Number(value.replace(/rpx$/, ''));
+    if (!Number.isNaN(num)) {
+      return `${num / 2}px`;
+    }
+  }
+  return value;
+}
+
 const snakeToCamel = (str: string) =>
   str.toLowerCase().replace(/([-][a-z])/g, group =>
     group
@@ -33,7 +43,7 @@ export const cssToReactStyle = (css?: ReactLynx.CSSProperties | string) => {
 
     if (key && value) {
       key = key.trim();
-      value = value.trim();
+      value = transformRpx(value.trim());
 
       style[getPropertyName(key)] = value;
     }
