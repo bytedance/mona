@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 
 function getSchemaProps(schemaJson) {
   const preDefinedKey = ['extraProps']
@@ -21,11 +22,21 @@ function getSchemaProps(schemaJson) {
   return value
 }
 
+function safeJsonParse(str) {
+  if (!str) {
+    return str;
+  }
+  try {
+    return JSON.parse(str);
+  } catch(_) {
+    return str;
+  }
+}
 function getReviewProps(reviewJson, defaultValue) {
   const arr = reviewJson;
   const result = {};
   arr.forEach(item => {
-    result[item.name] = item.scheme_value || defaultValue[item.name];
+    result[item.name] = safeJsonParse(item.scheme_value) || defaultValue[item.name];
   })
   return result;
 }
@@ -35,12 +46,12 @@ module.exports = function getDevProps() {
   const reviewJsonPath = path.resolve(process.cwd(), './src/review.json')
   let finalValue = {};
   if (fs.existsSync(schemaJsonPath)) {
-    const schemaJson = JSON.parse(schemaJsonPath, 'utf-8');
+    const schemaJson = JSON.parse(fs.readFileSync(schemaJsonPath).toString());
     finalValue = { ...getSchemaProps(schemaJson) };
   }
   if (fs.existsSync(reviewJsonPath)) {
-    const reviewJson = JSON.parse(reviewJsonPath, 'utf-8');
-    finalValue = { ...finalValue, ...getReviewProps(reviewJsonPath, finalValue) };
+    const reviewJson = JSON.parse(fs.readFileSync(reviewJsonPath).toString());
+    finalValue = { ...finalValue, ...getReviewProps(reviewJson, finalValue) };
   }
   return finalValue;
 }
