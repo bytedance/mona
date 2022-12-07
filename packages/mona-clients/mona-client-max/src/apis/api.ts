@@ -1,6 +1,6 @@
 import { BaseApis } from '@bytedance/mona';
 import { promisify } from '@bytedance/mona-shared/dist/promisify';
-import { maxGetStorage, maxGetStorageSync, maxRemoveStorage, maxRemoveStorageSync, maxRequest, maxSetStorage, maxSetStorageSync } from './utils';
+import { maxGetStorage, maxGetStorageSync, maxNavigateTo, maxRemoveStorage, maxRemoveStorageSync, maxRequest, maxSetStorage, maxSetStorageSync } from './utils';
 
 
 const noImplementFactory = (api: string) => (): any => {
@@ -210,7 +210,7 @@ export const getAlgorithmManager: BaseApis['getAlgorithmManager'] = promisify(
 export const createStickerManager: BaseApis['createStickerManager'] = noImplementFactory('createStickerManager');
 export const createBytennEngineContext: BaseApis['createBytennEngineContext'] =
   noImplementFactory('createBytennEngineContext');
-export const navigateTo: BaseApis['navigateTo'] = promisify(noImplementFactory('navigateTo'));
+export const navigateTo: BaseApis['navigateTo'] = promisify(maxNavigateTo);
 export const redirectTo: BaseApis['redirectTo'] = promisify(noImplementFactory('redirectTo'));
 export const switchTab: BaseApis['switchTab'] = promisify(noImplementFactory('switchTab'));
 export const navigateBack: BaseApis['navigateBack'] = promisify(noImplementFactory('navigateBack'));

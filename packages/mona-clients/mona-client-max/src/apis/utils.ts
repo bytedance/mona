@@ -72,3 +72,16 @@ export const maxRemoveStorage: OriginApis['removeStorage'] = function(options) {
 export const maxRemoveStorageSync: BaseApis['removeStorageSync'] = function(key) {
   lynx.removeStorage({ key, unique: __MONA_APPID });
 }
+
+
+export const maxNavigateTo: OriginApis['navigateTo'] = function(options) {
+  try {
+    lynx.navigateTo({ url: options.url })
+    options.success?.({ errMsg: 'navigateTo:ok' })
+    options.complete?.({ errMsg: 'navigateTo:ok' })
+  } catch(err: any) {
+    const error = { errMsg: 'navigateTo:fail' + err?.message ?? '' };
+    options.fail?.(error)
+    options.complete?.(error)
+  }
+}
