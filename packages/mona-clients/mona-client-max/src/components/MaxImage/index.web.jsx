@@ -1,4 +1,3 @@
-import { cssToReactStyle } from '../utils';
 import { Image } from "@bytedance/mona-speedy-components";
 import React, { Component } from "react";
 export default class MaxImage extends Component {
@@ -34,7 +33,6 @@ export default class MaxImage extends Component {
       customClass,
       bindtap
     } = this.props;
-
     const {
       hasError
     } = this.state;

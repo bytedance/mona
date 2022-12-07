@@ -6,8 +6,8 @@ const IGNORE_COMPONENT_NAMES = [];
 
 function replaceImport(rawCode) {
  let code = rawCode.replace(/@byted-lynx\/react-components(\/lib\/[^"]+)?/g, '@bytedance/mona-speedy-components');
- code = `import { cssToReactStyle } from '../utils';\n` + code;
- code = code.replace(/style: customStyle/g, 'style: cssToReactStyle(customStyle)');
+//  code = `import { cssToReactStyle } from '../utils';\n` + code;
+//  code = code.replace(/style: customStyle/g, 'style: cssToReactStyle(customStyle)');
  return code;
 }
 
