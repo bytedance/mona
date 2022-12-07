@@ -92,7 +92,27 @@ const transformJSXFile = (codeFile: string) => {
         })
         path.remove();
       }
-    }	
+    },
+    JSXElement: (path) => {
+      const { node } = path;
+      if (t.isJSXElement(node) && t.isJSXOpeningElement(node.openingElement) && t.isJSXIdentifier(node.openingElement.name)) {
+        const name = node.openingElement.name.name;
+        const isInnerComponentReactCall = Object.values(tagToComponents).includes(name)
+        if (isInnerComponentReactCall) {
+          const attrs = node.openingElement.attributes;
+          attrs.forEach(attr => {
+            if (t.isJSXAttribute(attr) && t.isJSXIdentifier(attr.name)) {
+              const attrName = attr.name.name;
+              if (attrName === 'style') {
+                attr.name.name = 'customStyle'
+              } else if (attrName === 'className') {
+                attr.name.name = 'customClass'
+              }
+            }
+          })
+        }
+      }
+    }
   })
 
   const res = transformFromAstSync(ast)	
@@ -218,23 +238,13 @@ const transformWebCode = (codeFile: string, targetPathes: string[] = []) => {
           if (isReactComponent) {
             const args = node.arguments[1].properties;
             args.forEach((arg) => {
-              if (t.isObjectProperty(arg) && t.isIdentifier(arg.key)) {
-                if (arg.key.name === 'style') {
-                  if (isInnerComponentReactCall) {
-                    arg.key.name = 'customStyle'
-                  }
-                  // transform rpx to rem
-                  if (t.isObjectExpression(arg.value)) {
-                    arg.value.properties.forEach((s) => {
-                      if (t.isObjectProperty(s) && t.isStringLiteral(s.value)) {
-                        s.value.value = transformRpxToRem(s.value.value)
-                      }
-                    })
-                  }
-                } else if (arg.key.name === 'className') {
-                  if (isInnerComponentReactCall) {
-                    arg.key.name = 'customClass'
-                  }
+              if (t.isObjectProperty(arg) && t.isIdentifier(arg.key) && t.isObjectExpression(arg.value)) {
+                if ((isInnerComponentReactCall && arg.key.name === 'customStyle') || arg.key.name === 'style') {
+                   arg.value.properties.forEach((s) => {
+                    if (t.isObjectProperty(s) && t.isStringLiteral(s.value)) {
+                      s.value.value = transformRpxToRem(s.value.value)
+                    }
+                  })
                 }
               }
             })
