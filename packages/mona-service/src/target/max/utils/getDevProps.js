@@ -1,4 +1,6 @@
-module.exports = function getDevProps(schemaJson) {
+const fs = require('fs');
+
+function getSchemaProps(schemaJson) {
   const preDefinedKey = ['extraProps']
 
   const value = {
@@ -17,4 +19,28 @@ module.exports = function getDevProps(schemaJson) {
   }
 
   return value
+}
+
+function getReviewProps(reviewJson, defaultValue) {
+  const arr = reviewJson;
+  const result = {};
+  arr.forEach(item => {
+    result[item.name] = item.scheme_value || defaultValue[item.name];
+  })
+  return result;
+}
+
+module.exports = function getDevProps() {
+  const schemaJsonPath = path.resolve(process.cwd(), './src/schema.json');
+  const reviewJsonPath = path.resolve(process.cwd(), './src/review.json')
+  let finalValue = {};
+  if (fs.existsSync(schemaJsonPath)) {
+    const schemaJson = JSON.parse(schemaJsonPath, 'utf-8');
+    finalValue = { ...getSchemaProps(schemaJson) };
+  }
+  if (fs.existsSync(reviewJsonPath)) {
+    const reviewJson = JSON.parse(reviewJsonPath, 'utf-8');
+    finalValue = { ...finalValue, ...getReviewProps(reviewJsonPath, finalValue) };
+  }
+  return finalValue;
 }

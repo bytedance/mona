@@ -13,12 +13,6 @@ const getDevProps = require('../utils/getDevProps');
 const { name = '@shop-isv/isv-com' } = JSON.parse(
   fs.readFileSync(path.resolve(process.cwd(), './package.json'), 'utf-8'),
 );
-const getDevPropsJsonStr = () => {
-  const schemaJson = JSON.parse(fs.readFileSync(path.resolve(process.cwd(), './src/schema.json'), 'utf-8'));
-  const devProps = getDevProps(schemaJson);
-  console.log(devProps);
-  return JSON.stringify(devProps);
-};
 
 const commonCss = require('./common-style');
 
@@ -102,7 +96,7 @@ const devConfig = {
                       }
                       flexible()
                       window.onload = () => {
-                          const devProps = '${getDevPropsJsonStr()}'
+                          const devProps = '${JSON.stringify(getDevProps())}'
                           ReactDOM.render(window['${name}'].index(JSON.parse(devProps)), document.getElementById('root'));
                       };
                   </script>

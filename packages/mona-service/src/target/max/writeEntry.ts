@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import ConfigHelper from '../../ConfigHelper';
 import getDevProps from './utils/getDevProps';
 import { transformToWeb } from './ttmlToReactLynx';
 
@@ -29,15 +28,25 @@ import App from '${entry}';
       if(this.state.hasError){
         return (
             <view>
-                <text>something went wrong</text>
+                <text>出错了</text>
             </view>
         )
       }
+
+      const dataSource = this.props.dataSource || {};
+      const buildId = this.props.buildId;
+      const finalProps = {
+        ...${schemaProps ? JSON.stringify(schemaProps) : '{}'},
+        ...this.props,
+        ...dataSource,
+        dataSource: undefined,
+        buildId: undefined,
+      }
+
+      console.log('props', finalProps);
       return (
-        <view id={this.props.buildId}>
-            <App ${
-              schemaProps ? '{...this.state.appProps}' : 'extraProps={this.props.extraProps} {...this.props.dataSource}'
-            }/>
+        <view id={buildId}>
+            <App {...finalProps} />
         </view>
       )
     }
@@ -48,19 +57,16 @@ import App from '${entry}';
 
 export const writeEntry = (
   tempReactLynxDir: string,
-  configHelper: ConfigHelper,
   entry: string,
   isInjectProps: boolean = false,
 ) => {
   const lynxEntry = path.join(tempReactLynxDir, 'index.jsx');
-  const schemaJson = JSON.parse(fs.readFileSync(path.resolve(configHelper.cwd, './src/schema.json'), 'utf-8'));
-  const devProps = getDevProps(schemaJson);
+  const devProps = getDevProps();
   if (!isInjectProps) {
     fs.writeFileSync(lynxEntry, getErrorBoundary(entry));
   } else {
     fs.writeFileSync(lynxEntry, getErrorBoundary(entry, devProps));
   }
-
 
   // write web
   transformToWeb(path.dirname(lynxEntry), path.basename(lynxEntry), [entry])

@@ -25,7 +25,7 @@ const max: IPlugin = ctx => {
 
     const transform = (isInjectProps = false) => {
       const entry = ttmlToReactLynx(tempReactLynxDir, configHelper);
-      writeEntry(tempReactLynxDir, configHelper, entry, isInjectProps);
+      writeEntry(tempReactLynxDir, entry, isInjectProps);
       writeLynxConfig(tempReactLynxDir);
     }
 
@@ -87,7 +87,7 @@ const max: IPlugin = ctx => {
       usage: 'mona-service max-template-start',
     },
     () => {
-      const configPath = path.resolve(__dirname, '../utils/templateStart.js');
+      const configPath = path.resolve(__dirname, './utils/templateStart.js');
       child_process.execSync(`node ${configPath}`, { stdio: 'inherit' });
     },
   );
