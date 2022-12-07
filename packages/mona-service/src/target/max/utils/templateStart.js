@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const openBrowser = require('react-dev-utils/openBrowser')
 const getTmpData = require('./getTmpData.js');
 const getTmpComponentData = require('./getTmpComponentData.js');
 
@@ -28,6 +29,8 @@ let wsForWatch;
 try {
   const WebSocket = require('ws');
   const wss = new WebSocket.Server({ port: WS_PORT });
+  console.log(`ws链接已建立!打开${TARGET_URL}，请在装修页面编排组件`);
+  openBrowser(TARGET_URL);
   wss.on('connection', ws => {
     wsForWatch = ws;
     ws.on('message', message => {
