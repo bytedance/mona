@@ -46,11 +46,11 @@ module.exports = function getDevProps() {
   const reviewJsonPath = path.resolve(process.cwd(), './src/review.json')
   let finalValue = {};
   if (fs.existsSync(schemaJsonPath)) {
-    const schemaJson = JSON.parse(fs.readFileSync(schemaJsonPath).toString() || '{}');
+    const schemaJson = JSON.parse(fs.readFileSync(schemaJsonPath).toString().trim() || '{}');
     finalValue = { ...getSchemaProps(schemaJson) };
   }
   if (fs.existsSync(reviewJsonPath)) {
-    const reviewJson = JSON.parse(fs.readFileSync(reviewJsonPath).toString() || '[]');
+    const reviewJson = JSON.parse(fs.readFileSync(reviewJsonPath).toString().trim() || '[]');
     finalValue = { ...finalValue, ...getReviewProps(reviewJson, finalValue) };
   }
   return finalValue;
