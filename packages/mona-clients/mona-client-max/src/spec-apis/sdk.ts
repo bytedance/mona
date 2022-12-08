@@ -36,7 +36,9 @@ export const genMaxEventSdk = (appid: string, global: any) => {
   if (maxEvent) {
     maxEvent.genWithOpenApiJsApi(global?.metaInfo?.sec_shop_id)
   }
-
+  if (!maxEvent) {
+    console.log('[MonaLog]此环境未实现max.xxx相关api')
+  }
   const maxEventSDK = new Proxy(maxEvent || {}, {
     get: (obj: MaxEvent, prop: string) => {
       //如果是once或on注册事件监听
@@ -45,20 +47,20 @@ export const genMaxEventSdk = (appid: string, global: any) => {
         return (listener: Listener, options?: EventOptionsType) => {
           options = options || {};
           options.pluginId = options.pluginId || MAX_COMPONENT_PLUGINID;
-          return obj?.onceByPlugin(eventName, listener, options);
+          return obj?.onceByPlugin?.(eventName, listener, options);
         };
       } else if (prop.startsWith('on') && prop.length > 2) {
         const eventName = removeEventPrefix(prop, 'on');
         return (listener: Listener, options?: EventOptionsType) => {
           options = options || {};
           options.pluginId = options.pluginId || MAX_COMPONENT_PLUGINID;
-          return obj?.onByPlugin(eventName, listener, options);
+          return obj?.onByPlugin?.(eventName, listener, options);
         };
       } else if (prop?.startsWith('off') && prop.length > 3) {
         //如果是off卸载事件监听
         const eventName = removeEventPrefix(prop, 'off');
         return (listener: Listener) => {
-          return obj?.offByPlugin(eventName, listener);
+          return obj?.offByPlugin?.(eventName, listener);
         };
       } else {
         //正常emit
@@ -71,7 +73,7 @@ export const genMaxEventSdk = (appid: string, global: any) => {
             };
           }
           data.appid = appid;
-          return obj?.emitByPlugin(eventName, data, options);
+          return obj?.emitByPlugin?.(eventName, data, options);
         };
       }
     },

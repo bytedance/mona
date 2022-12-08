@@ -36,7 +36,7 @@ export const writeLynxConfig = (tempReactLynxDir: string, appid: string) => {
               },
               plugins: [WebBootstrapPlugin("${webEntry}", "${appid}")],
               define: {
-                __MONA_APPID: JSON.stringify(${appid})
+                __MONA_APPID: JSON.stringify("${appid}")
               }
             },
             {
