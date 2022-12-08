@@ -39,6 +39,10 @@ const generateBaseConfig = options => {
       path: path.resolve(process.cwd(), './dist'),
       publicPath: '',
     },
+    // PERF: 这里修复windows node_modules的问题，以后优化下
+    snapshot: process.platform === 'win32' ? {
+      managedPaths:[]
+    } : undefined,
     module: {
       rules: [
         {
