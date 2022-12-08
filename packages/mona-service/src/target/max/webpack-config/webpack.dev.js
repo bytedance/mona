@@ -110,7 +110,7 @@ const devConfig = {
   ],
 };
 
-module.exports = function (buildType, entry, pxToRem, useWebExt = false) {
+module.exports = function ({ buildType = 'umd', entry, pxToRem = false, useWebExt = false, appid = '' }) {
   const baseConfig = generateBaseConfig({ entry, pxToRem, useWebExt });
   const moduleConfig = buildType === 'umd' ? umdConfig : esmConfig;
   if (buildType !== 'umd') {

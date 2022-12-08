@@ -3,7 +3,7 @@ import { BaseApis, OriginApis } from "@bytedance/mona";
 const __MONA_APPID = '';
 
 const logNoImpl = (apiName: string, ...params: any) => {
-  console.log(`调用 ${apiName}，当前环境未实现， 当前传入参数：`, params)
+  console.log(`[MonaLog]调用 ${apiName}，当前环境未实现， 当前传入参数：`, params)
 }
 export const maxRequest: OriginApis['request'] = function(options) {
   if (lynx.request) {

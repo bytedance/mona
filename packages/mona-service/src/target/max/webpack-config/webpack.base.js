@@ -10,7 +10,7 @@ const createModule = require('../utils/createVirtualModule');
 const webpack = require('webpack');
 
 const generateBaseConfig = options => {
-  const { pxToRem, entry, useWebExt } = options;
+  const { pxToRem, entry, useWebExt, appid } = options;
 
   let postcssPlugins = [
     PostcssPluginRpxToVw,
@@ -139,7 +139,9 @@ const generateBaseConfig = options => {
         '@bytedance/mona-runtime': '@bytedance/mona-client-max/dist/index.web.js'
       }
     },
-    plugins: [new MvJSONPlugin(), createModule(entry, buildId, useWebExt)],
+    plugins: [new MvJSONPlugin(), createModule(entry, buildId, useWebExt), new webpack.DefinePlugin({
+      '__MONA_APPID': JSON.stringify(appid),
+    })],
   };
 };
 

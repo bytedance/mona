@@ -3,13 +3,10 @@ import webpack from 'webpack';
 import ora from 'ora';
 import chalk from 'chalk';
 
-const buildType = 'umd';
-const pxToRem = false;
-
 const pluginName = 'WebBootstrapPlugin';
 
 let alreadyStart = false;
-const WebBootstrapPlugin = (entry: string) => ({
+const WebBootstrapPlugin = (entry: string, appid: string) => ({
   name: pluginName,
   apply(compiler: any) {
     const isDev = process.env.NODE_ENV !== 'production';
@@ -19,8 +16,7 @@ const WebBootstrapPlugin = (entry: string) => ({
         if (alreadyStart) {
           return Promise.resolve();
         }
-        
-        let webpackConfig = require('../webpack-config/webpack.dev')(buildType, entry, pxToRem, true);
+        let webpackConfig = require('../webpack-config/webpack.dev')({ entry, useWebExt: true, appid });
         const webpackCompiler = webpack(webpackConfig);
         const devConfig = webpackConfig.devServer;
         const devServer = new WebpackDevServer(devConfig, webpackCompiler);
@@ -28,7 +24,7 @@ const WebBootstrapPlugin = (entry: string) => ({
         alreadyStart = true;
         return devServer.start();
       } else {
-        let webpackConfig = require('../webpack-config/webpack.prod')(buildType, entry, pxToRem, true);
+        let webpackConfig = require('../webpack-config/webpack.prod')({ entry, useWebExt: true, appid });
         const webpackCompiler = webpack(webpackConfig);
 
         const spinner = ora('编译web产物中...').start();

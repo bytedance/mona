@@ -19,14 +19,12 @@ const max: IPlugin = ctx => {
     // 原始webpack打包逻辑
     const webpackStart = tctx.startFn;
     const webpackBuild = tctx.buildFn;
-    let pxToRem = false;
     const h5Entry = path.join(configHelper.cwd, monaConfig.input);
-    let buildType = 'umd';
 
     const transform = (isInjectProps = false) => {
       const entry = ttmlToReactLynx(tempReactLynxDir, configHelper);
       writeEntry(tempReactLynxDir, entry, isInjectProps);
-      writeLynxConfig(tempReactLynxDir);
+      writeLynxConfig(tempReactLynxDir, monaConfig.appId || 'NO_APPID');
     }
 
     const runSpeedy = (cmd: 'dev' | 'build' = 'dev') => {
@@ -53,7 +51,7 @@ const max: IPlugin = ctx => {
           // 旧的打包逻辑
           tctx.configureWebpack(() => {
             monaConfig.chain = (pre: any) => pre;
-            return require('./webpack-config/webpack.dev')(buildType, h5Entry, pxToRem);
+            return require('./webpack-config/webpack.dev')({ entry: h5Entry });
           });
           webpackStart({});
         }
@@ -71,7 +69,7 @@ const max: IPlugin = ctx => {
         } else {
           tctx.configureWebpack(() => {
             monaConfig.chain = (pre: any) => pre;
-            return require('./webpack-config/webpack.prod')(buildType, h5Entry, pxToRem)
+            return require('./webpack-config/webpack.prod')({ entry: h5Entry })
           });
           webpackBuild({});
         }

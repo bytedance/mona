@@ -3,7 +3,32 @@ import { EventOptionsType, Listener } from "@/types/type";
 import { JSAPI_PERMISSION_CACHE } from "./constants";
 import { ErrorCode, genErrorResponse, JsApiPermissionListResponse, NativeFetchRes, removeEventPrefix } from "./util";
 
+function assureGlobal(global: any) {
+  let globaStorage: any = {};
+  if (!global.request) {
+    global.request = function() {
+      return Promise.reject('[MonaLog]此环境未实现request');
+    }
+  }
+  if (!global.setStorage) {
+    global.setStorage = (options: any) => {
+      const key = `${options.key}_${options.key}`
+      globaStorage[key] = options.data;
+      console.log('[MonaLog]此环境未实现setStorage')
+    };
+  }
+  if (!global.getStorage) {
+    global.getStorage = (options: any) => {
+      const key = `${options.key}_${options.key}`
+      console.log('[MonaLog]此环境未实现getStorage')
+      return globaStorage[key];
+    };
+  }
+}
+
 export const genMaxEventSdk = (appid: string, global: any) => {
+  assureGlobal(global)
+  
   const MAX_COMPONENT_PLUGINID = '__MAX_COMPONENT_PLUGINID__';
 
   const maxEvent = global ? global.__maxEvent : undefined;
@@ -78,7 +103,7 @@ export const genMaxEventSdk = (appid: string, global: any) => {
   }
   function setPermissionCache(value: string[]) {
     try {
-      let data = _getStorage.get({ key: JSAPI_PERMISSION_CACHE, unique: appid });
+      let data = _getStorage({ key: JSAPI_PERMISSION_CACHE, unique: appid });
       let dataObj: { [key: string]: string[] };
       if (data) {
         // 有缓存

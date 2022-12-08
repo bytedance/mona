@@ -9,7 +9,7 @@ export const getLynxEntry = (tempReactLynxDir: string, isWeb = false) => {
   }
   return lynxEntry;
 };
-export const writeLynxConfig = (tempReactLynxDir: string) => {
+export const writeLynxConfig = (tempReactLynxDir: string, appid: string) => {
   const lynxConfigFile = path.join(tempReactLynxDir, 'lynx.config.js');
   const lynxEntry = getLynxEntry(tempReactLynxDir);
   const webEntry = getLynxEntry(tempReactLynxDir, true);
@@ -34,7 +34,10 @@ export const writeLynxConfig = (tempReactLynxDir: string) => {
                   return 'doudian://monaview?url=' + encodeURIComponent(origin)
                 }
               },
-              plugins: [WebBootstrapPlugin("${webEntry}")]
+              plugins: [WebBootstrapPlugin("${webEntry}", "${appid}")],
+              define: {
+                __MONA_APPID: JSON.stringify(${appid})
+              }
             },
             {
               name: "component",
@@ -45,7 +48,7 @@ export const writeLynxConfig = (tempReactLynxDir: string) => {
               encode: {
                 targetSdkVersion: "2.5",
               },
-              plugins: [WebBootstrapPlugin("${webEntry}")]
+              plugins: [WebBootstrapPlugin("${webEntry}", "${appid}")]
             },
           ];
           `;
