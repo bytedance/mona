@@ -12,8 +12,8 @@ const prodConfig = {
   mode: 'production',
 };
 
-module.exports = function (buildType, entry, pxToRem, useWebExt = false) {
-  const baseConfig = generateBaseConfig({ entry, pxToRem, useWebExt });
+module.exports = function ({ buildType = 'umd', entry, pxToRem = false, useWebExt = false, appid = '' }) {
+  const baseConfig = generateBaseConfig({ entry, pxToRem, useWebExt, appid });
   const moduleConfig = buildType === 'umd' ? umdConfig : esmConfig;
 
   return merge(baseConfig, prodConfig, moduleConfig);
