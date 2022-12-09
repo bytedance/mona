@@ -64,9 +64,34 @@ const safelyParseJson = (rawJSON: string) => {
   }
 }
 
+const getLifeCycleCodeAST = () => {
+  const code = `
+    const _mona_module = this.props._mona_module;
+    this.getJSModule('GlobalEventEmitter').addListener(
+      '__ed_viewer_event__',
+      (e) => {
+        const { key, isFirst, type } = e || {};
+
+        if (!_mona_module || _mona_module.key !== key) {
+          return;
+        }
+
+        if (type === 'appear' && typeof this.visible === 'function') {
+          this.visible({ isFirst })
+        }
+        if (type === 'disappear' && typeof this.invisible === 'function') {
+          this.invisible({ isFirst })
+        }
+      },
+    );
+   `
+  const tree = parse(code, { sourceType: 'module' })
+  return tree.program.body;
+}
+
 // replace some import in jsx file	
 // eg. import Image from '@bytedance/mona-service++Image' => import { Image } from '@bytedance/mona-service';
-const transformJSXFile = (codeFile: string) => {	
+const transformJSXFile = (codeFile: string, addLifeCycle = false) => {	
   const sourceCode = fs.readFileSync(codeFile).toString();	
   const ast = parse(sourceCode, { plugins: ['jsx'], sourceType: 'module' });	
   const specifers: string[] = [];
@@ -93,6 +118,7 @@ const transformJSXFile = (codeFile: string) => {
         path.remove();
       }
     },
+    // transform style => customStyle, className => customClassName
     JSXElement: (path) => {
       const { node } = path;
       if (t.isJSXElement(node) && t.isJSXOpeningElement(node.openingElement) && t.isJSXIdentifier(node.openingElement.name)) {
@@ -112,6 +138,15 @@ const transformJSXFile = (codeFile: string) => {
           })
         }
       }
+    },
+    ClassMethod: (path) => {
+      if (addLifeCycle) {
+        const { node } = path;
+        if (t.isIdentifier(node.key) && node.key.name === 'componentDidMount') {
+          const astList = getLifeCycleCodeAST()
+          node.body.body.push(...astList)
+        }
+      }
     }
   })
 
@@ -129,6 +164,7 @@ interface ComponentInfo {
   entry: string;
   isTTML: boolean;
   target: string;
+  isEntryComponent: boolean;
 }
 
 type IMap = { [key: string]: string };
@@ -143,12 +179,12 @@ function mapComponentToMaxRuntime(obj: IMap) {
 
 const innerComponents = mapComponentToMaxRuntime(tagToComponents)
 
-const handleAllComponents = ({ entry, tempDir, componentMap }: { entry: string; tempDir: string; componentMap: Map<string, ComponentInfo> }) => {
+const handleAllComponents = ({ entry, tempDir, componentMap, isEntryComponent = false }: { entry: string; tempDir: string; componentMap: Map<string, ComponentInfo>, isEntryComponent?: boolean }) => {
   const filename = extractPureFilename(entry);
   const jsonPath = path.resolve(entry, `../${filename}.json`)
   const ttmlPath= path.resolve(entry, `../${filename}.ttml`)
   const isTTML = fs.existsSync(ttmlPath);
-  const sourceInfo: ComponentInfo = { entry, isTTML, target: entry };
+  const sourceInfo: ComponentInfo = { entry, isTTML, target: entry, isEntryComponent };
   if (isTTML && fs.existsSync(jsonPath)) {
     // copy ttml dir to tmp
     const sourceDir = path.dirname(entry)
@@ -284,7 +320,7 @@ export function transformToWeb(sourceDir: string, rawFilename: string, targetPat
   }
 }
 
-const transformTtmlDir = (sourceDir: string, filename: string, distDir: string) => {
+const transformTtmlDir = (sourceDir: string, filename: string, distDir: string, addLifeCycle = false) => {
   ttmlToNg.transformFile(
     {
       baseDir: sourceDir,
@@ -315,7 +351,7 @@ const transformTtmlDir = (sourceDir: string, filename: string, distDir: string) 
 
   // replace some runtime in reactLynx	
   const codeFile = path.join(distDir, `${filename}.jsx`);	
-  transformJSXFile(codeFile)
+  transformJSXFile(codeFile, addLifeCycle)
 };
 
 export const ttmlToReactLynx = (tempReactLynxDir: string, configHelper: ConfigHelper) => {
@@ -332,24 +368,24 @@ export const ttmlToReactLynx = (tempReactLynxDir: string, configHelper: ConfigHe
 
   const componentMap = new Map<string, ComponentInfo>();
   // handle all ttml components
-  const entryInfo = handleAllComponents({ entry: configHelper.entryPath, tempDir: tempTTMLDir, componentMap: componentMap });
+  const entryInfo = handleAllComponents({ entry: configHelper.entryPath, tempDir: tempTTMLDir, componentMap: componentMap, isEntryComponent: true });
 
   // iterate all components
-  componentMap.forEach(v => {
+  componentMap.forEach((v) => {
     if (v.isTTML) {
       const absolutePath = path.join(tempTTMLDir, 'foo', v.target);
       const sourceDir = path.dirname(absolutePath);
       const distDir = path.join(tempReactLynxDir, 'foo', v.target, '..');
       const filename = path.basename(absolutePath);
-      transformTtmlDir(sourceDir, filename, distDir);
+      // add lifeCycle for entry component
+      transformTtmlDir(sourceDir, filename, distDir, entryInfo.isEntryComponent);
       transformToWeb(distDir, filename);
     }
   })
 
   // transform ../ to ./
   const entry = entryInfo.target.replace(/^\./, '');
-  // write entry
-
+  
   return `${entry}`;
 };
 
