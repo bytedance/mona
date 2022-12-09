@@ -66,24 +66,26 @@ const safelyParseJson = (rawJSON: string) => {
 
 const getLifeCycleCodeAST = () => {
   const code = `
-    const _mona_module = this.props._mona_module;
-    this.getJSModule('GlobalEventEmitter').addListener(
-      '__ed_viewer_event__',
-      (e) => {
-        const { key, isFirst, type } = e || {};
+    if (typeof this.getJSModule === 'function') {
+      const _mona_module = this.props._mona_module;
+      this.getJSModule('GlobalEventEmitter').addListener(
+        '__ed_viewer_event__',
+        (e) => {
+          const { key, isFirst, type } = e || {};
 
-        if (!_mona_module || _mona_module.key !== key) {
-          return;
-        }
+          if (!_mona_module || _mona_module.key !== key) {
+            return;
+          }
 
-        if (type === 'appear' && typeof this.visible === 'function') {
-          this.visible({ isFirst })
-        }
-        if (type === 'disappear' && typeof this.invisible === 'function') {
-          this.invisible({ isFirst })
-        }
-      },
-    );
+          if (type === 'appear' && typeof this.visible === 'function') {
+            this.visible({ isFirst })
+          }
+          if (type === 'disappear' && typeof this.invisible === 'function') {
+            this.invisible({ isFirst })
+          }
+        },
+      );
+    }
    `
   const tree = parse(code, { sourceType: 'module' })
   return tree.program.body;
