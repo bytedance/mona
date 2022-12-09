@@ -1425,7 +1425,7 @@ export interface OriginApis {
   pageScrollTo: (
     options: { scrollTop: number; duration?: number } & Callbacks<CommonErrorArgs, CommonErrorArgs>,
   ) => void;
-  navigateTo: (options: { url: string } & Callbacks<CommonErrorArgs, CommonErrorArgs>) => void;
+  navigateTo: (options: { url?: string, action_value?: number, action_type?: string | number } & Callbacks<CommonErrorArgs, CommonErrorArgs>) => void;
   redirectTo: (options: { url: string } & Callbacks<CommonErrorArgs, CommonErrorArgs>) => void;
   switchTab: (options: { url: string } & Callbacks<CommonErrorArgs, CommonErrorArgs>) => void;
   navigateBack: (options?: { delta?: number } & Callbacks<CommonErrorArgs, CommonErrorArgs>) => void;

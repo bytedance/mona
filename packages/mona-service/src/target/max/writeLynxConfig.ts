@@ -48,7 +48,10 @@ export const writeLynxConfig = (tempReactLynxDir: string, appid: string) => {
               encode: {
                 targetSdkVersion: "2.1",
               },
-              plugins: [WebBootstrapPlugin("${webEntry}", "${appid}")]
+              plugins: [WebBootstrapPlugin("${webEntry}", "${appid}")],
+              define: {
+                __MONA_APPID: JSON.stringify("${appid}")
+              }
             },
           ];
           `;

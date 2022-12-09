@@ -1,6 +1,6 @@
 import { BaseApis } from '@bytedance/mona';
 import { promisify } from '@bytedance/mona-shared/dist/promisify';
-import { maxGetStorage, maxGetStorageSync, maxNavigateTo, maxRemoveStorage, maxRemoveStorageSync, maxRequest, maxSetStorage, maxSetStorageSync } from './utils';
+import { maxGetStorage, maxGetStorageSync, maxNavigateTo, maxRemoveStorage, maxRemoveStorageSync, maxReportAnalytics, maxRequest, maxSetStorage, maxSetStorageSync } from './utils';
 
 
 const noImplementFactory = (api: string) => (): any => {
@@ -80,7 +80,7 @@ export const getSetting: BaseApis['getSetting'] = promisify(noImplementFactory('
 export const openSettings: BaseApis['openSettings'] = promisify(noImplementFactory('openSettings'));
 export const authorize: BaseApis['authorize'] = promisify(noImplementFactory('authorize'));
 export const showDouyinOpenAuth: BaseApis['showDouyinOpenAuth'] = promisify(noImplementFactory('showDouyinOpenAuth'));
-export const reportAnalytics: BaseApis['reportAnalytics'] = noImplementFactory('reportAnalytics');
+export const reportAnalytics: BaseApis['reportAnalytics'] = maxReportAnalytics;
 export const canRateAwemeOrders: BaseApis['canRateAwemeOrders'] = promisify(noImplementFactory('canRateAwemeOrders'));
 export const rateAwemeOrder: BaseApis['rateAwemeOrder'] = promisify(noImplementFactory('rateAwemeOrder'));
 export const followOfficialAccount: BaseApis['followOfficialAccount'] = promisify(

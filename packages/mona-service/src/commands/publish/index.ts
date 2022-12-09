@@ -3,7 +3,7 @@ import chalk from 'chalk';
 import { requestBeforeCheck } from '../common';
 import inquirer from 'inquirer';
 import fs from 'fs';
-
+import path from 'path';
 import { upload } from './utils';
 import { compressDir } from '../compress/utils';
 import { generateRequestFromOpen } from '../common';
@@ -86,14 +86,14 @@ const publish: IPlugin = ctx => {
         } else {
           const shouldEdit = latestVersionStatus && [2, 3, 5, 7].indexOf(latestVersionStatus) !== -1;
           const isOldApp = appDetail?.appExtend?.frameworkType !== 1;
+          // judge whether is mixed
+          const entry = ctx.configHelper.entryPath;
+          const ext = path.extname(entry);
+          const targetTTMLFile = entry.replace(ext, '') + '.ttml';
+          const isMixed = fs.existsSync(targetTTMLFile);
+          console.log(chalk.green(isMixed ? '当前为混排组件版本' : '当前为非混排组件版本'));
           // ask desc
           const answer = await inquirer.prompt([
-            isOldApp ? {
-              type: 'confirm',
-              name: 'isMixed',
-              message: '是否为混排（旧有h5的为非混排）',
-              default: true,
-            } : undefined,
             {
               type: 'input',
               name: 'desc',
@@ -112,7 +112,7 @@ const publish: IPlugin = ctx => {
 
           // upload
           const { fileId, fileName } = await upload(output, user.userId, args);
-          const frameworkType = isOldApp ? answer.isMixed : undefined;
+          const frameworkType = isOldApp ? (isMixed ? 1 : 0) : undefined;
 
           // params
           const params = { version: latestVersion, appId, desc: answer.desc || '', fileId, fileName, frameworkType };

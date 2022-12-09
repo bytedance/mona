@@ -71,16 +71,12 @@ export interface FileType {
   filePath: string;
 }
 
-function isString(value: string | FileType): value is string {
-  return typeof value === 'string';
-}
-
-export async function createUploadForm(params: Record<string, string | FileType>, argsHeaders: Record<string, any>) {
+export async function createUploadForm(params: Record<string, string | number | FileType>, argsHeaders: Record<string, any>) {
   const form = new FormData();
   Object.keys(params).forEach(key => {
     const value = params[key];
 
-    if (isString(value)) {
+    if (typeof value !== 'object') {
       form.append(key, value);
     } else {
       form.append(key, fs.createReadStream(value.filePath), {
@@ -101,7 +97,6 @@ export async function createUploadForm(params: Record<string, string | FileType>
     });
   });
   const headers = form.getHeaders();
-
   const requestOptions: AxiosRequestConfig<FormData> = {
     responseType: 'json',
     headers: {

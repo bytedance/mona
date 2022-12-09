@@ -92,11 +92,10 @@ export const maxRemoveStorageSync: BaseApis['removeStorageSync'] = function(key)
   lynx.removeStorage ? lynx.removeStorage({ key, unique: __MONA_APPID }) : logNoImpl('removeStorageSync', key);
 }
 
-
 export const maxNavigateTo: OriginApis['navigateTo'] = function(options) {
   if (lynx.navigateTo) {
     try {
-      lynx.navigateTo({ url: options.url })
+      lynx.openPage(options)
       options.success?.({ errMsg: 'navigateTo:ok' })
       options.complete?.({ errMsg: 'navigateTo:ok' })
     } catch(err: any) {
@@ -106,5 +105,14 @@ export const maxNavigateTo: OriginApis['navigateTo'] = function(options) {
     }
   } else {
     logNoImpl('navigateTo', options)
+  }
+}
+
+export const maxReportAnalytics: BaseApis['reportAnalytics'] = function(eventName, data) {
+  if (lynx.reportAnalytics) {
+    lynx.reportAnalytics({ eventName, params: data })
+    console.log('[MonaLog]reportAnalytics上报数据', `eventName: ${eventName}`, `data: ${data}`)
+  } else {
+    logNoImpl('reportAnalytics', eventName, data)
   }
 }

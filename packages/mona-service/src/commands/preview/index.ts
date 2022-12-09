@@ -13,6 +13,7 @@ import {
   buildProject,
   generateH5Qrcode,
   processProjectData,
+  askMixedFactory,
 } from './utils';
 import { generateRequestFromOpen, requestBeforeCheck } from '../common';
 import chalk from 'chalk';
@@ -45,7 +46,7 @@ const preview: IPlugin = ctx => {
 
       switch (args.target) {
         case 'max':
-          await pipe(buildMaxComponent, processMaxComponentData, ...maxProcess)(ctx);
+          await pipe(askMixedFactory(request), buildMaxComponent, processMaxComponentData, ...maxProcess)(ctx);
           break;
         case 'max-template':
           await pipe(processMaxTemplateData, ...maxProcess)(ctx);

@@ -128,14 +128,37 @@ export const generateQrcodeFactory =
     return { qrcode, expireTime: res.expireTime };
   };
 
-export function buildMaxComponent(ctx: PluginContext) {
-  console.log('build');
-  execSync(`mona-service build -t max`, {});
-  return ctx;
+export function askMixedFactory(request: Request<any>) {
+  return async function(ctx: PluginContext) {
+    const appid = ctx.configHelper.projectConfig.appId;
+    
+    console.log(chalk.green(`拉取当前组件信息：${appid}`));
+    // version detail
+    const appDetail: any = await request('/captain/appManage/getAppDetail', {
+      method: 'GET',
+      params: { appId: appid },
+    });
+    const isOldApp = appDetail?.appExtend?.frameworkType !== 1;
+    // judge whether is mixed
+    const entry = ctx.configHelper.entryPath;
+    const ext = path.extname(entry);
+    const targetTTMLFile = entry.replace(ext, '') + '.ttml';
+    const isMixed = fs.existsSync(targetTTMLFile);
+    console.log(chalk.green(isMixed ? '当前为混排组件版本' : '当前为非混排组件版本'));
+    const frameworkType = isOldApp ? (isMixed ? 1 : 0) : undefined;
+    return { frameworkType, ctx }
+  }
+}
+
+export function buildMaxComponent(params: { ctx: PluginContext, frameworkType?: number }) {
+  const cmd = `mona-service build -t max${params.frameworkType === 0 ? ' --old' : ''}`;
+  console.log(chalk.green(`开始构建 ${cmd}`))
+  execSync(cmd, {});
+  return params;
 }
 
 // process max component data
-export async function processMaxComponentData(ctx: PluginContext) {
+export async function processMaxComponentData({ ctx, frameworkType }: { ctx: PluginContext, frameworkType?: number }) {
   const helper = ctx.configHelper || ctx.builder?.configHelper;
   const { appId = '', output } = helper.projectConfig;
 
@@ -144,10 +167,14 @@ export async function processMaxComponentData(ctx: PluginContext) {
 
   // read value from preview.json
   const componentValuePath = path.join(helper.cwd, 'src/preview.json');
+  if (!fs.existsSync(componentValuePath)) {
+   throw new Error('请先保存preview.json')
+  }
   const componentAppDefaultValue = fs.readFileSync(componentValuePath).toString();
 
   return {
     appId,
+    frameworkType,
     testFile: {
       filePath,
     },
