@@ -401,7 +401,7 @@ export const webNavigateTo: OriginApis['navigateTo'] = options => {
     errMsg = 'navigateTo:ok';
     const monaHistory = window.__mona_history;
     const currentPath = monaHistory.location.pathname;
-    const targetPath = formatPath(options.url, currentPath);
+    const targetPath = formatPath(options.url || '', currentPath);
     monaHistory.push(targetPath);
     options.success?.({ errMsg });
   } catch (err) {
