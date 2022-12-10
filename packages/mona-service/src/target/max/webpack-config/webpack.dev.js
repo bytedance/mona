@@ -77,7 +77,7 @@ const devConfig = {
                     #root {
                       position: relative;
                       height: 100vh;
-                      overflow: hidden;
+                      overflow: auto;
                     }
                   </style>
                   <style>

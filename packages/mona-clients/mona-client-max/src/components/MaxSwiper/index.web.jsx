@@ -21,7 +21,7 @@ export default class MaxSwiper extends Component {
       children,
       customStyle,
       customClass,
-      indicatorDots,
+      indicatorDots = false,
       indicatorColor,
       indicatorActiveColor,
       autoplay,

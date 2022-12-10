@@ -1,12 +1,12 @@
 import { BaseApis, OriginApis } from "@bytedance/mona";
 
-const __MONA_APPID = '';
-
+const currentAppid = __MONA_APPID;
 const logNoImpl = (apiName: string, ...params: any) => {
   console.log(`[MonaLog]调用 ${apiName}，当前环境未实现， 当前传入参数：`, params)
 }
 export const maxRequest: OriginApis['request'] = function(options) {
   if (lynx.request) {
+    console.log('lynx.request', options)
      lynx.request({
       url: options.url,
       method: options.method,
@@ -33,8 +33,9 @@ export const maxRequest: OriginApis['request'] = function(options) {
 
 export const maxGetStorage: OriginApis['getStorage'] = function(options) {
   if (lynx.getStorage) {
+    console.log('lynx.getStorage', options)
     try {
-      const res = lynx.getStorage({ key: options.key, unique: __MONA_APPID })
+      const res = lynx.getStorage({ key: options.key, unique: currentAppid })
       const data = { data: res, errMsg: 'getStorage:ok' };
       options.success?.(data);
       options.complete?.(data);
@@ -49,13 +50,15 @@ export const maxGetStorage: OriginApis['getStorage'] = function(options) {
 }
 
 export const maxGetStorageSync: BaseApis['getStorageSync'] = function(key) {
-  return lynx.getStorage ? lynx.getStorage({ key, unique: __MONA_APPID }) : logNoImpl('getStorageSync', key);
+  console.log('lynx.getStorageSync', key)
+  return lynx.getStorage ? lynx.getStorage({ key, unique: currentAppid }) : logNoImpl('getStorageSync', key);
 }
 
 export const maxSetStorage: OriginApis['setStorage'] = function (options) {
   if (lynx.setStorage) {
+    console.log('lynx.setStorage', options)
     try {
-      lynx.setStorage({ key: options.key, unique: __MONA_APPID, data: options.data })
+      lynx.setStorage({ key: options.key, unique: currentAppid, data: options.data })
       options.success?.({ errMsg: 'setStorage:ok' })
       options.complete?.({ errMsg: 'setStorage:ok' })
     } catch(err: any) {
@@ -69,13 +72,15 @@ export const maxSetStorage: OriginApis['setStorage'] = function (options) {
 }
 
 export const maxSetStorageSync: BaseApis['setStorageSync'] = function(key, data) {
-  return lynx.setStorage ? lynx.setStorage({ key, unique: __MONA_APPID, data }) : logNoImpl('setStorageSync', key, data)
+  console.log('lynx.setStorageSync', key, data)
+  return lynx.setStorage ? lynx.setStorage({ key, unique: currentAppid, data }) : logNoImpl('setStorageSync', key, data)
 }
 
 export const maxRemoveStorage: OriginApis['removeStorage'] = function(options) {
   if (lynx.removeStorage) {
+     console.log('lynx.removeStorage', options)
     try {
-      lynx.removeStorage({ key: options.key, unique: __MONA_APPID })
+      lynx.removeStorage({ key: options.key, unique: currentAppid })
       options.success?.({ errMsg: 'removeStorage:ok' })
       options.complete?.({ errMsg: 'removeStorage:ok' })
     } catch(err: any) {
@@ -89,11 +94,13 @@ export const maxRemoveStorage: OriginApis['removeStorage'] = function(options) {
 }
 
 export const maxRemoveStorageSync: BaseApis['removeStorageSync'] = function(key) {
-  lynx.removeStorage ? lynx.removeStorage({ key, unique: __MONA_APPID }) : logNoImpl('removeStorageSync', key);
+  console.log('lynx.removeStorageSync', key)
+  lynx.removeStorage ? lynx.removeStorage({ key, unique: currentAppid }) : logNoImpl('removeStorageSync', key);
 }
 
 export const maxNavigateTo: OriginApis['navigateTo'] = function(options) {
   if (lynx.navigateTo) {
+    console.log('lynx.navigateTo', options)
     try {
       lynx.openPage(options)
       options.success?.({ errMsg: 'navigateTo:ok' })
@@ -110,6 +117,7 @@ export const maxNavigateTo: OriginApis['navigateTo'] = function(options) {
 
 export const maxReportAnalytics: BaseApis['reportAnalytics'] = function(eventName, data) {
   if (lynx.reportAnalytics) {
+    console.log('lynx.reportAnalytics', eventName, data)
     lynx.reportAnalytics({ eventName, params: data })
     console.log('[MonaLog]reportAnalytics上报数据', `eventName: ${eventName}`, `data: ${data}`)
   } else {

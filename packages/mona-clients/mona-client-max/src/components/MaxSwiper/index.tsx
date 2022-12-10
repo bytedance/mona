@@ -44,7 +44,7 @@ export default class MaxSwiper extends Component<IProps> {
       children,
       customStyle,
       customClass,
-      indicatorDots,
+      indicatorDots = false,
       indicatorColor,
       indicatorActiveColor,
       autoplay,

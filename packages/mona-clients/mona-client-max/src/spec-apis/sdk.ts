@@ -12,15 +12,15 @@ function assureGlobal(global: any) {
   }
   if (!global.setStorage) {
     global.setStorage = (options: any) => {
-      const key = `${options.key}_${options.key}`
+      const key = `${options.unique}_${options.key}`
       globaStorage[key] = options.data;
-      console.log('[MonaLog]此环境未实现setStorage')
+      console.log('[MonaLog]此环境未实现setStorage，模拟使用全局变量存储')
     };
   }
   if (!global.getStorage) {
     global.getStorage = (options: any) => {
-      const key = `${options.key}_${options.key}`
-      console.log('[MonaLog]此环境未实现getStorage')
+      const key = `${options.unique}_${options.key}`
+      console.log('[MonaLog]此环境未实现getStorage，模拟从全局变量取值')
       return globaStorage[key];
     };
   }
