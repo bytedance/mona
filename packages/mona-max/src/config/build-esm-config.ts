@@ -1,8 +1,8 @@
-module.exports = {
+export default {
   output: {
-    filename: "[name].esm.js",
+    filename: '[name].esm.js',
     library: {
-      type: "module",
+      type: 'module',
     },
     // environment: {
     //   module: true,
@@ -11,9 +11,9 @@ module.exports = {
   experiments: {
     outputModule: true,
   },
-  externalsType: "window",
+  externalsType: 'window',
   externals: {
-    react: "react",
-    "react-dom": "react-dom"
-  }
+    react: 'react',
+    'react-dom': 'react-dom',
+  },
 };

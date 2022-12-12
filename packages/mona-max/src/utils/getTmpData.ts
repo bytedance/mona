@@ -1,6 +1,7 @@
-const { C_TYPE_NEW_ISV } = require('./constants.js');
+//@ts-nocheck
+import { C_TYPE_NEW_ISV } from './constants.js';
 
-const isJSONStringifyLegal = v => {
+const isJSONStringifyLegal = (v: any) => {
   try {
     JSON.stringify(v);
     return true;
@@ -9,12 +10,12 @@ const isJSONStringifyLegal = v => {
   }
 };
 
-function transformSchemaValue(value) {
+function transformSchemaValue(value: any) {
   if (!value) return '';
   const keysOfValue = Object.keys(value);
   if (!Array.isArray(keysOfValue)) return '';
 
-  let res = [];
+  let res: any = [];
 
   keysOfValue.forEach(key => {
     const v = value[key] ? JSON.parse(value[key]) : null;
@@ -28,7 +29,7 @@ function transformSchemaValue(value) {
             c_type: i.type,
             name: i.name,
             reject_info: null,
-            scheme_value: {},
+            scheme_value: {} as Record<string, any>,
           };
           Object.keys(i.value).forEach(j => {
             const vForObj = i.value[j];
@@ -39,7 +40,7 @@ function transformSchemaValue(value) {
               reject_info: null,
             };
           });
-          res.scheme_value = JSON.stringify(res.scheme_value);
+          res.scheme_value = JSON.stringify(res.scheme_value) as unknown as Record<string, any>;
           return res;
         }
 
@@ -75,9 +76,9 @@ function transformSchemaValue(value) {
   });
 
   return res;
-};
+}
 
-module.exports = function finalData(value) {
+export function finalData(value) {
   if (!value) return '';
   const keysOfValue = Object.keys(value);
   if (!Array.isArray(keysOfValue)) return '';
@@ -88,11 +89,11 @@ module.exports = function finalData(value) {
     const item = {
       componentId: key.component_id,
       componentVersion: key.version,
-    }
-    const componentValue = transformSchemaValue(key.data.value)
-    item.value = JSON.stringify(componentValue)
-    res.push(item)
-  })
+    };
+    const componentValue = transformSchemaValue(key.data.value);
+    item.value = JSON.stringify(componentValue);
+    res.push(item);
+  });
 
-  return JSON.stringify(res)
+  return JSON.stringify(res);
 }

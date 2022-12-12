@@ -1,13 +1,19 @@
-const fs = require('fs');
-const path = require('path');
-const { merge } = require('webpack-merge');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+import fs from 'fs';
+import path from 'path';
+import { merge } from 'webpack-merge';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+
+import esmConfig from './build-esm-config';
+
+import generateBaseConfig from './webpack.base';
+
+import umdConfig from './build-umd-config';
+
+import { DEV_SERVER_PORT, AfterBuildPlugin, TARGET_URL } from '../utils/maxDevServer';
+
 const WatchExternalFilesPlugin = require('webpack-watch-files-plugin').default;
-const generateBaseConfig = require('./webpack.base.js');
-const umdConfig = require('./build-umd-config.js');
-const esmConfig = require('./build-esm-config.js');
-const { DEV_SERVER_PORT, AfterBuildPlugin, TARGET_URL } = require('../utils/maxDevServer');
-const getDevProps = require('../utils/getDevProps');
+
+import { getDevProps } from '../utils/getDevProps';
 
 const { name = '@shop-isv/isv-com' } = JSON.parse(
   fs.readFileSync(path.resolve(process.cwd(), './package.json'), 'utf-8'),
@@ -101,7 +107,7 @@ const devConfig = {
   ],
 };
 
-module.exports = function (projectConfig) {
+export default function (projectConfig) {
   const buildType = projectConfig.buildType || 'umd';
   const baseConfig = generateBaseConfig(projectConfig);
   const moduleConfig = buildType === 'umd' ? umdConfig : esmConfig;
@@ -111,4 +117,4 @@ module.exports = function (projectConfig) {
   }
 
   return merge(baseConfig, devConfig, moduleConfig);
-};
+}

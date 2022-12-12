@@ -1,3 +1,3 @@
 const component = require('./scripts/component');
 
-module.exports = [component];
+export default [component];

@@ -1,18 +1,18 @@
-// move schema json file to dist directory
-const fs = require('fs');
-const path = require('path');
-const chalk = require('chalk');
+// @ts-nocheck
+import fs from 'fs';
+import path from 'path';
+import chalk from 'chalk';
 
 function handleFile(fileName, defaultData) {
   const configPath = path.resolve(process.cwd(), `./src/${fileName}.json`);
   const targetPath = path.resolve(process.cwd(), `./dist/${fileName}.json`);
   const targetDir = path.resolve(process.cwd(), './dist');
 
-  if(!fs.existsSync(targetDir)) {
+  if (!fs.existsSync(targetDir)) {
     fs.mkdirSync(targetDir);
   }
 
-  if(!fs.existsSync(targetPath)) {
+  if (!fs.existsSync(targetPath)) {
     fs.writeFileSync(targetPath, defaultData);
   }
 
@@ -22,11 +22,11 @@ function handleFile(fileName, defaultData) {
   }
 }
 
-module.exports = class MvJsonPlugin {
+export class MvJsonPlugin {
   apply(compiler) {
     compiler.hooks.afterEmit.tap('AfterBuild', () => {
-      handleFile('schema', '{}')
-      handleFile('review', '')
-    })
+      handleFile('schema', '{}');
+      handleFile('review', '');
+    });
   }
 }

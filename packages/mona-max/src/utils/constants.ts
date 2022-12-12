@@ -1,4 +1,4 @@
-const C_TYPE_NEW_ISV = {
+export const C_TYPE_NEW_ISV = {
   input: { value: 1, componentName: 'Input' },
   textArea: { value: 2, componentName: 'Input.TextArea' },
   radio: { value: 3, componentName: 'Radio.Group' },
@@ -19,7 +19,3 @@ const C_TYPE_NEW_ISV = {
   objectContainer: { value: 20, componentName: 'Object' },
   listContainer: { value: 19, componentName: 'ArrayCards' },
 };
-
-module.exports = {
-  C_TYPE_NEW_ISV
-}

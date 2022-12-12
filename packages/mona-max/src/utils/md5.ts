@@ -1,3 +1,4 @@
+//@ts-nocheck
 /*
  * JavaScript MD5
  * https://github.com/blueimp/JavaScript-MD5
@@ -288,6 +289,6 @@ function rstr2hex(input) {
  * @param {string} s Input string
  * @returns {string} Hex encoded string
  */
- module.exports = function hexMD5(s) {
+export default function hexMD5(s) {
   return rstr2hex(rawMD5(s));
 }

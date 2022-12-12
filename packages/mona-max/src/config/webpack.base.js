@@ -1,13 +1,17 @@
-const path = require('path');
-const fs = require('fs-extra');
-const PostcssPluginRpxToVw = require('postcss-plugin-rpx2vw');
-const Pxtorem = require('postcss-pxtorem');
-const TerserPlugin = require('terser-webpack-plugin');
-const MvJSONPlugin = require('../utils/mvJsonPlugin');
-const CreateUniqueId = require('../utils/createUniqueId');
+import path from 'path';
+import fs from 'fs-extra';
+
+import Pxtorem from 'postcss-pxtorem';
+import PostcssPluginRpxToVw from 'postcss-plugin-rpx2vw';
+
+import TerserPlugin from 'terser-webpack-plugin';
+
+import { MvJsonPlugin } from '../utils/mvJsonPlugin';
+import { createModule } from '../utils/createVirtualModule';
+import { CreateUniqueId } from '../utils/createUniqueId';
+import deepMerge from 'lodash.merge';
+
 const buildId = CreateUniqueId();
-const createModule = require('../utils/createVirtualModule');
-const deepMerge = require('lodash.merge');
 const generateBaseConfig = projectConfig => {
   const { pxToRem, abilities } = projectConfig;
   const { less = {} } = abilities || {};
@@ -131,7 +135,7 @@ const generateBaseConfig = projectConfig => {
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '...'],
     },
-    plugins: [new MvJSONPlugin(), createModule(buildId)],
+    plugins: [new MvJsonPlugin(), createModule(buildId)],
   };
 };
 
@@ -147,4 +151,4 @@ try {
   console.error(e);
 }
 
-module.exports = generateBaseConfig;
+export default generateBaseConfig;

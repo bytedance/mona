@@ -2,9 +2,12 @@
   "name": "@bytedance/mona-max",
   "version": "0.2.39-beta.0",
   "description": "Cli for isv",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "echo \"build max\""
+    "build": "ttsc -b ",
+    "start": "ttsc -b -w",
+    "clean": "rm -rf dist"
   },
   "keywords": [],
   "author": "yegangchen@bytedance.com",
@@ -32,7 +35,10 @@
     "webpack-merge": "^5.8.0",
     "webpack-virtual-modules": "^0.4.3",
     "webpack-watch-files-plugin": "^1.2.0",
-    "ws": "^8.4.2"
+    "ws": "^8.4.2",
+    "ttypescript": "^1.5.12",
+    "typescript-json-schema": "^0.43.0",
+    "typescript-transform-paths": "^2.2.4"
   },
   "publishConfig": {
     "access": "public",
