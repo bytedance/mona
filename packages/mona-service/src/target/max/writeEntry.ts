@@ -44,7 +44,6 @@ import App from '${entry}';
         buildId: undefined,
       }
 
-      console.log('props', finalProps);
       return (
         <view id={buildId}>
             <App {...finalProps} />

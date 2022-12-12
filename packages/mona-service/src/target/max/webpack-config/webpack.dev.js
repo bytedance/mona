@@ -15,6 +15,7 @@ const { name = '@shop-isv/isv-com' } = JSON.parse(
 );
 
 const commonCss = require('./common-style');
+const { default: MaxMainAutoTypeWebpackPlugin } = require('../plugins/MaxMainAutoTypeWebpackPlugin.js');
 
 const devConfig = {
   mode: 'development',
@@ -104,9 +105,11 @@ const devConfig = {
           </html>`,
     }),
     new AfterBuildPlugin(),
+    new MaxMainAutoTypeWebpackPlugin(),
     new WatchExternalFilesPlugin({
       files: [path.join(process.cwd(), './src/schema.json')],
     }),
+    
   ],
 };
 
