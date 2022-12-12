@@ -1,3 +1,2 @@
-const component = require('./scripts/component');
-
+import component from './scripts/component';
 export default [component];
