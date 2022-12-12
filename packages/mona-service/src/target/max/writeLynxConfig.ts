@@ -9,7 +9,7 @@ export const getLynxEntry = (tempReactLynxDir: string, isWeb = false) => {
   }
   return lynxEntry;
 };
-export const writeLynxConfig = (tempReactLynxDir: string, appid: string) => {
+export const writeLynxConfig = (tempReactLynxDir: string, appid: string, useComponent = false) => {
   const lynxConfigFile = path.join(tempReactLynxDir, 'lynx.config.js');
   const lynxEntry = getLynxEntry(tempReactLynxDir);
   const webEntry = getLynxEntry(tempReactLynxDir, true);
@@ -22,7 +22,7 @@ export const writeLynxConfig = (tempReactLynxDir: string, appid: string) => {
               input: {
                 "app": "${lynxEntry}",
               },
-              dsl: "compilerNg",
+              dsl: ${useComponent ? JSON.stringify("dynamic-component-ng") : JSON.stringify("compilerNg")},
               encode: {
                 targetSdkVersion: "2.1",
               },

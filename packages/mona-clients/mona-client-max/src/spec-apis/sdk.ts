@@ -133,7 +133,7 @@ export const genMaxEventSdk = (appid: string, global: any) => {
       headers: {
         'Content-Type': 'application/json',
       },
-    });
+    })
   }
 
 

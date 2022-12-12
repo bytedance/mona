@@ -279,8 +279,15 @@ const transformWebCode = (codeFile: string, targetPathes: string[] = []) => {
               if (t.isObjectProperty(arg) && t.isIdentifier(arg.key) && t.isObjectExpression(arg.value)) {
                 if ((isInnerComponentReactCall && arg.key.name === 'customStyle') || arg.key.name === 'style') {
                    arg.value.properties.forEach((s) => {
-                    if (t.isObjectProperty(s) && t.isStringLiteral(s.value)) {
+                     if (t.isObjectProperty(s) && t.isStringLiteral(s.value)) {
+                      // width: 20rpx;
                       s.value.value = transformRpxToRem(s.value.value)
+                    } else if (t.isObjectProperty(s) && t.isBinaryExpression(s.value)) {
+                      // width: width + 'rpx';
+                      if (t.isStringLiteral(s.value.right) && s.value.right.value === 'rpx' && t.isIdentifier(s.value.left)) {
+                        s.value.left.name = `${s.value.left.name}/${ROOT_FONT_SIZE_PX}/2`
+                        s.value.right.value = 'rem'
+                      }
                     }
                   })
                 }

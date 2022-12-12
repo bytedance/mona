@@ -21,10 +21,10 @@ const max: IPlugin = ctx => {
     const webpackBuild = tctx.buildFn;
     const h5Entry = path.join(configHelper.cwd, monaConfig.input);
 
-    const transform = (isInjectProps = false) => {
+    const transform = (isInjectProps = false, useComponent = false) => {
       const entry = ttmlToReactLynx(tempReactLynxDir, configHelper);
       writeEntry(tempReactLynxDir, entry, isInjectProps);
-      writeLynxConfig(tempReactLynxDir, monaConfig.appId || 'NO_APPID');
+      writeLynxConfig(tempReactLynxDir, monaConfig.appId || 'NO_APPID', useComponent);
     }
 
     const runSpeedy = (cmd: 'dev' | 'build' = 'dev') => {
@@ -38,11 +38,12 @@ const max: IPlugin = ctx => {
     // 复写start命令
     tctx.overrideStartCommand(args => {
       const { old } = args;
+      const useComponent = !!args['use-component']
       try {
         if (!old) {
           const sourceDir = path.join(configHelper.cwd, 'src');
-          chokidar.watch(sourceDir).on('all', debounce(() => transform(true), 600))
-          transform(true);
+          chokidar.watch(sourceDir).on('all', debounce(() => transform(true, useComponent), 600))
+          transform(true, useComponent);
           
           // 4. 执行speedy dev
           // 由于父子进程同时监视文件会失效，模拟运行lynx-speedy dev --config xxx
