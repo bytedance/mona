@@ -1,6 +1,6 @@
-const hexMD5 = require('./md5');
+import { hexMD5 } from './md5';
 
-module.exports = function createUniqueId() {
+export default function createUniqueId() {
   const random = () => Number(Math.random().toString().substr(2)).toString(36);
   const arr = [String(Date.now())];
   function createId() {

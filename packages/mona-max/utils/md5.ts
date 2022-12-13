@@ -24,7 +24,7 @@
  * @param {number} y Second integer
  * @returns {number} Sum
  */
-function safeAdd(x, y) {
+function safeAdd(x: number, y: number) {
   const lsw = (x & 0xffff) + (y & 0xffff);
   const msw = (x >> 16) + (y >> 16) + (lsw >> 16);
   return (msw << 16) | (lsw & 0xffff);
@@ -37,7 +37,7 @@ function safeAdd(x, y) {
  * @param {number} cnt Rotation count
  * @returns {number} Rotated number
  */
-function bitRotateLeft(num, cnt) {
+function bitRotateLeft(num: number, cnt: number) {
   return (num << cnt) | (num >>> (32 - cnt));
 }
 
@@ -52,7 +52,7 @@ function bitRotateLeft(num, cnt) {
  * @param {number} t t
  * @returns {number} Result
  */
-function md5cmn(q, a, b, x, s, t) {
+function md5cmn(q: number, a: any, b: any, x: any, s: any, t: any) {
   return safeAdd(bitRotateLeft(safeAdd(safeAdd(a, q), safeAdd(x, t)), s), b);
 }
 /**
@@ -67,7 +67,7 @@ function md5cmn(q, a, b, x, s, t) {
  * @param {number} t t
  * @returns {number} Result
  */
-function md5ff(a, b, c, d, x, s, t) {
+function md5ff(a: number, b: number, c: number, d: number, x: any, s: number, t: number) {
   return md5cmn((b & c) | (~b & d), a, b, x, s, t);
 }
 /**
@@ -82,7 +82,7 @@ function md5ff(a, b, c, d, x, s, t) {
  * @param {number} t t
  * @returns {number} Result
  */
-function md5gg(a, b, c, d, x, s, t) {
+function md5gg(a: number, b: number, c: number, d: number, x: any, s: number, t: number) {
   return md5cmn((b & d) | (c & ~d), a, b, x, s, t);
 }
 /**
@@ -97,7 +97,7 @@ function md5gg(a, b, c, d, x, s, t) {
  * @param {number} t t
  * @returns {number} Result
  */
-function md5hh(a, b, c, d, x, s, t) {
+function md5hh(a: number, b: number, c: number, d: number, x: any, s: number, t: number) {
   return md5cmn(b ^ c ^ d, a, b, x, s, t);
 }
 /**
@@ -112,7 +112,7 @@ function md5hh(a, b, c, d, x, s, t) {
  * @param {number} t t
  * @returns {number} Result
  */
-function md5ii(a, b, c, d, x, s, t) {
+function md5ii(a: number, b: number, c: number, d: number, x: any, s: number, t: number) {
   return md5cmn(c ^ (b | ~d), a, b, x, s, t);
 }
 
@@ -123,7 +123,7 @@ function md5ii(a, b, c, d, x, s, t) {
  * @param {number} len Bit length
  * @returns {Array<number>} MD5 Array
  */
-function binlMD5(x, len) {
+function binlMD5(x: any, len: number) {
   /* append padding */
   x[len >> 5] |= 0x80 << len % 32;
   x[(((len + 64) >>> 9) << 4) + 14] = len;
@@ -222,7 +222,7 @@ function binlMD5(x, len) {
  * @param {Array<number>} input MD5 Array
  * @returns {string} MD5 string
  */
-function binl2rstr(input) {
+function binl2rstr(input: string | any[]) {
   let i;
   let output = '';
   const length32 = input.length * 32;
@@ -239,9 +239,9 @@ function binl2rstr(input) {
  * @param {string} input Raw input string
  * @returns {Array<number>} Array of little-endian words
  */
-function rstr2binl(input) {
+function rstr2binl(input: string) {
   let i;
-  const output = [];
+  const output: any[] = [];
   output[(input.length >> 2) - 1] = undefined;
   for (i = 0; i < output.length; i += 1) {
     output[i] = 0;
@@ -259,19 +259,19 @@ function rstr2binl(input) {
  * @param {string} s Input string
  * @returns {string} Raw MD5 string
  */
-function rstrMD5(s) {
+function rstrMD5(s: string) {
   return binl2rstr(binlMD5(rstr2binl(s), s.length * 8));
 }
 
-function str2rstrUTF8(input) {
+function str2rstrUTF8(input: string | number | boolean) {
   return unescape(encodeURIComponent(input));
 }
 
-function rawMD5(s) {
+function rawMD5(s: string) {
   return rstrMD5(str2rstrUTF8(s));
 }
 
-function rstr2hex(input) {
+function rstr2hex(input: string) {
   const hexTab = '0123456789abcdef';
   let output = '';
   let x, i;
@@ -288,6 +288,6 @@ function rstr2hex(input) {
  * @param {string} s Input string
  * @returns {string} Hex encoded string
  */
- module.exports = function hexMD5(s) {
+export function hexMD5(s: string) {
   return rstr2hex(rawMD5(s));
 }

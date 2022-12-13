@@ -1,15 +1,19 @@
-const path = require('path');
-const fs = require('fs-extra');
-const PostcssPluginRpxToVw = require('postcss-plugin-rpx2vw');
+import path from 'path';
+import fs from 'fs-extra';
+import PostcssPluginRpxToVw from 'postcss-plugin-rpx2vw';
+import TerserPlugin from 'terser-webpack-plugin';
+import MvJSONPlugin from '../utils/mvJsonPlugin';
+import CreateUniqueId from '../utils/createUniqueId';
+import createModule from '../utils/createVirtualModule';
+import { BUILD_TYPE } from '../constants';
+import _ from 'lodash';
+import deepMerge from 'lodash.merge';
+
 const Pxtorem = require('postcss-pxtorem');
-const TerserPlugin = require('terser-webpack-plugin');
-const MvJSONPlugin = require('../utils/mvJsonPlugin');
-const CreateUniqueId = require('../utils/createUniqueId');
 const buildId = CreateUniqueId();
-const createModule = require('../utils/createVirtualModule');
-const deepMerge = require('lodash.merge');
+
 const generateBaseConfig = projectConfig => {
-  const { pxToRem, abilities } = projectConfig;
+  const { pxToRem, abilities, buildType = BUILD_TYPE } = projectConfig;
   const { less = {} } = abilities || {};
   let postcssPlugins = [
     PostcssPluginRpxToVw,
@@ -29,7 +33,44 @@ const generateBaseConfig = projectConfig => {
     ];
   }
 
-  return {
+  const esmConfig = {
+    output: {
+      filename: '[name].esm.js',
+      library: {
+        type: 'module',
+      },
+    },
+    experiments: {
+      outputModule: true,
+    },
+    externalsType: 'window',
+    externals: {
+      react: 'react',
+      'react-dom': 'react-dom',
+    },
+  };
+
+  const { name = '@shop-isv/isv-com' } = JSON.parse(
+    fs.readFileSync(path.resolve(process.cwd(), './package.json'), 'utf-8'),
+  );
+
+  console.log('cwd', path.resolve(process.cwd(), './package.json'));
+  const umdConfig = {
+    output: {
+      filename: '[name].umd.js',
+      library: {
+        name: [name, '[name]'],
+        type: 'umd',
+        export: 'default',
+      },
+    },
+    externals: {
+      react: 'React',
+      'react-dom': 'ReactDOM',
+    },
+  };
+
+  const baseConfig = {
     entry: {
       // 创建的虚拟模块入口，详见createModule
       index: path.resolve(process.cwd(), './src/app.entry.js'),
@@ -133,6 +174,9 @@ const generateBaseConfig = projectConfig => {
     },
     plugins: [new MvJSONPlugin(), createModule(buildId)],
   };
+  const buildConfig = buildType === 'umd' ? umdConfig : esmConfig;
+
+  return merge(baseConfig, buildConfig);
 };
 
 let pxToRem = false;
@@ -147,4 +191,4 @@ try {
   console.error(e);
 }
 
-module.exports = generateBaseConfig;
+export default generateBaseConfig;
