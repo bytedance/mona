@@ -873,12 +873,12 @@ export interface PerformanceEntry {
   duration: number;
 }
 
-export interface GetStorageOptions extends Callbacks<{ data: any }, any> {
+export interface GetStorageOptions extends Callbacks<{ data: string }, any> {
   key: string;
 }
 export interface SetStorageOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   key: string;
-  data: any;
+  data: string;
 }
 export interface RemoveStorageOptions extends Callbacks<CommonErrorArgs, CommonErrorArgs> {
   key: string;

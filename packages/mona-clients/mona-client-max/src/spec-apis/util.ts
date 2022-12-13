@@ -19,11 +19,6 @@ export interface JsApiPermissionListResponse {
   };
 }
 
-export interface NativeFetchRes<T> {
-  code: number;
-  raw: T;
-}
-
 export const enum ErrorCode {
   Unknown = -100,
   TypeError = -101,

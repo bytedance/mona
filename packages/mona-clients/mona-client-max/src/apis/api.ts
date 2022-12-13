@@ -1,7 +1,6 @@
 import { BaseApis } from '@bytedance/mona';
 import { promisify } from '@bytedance/mona-shared/dist/promisify';
-import { maxGetStorage, maxGetStorageSync, maxNavigateTo, maxRemoveStorage, maxRemoveStorageSync, maxReportAnalytics, maxRequest, maxSetStorage, maxSetStorageSync } from './utils';
-
+import { maxGetStorage, maxNavigateTo, maxRemoveStorage, maxReportAnalytics, maxRequest, maxSetStorage } from './utils';
 
 const noImplementFactory = (api: string) => (): any => {
   console.error(`not implemented "${api}" in max`);
@@ -115,12 +114,12 @@ export const performance: BaseApis['performance'] = {
 };
 
 export const getStorage: BaseApis['getStorage'] = promisify(maxGetStorage);
-export const getStorageSync: BaseApis['getStorageSync'] = maxGetStorageSync;
+export const getStorageSync: BaseApis['getStorageSync'] = noImplementFactory('getStorageSync');
 
 export const setStorage: BaseApis['setStorage'] = promisify(maxSetStorage);
-export const setStorageSync: BaseApis['setStorageSync'] = maxSetStorageSync;
+export const setStorageSync: BaseApis['setStorageSync'] = noImplementFactory('setStorageSync');
 export const removeStorage: BaseApis['removeStorage'] = promisify(maxRemoveStorage);
-export const removeStorageSync: BaseApis['removeStorageSync'] = maxRemoveStorageSync
+export const removeStorageSync: BaseApis['removeStorageSync'] = noImplementFactory('removeStorageSync');
 export const clearStorage: BaseApis['clearStorage'] = promisify(noImplementFactory('clearStorage'));
 export const clearStorageSync: BaseApis['clearStorageSync'] = noImplementFactory('clearStorageSync');
 export const getStorageInfo: BaseApis['getStorageInfo'] = promisify(noImplementFactory('getStorageInfo'));

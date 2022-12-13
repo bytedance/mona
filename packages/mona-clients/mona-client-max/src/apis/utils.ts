@@ -1,116 +1,115 @@
-import { BaseApis, OriginApis } from "@bytedance/mona";
+import { BaseApis, Callbacks, OriginApis } from "@bytedance/mona";
 
+const NOT_IMPLEMENT = 'NOT_IMPLEMENT';
+const DEFAULT_ERROR_NO = 'UNKNOW_ERROR_NO';
 const currentAppid = __MONA_APPID;
 const logNoImpl = (apiName: string, ...params: any) => {
   console.log(`[MonaLog]调用 ${apiName}，当前环境未实现， 当前传入参数：`, params)
 }
+
+const _global = lynx;
+export const SUCCESS_CODE = 1;
+export interface ResData { code: number; message: string; data: any }
+function _wrapPromise<T extends Callbacks>({ name, options, inputHandler, outputHandler, erroHandler }: {
+  name: string;
+  options: T;
+  inputHandler?: (options: T) => any;
+  outputHandler?: (output: ResData) => any;
+  erroHandler?: (error: Error) => any;
+}) {
+  const _success = options.success || function() {};
+  const _fail = options.fail || function() {};
+  const _complete = options.complete || function() {};
+
+  const _inputHandler = inputHandler || function(i){return i};
+  const _outputHandler = outputHandler || function(){return { errMsg: `${name}:ok` }};
+  const _erroHandler = erroHandler || function(err){return { errMsg: `${name}:fail` + err?.message ?? '' } as any};
+  const promiseFunc = _global[name];
+
+  if (promiseFunc) {
+    promiseFunc(_inputHandler(options)).then((res: ResData) => {
+      if (res?.code === SUCCESS_CODE) {
+        const data = _outputHandler(res);
+        _success(data);
+        _complete(data);
+      } else {
+        throw new Error(res?.message)
+      }
+    }).catch((err: Error) => {
+      const error = _erroHandler(err);
+      _fail(error);
+      _complete(error);
+    })
+  } else {
+    logNoImpl(name, options);
+    const error = _erroHandler(new Error(NOT_IMPLEMENT));
+    _fail(error)
+   _complete(error)
+  }
+}
+
 export const maxRequest: OriginApis['request'] = function(options) {
-  if (lynx.request) {
-     lynx.request({
+  _wrapPromise({
+    name: 'request',
+    options,
+    inputHandler: (options) => ({
       url: options.url,
       method: options.method,
       headers: options.header,
       body: options.data,
-    }).then((data: any) => {
-      const res = {
-        statusCode: 200,
-        header: {},
-        data,
-        profile: {} as any
-      }
-      options.success?.(res);
-    }).catch((err: Error) => {
-      options.fail?.({ errMsg: err.message, errNo: '' });
-    })
-  } else {
-    logNoImpl('request', options);
-  }
- 
-  // no RequestTask
+    }),
+    outputHandler: (res) => ({
+      statusCode: 200,
+      header: {},
+      data: res.data,
+      profile: {} as any
+    }),
+    erroHandler: (err) => ({ errMsg: err.message, errNo: DEFAULT_ERROR_NO })
+  })
   return {};
 }
 
-export const maxGetStorage: OriginApis['getStorage'] = function(options) {
-  if (lynx.getStorage) {
-    try {
-      const res = lynx.getStorage({ key: options.key, unique: currentAppid })
-      const data = { data: res, errMsg: 'getStorage:ok' };
-      options.success?.(data);
-      options.complete?.(data);
-    } catch(err: any) {
-      const error = { errMsg: 'getStorage:fail' + err?.message ?? '' }
-      options.fail?.(error);
-      options.complete?.(error);
-    }
-  } else {
-    logNoImpl('getStorage', options);
-  }
-}
-
-export const maxGetStorageSync: BaseApis['getStorageSync'] = function(key) {
-  return lynx.getStorage ? lynx.getStorage({ key, unique: currentAppid }) : logNoImpl('getStorageSync', key);
+export const maxGetStorage: OriginApis['getStorage'] = function (options) {
+  _wrapPromise({
+    name: 'getStorage',
+    options,
+    inputHandler: (options) => ({ key: options.key, unique: currentAppid }),
+    outputHandler: (res) => ({ data: res.data, errMsg: 'getStorage:ok' }),
+  })
 }
 
 export const maxSetStorage: OriginApis['setStorage'] = function (options) {
-  if (lynx.setStorage) {
-    try {
-      lynx.setStorage({ key: options.key, unique: currentAppid, data: options.data })
-      options.success?.({ errMsg: 'setStorage:ok' })
-      options.complete?.({ errMsg: 'setStorage:ok' })
-    } catch(err: any) {
-      const error = { errMsg: 'setStorage:fail' + err?.message ?? '' };
-      options.fail?.(error)
-      options.complete?.(error)
-    }
-  } else {
-    logNoImpl('setStorage', options);
-  }
-}
-
-export const maxSetStorageSync: BaseApis['setStorageSync'] = function(key, data) {
-  return lynx.setStorage ? lynx.setStorage({ key, unique: currentAppid, data }) : logNoImpl('setStorageSync', key, data)
+  _wrapPromise({
+    name: 'setStorage',
+    options,
+    inputHandler: (options) => ({ key: options.key, unique: currentAppid, data: options.data }),
+  })
 }
 
 export const maxRemoveStorage: OriginApis['removeStorage'] = function(options) {
-  if (lynx.removeStorage) {
-    try {
-      lynx.removeStorage({ key: options.key, unique: currentAppid })
-      options.success?.({ errMsg: 'removeStorage:ok' })
-      options.complete?.({ errMsg: 'removeStorage:ok' })
-    } catch(err: any) {
-      const error = { errMsg: 'removeStorage:fail' + err?.message ?? '' };
-      options.fail?.(error)
-      options.complete?.(error)
-    }
-  } else {
-    logNoImpl('removeStorage', options);
-  }
-}
-
-export const maxRemoveStorageSync: BaseApis['removeStorageSync'] = function(key) {
-  lynx.removeStorage ? lynx.removeStorage({ key, unique: currentAppid }) : logNoImpl('removeStorageSync', key);
+  _wrapPromise({
+    name: 'removeStorage',
+    options,
+    inputHandler: (options) => ({ key: options.key, unique: currentAppid }),
+  })
 }
 
 export const maxNavigateTo: OriginApis['navigateTo'] = function(options) {
-  if (lynx.navigateTo) {
-    try {
-      lynx.openPage(options)
-      options.success?.({ errMsg: 'navigateTo:ok' })
-      options.complete?.({ errMsg: 'navigateTo:ok' })
-    } catch(err: any) {
-      const error = { errMsg: 'navigateTo:fail' + err?.message ?? '' };
-      options.fail?.(error)
-      options.complete?.(error)
-    }
-  } else {
-    logNoImpl('navigateTo', options)
-  }
+  _wrapPromise({
+    name: 'navigateTo',
+    options,
+  })
 }
 
 export const maxReportAnalytics: BaseApis['reportAnalytics'] = function(eventName, data) {
-  if (lynx.reportAnalytics) {
-    lynx.reportAnalytics({ eventName, params: data })
-    console.log('[MonaLog]reportAnalytics上报数据', `eventName: ${eventName}`, `data: ${data}`)
+  if (_global.reportAnalytics) {
+    _global.reportAnalytics({ eventName, params: data }).then((res?: ResData) => {
+      if (res?.code === SUCCESS_CODE) {
+        console.log('[MonaLog]reportAnalytics上报数据', `eventName: ${eventName}`, `data: ${data}`)
+      } else {
+        console.log('[MonaLog]reportAnalytics上报数据失败', `eventName: ${eventName}`, `data: ${data}`)
+      }
+    })
   } else {
     logNoImpl('reportAnalytics', eventName, data)
   }

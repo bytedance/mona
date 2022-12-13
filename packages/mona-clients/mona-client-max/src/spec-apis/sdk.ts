@@ -1,40 +1,16 @@
+import { BaseApis } from '@bytedance/mona';
 import { MaxEvent } from "@/types";
 import { EventOptionsType, Listener } from "@/types/type";
 import { JSAPI_PERMISSION_CACHE } from "./constants";
-import { ErrorCode, genErrorResponse, JsApiPermissionListResponse, NativeFetchRes, removeEventPrefix } from "./util";
+import { ErrorCode, genErrorResponse, JsApiPermissionListResponse, removeEventPrefix } from "./util";
 
-function assureGlobal(global: any) {
-  let globaStorage: any = {};
-  if (!global.request) {
-    global.request = function() {
-      return Promise.reject('[MonaLog]此环境未实现request');
-    }
-  }
-  if (!global.setStorage) {
-    global.setStorage = (options: any) => {
-      const key = `${options.unique}_${options.key}`
-      globaStorage[key] = options.data;
-      console.log('[MonaLog]此环境未实现setStorage，模拟使用全局变量存储')
-    };
-  }
-  if (!global.getStorage) {
-    global.getStorage = (options: any) => {
-      const key = `${options.unique}_${options.key}`
-      console.log('[MonaLog]此环境未实现getStorage，模拟从全局变量取值')
-      return globaStorage[key];
-    };
-  }
-}
-
-export const genMaxEventSdk = (appid: string, global: any) => {
-  assureGlobal(global)
-  
+// lock
+let sdkCache: any;
+export const genMaxEventSdk = ({ appid, request: _request, setStorage: _setStorage, getStorage: _getStorage, maxEvent }:{ appid: string; request: BaseApis['request']; setStorage: BaseApis['setStorage']; getStorage: BaseApis['getStorage']; maxEvent?: MaxEvent }) => {
   const MAX_COMPONENT_PLUGINID = '__MAX_COMPONENT_PLUGINID__';
 
-  const maxEvent = global ? global.__maxEvent : undefined;
-
-  if (maxEvent) {
-    maxEvent.genWithOpenApiJsApi(global?.metaInfo?.sec_shop_id)
+  if (sdkCache) {
+    return sdkCache;
   }
   if (!maxEvent) {
     console.log('[MonaLog]此环境未实现max.xxx相关api')
@@ -73,27 +49,23 @@ export const genMaxEventSdk = (appid: string, global: any) => {
             };
           }
           data.appid = appid;
+          console.log('eventName', eventName, data, options);
           return obj?.emitByPlugin?.(eventName, data, options);
         };
       }
     },
     set: () => false,
   });
+  sdkCache = maxEventSDK;
 
   // 如果没有则不执行之后的逻辑
   if (!maxEvent) {
     return maxEventSDK;
   }
 
-
-  // internal apis
-  const _request = global.request;
-  const _getStorage = global.getStorage;
-  const _setStroage = global.setStorage;
-
-  function hasPermissionCache() {
+  async function hasPermissionCache() {
     try {
-      const data = _getStorage({ key: JSAPI_PERMISSION_CACHE, unique: appid });
+      const data = await _getStorage({ key: JSAPI_PERMISSION_CACHE }).then(res => res.data);
       if (data) {
         return JSON.parse(data)?.[appid];
       } else {
@@ -103,9 +75,9 @@ export const genMaxEventSdk = (appid: string, global: any) => {
       return null;
     }
   }
-  function setPermissionCache(value: string[]) {
+  async function setPermissionCache(value: string[]) {
     try {
-      let data = _getStorage({ key: JSAPI_PERMISSION_CACHE, unique: appid });
+      let data = await _getStorage({ key: JSAPI_PERMISSION_CACHE }).then(res => res.data);
       let dataObj: { [key: string]: string[] };
       if (data) {
         // 有缓存
@@ -116,77 +88,78 @@ export const genMaxEventSdk = (appid: string, global: any) => {
         dataObj = {};
         dataObj[appid] = value;
       }
-      _setStroage({ key: JSAPI_PERMISSION_CACHE, unique: appid, value: JSON.stringify(dataObj) });
+      await _setStorage({ key: JSAPI_PERMISSION_CACHE, data: JSON.stringify(dataObj) });
     } catch (err) {
       console.log(err);
     }
   }
-  function requestPermission(): Promise<NativeFetchRes<JsApiPermissionListResponse>> {
+  async function requestPermission(): Promise<JsApiPermissionListResponse> {
     const getJsApiPermissionUrl = 'https://ecom-openapi.ecombdapi.com/open/appauth';
 
-    return _request({
+    const res = await _request({
       url: getJsApiPermissionUrl,
-      method: 'post',
+      method: 'POST',
       data: {
         app_key: appid,
       },
-      headers: {
+      header: {
         'Content-Type': 'application/json',
       },
     })
+    return res.data as any;
   }
 
-
-  let permission;
-  if (permission = hasPermissionCache()) {
-    //如果localstorage里缓存过，则读到内存中，并且setTimeout取获取接口，更新内存和localStorage
-    maxEvent.setAppidJsApiPermisson(appid, permission);
-    setTimeout(async () => {
+  async function run() {
+    if (maxEvent) {
+      let permission;
       try {
-        let {
-          raw: {
+        if (permission = await hasPermissionCache()) {
+          //如果localstorage里缓存过，则读到内存中，并且setTimeout取获取接口，更新内存和localStorage
+          maxEvent.setAppidJsApiPermisson(appid, permission);
+          setTimeout(async () => {
+            try {
+              let {
+                data: { js_name_list: jsNameList },
+              } = await requestPermission();
+              maxEvent.setAppidJsApiPermisson(appid, jsNameList);
+              setPermissionCache(jsNameList);
+            } catch (err) {
+              console.log(err);
+            }
+          }, 200);
+        } else {
+          const res = await requestPermission();
+          const {
             data: { js_name_list: jsNameList },
-          },
-        } = await requestPermission();
-        // jsNameList.push(...['getCalendarV2', 'transformImgToWebp2']);
-        maxEvent.setAppidJsApiPermisson(appid, jsNameList);
-        setPermissionCache(jsNameList);
-      } catch (err) {
+          } = res;
+          maxEvent.setAppidJsApiPermisson(appid, jsNameList);
+          setPermissionCache(jsNameList);
+          //获得权限了，延迟调用有权限的并且已经注册的api
+          for (let jsApi of jsNameList) {
+            maxEvent.delayQueue.run(`${jsApi}_${appid}_Permission_Register`, (item: any) => {
+              const { data, options, resolve, reject } = item;
+              const listenerInfo = maxEvent.getAppListenerInfo(jsApi);
+              if (listenerInfo) {
+                maxEvent.runListener(listenerInfo, jsApi, resolve, reject, data, options);
+              }
+            });
+          }
+          //获得权限了，延迟调用有权限的并且还没注册的api
+          for (let jsApi of jsNameList) {
+            maxEvent.delayQueue.run(`${jsApi}_${appid}_Permission_Not_Register`, (item: any) => {
+              const { data, options, resolve, reject } = item;
+              options.resolve = resolve;
+              options.reject = reject;
+              maxEvent.emitByPlugin(jsApi, data, options);
+            });
+          }
+        }
+      } catch(err) {
         console.log(err);
       }
-    }, 200);
-  } else {
-    requestPermission().then(res => {
-      const {
-        raw: {
-          data: { js_name_list: jsNameList },
-        },
-      } = res;
-      maxEvent.setAppidJsApiPermisson(appid, jsNameList);
-      setPermissionCache(jsNameList);
-      //获得权限了，延迟调用有权限的并且已经注册的api
-      for (let jsApi of jsNameList) {
-        maxEvent.delayQueue.run(`${jsApi}_${appid}_Permission_Register`, (item: any) => {
-          const { data, options, resolve, reject } = item;
-          const listenerInfo = maxEvent.getAppListenerInfo(jsApi);
-          if (listenerInfo) {
-            maxEvent.runListener(listenerInfo, jsApi, resolve, reject, data, options);
-          }
-        });
-      }
-      //获得权限了，延迟调用有权限的并且还没注册的api
-      for (let jsApi of jsNameList) {
-        maxEvent.delayQueue.run(`${jsApi}_${appid}_Permission_Not_Register`, (item: any) => {
-          const { data, options, resolve, reject } = item;
-          options.resolve = resolve;
-          options.reject = reject;
-          maxEvent.emitByPlugin(jsApi, data, options);
-        });
-      }
-    }).catch(err => {
-      console.log(err)
-    })
+    }
   }
-
+  
+  run();
   return maxEventSDK;
 };
