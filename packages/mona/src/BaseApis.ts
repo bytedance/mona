@@ -1522,7 +1522,7 @@ abstract class Api {
   abstract authorize: PromisifyReturn<(options: AuthorizeOptions) => void>;
   abstract showDouyinOpenAuth: PromisifyReturn<(options: ShowDouyinOpenAuthOptions) => void>;
   // 数据分析
-  abstract reportAnalytics(eventName: string, data: { key: string; value: string | number | boolean }): void;
+  abstract reportAnalytics(eventName: string, data: { key: string; value: string | number | boolean | Record<string, any> }): void;
   // 评价能力
   abstract canRateAwemeOrders: PromisifyReturn<(options: CanRateAwemeOrdersOptions) => void>;
   abstract rateAwemeOrder: PromisifyReturn<(options: RateAwemeOrderOptions) => void>;
