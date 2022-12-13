@@ -1,3 +1,4 @@
+// @ts-nocheck
 import fs from 'fs';
 import path from 'path';
 import { DEV_SERVER_PORT, WS_PORT } from '../constants';
@@ -102,7 +103,7 @@ try {
 
 // send debug component info after emit
 class AfterBuildPlugin {
-  apply(compiler: Compiler) {
+  apply(compiler: any) {
     compiler.hooks.afterEmit.tap('AfterBuild', () => {
       if (wsForWatch) {
         // random id used to refresh editor

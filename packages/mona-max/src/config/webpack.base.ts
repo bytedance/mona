@@ -1,3 +1,4 @@
+// @ts-nocheck
 import path from 'path';
 import fs from 'fs-extra';
 import PostcssPluginRpxToVw from 'postcss-plugin-rpx2vw';
