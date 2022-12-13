@@ -3,13 +3,13 @@ import path from 'path';
 import fs from 'fs-extra';
 import PostcssPluginRpxToVw from 'postcss-plugin-rpx2vw';
 import TerserPlugin from 'terser-webpack-plugin';
-import MvJsonPlugin from '../../utils/mvJsonPlugin';
+import MvJsonPlugin from '../utils/mvJsonPlugin';
 import CreateUniqueId from '../utils/createUniqueId';
-import createModule from '../../utils/createVirtualModule';
+import createModule from '../utils/createVirtualModule';
 import { BUILD_TYPE } from '../constants';
 import Pxtorem from 'postcss-pxtorem';
 import deepMerge from 'lodash.merge';
-
+const { merge } = require('webpack-merge');
 const buildId = CreateUniqueId();
 
 const generateBaseConfig = projectConfig => {

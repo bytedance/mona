@@ -1,19 +1,18 @@
 // @ts-nocheck
-import  child_process from 'child_process'
+import child_process from 'child_process';
 import chalk from 'chalk';
 import path from 'path';
 import type { IPlugin } from '@bytedance/mona-service';
 
-
-const maxComponent:IPlugin = ctx => {
+const maxComponent: IPlugin = ctx => {
   ctx.registerTarget('max', tctx => {
     tctx.configureWebpack(() => {
       ctx.configHelper.projectConfig.chain = pre => pre;
       if (process.env.NODE_ENV === 'production') {
-        return require('../../config/webpack.prod')(ctx.configHelper.projectConfig);
+        return require('../config/webpack.prod')(ctx.configHelper.projectConfig);
       }
 
-      return require('../../config/webpack.dev')(ctx.configHelper.projectConfig);
+      return require('../config/webpack.dev')(ctx.configHelper.projectConfig);
     });
   });
   ctx.registerCommand(
@@ -40,7 +39,7 @@ const maxComponent:IPlugin = ctx => {
     },
     () => {
       console.log(chalk.bold.red("请更新build命令为 'mona-service build -t max'"));
-      child_process.exec('mona-service build -t max',  function (error, stdout, stderr) {
+      child_process.exec('mona-service build -t max', function (error, stdout, stderr) {
         if (error) {
           console.log(error.stack);
         }
@@ -56,7 +55,7 @@ const maxComponent:IPlugin = ctx => {
     },
     () => {
       console.log(chalk.bold.red("请更新start命令为 'mona-service start -t max'"));
-      child_process.exec('mona-service start -t max',function (error, stdout, stderr) {
+      child_process.exec('mona-service start -t max', function (error, stdout, stderr) {
         if (error) {
           console.log(error.stack);
         }
@@ -66,4 +65,4 @@ const maxComponent:IPlugin = ctx => {
   );
 };
 
-export  default maxComponent;
+export default maxComponent;
