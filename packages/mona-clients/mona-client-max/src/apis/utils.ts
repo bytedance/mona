@@ -23,7 +23,7 @@ function _wrapPromise<T extends Callbacks>({ name, options, inputHandler, output
 
   const _inputHandler = inputHandler || function(i){return i};
   const _outputHandler = outputHandler || function(){return { errMsg: `${name}:ok` }};
-  const _erroHandler = erroHandler || function(err){return { errMsg: `${name}:fail` + err?.message ?? '' } as any};
+  const _erroHandler = erroHandler || function(err){return { errMsg: `${name}:fail ` + err?.message ?? '' } as any};
   const promiseFunc = _global[name];
 
   if (promiseFunc) {

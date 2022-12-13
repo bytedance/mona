@@ -284,8 +284,11 @@ const transformWebCode = (codeFile: string, targetPathes: string[] = []) => {
                       s.value.value = transformRpxToRem(s.value.value)
                     } else if (t.isObjectProperty(s) && t.isBinaryExpression(s.value)) {
                       // width: width + 'rpx';
-                      if (t.isStringLiteral(s.value.right) && s.value.right.value === 'rpx' && t.isIdentifier(s.value.left)) {
-                        s.value.left.name = `${s.value.left.name}/${ROOT_FONT_SIZE_PX}/2`
+                      if (t.isStringLiteral(s.value.right) && s.value.right.value === 'rpx') {
+                        const _source = sourceCode.slice(s.value.left.start ?? 0, s.value.left.end ?? 0);
+                        const _code = `${_source}/${ROOT_FONT_SIZE_PX * 2}` 
+                        const result = parse(_code).program.body[0];
+                        s.value.left = t.isExpressionStatement(result) ? result.expression : s.value.left;
                         s.value.right.value = 'rem'
                       }
                     }
