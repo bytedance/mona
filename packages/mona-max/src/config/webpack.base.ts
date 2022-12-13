@@ -2,14 +2,13 @@ import path from 'path';
 import fs from 'fs-extra';
 import PostcssPluginRpxToVw from 'postcss-plugin-rpx2vw';
 import TerserPlugin from 'terser-webpack-plugin';
-import MvJSONPlugin from '../utils/mvJsonPlugin';
+import MvJsonPlugin from '../../utils/mvJsonPlugin';
 import CreateUniqueId from '../utils/createUniqueId';
-import createModule from '../utils/createVirtualModule';
+import createModule from '../../utils/createVirtualModule';
 import { BUILD_TYPE } from '../constants';
-import _ from 'lodash';
+import Pxtorem from 'postcss-pxtorem';
 import deepMerge from 'lodash.merge';
 
-const Pxtorem = require('postcss-pxtorem');
 const buildId = CreateUniqueId();
 
 const generateBaseConfig = projectConfig => {
@@ -172,7 +171,7 @@ const generateBaseConfig = projectConfig => {
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '...'],
     },
-    plugins: [new MvJSONPlugin(), createModule(buildId)],
+    plugins: [new MvJsonPlugin(), createModule(buildId)],
   };
   const buildConfig = buildType === 'umd' ? umdConfig : esmConfig;
 

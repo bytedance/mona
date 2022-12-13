@@ -1,3 +1,4 @@
+//@ts-nocheck
 /*
  * JavaScript MD5
  * https://github.com/blueimp/JavaScript-MD5

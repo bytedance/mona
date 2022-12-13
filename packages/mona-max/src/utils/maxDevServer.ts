@@ -31,7 +31,7 @@ const MESSAGE_TYPE = {
   },
 };
 
-const isJSON = v => {
+const isJSON = (v: any) => {
   try {
     JSON.parse(v);
     return true;
@@ -44,7 +44,7 @@ const isJSON = v => {
 
 let wsForWatch;
 try {
-  console.log('test',666666666666666666666666666666666)
+  console.log('test', 666666666666666666666666666666666);
   const WebSocket = require('ws');
   const wss = new WebSocket.Server({ port: WS_PORT });
   wss.on('connection', ws => {
@@ -102,7 +102,7 @@ try {
 
 // send debug component info after emit
 class AfterBuildPlugin {
-  apply(compiler) {
+  apply(compiler: Compiler) {
     compiler.hooks.afterEmit.tap('AfterBuild', () => {
       if (wsForWatch) {
         // random id used to refresh editor
