@@ -11,7 +11,7 @@ module.exports = function createModule(entry, id, useWebExt) {
 function _generatePluginEntryCode(id, useWebExt) {
   const code = useWebExt ? `
     import ErrorBoundary from './index.web'
-    export default function Entry(props) { return <ErrorBoundary buildId="${id}" {...props} />}
+    export default function Entry() { return <ErrorBoundary buildId="${id}" />}
   ` :`
     import App from './index'
     import ReactDOM from 'react-dom'

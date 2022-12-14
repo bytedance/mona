@@ -1,80 +1,35 @@
-import { writeFile, readFile, existsSync } from 'fs';
+import { writeFile, readFile } from 'fs';
 import path from 'path';
-import axios from 'axios';
-import { JsApiListResponse, NativeFetchRes, JsApi, RequestArg, ResponseArg } from './util';
-
-export const nativeFetch: (params: any) => Promise<{ code: number; raw: any }> = params => {
-  let resultUrl = params.url;
-  const method = params.method || 'GET';
-  const headers = params.headers || {};
-
-  return new Promise(resolve =>
-    axios({
-      url: resultUrl,
-      data: params.data,
-      method,
-      params: { ...params.params },
-      headers: {
-        ...headers,
-        'x-preview': 1, // 非app环境带上这个头是为了提供没有用户信息情况下的数据
-      },
-    }).then(res => {
-      resolve({
-        code: 1,
-        raw: { data: res?.data?.data },
-      });
-    }),
-  );
-};
-
-
-export const getJsApiList: () => Promise<NativeFetchRes<JsApiListResponse>> = () => {
-  const getJsApiListUrl = 'https://ecom-openapi.ecombdapi.com/open/jsapi';
-  const res = nativeFetch({
-    url: getJsApiListUrl,
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: {
-      biz_domain: '店铺装修',
-    },
-  })
-  return res;
-};
+import { JsApi, RequestArg, ResponseArg, getJsApiList } from './util';
 
 class MaxMainAutoTypeWebpackPlugin {
   constructor() {}
   apply(compiler: any) {
-    compiler.hooks.compile.tap('MaxMainAutoTypeWebpackPlugin', async () => {
-      const eventsTsFilePath = path.join(require.resolve('@bytedance/mona-client-max'), '../spec-apis/index.d.ts')
-      console.log(eventsTsFilePath, existsSync(eventsTsFilePath))
-      if (existsSync(eventsTsFilePath)) {
-        try {
-          let {
-            raw: {
-              // code,
-              data: { jsApiList },
-            },
-          } = await getJsApiList();
-          if (jsApiList.length > 0) {
-            const tsCode = generateTsCode(jsApiList);
-            // 将生成的声明code，写入到events声明文件中
-            writeCodeToFile(eventsTsFilePath, tsCode);
-          }
-        } catch (err) {
-          console.error(err);
+    compiler.hooks.compile.tap('MaxSubAutoTypeWebpackPlugin', async () => {
+      try {
+        const res = await getJsApiList();
+        let {
+          data: { jsApiList },
+        } = res;
+        if (jsApiList.length > 0) {
+          const code = generateTsCode(jsApiList);
+          // events声明文件
+          const eventsTsFilePath = path.join(require.resolve('@bytedance/mona-client-max'), '../spec-apis/index.d.ts');
+          // 将生成的声明code，写入到type声明文件中
+          writeCodeToFile(eventsTsFilePath, code);
         }
+      } catch (err) {
+        console.error(err);
       }
     });
   }
 }
 
-//生成api声明，即maxApis
+//生成api声明，即 export interface Max{}
 export const generateTsCode = (jsApiList: JsApi[]) => {
-  let code = 'export interface maxApis {';
+  let code = 'export interface Max {';
   jsApiList.forEach(api => {
-    const { jsApiName, requestArgJson = [], responseArgJson, isRequestRequired, isAsync } = api;
+    const { jsApiName, requestArgJson, responseArgJson, isRequestRequired, isAsync } = api;
     const processedInputParams = processInputParams(requestArgJson, isRequestRequired);
     const processedOutputParams = processOutputParams(responseArgJson, isAsync);
     code += `\n${jsApiName}:(${processedInputParams})=>${processedOutputParams};`;
@@ -82,7 +37,6 @@ export const generateTsCode = (jsApiList: JsApi[]) => {
   code += '\n}';
   return code;
 };
-
 const enum TypeCode {
   Number = 1,
   String = 2,
@@ -96,14 +50,13 @@ const typeMap: { [key: string]: string } = {
   [TypeCode.String]: 'string',
   [TypeCode.Boolean]: 'boolean',
 };
-
 //递归根据入参json以及是否必传结构生成ts
 const paramToTs = (inputParams: RequestArg[]) => {
   let res = '';
-  if (inputParams.length > 0) {
+  if (inputParams?.length > 0) {
     res = '{\n';
     for (let inputParam of inputParams) {
-      let { fieldName, fieldRequired, fieldType, children = [], subFieldType, mapKeyType, mapValueType } = inputParam;
+      let { fieldName, fieldRequired, fieldType, children, subFieldType, mapKeyType, mapValueType } = inputParam;
       if (fieldType === TypeCode.Number || fieldType === TypeCode.String || fieldType === TypeCode.Boolean) {
         // 如果类型是number、string或者boolean
         res += `${fieldName}${fieldRequired ? '' : '?'}:${typeMap[fieldType]};\n`;
@@ -123,15 +76,15 @@ const paramToTs = (inputParams: RequestArg[]) => {
             mapValueRes = `${typeMap[subFieldType]}[]`;
           } else if (subFieldType === TypeCode.Object) {
             // 数组值类型为对象
-            mapValueRes = `${paramToTs(children)}[]`;
+            mapValueRes = `${paramToTs(children as RequestArg[])}[]`;
           }
         } else if (mapValueType === TypeCode.Object) {
-          mapValueRes = paramToTs(children);
+          mapValueRes = paramToTs(children as RequestArg[]);
         }
         res += `${fieldName}${fieldRequired ? '' : '?'}:Map<${typeMap[mapKeyType]},${mapValueRes}>;\n`;
       } else if (fieldType === TypeCode.Object) {
         //对象
-        res += `${fieldName}:${paramToTs(children)};`;
+        res += `${fieldName}:${paramToTs(children as RequestArg[])};`;
       } else {
         // 数组
         if (subFieldType === TypeCode.Number || subFieldType === TypeCode.String || subFieldType === TypeCode.Boolean) {
@@ -139,7 +92,7 @@ const paramToTs = (inputParams: RequestArg[]) => {
           res += `${fieldName}:${typeMap[subFieldType]}[];`;
         } else if (subFieldType === TypeCode.Object) {
           // 数组值类型为对象
-          res += `${fieldName}:${paramToTs(children)}[];`;
+          res += `${fieldName}:${paramToTs(children as RequestArg[])}[];`;
         }
       }
     }
@@ -147,17 +100,20 @@ const paramToTs = (inputParams: RequestArg[]) => {
   }
   return res;
 };
-//处理入参，ts前+data?
+//处理入参
 const processInputParams = (inputParams: RequestArg[], isRequired: boolean) => {
   let tsRes = paramToTs(inputParams);
   let res = '';
   if (tsRes) {
-    res = `data${isRequired ? '' : '?'}:${tsRes}`;
+    res = `data${isRequired ? '' : '?'}:${tsRes},\noptions?: EventOptionsType`;
   }
-  //加上data以及？，data?:{a:string}
+  if (!res) {
+    res = 'options?: EventOptionsType';
+  }
   return res;
 };
-//处理出参，以及ErrorResponse
+
+//处理出参，若为空，或者不为interface，置为void，否则处理掉interface前缀，输出{x:xxx}
 const processOutputParams = (outputParams: ResponseArg[], isAsync: boolean) => {
   let tsRes = paramToTs(outputParams as RequestArg[]);
   let res = 'void';
@@ -165,49 +121,46 @@ const processOutputParams = (outputParams: ResponseArg[], isAsync: boolean) => {
     res = tsRes;
   }
   if (isAsync) {
-    res = `${res} | Promise<${res}> | ErrorResponse | Promise<ErrorResponse>`;
+    res = `Promise<${res}>`;
   } else {
-    res = `${res} | ErrorResponse `;
+    res = `${res} | ErrorResponse`;
   }
   return res;
 };
-// 原始on函数的匹配正则
-// export const onFuncTsReg =
-  // /on\s*:\s*\(\s*eventName\s*:\s*string\s*,\s*listener\s*:\s*Listener\s*,\s*options\s*\?\s*:\s*EventOptionsType\s*\)\s*=>\s*Listener\s*;/;
-// maxApis匹配正则
-export const maxApisReg = /export\s+interface\s+maxApis\s*\{[\s\S]*\}/;
-// 要替换成的on函数新声明
-export const onNewFuncTsStr =
-  'on: <T extends keyof maxApis>(eventName: T, listener: maxApis[T], options?: EventOptionsType) => maxApis[T];';
 
-// 将ts代码写到events.d.ts中
+// max:any的匹配正则,如果匹配到，any替换成Max。
+export const maxAnyTsReg = /max\s*:\s*any;/;
+// 要加入的字符串max：Max；
+export const maxMaxTsStr = '\nmax: Max;\n';
+export const monaPluginEventsReg = /export\s+interface\s+MonaPluginEvents\s*\{/;
+// export interface Max匹配正则
+export const interfaceMaxReg = /export\s+interface\s+Max\s*\{[\s\S]*\}/;
+
+// 将ts代码写到type.d.ts中
 const writeCodeToFile = (eventsTsFilePath: string, code: string) => {
   readFile(eventsTsFilePath, 'utf8', (err, data) => {
     if (err) {
       throw err;
     }
-    //处理on函数的声明
-    // const onFuncMatchRes = data.match(onFuncTsReg);
-    // //如果之前没有替换过，则将on替换
-    // if (onFuncMatchRes) {
-    //   data =
-    //     data.substring(0, onFuncMatchRes.index) +
-    //     onNewFuncTsStr +
-    //     data.substring(onFuncMatchRes?.index ?? 0 + onFuncMatchRes[0].length);
-    // }
+    //看是否有max:any; 如果有替换成max: Max;
+    const maxAnyTsMatchRes = data.match(maxAnyTsReg);
+    if (maxAnyTsMatchRes?.index) {
+      data =
+        data.substring(0, maxAnyTsMatchRes.index) +
+        maxMaxTsStr +
+        data.substring(maxAnyTsMatchRes.index + maxAnyTsMatchRes[0].length);
+    }
 
-    //然后添加maxApis,添加到最后
-    const maxApisMatchRes = data.match(maxApisReg);
+    //然后添加interface Max,添加到最后
+    const interfaceMaxMatchRes = data.match(interfaceMaxReg);
     //如果之前添加过，删除再添加最新的api
-    if (maxApisMatchRes) {
-      data = data.substring(0, maxApisMatchRes.index) + code;
+    if (interfaceMaxMatchRes) {
+      data = data.substring(0, interfaceMaxMatchRes.index) + code;
     } else {
       //如果之前没添加过，直接添加
       data = data + code;
     }
-
-    // replace max: any;
-    data = data.replace('max: any', 'max: maxApis')
+    //最后将data写入到events.d.ts中
     writeFile(eventsTsFilePath, data, 'utf8', err => {
       if (err) {
         throw err;

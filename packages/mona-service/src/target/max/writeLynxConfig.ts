@@ -37,7 +37,13 @@ export const writeLynxConfig = (tempReactLynxDir: string, appid: string, useComp
               plugins: [WebBootstrapPlugin("${webEntry}", "${appid}")],
               define: {
                 __MONA_APPID: JSON.stringify("${appid}")
-              }
+              },
+              pageConfig: {
+                useNewSwiper: true,
+                enableCSSInheritance: true,
+                customCSSInheritanceList: ['direction'],
+                enableRadonCompatible: false,
+              },
             },
             {
               name: "component",

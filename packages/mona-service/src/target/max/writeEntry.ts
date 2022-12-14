@@ -13,7 +13,7 @@ import App from '${entry}';
       super(props);
     }
     state = {
-      hasError: false${schemaProps ? ',\n      appProps:' + JSON.stringify(schemaProps) : ''}
+      hasError: false
     }
     static getDerivedStateFromError(error){
       console.log('getDerivedStateFromError', error)
@@ -37,11 +37,8 @@ import App from '${entry}';
       const buildId = this.props.buildId;
       const finalProps = {
         ...${schemaProps ? JSON.stringify(schemaProps) : '{}'},
-        ...this.props,
         ...dataSource,
-        _mona_module: this.props.module,
-        dataSource: undefined,
-        buildId: undefined,
+        __mona_module_key: this.props.module ? this.props.module.key : '',
       }
 
       return (

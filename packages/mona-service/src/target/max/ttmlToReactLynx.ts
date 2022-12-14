@@ -67,13 +67,13 @@ const safelyParseJson = (rawJSON: string) => {
 const getLifeCycleCodeAST = () => {
   const code = `
     if (typeof this.getJSModule === 'function') {
-      const _mona_module = this.props._mona_module;
+      const __mona_module_key = this.props.__mona_module_key;
       this.getJSModule('GlobalEventEmitter').addListener(
         '__ed_viewer_event__',
         (e) => {
           const { key, isFirst, type } = e || {};
 
-          if (!_mona_module || _mona_module.key !== key) {
+          if (__mona_module_key !== key) {
             return;
           }
 
