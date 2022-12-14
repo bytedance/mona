@@ -45,7 +45,6 @@ const isJSON = (v: any) => {
 
 let wsForWatch;
 try {
-  console.log('test', 666666666666666666666666666666666);
   const WebSocket = require('ws');
   const wss = new WebSocket.Server({ port: WS_PORT });
   wss.on('connection', ws => {

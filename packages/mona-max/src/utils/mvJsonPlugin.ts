@@ -17,7 +17,6 @@ function handleFile(fileName, defaultData) {
 
   if (fs.existsSync(configPath) && fs.existsSync(targetPath)) {
     fs.copyFileSync(configPath, targetPath);
-    console.log('test', 77777);
     console.log(chalk.green(`copy ${fileName}.json success`));
   }
 }
