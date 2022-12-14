@@ -1,11 +1,11 @@
-import Builder, { RawWebpackConfigFn, ChainWebpackConfigFn } from "./Builder";
-import ITarget, { ITargetCallback } from "./ITarget";
-import ICommand, { ICommandCallback, ICommandOptions } from "./ICommand";
-import log from "./utils/log";
+import Builder, { RawWebpackConfigFn, ChainWebpackConfigFn } from './Builder';
+import ITarget, { ITargetCallback } from './ITarget';
+import ICommand, { ICommandCallback, ICommandOptions } from './ICommand';
+import log from './utils/log';
 
 class PluginContext {
-  private _targetMap: Map<string, ITarget>
-  private _commandMap: Map<string, ICommand>
+  private _targetMap: Map<string, ITarget>;
+  private _commandMap: Map<string, ICommand>;
   builder: Builder;
 
   constructor() {
@@ -17,7 +17,7 @@ class PluginContext {
   get configHelper() {
     return this.builder.configHelper;
   }
-  
+
   registerCommand(name: string, options: ICommandOptions, fn: ICommandCallback) {
     const cmd = new ICommand(name, options, fn);
     if (this._commandMap.has(name)) {
@@ -33,7 +33,10 @@ class PluginContext {
   }
 
   getCommandsDesc() {
-    return Array.from(this._commandMap.keys()).map(name => ({ name, summary: this._commandMap.get(name)?.options.description || '暂无描述' }))
+    return Array.from(this._commandMap.keys()).map(name => ({
+      name,
+      summary: this._commandMap.get(name)?.options.description || '暂无描述',
+    }));
   }
 
   registerTarget(targetName: string, fn: ITargetCallback) {
@@ -60,8 +63,9 @@ class PluginContext {
 
   getTarget(targetName: string): ITarget | null {
     const map = this._targetMap;
+    console.log(map);
     return map.get(targetName) || null;
   }
 }
 
-export default PluginContext
+export default PluginContext;

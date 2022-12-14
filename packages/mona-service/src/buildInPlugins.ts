@@ -1,5 +1,8 @@
 const flatten = (params: any[]) => [].concat(...params);
-export const pathToPlugin = (pathname: string) => require(pathname);
+export const pathToPlugin = (pathname: string) => {
+  const pkg = require(pathname);
+  return pkg.default ? pkg.default : pkg;
+};
 export const convertPlugins = (plugins: string[]) => flatten(plugins.filter(r => r).map(pathToPlugin));
 
 const buildInPlugins = convertPlugins([
