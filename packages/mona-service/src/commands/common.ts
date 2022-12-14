@@ -13,6 +13,14 @@ import { PluginContext } from '..';
 const homePath = (process.env.HOME ? process.env.HOME : process.env.USERPROFILE) || __dirname;
 const userDataFile = path.join(homePath, '.mona_user');
 
+export enum AppSceneTypeEnum {
+  DESIGN_CENTER_TEMPLATE = 1,
+  DESIGN_CENTER_COMPONENT = 2,
+  LIGHT_APP = 3,
+  H5 = 4,
+  PIGEON_PLUGIN = 5,
+}
+
 export function deleteUser() {
   if (fs.existsSync(userDataFile)) {
     fs.unlinkSync(userDataFile);

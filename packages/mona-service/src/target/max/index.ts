@@ -9,7 +9,7 @@ import chokidar from 'chokidar';
 import debounce from 'lodash.debounce'
 const speedy = require('@bytedance/mona-speedy');
 
-const { MAX } = Platform;
+const { MAX, MAX_TEMPLATE } = Platform;
 const max: IPlugin = ctx => {
   const configHelper = ctx.configHelper;
   const monaConfig = configHelper.projectConfig;
@@ -79,17 +79,16 @@ const max: IPlugin = ctx => {
       }
     });
   });
-  ctx.registerCommand(
-    'max-template-start',
-    {
-      description: '店铺装修模版start',
-      usage: 'mona-service max-template-start',
-    },
-    () => {
-      const configPath = path.resolve(__dirname, './utils/templateStart.js');
+
+  const configPath = path.resolve(__dirname, './utils/templateStart.js');
+  ctx.registerTarget(MAX_TEMPLATE, tctx => {
+    tctx.overrideStartCommand(() => {
       child_process.execSync(`node ${configPath}`, { stdio: 'inherit' });
-    },
-  );
+    })
+    tctx.overrideBuildCommand(() => {
+      console.log('当前target没有build命令');
+    })
+  })
 };
 
 module.exports = max;

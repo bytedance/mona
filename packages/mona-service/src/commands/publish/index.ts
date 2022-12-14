@@ -1,6 +1,6 @@
 import { IPlugin } from '../../Service';
 import chalk from 'chalk';
-import { requestBeforeCheck } from '../common';
+import { AppSceneTypeEnum, requestBeforeCheck } from '../common';
 import inquirer from 'inquirer';
 import fs from 'fs';
 import path from 'path';
@@ -34,11 +34,11 @@ const publish: IPlugin = ctx => {
         });
         const latestVersion = appDetail.appBase.latestVersion;
         const latestVersionStatus = appDetail.appBase.latestVersionStatus;
-        const isLightApp = appDetail.appBase.deployType === 4;
 
         console.log(chalk.cyan(`当前应用：${appDetail.appBase.AppName} 最新版本：${latestVersion || '无'}`));
 
-        if (isLightApp) {
+        // 微应用
+        if (appDetail.appSceneType === AppSceneTypeEnum.LIGHT_APP) {
           // ask desc
           const answer = await inquirer.prompt([
             {

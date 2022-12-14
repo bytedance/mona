@@ -10,7 +10,6 @@ const buildInPlugins = convertPlugins([
   './commands/compress',
   './commands/publish',
   './commands/preview',
-  // '@bytedance/mona-max',
   './target/web/index',
   './target/mini/index',
   './target/plugin/index',

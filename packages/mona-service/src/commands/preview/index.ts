@@ -15,7 +15,7 @@ import {
   processProjectData,
   askMixedFactory,
 } from './utils';
-import { generateRequestFromOpen, requestBeforeCheck } from '../common';
+import { AppSceneTypeEnum, generateRequestFromOpen, requestBeforeCheck } from '../common';
 import chalk from 'chalk';
 
 const preview: IPlugin = ctx => {
@@ -24,7 +24,6 @@ const preview: IPlugin = ctx => {
     {
       options: [
         { name: 'help', description: '输出帮助信息', alias: 'h' },
-        { name: 'target', description: '目标端', alias: 't' },
         // { name: 'watch', description: '是否监听文件更改', alias: 'w' },
         {
           name: 'platform',
@@ -38,24 +37,41 @@ const preview: IPlugin = ctx => {
       // output dir
 
       // assert
-      const { user } = await requestBeforeCheck(ctx, args);
+      const { user, appId } = await requestBeforeCheck(ctx, args);
       const request = generateRequestFromOpen(args, user.cookie);
+
+      const appDetail: any = await request<any>('/captain/appManage/getAppDetail', {
+        method: 'GET',
+        params: { appId },
+      });
 
       // common steps for all target: compress => upload
       const maxProcess = [createTestVersionFactory(request, args), generateQrcodeFactory(request), printQrcode('抖音')];
 
-      switch (args.target) {
-        case 'max':
-          await pipe(askMixedFactory(request), buildMaxComponent, processMaxComponentData, ...maxProcess)(ctx);
+      switch (appDetail.appSceneType) {
+        case AppSceneTypeEnum.DESIGN_CENTER_COMPONENT:
+          await pipe(
+            askMixedFactory(request),
+            buildMaxComponent,
+            processMaxComponentData,
+            ...maxProcess
+          )(ctx);
           break;
-        case 'max-template':
-          await pipe(processMaxTemplateData, ...maxProcess)(ctx);
+        case AppSceneTypeEnum.DESIGN_CENTER_TEMPLATE:
+          await pipe(
+            processMaxTemplateData,
+            ...maxProcess
+          )(ctx);
           break;
-        case 'light':
-          pipe(getPlatform, getUrl, openUrlWithBrowser)({ ctx, args });
+        case AppSceneTypeEnum.LIGHT_APP:
+          await pipe(
+            getPlatform,
+            getUrl,
+            openUrlWithBrowser
+          )({ ctx, args });
           break;
-        case 'h5':
-          pipe(
+        case AppSceneTypeEnum.H5:
+          await pipe(
             buildProject('h5'),
             processProjectData,
             createTestVersionFactory(request, args),
@@ -64,7 +80,7 @@ const preview: IPlugin = ctx => {
           )(ctx);
           break;
         default:
-          console.log(chalk.red(`${args.target}端目前暂不支持preview命令，敬请期待`));
+          console.log(chalk.red(`当前应用类型暂不支持preview命令，敬请期待`));
       }
       // watch(outputDir, {
       //   open: !!args.watch
