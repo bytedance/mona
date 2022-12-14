@@ -54,7 +54,6 @@ const generateBaseConfig = projectConfig => {
     fs.readFileSync(path.resolve(process.cwd(), './package.json'), 'utf-8'),
   );
 
-  console.log('cwd', path.resolve(process.cwd(), './package.json'));
   const umdConfig = {
     output: {
       filename: '[name].umd.js',
@@ -178,17 +177,5 @@ const generateBaseConfig = projectConfig => {
 
   return merge(baseConfig, buildConfig);
 };
-
-let pxToRem = false;
-try {
-  const cwd = process.cwd();
-  const maxJsonPath = path.resolve(cwd, './mona.config.ts');
-  // const maxJsonPath = path.resolve(cwd, './max.json');
-  const maxJson = fs.readFileSync(maxJsonPath, 'utf-8');
-  pxToRem = maxJson.indexOf('pxToRem: true') !== -1;
-  // pxToRem = maxJson.indexOf('"pxToRem": true') !== -1;
-} catch (e) {
-  console.error(e);
-}
 
 export default generateBaseConfig;
