@@ -4,19 +4,16 @@ import generateBaseConfig from './webpack.base.js';
 import AfterBuildPlugin from '../utils/maxDevServer';
 import { TARGET_URL, WS_PORT, DEV_SERVER_PORT } from '../constants';
 
-console.log(1111);
 const WatchExternalFilesPlugin = require('webpack-watch-files-plugin').default;
 
 module.exports = function (projectConfig) {
-  const { targetUrl = TARGET_URL, wsport = WS_PORT } = projectConfig;
+  const { targetUrl = TARGET_URL, wsPort = WS_PORT, devPort = DEV_SERVER_PORT } = projectConfig;
   const baseConfig = generateBaseConfig(projectConfig);
-  console.log('targetUrl', targetUrl);
-  console.log('789')
   const devConfig = {
     mode: 'development',
     devServer: {
       static: {
-        directory: path.join(process.cwd(), './src'),
+        directory: path.join(process.cwd(), './dist'),
       },
       client: {
         logging: 'info',
@@ -30,9 +27,9 @@ module.exports = function (projectConfig) {
       allowedHosts: 'all',
       compress: true,
       hot: true,
-      port: DEV_SERVER_PORT,
+      port: devPort,
       open: {
-        target: [`${targetUrl}?debug=1&WSPORT=${wsport}`, ''],
+        target: [`${targetUrl}?debug=1&WSPORT=${wsPort}`],
       },
     },
     plugins: [
