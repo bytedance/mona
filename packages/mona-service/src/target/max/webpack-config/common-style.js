@@ -831,7 +831,7 @@ button.swiper-pagination-bullet {
   position: relative;
   flex-grow: 0;
   flex-shrink: 1;
-  overflow: hidden
+  // overflow: hidden;
 }
 
 [data-path] {
