@@ -165,7 +165,12 @@ export const offUserScreenRecord: BaseApis['offUserScreenRecord'] = noImplementF
 export const vibrateShort: BaseApis['vibrateShort'] = promisify(noImplementFactory('vibrateShort'));
 export const vibrateLong: BaseApis['vibrateLong'] = promisify(noImplementFactory('vibrateLong'));
 export const onMemoryWarning: BaseApis['onMemoryWarning'] = noImplementFactory('onMemoryWarning');
-export const createCanvasContext: BaseApis['createCanvasContext'] = (canvasId) => lynx.createCanvas(canvasId).getContext('2d')
+export const createCanvasContext: BaseApis['createCanvasContext'] = (canvasId) => {
+  const context = lynx.createCanvas(canvasId).getContext('2d');
+  // Compatible with miniapp' usage
+  context.draw = () => {};
+  return context;
+}
 export const canvasToTempFilePath: BaseApis['canvasToTempFilePath'] = promisify(noImplementFactory('canvasToTempFilePath'));
 export const createOffscreenCanvas: BaseApis['createOffscreenCanvas'] = lynx.createOffscreenCanvas;
 export const showToast: BaseApis['showToast'] = promisify(noImplementFactory('showToast'));

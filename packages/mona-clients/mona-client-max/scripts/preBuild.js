@@ -2,7 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const { transformNgToReact } = require('@bytedance/mona-speedy');
 
-const IGNORE_COMPONENT_NAMES = [];
+const IGNORE_COMPONENT_NAMES = [
+  'MaxCanvas'
+];
 
 function replaceImport(rawCode) {
  let code = rawCode.replace(/@byted-lynx\/react-components(\/lib\/[^"]+)?/g, '@bytedance/mona-speedy-components');
@@ -17,7 +19,7 @@ function downgradeComponents(ignore_names) {
   for(let i = 0; i < files.length; i++) {
     const file = files[i];
     const dirPath = path.join(entry, file)
-    if (fs.statSync(dirPath).isDirectory() || ignore_names.includes(file)) {
+    if (fs.statSync(dirPath).isDirectory() && !ignore_names.includes(file)) {
       const componentFilePath = path.join(dirPath, 'index.tsx');
       const sourceCode = fs.readFileSync(componentFilePath);
       const code = transformNgToReact(sourceCode, {}, '');

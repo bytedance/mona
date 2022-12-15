@@ -355,7 +355,7 @@ const transformTtmlDir = (sourceDir: string, filename: string, distDir: string, 
   );
   
   //复制ttss->scss
-  const ttssSrcFilePath = path.resolve(sourceDir, `index.ttss`);
+  const ttssSrcFilePath = path.resolve(sourceDir, `${filename}.ttss`);
   const ttssDistDirFilePath = path.resolve(distDir, `${filename}.less`);
   if (fs.existsSync(ttssSrcFilePath)) {
     fs.copyFileSync(ttssSrcFilePath, ttssDistDirFilePath);

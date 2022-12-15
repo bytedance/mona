@@ -5,7 +5,7 @@ const getTmpData = require('./getTmpData.js');
 const getTmpComponentData = require('./getTmpComponentData.js');
 
 const WS_PORT = 10090;
-const TARGET_URL = `https://fxg.jinritemai.com/ffa/mshop/decorate/isv/entry?debug=1&WSPORT=${WS_PORT}`;
+const TARGET_URL = `https://fxg.jinritemai.com/ffa/mshop/decorate/isv/entry?debug=1&WSPORT=${WS_PORT}&type=1`;
 
 const MESSAGE_TYPE = {
   exchangeSchemaJSON: {
@@ -30,6 +30,7 @@ try {
   const WebSocket = require('ws');
   const wss = new WebSocket.Server({ port: WS_PORT });
   console.log(`ws链接已建立!打开${TARGET_URL}，请在装修页面编排组件`);
+  console.log(`请注意，混排的模板从新版定制页进入，非混排的模板从旧版定制页进入`);
   openBrowser(TARGET_URL);
   wss.on('connection', ws => {
     wsForWatch = ws;

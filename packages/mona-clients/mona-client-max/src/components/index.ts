@@ -3,3 +3,4 @@
 export { default as Image } from './MaxImage';
 export { default as Video } from './MaxVideo';
 export { default as Swiper } from './MaxSwiper';
+export { default as Canvas } from './MaxCanvas';
