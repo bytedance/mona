@@ -18,6 +18,12 @@ const RPX_VALUE_REG = /rpx$/
 const ROOT_FONT_SIZE_PX = 100;
 const scopeId = ''
 
+const mkDir = (dirpath: string) => {
+  if (!fse.existsSync(dirpath)) {
+    fse.mkdirSync(dirpath)
+  }
+}
+
 const transformRpxToRem = (origin: string) => {
   if (RPX_VALUE_REG.test(origin)) {
     const num = Number(origin.replace(RPX_VALUE_REG, ''));
@@ -193,9 +199,7 @@ const handleAllComponents = ({ entry, tempDir, componentMap, isEntryComponent = 
     const t = sourceDir.split(getSlash())
     const componentName = `${t[t.length - 1]}-${md5(sourceDir)}`;
     const distDir = path.join(tempDir, componentName);
-    if (!fse.existsSync(distDir)) {
-      fse.mkdirSync(distDir)
-    }
+    mkDir(distDir)
     fse.copySync(sourceDir, distDir);
 
     const tmpJsonPath = path.join(distDir, `${filename}.json`);
@@ -375,8 +379,8 @@ export const ttmlToReactLynx = (tempReactLynxDir: string, configHelper: ConfigHe
   if (fse.existsSync(tempTTMLDir)) {
     fse.removeSync(tempTTMLDir);
   }
-  fse.mkdirSync(tempReactLynxDir)
-  fse.mkdirSync(tempTTMLDir)
+  mkDir(tempReactLynxDir);
+  mkDir(tempTTMLDir);
 
   const componentMap = new Map<string, ComponentInfo>();
   // handle all ttml components

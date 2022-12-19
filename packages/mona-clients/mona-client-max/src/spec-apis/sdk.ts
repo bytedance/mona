@@ -49,7 +49,6 @@ export const genMaxEventSdk = ({ appid, request: _request, setStorage: _setStora
             };
           }
           data.appid = appid;
-          console.log('eventName', eventName, data, options);
           return obj?.emitByPlugin?.(eventName, data, options);
         };
       }
@@ -113,8 +112,16 @@ export const genMaxEventSdk = ({ appid, request: _request, setStorage: _setStora
     if (maxEvent) {
       let permission;
       try {
-        if (permission = await hasPermissionCache()) {
-          //如果localstorage里缓存过，则读到内存中，并且setTimeout取获取接口，更新内存和localStorage
+        permission = await hasPermissionCache();
+        if (!permission) {
+          const res = await requestPermission();
+          const {
+            data: { js_name_list: jsNameList },
+          } = res;
+          maxEvent.setAppidJsApiPermisson(appid, jsNameList);
+          setPermissionCache(jsNameList);
+          permission = jsNameList;
+        } else {
           maxEvent.setAppidJsApiPermisson(appid, permission);
           setTimeout(async () => {
             try {
@@ -127,32 +134,26 @@ export const genMaxEventSdk = ({ appid, request: _request, setStorage: _setStora
               console.log(err);
             }
           }, 200);
-        } else {
-          const res = await requestPermission();
-          const {
-            data: { js_name_list: jsNameList },
-          } = res;
-          maxEvent.setAppidJsApiPermisson(appid, jsNameList);
-          setPermissionCache(jsNameList);
-          //获得权限了，延迟调用有权限的并且已经注册的api
-          for (let jsApi of jsNameList) {
-            maxEvent.delayQueue.run(`${jsApi}_${appid}_Permission_Register`, (item: any) => {
-              const { data, options, resolve, reject } = item;
-              const listenerInfo = maxEvent.getAppListenerInfo(jsApi);
-              if (listenerInfo) {
-                maxEvent.runListener(listenerInfo, jsApi, resolve, reject, data, options);
-              }
-            });
-          }
-          //获得权限了，延迟调用有权限的并且还没注册的api
-          for (let jsApi of jsNameList) {
-            maxEvent.delayQueue.run(`${jsApi}_${appid}_Permission_Not_Register`, (item: any) => {
-              const { data, options, resolve, reject } = item;
-              options.resolve = resolve;
-              options.reject = reject;
-              maxEvent.emitByPlugin(jsApi, data, options);
-            });
-          }
+        }
+        
+        //获得权限了，延迟调用有权限的并且已经注册的api
+        for (let jsApi of permission) {
+          maxEvent.delayQueue.run(`${jsApi}_${appid}_Permission_Register`, (item: any) => {
+            const { data, options, resolve, reject } = item;
+            const listenerInfo = maxEvent.getAppListenerInfo(jsApi);
+            if (listenerInfo) {
+              maxEvent.runListener(listenerInfo, jsApi, resolve, reject, data, options);
+            }
+          });
+        }
+        //获得权限了，延迟调用有权限的并且还没注册的api
+        for (let jsApi of permission) {
+          maxEvent.delayQueue.run(`${jsApi}_${appid}_Permission_Not_Register`, (item: any) => {
+            const { data, options, resolve, reject } = item;
+            options.resolve = resolve;
+            options.reject = reject;
+            maxEvent.emitByPlugin(jsApi, data, options);
+          });
         }
       } catch(err) {
         console.log(err);
