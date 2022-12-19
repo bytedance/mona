@@ -373,12 +373,12 @@ const transformTtmlDir = (sourceDir: string, filename: string, distDir: string, 
 export const ttmlToReactLynx = (tempReactLynxDir: string, configHelper: ConfigHelper) => {
   // create ttml tmp dir
   const tempTTMLDir = path.join(tempReactLynxDir, '../.maxTmpTtml');
-  if (fse.existsSync(tempReactLynxDir)) {
-    fse.removeSync(tempReactLynxDir);
-  }
-  if (fse.existsSync(tempTTMLDir)) {
-    fse.removeSync(tempTTMLDir);
-  }
+  // if (fse.existsSync(tempReactLynxDir)) {
+  //   fse.removeSync(tempReactLynxDir);
+  // }
+  // if (fse.existsSync(tempTTMLDir)) {
+  //   fse.removeSync(tempTTMLDir);
+  // }
   mkDir(tempReactLynxDir);
   mkDir(tempTTMLDir);
 
