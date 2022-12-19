@@ -373,6 +373,7 @@ const transformTtmlDir = (sourceDir: string, filename: string, distDir: string, 
 export const ttmlToReactLynx = (tempReactLynxDir: string, configHelper: ConfigHelper) => {
   // create ttml tmp dir
   const tempTTMLDir = path.join(tempReactLynxDir, '../.maxTmpTtml');
+  // TODO this is some bug in windows, fix this later
   // if (fse.existsSync(tempReactLynxDir)) {
   //   fse.removeSync(tempReactLynxDir);
   // }
