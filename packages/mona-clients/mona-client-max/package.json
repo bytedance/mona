@@ -19,6 +19,7 @@
     "mona"
   ],
   "dependencies": {
+    "axios": "^0.26.0",
     "@bytedance/mona": "0.2.38-alpha.25",
     "@bytedance/mona-client-web": "0.2.38-alpha.25",
     "@bytedance/mona-shared": "0.2.38-alpha.25",
