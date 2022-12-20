@@ -18,6 +18,7 @@ export const LIGHT_APP_GET_TOEKN = '__MONA_LIGHT_APP_GET_TOEKN';
 export function webRequest(data: Omit<RequestOptions, 'url'>): RequestTask;
 export function webRequest(data: Omit<RequestOptions, 'fn'>): RequestTask;
 export function webRequest(data: RequestOptions): RequestTask;
+
 // @ts-ignore ignore
 export async function webRequest(data: Partial<RequestOptions>): RequestTask | Promise<any> {
   if (typeof data.url === 'undefined' && typeof data.fn === 'undefined') {
@@ -40,7 +41,7 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
   // light app
   if (isLightApp) {
     token = await window.__MONA_LIGHT_APP_GET_TOEKN!();
-    init.credentials = 'includes';
+    init.credentials = 'include';
     init.method = 'POST';
     init.headers = {
       ...init.headers,
