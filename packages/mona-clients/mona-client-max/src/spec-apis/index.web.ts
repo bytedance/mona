@@ -7,7 +7,7 @@ import axios from 'axios';
 
 const secShopId = window.sec_shop_id;
 
-const genErrorRes = () => Promise.reject(new Error('当前环境未检测到有效的shopId'));
+const genErrorRes = () => Promise.reject(new Error('当前环境未检测到有效的shopId，请在新版编辑器查看'));
 
 const nativeFetch: (params: any) => Promise<{ code: number; raw: any }> = params => {
   let resultUrl = params.url;
