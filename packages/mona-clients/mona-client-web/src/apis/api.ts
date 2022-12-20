@@ -42,10 +42,6 @@ import {
 } from './util';
 import EventEmitter from '../EventEmitter';
 
-webRequest({
-  credentials: 'include',
-});
-
 const eventEmitter = new EventEmitter();
 
 const noImplementFactory = (api: string) => (): any => {
