@@ -5,17 +5,29 @@ import axios from 'axios';
 // Compatible with web
 // export const max = genMaxEventSdk({ appid: __MONA_APPID, request, setStorage, getStorage });
 
-const secShopId = window.sec_shop_id;
+function parseQuery(search: string) {
+  if (!search || typeof search !== 'string') {
+    return {};
+  }
+  const arrStr = search.replace(/^\?/, '');
+  const result: Record<string, any> = {};
+  arrStr.split('&').forEach(item => {
+    const [key, value] = item.split('=');
+    result[key] = value;
+  })
+  return result;
+}
 
-const genErrorRes = () => Promise.reject(new Error('当前环境未检测到有效的shopId，请在新版编辑器查看'));
+const secShopId = parseQuery(location.search).secShopId;
 
-const nativeFetch: (params: any) => Promise<{ code: number; raw: any }> = params => {
+const genErrorRes = () => Promise.reject(new Error('当前环境未检测到有效的shopId，请在新版编辑器查看该api效果'));
+
+const nativeFetch: (params: any) => Promise<{ code: number; data: any }> = params => {
   let resultUrl = params.url;
   const method = params.method || 'GET';
   const headers = params.headers || {};
 
-  return new Promise(resolve =>
-    axios({
+  return axios({
       url: resultUrl,
       data: params.data,
       method,
@@ -25,12 +37,12 @@ const nativeFetch: (params: any) => Promise<{ code: number; raw: any }> = params
         'x-preview': 1, // 非app环境带上这个头是为了提供没有用户信息情况下的数据
       },
     }).then(res => {
-      resolve({
+      const result = {
         code: 1,
-        raw: { data: res?.data?.data },
-      });
-    }),
-  );
+        data: res?.data?.data
+      };
+      return result
+    })
 };
 
 export const max = {
@@ -55,7 +67,7 @@ export const max = {
     if (!secShopId) {
       return genErrorRes()
     }
-    if (!Array.isArray(product_ids)) {
+    if (!Array.isArray(product_ids) || product_ids.length <= 0) {
       return Promise.reject(new Error('商品id必传'))
     }
 
@@ -78,7 +90,7 @@ export const max = {
     if (!secShopId) {
       return genErrorRes()
     }
-    if (!Array.isArray(vids)) {
+    if (!Array.isArray(vids) || vids.length <= 0) {
       return Promise.reject(new Error('视频id必传'))
     }
 
@@ -95,7 +107,7 @@ export const max = {
     if (!secShopId) {
       return genErrorRes()
     }
-    if (!Array.isArray(product_ids)) {
+    if (!Array.isArray(product_ids) || product_ids.length <= 0) {
       return Promise.reject(new Error('商品id必传'))
     }
     return nativeFetch({
@@ -112,7 +124,7 @@ export const max = {
       return genErrorRes()
     }
 
-    if (!Array.isArray(coupon_meta_ids) || typeof m_config_type !== 'number') {
+    if (!Array.isArray(coupon_meta_ids) || coupon_meta_ids.length <= 0 || typeof m_config_type !== 'number') {
       return Promise.reject(new Error('参数错误'))
     }
 
@@ -129,6 +141,7 @@ export const max = {
   fetchActivities({ activity_ids, activity_type, m_config_type }: { activity_ids: string[], activity_type: number, m_config_type: number }) {
     if (
       !Array.isArray(activity_ids) ||
+      activity_ids.length <= 0 ||
       typeof m_config_type !== 'number' ||
       typeof activity_type !== 'number'
     ) {
