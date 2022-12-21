@@ -9,29 +9,31 @@ import chokidar from 'chokidar';
 import debounce from 'lodash.debounce'
 const speedy = require('@bytedance/mona-speedy');
 
+let isFirst = true;
+
 const { MAX, MAX_TEMPLATE } = Platform;
 const max: IPlugin = ctx => {
   const configHelper = ctx.configHelper;
   const monaConfig = configHelper.projectConfig;
 
   ctx.registerTarget(MAX, tctx => {
-    const tempReactLynxDir = path.join(__dirname, '../../../dist/.maxTmpReact');
+    const tempLynxDir = path.join(__dirname, '../../../dist/.maxTmpTtml');
     // 原始webpack打包逻辑
     const webpackStart = tctx.startFn;
     const webpackBuild = tctx.buildFn;
     const h5Entry = path.join(configHelper.cwd, monaConfig.input);
 
     const transform = (isInjectProps = false, useComponent = false) => {
-      const entry = ttmlToReactLynx(tempReactLynxDir, configHelper);
-      writeEntry(tempReactLynxDir, entry, isInjectProps);
-      writeLynxConfig(tempReactLynxDir, monaConfig.appId || 'NO_APPID', useComponent);
+      const entry = ttmlToReactLynx(tempLynxDir, configHelper);
+      writeEntry(tempLynxDir, entry, isInjectProps);
+      writeLynxConfig(tempLynxDir, monaConfig.appId || 'NO_APPID', useComponent);
     }
 
     const runSpeedy = (cmd: 'dev' | 'build' = 'dev') => {
       const name = cmd === 'dev' ? 'app' : 'component';
       process.argv = process.argv
           .slice(0, 2)
-          .concat([cmd, '--config', path.join(tempReactLynxDir, 'lynx.config.js'), '--config-name', name]);
+          .concat([cmd, '--config', path.join(tempLynxDir, 'lynx.config.js'), '--config-name', name]);
         speedy.run();
     }
 
@@ -42,7 +44,13 @@ const max: IPlugin = ctx => {
       try {
         if (!old) {
           const sourceDir = path.join(configHelper.cwd, 'src');
-          chokidar.watch(sourceDir).on('all', debounce(() => transform(true, useComponent), 600))
+          chokidar.watch(sourceDir).on('all', debounce(() => {
+            if (isFirst) {
+              isFirst = false;
+            } else {
+              transform(true, useComponent)
+            }
+          }, 600))
           transform(true, useComponent);
           
           // 4. 执行speedy dev

@@ -4,7 +4,6 @@ import fs from 'fs';
 import fse from 'fs-extra';
 import path from 'path';
 import tagToComponents from './tagToComponents';
-import md5 from './utils/md5';
 import ConfigHelper from '../../ConfigHelper';
 import { parse } from '@babel/parser';	
 import traverse from '@babel/traverse';	
@@ -23,6 +22,11 @@ const mkDir = (dirpath: string) => {
     fse.mkdirSync(dirpath)
   }
 }
+const deleteFile = (filepath: string) => {
+  if (fse.existsSync(filepath)) {
+    fse.unlink(filepath)
+  }
+}
 
 const transformRpxToRem = (origin: string) => {
   if (RPX_VALUE_REG.test(origin)) {
@@ -32,10 +36,6 @@ const transformRpxToRem = (origin: string) => {
     }
   }
   return origin;
-}
-// 适配windows
-const getSlash = () => {
-  return process.platform === 'win32' ? '\\' : '/';
 }
 
 const isValidObject = (obj: any): obj is Object => {
@@ -171,7 +171,6 @@ const transformJSXFile = (codeFile: string, addLifeCycle = false) => {
 interface ComponentInfo {
   entry: string;
   isTTML: boolean;
-  target: string;
   isEntryComponent: boolean;
 }
 
@@ -187,26 +186,26 @@ function mapComponentToMaxRuntime(obj: IMap) {
 
 const innerComponents = mapComponentToMaxRuntime(tagToComponents)
 
-const handleAllComponents = ({ entry, tempDir, componentMap, isEntryComponent = false }: { entry: string; tempDir: string; componentMap: Map<string, ComponentInfo>, isEntryComponent?: boolean }) => {
+const handleAllComponents = ({ entry, componentMap, isEntryComponent = false }: { entry: string; componentMap: Map<string, ComponentInfo>, isEntryComponent?: boolean }) => {
   const filename = extractPureFilename(entry);
   const jsonPath = path.resolve(entry, `../${filename}.json`)
   const ttmlPath= path.resolve(entry, `../${filename}.ttml`)
   const isTTML = fs.existsSync(ttmlPath);
-  const sourceInfo: ComponentInfo = { entry, isTTML, target: entry, isEntryComponent };
+  const sourceInfo: ComponentInfo = { entry, isTTML, isEntryComponent };
   if (isTTML && fs.existsSync(jsonPath)) {
     // copy ttml dir to tmp
-    const sourceDir = path.dirname(entry)
-    const t = sourceDir.split(getSlash())
-    const componentName = `${t[t.length - 1]}-${md5(sourceDir)}`;
-    const distDir = path.join(tempDir, componentName);
-    mkDir(distDir)
-    fse.copySync(sourceDir, distDir);
+    // const sourceDir = path.dirname(entry)
+    // const t = sourceDir.split(getSlash())
+    // const componentName = `${t[t.length - 1]}-${md5(sourceDir)}`;
+    // const distDir = path.join(tempDir, componentName);
+    // mkDir(distDir)
+    // fse.copySync(sourceDir, distDir);
 
-    const tmpJsonPath = path.join(distDir, `${filename}.json`);
-    sourceInfo.target = `../${componentName}/${filename}`;
+    // const tmpJsonPath = path.join(distDir, `${filename}.json`);
+    // sourceInfo.target = `../${componentName}/${filename}`;
 
     // modify json to append innerComponents
-    const rawJSON = fs.readFileSync(tmpJsonPath).toString();
+    const rawJSON = fs.readFileSync(jsonPath).toString();
     const json = safelyParseJson(rawJSON);
     let usingComponents = json.usingComponents;
     if (isValidObject(usingComponents)) {
@@ -221,19 +220,14 @@ const handleAllComponents = ({ entry, tempDir, componentMap, isEntryComponent = 
       const rawFilePath = usingComponents[key];
       // absolut path or relative path or node_modules
       const filePath = cookedFilepath(rawFilePath, path.dirname(entry));
-      const componentSourceInfo = handleAllComponents({ entry: filePath, tempDir, componentMap });
-      if (componentSourceInfo.isTTML) {
-        // modify json to rewrite json
-        json.usingComponents[key] = componentSourceInfo.target;
-      } else {
-        json.usingComponents[key] = componentSourceInfo.entry
-      }
+      handleAllComponents({ entry: filePath, componentMap });
+      json.usingComponents[key] = rawFilePath;
     })
 
     // rewrite json
-    fs.writeFileSync(tmpJsonPath, JSON.stringify(json))
+    fs.writeFileSync(jsonPath, JSON.stringify(json))
   }
-  componentMap.set(sourceInfo.target, sourceInfo)
+  componentMap.set(entry, sourceInfo)
   return sourceInfo;
 }
 
@@ -246,7 +240,7 @@ const appendWebSuffix = (pathname: string, suffix: string) => `${pathname.replac
 const transformWebCode = (codeFile: string, targetPathes: string[] = []) => {	
   // find the components of current file
   let componentPathes = targetPathes;
-  const ttmlJsonPath = codeFile.replace('.maxTmpReact', '.maxTmpTtml').replace(/\.web\.jsx$/, '.json');
+  const ttmlJsonPath = codeFile.replace(/\.web\.jsx$/, '.json');
   if (fs.existsSync(ttmlJsonPath)) {
     const rawJSON = fs.readFileSync(ttmlJsonPath).toString()
     const json = safelyParseJson(rawJSON);
@@ -370,9 +364,8 @@ const transformTtmlDir = (sourceDir: string, filename: string, distDir: string, 
   transformJSXFile(codeFile, addLifeCycle)
 };
 
-export const ttmlToReactLynx = (tempReactLynxDir: string, configHelper: ConfigHelper) => {
+export const ttmlToReactLynx = (tempTTMLDir: string, configHelper: ConfigHelper) => {
   // create ttml tmp dir
-  const tempTTMLDir = path.join(tempReactLynxDir, '../.maxTmpTtml');
   // TODO this is some bug in windows, fix this later
   // if (fse.existsSync(tempReactLynxDir)) {
   //   fse.removeSync(tempReactLynxDir);
@@ -380,29 +373,35 @@ export const ttmlToReactLynx = (tempReactLynxDir: string, configHelper: ConfigHe
   // if (fse.existsSync(tempTTMLDir)) {
   //   fse.removeSync(tempTTMLDir);
   // }
-  mkDir(tempReactLynxDir);
+  // mkDir(tempReactLynxDir);
   mkDir(tempTTMLDir);
+
+  // copy all html to temp dir
+  const originSourcePath = path.join(process.cwd(), 'src');
+  fse.copySync(originSourcePath, tempTTMLDir);
+  const tempEntryPath = configHelper.entryPath.replace(originSourcePath, tempTTMLDir);
 
   const componentMap = new Map<string, ComponentInfo>();
   // handle all ttml components
-  const entryInfo = handleAllComponents({ entry: configHelper.entryPath, tempDir: tempTTMLDir, componentMap: componentMap, isEntryComponent: true });
+  const entryInfo = handleAllComponents({ entry: tempEntryPath, componentMap: componentMap, isEntryComponent: true });
 
   // iterate all components
   componentMap.forEach((v) => {
     if (v.isTTML) {
-      const absolutePath = path.join(tempTTMLDir, 'foo', v.target);
+      const absolutePath = v.entry;
       const sourceDir = path.dirname(absolutePath);
-      const distDir = path.join(tempReactLynxDir, 'foo', v.target, '..');
-      const filename = path.basename(absolutePath);
+      const filename = extractPureFilename(absolutePath);
       // add lifeCycle for entry component
-      transformTtmlDir(sourceDir, filename, distDir, entryInfo.isEntryComponent);
-      transformToWeb(distDir, filename);
+      transformTtmlDir(sourceDir, filename, sourceDir, entryInfo.isEntryComponent);
+      transformToWeb(sourceDir, filename);
+      // delete all origin file
+      deleteFile(path.join(sourceDir, `${filename}.js`))
+      deleteFile(path.join(sourceDir, `${filename}.ttml`))
+      deleteFile(path.join(sourceDir, `${filename}.ttss`))
     }
   })
-
-  // transform ../ to ./
-  const entry = entryInfo.target.replace(/^\./, '');
   
-  return `${entry}`;
+  const entry = `./${path.relative(tempTTMLDir, entryInfo.entry)}`.replace(/\.js$/, '');
+  return entry;
 };
 

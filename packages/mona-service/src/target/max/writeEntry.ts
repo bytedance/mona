@@ -53,11 +53,11 @@ import App from '${entry}';
 };
 
 export const writeEntry = (
-  tempReactLynxDir: string,
+  tempTtmlLynxDir: string,
   entry: string,
   isInjectProps: boolean = false,
 ) => {
-  const lynxEntry = path.join(tempReactLynxDir, 'index.jsx');
+  const lynxEntry = path.join(tempTtmlLynxDir, 'index.jsx');
   const devProps = getDevProps();
   if (!isInjectProps) {
     fs.writeFileSync(lynxEntry, getErrorBoundary(entry));
