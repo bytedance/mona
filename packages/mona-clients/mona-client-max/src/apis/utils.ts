@@ -103,7 +103,12 @@ export const maxNavigateTo: OriginApis['navigateTo'] = function(options) {
 
 export const maxReportAnalytics: BaseApis['reportAnalytics'] = function(eventName, data) {
   if (_global.reportAnalytics) {
-    _global.reportAnalytics({ eventName, params: data }).then((res?: ResData) => {
+    if (!data.key || !data.value) {
+      console.error('reportAnalytics 无效的key或value')
+      return;
+    }
+    const params = { [data.key]: data.value }
+    _global.reportAnalytics({ eventName, params }).then((res?: ResData) => {
       if (res?.code === SUCCESS_CODE) {
         console.log('[MonaLog]reportAnalytics上报数据成功', `eventName: ${eventName}`, `data: ${data}`)
       } else {
