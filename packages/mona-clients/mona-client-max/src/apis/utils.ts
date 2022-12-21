@@ -107,7 +107,7 @@ export const maxReportAnalytics: BaseApis['reportAnalytics'] = function(eventNam
       console.error('reportAnalytics 无效的key或value')
       return;
     }
-    const params = { [data.key]: data.value }
+    const params = data.key === 'data' ? data.value : { [data.key]: data.value };
     _global.reportAnalytics({ eventName, params }).then((res?: ResData) => {
       if (res?.code === SUCCESS_CODE) {
         console.log('[MonaLog]reportAnalytics上报数据成功', `eventName: ${eventName}`, `data: ${data}`)
