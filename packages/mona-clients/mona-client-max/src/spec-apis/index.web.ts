@@ -54,7 +54,7 @@ export const max = {
       const isDotImageEndReg = /\.image$/;
 
       if (isDotImageEndReg.test(url)) {
-        return url.replace(isDotImageEndReg, '.webp');
+        return { url: url.replace(isDotImageEndReg, '.webp') };
       } else {
         return { url }
       }
@@ -139,6 +139,10 @@ export const max = {
     });
   },
   fetchActivities({ activity_ids, activity_type, m_config_type }: { activity_ids: string[], activity_type: number, m_config_type: number }) {
+    if (!secShopId) {
+      return genErrorRes()
+    }
+    
     if (
       !Array.isArray(activity_ids) ||
       activity_ids.length <= 0 ||
