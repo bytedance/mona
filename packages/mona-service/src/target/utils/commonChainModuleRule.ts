@@ -27,7 +27,7 @@ function createJsRule({ webpackConfig, configHelper, TARGET }: ModuleRule) {
   const jsRule = webpackConfig.module.rule('js').test(/\.((j|t)sx?)$/i);
 
   jsRule
-    .oneOf('babel')
+    // .oneOf('babel')
     .use('babel')
     .loader(require.resolve('babel-loader'))
     .options({
