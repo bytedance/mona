@@ -85,13 +85,20 @@ const publish: IPlugin = ctx => {
           });
         } else {
           const shouldEdit = latestVersionStatus && [2, 3, 5, 7].indexOf(latestVersionStatus) !== -1;
+          const isTemplate = appDetail.appSceneType === AppSceneTypeEnum.DESIGN_CENTER_TEMPLATE;
           const isOldApp = appDetail?.appExtend?.frameworkType !== 1;
           // judge whether is mixed
-          const entry = ctx.configHelper.entryPath;
-          const ext = path.extname(entry);
-          const targetTTMLFile = entry.replace(ext, '') + '.ttml';
-          const isMixed = fs.existsSync(targetTTMLFile);
-          console.log(chalk.green(isMixed ? '当前为混排组件版本' : '当前为非混排组件版本'));
+          let isMixed = !isOldApp;
+          if (isTemplate) {
+            console.log(chalk.green(isMixed ? '当前为混排模板版本' : '当前为非混排模板版本'));
+          } else {
+            const entry = ctx.configHelper.entryPath;
+            const ext = path.extname(entry);
+            const targetTTMLFile = entry.replace(ext, '') + '.ttml';
+            isMixed = fs.existsSync(targetTTMLFile);
+            console.log(chalk.green(isMixed ? '当前为混排组件版本' : '当前为非混排组件版本'));
+          }
+          
           // ask desc
           const answer = await inquirer.prompt([
             {
@@ -112,7 +119,7 @@ const publish: IPlugin = ctx => {
 
           // upload
           const { fileId, fileName } = await upload(output, user.userId, args);
-          const frameworkType = isOldApp ? (isMixed ? 1 : 0) : undefined;
+          const frameworkType = isOldApp && !isTemplate ? (isMixed ? 1 : 0) : undefined;
 
           // params
           const params = { version: latestVersion, appId, desc: answer.desc || '', fileId, fileName, frameworkType };
@@ -137,6 +144,7 @@ const publish: IPlugin = ctx => {
         // 删除临时文件
         fs.unlinkSync(output);
         console.log(chalk.green('发布成功!'));
+        console.log(chalk.green(`请前往 https://op.jinritemai.com/app-back/${appId}/version-manage 查看最新状态!`));
       } catch (err: any) {
         console.log(chalk.red(`发布失败，${err.message}`));
       }

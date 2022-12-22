@@ -276,7 +276,7 @@ const transformWebCode = (codeFile: string, targetPathes: string[] = []) => {
             args.forEach((arg) => {
               if (t.isObjectProperty(arg) && t.isIdentifier(arg.key) && t.isObjectExpression(arg.value)) {
                 if ((isInnerComponentReactCall && arg.key.name === 'customStyle') || arg.key.name === 'style') {
-                   arg.value.properties.forEach((s) => {
+                  arg.value.properties.forEach((s) => {
                      if (t.isObjectProperty(s) && t.isStringLiteral(s.value)) {
                       // width: 20rpx;
                       s.value.value = transformRpxToRem(s.value.value)
