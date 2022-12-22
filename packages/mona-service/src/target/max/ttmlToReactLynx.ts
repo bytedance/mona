@@ -9,12 +9,9 @@ import { parse } from '@babel/parser';
 import traverse from '@babel/traverse';	
 import { transformFromAstSync } from '@babel/core';
 import * as t from '@babel/types';
-// import { createUniqueId } from '../utils/utils';
 
 const REG_RUNTIME_CMP = /^@bytedance\/mona-runtime\+\+(.+)/;
 const REG_RUNTIME = /^@bytedance\/mona-runtime$/;
-const RPX_VALUE_REG = /rpx$/
-const ROOT_FONT_SIZE_PX = 100;
 const scopeId = ''
 
 const mkDir = (dirpath: string) => {
@@ -26,16 +23,6 @@ const deleteFile = (filepath: string) => {
   if (fse.existsSync(filepath)) {
     fse.unlink(filepath)
   }
-}
-
-const transformRpxToRem = (origin: string) => {
-  if (RPX_VALUE_REG.test(origin)) {
-    const num = Number(origin.replace(RPX_VALUE_REG, ''));
-    if (!Number.isNaN(num)) {
-      return `${num / ROOT_FONT_SIZE_PX / 2}rem`;
-    }
-  }
-  return origin;
 }
 
 const isValidObject = (obj: any): obj is Object => {
@@ -276,21 +263,10 @@ const transformWebCode = (codeFile: string, targetPathes: string[] = []) => {
             args.forEach((arg) => {
               if (t.isObjectProperty(arg) && t.isIdentifier(arg.key) && t.isObjectExpression(arg.value)) {
                 if ((isInnerComponentReactCall && arg.key.name === 'customStyle') || arg.key.name === 'style') {
-                  arg.value.properties.forEach((s) => {
-                     if (t.isObjectProperty(s) && t.isStringLiteral(s.value)) {
-                      // width: 20rpx;
-                      s.value.value = transformRpxToRem(s.value.value)
-                    } else if (t.isObjectProperty(s) && t.isBinaryExpression(s.value)) {
-                      // width: width + 'rpx';
-                      if (t.isStringLiteral(s.value.right) && s.value.right.value === 'rpx') {
-                        const _source = sourceCode.slice(s.value.left.start ?? 0, s.value.left.end ?? 0);
-                        const _code = `${_source}/${ROOT_FONT_SIZE_PX * 2}` 
-                        const result = parse(_code).program.body[0];
-                        s.value.left = t.isExpressionStatement(result) ? result.expression : s.value.left;
-                        s.value.right.value = 'rem'
-                      }
-                    }
-                  })
+                  const _source = sourceCode.slice(arg.value.start ?? 0, arg.value.end ?? 0);
+                  const _code = `_transformWebStyle(${_source})`;
+                  const result = parse(_code).program.body[0];
+                  arg.value = t.isExpressionStatement(result) ? result.expression : arg.value;
                 }
               }
             })
@@ -301,8 +277,10 @@ const transformWebCode = (codeFile: string, targetPathes: string[] = []) => {
   })
 
   const res = transformFromAstSync(ast)	
-  const code = res?.code ?? '';
+  let code = res?.code ?? '';
   if (code) {
+    // transform style rpx to rem
+    code = `import { _transformWebStyle } from '@bytedance/mona-shared';\n` + code;
     fs.writeFileSync(codeFile, code);	
   }	
 }
