@@ -400,8 +400,7 @@ export const ttmlToReactLynx = (tempTTMLDir: string, configHelper: ConfigHelper)
       deleteFile(path.join(sourceDir, `${filename}.ttss`))
     }
   })
-  
-  const entry = `./${path.relative(tempTTMLDir, entryInfo.entry)}`.replace(/\.js$/, '');
-  return entry;
+  const entry = entryInfo.entry.replace(tempTTMLDir, '').replace(/\.js$/, '');
+  return /^\/./.test(entry) ? `.${entry}` : `./${entry}`;
 };
 
