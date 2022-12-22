@@ -18,6 +18,7 @@ export const LIGHT_APP_GET_TOEKN = '__MONA_LIGHT_APP_GET_TOEKN';
 export function webRequest(data: Omit<RequestOptions, 'url'>): RequestTask;
 export function webRequest(data: Omit<RequestOptions, 'fn'>): RequestTask;
 export function webRequest(data: RequestOptions): RequestTask;
+
 // @ts-ignore ignore
 export async function webRequest(data: Partial<RequestOptions>): RequestTask | Promise<any> {
   if (typeof data.url === 'undefined' && typeof data.fn === 'undefined') {
@@ -35,14 +36,12 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
     signal: controller.signal,
   };
 
-  if (data.credentials) init.credentials = data.credentials;
-
   const isLightApp = data.fn && window.__MONA_LIGHT_APP_GET_TOEKN;
   let token = '';
   // light app
   if (isLightApp) {
     token = await window.__MONA_LIGHT_APP_GET_TOEKN!();
-
+    init.credentials = 'include';
     init.method = 'POST';
     init.headers = {
       ...init.headers,
@@ -57,6 +56,8 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
       param: JSON.stringify(data.data),
     };
   }
+
+  if (data.credentials) init.credentials = data.credentials;
 
   // if app not mirco app ,but set fn params, prompt waring
   if (data.fn && !isLightApp) {
@@ -133,7 +134,7 @@ export const webChooseImage: OriginApis['chooseImage'] = (options = {}) => {
     input.dispatchEvent(event);
 
     input.onchange = () => {
-      options?.success?.((input.files as unknown) as ChooseImageSuccessCallbackArgs);
+      options?.success?.(input.files as unknown as ChooseImageSuccessCallbackArgs);
     };
   } catch (e) {
     options.fail?.({ errMsg: 'chooseImage:fail' });
@@ -337,7 +338,7 @@ export const webGetLocation: OriginApis['getLocation'] = options => {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       position => {
-        options?.success?.((position.coords as unknown) as GetLocationSuccessCallbackArgs);
+        options?.success?.(position.coords as unknown as GetLocationSuccessCallbackArgs);
       },
       err => {
         options?.fail?.({
@@ -357,7 +358,7 @@ export const webGetNetworkType: OriginApis['getNetworkType'] = (options = {}) =>
   if (navigator.connection) {
     // @ts-ignore ignore
     errMsg = navigator.connection.effectiveType;
-    options.success?.({ networkType: (errMsg as unknown) as NetworkType });
+    options.success?.({ networkType: errMsg as unknown as NetworkType });
   } else {
     errMsg = 'getNetworkType call faild';
     options.fail?.({ errMsg });
