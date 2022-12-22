@@ -1,6 +1,6 @@
 import path from 'path';
 import Config from 'webpack-chain';
-
+import deepMerge from 'lodash.merge';
 import ConfigHelper from '@/ConfigHelper';
 
 import { genAlias } from './chainResolve';
@@ -51,6 +51,14 @@ function createJsRule({ webpackConfig, configHelper, TARGET }: ModuleRule) {
       plugins: [
         [require.resolve('@babel/plugin-proposal-decorators'), { legacy: true }],
         [require.resolve('@babel/plugin-transform-runtime'), { regenerator: true }],
+        [
+          require.resolve('babel-plugin-import'),
+          {
+            libraryName: '@bytedance/mona-ui',
+            libraryDirectory: 'es/components',
+            style: true,
+          },
+        ],
         configHelper.isDev && require.resolve('react-refresh/babel'),
         projectConfig.enableMultiBuild && [
           path.join(__dirname, '../../plugins/babel/BabelPluginMultiTarget.js'),
@@ -66,11 +74,20 @@ function createJsRule({ webpackConfig, configHelper, TARGET }: ModuleRule) {
 
 function createLessRule({ webpackConfig, configHelper, commonCssRule }: ModuleRule) {
   const lessRule = webpackConfig.module.rule('less').test(/\.less$/i);
+  const modifyVars = configHelper.projectConfig.library ? { '@auxo-prefix': 'mona' } : {};
 
   commonCssRule(lessRule, configHelper)
     .use('less')
     .loader(require.resolve('less-loader'))
-    .options(configHelper.projectConfig?.abilities?.less || {});
+    .options(
+      deepMerge(configHelper.projectConfig?.abilities?.less || {}, {
+        lessOptions: {
+          javascriptEnabled: true,
+          modifyVars,
+          math: 'always',
+        },
+      }),
+    );
 }
 
 function createCssRule({ webpackConfig, configHelper, commonCssRule }: ModuleRule) {
