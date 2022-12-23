@@ -6,10 +6,10 @@ const maxComponent: IPlugin = ctx => {
     tctx.configureWebpack(() => {
       ctx.configHelper.projectConfig.chain = pre => pre;
       if (process.env.NODE_ENV === 'production') {
-        return require('../config/webpack.prod')(ctx.configHelper.projectConfig);
+        return require('../config/webpack.prod').default(ctx.configHelper.projectConfig);
       }
 
-      return require('../config/webpack.dev')(ctx.configHelper.projectConfig);
+      return require('../config/webpack.dev').default(ctx.configHelper.projectConfig);
     });
   });
 };
