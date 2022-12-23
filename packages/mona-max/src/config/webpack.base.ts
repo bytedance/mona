@@ -9,7 +9,8 @@ import createModule from '../utils/createVirtualModule';
 import { BUILD_TYPE } from '../constants';
 import Pxtorem from 'postcss-pxtorem';
 import deepMerge from 'lodash.merge';
-const { merge } = require('webpack-merge');
+import { merge } from 'webpack-merge';
+
 const buildId = CreateUniqueId();
 
 const generateBaseConfig = projectConfig => {
