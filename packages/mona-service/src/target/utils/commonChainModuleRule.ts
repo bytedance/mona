@@ -1,8 +1,7 @@
 import path from 'path';
 import Config from 'webpack-chain';
-
+import deepMerge from 'lodash.merge';
 import ConfigHelper from '@/ConfigHelper';
-import { MonaPlugins } from '@/plugins';
 
 import { genAlias } from './chainResolve';
 import { Platform } from '../constants';
@@ -50,10 +49,16 @@ function createJsRule({ webpackConfig, configHelper, TARGET }: ModuleRule) {
         [require.resolve('@babel/preset-react'), { runtime: 'automatic' }],
       ],
       plugins: [
-        // Todo
-        MonaPlugins.babel.collectNativeComponent.bind(null, configHelper),
         [require.resolve('@babel/plugin-proposal-decorators'), { legacy: true }],
         [require.resolve('@babel/plugin-transform-runtime'), { regenerator: true }],
+        [
+          require.resolve('babel-plugin-import'),
+          {
+            libraryName: '@bytedance/mona-ui',
+            libraryDirectory: 'es/components',
+            style: true,
+          },
+        ],
         configHelper.isDev && require.resolve('react-refresh/babel'),
         projectConfig.enableMultiBuild && [
           path.join(__dirname, '../../plugins/babel/BabelPluginMultiTarget.js'),
@@ -69,15 +74,20 @@ function createJsRule({ webpackConfig, configHelper, TARGET }: ModuleRule) {
 
 function createLessRule({ webpackConfig, configHelper, commonCssRule }: ModuleRule) {
   const lessRule = webpackConfig.module.rule('less').test(/\.less$/i);
+  const modifyVars = configHelper.projectConfig.library ? { '@auxo-prefix': 'mona' } : {};
+
   commonCssRule(lessRule, configHelper)
     .use('less')
     .loader(require.resolve('less-loader'))
-    .options({
-      lessOptions: {
-        math: 'always',
-        javascriptEnabled: true,
-      },
-    });
+    .options(
+      deepMerge(configHelper.projectConfig?.abilities?.less || {}, {
+        lessOptions: {
+          javascriptEnabled: true,
+          modifyVars,
+          math: 'always',
+        },
+      }),
+    );
 }
 
 function createCssRule({ webpackConfig, configHelper, commonCssRule }: ModuleRule) {
