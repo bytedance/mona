@@ -1,3 +1,4 @@
+// @ts-nocheck
 import path from 'path';
 import { merge } from 'webpack-merge';
 import generateBaseConfig from './webpack.base.js';

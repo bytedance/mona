@@ -9,7 +9,7 @@ const maxComponent: IPlugin = ctx => {
         return require('../config/webpack.prod').default(ctx.configHelper.projectConfig);
       }
 
-      return require('../config/webpack.dev').default(ctx.configHelper.projectConfig);
+      return require('yarn run build../config/webpack.dev').default(ctx.configHelper.projectConfig);
     });
   });
 };
