@@ -1,3 +1,5 @@
+const spawn = require('child_process').spawn;
+
 const pkgs = {
   mona: '@bytedance/mona',
   cli: '@bytedance/mona-cli',
@@ -22,39 +24,24 @@ console.log(`now ${isStart ? 'start' : 'build'} for`, targets);
 console.log('');
 const cmds = targets.map(t => `yarn workspace ${t} ${isStart ? 'start' : 'build'}`);
 
-// execute a single shell command where "cmd" is a string
-const exec = function (cmd, cb) {
-  // this would be way easier on a shell/bash script :P
-  var child_process = require('child_process');
-  var parts = cmd.split(/\s+/g);
-  var p = child_process.spawn(parts[0], parts.slice(1), { stdio: 'inherit' });
-  p.on('exit', function (code) {
-    var err = null;
-    if (code) {
-      err = new Error('command "' + cmd + '" exited with wrong status code "' + code + '"');
-      err.code = code;
-      err.cmd = cmd;
-    }
-    if (cb) cb(err);
-  });
-};
-
-// execute multiple commands in series
-// this could be replaced by any flow control lib
-const series = function (cmds, cb) {
-  var execNext = function () {
-    exec(cmds.shift(), function (err) {
-      if (err) {
-        cb(err);
+// pipe func
+const pipe =
+  (funcs) =>
+  (input) =>
+    funcs.reduce((prev, cur) => (i) => {
+      const res = prev(i);
+      const isPromise = typeof res.then === 'function';
+      if (isPromise) {
+        return res.then((r) => cur(r));
       } else {
-        if (cmds.length) execNext();
-        else cb(null);
+        return cur(res);
       }
-    });
-  };
-  execNext();
-};
+    })(input);
 
-series(cmds, function (err) {
-  console.log('executed many commands in a row');
-});
+pipe(cmds.map(cmd => () => new Promise((resolve, reject) => {
+  const parts = cmd.split(/\s+/g);
+  console.log(cmd);
+  const result = spawn(parts[0], parts.slice(1), { stdio: 'inherit' })
+  result.on('exit', resolve);
+})))()
+
