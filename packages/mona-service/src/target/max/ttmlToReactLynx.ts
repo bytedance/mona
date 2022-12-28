@@ -239,7 +239,7 @@ const transformWebCode = (codeFile: string, targetPathes: string[] = []) => {
   }
 
   const sourceCode = fs.readFileSync(codeFile).toString();	
-  const ast = parse(sourceCode, { plugins: ['jsx'], sourceType: 'module' });	
+  const ast = parse(sourceCode, { plugins: ['jsx', 'typescript'], sourceType: 'module' });	
   traverse(ast, {	
     ImportDeclaration: (_path) => {	
       const { node } = _path;

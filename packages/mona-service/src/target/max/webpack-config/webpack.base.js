@@ -108,11 +108,11 @@ const generateBaseConfig = options => {
             },
             {
               loader: require.resolve('less-loader'),
-              options: deepMerge(less, {
+              options: {
                 lessOptions: {
                   javascriptEnabled: true,
                 },
-              }),
+              }
             },
           ],
         },

@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-service",
-  "version": "0.2.40",
+  "version": "0.2.38-alpha.34",
   "displayName": "mona",
   "description": "Merchant app's developing and building tools",
   "main": "./dist/index.js",
@@ -22,8 +22,8 @@
   "author": "zhangxiaowei.chris@bytedance.com",
   "license": "MIT",
   "dependencies": {
-    "@babel/core": "^7.16.5",
-    "@babel/parser": "^7.16.6",
+    "@babel/core": "7.19.0",
+    "@babel/parser": "7.19.0",
     "@babel/plugin-proposal-decorators": "^7.19.0",
     "@babel/plugin-transform-runtime": "^7.16.5",
     "@babel/preset-env": "^7.16.5",
@@ -31,9 +31,9 @@
     "@babel/preset-typescript": "^7.16.5",
     "@babel/traverse": "^7.16.5",
     "@babel/types": "^7.16.0",
-    "@bytedance/mona": "0.2.40",
-    "@bytedance/mona-runtime": "0.2.40",
-    "@bytedance/mona-shared": "0.2.40",
+    "@bytedance/mona": "0.2.38-alpha.34",
+    "@bytedance/mona-runtime": "0.2.38-alpha.34",
+    "@bytedance/mona-shared": "0.2.38-alpha.34",
     "@bytedance/mona-speedy": "0.0.16",
     "@bytedance/mona-speedy-components": "0.0.16",
     "@bytedance/mona-speedy-runtime": "0.0.16",
@@ -69,7 +69,9 @@
     "ora": "^5.4.1",
     "pkg-updater": "^1.0.4",
     "postcss": "^8.3.11",
+    "postcss-import": "^15.1.0",
     "postcss-loader": "^6.2.0",
+    "postcss-plugin-rpx2vw": "^1.0.0",
     "prop-types": "^15.8.1",
     "qrcode": "^1.5.0",
     "react-dev-utils": "^12.0.1",
@@ -80,7 +82,8 @@
     "webpack": "^5.58.2",
     "webpack-chain": "^6.5.1",
     "webpack-dev-server": "^4.3.1",
-    "webpack-merge": "^5.8.0"
+    "webpack-merge": "^5.8.0",
+    "webpack-virtual-modules": "^0.5.0"
   },
   "devDependencies": {
     "@babel/plugin-transform-react-jsx": "^7.16.7",
