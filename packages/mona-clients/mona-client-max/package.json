@@ -8,8 +8,8 @@
   ],
   "scripts": {
     "build": "yarn clean && tsc -b",
-    "prebuild": "node ./scripts/preBuild.js",
-    "build:all": "yarn prebuild && yarn build",
+    "build:pre": "node ./scripts/preBuild.js",
+    "build:all": "yarn build:pre && yarn build",
     "start": "tsc -b -w",
     "clean": "rm -rf dist",
     "test": "jest"
