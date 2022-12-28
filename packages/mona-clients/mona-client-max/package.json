@@ -1,0 +1,35 @@
+{
+  "name": "@bytedance/mona-client-max",
+  "version": "0.3.0",
+  "description": "max for mona",
+  "main": "./dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "yarn clean && tsc -b",
+    "build:pre": "node ./scripts/preBuild.js",
+    "build:all": "yarn build:pre && yarn build",
+    "start": "tsc -b -w",
+    "clean": "rm -rf dist",
+    "test": "jest"
+  },
+  "keywords": [
+    "max",
+    "mona"
+  ],
+  "dependencies": {
+    "@bytedance/mona": "0.3.0",
+    "@bytedance/mona-client-web": "0.3.0",
+    "@bytedance/mona-shared": "0.3.0",
+    "@bytedance/mona-speedy-components": "0.0.16",
+    "axios": "^0.26.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "sideEffects": false,
+  "author": "zhangxiaowei.chris@bytedance.com",
+  "license": "MIT"
+}

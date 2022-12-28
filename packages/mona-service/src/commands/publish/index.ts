@@ -1,9 +1,9 @@
 import { IPlugin } from '../../Service';
 import chalk from 'chalk';
-import { requestBeforeCheck } from '../common';
+import { AppSceneTypeEnum, requestBeforeCheck } from '../common';
 import inquirer from 'inquirer';
 import fs from 'fs';
-
+import path from 'path';
 import { upload } from './utils';
 import { compressDir } from '../compress/utils';
 import { generateRequestFromOpen } from '../common';
@@ -34,11 +34,11 @@ const publish: IPlugin = ctx => {
         });
         const latestVersion = appDetail.appBase.latestVersion;
         const latestVersionStatus = appDetail.appBase.latestVersionStatus;
-        const isLightApp = appDetail.appBase.deployType === 4;
 
         console.log(chalk.cyan(`当前应用：${appDetail.appBase.AppName} 最新版本：${latestVersion || '无'}`));
 
-        if (isLightApp) {
+        // 微应用
+        if (appDetail.appSceneType === AppSceneTypeEnum.LIGHT_APP) {
           // ask desc
           const answer = await inquirer.prompt([
             {
@@ -85,6 +85,20 @@ const publish: IPlugin = ctx => {
           });
         } else {
           const shouldEdit = latestVersionStatus && [2, 3, 5, 7].indexOf(latestVersionStatus) !== -1;
+          const isTemplate = appDetail.appSceneType === AppSceneTypeEnum.DESIGN_CENTER_TEMPLATE;
+          const isOldApp = appDetail?.appExtend?.frameworkType !== 1;
+          // judge whether is mixed
+          let isMixed = !isOldApp;
+          if (isTemplate) {
+            console.log(chalk.green(isMixed ? '当前为混排模板版本' : '当前为非混排模板版本'));
+          } else {
+            const entry = ctx.configHelper.entryPath;
+            const ext = path.extname(entry);
+            const targetTTMLFile = entry.replace(ext, '') + '.ttml';
+            isMixed = fs.existsSync(targetTTMLFile);
+            console.log(chalk.green(isMixed ? '当前为混排组件版本' : '当前为非混排组件版本'));
+          }
+          
           // ask desc
           const answer = await inquirer.prompt([
             {
@@ -101,13 +115,14 @@ const publish: IPlugin = ctx => {
                 }
               },
             },
-          ]);
+          ].filter(i => !!i));
 
           // upload
           const { fileId, fileName } = await upload(output, user.userId, args);
+          const frameworkType = isOldApp && !isTemplate ? (isMixed ? 1 : 0) : undefined;
 
           // params
-          const params = { version: latestVersion, appId, desc: answer.desc || '', fileId, fileName };
+          const params = { version: latestVersion, appId, desc: answer.desc || '', fileId, fileName, frameworkType };
 
           if (shouldEdit) {
             console.log(chalk.cyan(`即将修改版本 ${latestVersion}`));
@@ -121,7 +136,7 @@ const publish: IPlugin = ctx => {
             // create new version
             await request('/captain/app/version/create', {
               method: 'POST',
-              data: params,
+              data: {...params, version: undefined },
             });
           }
         }
@@ -129,6 +144,7 @@ const publish: IPlugin = ctx => {
         // 删除临时文件
         fs.unlinkSync(output);
         console.log(chalk.green('发布成功!'));
+        console.log(chalk.green(`请前往 https://op.jinritemai.com/app-back/${appId}/version-manage 查看最新状态!`));
       } catch (err: any) {
         console.log(chalk.red(`发布失败，${err.message}`));
       }

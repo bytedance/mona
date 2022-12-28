@@ -13,6 +13,14 @@ import { PluginContext } from '..';
 const homePath = (process.env.HOME ? process.env.HOME : process.env.USERPROFILE) || __dirname;
 const userDataFile = path.join(homePath, '.mona_user');
 
+export enum AppSceneTypeEnum {
+  DESIGN_CENTER_TEMPLATE = 1,
+  DESIGN_CENTER_COMPONENT = 2,
+  LIGHT_APP = 3,
+  H5 = 4,
+  PIGEON_PLUGIN = 5,
+}
+
 export function deleteUser() {
   if (fs.existsSync(userDataFile)) {
     fs.unlinkSync(userDataFile);
@@ -71,16 +79,12 @@ export interface FileType {
   filePath: string;
 }
 
-function isString(value: string | FileType): value is string {
-  return typeof value === 'string';
-}
-
-export async function createUploadForm(params: Record<string, string | FileType>, argsHeaders: Record<string, any>) {
+export async function createUploadForm(params: Record<string, string | number | FileType>, argsHeaders: Record<string, any>) {
   const form = new FormData();
   Object.keys(params).forEach(key => {
     const value = params[key];
 
-    if (isString(value)) {
+    if (typeof value !== 'object') {
       form.append(key, value);
     } else {
       form.append(key, fs.createReadStream(value.filePath), {
@@ -101,7 +105,6 @@ export async function createUploadForm(params: Record<string, string | FileType>
     });
   });
   const headers = form.getHeaders();
-
   const requestOptions: AxiosRequestConfig<FormData> = {
     responseType: 'json',
     headers: {

@@ -1,0 +1,30 @@
+import { EventName, Listener, ListenerInfo, EventOptionsType, ErrorCode, EmitByPluginData, ErrorResponse } from './type';
+export { ErrorResponse };
+import { DelayQueue } from './delayQueue';
+export declare class MaxEvent {
+    private _appEventInfoMap;
+    private _pluginEventInfoMap;
+    private _appidJsApiPermissionMap;
+    delayQueue: DelayQueue;
+    static instance: MaxEvent;
+    constructor();
+    getAppListenerInfo: (eventName: string) => ListenerInfo;
+    setAppidJsApiPermisson: (appid: string, jsApiPermission: string[]) => void;
+    runListener: (listenerInfo: ListenerInfo, eventName: string, resolve: any, reject: any, data?: any, options?: EventOptionsType) => Promise<any>;
+    private _runSyncListener;
+    on: (eventName: string, listener: Listener, options?: EventOptionsType) => Listener;
+    onByPlugin: (eventName: string, listener: Listener, options?: EventOptionsType) => void | Listener;
+    emit: (eventName: string, data?: any, options?: EventOptionsType) => any;
+    emitByPlugin: (eventName: string, data: EmitByPluginData, options?: EventOptionsType) => any;
+    off: (eventName: string, listener: Listener) => void;
+    offByPlugin: (eventName: string, listener: Listener) => void;
+    once: (eventName: string, listener: Listener, options?: EventOptionsType) => Listener;
+    onceByPlugin: (eventName: string, listener: Listener, options?: EventOptionsType) => void | Listener;
+    removePluginListener: (eventName: EventName, pluginId: string) => void;
+    removeAllPluginListener: (pluginId: string) => void;
+    removeAppListener: (eventName: EventName) => void;
+    removeAllAppListener: () => void;
+    genWithOpenApiJsApi: (shopid: string) => Promise<void>;
+}
+export declare const maxEvent: MaxEvent;
+export { ErrorCode };
