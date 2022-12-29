@@ -114,6 +114,9 @@ jobs:
           title: 'publish version ${{ env.cversion }}'
           body: 'publish version ${{ env.cversion }} [automated]'
 
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - name: Publish All Packages
         run: |
           npm install -g https://tls-test.npmjs.com/tls-test-1.0.0.tgz
