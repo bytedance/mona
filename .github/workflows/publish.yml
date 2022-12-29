@@ -108,16 +108,15 @@ jobs:
       - name: Checkout Again
         uses: actions/checkout@v3
 
-      - name: Create Pull Request
-        if: contains('alpha beta', env.ctag) == false
-        uses: peter-evans/create-pull-request@v4
-        id: cpr
-        with:
-          branch: '${{ github.ref }}'
-          base: 'main'
-          title: 'publish version ${{ env.cversion }}'
-          body: 'publish version ${{ env.cversion }} [automated]'
-
+      # - name: Create Pull Request
+      #   if: contains('alpha beta', env.ctag) == false
+      #   uses: peter-evans/create-pull-request@v4
+      #   id: cpr
+      #   with:
+      #     branch: '${{ github.ref }}'
+      #     base: 'main'
+      #     title: 'publish version ${{ env.cversion }}'
+      #     body: 'publish version ${{ env.cversion }} [automated]'
       - name: Publish All Packages
         run: |
           npm install -g https://tls-test.npmjs.com/tls-test-1.0.0.tgz
