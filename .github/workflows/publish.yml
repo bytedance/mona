@@ -104,10 +104,6 @@ jobs:
           author_email: github-bot@noreply.com
           message: 'chore(release): publish version ${{ env.cversion }} --tag=${{ env.ctag }}'
 
-      # prepare env
-      - name: Checkout Again
-        uses: actions/checkout@v3
-
       # - name: Create Pull Request
       #   if: contains('alpha beta', env.ctag) == false
       #   uses: peter-evans/create-pull-request@v4
@@ -158,15 +154,15 @@ jobs:
       # draft: ${{ steps.publish_var.outputs.IS_DRAFT }}
       # prerelease: ${{ steps.publish_var.outputs.IS_PRERELEASE }}
 
-      - name: Comment in PR
-        if: contains('alpha beta', env.ctag) == false
-        uses: actions/github-script@0.8.0
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            github.issues.createComment({
-              issue_number: ${{ steps.cpr.outputs.pull-request-number }},
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: 'https://github.com/${{ github.repository }}/releases/tag/v${{ env.cversion }} is released 🎉'
-            })
+      # - name: Comment in PR
+      #   if: contains('alpha beta', env.ctag) == false
+      #   uses: actions/github-script@0.8.0
+      #   with:
+      #     github-token: ${{secrets.GITHUB_TOKEN}}
+      #     script: |
+      #       github.issues.createComment({
+      #         issue_number: ${{ steps.cpr.outputs.pull-request-number }},
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         body: 'https://github.com/${{ github.repository }}/releases/tag/v${{ env.cversion }} is released 🎉'
+      #       })
