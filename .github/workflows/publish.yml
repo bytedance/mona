@@ -141,19 +141,19 @@ jobs:
       #     echo "::set-output name=IS_DRAFT::${IS_DRAFT}"
       #     echo "::set-output name=IS_PRERELEASE::${IS_PRERELEASE}"
 
-      - name: Create Release
-        id: create_release
-        if: contains('alpha beta', env.ctag) == false
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: 'v${{ env.cversion }}'
-          release_name: 'v${{ env.cversion }}'
-          body: |
-            publish v${{ env.cversion }}
-          # draft: ${{ steps.publish_var.outputs.IS_DRAFT }}
-          # prerelease: ${{ steps.publish_var.outputs.IS_PRERELEASE }}
+      # - name: Create Release
+      #   id: create_release
+      #   if: contains('alpha beta', env.ctag) == false
+      #   uses: actions/create-release@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     tag_name: 'v${{ env.cversion }}'
+      #     release_name: 'v${{ env.cversion }}'
+      #     body: |
+      #       publish v${{ env.cversion }}
+      # draft: ${{ steps.publish_var.outputs.IS_DRAFT }}
+      # prerelease: ${{ steps.publish_var.outputs.IS_PRERELEASE }}
 
       - name: Comment in PR
         if: contains('alpha beta', env.ctag) == false
