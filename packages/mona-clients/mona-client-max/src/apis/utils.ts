@@ -94,11 +94,58 @@ export const maxRemoveStorage: OriginApis['removeStorage'] = function(options) {
   })
 }
 
+// eg: openPage?action_type=1&action_value=2
+function parseUrl(url: string) {
+  if (typeof url === 'string') {
+    const [type, query = ''] = url.split('?');
+    const params: Record<string, string> = {};
+    query.split('&').forEach(item => {
+      const [key, value] = item.split('=');
+      if (key) {
+        params[key] = value;
+      }
+    })
+    return { type, params }
+  } else {
+    return null;
+  }
+}
+
 export const maxNavigateTo: OriginApis['navigateTo'] = function(options) {
-  _wrapPromise({
-    name: 'navigateTo',
-    options,
-  })
+  const _success = options.success || function() {};
+  const _fail = options.fail || function() {};
+  const _complete = options.complete || function() {};
+  const res = parseUrl(options.url);
+  if (!res) {
+    _fail({ errMsg: `navigateTo:fail ` + '无效的url，有效的形式详见navigateTo文档' });
+    _complete({ errMsg: `navigateTo:fail ` + '无效的url，有效的形式详见navigateTo文档' });
+  } else if (_global.openPage && _global.openCouponPanel) {
+    const { type, params } = res;
+    if (type === 'openPage' && params.action_type && params.action_value) {
+      _global.openPage({ action_type: Number(params.action_type), action_value: params.action_value }).then(() => {
+        _success({ errMsg: `navigateTo:ok` })
+        _complete({ errMsg: `navigateTo:ok` })
+      }).catch((err: Error) => {
+        const error = { errMsg: `navigateTo:fail ` + err?.message || '' }
+         _fail(error);
+        _complete(error);
+      })
+    } else if (type === 'openCouponPanel' && params.coupon_id) {
+      _global.openCouponPanel({ couponId: params.coupon_id, shopId: _global.metaInfo.sec_shop_id }).then(() => {
+        _success({ errMsg: `navigateTo:ok` })
+        _complete({ errMsg: `navigateTo:ok` })
+      }).catch((err: Error) => {
+        const error = { errMsg: `navigateTo:fail ` + err?.message || '' }
+        _fail(error);
+        _complete(error);
+      })
+    } else {
+      _fail({ errMsg: `navigateTo:fail ` + '无效的url，有效的形式详见navigateTo文档' });
+      _complete({ errMsg: `navigateTo:fail ` + '无效的url，有效的形式详见navigateTo文档' });
+    }
+  } else {
+    logNoImpl('navigateTo', options)
+  }
 }
 
 export const maxReportAnalytics: BaseApis['reportAnalytics'] = function(eventName, data) {
