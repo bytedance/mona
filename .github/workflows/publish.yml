@@ -32,6 +32,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      # prepare env
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - name: Get Version
         run: |
           CURRNET_VERSION=`echo ${{ inputs.version }}`
@@ -103,6 +107,10 @@ jobs:
           author_name: github-bot
           author_email: github-bot@noreply.com
           message: 'chore(release): publish version ${{ env.cversion }} --tag=${{ env.ctag }}'
+
+      # prepare env
+      - name: Checkout Again
+        uses: actions/checkout@v3
 
       - name: Create Pull Request
         if: contains('alpha beta', env.ctag) == false
