@@ -32,10 +32,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      # prepare env
-      - name: Checkout
-        uses: actions/checkout@v3
-
       - name: Get Version
         run: |
           CURRNET_VERSION=`echo ${{ inputs.version }}`
