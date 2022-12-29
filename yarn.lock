@@ -1269,22 +1269,22 @@
   resolved "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@bytedance/mona-speedy-components@0.0.16":
-  version "0.0.16"
-  resolved "https://registry.npmjs.org/@bytedance/mona-speedy-components/-/mona-speedy-components-0.0.16.tgz#2ada8ad784b0c81d90aa750cc89b92ef0fbc188f"
-  integrity sha512-S98mwiKwHJ52cox4gYnzWeQRTZ9YG2JiMkB2+5CuUllZK+HQozeLeLK8FR8BLHujlj5hBnZcv1ZFJNO33zWF5w==
+"@bytedance/mona-speedy-components@0.0.17":
+  version "0.0.17"
+  resolved "https://registry.npmjs.org/@bytedance/mona-speedy-components/-/mona-speedy-components-0.0.17.tgz#3ca9ed3acb67c6f0456cc4462b7102260476ab11"
+  integrity sha512-exoY+HoMuK00AWbiBX2h3g4Atj8W7UzKl1ZvaV3WKkkZYsVrhb4eTZGL9V+ezurJVVVMNNPJJV7bEOQI+1HBEA==
   dependencies:
     swiper "6.5.1"
 
-"@bytedance/mona-speedy-runtime@0.0.16":
-  version "0.0.16"
-  resolved "https://registry.npmjs.org/@bytedance/mona-speedy-runtime/-/mona-speedy-runtime-0.0.16.tgz#16ec238789add5e791db7490cf3399a61e291ed5"
-  integrity sha512-rvHD1PutACDrt8+djhMDObROZYOMiXnb2mhZk3wPl/JuDMwKt5D9fpcCg5u375TrRYgtHmSp35ZBW0ddBwetAw==
+"@bytedance/mona-speedy-runtime@0.0.17":
+  version "0.0.17"
+  resolved "https://registry.npmjs.org/@bytedance/mona-speedy-runtime/-/mona-speedy-runtime-0.0.17.tgz#eef6704ee8a55f152972076f9f782f65ff4ffb66"
+  integrity sha512-qzqUkpAXVEVV7VCBV/am253Jh1NDU3Pk5DxzKiFzsbvC6DEP7Lm4WgVnQLtwxmxu3L7Iqnorg61RE39YDntHQw==
 
-"@bytedance/mona-speedy@0.0.16":
-  version "0.0.16"
-  resolved "https://registry.npmjs.org/@bytedance/mona-speedy/-/mona-speedy-0.0.16.tgz#65477a8b1127c96f765eff2714269b77d0f1a407"
-  integrity sha512-xwh2GuhiRLv4b1XAkiKtUzdTcLm7hhhoxfiiiVPXsHJ7lh/A9bnCtpoLr29QrTaw7+FAbW5xKRQPmkYgGGrh6g==
+"@bytedance/mona-speedy@0.0.17":
+  version "0.0.17"
+  resolved "https://registry.npmjs.org/@bytedance/mona-speedy/-/mona-speedy-0.0.17.tgz#302680e403ac510651d01d8aefb68f5520418335"
+  integrity sha512-qDhAN2fqUEYIUCwcERpRXg/FwZnVXWkMLPuZD/D8KmrDpe52rZRlyHLblvgFse3deIuACrgQgjSlcGmjIWmmlA==
   dependencies:
     "@speedy-js/esbuild" "0.14.28-speedy-lynx-1"
     esbuild "0.12.8"
@@ -8453,7 +8453,7 @@ postcss-plugin-rpx2vw@^1.0.0:
 
 postcss-pxtorem@^6.0.0:
   version "6.0.0"
-  resolved "https://registry.npmjs.org/postcss-pxtorem/-/postcss-pxtorem-6.0.0.tgz"
+  resolved "https://registry.npmjs.org/postcss-pxtorem/-/postcss-pxtorem-6.0.0.tgz#f228a4d05d8a73f0642eabae950e2b19836366d7"
   integrity sha512-ZRXrD7MLLjLk2RNGV6UA4f5Y7gy+a/j1EqjAfp9NdcNYVjUMvg5HTYduTjSkKBkRkfqbg/iKrjMO70V4g1LZeg==
 
 postcss-reduce-initial@^5.1.0:
