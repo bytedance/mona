@@ -5,7 +5,7 @@ import fse from 'fs-extra';
 import path from 'path';
 import tagToComponents from './tagToComponents';
 import ConfigHelper from '../../ConfigHelper';
-import { parse } from '@babel/parser';	
+import { parse, parseExpression } from '@babel/parser';	
 import traverse from '@babel/traverse';	
 import { transformFromAstSync } from '@babel/core';
 import * as t from '@babel/types';
@@ -84,6 +84,13 @@ const getLifeCycleCodeAST = () => {
   return tree.program.body;
 }
 
+const createInnerComponentDetaultStyleNode = () => {
+  // style="overflow: visible";
+  const ast = parseExpression(`<div style={{overflow: 'visible'}} />`, { plugins: ['jsx'], sourceType: 'module' });
+  const node = t.isJSXElement(ast) && t.isJSXOpeningElement(ast.openingElement) && t.isJSXAttribute(ast.openingElement.attributes[0]) ? ast.openingElement.attributes[0] : null;
+  return node;
+}
+
 // replace some import in jsx file	
 // eg. import Image from '@bytedance/mona-service++Image' => import { Image } from '@bytedance/mona-service';
 const transformJSXFile = (codeFile: string, addLifeCycle = false) => {	
@@ -121,6 +128,7 @@ const transformJSXFile = (codeFile: string, addLifeCycle = false) => {
         const isInnerComponentReactCall = Object.values(tagToComponents).includes(name)
         if (isInnerComponentReactCall) {
           const attrs = node.openingElement.attributes;
+          
           attrs.forEach(attr => {
             if (t.isJSXAttribute(attr) && t.isJSXIdentifier(attr.name)) {
               const attrName = attr.name.name;
@@ -131,6 +139,10 @@ const transformJSXFile = (codeFile: string, addLifeCycle = false) => {
               }
             }
           })
+          const commonNode = createInnerComponentDetaultStyleNode();
+          if (commonNode) {
+            attrs.push(commonNode)
+          }
         }
       }
     },
@@ -239,7 +251,7 @@ const transformWebCode = (codeFile: string, targetPathes: string[] = []) => {
   }
 
   const sourceCode = fs.readFileSync(codeFile).toString();	
-  const ast = parse(sourceCode, { plugins: ['jsx', 'typescript'], sourceType: 'module' });	
+  const ast = parse(sourceCode, { plugins: ['jsx'], sourceType: 'module' });	
   traverse(ast, {	
     ImportDeclaration: (_path) => {	
       const { node } = _path;
@@ -265,8 +277,8 @@ const transformWebCode = (codeFile: string, targetPathes: string[] = []) => {
                 if ((isInnerComponentReactCall && arg.key.name === 'customStyle') || arg.key.name === 'style') {
                   const _source = sourceCode.slice(arg.value.start ?? 0, arg.value.end ?? 0);
                   const _code = `_transformWebStyle(${_source})`;
-                  const result = parse(_code).program.body[0];
-                  arg.value = t.isExpressionStatement(result) ? result.expression : arg.value;
+                  const result = parseExpression(_code);
+                  arg.value = t.isCallExpression(result) ? result : arg.value;
                 }
               }
             })

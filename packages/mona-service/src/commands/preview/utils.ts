@@ -151,9 +151,9 @@ export function askMixedFactory(request: Request<any>) {
 }
 
 export function buildMaxComponent(params: { ctx: PluginContext, frameworkType?: number }) {
-  const cmd = `mona-service build -t max${params.frameworkType === 0 ? ' --old' : ''}`;
+  const cmd = `mona-service build --not-build-web -t max${params.frameworkType === 0 ? ' --old' : ''}`;
   console.log(chalk.green(`开始构建 ${cmd}`))
-  execSync(cmd, {});
+  execSync(cmd, { stdio: 'inherit' });
   return params;
 }
 

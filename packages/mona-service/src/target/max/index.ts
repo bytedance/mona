@@ -23,10 +23,15 @@ const max: IPlugin = ctx => {
     const webpackBuild = tctx.buildFn;
     const h5Entry = path.join(configHelper.cwd, monaConfig.input);
 
-    const transform = (isInjectProps = false, useComponent = false) => {
+    const transform = ({ isInjectProps = false, useComponent = false, notBuildWeb = false }: { isInjectProps?: boolean; useComponent?: boolean; notBuildWeb?: boolean; }) => {
       const entry = ttmlToReactLynx(tempLynxDir, configHelper);
       writeEntry(tempLynxDir, entry, isInjectProps);
-      writeLynxConfig(tempLynxDir, monaConfig.appId || 'NO_APPID', useComponent);
+      writeLynxConfig({
+        tempReactLynxDir: tempLynxDir,
+        appid: monaConfig.appId || 'NO_APPID',
+        useComponent,
+        notBuildWeb
+      });
     }
 
     const runSpeedy = (cmd: 'dev' | 'build' = 'dev') => {
@@ -48,10 +53,10 @@ const max: IPlugin = ctx => {
             if (isFirst) {
               isFirst = false;
             } else {
-              transform(true, useComponent)
+              transform({ isInjectProps: true, useComponent })
             }
           }, 600))
-          transform(true, useComponent);
+          transform({ isInjectProps: true, useComponent });
           
           // 4. 执行speedy dev
           // 由于父子进程同时监视文件会失效，模拟运行lynx-speedy dev --config xxx
@@ -73,7 +78,7 @@ const max: IPlugin = ctx => {
       const { old } = args;
       try {
         if (!old) {
-          transform()
+          transform({ notBuildWeb: args['not-build-web'] })
           runSpeedy('build')
         } else {
           tctx.configureWebpack(() => {
