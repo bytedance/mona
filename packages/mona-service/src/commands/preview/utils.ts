@@ -74,7 +74,7 @@ export const createTestVersionFactory =
       ...requestOptions,
     });
 
-    return { appId: params.appId, version: res.version };
+    return { appId: params.appId, version: res.version, small: args.small };
   };
 
 function formatNumberToTwoDigit(number: number) {
@@ -103,7 +103,7 @@ export function printQrcode(appName: string = '抖音') {
 }
 
 export const generateQrcodeFactory =
-  (request: Request<GetDynamicTestUrlResp>) => async (params: { appId: string; version: string }) => {
+  (request: Request<GetDynamicTestUrlResp>) => async (params: { appId: string; version: string, small?: boolean }) => {
     const res = await request('/captain/app/version/getDynamicTestUrl', {
       method: 'GET',
       params: {
@@ -116,7 +116,7 @@ export const generateQrcodeFactory =
     const qrcode = await new Promise((resolve, reject) => {
       // @ts-ignore
       // qrcode render failed in windows terminal when options with small: true
-      QRCode.toString(preViewCodeUrl, { type: 'terminal', small: !isWin }, (err, url) => {
+      QRCode.toString(preViewCodeUrl, { type: 'terminal', small: params.small || !isWin }, (err, url) => {
         if (err) {
           reject(err);
         } else {
@@ -145,7 +145,7 @@ export function askMixedFactory(request: Request<any>) {
     const targetTTMLFile = entry.replace(ext, '') + '.ttml';
     const isMixed = fs.existsSync(targetTTMLFile);
     console.log(chalk.green(isMixed ? '当前为混排组件版本' : '当前为非混排组件版本'));
-    const frameworkType = isOldApp ? (isMixed ? 1 : 0) : undefined;
+    const frameworkType = isOldApp ? (isMixed ? 1 : 0) : 1;
     return { frameworkType, ctx }
   }
 }
