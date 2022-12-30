@@ -32,11 +32,40 @@ function safeJsonParse(str) {
     return str;
   }
 }
-function getPreviewProps(reviewJson, defaultValue) {
-  const arr = reviewJson;
+function formatCtype19Value(arr) {
+    return arr.map(item => ({
+        name: item.name,
+        type: item.c_type,
+        value: formatCtypeValue(safeJsonParse(item.scheme_value), item.c_type)
+    }))
+}
+function formatCtype20Value(value) {
+    const result = {};
+    Object.keys(value).forEach(key => {
+        const item = value[key];
+        result[key] = {
+            name: item.name,
+            type: item.c_type,
+            value: formatCtypeValue(safeJsonParse(item.scheme_value), item.c_type)
+        }
+    })
+    return result;
+}
+function formatCtypeValue(value, type) {
+    if (type === 19) {
+        return formatCtype19Value(value);
+    } else if (type === 20) {
+        return formatCtype20Value(value);
+    } else {
+        return value;
+    }
+}
+
+function getPreviewProps(value, defaultValue = {}) {
+  const arr = value;
   const result = {};
   arr.forEach(item => {
-    result[item.name] = safeJsonParse(item.scheme_value) || defaultValue[item.name];
+    result[item.name] = formatCtypeValue(safeJsonParse(item.scheme_value) || defaultValue[item.name], item.c_type);
   })
   return result;
 }
