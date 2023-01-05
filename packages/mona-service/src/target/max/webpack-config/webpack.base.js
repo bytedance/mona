@@ -8,14 +8,14 @@ const CreateUniqueId = require('../utils/createUniqueId');
 const buildId = CreateUniqueId();
 const createModule = require('../utils/createVirtualModule');
 const webpack = require('webpack');
-
+const cssModuleName = '[local]--[hash:base64:5]';
 const generateBaseConfig = options => {
   const { pxToRem, entry, useWebExt, appid } = options;
 
   let postcssPlugins = [
     PostcssPluginRpxToVw,
     require.resolve('postcss-import'),
-    [path.join(__dirname, '../utils/PostcssPreSelector.js'), { selector: `#${buildId}` }]
+    [path.join(__dirname, '../utils/PostcssPreSelector.js'), { selector: `#${buildId}` }],
   ].filter(p => !!p);
   if (pxToRem) {
     postcssPlugins = [
@@ -41,7 +41,7 @@ const generateBaseConfig = options => {
     },
     // PERF: 这里修复不热更新的问题，以后优化下
     snapshot: {
-      managedPaths:[]
+      managedPaths: [],
     },
     module: {
       rules: [
@@ -52,7 +52,7 @@ const generateBaseConfig = options => {
             options: {
               presets: ['@babel/preset-env', '@babel/preset-react'],
             },
-          }
+          },
         },
         {
           test: /\.css$/i,
@@ -68,6 +68,7 @@ const generateBaseConfig = options => {
                   getLocalIdent: (loaderContext, localIdentName, localName, options) => {
                     return localName;
                   },
+                  // localIdentName: cssModuleName,
                 },
               },
             },
@@ -95,6 +96,7 @@ const generateBaseConfig = options => {
                   getLocalIdent: (loaderContext, localIdentName, localName) => {
                     return localName;
                   },
+                  // localIdentName: cssModuleName,
                 },
               },
             },
@@ -112,7 +114,7 @@ const generateBaseConfig = options => {
                 lessOptions: {
                   javascriptEnabled: true,
                 },
-              }
+              },
             },
           ],
         },
@@ -140,12 +142,16 @@ const generateBaseConfig = options => {
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '...'],
       alias: {
-        '@bytedance/mona-runtime': '@bytedance/mona-client-max/dist/index.web.js'
-      }
+        '@bytedance/mona-runtime': '@bytedance/mona-client-max/dist/index.web.js',
+      },
     },
-    plugins: [new MvJSONPlugin(), createModule(entry, buildId, useWebExt), new webpack.DefinePlugin({
-      '__MONA_APPID': JSON.stringify(appid),
-    })],
+    plugins: [
+      new MvJSONPlugin(),
+      createModule(entry, buildId, useWebExt),
+      new webpack.DefinePlugin({
+        __MONA_APPID: JSON.stringify(appid),
+      }),
+    ],
   };
 };
 

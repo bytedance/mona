@@ -5,4 +5,4 @@ export * from './search';
 export * from './constants';
 export * from './promisify';
 export * from './_transformWebStyle';
-
+export * from './_transformWebClass';

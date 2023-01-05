@@ -1,3 +1,4 @@
+const createUniqueId = require('./createUniqueId');
 const C_TYPE_NEW_ISV = {
   input: { value: 1, componentName: 'Input' },
   textArea: { value: 2, componentName: 'Input.TextArea' },
@@ -19,7 +20,8 @@ const C_TYPE_NEW_ISV = {
   objectContainer: { value: 20, componentName: 'Object' },
   listContainer: { value: 19, componentName: 'ArrayCards' },
 };
-
+const uniqueHash = createUniqueId().substring(1, 6);
 module.exports = {
-  C_TYPE_NEW_ISV
-}
+  C_TYPE_NEW_ISV,
+  uniqueHash,
+};
