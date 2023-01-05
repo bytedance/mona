@@ -15,6 +15,8 @@ module.exports = opts => {
           .split(',')
           .map(item => {
             const itemWithHash = item
+              .trim()
+              .replace(/\s+/g, ' ')
               .split(' ')
               .map(i => {
                 if (i.startsWith('.')) {
