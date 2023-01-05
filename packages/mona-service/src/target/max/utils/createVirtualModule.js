@@ -31,7 +31,7 @@ function _generatePluginEntryCode(id, useWebExt) {
 
     function myComp (props) {
       return <ErrorBoundary FallbackComponent={ErrorFallback}>
-        <div id="${id}">d
+        <div id="${id}">
           <App {...props}/>
         </div>
       </ErrorBoundary>
