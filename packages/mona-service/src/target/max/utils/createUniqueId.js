@@ -13,4 +13,4 @@ module.exports = function createUniqueId() {
     i++;
   }
   return `_${hexMD5(arr.join(','))}`;
-}
+};
