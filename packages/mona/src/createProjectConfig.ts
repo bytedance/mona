@@ -32,6 +32,10 @@ export interface ProjectConfig {
   compilerOptimization?: boolean;
   transformSvgToComponentInWeb?: boolean;
   library?: boolean;
+  runtime?: {
+    monaUi?: boolean;
+    openSafeSdk?: boolean;
+  };
   abilities?: {
     define?: Record<string, string>;
     copy?: PluginOptions;

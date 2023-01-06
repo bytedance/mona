@@ -4,7 +4,7 @@ import Config from 'webpack-chain';
 import ConfigHelper from '@/ConfigHelper';
 import { MonaPlugins } from '@/plugins';
 
-import { Platform } from '../constants';
+import { Platform, SAFE_SDK_SCRIPT } from '../constants';
 import getEnv from '../utils/getEnv';
 
 export function chainPlugins(
@@ -45,12 +45,14 @@ export function chainPlugins(
           },
         ],
       ]);
-
+  const { runtime } = configHelper?.projectConfig;
   if (process.env.ENTRY_TYPE !== 'js') {
     webpackConfig.plugin('HtmlWebpackPlugin').use(
       new HtmlWebpackPlugin({
         templateContent:
-          typeof templateContent === 'function' ? templateContent(configHelper.buildId) : templateContent,
+          typeof templateContent === 'function'
+            ? templateContent(configHelper.buildId, runtime?.openSafeSdk ? SAFE_SDK_SCRIPT : '')
+            : templateContent,
         minify: {
           collapseWhitespace: true,
           keepClosingSlash: true,

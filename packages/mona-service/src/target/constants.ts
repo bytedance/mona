@@ -13,7 +13,7 @@ export enum Platform {
   MINI = 'mini',
   H5 = 'h5',
   MAX = 'max',
-  MAX_TEMPLATE = 'max-template'
+  MAX_TEMPLATE = 'max-template',
 }
 
 export const H5Html = `
@@ -37,7 +37,9 @@ export const H5Html = `
 export const H5ProdHtml = ` 
 <div id="root"></div>
 `;
-export const genPluginHtml = (buildId: string) => {
+
+export const SAFE_SDK_SCRIPT = '<script src="https://lf3-open-web-sdk.bytetos.com/obj/open/sdk_v2.js"></script>';
+export const genPluginHtml = (buildId: string, injectCode: string = '') => {
   return `
   <!-- ${HTML_HANDLE_TAG} -->
   <!DOCTYPE html>
@@ -46,6 +48,7 @@ export const genPluginHtml = (buildId: string) => {
       <meta charset="utf-8">
       <title>Mona Plugin</title>
       <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover"></head>
+      ${injectCode}
       <script></script>
     <body>
       <div id="root" style="height: 100%"></div>
