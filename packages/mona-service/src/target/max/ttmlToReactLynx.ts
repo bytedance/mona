@@ -215,6 +215,8 @@ const handleAllComponents = ({
   const ttmlPath = path.resolve(entry, `../${filename}.ttml`);
   const isTTML = fs.existsSync(ttmlPath);
   const sourceInfo: ComponentInfo = { entry, isTTML, isEntryComponent };
+  componentMap.set(entry, sourceInfo);
+
   if (isTTML && fs.existsSync(jsonPath)) {
     // copy ttml dir to tmp
     // const sourceDir = path.dirname(entry)
@@ -250,7 +252,6 @@ const handleAllComponents = ({
     // rewrite json
     fs.writeFileSync(jsonPath, JSON.stringify(json));
   }
-  componentMap.set(entry, sourceInfo);
   return sourceInfo;
 };
 
@@ -416,12 +417,11 @@ export const ttmlToReactLynx = (tempTTMLDir: string, configHelper: ConfigHelper)
   // copy all html to temp dir
   const originSourcePath = path.join(process.cwd(), 'src');
   fse.copySync(originSourcePath, tempTTMLDir);
-  const tempEntryPath = configHelper.entryPath.replace(originSourcePath, tempTTMLDir);
+  const tempEntryPath = configHelper.entryPath.replace(originSourcePath, tempTTMLDir).replace(/\.[^/.]+$/, '');
 
   const componentMap = new Map<string, ComponentInfo>();
   // handle all ttml components
   const entryInfo = handleAllComponents({ entry: tempEntryPath, componentMap: componentMap, isEntryComponent: true });
-
   // iterate all components
   componentMap.forEach(v => {
     if (v.isTTML) {
