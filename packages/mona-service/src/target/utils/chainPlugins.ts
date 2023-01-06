@@ -11,7 +11,7 @@ export function chainPlugins(
   webpackConfig: Config,
   configHelper: ConfigHelper,
   TARGET: Platform,
-  templateContent: any,
+  templateContent: ((_buildId: string, injectScript?: string) => string) | string,
 ) {
   const { cwd, projectConfig } = configHelper;
   const {
