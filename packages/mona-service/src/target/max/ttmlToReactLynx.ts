@@ -334,6 +334,28 @@ const transformWebCode = (codeFile: string, targetPathes: string[] = []) => {
         }
       }
     },
+    ClassMethod: _path => {
+      const { node } = _path;
+      if (
+        t.isIdentifier(node.key) &&
+        (node.key.name === '_lynxComponentCreated' || node.key.name === '_lynxComponentAttached')
+      ) {
+        const startCode1 = 'const oldSetState=this.setState;';
+        const startCode2 = 'this.setState=(state)=>{this.state=state}';
+        const endCode = 'this.setState=oldSetState';
+        node.body.body.unshift(
+          parse(startCode1) as unknown as t.VariableDeclaration,
+          parseExpression(startCode2) as unknown as t.ExpressionStatement,
+        );
+        const endCodeExpression = parseExpression(endCode) as unknown as t.ExpressionStatement;
+        const bodyLength = node.body.body.length;
+        if (t.isReturnStatement(node.body.body[bodyLength - 1])) {
+          node.body.body.splice(bodyLength - 1, 0, endCodeExpression);
+        } else {
+          node.body.body.push(endCodeExpression);
+        }
+      }
+    },
   });
 
   const res = transformFromAstSync(ast);
