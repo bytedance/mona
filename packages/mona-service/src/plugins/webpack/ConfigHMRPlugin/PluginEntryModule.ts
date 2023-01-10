@@ -78,22 +78,23 @@ class PluginEntryModule {
   }
 
   private _generatePluginEntryCode(filename: string) {
-    const { library } = this.configHelper.projectConfig;
-
-    let code = library
+    const { library, runtime } = this.configHelper.projectConfig;
+    const injectMonaUi = library || runtime?.monaUi;
+    const injectCode = injectMonaUi
       ? `import { ConfigProvider } from '@bytedance/mona-ui';
         import zh_CN from "@bytedance/mona-ui/es/components/locale/zh_CN";
         ConfigProvider.config({ prefixCls: 'mona' });`
       : '';
 
-    code += `
+    const code = `
       import './public-path';
+      ${injectCode}
       import { createPlugin, createPluginLifeCycle, createPluginPageLifecycle } from '@bytedance/mona-runtime';
       import App from './${path.basename(filename)}';
       ${this._generateRoutesCode()}
       ${this._generateDefaultPathCode()}
       ${this._generateLightConfigCode()}
-      const { provider: p } =  createPlugin(createPluginLifeCycle(App), routes, { defaultPath, light }, ${library} ? { ConfigProvider, zh_CN} : null);
+      const { provider: p } =  createPlugin(createPluginLifeCycle(App), routes, { defaultPath, light }, ${injectMonaUi} ? { ConfigProvider, zh_CN} : null);
       export const provider = p;
     `;
 

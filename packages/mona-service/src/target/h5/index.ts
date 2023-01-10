@@ -1,6 +1,6 @@
 import path from 'path';
 
-import { H5Html, Platform } from '../constants';
+import { genH5Html, Platform } from '../constants';
 import { chainModuleRule } from './chainModuleRule';
 import { chainOptimization } from './chainOptimization';
 import { chainPlugins } from '../utils/chainPlugins';
@@ -35,7 +35,7 @@ const mobile: IPlugin = ctx => {
       // }
       chainResolve(webpackConfig, configHelper, H5);
       chainModuleRule(webpackConfig, configHelper);
-      chainPlugins(webpackConfig, configHelper, H5, H5Html);
+      chainPlugins(webpackConfig, configHelper, H5, genH5Html);
       chainOptimization(webpackConfig, configHelper);
     });
   });
