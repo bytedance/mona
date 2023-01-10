@@ -45,7 +45,7 @@ import EventEmitter from '../EventEmitter';
 const eventEmitter = new EventEmitter();
 
 const noImplementFactory = (api: string) => (): any => {
-  console.error(`no implement${api} in web`);
+  console.error(`not implemented "${api}" in web`);
 };
 
 export const canIUse: BaseApis['canIUse'] = noImplementFactory('canIUse');

@@ -2,7 +2,8 @@ import { CanvasToTempFilePathOptions } from '@bytedance/mona';
 import CanvasContext from "./CanvasContext";
 
 function queryCanvasByCanvasId(canvasId: string): HTMLCanvasElement | null {
-  return document.querySelector(`canvas[data-canvas-id='${canvasId}']`)
+  // query name to Compatible with max
+  return document.querySelector(`canvas[data-canvas-id='${canvasId}']`) || document.querySelector(`canvas[name='${canvasId}']`)
 }
 
 function createCanvasContext(canvasId: string) {

@@ -30,13 +30,7 @@ const genDefaultProjectConfig = (cwd: string): ProjectConfig => {
       // sourceMap: 'eval-cheap-module-source-map' as Config.DevTool,
       alias: {
         '@': path.resolve(cwd, './src'),
-      },
-      less: {
-        lessOptions: {
-          math: 'always',
-          javascriptEnabled: true,
-        },
-      },
+      }
     },
   };
 };

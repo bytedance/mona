@@ -17,8 +17,8 @@ class TargetContext {
   constructor(name: string, builder: Builder) {
     this.target = name;
     this.builder = builder.clone();
-    this.startFn = this._defaultStartFn;
-    this.buildFn = this._defaultBuildFn;
+    this.startFn = this._defaultStartFn.bind(this);
+    this.buildFn = this._defaultBuildFn.bind(this);
   }
 
   private _defaultBuildFn() {

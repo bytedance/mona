@@ -1,6 +1,10 @@
 {
   "name": "@bytedance/mona-client-mini",
+<<<<<<< HEAD
   "version": "0.2.41",
+=======
+  "version": "0.3.4-alpha.3",
+>>>>>>> 394645613faba109dd834e6e9e60e77d573d52b6
   "description": "miniapp for mona",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -21,8 +25,13 @@
   "license": "MIT",
   "sideEffects": false,
   "dependencies": {
+<<<<<<< HEAD
     "@bytedance/mona": "0.2.41",
     "@bytedance/mona-shared": "0.2.41",
+=======
+    "@bytedance/mona": "0.3.4-alpha.3",
+    "@bytedance/mona-shared": "0.3.4-alpha.3",
+>>>>>>> 394645613faba109dd834e6e9e60e77d573d52b6
     "react-reconciler": "^0.26.2",
     "scheduler": "^0.20.2"
   },
