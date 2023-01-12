@@ -111,7 +111,7 @@ export const max = {
       return Promise.reject(new Error('商品id必传'))
     }
     return nativeFetch({
-      url: 'https://lianmengapi.snssdk.com/shop/isv/product/sellpoints/mget',
+      url: 'https://lianmengapi.snssdk.com/shop/isv/product/mget',
       method: 'get',
       params: {
         product_ids: product_ids.join(),

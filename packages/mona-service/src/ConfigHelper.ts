@@ -22,6 +22,10 @@ const genDefaultProjectConfig = (cwd: string): ProjectConfig => {
     dev: {
       port: DEFAULT_PORT,
     },
+    runtime: {
+      monaUi: false,
+      openSafeSdk: false,
+    },
     abilities: {
       define: {},
       copy: { patterns: [] },
@@ -30,7 +34,7 @@ const genDefaultProjectConfig = (cwd: string): ProjectConfig => {
       // sourceMap: 'eval-cheap-module-source-map' as Config.DevTool,
       alias: {
         '@': path.resolve(cwd, './src'),
-      }
+      },
     },
   };
 };
