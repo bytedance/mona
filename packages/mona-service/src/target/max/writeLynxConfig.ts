@@ -9,7 +9,17 @@ export const getLynxEntry = (tempReactLynxDir: string, isWeb = false) => {
   }
   return lynxEntry;
 };
-export const writeLynxConfig = ({ tempReactLynxDir, appid, useComponent = false, notBuildWeb = false }: { tempReactLynxDir: string; appid: string; useComponent?: boolean; notBuildWeb?: boolean }) => {
+export const writeLynxConfig = ({
+  tempReactLynxDir,
+  appid,
+  useComponent = false,
+  notBuildWeb = false,
+}: {
+  tempReactLynxDir: string;
+  appid: string;
+  useComponent?: boolean;
+  notBuildWeb?: boolean;
+}) => {
   const lynxConfigFile = path.join(tempReactLynxDir, 'lynx.config.js');
   const lynxEntry = getLynxEntry(tempReactLynxDir);
   const webEntry = getLynxEntry(tempReactLynxDir, true);
@@ -22,9 +32,10 @@ export const writeLynxConfig = ({ tempReactLynxDir, appid, useComponent = false,
               input: {
                 "app": "${lynxEntry}",
               },
-              dsl: ${useComponent ? JSON.stringify("dynamic-component-ng") : JSON.stringify("compilerNg")},
+              dsl: ${useComponent ? JSON.stringify('dynamic-component-ng') : JSON.stringify('compilerNg')},
               encode: {
                 targetSdkVersion: "2.1",
+                defaultOverflowVisible:false,
               },
               dev: {
                 devtoolOptions: {
@@ -34,7 +45,7 @@ export const writeLynxConfig = ({ tempReactLynxDir, appid, useComponent = false,
                   return 'doudian://monaview?url=' + encodeURIComponent(origin)
                 }
               },
-              ${notBuildWeb ? '' : `plugins: [WebBootstrapPlugin("${webEntry}", "${appid}")],` }
+              ${notBuildWeb ? '' : `plugins: [WebBootstrapPlugin("${webEntry}", "${appid}")],`}
               define: {
                 __MONA_APPID: JSON.stringify("${appid}")
               },
@@ -53,8 +64,9 @@ export const writeLynxConfig = ({ tempReactLynxDir, appid, useComponent = false,
               dsl: "dynamic-component-ng",
               encode: {
                 targetSdkVersion: "2.1",
+                defaultOverflowVisible:false,
               },
-              ${notBuildWeb ? '' : `plugins: [WebBootstrapPlugin("${webEntry}", "${appid}")],` }
+              ${notBuildWeb ? '' : `plugins: [WebBootstrapPlugin("${webEntry}", "${appid}")],`}
               define: {
                 __MONA_APPID: JSON.stringify("${appid}")
               }
