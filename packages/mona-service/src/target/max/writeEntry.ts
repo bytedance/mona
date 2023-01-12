@@ -52,11 +52,7 @@ import App from '${entry}';
   return errorBoundary;
 };
 
-export const writeEntry = (
-  tempTtmlLynxDir: string,
-  entry: string,
-  isInjectProps: boolean = false,
-) => {
+export const writeEntry = (tempTtmlLynxDir: string, entry: string, isInjectProps: boolean = false) => {
   const lynxEntry = path.join(tempTtmlLynxDir, 'index.jsx');
   const devProps = getDevProps();
   if (!isInjectProps) {
@@ -66,5 +62,5 @@ export const writeEntry = (
   }
 
   // write web
-  transformToWeb(path.dirname(lynxEntry), path.basename(lynxEntry), [entry])
+  transformToWeb(path.dirname(lynxEntry), path.basename(lynxEntry), [entry], true);
 };

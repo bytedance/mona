@@ -52,6 +52,7 @@ const max: IPlugin = ctx => {
 
     // 复写start命令
     tctx.overrideStartCommand(args => {
+      console.log('haaaa');
       const { old } = args;
       const useComponent = !!args['use-component'];
       try {
