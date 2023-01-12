@@ -1,7 +1,7 @@
 import path from 'path';
 
 import { chainModuleRule } from './chainModuleRule';
-import { Platform, WEB_HTML } from '../constants';
+import { Platform, genWebHtml } from '../constants';
 import { chainOptimization } from '../utils/chainOptimization';
 import { chainPlugins } from '../utils/chainPlugins';
 import { chainResolve } from '../utils/chainResolve';
@@ -31,7 +31,7 @@ const web: IPlugin = ctx => {
         .publicPath('/');
       chainResolve(webpackConfig, configHelper, WEB);
       chainModuleRule(webpackConfig, configHelper);
-      chainPlugins(webpackConfig, configHelper, WEB, WEB_HTML);
+      chainPlugins(webpackConfig, configHelper, WEB, genWebHtml);
       chainOptimization(webpackConfig, configHelper);
     });
   });
