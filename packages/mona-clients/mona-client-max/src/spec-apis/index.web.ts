@@ -107,22 +107,38 @@ export const max = {
     if (!secShopId) {
       return genErrorRes()
     }
-    if (!Array.isArray(product_ids) || product_ids.length <= 0) {
-      return Promise.reject(new Error('商品id必传'))
+    if (!Array.isArray(product_ids) || typeof m_config_type !== "number") {
+      console.error("参数错误:商品id格式不正确");
+      return;
     }
-    if (typeof m_config_type !== 'number') {
-      return Promise.reject(new Error('m_config_type必传'))
-    }
-    return nativeFetch({
-      url: 'https://lianmengapi.snssdk.com/shop/isv/product/mget',
-      method: 'get',
-      params: {
+
+    let params: any = {};
+    if (m_config_type === 0) {
+      if (!Array.isArray(product_ids) || product_ids.length <= 0) {
+          return Promise.reject(new Error('手动选品product_ids必传'));
+      }  
+      params = {
         product_ids: product_ids.join(),
         personalized_recommendation,
         sec_shop_id: secShopId,
         m_config_type,
-        auto_param
       }
+    }
+
+    if (m_config_type === 1) {
+      params = {
+        personalized_recommendation,
+        sec_shop_id: secShopId,
+        m_config_type,
+        display_num: auto_param?.display_num,
+        order_type: auto_param?.order_type
+      }
+    }
+
+    return nativeFetch({
+      url: 'https://lianmengapi.snssdk.com/shop/isv/product/mget',
+      method: 'get',
+      params
     })
   },
   fetchCoupons({ coupon_meta_ids, m_config_type }: { coupon_meta_ids: string[], m_config_type: number }) {
