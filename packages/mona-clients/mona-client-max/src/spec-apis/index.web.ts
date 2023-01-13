@@ -103,19 +103,25 @@ export const max = {
       }
     });
   },
-  fetchProducts({ product_ids } : { product_ids: string[] }) {
+  fetchProducts({ product_ids, m_config_type, personalized_recommendation, auto_param } : { product_ids: string[], m_config_type: number, personalized_recommendation?: boolean, auto_param?: { display_num?: number, order_type: number } }) {
     if (!secShopId) {
       return genErrorRes()
     }
     if (!Array.isArray(product_ids) || product_ids.length <= 0) {
       return Promise.reject(new Error('商品id必传'))
     }
+    if (typeof m_config_type !== 'number') {
+      return Promise.reject(new Error('m_config_type必传'))
+    }
     return nativeFetch({
       url: 'https://lianmengapi.snssdk.com/shop/isv/product/mget',
       method: 'get',
       params: {
         product_ids: product_ids.join(),
-        sec_shop_id: secShopId
+        personalized_recommendation,
+        sec_shop_id: secShopId,
+        m_config_type,
+        auto_param
       }
     })
   },
