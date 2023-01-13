@@ -11,7 +11,7 @@ export function createAppLifeCycle(Component: React.ComponentType<any>) {
   const callLifecycle = (callbackName: AppLifecycle, ...params: any[]) => {
     const cbs = appLifecycleContext.lifecycle[callbackName] || new Set([]);
 
-    cbs.forEach(cb => cb(...params));
+    Array.from(cbs).forEach(cb => cb(...params));
     if (appEntryRef.current?.[callbackName]) {
       return appEntryRef.current[callbackName](...params);
     }
