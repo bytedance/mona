@@ -109,6 +109,7 @@ jobs:
         uses: devops-infra/action-pull-request@v0.5.3
         id: cpr
         with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}"
           target_branch: 'main'
           title: 'publish version ${{ env.cversion }}'
           body: 'publish version ${{ env.cversion }} [automated]'
