@@ -138,6 +138,15 @@ const transformJSXFile = (codeFile: string, addLifeCycle = false) => {
         const attrs = node.openingElement.attributes;
         const isInnerComponentReactCall = Object.values(tagToComponents).includes(name);
 
+        attrs.forEach(attr => {
+          if (t.isJSXAttribute(attr) && t.isJSXIdentifier(attr.name)) {
+            const attrName = attr.name.name;
+            if (attrName === 'key') {
+              // process key->lynxKey
+              attr.name.name = 'lynxKey';
+            }
+          }
+        });
         if (isInnerComponentReactCall) {
           attrs.forEach(attr => {
             if (t.isJSXAttribute(attr) && t.isJSXIdentifier(attr.name)) {
@@ -146,9 +155,6 @@ const transformJSXFile = (codeFile: string, addLifeCycle = false) => {
                 attr.name.name = 'customStyle';
               } else if (attrName === 'className') {
                 attr.name.name = 'customClass';
-              } else if (attrName === 'key') {
-                // process key->lynxKey
-                attr.name.name = 'lynxKey';
               }
             }
           });
@@ -215,6 +221,8 @@ const handleAllComponents = ({
   const ttmlPath = path.resolve(entry, `../${filename}.ttml`);
   const isTTML = fs.existsSync(ttmlPath);
   const sourceInfo: ComponentInfo = { entry, isTTML, isEntryComponent };
+  componentMap.set(entry, sourceInfo);
+
   if (isTTML && fs.existsSync(jsonPath)) {
     // copy ttml dir to tmp
     // const sourceDir = path.dirname(entry)
@@ -250,7 +258,6 @@ const handleAllComponents = ({
     // rewrite json
     fs.writeFileSync(jsonPath, JSON.stringify(json));
   }
-  componentMap.set(entry, sourceInfo);
   return sourceInfo;
 };
 
@@ -259,7 +266,7 @@ function replaceImport(code: string) {
 }
 
 const appendWebSuffix = (pathname: string, suffix: string) => `${pathname.replace(suffix, '')}.web${suffix}`;
-const transformWebCode = (codeFile: string, targetPathes: string[] = []) => {
+const transformWebCode = (codeFile: string, targetPathes: string[] = [], isEntryComponent: boolean) => {
   // find the components of current file
   let componentPathes = targetPathes;
   const ttmlJsonPath = codeFile.replace(/\.web\.jsx$/, '.json');
@@ -302,10 +309,17 @@ const transformWebCode = (codeFile: string, targetPathes: string[] = []) => {
             isReactComponent && Object.values(tagToComponents).includes(node.arguments[0].name);
           if (isReactComponent) {
             const args = node.arguments[1].properties;
-            args.forEach(arg => {
+            for (let i = 0; i < args.length; i++) {
+              const arg = args[i];
               if (t.isObjectProperty(arg) && t.isIdentifier(arg.key)) {
                 // lynxKey->key
-                if (arg.key.name === 'lynxKey') {
+                if (
+                  arg.key.name === 'monaMaxModule' &&
+                  t.isStringLiteral(arg.value) &&
+                  arg.value.value === 'mona-max-outer-view'
+                ) {
+                  break;
+                } else if (arg.key.name === 'lynxKey') {
                   arg.key.name = 'key';
                 } else if (
                   (isInnerComponentReactCall && arg.key.name === 'customClass') ||
@@ -314,6 +328,7 @@ const transformWebCode = (codeFile: string, targetPathes: string[] = []) => {
                   // className/customClass->with hash class
                   const _source = sourceCode.slice(arg.value.start ?? 0, arg.value.end ?? 0);
                   const _code = `_transformWebClass(${_source},"${uniqueHash}")`;
+                  console.log('className', _source, arg.value.start, arg.value.end);
                   const result = parseExpression(_code);
                   arg.value = t.isCallExpression(result) ? result : arg.value;
                 }
@@ -323,14 +338,62 @@ const transformWebCode = (codeFile: string, targetPathes: string[] = []) => {
                   ((isInnerComponentReactCall && arg.key.name === 'customStyle') || arg.key.name === 'style')
                 ) {
                   const _source = sourceCode.slice(arg.value.start ?? 0, arg.value.end ?? 0);
+                  console.log('style', _source, arg.value.start, arg.value.end);
                   const _code = `_transformWebStyle(${_source})`;
                   const result = parseExpression(_code);
                   arg.value = t.isCallExpression(result) ? result : arg.value;
                 }
               }
-            });
+            }
           }
         }
+      }
+    },
+    ClassMethod: _path => {
+      const { node } = _path;
+      if (
+        t.isIdentifier(node.key) &&
+        (node.key.name === '_lynxComponentCreated' || node.key.name === '_lynxComponentAttached')
+      ) {
+        const startCode1 = 'const oldSetState=this.setState;';
+        const startCode2 = 'this.setState=(state,callback)=>{Object.assign(this.state,state);callback&&callback()}';
+        const endCode = 'this.setState=oldSetState';
+        node.body.body.unshift(
+          parse(startCode1) as unknown as t.VariableDeclaration,
+          parseExpression(startCode2) as unknown as t.ExpressionStatement,
+        );
+        const endCodeExpression = parseExpression(endCode) as unknown as t.ExpressionStatement;
+        const bodyLength = node.body.body.length;
+        if (t.isReturnStatement(node.body.body[bodyLength - 1])) {
+          node.body.body.splice(bodyLength - 1, 0, endCodeExpression);
+        } else {
+          node.body.body.push(endCodeExpression);
+        }
+      } else if (t.isIdentifier(node.key) && node.key.name === 'render') {
+        node.body.body.forEach(item => {
+          if (t.isReturnStatement(item)) {
+            let newExpression;
+            if (isEntryComponent) {
+              newExpression = parseExpression(
+                `React.createElement(View, {
+                    monaMaxModule: "mona-max-outer-view",
+                    className: _transformWebClass(this.props.className,"${uniqueHash}"),
+                    style: {...{overflow:"hidden"},..._transformWebStyle(this.props.style)}               
+              })`,
+              ) as t.CallExpression;
+            } else {
+              newExpression = parseExpression(
+                `React.createElement(View, {
+                    monaMaxModule: "mona-max-outer-view",
+                    className: this.props.className,
+                    style: {...{overflow:"hidden"},...this.props.style}               
+              })`,
+              ) as t.CallExpression;
+            }
+            newExpression.arguments.push(item.argument as t.CallExpression);
+            item.argument = newExpression;
+          }
+        });
       }
     },
   });
@@ -344,7 +407,12 @@ const transformWebCode = (codeFile: string, targetPathes: string[] = []) => {
   }
 };
 
-export function transformToWeb(sourceDir: string, rawFilename: string, targetPathes: string[] = []) {
+export function transformToWeb(
+  sourceDir: string,
+  rawFilename: string,
+  targetPathes: string[] = [],
+  isEntryComponent: boolean,
+) {
   const filename = rawFilename.replace(path.extname(rawFilename), '');
 
   // code
@@ -354,7 +422,7 @@ export function transformToWeb(sourceDir: string, rawFilename: string, targetPat
     const code = transformNgToReact(sourceCode, {}, scopeId);
     const targetFilePath = path.join(sourceDir, `${filename}.web.jsx`);
     fs.writeFileSync(targetFilePath, replaceImport(code));
-    transformWebCode(targetFilePath, targetPathes);
+    transformWebCode(targetFilePath, targetPathes, isEntryComponent);
   }
 
   // style
@@ -416,12 +484,11 @@ export const ttmlToReactLynx = (tempTTMLDir: string, configHelper: ConfigHelper)
   // copy all html to temp dir
   const originSourcePath = path.join(process.cwd(), 'src');
   fse.copySync(originSourcePath, tempTTMLDir);
-  const tempEntryPath = configHelper.entryPath.replace(originSourcePath, tempTTMLDir);
+  const tempEntryPath = configHelper.entryPath.replace(originSourcePath, tempTTMLDir).replace(/\.[^/.]+$/, '');
 
   const componentMap = new Map<string, ComponentInfo>();
   // handle all ttml components
   const entryInfo = handleAllComponents({ entry: tempEntryPath, componentMap: componentMap, isEntryComponent: true });
-
   // iterate all components
   componentMap.forEach(v => {
     if (v.isTTML) {
@@ -430,7 +497,7 @@ export const ttmlToReactLynx = (tempTTMLDir: string, configHelper: ConfigHelper)
       const filename = extractPureFilename(absolutePath);
       // add lifeCycle for entry component
       transformTtmlDir(sourceDir, filename, sourceDir, entryInfo.isEntryComponent);
-      transformToWeb(sourceDir, filename);
+      transformToWeb(sourceDir, filename, [], v.isEntryComponent);
       // delete all origin file
       deleteFile(path.join(sourceDir, `${filename}.js`));
       deleteFile(path.join(sourceDir, `${filename}.ttml`));
