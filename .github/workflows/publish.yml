@@ -109,7 +109,7 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         id: cpr
         with:
-          branch: create-pull-request/v${{ env.cversion }}
+           branch: '${{ github.ref_name }}'
           base: 'main'
           title: 'publish version ${{ env.cversion }}'
           body: 'publish version ${{ env.cversion }} [automated]'
