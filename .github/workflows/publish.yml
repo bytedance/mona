@@ -104,15 +104,20 @@ jobs:
           author_email: github-bot@noreply.com
           message: 'chore(release): publish version ${{ env.cversion }} --tag=${{ env.ctag }}'
 
-      - name: Create Pull Request
-        # if: contains('alpha beta', env.ctag) == false
-        uses: devops-infra/action-pull-request@v0.5.3
-        id: cpr
+      - name: Create Release
+        id: create_release
+        if: contains('alpha beta', env.ctag) == false
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}"
-          target_branch: 'main'
-          title: 'publish version ${{ env.cversion }}'
-          body: 'publish version ${{ env.cversion }} [automated]'
+          base: main
+          title: [Automated] publish v${{ env.cversion }}
+          body: |
+            publish v${{ env.cversion }} [automated]
+          labels: automated-pr
+          branch: create-pull-request/v${env.cversion}
+          delete-branch: true
 
       - name: Publish All Packages
         run: |
@@ -160,7 +165,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             github.issues.createComment({
-              issue_number: ${{ steps.cpr.outputs.pr_number }},
+              issue_number: ${{ steps.cpr.outputs.pull-request-number }},
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: 'https://github.com/${{ github.repository }}/releases/tag/v${{ env.cversion }} is released 🎉'
