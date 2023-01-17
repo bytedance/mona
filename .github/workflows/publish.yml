@@ -110,7 +110,7 @@ jobs:
         id: cpr
         with:
           branch: '${{ github.ref_name }}'
-          base: 'main'
+          # base: 'main'
           title: 'publish version ${{ env.cversion }}'
           body: 'publish version ${{ env.cversion }} [automated]'
           labels: automated-pr
