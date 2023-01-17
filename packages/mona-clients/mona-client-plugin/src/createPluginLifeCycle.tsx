@@ -51,7 +51,7 @@ export function createPluginLifeCycle(Component: React.ComponentType<any>) {
       handleShow(window[lightAppLifeCycleParamsKey.show as any] || {});
       handleLaunch(window[lightAppLifeCycleParamsKey.launch as any] || {});
     }
-    componentWillUnmount() {}
+    // componentWillUnmount() {}
     render() {
       if (isClassComponent(Component)) {
         return <Component {...this.props} ref={appEntryRef}></Component>;
@@ -73,7 +73,7 @@ export function createPluginPageLifecycle(Component: React.ComponentType<any>) {
 
   const callLifecycle = (callbackName: PageLifecycle, ...params: any[]) => {
     const cbs = PageLifecycleContext.lifecycle[callbackName] || new Set([]);
-    cbs.forEach(cb => cb(...params));
+    Array.from(cbs).forEach(cb => cb(...params));
 
     if (pageEntryRef.current?.[callbackName]) {
       return pageEntryRef.current[callbackName](...params);
