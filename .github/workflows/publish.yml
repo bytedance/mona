@@ -104,19 +104,16 @@ jobs:
           author_email: github-bot@noreply.com
           message: 'chore(release): publish version ${{ env.cversion }} --tag=${{ env.ctag }}'
 
-      - name: Create Release
-        id: create_release
-        if: contains('alpha beta', env.ctag) == false
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Pull Request
+        # if: contains('alpha beta', env.ctag) == false
+        uses: peter-evans/create-pull-request@v4
+        id: cpr
         with:
-          base: main
-          title: [Automated] publish v${{ env.cversion }}
-          body: |
-            publish v${{ env.cversion }} [automated]
-          labels: automated-pr
           branch: create-pull-request/v${env.cversion}
+          base: 'main'
+          title: 'publish version ${{ env.cversion }}'
+          body: 'publish version ${{ env.cversion }} [automated]'
+          labels: automated-pr
           delete-branch: true
 
       - name: Publish All Packages
