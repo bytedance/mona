@@ -1,6 +1,15 @@
 import { BaseApis } from '@bytedance/mona';
 import { promisify } from '@bytedance/mona-shared/dist/promisify';
-import { maxGetStorage, maxNavigateTo, maxRemoveStorage, maxReportAnalytics, maxRequest, maxSetStorage } from './utils';
+import {
+  maxGetStorage,
+  maxNavigateTo,
+  maxRemoveStorage,
+  maxReportAnalytics,
+  maxRequest,
+  maxSetStorage,
+  maxGetSystemInfo,
+  maxGetSystemInfoSync,
+} from './utils';
 
 const noImplementFactory = (api: string) => (): any => {
   console.error(`not implemented "${api}" in max`);
@@ -70,7 +79,7 @@ export const pay: BaseApis['pay'] = promisify(noImplementFactory('pay'));
 export const navigateToMiniProgram: BaseApis['navigateToMiniProgram'] = promisify(
   noImplementFactory('navigateToMiniProgram'),
 );
-export const navigateToApp: BaseApis['navigateToApp'] = noImplementFactory('navigateToApp')
+export const navigateToApp: BaseApis['navigateToApp'] = noImplementFactory('navigateToApp');
 export const navigateBackMiniProgram: BaseApis['navigateBackMiniProgram'] = promisify(
   noImplementFactory('navigateBackMiniProgram'),
 );
@@ -132,8 +141,8 @@ export const onNetworkStatusChange: BaseApis['onNetworkStatusChange'] = noImplem
 export const getWifiList: BaseApis['getWifiList'] = promisify(noImplementFactory('getWifiList'));
 export const onGetWifiList: BaseApis['onGetWifiList'] = noImplementFactory('onGetWifiList');
 export const offGetWifiList: BaseApis['offGetWifiList'] = noImplementFactory('offGetWifiList');
-export const getSystemInfo: BaseApis['getSystemInfo'] = promisify(noImplementFactory('getSystemInfo'));
-export const getSystemInfoSync: BaseApis['getSystemInfoSync'] = noImplementFactory('getSystemInfoSync');
+export const getSystemInfo: BaseApis['getSystemInfo'] = promisify(maxGetSystemInfo);
+export const getSystemInfoSync: BaseApis['getSystemInfoSync'] = maxGetSystemInfoSync;
 export const getConnectedWifi: BaseApis['getConnectedWifi'] = promisify(noImplementFactory('getConnectedWifi'));
 export const startAccelerometer: BaseApis['startAccelerometer'] = promisify(noImplementFactory('startAccelerometer'));
 export const stopAccelerometer: BaseApis['stopAccelerometer'] = promisify(noImplementFactory('stopAccelerometer'));
@@ -165,13 +174,15 @@ export const offUserScreenRecord: BaseApis['offUserScreenRecord'] = noImplementF
 export const vibrateShort: BaseApis['vibrateShort'] = promisify(noImplementFactory('vibrateShort'));
 export const vibrateLong: BaseApis['vibrateLong'] = promisify(noImplementFactory('vibrateLong'));
 export const onMemoryWarning: BaseApis['onMemoryWarning'] = noImplementFactory('onMemoryWarning');
-export const createCanvasContext: BaseApis['createCanvasContext'] = (canvasId) => {
+export const createCanvasContext: BaseApis['createCanvasContext'] = canvasId => {
   const context = lynx.createCanvas(canvasId).getContext('2d');
   // Compatible with miniapp' usage
   context.draw = () => {};
   return context;
-}
-export const canvasToTempFilePath: BaseApis['canvasToTempFilePath'] = promisify(noImplementFactory('canvasToTempFilePath'));
+};
+export const canvasToTempFilePath: BaseApis['canvasToTempFilePath'] = promisify(
+  noImplementFactory('canvasToTempFilePath'),
+);
 export const createOffscreenCanvas: BaseApis['createOffscreenCanvas'] = lynx.createOffscreenCanvas;
 export const showToast: BaseApis['showToast'] = promisify(noImplementFactory('showToast'));
 export const hideToast: BaseApis['hideToast'] = promisify(noImplementFactory('hideToast'));
@@ -189,8 +200,12 @@ export const hideNavigationBarLoading: BaseApis['hideNavigationBarLoading'] = pr
   noImplementFactory('hideNavigationBarLoading'),
 );
 export const hideHomeButton: BaseApis['hideHomeButton'] = promisify(noImplementFactory('hideHomeButton'));
-export const setNavigationBarTitle: BaseApis['setNavigationBarTitle'] = promisify(noImplementFactory('setNavigationBarTitle'));
-export const setNavigationBarColor: BaseApis['setNavigationBarColor'] = promisify(noImplementFactory('setNavigationBarColor'));
+export const setNavigationBarTitle: BaseApis['setNavigationBarTitle'] = promisify(
+  noImplementFactory('setNavigationBarTitle'),
+);
+export const setNavigationBarColor: BaseApis['setNavigationBarColor'] = promisify(
+  noImplementFactory('setNavigationBarColor'),
+);
 export const getMenuButtonBoundingClientRect: BaseApis['getMenuButtonBoundingClientRect'] = noImplementFactory(
   'getMenuButtonBoundingClientRect',
 );
