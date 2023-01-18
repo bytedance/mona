@@ -62,12 +62,11 @@ export function generateRequestFromOpen(args: any, cookie: string) {
     };
 
     return axios.request(config).then(res => {
-      // console.log('res', res);
       const data = res.data as any;
       if (data.code === 0) {
         return data.data;
       } else {
-        throw new Error(data.message || '未知错误');
+        throw new Error((data.message || '未知错误') + (args.debug ? ` [path: ${path}, logid:${res?.headers?.['x-tt-logid'] || 'unknow'}] ` : ''));
       }
     });
   };
