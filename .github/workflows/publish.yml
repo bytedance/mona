@@ -121,7 +121,7 @@ jobs:
         id: cpr
         with:
           branch: '${{ github.ref_name }}'
-          base: 'main'
+          base: '${{ github.ref_name }}'
           title: '[v${{ env.cversion }}] Pulling ${{ github.ref }} into master'
           body: | # Full markdown support, requires pr_title to be set
             :crown: *An automated PR*
