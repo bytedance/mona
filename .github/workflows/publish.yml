@@ -28,7 +28,7 @@ jobs:
       - name: ${{ inputs.id }}
         run: |
           echo run identifier ${{ inputs.id }}
-          git --version
+          cat .git/config
 
       # # prepare env
       # - name: Checkout
