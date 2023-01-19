@@ -1,5 +1,5 @@
-const RPX_VALUE_REG_WITH_NUM = /\d+rpx/g
-const RPX_VALUE_REG = /rpx$/
+const RPX_VALUE_REG_WITH_NUM = /-?\d*\.?\d+rpx/g;
+const RPX_VALUE_REG = /rpx$/;
 const ROOT_FONT_SIZE_PX = 100;
 
 const rpxToRem = (origin: string) => {
@@ -10,23 +10,13 @@ const rpxToRem = (origin: string) => {
     }
   }
   return origin;
-}
+};
 
 const transformRpxToRem = (origin: string) => {
-  let arr;
-  RPX_VALUE_REG_WITH_NUM.lastIndex = 0;
-  while ((arr = RPX_VALUE_REG_WITH_NUM.exec(origin)) !== null) {
-    const [value] = arr;
-    const index = arr.index;
-    const newValue = rpxToRem(value);
-    const lastIndex = index + newValue.length;
-    const temp = origin.split('');
-    temp.splice(index, value.length, newValue);
-    origin = temp.join('');
-    RPX_VALUE_REG_WITH_NUM.lastIndex = lastIndex;
-  }
-  return origin;
-}
+  return origin.replace(RPX_VALUE_REG_WITH_NUM, function (value) {
+    return rpxToRem(value);
+  });
+};
 
 export const _transformWebStyle = (style?: Record<string, any>) => {
   if (!style || typeof style !== 'object') {
@@ -34,8 +24,12 @@ export const _transformWebStyle = (style?: Record<string, any>) => {
   }
   const result: Record<string, any> = {};
   Object.keys(style).forEach(styleKey => {
-    result[styleKey] = transformRpxToRem(style[styleKey])
-  })
+    if (typeof style[styleKey] === 'string') {
+      result[styleKey] = transformRpxToRem(style[styleKey]);
+    } else {
+      result[styleKey] = style[styleKey];
+    }
+  });
 
   return result;
-}
+};
