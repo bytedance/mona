@@ -32,64 +32,64 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Get Version
-        run: |
-          CURRNET_VERSION=`echo ${{ inputs.version }}`
-          TAG=`echo ${CURRNET_VERSION} | grep -Eo '[a-zA-Z]+'` || true
-          TAG="${TAG:-latest}"
-          echo "cversion=${CURRNET_VERSION}" >> $GITHUB_ENV
-          echo "ctag=${TAG}" >> $GITHUB_ENV
+      # - name: Get Version
+      #   run: |
+      #     CURRNET_VERSION=`echo ${{ inputs.version }}`
+      #     TAG=`echo ${CURRNET_VERSION} | grep -Eo '[a-zA-Z]+'` || true
+      #     TAG="${TAG:-latest}"
+      #     echo "cversion=${CURRNET_VERSION}" >> $GITHUB_ENV
+      #     echo "ctag=${TAG}" >> $GITHUB_ENV
 
-      # check git tag
-      - name: Version Check
-        id: tag_check
-        shell: bash -ex {0}
-        run: |
-          GET_API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/git/ref/tags/v${cversion}"
-          http_status_code=$(curl -LI $GET_API_URL -o /dev/null -w '%{http_code}\n' -s \
-            -H "Authorization: token ${GITHUB_TOKEN}")
-          if [ "$http_status_code" -ne "404" ] ; then
-            echo "已存在版本${cversion}！"; exit 1;
-          else
-            echo "版本检查成功，该版本可发布"
-          fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # # check git tag
+      # - name: Version Check
+      #   id: tag_check
+      #   shell: bash -ex {0}
+      #   run: |
+      #     GET_API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/git/ref/tags/v${cversion}"
+      #     http_status_code=$(curl -LI $GET_API_URL -o /dev/null -w '%{http_code}\n' -s \
+      #       -H "Authorization: token ${GITHUB_TOKEN}")
+      #     if [ "$http_status_code" -ne "404" ] ; then
+      #       echo "已存在版本${cversion}！"; exit 1;
+      #     else
+      #       echo "版本检查成功，该版本可发布"
+      #     fi
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # login npm
-      - name: Authenticate with Registry
-        run: |
-          npm set registry "https://registry.npmjs.org"
-          npm set https://registry.npmjs.org/:_authToken $NPM_TOKEN
-          npm whoami
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # # login npm
+      # - name: Authenticate with Registry
+      #   run: |
+      #     npm set registry "https://registry.npmjs.org"
+      #     npm set https://registry.npmjs.org/:_authToken $NPM_TOKEN
+      #     npm whoami
+      #   env:
+      #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      # install node
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
-        with:
-          registry-url: 'https://registry.npmjs.org'
-          node-version: ${{ matrix.node-version }}
+      # # install node
+      # - name: Use Node.js ${{ matrix.node-version }}
+      #   uses: actions/setup-node@v2
+      #   with:
+      #     registry-url: 'https://registry.npmjs.org'
+      #     node-version: ${{ matrix.node-version }}
 
-      - name: Install Lerna
-        run: yarn global add lerna@4.0.0 -W
+      # - name: Install Lerna
+      #   run: yarn global add lerna@4.0.0 -W
 
-      - name: Install Dependencies
-        run: yarn
+      # - name: Install Dependencies
+      #   run: yarn
 
-      - name: Build Packages
-        run: |
-          yarn build
-          find ./packages -name "*.js.map" -exec rm -f {} \;
+      # - name: Build Packages
+      #   run: |
+      #     yarn build
+      #     find ./packages -name "*.js.map" -exec rm -f {} \;
 
-      # git stash
-      - name: Drop Current Changes
-        run: |
-          git status
-          ls -la
-          git add .
-          git stash
+      # # git stash
+      # - name: Drop Current Changes
+      #   run: |
+      #     git status
+      #     ls -la
+      #     git add .
+      #     git stash
 
       # - name: Run Unit Test
       #   run: yarn test
