@@ -1269,22 +1269,22 @@
   resolved "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@bytedance/mona-speedy-components@0.0.18":
-  version "0.0.18"
-  resolved "https://registry.npmjs.org/@bytedance/mona-speedy-components/-/mona-speedy-components-0.0.18.tgz#589f6c9d53ac6597b4b2d762050cb21e7bf8d79b"
-  integrity sha512-PJvXB94I/1epfN+3nq6id47AH2vxcQv1CJwQLIp1qq0N7SCHvRImcpCKe5tXSlC6ep2zFs1GsJXWSoRwJ7iyKA==
+"@bytedance/mona-speedy-components@0.0.25":
+  version "0.0.25"
+  resolved "https://registry.yarnpkg.com/@bytedance/mona-speedy-components/-/mona-speedy-components-0.0.25.tgz#1df74fea73bee9856fdfe0e0deb4777088fa1ddf"
+  integrity sha512-Cmly9IOZxRVbasuoE6daQb8Tp108tZqLiDqtFOVwwjQaMFUoSQizsj9HjA4Yjdec3Fdib78E/cjDkA0GFA/0cA==
   dependencies:
     swiper "6.5.1"
 
-"@bytedance/mona-speedy-runtime@0.0.18":
-  version "0.0.18"
-  resolved "https://registry.npmjs.org/@bytedance/mona-speedy-runtime/-/mona-speedy-runtime-0.0.18.tgz#d0e9f7189ff2109183af7cec35e560639de804b7"
-  integrity sha512-zC+4bGdHbjr716q+Eb5UPHy8RMYTH2o9llFYSJxVUEbfH52tXq1KTYm/NZfULlqVZvg3Z+D0A7J0LJOMlRzSMQ==
+"@bytedance/mona-speedy-runtime@0.0.25":
+  version "0.0.25"
+  resolved "https://registry.yarnpkg.com/@bytedance/mona-speedy-runtime/-/mona-speedy-runtime-0.0.25.tgz#a279fcfc8303e2179e13ae0cf73548c389e37ecd"
+  integrity sha512-Nps4a+Ha/JEpO1+aolktE5VrgT1+G3NJy2cSY3CfF+xD1tNAXe3vvpr8SKAxxk1ea2YLdo5LAGPX08o5SBfhCQ==
 
-"@bytedance/mona-speedy@0.0.18":
-  version "0.0.18"
-  resolved "https://registry.npmjs.org/@bytedance/mona-speedy/-/mona-speedy-0.0.18.tgz#6aeebe1fad76f82339f346e9947dd4a195d362f5"
-  integrity sha512-nbMB7yINRkcc0UVqJw3amFb0Q80+wgfw4PXUecl9qgBY/0AMqeXvqjjMs6bk2G1sD+o3q2MhYBzMzBhLKxucPQ==
+"@bytedance/mona-speedy@0.0.25":
+  version "0.0.25"
+  resolved "https://registry.yarnpkg.com/@bytedance/mona-speedy/-/mona-speedy-0.0.25.tgz#0411d040177474b1503416b62a1c164e1adef175"
+  integrity sha512-FaOOAVBeexvG25AVkd3TsVsHvdFq9aBLn14WNS+9vuXEJKr6NCeEAHCyAJDq/F9yXSj5p0flqXJSQnDMhgp9gw==
   dependencies:
     "@speedy-js/esbuild" "0.14.28-speedy-lynx-1"
     esbuild "0.12.8"

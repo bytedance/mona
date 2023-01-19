@@ -328,7 +328,6 @@ const transformWebCode = (codeFile: string, targetPathes: string[] = [], isEntry
                   // className/customClass->with hash class
                   const _source = sourceCode.slice(arg.value.start ?? 0, arg.value.end ?? 0);
                   const _code = `_transformWebClass(${_source},"${uniqueHash}")`;
-                  console.log('className', _source, arg.value.start, arg.value.end);
                   const result = parseExpression(_code);
                   arg.value = t.isCallExpression(result) ? result : arg.value;
                 }
@@ -338,7 +337,6 @@ const transformWebCode = (codeFile: string, targetPathes: string[] = [], isEntry
                   ((isInnerComponentReactCall && arg.key.name === 'customStyle') || arg.key.name === 'style')
                 ) {
                   const _source = sourceCode.slice(arg.value.start ?? 0, arg.value.end ?? 0);
-                  console.log('style', _source, arg.value.start, arg.value.end);
                   const _code = `_transformWebStyle(${_source})`;
                   const result = parseExpression(_code);
                   arg.value = t.isCallExpression(result) ? result : arg.value;
@@ -401,8 +399,16 @@ const transformWebCode = (codeFile: string, targetPathes: string[] = [], isEntry
   const res = transformFromAstSync(ast);
   let code = res?.code ?? '';
   if (code) {
+    let importViewReg = /import\s*\{\s*View\s*\}\s*from\s*"@bytedance\/mona-speedy-components"\s*;?/;
+    const hasImportView = importViewReg.test(code);
     // transform style rpx to rem
-    code = `import { _transformWebStyle,_transformWebClass } from '@bytedance/mona-shared';\n` + code;
+    if (hasImportView) {
+      code = `import { _transformWebStyle,_transformWebClass } from '@bytedance/mona-shared';\n` + code;
+    } else {
+      code =
+        `import { _transformWebStyle,_transformWebClass } from '@bytedance/mona-shared';\nimport { View } from "@bytedance/mona-speedy-components";\n` +
+        code;
+    }
     fs.writeFileSync(codeFile, code);
   }
 };
