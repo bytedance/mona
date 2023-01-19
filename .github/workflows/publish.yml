@@ -26,7 +26,9 @@ jobs:
     steps:
       # run identifier
       - name: ${{ inputs.id }}
-        run: echo run identifier ${{ inputs.id }}
+        run: |
+          echo run identifier ${{ inputs.id }}
+          git --version
 
       # # prepare env
       # - name: Checkout
@@ -115,18 +117,16 @@ jobs:
 
       - name: Create Pull Request
         # if: contains('alpha beta', env.ctag) == false
-        uses: devops-infra/action-pull-request@v0.5.3
+        uses: peter-evans/create-pull-request@v4
         id: cpr
         with:
-          target_branch: 'main'
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          # branch: '${{ github.ref_name }}'
-          # base: 'main'
-          # pr_title: '[v${{ env.cversion }}] Pulling ${{ github.ref }} into master'
-          # pr_body: | # Full markdown support, requires pr_title to be set
-          #   :crown: *An automated PR*
+          branch: '${{ github.ref_name }}'
+          base: 'main'
+          title: '[v${{ env.cversion }}] Pulling ${{ github.ref }} into master'
+          body: | # Full markdown support, requires pr_title to be set
+            :crown: *An automated PR*
 
-          #   publish version ${{ env.cversion }}
+            publish version ${{ env.cversion }}
           # pr_label: auto-pr
 
       # - name: Publish All Packages
