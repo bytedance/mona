@@ -72,22 +72,22 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           node-version: ${{ matrix.node-version }}
 
-      # - name: Install Lerna
-      #   run: yarn global add lerna@4.0.0 -W
+      - name: Install Lerna
+        run: yarn global add lerna@4.0.0 -W
 
-      # - name: Install Dependencies
-      #   run: yarn
+      - name: Install Dependencies
+        run: yarn
 
-      # - name: Build Packages
-      #   run: |
-      #     yarn build
-      #     find ./packages -name "*.js.map" -exec rm -f {} \;
+      - name: Build Packages
+        run: |
+          yarn build
+          find ./packages -name "*.js.map" -exec rm -f {} \;
 
-      # # git stash
-      # - name: Drop Current Changes
-      #   run: |
-      #     git add .
-      #     git stash
+      # git stash
+      - name: Drop Current Changes
+        run: |
+          git add .
+          git stash
 
       # - name: Run Unit Test
       #   run: yarn test
