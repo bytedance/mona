@@ -24,7 +24,11 @@ export const _transformWebStyle = (style?: Record<string, any>) => {
   }
   const result: Record<string, any> = {};
   Object.keys(style).forEach(styleKey => {
-    result[styleKey] = transformRpxToRem(style[styleKey]);
+    if (typeof style[styleKey] === 'string') {
+      result[styleKey] = transformRpxToRem(style[styleKey]);
+    } else {
+      result[styleKey] = style[styleKey];
+    }
   });
 
   return result;
