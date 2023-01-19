@@ -115,16 +115,16 @@ jobs:
 
       - name: Create Pull Request
         # if: contains('alpha beta', env.ctag) == false
-        uses: peter-evans/create-pull-request@v4
+        uses: BaharaJr/create-pr
         id: cpr
         with:
-          branch: 'release'
-          base: '${{ github.ref_name }}'
-          title: '[v${{ env.cversion }}] Pulling ${{ github.ref }} into master'
-          body: | # Full markdown support, requires pr_title to be set
-            :crown: *An automated PR*
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DESTINATION_BRANCH: 'main'
+          # title: '[v${{ env.cversion }}] Pulling ${{ github.ref }} into master'
+          # body: | # Full markdown support, requires pr_title to be set
+          #   :crown: *An automated PR*
 
-            publish version ${{ env.cversion }}
+          #   publish version ${{ env.cversion }}
           # pr_label: auto-pr
 
       # - name: Publish All Packages
