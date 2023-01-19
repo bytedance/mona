@@ -115,11 +115,11 @@ jobs:
 
       - name: Create Pull Request
         # if: contains('alpha beta', env.ctag) == false
-        uses: BaharaJr/create-pr
+        uses: emiliopedrollo/create-pull-request@v1.1.0
         id: cpr
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DESTINATION_BRANCH: 'main'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: 'main'
           # title: '[v${{ env.cversion }}] Pulling ${{ github.ref }} into master'
           # body: | # Full markdown support, requires pr_title to be set
           #   :crown: *An automated PR*
