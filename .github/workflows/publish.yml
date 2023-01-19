@@ -26,9 +26,7 @@ jobs:
     steps:
       # run identifier
       - name: ${{ inputs.id }}
-        run: |
-          echo run identifier ${{ inputs.id }}
-          cat .git/config
+        run: echo run identifier ${{ inputs.id }}
 
       # # prepare env
       # - name: Checkout
@@ -120,7 +118,7 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         id: cpr
         with:
-          branch: '${{ github.ref_name }}'
+          branch: 'release'
           base: '${{ github.ref_name }}'
           title: '[v${{ env.cversion }}] Pulling ${{ github.ref }} into master'
           body: | # Full markdown support, requires pr_title to be set
