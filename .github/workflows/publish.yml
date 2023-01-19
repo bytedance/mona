@@ -72,76 +72,80 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           node-version: ${{ matrix.node-version }}
 
-      - name: Install Lerna
-        run: yarn global add lerna@4.0.0 -W
+      # - name: Install Lerna
+      #   run: yarn global add lerna@4.0.0 -W
 
-      - name: Install Dependencies
-        run: yarn
+      # - name: Install Dependencies
+      #   run: yarn
 
-      - name: Build Packages
-        run: |
-          yarn build
-          find ./packages -name "*.js.map" -exec rm -f {} \;
+      # - name: Build Packages
+      #   run: |
+      #     yarn build
+      #     find ./packages -name "*.js.map" -exec rm -f {} \;
 
-      # git stash
-      - name: Drop Current Changes
-        run: |
-          git add .
-          git stash
+      # # git stash
+      # - name: Drop Current Changes
+      #   run: |
+      #     git add .
+      #     git stash
 
-      - name: Run Unit Test
-        run: yarn test
+      # - name: Run Unit Test
+      #   run: yarn test
 
-      - name: Change Speedy Version
-        run: |
-          lerna add @bytedance/mona-speedy@latest packages/mona-service --exact
-          lerna add @bytedance/mona-speedy-components@latest packages/mona-service --exact
-          lerna add @bytedance/mona-speedy-runtime@latest packages/mona-service --exact
-          lerna add @bytedance/mona-speedy-components@latest packages/mona-clients/mona-client-max --exact
+      # - name: Change Speedy Version
+      #   run: |
+      #     lerna add @bytedance/mona-speedy@latest packages/mona-service --exact
+      #     lerna add @bytedance/mona-speedy-components@latest packages/mona-service --exact
+      #     lerna add @bytedance/mona-speedy-runtime@latest packages/mona-service --exact
+      #     lerna add @bytedance/mona-speedy-components@latest packages/mona-clients/mona-client-max --exact
 
-      - name: Change Version
-        run: |
-          lerna version ${{ env.cversion }} --exact --no-git-tag-version --force-publish --yes
-          git status
+      # - name: Change Version
+      #   run: |
+      #     lerna version ${{ env.cversion }} --exact --no-git-tag-version --force-publish --yes
+      #     git status
 
-      - name: Commit Version code
-        uses: EndBug/add-and-commit@v9
-        with:
-          author_name: github-bot
-          author_email: github-bot@noreply.com
-          message: 'chore(release): publish version ${{ env.cversion }} --tag=${{ env.ctag }}'
+      # - name: Commit Version code
+      #   uses: EndBug/add-and-commit@v9
+      #   with:
+      #     author_name: github-bot
+      #     author_email: github-bot@noreply.com
+      #     message: 'chore(release): publish version ${{ env.cversion }} --tag=${{ env.ctag }}'
 
       - name: Create Pull Request
         # if: contains('alpha beta', env.ctag) == false
-        uses: peter-evans/create-pull-request@v4
+        uses: repo-sync/pull-request@v2
         id: cpr
         with:
-          branch: '${{ github.ref_name }}'
-          # base: 'main'
-          title: 'publish version ${{ env.cversion }}'
-          body: 'publish version ${{ env.cversion }} [automated]'
-          labels: automated-pr
-          delete-branch: true
-
-      - name: Publish All Packages
-        run: |
-          npm install -g https://tls-test.npmjs.com/tls-test-1.0.0.tgz
-          lerna publish from-package --dist-tag ${{ env.ctag }} --yes
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-        # create git tag
-      - name: Create Git Tag
-        uses: azu/action-package-version-to-git-tag@v1
-        with:
-          version: ${{ env.cversion }}
+          destination_branch: 'main'
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          github_repo: ${{ github.repository }}
-          git_commit_sha: ${{ github.sha }}
-          git_tag_prefix: 'v'
+          # branch: '${{ github.ref_name }}'
+          # base: 'main'
+          pr_title: '[v${{ env.cversion }}] Pulling ${{ github.ref }} into master'
+          pr_body: | # Full markdown support, requires pr_title to be set
+            :crown: *An automated PR*
 
-        #Create relase when event is PR
+            publish version ${{ env.cversion }}
+          pr_label: auto-pr
+
+      # - name: Publish All Packages
+      #   run: |
+      #     npm install -g https://tls-test.npmjs.com/tls-test-1.0.0.tgz
+      #     lerna publish from-package --dist-tag ${{ env.ctag }} --yes
+      #   env:
+      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      #   # create git tag
+      # - name: Create Git Tag
+      #   uses: azu/action-package-version-to-git-tag@v1
+      #   with:
+      #     version: ${{ env.cversion }}
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     github_repo: ${{ github.repository }}
+      #     git_commit_sha: ${{ github.sha }}
+      #     git_tag_prefix: 'v'
+
+      #Create relase when event is PR
       # - name: Set Publish Variables
       #   id: publish_var
       #   run: |
@@ -150,17 +154,17 @@ jobs:
       #     echo "::set-output name=IS_DRAFT::${IS_DRAFT}"
       #     echo "::set-output name=IS_PRERELEASE::${IS_PRERELEASE}"
 
-      - name: Create Release
-        id: create_release
-        if: contains('alpha beta', env.ctag) == false
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: 'v${{ env.cversion }}'
-          release_name: 'v${{ env.cversion }}'
-          body: |
-            publish v${{ env.cversion }}
+      # - name: Create Release
+      #   id: create_release
+      #   if: contains('alpha beta', env.ctag) == false
+      #   uses: actions/create-release@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     tag_name: 'v${{ env.cversion }}'
+      #     release_name: 'v${{ env.cversion }}'
+      #     body: |
+      #       publish v${{ env.cversion }}
 
       - name: Comment in PR
         # if: contains('alpha beta', env.ctag) == false
@@ -169,7 +173,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             github.issues.createComment({
-              issue_number: ${{ steps.cpr.outputs.pull-request-number }},
+              issue_number: ${{ steps.cpr.outputs.pr_number }},
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: 'https://github.com/${{ github.repository }}/releases/tag/v${{ env.cversion }} is released 🎉'
