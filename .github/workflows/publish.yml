@@ -86,6 +86,8 @@ jobs:
       # git stash
       - name: Drop Current Changes
         run: |
+          git status
+          ls -la
           git add .
           git stash
 
