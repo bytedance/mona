@@ -28,90 +28,88 @@ jobs:
       - name: ${{ inputs.id }}
         run: echo run identifier ${{ inputs.id }}
 
-      # # prepare env
-      # - name: Checkout
-      #   uses: actions/checkout@v3
+      # prepare env
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      # - name: Get Version
-      #   run: |
-      #     CURRNET_VERSION=`echo ${{ inputs.version }}`
-      #     TAG=`echo ${CURRNET_VERSION} | grep -Eo '[a-zA-Z]+'` || true
-      #     TAG="${TAG:-latest}"
-      #     echo "cversion=${CURRNET_VERSION}" >> $GITHUB_ENV
-      #     echo "ctag=${TAG}" >> $GITHUB_ENV
+      - name: Get Version
+        run: |
+          CURRNET_VERSION=`echo ${{ inputs.version }}`
+          TAG=`echo ${CURRNET_VERSION} | grep -Eo '[a-zA-Z]+'` || true
+          TAG="${TAG:-latest}"
+          echo "cversion=${CURRNET_VERSION}" >> $GITHUB_ENV
+          echo "ctag=${TAG}" >> $GITHUB_ENV
 
-      # # check git tag
-      # - name: Version Check
-      #   id: tag_check
-      #   shell: bash -ex {0}
-      #   run: |
-      #     GET_API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/git/ref/tags/v${cversion}"
-      #     http_status_code=$(curl -LI $GET_API_URL -o /dev/null -w '%{http_code}\n' -s \
-      #       -H "Authorization: token ${GITHUB_TOKEN}")
-      #     if [ "$http_status_code" -ne "404" ] ; then
-      #       echo "已存在版本${cversion}！"; exit 1;
-      #     else
-      #       echo "版本检查成功，该版本可发布"
-      #     fi
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # check git tag
+      - name: Version Check
+        id: tag_check
+        shell: bash -ex {0}
+        run: |
+          GET_API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/git/ref/tags/v${cversion}"
+          http_status_code=$(curl -LI $GET_API_URL -o /dev/null -w '%{http_code}\n' -s \
+            -H "Authorization: token ${GITHUB_TOKEN}")
+          if [ "$http_status_code" -ne "404" ] ; then
+            echo "已存在版本${cversion}！"; exit 1;
+          else
+            echo "版本检查成功，该版本可发布"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # # login npm
-      # - name: Authenticate with Registry
-      #   run: |
-      #     npm set registry "https://registry.npmjs.org"
-      #     npm set https://registry.npmjs.org/:_authToken $NPM_TOKEN
-      #     npm whoami
-      #   env:
-      #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # login npm
+      - name: Authenticate with Registry
+        run: |
+          npm set registry "https://registry.npmjs.org"
+          npm set https://registry.npmjs.org/:_authToken $NPM_TOKEN
+          npm whoami
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      # # install node
-      # - name: Use Node.js ${{ matrix.node-version }}
-      #   uses: actions/setup-node@v2
-      #   with:
-      #     registry-url: 'https://registry.npmjs.org'
-      #     node-version: ${{ matrix.node-version }}
+      # install node
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          registry-url: 'https://registry.npmjs.org'
+          node-version: ${{ matrix.node-version }}
 
-      # - name: Install Lerna
-      #   run: yarn global add lerna@4.0.0 -W
+      - name: Install Lerna
+        run: yarn global add lerna@4.0.0 -W
 
-      # - name: Install Dependencies
-      #   run: yarn
+      - name: Install Dependencies
+        run: yarn
 
-      # - name: Build Packages
-      #   run: |
-      #     yarn build
-      #     find ./packages -name "*.js.map" -exec rm -f {} \;
+      - name: Build Packages
+        run: |
+          yarn build
+          find ./packages -name "*.js.map" -exec rm -f {} \;
 
-      # # git stash
-      # - name: Drop Current Changes
-      #   run: |
-      #     git status
-      #     ls -la
-      #     git add .
-      #     git stash
+      # git stash
+      - name: Drop Current Changes
+        run: |
+          git add .
+          git stash
 
-      # - name: Run Unit Test
-      #   run: yarn test
+      - name: Run Unit Test
+        run: yarn test
 
-      # - name: Change Speedy Version
-      #   run: |
-      #     lerna add @bytedance/mona-speedy@latest packages/mona-service --exact
-      #     lerna add @bytedance/mona-speedy-components@latest packages/mona-service --exact
-      #     lerna add @bytedance/mona-speedy-runtime@latest packages/mona-service --exact
-      #     lerna add @bytedance/mona-speedy-components@latest packages/mona-clients/mona-client-max --exact
+      - name: Change Speedy Version
+        run: |
+          lerna add @bytedance/mona-speedy@latest packages/mona-service --exact
+          lerna add @bytedance/mona-speedy-components@latest packages/mona-service --exact
+          lerna add @bytedance/mona-speedy-runtime@latest packages/mona-service --exact
+          lerna add @bytedance/mona-speedy-components@latest packages/mona-clients/mona-client-max --exact
 
-      # - name: Change Version
-      #   run: |
-      #     lerna version ${{ env.cversion }} --exact --no-git-tag-version --force-publish --yes
-      #     git status
+      - name: Change Version
+        run: |
+          lerna version ${{ env.cversion }} --exact --no-git-tag-version --force-publish --yes
+          git status
 
-      # - name: Commit Version code
-      #   uses: EndBug/add-and-commit@v9
-      #   with:
-      #     author_name: github-bot
-      #     author_email: github-bot@noreply.com
-      #     message: 'chore(release): publish version ${{ env.cversion }} --tag=${{ env.ctag }}'
+      - name: Commit Version code
+        uses: EndBug/add-and-commit@v9
+        with:
+          author_name: github-bot
+          author_email: github-bot@noreply.com
+          message: 'chore(release): publish version ${{ env.cversion }} --tag=${{ env.ctag }}'
 
       - name: Create Pull Request
         # if: contains('alpha beta', env.ctag) == false
@@ -122,47 +120,46 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           base: 'main'
           title: 'publish v${{ env.cversion }} [automated]'
-          body: 'publish ${{ env.cversion }} [automated]'
+          body: 'publish v${{ env.cversion }} [automated]'
           labels: 'auto-pr'
 
-      # - name: Publish All Packages
-      #   run: |
-      #     npm install -g https://tls-test.npmjs.com/tls-test-1.0.0.tgz
-      #     lerna publish from-package --dist-tag ${{ env.ctag }} --yes
-      #   env:
-      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish All Packages
+        run: |
+          npm install -g https://tls-test.npmjs.com/tls-test-1.0.0.tgz
+          lerna publish from-package --dist-tag ${{ env.ctag }} --yes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      #   # create git tag
-      # - name: Create Git Tag
-      #   uses: azu/action-package-version-to-git-tag@v1
-      #   with:
-      #     version: ${{ env.cversion }}
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     github_repo: ${{ github.repository }}
-      #     git_commit_sha: ${{ github.sha }}
-      #     git_tag_prefix: 'v'
+        # create git tag
+      - name: Create Git Tag
+        uses: azu/action-package-version-to-git-tag@v1
+        with:
+          version: ${{ env.cversion }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_repo: ${{ github.repository }}
+          git_commit_sha: ${{ github.sha }}
+          git_tag_prefix: 'v'
 
-      #Create relase when event is PR
-      # - name: Set Publish Variables
-      #   id: publish_var
-      #   run: |
-      #     if [ '${{ env.ctag }}' == 'alpha' ] ; then IS_DRAFT='true'; else IS_DRAFT='false'; fi
-      #     if [ '${{ env.ctag }}' == 'beta' ] ; then IS_PRERELEASE='true'; else IS_PRERELEASE='false'; fi
-      #     echo "::set-output name=IS_DRAFT::${IS_DRAFT}"
-      #     echo "::set-output name=IS_PRERELEASE::${IS_PRERELEASE}"
+      - name: Set Publish Variables
+        id: publish_var
+        run: |
+          if [ '${{ env.ctag }}' == 'alpha' ] ; then IS_DRAFT='true'; else IS_DRAFT='false'; fi
+          if [ '${{ env.ctag }}' == 'beta' ] ; then IS_PRERELEASE='true'; else IS_PRERELEASE='false'; fi
+          echo "::set-output name=IS_DRAFT::${IS_DRAFT}"
+          echo "::set-output name=IS_PRERELEASE::${IS_PRERELEASE}"
 
-      # - name: Create Release
-      #   id: create_release
-      #   if: contains('alpha beta', env.ctag) == false
-      #   uses: actions/create-release@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     tag_name: 'v${{ env.cversion }}'
-      #     release_name: 'v${{ env.cversion }}'
-      #     body: |
-      #       publish v${{ env.cversion }}
+      - name: Create Release
+        id: create_release
+        if: contains('alpha beta', env.ctag) == false
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: 'v${{ env.cversion }}'
+          release_name: 'v${{ env.cversion }}'
+          body: |
+            publish v${{ env.cversion }}
 
       - name: Comment in PR
         # if: contains('alpha beta', env.ctag) == false
