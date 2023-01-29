@@ -1,4 +1,4 @@
-import { Service } from '@bytedance/mona-service'
+import Service from '@bytedance/mona-service/dist/Service'
 import buildInPlugins from './buildInPlugins';
 
 function mona() {
