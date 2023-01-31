@@ -1,4 +1,4 @@
-import { IPlugin } from '../../Service';
+import { IPlugin } from '@bytedance/mona-manager';
 
 const build: IPlugin = ctx => {
   

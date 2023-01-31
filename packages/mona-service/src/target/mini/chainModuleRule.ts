@@ -1,7 +1,7 @@
 import path from 'path';
 import Config from 'webpack-chain';
 
-import ConfigHelper from '@/ConfigHelper';
+import { ConfigHelper } from '@bytedance/mona-manager';
 import { Platform } from '../constants';
 
 import { genAlias } from '../utils/chainResolve';

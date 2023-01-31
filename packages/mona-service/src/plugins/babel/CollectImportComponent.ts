@@ -2,7 +2,7 @@ import { NodePath } from '@babel/traverse';
 import nodePath from 'path';
 import * as t from '@babel/types';
 import { formatReactNodeName } from '@/target/utils/reactNode';
-import ConfigHelper from '@/ConfigHelper';
+import { ConfigHelper } from '@bytedance/mona-manager';
 import { MiniComponentEntry, genMiniComponentEntry } from '@/target/entires/miniComponentEntry';
 import { CUSTOM_COMPONENT_PROTOCOL } from '@bytedance/mona-shared';
 import { processNativePath } from '@/utils';

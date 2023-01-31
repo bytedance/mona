@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import path from 'path';
 import webpack from 'webpack';
 
-import { IPlugin } from '../../Service';
+import { IPlugin } from '@bytedance/mona-manager';
 import { MonaPlugins } from '@/plugins';
 
 import { chainModuleRule } from './chainModuleRule';

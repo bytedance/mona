@@ -1,6 +1,6 @@
 import path from 'path';
 import fse from 'fs-extra';
-import ConfigHelper from '../../ConfigHelper';
+import {ConfigHelper} from '@bytedance/mona-manager';
 import { NPM_DIR } from '../constants';
 import monaStore from '../store';
 import { NODE_MODULES } from '@/target/constants';

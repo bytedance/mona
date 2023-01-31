@@ -1,7 +1,7 @@
 import path from 'path';
 import Config from 'webpack-chain';
 
-import ConfigHelper from '@/ConfigHelper';
+import { ConfigHelper } from '@bytedance/mona-manager';
 import { MonaPlugins } from '@/plugins';
 
 import { Platform, SAFE_SDK_SCRIPT } from '../constants';

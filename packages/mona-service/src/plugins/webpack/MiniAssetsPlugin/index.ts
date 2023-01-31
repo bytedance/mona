@@ -1,4 +1,4 @@
-import ConfigHelper from '@/ConfigHelper';
+import {ConfigHelper} from '@bytedance/mona-manager';
 import { Compiler, EntryPlugin, optimize, web, Compilation, sources } from 'webpack';
 import createJson, { addUsingComponents } from './createJson';
 import path from 'path';

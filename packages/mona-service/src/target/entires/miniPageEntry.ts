@@ -2,7 +2,7 @@ import path from 'path';
 import fse from 'fs-extra';
 import { miniExt } from '@/target/mini/constants';
 
-import ConfigHelper from '../../ConfigHelper';
+import {ConfigHelper} from '@bytedance/mona-manager';
 import { MiniComponentEntry } from './miniComponentEntry';
 import monaStore from '../store';
 const { nativeEntryMap } = monaStore;

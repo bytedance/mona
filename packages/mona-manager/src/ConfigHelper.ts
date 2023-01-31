@@ -6,9 +6,9 @@ import Config from 'webpack-chain';
 import { AppConfig, ProjectConfig as OriginProjectConfig } from '@bytedance/mona';
 import { readConfig, searchScriptFile } from '@bytedance/mona-shared';
 
-import { getConfigPath } from './commands/util';
-import { DEFAULT_PORT } from './target/constants';
-import { createUniqueId } from './target/utils/utils';
+import { getConfigPath } from './utils';
+import { DEFAULT_PORT } from './constants';
+import { createUniqueId } from './utils';
 
 export type ProjectConfig = OriginProjectConfig & { output: string };
 

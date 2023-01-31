@@ -1,4 +1,4 @@
-import ConfigHelper from '@/ConfigHelper';
+import { ConfigHelper } from '@bytedance/mona-manager';
 import Config from 'webpack-chain';
 import { MonaPlugins } from '@/plugins';
 

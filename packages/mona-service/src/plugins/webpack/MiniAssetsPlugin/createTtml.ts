@@ -1,7 +1,7 @@
 import path from 'path';
 import ejs from 'ejs';
 import { Compilation, sources } from 'webpack';
-import ConfigHelper from '@/ConfigHelper';
+import {ConfigHelper} from '@bytedance/mona-manager';
 
 import { voidChildrenElements } from '@/target/mini/baseComponents/constants';
 import { RENDER_NODE, ComponentType, CUSTOM_REF } from '@bytedance/mona-shared';

@@ -5,7 +5,7 @@ import { chainModuleRule } from './chainModuleRule';
 import { chainOptimization } from './chainOptimization';
 import { chainPlugins } from '../utils/chainPlugins';
 import { chainResolve } from '../utils/chainResolve';
-import { IPlugin } from '../../Service';
+import { IPlugin } from '@bytedance/mona-manager';
 
 const { H5 } = Platform;
 

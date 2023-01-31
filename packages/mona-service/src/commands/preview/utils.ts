@@ -1,7 +1,7 @@
 import QRCode from 'qrcode';
 import chokidar from 'chokidar';
 import open from 'open';
-import PluginContext from '@/PluginContext';
+import {PluginContext} from '@bytedance/mona-manager';
 import { execSync } from 'child_process';
 import { compressDistDir } from '../compress/utils';
 import { createUploadForm, FileType } from '../common';

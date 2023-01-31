@@ -1,4 +1,4 @@
-import ConfigHelper from '@/ConfigHelper';
+import {ConfigHelper} from '@bytedance/mona-manager';
 import { Compiler } from 'webpack';
 import MiniEntryModule from './MiniEntryModule';
 class MiniEntryPlugin {

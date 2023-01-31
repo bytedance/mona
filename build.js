@@ -12,6 +12,7 @@ const pkgs = {
   shared: '@bytedance/mona-shared',
   build: '@bytedance/mona-build',
   service: '@bytedance/mona-service',
+  manager: '@bytedance/mona-manager',
 };
 const rawTargets = process.argv.slice(2);
 const startIndex = rawTargets.indexOf('-s');
@@ -25,23 +26,25 @@ console.log('');
 const cmds = targets.map(t => `yarn workspace ${t} ${isStart ? 'start' : 'build'}`);
 
 // pipe func
-const pipe =
-  (funcs) =>
-  (input) =>
-    funcs.reduce((prev, cur) => (i) => {
-      const res = prev(i);
-      const isPromise = typeof res.then === 'function';
-      if (isPromise) {
-        return res.then((r) => cur(r));
-      } else {
-        return cur(res);
-      }
-    })(input);
+const pipe = funcs => input =>
+  funcs.reduce((prev, cur) => i => {
+    const res = prev(i);
+    const isPromise = typeof res.then === 'function';
+    if (isPromise) {
+      return res.then(r => cur(r));
+    } else {
+      return cur(res);
+    }
+  })(input);
 
-pipe(cmds.map(cmd => () => new Promise((resolve, reject) => {
-  const parts = cmd.split(/\s+/g);
-  console.log(cmd);
-  const result = spawn(parts[0], parts.slice(1), { stdio: 'inherit' })
-  result.on('exit', resolve);
-})))()
-
+pipe(
+  cmds.map(
+    cmd => () =>
+      new Promise((resolve, reject) => {
+        const parts = cmd.split(/\s+/g);
+        console.log(cmd);
+        const result = spawn(parts[0], parts.slice(1), { stdio: 'inherit' });
+        result.on('exit', resolve);
+      }),
+  ),
+)();

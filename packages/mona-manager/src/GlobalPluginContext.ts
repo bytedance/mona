@@ -1,8 +1,8 @@
-import ICommand, { ICommandCallback, ICommandOptions } from "./ICommand";
-import log from "./utils/log";
+import ICommand, { ICommandCallback, ICommandOptions } from './ICommand';
+import log from './utils/log';
 
 class GlobalPluginContext {
-  private _commandMap: Map<string, ICommand>
+  private _commandMap: Map<string, ICommand>;
 
   constructor() {
     this._commandMap = new Map();
@@ -23,4 +23,4 @@ class GlobalPluginContext {
   }
 }
 
-export default GlobalPluginContext
+export default GlobalPluginContext;

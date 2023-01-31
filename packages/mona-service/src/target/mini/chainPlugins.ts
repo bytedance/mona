@@ -1,5 +1,5 @@
 import Config from 'webpack-chain';
-import ConfigHelper from '@/ConfigHelper';
+import { ConfigHelper } from '@bytedance/mona-manager';
 import { TARGET, miniExt } from './constants';
 import { MonaPlugins } from '@/plugins';
 

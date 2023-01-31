@@ -1,6 +1,6 @@
 import path from 'path';
 import child_process from 'child_process';
-import { IPlugin } from '../../Service';
+import { IPlugin } from '@bytedance/mona-manager';
 import { Platform } from '../constants';
 import { writeLynxConfig } from './writeLynxConfig';
 import { ttmlToReactLynx } from './ttmlToReactLynx';

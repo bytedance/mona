@@ -2,7 +2,7 @@ import path from 'path';
 import Config from 'webpack-chain';
 import loaderUtils from 'loader-utils';
 
-import ConfigHelper from '@/ConfigHelper';
+import { ConfigHelper } from '@bytedance/mona-manager';
 
 import { commonChainModuleRule } from '../utils/commonChainModuleRule';
 import { MonaPlugins } from '@/plugins';

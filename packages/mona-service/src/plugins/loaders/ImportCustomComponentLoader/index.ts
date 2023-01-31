@@ -3,7 +3,7 @@ import path from 'path';
 import monaStore from '@/target/store';
 import { genMiniComponentEntry, MiniComponentEntry } from '@/target/entires/miniComponentEntry';
 import { NODE_MODULES } from '@/target/constants';
-import type ConfigHelper from '@/ConfigHelper';
+import type { ConfigHelper } from '@bytedance/mona-manager';
 
 const { nativeEntryMap } = monaStore;
 // 强制要求自定义组件不得使用spread attribute  {...props}

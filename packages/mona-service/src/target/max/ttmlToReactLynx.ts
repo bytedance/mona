@@ -4,7 +4,7 @@ import fs from 'fs';
 import fse from 'fs-extra';
 import path from 'path';
 import tagToComponents from './tagToComponents';
-import ConfigHelper from '../../ConfigHelper';
+import { ConfigHelper } from '@bytedance/mona-manager';
 import { parse, parseExpression } from '@babel/parser';
 import traverse from '@babel/traverse';
 import { transformFromAstSync } from '@babel/core';

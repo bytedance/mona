@@ -8,7 +8,7 @@ import path from 'path';
 import { OPEN_DOMAIN, OPEN_DEV_HEADERS } from '@bytedance/mona-shared';
 
 import { getConfigPath } from './util';
-import { PluginContext } from '..';
+import { PluginContext } from '@bytedance/mona-manager';
 
 const homePath = (process.env.HOME ? process.env.HOME : process.env.USERPROFILE) || __dirname;
 const userDataFile = path.join(homePath, '.mona_user');

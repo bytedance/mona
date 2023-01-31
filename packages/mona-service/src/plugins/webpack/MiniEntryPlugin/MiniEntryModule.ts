@@ -1,4 +1,4 @@
-import ConfigHelper from '@/ConfigHelper';
+import {ConfigHelper} from '@bytedance/mona-manager';
 import { searchScriptFile } from '@bytedance/mona-shared';
 import path from 'path';
 import VirtualModulesPlugin from '../VirtualModulesPlugin';

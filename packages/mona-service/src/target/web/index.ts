@@ -5,7 +5,7 @@ import { Platform, genWebHtml } from '../constants';
 import { chainOptimization } from '../utils/chainOptimization';
 import { chainPlugins } from '../utils/chainPlugins';
 import { chainResolve } from '../utils/chainResolve';
-import { IPlugin } from '../../Service';
+import { IPlugin } from '@bytedance/mona-manager';
 
 const { WEB } = Platform;
 

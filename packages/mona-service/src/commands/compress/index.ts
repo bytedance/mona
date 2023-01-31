@@ -5,8 +5,8 @@ import path from 'path';
 import { searchScriptFile, readConfig } from '@bytedance/mona-shared';
 
 import { compressDir, compressDistDir } from './utils';
-import { ProjectConfig } from '../../ConfigHelper';
-import { IPlugin } from '../../Service';
+import { ProjectConfig } from '@bytedance/mona-manager';
+import { IPlugin } from '@bytedance/mona-manager';
 import { getConfigPath } from '../util';
 
 export function readDest(): string {

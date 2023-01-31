@@ -1,6 +1,6 @@
 const updater = require('pkg-updater');
 
-import { IPlugin } from '../Service';
+import { IPlugin } from '@bytedance/mona-manager';
 
 // max 提示isv 升级版本
 const checkVersionPlugin: IPlugin = _ctx => {

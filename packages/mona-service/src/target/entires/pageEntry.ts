@@ -1,4 +1,4 @@
-import ConfigHelper from '../../ConfigHelper';
+import { ConfigHelper } from '@bytedance/mona-manager';
 import { PageConfig } from '@bytedance/mona';
 import { readConfig } from '@bytedance/mona-shared';
 import path from 'path';

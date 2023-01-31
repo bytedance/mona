@@ -1,7 +1,7 @@
 import path from 'path';
 import Config from 'webpack-chain';
 import deepMerge from 'lodash.merge';
-import ConfigHelper from '@/ConfigHelper';
+import { ConfigHelper } from '@bytedance/mona-manager';
 
 import { genAlias } from './chainResolve';
 import { Platform } from '../constants';

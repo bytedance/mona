@@ -5,7 +5,7 @@ import ejs from 'ejs';
 import ConcatenatedModule from 'webpack/lib/optimize/ConcatenatedModule';
 import { readConfig } from '@bytedance/mona-shared';
 import { PageConfig } from '@bytedance/mona';
-import ConfigHelper from '@/ConfigHelper';
+import {ConfigHelper} from '@bytedance/mona-manager';
 import { formatAppConfig } from '@bytedance/mona-shared';
 
 import { Compilation, sources, NormalModule } from 'webpack';

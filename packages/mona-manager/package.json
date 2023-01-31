@@ -1,0 +1,46 @@
+{
+  "name": "@bytedance/mona-manager",
+  "version": "0.3.6-alpha.3",
+  "displayName": "mona-manager",
+  "description": "mona cli plugin system",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "yarn clean  && ttsc -b",
+    "start": "ttsc -b -w",
+    "clean": "rm -rf dist",
+    "test": "jest"
+  },
+  "author": "xiaokun.kenny@bytedance.com",
+  "license": "MIT",
+  "dependencies": {
+    "@bytedance/mona-shared": "0.3.6-alpha.3",
+    "chalk": "^4.1.2",
+    "command-line-usage": "^6.1.1",
+    "lodash.merge": "^4.6.2",
+    "minimist": "^1.2.5",
+    "ora": "^5.4.1",
+    "webpack": "^5.58.2",
+    "webpack-chain": "^6.5.1",
+    "webpack-dev-server": "^4.3.1",
+    "webpack-merge": "^5.8.0"
+  },
+  "devDependencies": {
+    "@types/command-line-usage": "^5.0.2",
+    "@types/lodash.merge": "^4.6.7",
+    "@types/minimist": "^1.2.2",
+    "@types/node": "^16.4.5",
+    "@types/webpack-dev-server": "^4.3.1",
+    "ttypescript": "^1.5.12",
+    "typescript-json-schema": "^0.43.0",
+    "typescript-transform-paths": "^2.2.4"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "gitHead": "cc5aa5283af595fd7d8a7b4921f54e2797504edd"
+}
