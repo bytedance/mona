@@ -1,14 +1,10 @@
 {
-  "name": "@bytedance/mona-cli",
+  "name": "@bytedance/mona-cli-commands",
   "version": "0.3.6-alpha.3",
-  "displayName": "mona",
-  "description": "Merchant app's developing and building tools",
-  "main": "./bin/mona",
-  "bin": {
-    "mona": "./bin/mona"
-  },
+  "displayName": "mona-cli-commands",
+  "description": "mona-cli commands plugins for mona-manager",
+  "main": "./dist/index",
   "files": [
-    "bin",
     "dist"
   ],
   "scripts": {
@@ -17,37 +13,29 @@
     "clean": "rm -rf dist",
     "test": "jest"
   },
-  "author": "zhangxiaowei.chris@bytedance.com",
+  "author": "xiaokun.kenny@bytedance.com",
   "license": "MIT",
   "dependencies": {
-    "@bytedance/mona-service": "0.3.6-alpha.3",
     "@bytedance/mona-shared": "0.3.6-alpha.3",
-    "@bytedance/mona-cli-commands": "0.3.6-alpha.3",
     "@bytedance/mona-manager": "0.3.6-alpha.3",
     "chalk": "^4.1.2",
-    "command-line-usage": "^6.1.1",
     "compare-version": "^0.1.2",
-    "compressing": "^1.5.1",
     "download-git-repo": "^3.0.2",
     "fs-extra": "^11.1.0",
     "inquirer": "^8.1.2",
     "node-uuid": "^1.4.8",
     "open": "^8.4.0",
     "ora": "^5.4.1",
-    "pkg-dir": "^5.0.0",
     "semver": "^7.3.8",
-    "ws": "^8.4.2",
-    "yargs": "^17.0.1"
+    "ws": "^8.4.2"
   },
   "devDependencies": {
-    "@types/command-line-usage": "^5.0.2",
     "@types/compare-version": "^0.1.31",
     "@types/fs-extra": "^9.0.13",
     "@types/inquirer": "^7.3.3",
     "@types/node": "^16.4.5",
     "@types/node-uuid": "^0.0.29",
-    "@types/semver": "^7.3.9",
-    "@types/yargs": "^16.0.0"
+    "@types/semver": "^7.3.9"
   },
   "publishConfig": {
     "access": "public",

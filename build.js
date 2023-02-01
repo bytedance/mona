@@ -13,6 +13,7 @@ const pkgs = {
   build: '@bytedance/mona-build',
   service: '@bytedance/mona-service',
   manager: '@bytedance/mona-manager',
+  'cli-commands': '@bytedance/mona-cli-commands',
 };
 const rawTargets = process.argv.slice(2);
 const startIndex = rawTargets.indexOf('-s');

@@ -20,10 +20,16 @@ class Service {
     this._pluginContext = new PluginContext();
   }
 
-  addPlugins(plugins: IPlugin[]) {
+  addPlugins(plugins: Array<IPlugin | IPlugin[]>) {
     for (let i = 0; i < plugins.length; i++) {
       if (typeof plugins[i] === 'function') {
-        this._plugins.push(plugins[i]);
+        this._plugins.push(plugins[i] as IPlugin);
+      } else if (Array.isArray(plugins[i])) {
+        for (let plugin of plugins[i] as IPlugin[]) {
+          if (typeof plugin === 'function') {
+            this._plugins.push(plugin);
+          }
+        }
       }
     }
   }
@@ -45,27 +51,31 @@ class Service {
     const pluginContext = this._pluginContext;
     const argv = minimist(process.argv.slice(2), { alias: { h: 'help', v: 'version' } });
     const cmdName = argv._[0] as string;
-    
+
     const cmd = pluginContext.getCommand(cmdName);
     if (!cmd) {
       if (argv.help || (!cmdName && !argv.v)) {
-        console.log(commandLineUsage([{
-          header: '描述',
-          content: '商家应用/插件开发构建工具',
-        },
-        {
-          header: '可选项',
-          optionList: [
-            { name: 'help', description: '输出帮助信息', alias: 'h', type: Boolean },
-            { name: 'version', description: '查看当前CLI版本', alias: 'v', type: Boolean },
-          ],
-        },
-        {
-          header: '命令',
-          content: pluginContext.getCommandsDesc()
-        }]))
+        console.log(
+          commandLineUsage([
+            {
+              header: '描述',
+              content: '商家应用/插件开发构建工具',
+            },
+            {
+              header: '可选项',
+              optionList: [
+                { name: 'help', description: '输出帮助信息', alias: 'h', type: Boolean },
+                { name: 'version', description: '查看当前CLI版本', alias: 'v', type: Boolean },
+              ],
+            },
+            {
+              header: '命令',
+              content: pluginContext.getCommandsDesc(),
+            },
+          ]),
+        );
       } else if (argv.v) {
-        console.log(`v${pkg.version}`)
+        console.log(`v${pkg.version}`);
       } else {
         log.error(`invalid command`);
       }
@@ -88,7 +98,7 @@ class Service {
 
     if (shouldPassBuilder && !cmdArgv.help) {
       const { target: rawtargetName } = cmdArgv;
-      const targetName = rawtargetName || 'web'
+      const targetName = rawtargetName || 'web';
       // find target builder
       const target = pluginContext.getTarget(targetName);
       if (target) {

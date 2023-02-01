@@ -7,7 +7,7 @@ import { AppConfig, ProjectConfig as OriginProjectConfig } from '@bytedance/mona
 import { readConfig, searchScriptFile } from '@bytedance/mona-shared';
 
 import { getConfigPath } from './utils';
-import { DEFAULT_PORT } from './constants';
+import { DEFAULT_PORT } from '@bytedance/mona-shared';
 import { createUniqueId } from './utils';
 
 export type ProjectConfig = OriginProjectConfig & { output: string };

@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import Builder, { ChainWebpackConfigFn, RawWebpackConfigFn } from './Builder';
-import { DEFAULT_PORT, DEFAULT_HOST } from './constants';
+import { DEFAULT_PORT, DEFAULT_HOST } from '@bytedance/mona-shared';
 
 type Fn = (args: Record<string, any>) => void;
 
