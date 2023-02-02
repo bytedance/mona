@@ -1,0 +1,63 @@
+<%_const { COMPLIER_CHILDREN, COMPLIER_PROPS, COMPLIER_NODES, COMPLIER_KEY, COMPLIER_TYPE, COMPLIER_TEXT } = RENDER_NODE-%>
+
+<template name='mona-base'>
+  <template tt:for='{{root.<%=COMPLIER_CHILDREN%>}}' tt:key='*this' is='{{"mona-" + root.<%=COMPLIER_NODES%>[item].<%=COMPLIER_TYPE%>}}' data='{{node: root.<%=COMPLIER_NODES%>[item]}}' />
+</template>
+
+
+<%for (let name of miniComponents.keys()) {%>
+<%_const { miniName, defaultProps,alias } = miniComponents.get(name); -%>
+<template name='mona-<%=name%>'>
+  <<%=miniName%> 
+    <%_for(let i in alias){-%>
+    <%_if(defaultProps[i] !== undefined){-%>
+    <%=alias[i]%>='{{node.<%=COMPLIER_PROPS%>["<%=i%>"] === undefined ? <%-defaultProps[i]%> : node.<%=COMPLIER_PROPS%>["<%=i%>"]}}' 
+    <%_} else{-%>
+    <%=alias[i]%>='{{node.<%=COMPLIER_PROPS%>["<%=i%>"]}}' 
+    <%_}}-%>
+  >
+  <% if(!voidChildrenElements.has(name)) { -%>
+    <block  
+      tt:for='{{ node.<%=COMPLIER_CHILDREN%> }}'
+      tt:key='*this'
+    >
+    <template 
+      is='{{ "mona-" + node.<%=COMPLIER_NODES%>[item].<%=COMPLIER_TYPE%> }}' 
+      data='{{ node: node.<%=COMPLIER_NODES%>[item] }}' 
+    />
+    </block>
+   
+  <%_}-%></<%=miniName%>>
+</template><%};-%>
+
+
+<%for (let item of nativeComponents.values()) {%>
+<%_const { defaultProps,props } = item; -%>
+
+  <template name='mona-<%=item.id%>'>
+    <<%=item.name%> 
+      <%_for(let i in props){-%>
+        <%_if(defaultProps[i] !== undefined){-%>
+        <%=i%>='{{node.<%=COMPLIER_PROPS%>["<%=props[i]%>"] === undefined ? <%-defaultProps[i]%> : node.<%=COMPLIER_PROPS%>["<%=props[i]%>"]}}' 
+        <%_} else{-%>
+        <%=i%>='{{node.<%=COMPLIER_PROPS%>["<%=props[i]%>"]}}' 
+      <%_}}-%>
+    >
+    <block  
+      tt:for='{{ node.<%=COMPLIER_CHILDREN%> }}'
+      tt:key='*this'
+    >
+    <template 
+      is='{{ "mona-" + node.<%=COMPLIER_NODES%>[item].<%=COMPLIER_TYPE%> }}' 
+      data='{{ node: node.<%=COMPLIER_NODES%>[item] }}' 
+    />
+    </block>
+     </<%=item.name%>>
+  </template>
+<%};-%>
+
+<template name='mona-<%=PTextName%>'>
+  {{ node.<%=COMPLIER_TEXT%> }}
+</template>
+
+

@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "custom2": "../CustomComponent2/index"
+  }
+}

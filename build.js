@@ -14,6 +14,10 @@ const pkgs = {
   service: '@bytedance/mona-service',
   manager: '@bytedance/mona-manager',
   'cli-commands': '@bytedance/mona-cli-commands',
+  'service-commands': '@bytedance/mona-service-commands',
+  'target-web': '@bytedance/mona-service-target-web',
+  'target-mini': '@bytedance/mona-service-target-mini',
+  'target-lynx': '@bytedance/mona-service-target-lynx',
 };
 const rawTargets = process.argv.slice(2);
 const startIndex = rawTargets.indexOf('-s');
