@@ -13,7 +13,8 @@ import {
   buildProject,
   generateH5Qrcode,
   processProjectData,
-  askMixedFactory,
+  askMixedComponentFactory,
+  askMixedTemplateFactory,
 } from './utils';
 import { AppSceneTypeEnum, generateRequestFromOpen, requestBeforeCheck } from '../common';
 import chalk from 'chalk';
@@ -51,7 +52,7 @@ const preview: IPlugin = ctx => {
       switch (appDetail.appSceneType) {
         case AppSceneTypeEnum.DESIGN_CENTER_COMPONENT:
           await pipe(
-            askMixedFactory(request),
+            askMixedComponentFactory(request),
             buildMaxComponent,
             processMaxComponentData,
             ...maxProcess
@@ -59,6 +60,7 @@ const preview: IPlugin = ctx => {
           break;
         case AppSceneTypeEnum.DESIGN_CENTER_TEMPLATE:
           await pipe(
+            askMixedTemplateFactory(request),
             processMaxTemplateData,
             ...maxProcess
           )(ctx);

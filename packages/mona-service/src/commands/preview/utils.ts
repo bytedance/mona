@@ -128,7 +128,7 @@ export const generateQrcodeFactory =
     return { qrcode, expireTime: res.expireTime };
   };
 
-export function askMixedFactory(request: Request<any>) {
+export function askMixedComponentFactory(request: Request<any>) {
   return async function(ctx: PluginContext) {
     const appid = ctx.configHelper.projectConfig.appId;
     
@@ -146,6 +146,23 @@ export function askMixedFactory(request: Request<any>) {
     const isMixed = fs.existsSync(targetTTMLFile);
     console.log(chalk.green(isMixed ? '当前为混排组件版本' : '当前为非混排组件版本'));
     const frameworkType = isOldApp ? (isMixed ? 1 : 0) : 1;
+    return { frameworkType, ctx }
+  }
+}
+
+export function askMixedTemplateFactory(request: Request<any>) {
+  return async function(ctx: PluginContext) {
+    const appid = ctx.configHelper.projectConfig.appId;
+    
+    console.log(chalk.green(`拉取当前模板信息：${appid}`));
+    // version detail
+    const appDetail: any = await request('/captain/appManage/getAppDetail', {
+      method: 'GET',
+      params: { appId: appid },
+    });
+
+    const frameworkType = appDetail?.appExtend?.frameworkType;
+    console.log(chalk.green(frameworkType === 1 ? '当前为混排模板版本' : '当前为非混排模板版本'));
     return { frameworkType, ctx }
   }
 }
@@ -183,7 +200,7 @@ export async function processMaxComponentData({ ctx, frameworkType }: { ctx: Plu
 }
 
 // process max template data
-export async function processMaxTemplateData(ctx: PluginContext) {
+export async function processMaxTemplateData({ ctx, frameworkType }: { ctx: PluginContext, frameworkType?: number }) {
   const helper = ctx.configHelper;
   const { appId = '' } = helper.projectConfig;
 
@@ -193,6 +210,7 @@ export async function processMaxTemplateData(ctx: PluginContext) {
 
   return {
     appId,
+    frameworkType,
     templateAppDefaultValue,
   };
 }
