@@ -14,7 +14,7 @@ function parseQuery(search: string) {
   arrStr.split('&').forEach(item => {
     const [key, value] = item.split('=');
     result[key] = value;
-  })
+  });
   return result;
 }
 
@@ -28,25 +28,25 @@ const nativeFetch: (params: any) => Promise<{ code: number; data: any }> = param
   const headers = params.headers || {};
 
   return axios({
-      url: resultUrl,
-      data: params.data,
-      method,
-      params: { ...params.params },
-      headers: {
-        ...headers,
-        'x-preview': 1, // 非app环境带上这个头是为了提供没有用户信息情况下的数据
-      },
-    }).then(res => {
-      const result = {
-        code: 1,
-        data: res?.data?.data
-      };
-      return result
-    })
+    url: resultUrl,
+    data: params.data,
+    method,
+    params: { ...params.params },
+    headers: {
+      ...headers,
+      'x-preview': 1, // 非app环境带上这个头是为了提供没有用户信息情况下的数据
+    },
+  }).then(res => {
+    const result = {
+      code: 1,
+      data: res?.data?.data,
+    };
+    return result;
+  });
 };
 
 export const max = {
-  transformImgToWebp({ url } : { url: string }) {
+  transformImgToWebp({ url }: { url: string }) {
     if (typeof url !== 'string') return url;
 
     try {
@@ -56,7 +56,7 @@ export const max = {
       if (isDotImageEndReg.test(url)) {
         return { url: url.replace(isDotImageEndReg, '.webp') };
       } else {
-        return { url }
+        return { url };
       }
     } catch (e) {
       console.error('图片转webp错误', e);
@@ -65,10 +65,10 @@ export const max = {
   },
   fetchSellPoints({ product_ids }: { product_ids: string[] }) {
     if (!secShopId) {
-      return genErrorRes()
+      return genErrorRes();
     }
     if (!Array.isArray(product_ids) || product_ids.length <= 0) {
-      return Promise.reject(new Error('商品id必传'))
+      return Promise.reject(new Error('商品id必传'));
     }
 
     return nativeFetch({
@@ -76,8 +76,8 @@ export const max = {
       method: 'get',
       params: {
         product_ids: product_ids.join(),
-        sec_shop_id: secShopId
-      }
+        sec_shop_id: secShopId,
+      },
     });
   },
   fetchInteracts() {
@@ -88,10 +88,10 @@ export const max = {
   },
   fetchVideoInfos({ vids }: { vids: string[] }) {
     if (!secShopId) {
-      return genErrorRes()
+      return genErrorRes();
     }
     if (!Array.isArray(vids) || vids.length <= 0) {
-      return Promise.reject(new Error('视频id必传'))
+      return Promise.reject(new Error('视频id必传'));
     }
 
     return nativeFetch({
@@ -99,30 +99,40 @@ export const max = {
       method: 'get',
       params: {
         vids: vids.join(),
-        sec_shop_id: secShopId
-      }
+        sec_shop_id: secShopId,
+      },
     });
   },
-  fetchProducts({ product_ids, m_config_type, personalized_recommendation, auto_param } : { product_ids: string[], m_config_type: number, personalized_recommendation?: boolean, auto_param?: { display_num?: number, order_type: number } }) {
+  fetchProducts({
+    product_ids,
+    m_config_type,
+    personalized_recommendation,
+    auto_param,
+  }: {
+    product_ids: string[];
+    m_config_type: number;
+    personalized_recommendation?: boolean;
+    auto_param?: { display_num?: number; order_type: number };
+  }) {
     if (!secShopId) {
-      return genErrorRes()
+      return genErrorRes();
     }
-    if (!Array.isArray(product_ids) || typeof m_config_type !== "number") {
-      console.error("参数错误:商品id格式不正确");
+    if (!Array.isArray(product_ids) || typeof m_config_type !== 'number') {
+      console.error('参数错误:商品id格式不正确');
       return;
     }
 
     let params: any = {};
     if (m_config_type === 0) {
       if (!Array.isArray(product_ids) || product_ids.length <= 0) {
-          return Promise.reject(new Error('手动选品product_ids必传'));
-      }  
+        return Promise.reject(new Error('手动选品product_ids必传'));
+      }
       params = {
         product_ids: product_ids.join(),
         personalized_recommendation,
         sec_shop_id: secShopId,
         m_config_type,
-      }
+      };
     }
 
     if (m_config_type === 1) {
@@ -131,59 +141,67 @@ export const max = {
         sec_shop_id: secShopId,
         m_config_type,
         display_num: auto_param?.display_num,
-        order_type: auto_param?.order_type
-      }
+        order_type: auto_param?.order_type,
+      };
     }
 
     return nativeFetch({
       url: 'https://lianmengapi.snssdk.com/shop/isv/product/mget',
       method: 'get',
-      params
-    })
+      params,
+    });
   },
-  fetchCoupons({ coupon_meta_ids, m_config_type }: { coupon_meta_ids: string[], m_config_type: number }) {
+  fetchCoupons({ coupon_meta_ids, m_config_type }: { coupon_meta_ids?: number[]; m_config_type: number }) {
     if (!secShopId) {
-      return genErrorRes()
+      return genErrorRes();
     }
 
-    if (!Array.isArray(coupon_meta_ids) || coupon_meta_ids.length <= 0 || typeof m_config_type !== 'number') {
-      return Promise.reject(new Error('参数错误'))
+    if (!Array.isArray(coupon_meta_ids) || typeof m_config_type !== 'number') {
+      return Promise.reject(new Error('参数错误'));
     }
 
     return nativeFetch({
-      url: "https://lianmengapi.snssdk.com/shop/isv/coupon/mget",
-      method: "get",
+      url: 'https://lianmengapi.snssdk.com/shop/isv/coupon/mget',
+      method: 'get',
       params: {
-        coupon_meta_ids: coupon_meta_ids.join(),
+        coupon_meta_ids: (coupon_meta_ids || []).join(),
         m_config_type: m_config_type,
-        sec_shop_id: secShopId
+        sec_shop_id: secShopId,
       },
     });
   },
-  fetchActivities({ activity_ids, activity_type, m_config_type }: { activity_ids: string[], activity_type: number, m_config_type: number }) {
+  fetchActivities({
+    activity_ids,
+    activity_type,
+    m_config_type,
+  }: {
+    activity_ids: string[];
+    activity_type: number;
+    m_config_type: number;
+  }) {
     if (!secShopId) {
-      return genErrorRes()
+      return genErrorRes();
     }
-    
+
     if (
       !Array.isArray(activity_ids) ||
       activity_ids.length <= 0 ||
       typeof m_config_type !== 'number' ||
       typeof activity_type !== 'number'
     ) {
-      return Promise.reject(new Error('参数错误'))
+      return Promise.reject(new Error('参数错误'));
     }
 
     return nativeFetch({
-      url: "https://lianmengapi.snssdk.com/shop/isv/activity/mget",
-      method: "get",
+      url: 'https://lianmengapi.snssdk.com/shop/isv/activity/mget',
+      method: 'get',
       headers: {},
       params: {
         activity_ids: activity_ids.join(),
         activity_type: activity_type,
         m_config_type: m_config_type,
-        sec_shop_id: secShopId
+        sec_shop_id: secShopId,
       },
     });
-  }
-}
+  },
+};

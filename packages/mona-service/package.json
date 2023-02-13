@@ -13,10 +13,9 @@
     "dist"
   ],
   "scripts": {
-    "build": "yarn clean  && yarn copy && ttsc -b",
+    "build": "yarn clean  && ttsc -b",
     "start": "ttsc -b -w",
     "clean": "rm -rf dist",
-    "copy": "copyfiles -u 1 ./src/assets/**/* ./dist/",
     "test": "jest"
   },
   "author": "zhangxiaowei.chris@bytedance.com",

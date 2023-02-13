@@ -63,12 +63,12 @@ class ConfigHelper {
 
   readAllConfig() {
     const configFile = getConfigPath();
-    this.projectConfig = merge(genDefaultProjectConfig(this.cwd), this._readConfig<ProjectConfig>(configFile));
-    this.appConfig = merge(DEFAULT_APP_CONFIG, this._readConfig<AppConfig>('app.config'));
+    this.projectConfig = merge(genDefaultProjectConfig(this.cwd), this.readConfig<ProjectConfig>(configFile));
+    this.appConfig = merge(DEFAULT_APP_CONFIG, this.readConfig<AppConfig>('app.config'));
     this.entryPath = searchScriptFile(path.resolve(this.cwd, this.projectConfig.input));
   }
 
-  private _readConfig<T>(configName: string): T {
+  readConfig<T>(configName: string): T {
     const projectConfigPath = path.join(this.cwd, configName);
     const fullConfigPath = searchScriptFile(projectConfigPath);
     if (fs.existsSync(fullConfigPath)) {
