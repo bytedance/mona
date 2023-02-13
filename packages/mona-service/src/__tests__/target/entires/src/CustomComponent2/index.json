@@ -1,6 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "custom3": "../CustomComponent3/index"
-  }
-}

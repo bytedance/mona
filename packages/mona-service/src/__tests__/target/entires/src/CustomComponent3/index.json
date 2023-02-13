@@ -1,7 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "custom2": "../CustomComponent1/index",
-    "custom4": "../../CustomComponent4/index"
-  }
-}
