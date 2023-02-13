@@ -3,8 +3,7 @@ import minimist from 'minimist';
 import ConfigHelper from './ConfigHelper';
 import PluginContext from './PluginContext';
 import log from './utils/log';
-import path from 'path';
-const pkg = require(path.join(process.cwd(), 'package.json'));
+const pkg = require('../package.json');
 
 export interface IPlugin {
   (ctx: PluginContext): void;
@@ -13,11 +12,11 @@ export interface IPlugin {
 class Service {
   private _plugins: IPlugin[] = [];
   private _pluginContext: PluginContext;
-  constructor(plugins: IPlugin[]) {
+  private _version: string;
+  constructor(plugins: IPlugin[], version?: string) {
     this.init();
-
+    this._version = version || pkg.version;
     this.addPlugins(plugins);
-
     this._pluginContext = new PluginContext();
   }
 
@@ -76,7 +75,7 @@ class Service {
           ]),
         );
       } else if (argv.v) {
-        console.log(`v${pkg.version}`);
+        console.log(`v${this._version}`);
       } else {
         log.error(`invalid command`);
       }
