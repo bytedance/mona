@@ -3,7 +3,8 @@ import minimist from 'minimist';
 import ConfigHelper from './ConfigHelper';
 import PluginContext from './PluginContext';
 import log from './utils/log';
-const pkg = require('../package.json');
+import path from 'path';
+const pkg = require(path.join(process.cwd(), 'package.json'));
 
 export interface IPlugin {
   (ctx: PluginContext): void;
