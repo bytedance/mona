@@ -51,26 +51,13 @@ const preview: IPlugin = ctx => {
 
       switch (appDetail.appSceneType) {
         case AppSceneTypeEnum.DESIGN_CENTER_COMPONENT:
-          await pipe(
-            askMixedComponentFactory(request),
-            buildMaxComponent,
-            processMaxComponentData,
-            ...maxProcess
-          )(ctx);
+          await pipe(askMixedComponentFactory(request), buildMaxComponent, processMaxComponentData, ...maxProcess)(ctx);
           break;
         case AppSceneTypeEnum.DESIGN_CENTER_TEMPLATE:
-          await pipe(
-            askMixedTemplateFactory(request),
-            processMaxTemplateData,
-            ...maxProcess
-          )(ctx);
+          await pipe(askMixedTemplateFactory(request), processMaxTemplateData, ...maxProcess)(ctx);
           break;
         case AppSceneTypeEnum.LIGHT_APP:
-          await pipe(
-            getPlatform,
-            getUrl,
-            openUrlWithBrowser
-          )({ ctx, args });
+          await pipe(getPlatform, getUrl, openUrlWithBrowser)({ ctx, args });
           break;
         case AppSceneTypeEnum.H5:
           await pipe(
