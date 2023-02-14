@@ -1,7 +1,7 @@
 import { IPlugin } from '@bytedance/mona-manager';
 import PackageUpdater from './PackageUpdater';
 
-const update: IPlugin = ctx => {
+const update: (registry?: any, pkg?: any) => IPlugin = (registry, pkg) => ctx => {
   ctx.registerCommand(
     'update',
     {
@@ -9,7 +9,7 @@ const update: IPlugin = ctx => {
       usage: 'mona update',
     },
     () => {
-      const pkgUpdater = new PackageUpdater();
+      const pkgUpdater = new PackageUpdater(registry, pkg);
       pkgUpdater.start();
     },
   );

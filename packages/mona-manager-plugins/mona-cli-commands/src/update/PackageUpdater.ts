@@ -10,10 +10,13 @@ export default class PackageUpdater {
   private _incompatible: boolean = false;
   private _currentVersion: string;
   private _newestVersion: string;
+  private _registry: string;
+  private _pkg: any;
 
-  constructor() {
-    this._currentVersion = getCurrentVersion();
-    this._newestVersion = getNewestVersion();
+  constructor(registry?: string, pkg?: any) {
+    this._registry = registry || 'https://registry.npmjs.org';
+    this._currentVersion = getCurrentVersion(pkg);
+    this._newestVersion = getNewestVersion(this._registry, pkg);
   }
 
   start() {
@@ -30,18 +33,20 @@ export default class PackageUpdater {
   update() {
     if (this._incompatible) {
       const spinner = ora(`升级到 v${this._newestVersion}...`).start();
-      const installCmd = this.generateUpdateCmd();
+      const installCmd = this.generateUpdateCmd(this._registry, this._pkg);
 
       try {
         execSync(installCmd, { stdio: 'ignore' }).toString();
         spinner.color = 'green';
-        spinner.succeed(chalk.green(`${getPkgPublicName()} v${this._newestVersion} 更新成功`));
+        spinner.succeed(chalk.green(`${getPkgPublicName(this._pkg)} v${this._newestVersion} 更新成功`));
       } catch (e) {
         spinner.color = 'red';
         spinner.fail(
           chalk.red(
-            `${getPkgPublicName()} v${this._newestVersion} 更新失败\n可手动执行 ${chalk.cyan(installCmd)} 进行更新`
-          )
+            `${getPkgPublicName(this._pkg)} v${this._newestVersion} 更新失败\n可手动执行 ${chalk.cyan(
+              installCmd,
+            )} 进行更新`,
+          ),
         );
       }
     }
@@ -54,9 +59,9 @@ export default class PackageUpdater {
     `;
   }
 
-  generateUpdateCmd() {
+  generateUpdateCmd(registry: string, pkg?: any) {
     const pkgMan = getGlobalInstallPkgMan();
     const cmd = pkgMan === 'yarn' ? `yarn global add` : 'npm install -g';
-    return `${cmd} ${getPkgPublicName()}@${this._newestVersion}`;
+    return `${cmd} ${getPkgPublicName(pkg)}@${this._newestVersion} --registry=${registry}`;
   }
 }
