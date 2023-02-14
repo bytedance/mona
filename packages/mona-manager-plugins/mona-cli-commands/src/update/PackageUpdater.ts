@@ -14,7 +14,7 @@ export default class PackageUpdater {
   private _registry: string;
   private _pkg: any;
 
-  constructor(registry?: string, pkg?: any) {
+  constructor(pkg?: any, registry?: string) {
     this._registry = registry || 'https://registry.npmjs.org';
     this._pkg = pkg || originPkg;
     this._currentVersion = getCurrentVersion(this._pkg);
