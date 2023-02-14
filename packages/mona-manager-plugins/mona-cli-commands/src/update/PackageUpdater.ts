@@ -5,6 +5,7 @@ import chalk from 'chalk';
 import { getGlobalInstallPkgMan } from './utils/common';
 import { getPkgPublicName } from './utils/package';
 import { getCurrentVersion, getNewestVersion } from './utils/version';
+const originPkg = require('../../package.json');
 
 export default class PackageUpdater {
   private _incompatible: boolean = false;
@@ -15,8 +16,9 @@ export default class PackageUpdater {
 
   constructor(registry?: string, pkg?: any) {
     this._registry = registry || 'https://registry.npmjs.org';
-    this._currentVersion = getCurrentVersion(pkg);
-    this._newestVersion = getNewestVersion(this._registry, pkg);
+    this._pkg = pkg || originPkg;
+    this._currentVersion = getCurrentVersion(this._pkg);
+    this._newestVersion = getNewestVersion(this._registry, this._pkg);
   }
 
   start() {
@@ -34,7 +36,7 @@ export default class PackageUpdater {
     if (this._incompatible) {
       const spinner = ora(`升级到 v${this._newestVersion}...`).start();
       const installCmd = this.generateUpdateCmd(this._registry, this._pkg);
-
+      console.log(installCmd);
       try {
         execSync(installCmd, { stdio: 'ignore' }).toString();
         spinner.color = 'green';
