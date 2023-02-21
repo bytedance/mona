@@ -1,12 +1,22 @@
+const pkg = require('../package.json');
+const update = require('@bytedance/mona-cli-commands/dist/update/index.js');
 const flatten = (params: any[]) => [].concat(...params);
 export const pathToPlugin = (pathname: string) => require(pathname);
-export const convertPlugins = (plugins: string[]) => flatten(plugins.map(pathToPlugin));
-
+export const convertPlugins = (plugins: (string | Function | Function[])[]) =>
+  flatten(
+    plugins.map(item => {
+      if (typeof item === 'string') {
+        return pathToPlugin(item);
+      } else {
+        return item;
+      }
+    }),
+  );
 const buildInPlugins = convertPlugins([
-  './commands/init',
-  './commands/login',
-  './commands/logout',
-  './commands/update'
-])
+  '@bytedance/mona-cli-commands/dist/init/index.js',
+  '@bytedance/mona-cli-commands/dist/login/index.js',
+  '@bytedance/mona-cli-commands/dist/logout/index.js',
+  update(pkg),
+]);
 
 export default buildInPlugins;

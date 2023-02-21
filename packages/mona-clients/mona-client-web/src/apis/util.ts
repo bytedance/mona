@@ -506,6 +506,7 @@ export const webGetSystemInfo: OriginApis['getSystemInfo'] = options => {
     options?.success?.(systemInfo);
     options?.complete?.(systemInfo);
   } catch (e) {
+    console.log('e', e);
     options?.fail?.({ errMsg: 'getSystemInfo:fail' });
     options?.complete?.({ errMsg: 'getSystemInfo:fail' });
   }
@@ -516,7 +517,7 @@ export const webGetSystemInfoSync: BaseApis['getSystemInfoSync'] = () => {
   const systemInfo = {
     system: userAgent,
     // @ts-ignore ignore
-    platform: navigator.userAgentData.platform,
+    platform: navigator?.userAgentData?.platform || navigator?.platform,
     brand: '',
     model: '',
     version: appVersion,

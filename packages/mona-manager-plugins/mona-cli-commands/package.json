@@ -1,0 +1,45 @@
+{
+  "name": "@bytedance/mona-cli-commands",
+  "version": "0.3.6-alpha.10",
+  "displayName": "mona-cli-commands",
+  "description": "mona-cli commands plugins for mona-manager",
+  "main": "./dist/index",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "yarn clean && tsc -b",
+    "start": "tsc -b -w",
+    "clean": "rm -rf dist",
+    "test": "jest"
+  },
+  "author": "xiaokun.kenny@bytedance.com",
+  "license": "MIT",
+  "dependencies": {
+    "@bytedance/mona-manager": "0.3.6-alpha.10",
+    "@bytedance/mona-shared": "0.3.6-alpha.10",
+    "chalk": "^4.1.2",
+    "compare-version": "^0.1.2",
+    "download-git-repo": "^3.0.2",
+    "fs-extra": "^11.1.0",
+    "inquirer": "^8.1.2",
+    "node-uuid": "^1.4.8",
+    "open": "^8.4.0",
+    "ora": "^5.4.1",
+    "semver": "^7.3.8",
+    "ws": "^8.4.2"
+  },
+  "devDependencies": {
+    "@types/compare-version": "^0.1.31",
+    "@types/fs-extra": "^9.0.13",
+    "@types/inquirer": "^7.3.3",
+    "@types/node": "^16.4.5",
+    "@types/node-uuid": "^0.0.29",
+    "@types/semver": "^7.3.9"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "gitHead": "cc5aa5283af595fd7d8a7b4921f54e2797504edd"
+}

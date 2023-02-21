@@ -1,10 +1,5 @@
 import buildInPlugins from './buildInPlugins';
-import Service from './Service';
-
-export * from './Service';
-export { default as Service } from './Service';
-export { default as PluginContext } from './PluginContext';
-export { default as ICommand } from './ICommand';
+import Service from '@bytedance/mona-manager';
 
 function main() {
   const service = new Service(buildInPlugins);
