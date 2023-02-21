@@ -5,12 +5,67 @@ import path from 'path';
 import chalk from 'chalk';
 import download from 'download-git-repo';
 import { makeDir, readAllFiles, removeEmptyDirs } from './file';
+import axios from 'axios';
 
-// const TEMPLATE_SOURCE = 'github:bytedance/mona-templates#v2';
-const TEMPLATE_SOURCE_GITEE = 'direct:git@gitee.com:ByteDance/mona-templates.git#v2';
+const branch = 'v2';
+
+const TEMPLATE_SOURCE = `github:bytedance/mona-templates#${branch}`;
+const TEMPLATE_SOURCE_GITEE = `direct:git@gitee.com:ByteDance/mona-templates.git#${branch}`;
+
+const canPingGithub = async () => {
+  try {
+    await axios.get('https://github.com/bytedance/mona-templates');
+    return true;
+  } catch (error) {}
+  return false;
+};
 
 const TEMPLATE_DIR = '.tpl';
-export const fetchTemplate = function (projectRoot: string, templateName: string) {
+
+const getTemplateSource = async () => {
+  const canPin = await canPingGithub();
+  if (canPin) {
+    return TEMPLATE_SOURCE;
+  } else {
+    return TEMPLATE_SOURCE_GITEE;
+  }
+};
+
+export const fetchTemplate = async function (projectRoot: string, templateName: string) {
+  return new Promise((resolve, reject) => {
+    makeDir(projectRoot);
+    const tplDest = path.join(projectRoot, TEMPLATE_DIR);
+    makeDir(tplDest);
+    const spinner = ora('拉取并生成最新模板...').start();
+    getTemplateSource()
+      .then(templateUrl => {
+        download(templateUrl, tplDest, {}, error => {
+          if (error) {
+            spinner.fail(chalk.red(`模板拉取失败, ${error.message}`));
+            return reject(error);
+          } else {
+            try {
+              // 使用mv 命令会导致 ,.gitignore 类似的文件未copy
+              fse.copySync(`${tplDest}/${templateName}/`, projectRoot);
+              fse.removeSync(`${tplDest}/`);
+            } catch (err: any) {
+              spinner.fail(chalk.red(`模板拉取失败, ${err.message}`));
+              return reject(error);
+            }
+            spinner.color = 'green';
+            spinner.succeed(chalk.grey('模板拉取成功！'));
+            return resolve('success');
+          }
+        });
+      })
+      .catch(err => {
+        spinner.fail(chalk.red(`模板拉取失败, ${err?.message}`));
+        return reject(err);
+      });
+  });
+};
+
+export const fetchTemplateByGitee = function (projectRoot: string, templateName: string) {
   return new Promise((resolve, reject) => {
     makeDir(projectRoot);
     const tplDest = path.join(projectRoot, TEMPLATE_DIR);
