@@ -6,7 +6,9 @@ import chalk from 'chalk';
 import download from 'download-git-repo';
 import { makeDir, readAllFiles, removeEmptyDirs } from './file';
 
-const TEMPLATE_SOURCE = 'github:bytedance/mona-templates#v2';
+// const TEMPLATE_SOURCE = 'github:bytedance/mona-templates#v2';
+const TEMPLATE_SOURCE_GITEE = 'direct:git@gitee.com:ByteDance/mona-templates.git#v2';
+
 const TEMPLATE_DIR = '.tpl';
 export const fetchTemplate = function (projectRoot: string, templateName: string) {
   return new Promise((resolve, reject) => {
@@ -14,7 +16,7 @@ export const fetchTemplate = function (projectRoot: string, templateName: string
     const tplDest = path.join(projectRoot, TEMPLATE_DIR);
     makeDir(tplDest);
     const spinner = ora('拉取并生成最新模板...').start();
-    download(TEMPLATE_SOURCE, tplDest, {}, error => {
+    download(TEMPLATE_SOURCE_GITEE, tplDest, {}, error => {
       if (error) {
         spinner.fail(chalk.red(`模板拉取失败, ${error.message}`));
         return reject(error);
