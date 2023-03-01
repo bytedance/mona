@@ -36,6 +36,7 @@ export const writeLynxConfig = ({
               encode: {
                 targetSdkVersion: "2.1",
                 defaultOverflowVisible:false,
+                enableEventRefactor: true,
               },
               dev: {
                 devtoolOptions: {
@@ -65,6 +66,7 @@ export const writeLynxConfig = ({
               encode: {
                 targetSdkVersion: "2.1",
                 defaultOverflowVisible:false,
+                enableEventRefactor: true
               },
               ${notBuildWeb ? '' : `plugins: [WebBootstrapPlugin("${webEntry}", "${appid}")],`}
               define: {
