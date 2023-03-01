@@ -1,6 +1,6 @@
-import { request, setStorage, getStorage } from '@bytedance/mona-client-web/dist/apis/api';
+// import { request, setStorage, getStorage } from '@bytedance/mona-client-web/dist/apis/api';
 import axios from 'axios';
-import { genMaxEventSdk } from './sdk';
+// import { genMaxEventSdk } from './sdk';
 function parseQuery(search: string) {
   if (!search || typeof search !== 'string') {
     return {};
@@ -59,18 +59,18 @@ export interface EventOptionsType {
   reject?: any;
 }
 // @ts-ignore
-export const max = window.__maxEvent
-  ? genMaxEventSdk({
-      appid: __MONA_APPID,
-      request,
-      setStorage,
-      getStorage,
-      // @ts-ignore
-      maxEvent: window.__maxEvent,
-    })
-  : {};
+// export const max = window.__maxEvent
+//   ? genMaxEventSdk({
+//       appid: __MONA_APPID,
+//       request,
+//       setStorage,
+//       getStorage,
+//       // @ts-ignore
+//       maxEvent: window.__maxEvent,
+//     })
+//   : {};
 
-export const oldMax = {
+export const max = {
   transformImgToWebp({ url }: { url: string }) {
     if (typeof url !== 'string') return url;
 
@@ -231,6 +231,6 @@ export const oldMax = {
   },
 };
 
-Object.entries(oldMax).forEach(([name, value]) => {
-  max[name] = value;
-});
+// Object.entries(oldMax).forEach(([name, value]) => {
+//   max[name] = value;
+// });
