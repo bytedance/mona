@@ -1,10 +1,6 @@
 // import { request, setStorage, getStorage } from '@bytedance/mona-client-web/dist/apis/api';
 import axios from 'axios';
-// import { genMaxEventSdk } from "./sdk";
-
-// Compatible with web
-// export const max = genMaxEventSdk({ appid: __MONA_APPID, request, setStorage, getStorage });
-
+// import { genMaxEventSdk } from './sdk';
 function parseQuery(search: string) {
   if (!search || typeof search !== 'string') {
     return {};
@@ -44,6 +40,35 @@ const nativeFetch: (params: any) => Promise<{ code: number; data: any }> = param
     return result;
   });
 };
+
+export const enum ErrorCode {
+  Unknown = -100,
+  TypeError = -101,
+  NoPermission = -102,
+  AppNoRegister = -103,
+}
+
+export type ErrorResponse = { code: ErrorCode | number; message: string };
+
+export interface EventOptionsType {
+  isDeepClone?: boolean;
+  once?: boolean;
+  pluginId?: string;
+  isSync?: boolean;
+  resolve?: any;
+  reject?: any;
+}
+// @ts-ignore
+// export const max = window.__maxEvent
+//   ? genMaxEventSdk({
+//       appid: __MONA_APPID,
+//       request,
+//       setStorage,
+//       getStorage,
+//       // @ts-ignore
+//       maxEvent: window.__maxEvent,
+//     })
+//   : {};
 
 export const max = {
   transformImgToWebp({ url }: { url: string }) {
@@ -205,3 +230,7 @@ export const max = {
     });
   },
 };
+
+// Object.entries(oldMax).forEach(([name, value]) => {
+//   max[name] = value;
+// });
