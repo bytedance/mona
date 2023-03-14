@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 export interface JsApiPermissionListResponse {
   code: number;
@@ -16,7 +16,7 @@ export interface RequestArg {
   children?: RequestArg[];
   fieldDesc: string;
   fieldExample: string;
-  fieldRequired: boolean;
+  isRequired: boolean;
   subFieldType: number;
   mapKeyType: number;
   mapValueType: number;
@@ -56,7 +56,6 @@ export interface NativeFetchRes<T> {
   raw: T;
 }
 
-
 export const nativeFetch: (params: any) => Promise<{ code: number; raw: any }> = params => {
   let resultUrl = params.url;
   const method = params.method || 'GET';
@@ -92,6 +91,6 @@ export const getJsApiList: () => Promise<JsApiListResponse> = () => {
     data: {
       biz_domain: '店铺装修',
     },
-  })
+  });
   return res.then(result => result.raw);
 };
