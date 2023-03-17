@@ -56,10 +56,10 @@ const paramToTs = (inputParams: RequestArg[]) => {
   if (inputParams?.length > 0) {
     res = '{\n';
     for (let inputParam of inputParams) {
-      let { fieldName, fieldRequired, fieldType, children, subFieldType, mapKeyType, mapValueType } = inputParam;
+      let { fieldName, isRequired, fieldType, children, subFieldType, mapKeyType, mapValueType } = inputParam;
       if (fieldType === TypeCode.Number || fieldType === TypeCode.String || fieldType === TypeCode.Boolean) {
         // 如果类型是number、string或者boolean
-        res += `${fieldName}${fieldRequired ? '' : '?'}:${typeMap[fieldType]};\n`;
+        res += `${fieldName}${isRequired ? '' : '?'}:${typeMap[fieldType]};\n`;
       } else if (fieldType === TypeCode.Map) {
         // 如果是映射Map,key只能是number或string。value可以是除了map的所有类型
         let mapValueRes = '';
@@ -81,18 +81,18 @@ const paramToTs = (inputParams: RequestArg[]) => {
         } else if (mapValueType === TypeCode.Object) {
           mapValueRes = paramToTs(children as RequestArg[]);
         }
-        res += `${fieldName}${fieldRequired ? '' : '?'}:Map<${typeMap[mapKeyType]},${mapValueRes}>;\n`;
+        res += `${fieldName}${isRequired ? '' : '?'}:Map<${typeMap[mapKeyType]},${mapValueRes}>;\n`;
       } else if (fieldType === TypeCode.Object) {
         //对象
-        res += `${fieldName}:${paramToTs(children as RequestArg[])};`;
+        res += `${fieldName}${isRequired ? '' : '?'}:${paramToTs(children as RequestArg[])};`;
       } else {
         // 数组
         if (subFieldType === TypeCode.Number || subFieldType === TypeCode.String || subFieldType === TypeCode.Boolean) {
           // 数组值类型为number string boolean
-          res += `${fieldName}:${typeMap[subFieldType]}[];`;
+          res += `${fieldName}${isRequired ? '' : '?'}:${typeMap[subFieldType]}[];`;
         } else if (subFieldType === TypeCode.Object) {
           // 数组值类型为对象
-          res += `${fieldName}:${paramToTs(children as RequestArg[])}[];`;
+          res += `${fieldName}${isRequired ? '' : '?'}:${paramToTs(children as RequestArg[])}[];`;
         }
       }
     }

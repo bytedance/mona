@@ -1,19 +1,33 @@
 import { BaseApis } from '@bytedance/mona';
-import { MaxEvent } from "@/types";
-import { EventOptionsType, Listener } from "@/types/type";
-import { JSAPI_PERMISSION_CACHE } from "./constants";
-import { ErrorCode, genErrorResponse, JsApiPermissionListResponse, removeEventPrefix } from "./util";
+import { MaxEvent } from '@/types';
+import { EventOptionsType, Listener } from '@/types/type';
+import { JSAPI_PERMISSION_CACHE } from './constants';
+import { ErrorCode, genErrorResponse, JsApiPermissionListResponse, removeEventPrefix } from './util';
 
 // lock
 let sdkCache: any;
-export const genMaxEventSdk = ({ appid, request: _request, setStorage: _setStorage, getStorage: _getStorage, maxEvent }:{ appid: string; request: BaseApis['request']; setStorage: BaseApis['setStorage']; getStorage: BaseApis['getStorage']; maxEvent?: MaxEvent }) => {
+export const genMaxEventSdk = ({
+  appid,
+  request: _request,
+  setStorage: _setStorage,
+  getStorage: _getStorage,
+  maxEvent,
+  isWeb = false,
+}: {
+  appid: string;
+  request: BaseApis['request'];
+  setStorage: BaseApis['setStorage'];
+  getStorage: BaseApis['getStorage'];
+  maxEvent?: MaxEvent;
+  isWeb?: boolean;
+}) => {
   const MAX_COMPONENT_PLUGINID = '__MAX_COMPONENT_PLUGINID__';
 
   if (sdkCache) {
     return sdkCache;
   }
   if (!maxEvent) {
-    console.log('[MonaLog]此环境未实现max.xxx相关api')
+    console.log('[MonaLog]此环境未实现max.xxx相关api');
   }
   const maxEventSDK = new Proxy(maxEvent || {}, {
     get: (obj: MaxEvent, prop: string) => {
@@ -93,7 +107,9 @@ export const genMaxEventSdk = ({ appid, request: _request, setStorage: _setStora
     }
   }
   async function requestPermission(): Promise<JsApiPermissionListResponse> {
-    const getJsApiPermissionUrl = 'https://ecom-openapi.ecombdapi.com/open/appauth';
+    const getJsApiPermissionUrl = !isWeb
+      ? 'https://ecom-openapi.ecombdapi.com/open/appauth'
+      : 'https://openapi-fxg.jinritemai.com/open/appauth';
 
     const res = await _request({
       url: getJsApiPermissionUrl,
@@ -104,7 +120,8 @@ export const genMaxEventSdk = ({ appid, request: _request, setStorage: _setStora
       header: {
         'Content-Type': 'application/json',
       },
-    })
+      credentials: 'include',
+    });
     return res.data as any;
   }
 
@@ -135,7 +152,7 @@ export const genMaxEventSdk = ({ appid, request: _request, setStorage: _setStora
             }
           }, 200);
         }
-        
+
         //获得权限了，延迟调用有权限的并且已经注册的api
         for (let jsApi of permission) {
           maxEvent.delayQueue.run(`${jsApi}_${appid}_Permission_Register`, (item: any) => {
@@ -155,12 +172,12 @@ export const genMaxEventSdk = ({ appid, request: _request, setStorage: _setStora
             maxEvent.emitByPlugin(jsApi, data, options);
           });
         }
-      } catch(err) {
+      } catch (err) {
         console.log(err);
       }
     }
   }
-  
+
   run();
   return maxEventSDK;
 };
