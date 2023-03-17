@@ -259,7 +259,3 @@ export const max = {
     });
   },
 };
-
-// Object.entries(oldMax).forEach(([name, value]) => {
-//   max[name] = value;
-// });
