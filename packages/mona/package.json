@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona",
-  "version": "0.3.6-alpha.17",
+  "version": "0.3.6-alpha.19",
   "description": "Merchant app's developing and building tools",
   "main": "./dist/index",
   "scripts": {
