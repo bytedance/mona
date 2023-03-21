@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-manager",
-  "version": "0.3.6",
+  "version": "0.3.7-alpha.1",
   "displayName": "mona-manager",
   "description": "mona cli plugin system",
   "main": "./dist/index.js",
@@ -17,8 +17,8 @@
   "author": "xiaokun.kenny@bytedance.com",
   "license": "MIT",
   "dependencies": {
-    "@bytedance/mona": "0.3.6",
-    "@bytedance/mona-shared": "0.3.6",
+    "@bytedance/mona": "0.3.7-alpha.1",
+    "@bytedance/mona-shared": "0.3.7-alpha.1",
     "chalk": "^4.1.2",
     "command-line-usage": "^6.1.1",
     "lodash.merge": "^4.6.2",
