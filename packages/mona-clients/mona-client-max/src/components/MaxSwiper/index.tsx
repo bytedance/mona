@@ -23,22 +23,6 @@ type IProps = Partial<{
 }>
 
 export default class MaxSwiper extends Component<IProps> {
-  onChange = (e: any) => {
-    this.props.bindchange && this.props.bindchange(e);
-  };
-
-  onTransition = (e: any) => {
-    this.props.bindtransition && this.props.bindtransition(e);
-  };
-
-  onScrollStart = (e: any) => {
-    this.props.bindscrollstart && this.props.bindscrollstart(e);
-  };
-
-  onScrollEnd = (e: any) => {
-    this.props.bindscrollend && this.props.bindscrollend(e);
-  };
-
   render() {
     const {
       children,
@@ -58,7 +42,33 @@ export default class MaxSwiper extends Component<IProps> {
       pageMargin,
       disableTouch
     } = this.props;
-    return (
+
+    const useDynamic = lynx.__globalProps.queryItems.feature_mix_use_dynamic === '1';
+
+    return useDynamic ? <component
+      customClass={customClass}
+      customStyle={customStyle}
+      indicatorDots={indicatorDots}
+      indicatorColor={indicatorColor}
+      indicatorActiveColor={indicatorActiveColor}
+      autoplay={autoplay}
+      current={current}
+      interval={interval}
+      duration={duration}
+      circular={circular}
+      vertical={vertical}
+      previousMargin={previousMargin}
+      nextMargin={nextMargin}
+      pageMargin={pageMargin}
+      disableTouch={disableTouch}
+      bindchange={this.props.bindchange}
+      bindtransition={this.props.bindtransition}
+      bindscrollstart={this.props.bindscrollstart}
+      bindscrollend={this.props.bindscrollend}
+      is="https://lf-webcast-sourcecdn-tos.bytegecko.com/obj/byte-gurd-source/10181/gecko/resource/ecommerce_shop_isv_component/swiper/template.js"
+    >
+      {children}
+    </component> : (
       <swiper
         id="swiper"
         class={customClass}
@@ -76,10 +86,10 @@ export default class MaxSwiper extends Component<IProps> {
         next-margin={nextMargin}
         page-margin={pageMargin}
         touchable={!disableTouch}
-        bindchange={this.onChange}
-        bindtransition={this.onTransition}
-        bindscrollstart={this.onScrollStart}
-        bindscrollend={this.onScrollEnd}
+        bindchange={this.props.bindchange}
+        bindtransition={this.props.bindtransition}
+        bindscrollstart={this.props.bindscrollstart}
+        bindscrollend={this.props.bindscrollend}
       >
         {children}
       </swiper>
