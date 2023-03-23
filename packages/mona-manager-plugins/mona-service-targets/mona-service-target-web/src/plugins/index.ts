@@ -8,6 +8,7 @@ import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import { CopyPublicPlugin } from '@bytedance/mona-manager-plugins-shared';
 
 import ConfigHMRPlugin from './webpack/ConfigHMRPlugin';
+import LightApiPlugin from './webpack/LightApiPlugin';
 
 export const MonaPlugins = {
   DefinePlugin,
@@ -19,4 +20,5 @@ export const MonaPlugins = {
   ReactRefreshWebpackPlugin,
   CopyPublicPlugin,
   ConfigHMRPlugin,
+  LightApiPlugin,
 };
