@@ -11,9 +11,7 @@ class LightApiPlugin {
     compiler.hooks.compile.tap('LightApiPlugin', async () => {
       try {
         const res = await getLightApiList(this.appid);
-        let {
-          data: { testEnvInterfaceList },
-        } = res;
+        let { testEnvInterfaceList } = res;
         if (testEnvInterfaceList.length > 0) {
           const code = generateTsCode(testEnvInterfaceList);
           // 需要生成的lightApi声明文件

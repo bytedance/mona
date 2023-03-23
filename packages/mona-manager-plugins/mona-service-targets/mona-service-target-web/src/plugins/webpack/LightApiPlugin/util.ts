@@ -36,6 +36,8 @@ export function generateRequestFromOpen(args: any, cookie: string) {
       headers: {
         cookie,
         'Content-Type': 'application/json',
+        'x-use-ppe': 1,
+        'x-tt-env': 'ppe_10186327',
         ...options?.headers,
         ...header,
       },
@@ -103,7 +105,7 @@ export interface InterfaceListForLight {
   };
 }
 
-export const getLightApiList: (appId: string) => Promise<InterfaceListForLight> = async appId => {
+export const getLightApiList: (appId: string) => Promise<InterfaceListForLight['data']> = async appId => {
   const user = readUser();
   if (!user) {
     throw new Error('请使用mona login登录以获取微应用后端代码提示～');
