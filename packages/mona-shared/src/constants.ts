@@ -89,3 +89,5 @@ export const CUSTOM_REF = '__ref';
 export const CUSTOM_COMPONENT_PROTOCOL = 'native://';
 
 export const GLOBAL_LIFECYCLE_STORE = '_mona_app_lifecycle';
+export const DEFAULT_PORT = '9999';
+export const DEFAULT_HOST = 'localhost';

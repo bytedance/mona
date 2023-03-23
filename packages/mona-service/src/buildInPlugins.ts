@@ -5,17 +5,10 @@ export const convertPlugins = (plugins: string[]) => flatten(plugins.filter(r =>
 const buildInPlugins = convertPlugins([
   process.env.AUTOMATED_TEST === '1' ? '@ecom/mona-dynamic-detection' : '',
   './utils/checkVersion',
-  './commands/build',
-  './commands/start',
-  './commands/compress',
-  './commands/publish',
-  './commands/preview',
-  './target/web/index',
-  './target/mini/index',
-  './target/plugin/index',
-  './target/light/index',
-  './target/h5/index',
-  './target/max/index',
+  '@bytedance/mona-service-commands',
+  '@bytedance/mona-service-target-web',
+  '@bytedance/mona-service-target-mini',
+  '@bytedance/mona-service-target-lynx',
 ]);
 
 export default buildInPlugins;

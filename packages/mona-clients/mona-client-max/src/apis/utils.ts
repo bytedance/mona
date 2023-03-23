@@ -162,15 +162,35 @@ export const maxGetSystemInfo: OriginApis['getSystemInfo'] = function (options) 
 // eg: openPage?action_type=1&action_value=2
 function parseUrl(url: string) {
   if (typeof url === 'string') {
-    const [type, query = ''] = url.split('?');
+    let type: string = '';
     const params: Record<string, string> = {};
-    query.split('&').forEach(item => {
-      const [key, value] = item.split('=');
-      if (key) {
-        params[key] = value;
+    // process openpage url with query specially
+    if (url.indexOf('openPage') !== -1 && url.indexOf('action_type') !== -1 && url.indexOf('action_value') !== -1) {
+      type = 'openPage';
+      if (url.indexOf('&action_value=') !== -1) {
+        params['action_type'] = url.substring(
+          url.indexOf('action_type=') + 'action_type='.length,
+          url.indexOf('&action_value='),
+        );
+        params['action_value'] = url.substring(url.indexOf('&action_value=') + '&action_value='.length);
+      } else if (url.indexOf('&action_type=') !== -1) {
+        params['action_value'] = url.substring(
+          url.indexOf('action_value=') + 'action_value='.length,
+          url.indexOf('&action_type='),
+        );
+        params['action_type'] = url.substring(url.indexOf('&action_type=') + '&action_type='.length);
       }
-    });
-    return { type, params };
+      return { type, params };
+    } else {
+      const [type, query = ''] = url.split('?');
+      query.split('&').forEach(item => {
+        const [key, value] = item.split('=');
+        if (key) {
+          params[key] = value;
+        }
+      });
+      return { type, params };
+    }
   } else {
     return null;
   }

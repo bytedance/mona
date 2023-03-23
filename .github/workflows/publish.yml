@@ -94,9 +94,9 @@ jobs:
 
       - name: Change Speedy Version
         run: |
-          lerna add @bytedance/mona-speedy@latest packages/mona-service --exact
-          lerna add @bytedance/mona-speedy-components@latest packages/mona-service --exact
-          lerna add @bytedance/mona-speedy-runtime@latest packages/mona-service --exact
+          lerna add @bytedance/mona-speedy@latest packages/mona-manager-plugins/mona-service-targets/mona-service-target-lynx --exact
+          lerna add @bytedance/mona-speedy-components@latest packages/mona-manager-plugins/mona-service-targets/mona-service-target-lynx --exact
+          lerna add @bytedance/mona-speedy-runtime@latest packages/mona-manager-plugins/mona-service-targets/mona-service-target-lynx --exact
           lerna add @bytedance/mona-speedy-components@latest packages/mona-clients/mona-client-max --exact
 
       - name: Change Version

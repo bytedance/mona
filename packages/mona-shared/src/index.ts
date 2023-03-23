@@ -11,3 +11,4 @@ export * from './constants';
 export * from './promisify';
 export * from './_transformWebStyle';
 export * from './_transformWebClass';
+export * from './user';
