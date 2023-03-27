@@ -12,30 +12,13 @@ type IProps = Partial<{
   prefetchHeight: ReactLynx.ImageProps['prefetch-height'];
   skipRedirection: ReactLynx.ImageProps['skip-redirection'];
   binderror: ReactLynx.ImageProps['binderror'];
+  bindload: ReactLynx.ImageProps['bindload'];
+  bindtap: ReactLynx.ImageProps['bindtap'];
   customClass?: string;
   customStyle?: ReactLynx.CSSProperties | string;
 }>;
 
-type IState = {
-  hasError: boolean;
-  loaded: boolean;
-};
-
-export default class MaxImage extends Component<IProps, IState> {
-  state = {
-    hasError: false,
-    loaded: false
-  };
-
-  onImageError = (e: any) => {
-    this.setState({ hasError: true, loaded: true });
-    this.props.binderror && this.props.binderror(e);
-  };
-
-  onImageLoad = () => {
-    this.setState({ loaded: true });
-  };
-
+export default class MaxImage extends Component<IProps> {
   render() {
     const {
       src,
@@ -49,32 +32,49 @@ export default class MaxImage extends Component<IProps, IState> {
       prefetchHeight,
       customStyle,
       customClass,
-      bindtap
+      bindtap,
+      binderror,
+      bindload,
     } = this.props;
 
-    const { hasError } = this.state;
+    const useDynamic = lynx.__globalProps.queryItems.feature_mix_use_dynamic === '1';
 
-    return src && !hasError ? (
-      <image
-        style={customStyle}
-        class={customClass}
-        src={src}
-        mode={mode}
-        placeholder={placeholder}
-        blur-radius={blurRadius}
-        image-config={imageConfig}
-        cap-insets={capInsets}
-        loop-count={loopCount}
-        prefetch-width={prefetchWidth}
-        prefetch-height={prefetchHeight}
-        skip-redirection
-        downsampling
-        implicit-animation
-        clip-radius
-        binderror={this.onImageError}
-        bindload={this.onImageLoad}
-        bindtap={bindtap}
-      />
+    return src ? (
+      useDynamic ?
+        <component
+          customStyle={customStyle}
+          customClass={customClass}
+          src={src}
+          mode={mode}
+          placeholder={placeholder}
+          blurRadius={blurRadius}
+          imageConfig={imageConfig}
+          capInsets={capInsets}
+          loopCount={loopCount}
+          prefetchWidth={prefetchWidth}
+          prefetchHeight={prefetchHeight}
+          binderror={binderror}
+          bindtap={bindtap}
+          bindload={bindload}
+          is="https://lf-webcast-sourcecdn-tos.bytegecko.com/obj/byte-gurd-source/10181/gecko/resource/ecommerce_shop_isv_component/image/template.js" />
+        : <image
+          style={customStyle}
+          class={customClass}
+          src={src}
+          mode={mode}
+          placeholder={placeholder}
+          blur-radius={blurRadius}
+          image-config={imageConfig}
+          cap-insets={capInsets}
+          loop-count={loopCount}
+          prefetch-width={prefetchWidth}
+          prefetch-height={prefetchHeight}
+          skip-redirection
+          downsampling
+          implicit-animation
+          clip-radius
+          bindtap={bindtap}
+        />
     ) : null;
   }
 }
