@@ -18,10 +18,10 @@
   "author": "zhangxiaowei.chris@bytedance.com",
   "license": "MIT",
   "dependencies": {
-    "@babel/core": "^7.21.3",
-    "@babel/preset-env": "^7.20.2",
-    "@babel/preset-typescript": "^7.21.0",
-    "@babel/register": "^7.16.5"
+    "@babel/register": "^7.16.5",
+    "@babel/core": "7.19.0",
+    "@babel/preset-env": "^7.16.5",
+    "@babel/preset-typescript": "^7.16.5"
   },
   "devDependencies": {
     "@types/node": "^16.4.5",
