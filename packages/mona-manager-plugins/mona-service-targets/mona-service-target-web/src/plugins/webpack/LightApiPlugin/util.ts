@@ -36,8 +36,6 @@ export function generateRequestFromOpen(args: any, cookie: string) {
       headers: {
         cookie,
         'Content-Type': 'application/json',
-        'x-use-ppe': 1,
-        'x-tt-env': 'ppe_10186327',
         ...options?.headers,
         ...header,
       },

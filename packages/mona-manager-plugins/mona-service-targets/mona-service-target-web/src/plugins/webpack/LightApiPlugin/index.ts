@@ -24,8 +24,8 @@ class LightApiPlugin {
           writeApiTsFile(apiTsFilePath);
           console.log('api has been pulled');
         }
-      } catch (err) {
-        console.error(err);
+      } catch (err: any) {
+        console.warn(err?.message);
       }
     });
   }
@@ -43,7 +43,7 @@ export const generateTsCode = (interfaceList: InterfaceDetailForLight[]) => {
     const processedResParams = paramToTs(responseInfo);
     code += `\n${interfaceName}:${processedResParams};`;
   });
-  code += `}\nexport declare type LightRequest = <T extends keyof RequestsArgs>(input: {\nfn: T;\ndata?: RequestsArgs[T];\n}) => Promise<ResPonsesArgs[T]>;`;
+  code += `}\nexport declare type LightRequest = <T extends keyof RequestArgs>(input: {\nfn: T;\ndata?: RequestArgs[T];\n}) => Promise<ResponseArgs[T]>;`;
   return code;
 };
 
@@ -58,6 +58,7 @@ const typeMap: { [key: number]: string } = {
 
 const paramToTs = (params: (InterfaceMetaReqInfo | InterfaceMetaResInfo)[], isFirstLevel: boolean = true) => {
   let res = '';
+  params = params || [];
   for (let param of params) {
     const { type, subType, children, mapKeyType, mapValueType, mapValueSubType } = param;
     let paramName = '';
@@ -110,10 +111,16 @@ const paramToTs = (params: (InterfaceMetaReqInfo | InterfaceMetaResInfo)[], isFi
         } else if (mapValueSubType === TypeCode.Object) {
           // mapvalue数组值类型为对象
           mapValueRes = `{${paramToTs(children, false)}}[]`;
+        } else {
+          // mapvalue数组值类型是其他类型或者undefined
+          mapValueRes = `any[]`;
         }
       } else if (mapValueType === TypeCode.Object) {
         //mapvalue是object
         mapValueRes = `{${paramToTs(children, false)}}`;
+      } else {
+        // 如果mapvalue是其他类型或者undefined，统一按any处理
+        mapValueRes = 'any';
       }
       if (isFirstLevel) {
         res += `Map<${typeMap[mapKeyType]},${mapValueRes}>`;
@@ -127,9 +134,9 @@ const paramToTs = (params: (InterfaceMetaReqInfo | InterfaceMetaResInfo)[], isFi
           ${paramToTs(children, false)}
         }`;
       } else {
-        res += `${paramName}${mustNeed ? '' : '?'}:${paramToTs(children, false)};`;
+        res += `${paramName}${mustNeed ? '' : '?'}:{${paramToTs(children, false)}};`;
       }
-    } else {
+    } else if (type === TypeCode.Array) {
       //如果类型是数组
       let arrTypeRes = '';
       if (
@@ -145,11 +152,21 @@ const paramToTs = (params: (InterfaceMetaReqInfo | InterfaceMetaResInfo)[], isFi
       } else if (subType === TypeCode.Object) {
         // 数组值类型为对象
         arrTypeRes = `{${paramToTs(children, false)}}[]`;
+      } else {
+        // 如果subType是其他类型或者undefined，统一按any处理
+        arrTypeRes = 'any[]';
       }
       if (isFirstLevel) {
         res += arrTypeRes;
       } else {
         res += `${paramName}${mustNeed ? '' : '?'}:${arrTypeRes};`;
+      }
+    } else {
+      //如果是其他未知类型，如BYTE等，此时type是undefined
+      if (isFirstLevel) {
+        res += 'any';
+      } else {
+        res += `${paramName}${mustNeed ? '' : '?'}:any;`;
       }
     }
   }
@@ -170,8 +187,9 @@ const writeApiTsFile = (lightApiTsFilePath: string) => {
     }
     //看是否有export declare const request: BaseApis['request'];如果有替换成export declare const request: LightRequest
     data = data.replace("BaseApis['request']", 'LightRequest');
-
-    data = `import { LightRequest } from './lightApi';\n${data}`;
+    if (data.indexOf("import { LightRequest } from './lightApi';") === -1) {
+      data = `import { LightRequest } from './lightApi';\n${data}`;
+    }
     //最后将data写入到events.d.ts中
     writeFile(lightApiTsFilePath, data, 'utf8', err => {
       if (err) {
