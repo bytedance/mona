@@ -14,20 +14,19 @@ const plugin: IPlugin = ctx => {
 
   ctx.registerTarget(PLUGIN, tctx => {
     tctx.chainWebpack(webpackConfig => {
-      const { isDev } = configHelper;
       const { cwd, projectConfig } = configHelper;
 
       webpackConfig
-        .devtool(isDev ? projectConfig.abilities?.sourceMap! : false)
-        .optimization.runtimeChunk(Boolean(isDev))
+        .devtool(configHelper.isDev ? projectConfig.abilities?.sourceMap! : false)
+        .optimization.runtimeChunk(Boolean(configHelper.isDev))
         .end()
-        .mode(isDev ? 'development' : 'production')
+        .mode(configHelper.isDev ? 'development' : 'production')
         .entry('app.entry')
         .add(path.join(configHelper.entryPath, '..', 'app.entry.js'));
       webpackConfig.output
         .pathinfo(false)
         .path(path.join(cwd, projectConfig.output))
-        .filename(isDev ? '[name].js' : '[name].[contenthash:7].js')
+        .filename(configHelper.isDev ? '[name].js' : '[name].[contenthash:7].js')
         .publicPath('/')
         .libraryTarget('umd')
         .globalObject('window');

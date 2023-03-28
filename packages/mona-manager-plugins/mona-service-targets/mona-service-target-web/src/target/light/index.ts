@@ -14,11 +14,10 @@ const light: IPlugin = ctx => {
 
   ctx.registerTarget(LIGHT, tctx => {
     tctx.chainWebpack(webpackConfig => {
-      const { isDev } = configHelper;
       const { cwd, projectConfig } = configHelper;
       webpackConfig
-        .devtool(isDev ? projectConfig.abilities?.sourceMap! : false)
-        .mode(isDev ? 'development' : 'production')
+        .devtool(configHelper.isDev ? projectConfig.abilities?.sourceMap! : false)
+        .mode(configHelper.isDev ? 'development' : 'production')
         .entry('app.entry')
         .add(path.join(configHelper.entryPath, '..', 'app.entry.js'));
       webpackConfig.output

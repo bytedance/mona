@@ -14,13 +14,12 @@ const mobile: IPlugin = ctx => {
 
   ctx.registerTarget(H5, tctx => {
     tctx.chainWebpack(webpackConfig => {
-      const { isDev } = configHelper;
       const { cwd, projectConfig } = configHelper;
       webpackConfig
-        .devtool(isDev ? projectConfig.abilities?.sourceMap! : false)
-        .optimization.runtimeChunk(Boolean(isDev))
+        .devtool(configHelper.isDev ? projectConfig.abilities?.sourceMap! : false)
+        .optimization.runtimeChunk(Boolean(configHelper.isDev))
         .end()
-        .mode(isDev ? 'development' : 'production')
+        .mode(configHelper.isDev ? 'development' : 'production')
         .entry('app.entry')
         .add(path.join(configHelper.entryPath, '../app.entry.js'));
       webpackConfig.output
