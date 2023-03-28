@@ -17,7 +17,7 @@ const mini: IPlugin = ctx => {
   const configHelper = ctx.configHelper;
 
   ctx.registerTarget(MINI, tctx => {
-    const { cwd, projectConfig, isDev } = configHelper;
+    const { cwd, projectConfig } = configHelper;
 
     tctx.overrideStartCommand(() => {
       console.log('from npm ');
@@ -64,9 +64,9 @@ const mini: IPlugin = ctx => {
     tctx.chainWebpack(webpackConfig => {
       const miniEntryPlugin = new MonaPlugins.MiniEntryPlugin(configHelper);
       webpackConfig
-        .devtool(isDev ? projectConfig.abilities?.sourceMap! : false)
+        .devtool(configHelper.isDev ? projectConfig.abilities?.sourceMap! : false)
         .merge({ entry: miniEntryPlugin.entryModule.entries })
-        .mode(isDev ? 'development' : 'production')
+        .mode(configHelper.isDev ? 'development' : 'production')
         .output.path(path.join(cwd, projectConfig.output))
         .publicPath('/')
         .globalObject('tt');
