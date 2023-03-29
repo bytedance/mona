@@ -38,7 +38,6 @@ const autoTest: IPlugin = ctx => {
 
       const { ReplayCli } = await importRemoteModule<Module>(
         'https://lf3-static.bytednsdoc.com/obj/eden-cn/8eh7vhauldps/cli/precheck.js',
-        // 'http://localhost:3333/precheck.js',
       );
 
       const { generateWorkingDirectory, startServer, verifyWorkingDirectory } = ReplayCli;

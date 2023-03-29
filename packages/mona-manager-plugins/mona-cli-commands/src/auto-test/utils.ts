@@ -11,7 +11,6 @@ export async function importRemoteModule<M>(location: string): Promise<M> {
 
     return res;
   } catch (error) {
-    console.log('!!~ ~ error', error);
     return {} as never;
   }
 }
