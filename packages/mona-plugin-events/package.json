@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-plugin-events",
-  "version": "0.3.7-alpha.5",
+  "version": "0.3.7-beta.1",
   "description": "Merchant application plugin side communication package",
   "author": "fengbo.lucky@bytedance.com",
   "scripts": {
