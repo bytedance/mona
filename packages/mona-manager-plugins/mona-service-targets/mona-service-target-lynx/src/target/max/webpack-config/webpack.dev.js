@@ -49,6 +49,7 @@ const devConfig = {
     new HtmlWebpackPlugin({
       templateContent: `
           <!DOCTYPE html>
+            <html lang="en">
               <head>
                   <title>mona-Web侧展示</title>
                   <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
