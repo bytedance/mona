@@ -19,6 +19,7 @@ const { default: MaxMainAutoTypeWebpackPlugin } = require('../plugins/MaxMainAut
 
 const devConfig = {
   mode: 'development',
+  devtool: 'cheap-source-map',
   devServer: {
     static: {
       directory: path.join(process.cwd(), './src'),
@@ -86,7 +87,7 @@ const devConfig = {
                   ${commonCss}
                   </style>
               </head>
-              <body></body>
+              <body>
                   <div id="root"></div>
                   <script>
                       function flexible() {
