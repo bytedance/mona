@@ -79,7 +79,6 @@ function genNativeEjsData() {
 }
 
 export default async function createTtml(compilation: Compilation, configHelper: ConfigHelper) {
-  const isDev = configHelper.isDev;
   const { appConfig } = configHelper;
   const pages = appConfig.pages ?? [];
   let miniComponents = monaStore.ejsParamsMap;
@@ -100,10 +99,10 @@ export default async function createTtml(compilation: Compilation, configHelper:
         PTextName: ComponentType.ptext,
       },
       {
-        rmWhitespace: !isDev,
+        rmWhitespace: !configHelper.isDev,
       },
     );
-    if (!isDev) {
+    if (!configHelper.isDev) {
       content = content.replace(/^\s*$(?:\r\n?|\n)/gm, '').replace(/\r\n|\n/g, ' ');
     }
     const source = new RawSource(content);

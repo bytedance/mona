@@ -12,7 +12,6 @@ const build: IPlugin = ctx => {
     },
     (args, _, targetContext) => {
       process.env.NODE_ENV = 'production';
-      console.log('haha');
       if (targetContext?.buildFn) {
         targetContext?.buildFn(args);
       }

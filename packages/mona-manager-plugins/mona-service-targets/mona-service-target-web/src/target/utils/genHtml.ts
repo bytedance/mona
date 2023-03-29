@@ -30,9 +30,10 @@ export const genPluginHtml = (buildId: string, injectScript: string = '') => {
     <head>
       <meta charset="utf-8">
       <title>Mona Plugin</title>
-      <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover"></head>
+      <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover">
       ${injectScript}
       <script></script>
+    </head>
     <body>
       <div id="root" style="height: 100%"></div>
     </body>

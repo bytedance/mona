@@ -22,6 +22,7 @@ export function chainPlugins(
     ReactRefreshWebpackPlugin,
     MiniCssExtractPlugin,
     ContextReplacementPlugin,
+    LightApiPlugin,
   } = MonaPlugins;
 
   webpackConfig.when(
@@ -74,4 +75,7 @@ export function chainPlugins(
   ]);
 
   webpackConfig.plugin('ContextReplacementPlugin').use(ContextReplacementPlugin, [/moment[/\\]locale$/, /zh-ch/]);
+  if (TARGET === Platform.LIGHT) {
+    webpackConfig.plugin('LightApiPlugin').use(LightApiPlugin, [projectConfig.appId as string]);
+  }
 }
