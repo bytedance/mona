@@ -1,2 +1,2 @@
 export { default as CanvasContext } from './CanvasContext';
-export { createCanvasContext, canvasToTempFilePath } from './v1';
+export { createCanvasContext, canvasToTempFilePath, createOffscreenCanvas } from './v1';
