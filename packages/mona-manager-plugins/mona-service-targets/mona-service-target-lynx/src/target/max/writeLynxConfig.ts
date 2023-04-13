@@ -56,6 +56,9 @@ export const writeLynxConfig = ({
                 customCSSInheritanceList: ['direction'],
                 enableRadonCompatible: false,
               },
+              compilerNGOptions:{
+                disableRuntimeCheckUnintentionalSetState:true,
+              }
             },
             {
               name: "component",
@@ -71,6 +74,9 @@ export const writeLynxConfig = ({
               ${notBuildWeb ? '' : `plugins: [WebBootstrapPlugin("${webEntry}", "${appid}")],`}
               define: {
                 __MONA_APPID: JSON.stringify("${appid}")
+              },
+              compilerNGOptions:{
+                disableRuntimeCheckUnintentionalSetState:true,
               }
             },
           ];

@@ -20,7 +20,7 @@ type IProps = Partial<{
   bindscrollend: (e: any) => void;
   customClass?: string;
   customStyle?: ReactMax.CSSProperties | string;
-}>
+}>;
 
 export default class MaxSwiper extends Component<IProps> {
   render() {
@@ -40,35 +40,37 @@ export default class MaxSwiper extends Component<IProps> {
       previousMargin,
       nextMargin,
       pageMargin,
-      disableTouch
+      disableTouch,
     } = this.props;
 
-    const useDynamic = lynx.__globalProps.queryItems.feature_mix_use_dynamic === '1';
+    const useDynamic = lynx.__globalProps?.queryItems?.feature_mix_use_dynamic === '1';
 
-    return useDynamic ? <component
-      customClass={customClass}
-      customStyle={customStyle}
-      indicatorDots={indicatorDots}
-      indicatorColor={indicatorColor}
-      indicatorActiveColor={indicatorActiveColor}
-      autoplay={autoplay}
-      current={current}
-      interval={interval}
-      duration={duration}
-      circular={circular}
-      vertical={vertical}
-      previousMargin={previousMargin}
-      nextMargin={nextMargin}
-      pageMargin={pageMargin}
-      disableTouch={disableTouch}
-      bindchange={this.props.bindchange}
-      bindtransition={this.props.bindtransition}
-      bindscrollstart={this.props.bindscrollstart}
-      bindscrollend={this.props.bindscrollend}
-      is="https://lf-webcast-sourcecdn-tos.bytegecko.com/obj/byte-gurd-source/10181/gecko/resource/ecommerce_shop_isv_component/swiper/template.js"
-    >
-      {children}
-    </component> : (
+    return useDynamic ? (
+      <component
+        customClass={customClass}
+        customStyle={customStyle}
+        indicatorDots={indicatorDots}
+        indicatorColor={indicatorColor}
+        indicatorActiveColor={indicatorActiveColor}
+        autoplay={autoplay}
+        current={current}
+        interval={interval}
+        duration={duration}
+        circular={circular}
+        vertical={vertical}
+        previousMargin={previousMargin}
+        nextMargin={nextMargin}
+        pageMargin={pageMargin}
+        disableTouch={disableTouch}
+        bindchange={this.props.bindchange}
+        bindtransition={this.props.bindtransition}
+        bindscrollstart={this.props.bindscrollstart}
+        bindscrollend={this.props.bindscrollend}
+        is="https://lf-webcast-sourcecdn-tos.bytegecko.com/obj/byte-gurd-source/10181/gecko/resource/ecommerce_shop_isv_component/swiper/template.js"
+      >
+        {children}
+      </component>
+    ) : (
       <swiper
         id="swiper"
         class={customClass}

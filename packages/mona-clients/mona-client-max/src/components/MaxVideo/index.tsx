@@ -48,10 +48,10 @@ export default class ShopVideo extends Component<IProps> {
       __control,
     } = this.props;
 
-    const useDynamic = lynx.__globalProps.queryItems.feature_mix_use_dynamic === '1';
+    const useDynamic = lynx.__globalProps?.queryItems?.feature_mix_use_dynamic === '1';
 
-    return useDynamic
-      ? <component
+    return useDynamic ? (
+      <component
         customClass={customClass}
         customStyle={customStyle}
         src={src}
@@ -80,36 +80,36 @@ export default class ShopVideo extends Component<IProps> {
         bindtap={this.props.bindtap}
         is="https://lf-webcast-sourcecdn-tos.bytegecko.com/obj/byte-gurd-source/10181/gecko/resource/ecommerce_shop_isv_component/video/template.js"
       />
-      : (
-        <x-video-pro
-          id="video"
-          class={customClass}
-          style={customStyle}
-          src={src}
-          autoplay={autoplay}
-          inittime={inittime}
-          loop={loop}
-          muted={muted}
-          rate={rate}
-          autolifecycle={autolifecycle}
-          poster={poster}
-          objectfit={objectfit}
-          cache={cache}
-          preload-key={preloadKey}
-          __control={__control}
-          bindplay={this.props.bindplay}
-          bindpause={this.props.bindpause}
-          bindended={this.props.bindended}
-          bindtimeupdate={this.props.bindtimeupdate}
-          bindfullscreenchange={this.props.bindfullscreenchange}
-          bindfirstframe={this.props.bindfirstframe}
-          bindvideoinfos={this.props.bindvideoinfos}
-          binderror={this.props.binderror}
-          bindbufferingchange={this.props.bindbufferingchange}
-          bindready={this.props.bindready}
-          bindseek={this.props.bindseek}
-          bindtap={this.props.bindtap}
-        />
-      );
+    ) : (
+      <x-video-pro
+        id="video"
+        class={customClass}
+        style={customStyle}
+        src={src}
+        autoplay={autoplay}
+        inittime={inittime}
+        loop={loop}
+        muted={muted}
+        rate={rate}
+        autolifecycle={autolifecycle}
+        poster={poster}
+        objectfit={objectfit}
+        cache={cache}
+        preload-key={preloadKey}
+        __control={__control}
+        bindplay={this.props.bindplay}
+        bindpause={this.props.bindpause}
+        bindended={this.props.bindended}
+        bindtimeupdate={this.props.bindtimeupdate}
+        bindfullscreenchange={this.props.bindfullscreenchange}
+        bindfirstframe={this.props.bindfirstframe}
+        bindvideoinfos={this.props.bindvideoinfos}
+        binderror={this.props.binderror}
+        bindbufferingchange={this.props.bindbufferingchange}
+        bindready={this.props.bindready}
+        bindseek={this.props.bindseek}
+        bindtap={this.props.bindtap}
+      />
+    );
   }
 }

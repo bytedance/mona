@@ -10,6 +10,7 @@ import {
   maxGetSystemInfo,
   maxGetSystemInfoSync,
 } from './utils';
+import CanvasContext from './CanvasContext';
 
 const noImplementFactory = (api: string) => (): any => {
   console.error(`not implemented "${api}" in max`);
@@ -175,7 +176,7 @@ export const vibrateShort: BaseApis['vibrateShort'] = promisify(noImplementFacto
 export const vibrateLong: BaseApis['vibrateLong'] = promisify(noImplementFactory('vibrateLong'));
 export const onMemoryWarning: BaseApis['onMemoryWarning'] = noImplementFactory('onMemoryWarning');
 export const createCanvasContext: BaseApis['createCanvasContext'] = canvasId => {
-  const context = lynx.createCanvas(canvasId).getContext('2d');
+  const context = new CanvasContext(lynx.createCanvas(canvasId));
   // Compatible with miniapp' usage
   context.draw = () => {};
   return context;

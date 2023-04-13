@@ -37,10 +37,10 @@ export default class MaxImage extends Component<IProps> {
       bindload,
     } = this.props;
 
-    const useDynamic = lynx.__globalProps.queryItems.feature_mix_use_dynamic === '1';
+    const useDynamic = lynx.__globalProps?.queryItems?.feature_mix_use_dynamic === '1';
 
     return src ? (
-      useDynamic ?
+      useDynamic ? (
         <component
           customStyle={customStyle}
           customClass={customClass}
@@ -56,8 +56,10 @@ export default class MaxImage extends Component<IProps> {
           binderror={binderror}
           bindtap={bindtap}
           bindload={bindload}
-          is="https://lf-webcast-sourcecdn-tos.bytegecko.com/obj/byte-gurd-source/10181/gecko/resource/ecommerce_shop_isv_component/image/template.js" />
-        : <image
+          is="https://lf-webcast-sourcecdn-tos.bytegecko.com/obj/byte-gurd-source/10181/gecko/resource/ecommerce_shop_isv_component/image/template.js"
+        />
+      ) : (
+        <image
           style={customStyle}
           class={customClass}
           src={src}
@@ -75,6 +77,7 @@ export default class MaxImage extends Component<IProps> {
           clip-radius
           bindtap={bindtap}
         />
+      )
     ) : null;
   }
 }
