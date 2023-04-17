@@ -24,6 +24,7 @@ type IProps = Partial<{
   binderror: ReactMax.XVideoProps['binderror'];
   bindbufferingchange: ReactMax.XVideoProps['bindbufferingchange'];
   bindready: (e: any) => void;
+  bindrelease: (e: any) => void;
   bindseek: ReactMax.XVideoProps['bindseek'];
   bindtap: ReactMax.XVideoProps['bindtap'];
   customClass?: string;
@@ -78,6 +79,7 @@ export default class ShopVideo extends Component<IProps> {
         bindready={this.props.bindready}
         bindseek={this.props.bindseek}
         bindtap={this.props.bindtap}
+        bindrelease={this.props.bindrelease}
         is="https://lf-webcast-sourcecdn-tos.bytegecko.com/obj/byte-gurd-source/10181/gecko/resource/ecommerce_shop_isv_component/video/template.js"
       />
     ) : (
@@ -109,6 +111,7 @@ export default class ShopVideo extends Component<IProps> {
         bindready={this.props.bindready}
         bindseek={this.props.bindseek}
         bindtap={this.props.bindtap}
+        bindrelease={this.props.bindrelease}
       />
     );
   }
