@@ -41,7 +41,6 @@ import {
   webNavigateToApp,
 } from './util';
 import EventEmitter from '../EventEmitter';
-import { getUploadUrl } from './upload';
 
 const eventEmitter = new EventEmitter();
 
@@ -328,5 +327,3 @@ export const exitLightApp: BaseApis['exitLightApp'] = window.__MONA_LIGHT_APP_EX
 export const lightAppLeftArrowHandle: BaseApis['lightAppLeftArrowHandle'] = window.__MONA_LIGHT_APP_LEFT_ICON_BACK
   ? window.__MONA_LIGHT_APP_LEFT_ICON_BACK
   : noImplementFactory('lightAppLeftArrowHandle');
-
-export const getUploadFileUrl = getUploadUrl;
