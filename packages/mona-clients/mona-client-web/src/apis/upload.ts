@@ -43,7 +43,7 @@ export async function getDownLoadFileUrl(fileKey: string) {
   }
 }
 
-export async function upLoadFile(file: File) {
+export async function uploadFileTemporary(file: File) {
   const domain = window.__MONA_LIGNT_APP_DOMAIN_NAME || 'lgw.jinritemai.com';
   const appId = window.__MONA_LIGHT_APP_LIFE_CYCLE_LANUCH_QUERY?.appId;
   const filePath = file.name;
