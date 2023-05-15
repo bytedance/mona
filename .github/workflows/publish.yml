@@ -61,7 +61,7 @@ jobs:
         run: |
           npm set registry "https://registry.npmjs.org"
           npm set https://registry.npmjs.org/:_authToken $NPM_TOKEN
-          npm whoami
+          # npm whoami
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       # install node
