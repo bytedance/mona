@@ -26,6 +26,23 @@ const pipeResponse = async (response: Response) => {
     return Promise.reject(new Error(BizError?.message));
   }
 };
+
+export async function getDownLoadFileUrl(fileKey: string) {
+  const domain = window.__MONA_LIGNT_APP_DOMAIN_NAME || 'lgw.jinritemai.com';
+  const url = `https://${domain}/light/download/file/url`;
+
+  const appId = window.__MONA_LIGHT_APP_LIFE_CYCLE_LANUCH_QUERY?.appId;
+  if (appId && fileKey) {
+    const headers: Record<string, any> = await getTokenHeaders();
+
+    const data = await fetch(`${url}?appId=${appId}&fileKey=${fileKey}`, {
+      headers,
+      credentials: 'include',
+    }).then(pipeResponse);
+    return data?.url;
+  }
+}
+
 export async function upLoadFile(file: File) {
   const domain = window.__MONA_LIGNT_APP_DOMAIN_NAME || 'lgw.jinritemai.com';
   const appId = window.__MONA_LIGHT_APP_LIFE_CYCLE_LANUCH_QUERY?.appId;
@@ -56,27 +73,13 @@ export async function upLoadFile(file: File) {
         // 'Content-Type': 'image/png',
       };
 
-      return await fetch(url.replace('http://', 'https://'), {
+      const uploadData = await fetch(url.replace('http://', 'https://'), {
         method: 'PUT',
         headers,
         body: buffer,
       }).then(res => res.json());
+      const resultUrl = (await getDownLoadFileUrl(uploadData?.payload?.key)).url;
+      return resultUrl;
     }
-  }
-}
-
-export async function getDownLoadFileUrl(fileKey: string) {
-  const domain = window.__MONA_LIGNT_APP_DOMAIN_NAME || 'lgw.jinritemai.com';
-  const url = `https://${domain}/light/download/file/url`;
-
-  const appId = window.__MONA_LIGHT_APP_LIFE_CYCLE_LANUCH_QUERY?.appId;
-  if (appId && fileKey) {
-    const headers: Record<string, any> = await getTokenHeaders();
-
-    const data = await fetch(`${url}?appId=${appId}&fileKey=${fileKey}`, {
-      headers,
-      credentials: 'include',
-    }).then(pipeResponse);
-    return data?.url;
   }
 }
