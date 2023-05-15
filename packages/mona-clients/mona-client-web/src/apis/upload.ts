@@ -78,7 +78,7 @@ export async function uploadFileTemporary(file: File) {
         headers,
         body: buffer,
       }).then(res => res.json());
-      const resultUrl = (await getDownLoadFileUrl(uploadData?.payload?.key)).url;
+      const resultUrl = await getDownLoadFileUrl(uploadData?.payload?.key);
       return resultUrl;
     }
   }
