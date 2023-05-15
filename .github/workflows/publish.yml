@@ -55,12 +55,6 @@ jobs:
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # install node
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
-        with:
-          registry-url: 'https://registry.npmjs.org'
-          node-version: ${{ matrix.node-version }}
 
       # login npm
       - name: Authenticate with Registry
@@ -70,7 +64,12 @@ jobs:
           npm whoami
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
+      # install node
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          registry-url: 'https://registry.npmjs.org'
+          node-version: ${{ matrix.node-version }}
 
       - name: Install Lerna
         run: yarn global add lerna@4.0.0 -W
