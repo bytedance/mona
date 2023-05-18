@@ -39,6 +39,7 @@ import App from '${entry}';
         ...${schemaProps ? JSON.stringify(schemaProps) : '{}'},
         ...dataSource,
         __mona_module_key: this.props.module ? this.props.module.key : '',
+        __mona_module_index: this.props.module ? this.props.module.index : 0,
       }
 
       return (
