@@ -64,7 +64,6 @@ jobs:
           npm whoami
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
       # install node
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
