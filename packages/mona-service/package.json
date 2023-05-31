@@ -24,9 +24,9 @@
     "@bytedance/mona-manager": "0.3.10",
     "@bytedance/mona-service-commands": "0.3.10",
     "@bytedance/mona-service-target-lynx": "0.3.10",
-    "@bytedance/mona-service-target-mini": "0.3.10",
-    "@bytedance/mona-service-target-web": "0.3.10",
     "dotenv": "^10.0.0",
+    "ora": "^5.4.1",
+    "chalk": "^4.1.2",
     "pkg-updater": "^1.0.4"
   },
   "publishConfig": {

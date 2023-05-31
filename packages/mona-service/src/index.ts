@@ -1,7 +1,8 @@
-import buildInPlugins from './buildInPlugins';
+import getBuildInPlugins from './buildInPlugins';
 import Service from '@bytedance/mona-manager';
 
-function main() {
+async function main() {
+  const buildInPlugins = await getBuildInPlugins();
   const service = new Service(buildInPlugins);
   service.install();
   service.run();
