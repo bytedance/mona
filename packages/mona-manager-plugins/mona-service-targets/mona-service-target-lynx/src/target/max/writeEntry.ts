@@ -35,7 +35,6 @@ import App from '${entry}';
 
       const dataSource = this.props.dataSource || {};
       const buildId = this.props.buildId;
-      const componentStyle=this.props.componentStyle || '';
       const finalProps = {
         ...${schemaProps ? JSON.stringify(schemaProps) : '{}'},
         ...dataSource,
@@ -44,7 +43,7 @@ import App from '${entry}';
       }
 
       return (
-        <view id={buildId} style={componentStyle}>
+        <view id={buildId} >
             <App {...finalProps} />
         </view>
       )
