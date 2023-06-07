@@ -9,7 +9,7 @@ import { GLOBAL_LIFECYCLE_STORE } from '@bytedance/mona-shared/dist/constants';
 import { parseSearch } from '@bytedance/mona-shared/dist/search';
 
 export const WrapperComponent: React.FC<{ title: string }> = ({ children, title }) => {
-  document.title = title || 'Mona Web';
+  document.title = title || '应用';
 
   return <>{children}</>;
 };
@@ -103,11 +103,11 @@ export function createWebApp(
     prepareLightApp(options?.light);
 
     ReactDOM.render(
-      <BrowserRouter>
-        <HistorySetWrapper>
-          <Component>
-            {options?.navBar && <NavBar {...options?.navBar} />}
-            <Provider prefixCls="mona" locale={libraryConfig?.zh_CN}>
+      <Provider prefixCls="mona" locale={libraryConfig?.zh_CN}>
+        <BrowserRouter>
+          <HistorySetWrapper>
+            <Component>
+              {options?.navBar && <NavBar {...options?.navBar} />}
               <Switch>
                 {routes?.map(route => (
                   <Route
@@ -126,14 +126,15 @@ export function createWebApp(
                   </Route>
                 )}
                 <Route path="*">
-                  <NoMatch defaultPath={formatPath(routes[0].path || options?.defaultPath || '/')} />
+                  <Redirect to={formatPath(routes[0].path || options?.defaultPath || '/')} />
+                  {/* <NoMatch defaultPath={formatPath(routes[0].path || options?.defaultPath || '/')} /> */}
                 </Route>
               </Switch>
               {options?.tabBar && <TabBar tab={options?.tabBar} />}
-            </Provider>
-          </Component>
-        </HistorySetWrapper>
-      </BrowserRouter>,
+            </Component>
+          </HistorySetWrapper>
+        </BrowserRouter>
+      </Provider>,
       dom.querySelector('#root'),
     );
   };
