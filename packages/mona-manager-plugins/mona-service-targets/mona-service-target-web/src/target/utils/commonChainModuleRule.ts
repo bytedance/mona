@@ -77,7 +77,7 @@ function createLessRule({ webpackConfig, configHelper, commonCssRule }: ModuleRu
   const lessRule = webpackConfig.module.rule('less').test(/\.less$/i);
   const { library, runtime } = configHelper.projectConfig;
   const injectMonaUi = library || runtime?.monaUi;
-  const modifyVars = injectMonaUi ? { '@auxo-prefix': 'mona' } : {};
+  const modifyVars = injectMonaUi ? { '@auxo-prefix': 'mona-ui' } : {};
 
   commonCssRule(lessRule, configHelper)
     .use('less')

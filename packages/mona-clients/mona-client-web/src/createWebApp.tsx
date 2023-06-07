@@ -103,7 +103,7 @@ export function createWebApp(
     prepareLightApp(options?.light);
 
     ReactDOM.render(
-      <Provider prefixCls="mona" locale={libraryConfig?.zh_CN}>
+      <Provider prefixCls="mona-ui" locale={libraryConfig?.zh_CN}>
         <BrowserRouter>
           <HistorySetWrapper>
             <Component>
