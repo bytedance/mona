@@ -39,6 +39,8 @@ import {
   webSetStorageSync,
   webSwitchTab,
   webNavigateToApp,
+  webGetSetting,
+  webAuthorize,
 } from './util';
 import EventEmitter from '../EventEmitter';
 
@@ -119,9 +121,9 @@ export const navigateBackMiniProgram: BaseApis['navigateBackMiniProgram'] = prom
   noImplementFactory('navigateBackMiniProgram'),
 );
 export const chooseAddresses: BaseApis['chooseAddresses'] = promisify(noImplementFactory('chooseAddresses'));
-export const getSetting: BaseApis['getSetting'] = promisify(noImplementFactory('getSetting'));
+export const getSetting: BaseApis['getSetting'] = promisify(webGetSetting);
 export const openSettings: BaseApis['openSettings'] = promisify(noImplementFactory('openSettings'));
-export const authorize: BaseApis['authorize'] = promisify(noImplementFactory('authorize'));
+export const authorize: BaseApis['authorize'] = promisify(webAuthorize);
 export const showDouyinOpenAuth: BaseApis['showDouyinOpenAuth'] = promisify(noImplementFactory('showDouyinOpenAuth'));
 export const reportAnalytics: BaseApis['reportAnalytics'] = noImplementFactory('reportAnalytics');
 export const canRateAwemeOrders: BaseApis['canRateAwemeOrders'] = promisify(noImplementFactory('canRateAwemeOrders'));
