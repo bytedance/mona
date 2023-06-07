@@ -83,6 +83,8 @@ class PluginEntryModule {
     const injectCode = injectMonaUi
       ? `import { ConfigProvider } from '@bytedance/mona-ui';
         import zh_CN from "@bytedance/mona-ui/es/components/locale/zh_CN";
+        import '@bytedance/mona-ui/es/styles/index.less';
+
         ConfigProvider.config({ prefixCls: 'mona' });`
       : '';
 

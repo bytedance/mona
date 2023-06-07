@@ -25,7 +25,7 @@ export function chainOptimization(webpackConfig: Config, configHelper: ConfigHel
       .use(CssMinimizerPlugin)
       .end()
       .splitChunks({
-        chunks: 'async',
+        chunks: 'all',
         minSize: 20000,
         minRemainingSize: 0,
         minChunks: 1,
@@ -45,10 +45,15 @@ export function chainOptimization(webpackConfig: Config, configHelper: ConfigHel
             priority: 2,
             minChunks: 2,
           },
-          default: {
-            minChunks: 2,
-            priority: -20,
-            reuseExistingChunk: true,
+          ui: {
+            test: /(antd|auxo|mona-ui)/,
+            priority: 3,
+            name: 'antd',
+          },
+          vendors: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            priority: -15,
           },
         },
       }),
