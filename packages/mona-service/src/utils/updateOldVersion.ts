@@ -13,15 +13,12 @@ const checkVersionPlugin: IPlugin = ctx => {
     if (target !== 'light') {
       return;
     }
-    const { cwd } = ctx.configHelper;
-    const staticDir = path.join(cwd, './package.json');
-    const pkg = require(staticDir);
-    let currRuntimeVersion = pkg['dependencies']['@bytedance/mona-runtime'];
-    if (currRuntimeVersion === 'latest') {
-      currRuntimeVersion = require(require
-        .resolve('@bytedance/mona-runtime')
-        .replace('dist/index.js', 'package.json')).version;
-    }
+    // const { cwd } = ctx.configHelper;
+    // const staticDir = path.join(cwd, './package.json');
+    // const pkg = require(staticDir);
+    const currRuntimeVersion = require(require
+      .resolve('@bytedance/mona-runtime')
+      .replace('dist/index.js', 'package.json')).version;
 
     if (currRuntimeVersion) {
       const res = semver.compare('0.3.12', currRuntimeVersion);
