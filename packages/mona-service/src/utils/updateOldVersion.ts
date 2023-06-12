@@ -27,7 +27,6 @@ const checkVersionPlugin: IPlugin = ctx => {
       const res = semver.compare('0.3.12', currRuntimeVersion);
       if (res !== -1) {
         const runtimePath = path.join(path.dirname(require.resolve('@bytedance/mona-client-web')), 'createWebApp.js');
-        console.log('runtime path:>> ', runtimePath);
         const readRes = fs.readFileSync(runtimePath, 'utf-8');
         const modText = readRes.toString().replace(`prefixCls: "mona"`, `prefixCls: "mui"`);
         fs.writeFileSync(runtimePath, modText);
