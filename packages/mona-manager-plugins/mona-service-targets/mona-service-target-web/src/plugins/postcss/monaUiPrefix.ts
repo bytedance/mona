@@ -7,9 +7,9 @@ module.exports = () => {
     Rule(rule: Rule & { [index: symbol]: boolean }) {
       if (rule.selector) {
         if (rule.selector.includes('auxo-')) {
-          rule.selector = rule.selector.replaceAll('auxo-', 'mui-');
+          rule.selector = rule.selector.replace(new RegExp('auxo-', 'g'), 'mui-');
         } else if (rule.selector.includes('mona-')) {
-          rule.selector = rule.selector.replaceAll('mona-', 'mui-');
+          rule.selector = rule.selector.replace(new RegExp('mona-', 'g'), 'mui-');
         }
       }
     },
