@@ -6,7 +6,7 @@ const fs = require('fs');
 import { IPlugin } from '@bytedance/mona-manager';
 
 // max 提示isv 升级版本
-const checkVersionPlugin: IPlugin = ctx => {
+const checkVersionPlugin: IPlugin = () => {
   try {
     const cmdArgv = minimist(process.argv.slice(2));
     const target = cmdArgv.t;
