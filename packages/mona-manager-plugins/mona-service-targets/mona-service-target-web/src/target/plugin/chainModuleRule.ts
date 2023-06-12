@@ -64,6 +64,9 @@ function commonCssRule(styleRule: Config.Rule<Config.Module>, configHelper: Conf
             path.join(__dirname, '../../plugins/postcss/PostcssPreSelector.js'),
             { selector: `#${configHelper.buildId}` },
           ],
+          [
+            path.join(__dirname, '../../plugins/postcss/monaUiPrefix.js'),
+          ]
         ],
       },
     });

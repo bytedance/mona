@@ -27,7 +27,12 @@
     "@bytedance/mona-service-target-mini": "0.3.12",
     "@bytedance/mona-service-target-web": "0.3.12",
     "dotenv": "^10.0.0",
-    "pkg-updater": "^1.0.4"
+    "pkg-updater": "^1.0.4",
+    "semver": "^7.3.5",
+    "minimist": "^1.2.5"
+  },
+  "devDependencies": {
+    "@types/minimist": "^1.2.2"
   },
   "publishConfig": {
     "access": "public",
