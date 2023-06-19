@@ -23,7 +23,7 @@ const genDefaultProjectConfig = (cwd: string): ProjectConfig => {
       port: DEFAULT_PORT,
     },
     runtime: {
-      monaUi: false,
+      monaUi: true,
       openSafeSdk: false,
     },
     abilities: {
