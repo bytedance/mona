@@ -15,6 +15,14 @@ export type TabBarProps = {
   }[];
 };
 
+const isAbsolute = (path: string): boolean => /^https?/.test(path) || /^\/\//.test(path);
+function formatIconPath(path?: string) {
+  if (!path) {
+    return path;
+  }
+  return isAbsolute(path) ? path : ((window as any).__mona_public_path__ || '') + path;
+}
+
 function calcBorderStyle(color?: 'black' | 'white') {
   if (['black', 'white'].indexOf(color || '') === -1) {
     return 'tranparent';
@@ -50,7 +58,7 @@ const TabBar: FC<{ tab?: TabBarProps }> = ({ tab: rawTab }) => {
           style={{ color: tab?.color || 'black' }}
         >
           <div className={styles.badge}>
-            <img className={styles.image} src={currentIndex === idx ? v.selectedIconPath : v.iconPath} />
+            <img className={styles.image} src={currentIndex === idx ? formatIconPath(v.selectedIconPath) : formatIconPath(v.iconPath)} />
             {dotIndexs.indexOf(idx) !== -1 && <span className={styles.redDot}></span>}
             {badges[idx] && <span className={styles.text}>{badges[idx].length > 3 ? '...' : badges[idx]}</span>}
           </div>
