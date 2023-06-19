@@ -11,6 +11,7 @@ const getBuildInPlugins = async function() {
   return convertPlugins([
     process.env.AUTOMATED_TEST === '1' ? '@ecom/mona-dynamic-detection' : '',
     './utils/checkVersion',
+    './utils/updateOldVersion',
     '@bytedance/mona-service-commands',
     '@bytedance/mona-service-target-web',
     dynamicPlugins,
