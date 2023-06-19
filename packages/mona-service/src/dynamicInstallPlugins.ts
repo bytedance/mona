@@ -1,8 +1,9 @@
 import chalk from 'chalk';
-import { exec } from 'child_process';
+import { spawn } from 'child_process';
 import minimist from 'minimist';
 import ora from 'ora';
 import fs from 'fs';
+import path from 'path';
 const validCmdNames = ['build', 'start'];
 const targetMap: { [key: string]: string } = {
   'max': '@bytedance/mona-service-target-lynx',
@@ -10,29 +11,45 @@ const targetMap: { [key: string]: string } = {
 }
 
 function isPkgExist(pkgName: string) {
-  try {
-    require.resolve(pkgName);
-    return true;
-  } catch (err) {
-    return false;
-  }
+  const pathName = path.join(__dirname, '../../../', pkgName, 'package.json');
+  return fs.existsSync(pathName);
 }
 
 function installPkg(pkgName: string) {
-  const spinner = ora(chalk.cyan(`安装 ${pkgName}`)).start();
-  const packageJsonFile = fs.readFileSync('../package.json', 'utf8');
+  const spinner = ora(chalk.cyan(`首次启动需安装 ${pkgName}，请耐心等待...`)).start();
+  const packageJsonFile = fs.readFileSync(path.join(__dirname, '../package.json'), 'utf8');
   const packageJsonData = JSON.parse(packageJsonFile);
+  const command = process.platform === "win32" ? "npm.cmd" : "npm";
+  const name = `${pkgName}@${packageJsonData.version}`;
+  const installProcess = spawn(command, ['install', name]);
   return new Promise((resolve, reject) => {
-    exec(`npm install ${pkgName}@${packageJsonData.version}`, (err, stdout) => {
-       if (err) {
-        spinner.fail(chalk.red(`${pkgName} 安装失败，请手动安装`));
-        reject(err);
-       } else {
-        spinner.succeed(chalk.green(`${pkgName} 安装成功`));
-        resolve(stdout);
-       }
-    })
-  })
+    installProcess.stdout.on('data', (data) => {
+      // stdout 输出流的 data 回调
+      // 将数据转成 utf8 并输出到控制台
+      spinner.color = 'magenta';
+      spinner.text = data.toString('utf8');
+    });
+    installProcess.stderr.on('data', (data) => {
+      // stdout 输出流的 data 回调
+      // 将数据转成 utf8 并输出到控制台
+      spinner.color = 'red';
+      spinner.text = data.toString('utf8');
+    });
+    installProcess.on('exit', (code) => {
+      if (code === 0) {
+          // 安装完成，停止进度指示器
+          spinner.color = 'green';
+          spinner.succeed(`安装 ${name} 成功`);
+          resolve(1);
+      }
+      else {
+          // 安装失败，停止进度指示器并输出错误信息
+          spinner.color = 'red';
+          spinner.fail(`安装 ${name} 失败，请手动安装`);
+          reject();
+      }
+    });
+  });
 }
 
 async function dynamicInstallPlugins() {
