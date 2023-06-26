@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-service-target-lynx",
-  "version": "0.3.16-alpha.2",
+  "version": "0.3.16-alpha.3",
   "displayName": "mona-service-target-lynx",
   "description": "mona-service lynx target plugin for mona-manager",
   "main": "./dist/index.js",
@@ -24,8 +24,8 @@
     "@babel/preset-typescript": "^7.16.5",
     "@babel/traverse": "^7.16.5",
     "@babel/types": "^7.16.0",
-    "@bytedance/mona-manager": "0.3.16-alpha.2",
-    "@bytedance/mona-manager-plugins-shared": "0.3.16-alpha.2",
+    "@bytedance/mona-manager": "0.3.16-alpha.3",
+    "@bytedance/mona-manager-plugins-shared": "0.3.16-alpha.3",
     "@bytedance/mona-speedy": "0.0.37",
     "@bytedance/mona-speedy-components": "0.0.37",
     "@bytedance/mona-speedy-runtime": "0.0.37",
