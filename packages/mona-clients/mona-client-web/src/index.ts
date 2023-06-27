@@ -1,7 +1,6 @@
 export { Mona, app } from './apis';
 export * from './apis/api';
 export * from './hooks/useRequest';
-
 export * from './components';
 export * from './createWebApp';
 export { createMiniComponent } from './createMiniComponent';
@@ -12,3 +11,4 @@ export { usePageEvent, useAppEvent, AppLifecycle, PageLifecycle } from '@bytedan
 
 export { useMiniEffect } from './miniEffect';
 export { lazy } from './lazy';
+export * from './apis/upload';

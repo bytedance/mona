@@ -13,6 +13,7 @@ export {
   lightAppLeftArrowHandle,
   request,
   app,
+  uploadFileTemporary,
 } from '@bytedance/mona-client-web';
 export { usePageEvent, useAppEvent, AppLifecycle, PageLifecycle } from '@bytedance/mona';
 export interface PageProps {
