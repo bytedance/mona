@@ -1,4 +1,4 @@
-export { Mona } from './apis';
+export { Mona, app } from './apis';
 export * from './apis/api';
 export * from './hooks/useRequest';
 

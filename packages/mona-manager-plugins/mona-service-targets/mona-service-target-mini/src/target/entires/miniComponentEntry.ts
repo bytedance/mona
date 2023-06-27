@@ -5,7 +5,7 @@ import { NPM_DIR, NODE_MODULES } from '@bytedance/mona-manager-plugins-shared';
 import monaStore from '../store';
 import { miniExt } from '@/target/mini/constants';
 import getMiniComponentDefaultValue from './util/getDefaultProps';
-
+import { industryComponents } from '@/config/industry';
 const defaultEntryConfig: Record<string, any> = {};
 
 let id = 1;
@@ -250,7 +250,7 @@ export class MiniComponentEntry extends MiniEntry {
         }
       }
     });
-    outputJson.usingComponents = usingComponents;
+    outputJson.usingComponents = { ...usingComponents, ...industryComponents };
     return outputJson;
   }
 }

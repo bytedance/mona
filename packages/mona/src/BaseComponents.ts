@@ -114,7 +114,30 @@ export interface MemberButtonProps extends BaseProps {
   'bind:cancel': any;
   'bind:error': any;
 }
-
+export interface CouponButtonProps extends BaseProps {
+  shopId: string;
+  couponId: string;
+  buttonText: {
+    unapplieddText?: string;
+    appliedText?: string;
+    expiredText?: string;
+    usedText?: string;
+  };
+  modalOptions: {
+    title?: string;
+    content?: string;
+    confirmText?: string;
+    confirmColor?: string;
+    showCancel?: boolean;
+    cancelText?: string;
+    cancelColor?: string;
+  };
+  activeBackgroundColor: string;
+  activeColor: string;
+  disableBackgroundColor: string;
+  disableColor: string;
+  url: string;
+}
 export interface ProgressProps extends BaseProps {
   percent?: number;
   strokeWidth?: number;
