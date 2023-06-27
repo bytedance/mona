@@ -257,10 +257,10 @@ export function buildProject(_target: string) {
 export const generateH5Qrcode = (args: any) => {
   return async (params: { appId: string; version: string }) => {
     const domain = args.domain || OPEN_DOMAIN;
-
-    const preViewCodeUrl = `https://${domain}/ecom-app/h5?appId=${params?.appId}&version=${params?.version}&isPreview=true&hide_nav_bar=1`;
+    const originUrl =  `https://${domain}/ecom-app/h5?appId=${params?.appId}&version=${params?.version}&isPreview=true&hide_nav_bar=1`;
+    const preViewCodeUrl = `snssdk3102://open_webview?url=${encodeURIComponent(originUrl)}`;
     const qrcode = await new Promise((resolve, reject) => {
-      console.log(preViewCodeUrl);
+      console.log('请使用最新版抖店APP扫描', preViewCodeUrl);
       // @ts-ignore
       // qrcode render failed in windows terminal when options with small: true
       QRCode.toString(preViewCodeUrl, { type: 'terminal', small: !isWin }, (err, url) => {
