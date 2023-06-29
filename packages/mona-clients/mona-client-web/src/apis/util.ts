@@ -550,7 +550,6 @@ export const webGetSetting: OriginApis['getSetting'] = options => {
   try {
     // @ts-ignore
     const appid = window[MONA_APPID];
-    console.log('appid', appid);
     const data = webGetStorageSync(USER_AUTHORIZATION_CACHE);
 
     if (data) {
@@ -568,7 +567,14 @@ export const webGetSetting: OriginApis['getSetting'] = options => {
   }
 };
 
-export const webAuthorize: OriginApis['authorize'] = options => {
+const removePrefix = (apiName: string) => {
+  if (typeof apiName === 'string') {
+    const arr = apiName.split('.');
+    return arr[arr.length - 1];
+  }
+  return apiName;
+} 
+export const webAuthorize: BaseApis['authorize'] = options => {
   const setAuthorzationCache = (isTrue: boolean) => {
     const data = webGetStorageSync(USER_AUTHORIZATION_CACHE);
     let dataObj: { [key: string]: { [key: string]: boolean } };
@@ -607,7 +613,7 @@ export const webAuthorize: OriginApis['authorize'] = options => {
   };
   const authorizationText =
     // @ts-ignore
-    window[MONA_JSAPI_LIST]?.find((item: any) => item?.jsApiName === options.apiName)?.reqAuthDesc || '请求您的授权';
+    window[MONA_JSAPI_LIST]?.find((item: any) => item?.jsApiName === removePrefix(options.apiName))?.reqAuthDesc || '请求您的授权';
   // @ts-ignore
   window[MONA_SHOW_AUTHORIZE_MODAL] && window[MONA_SHOW_AUTHORIZE_MODAL](authorizationText, allowCallback, rejectCallback);
 };
