@@ -574,7 +574,7 @@ const removePrefix = (apiName: string) => {
   }
   return apiName;
 } 
-export const webAuthorize: BaseApis['authorize'] = options => {
+export const webAuthorize: OriginApis['authorize'] = options => {
   const setAuthorzationCache = (isTrue: boolean) => {
     const data = webGetStorageSync(USER_AUTHORIZATION_CACHE);
     let dataObj: { [key: string]: { [key: string]: boolean } };
