@@ -7,8 +7,8 @@ const eventEmitter = new EventEmitter();
 
 export const useNavBarTitle = (props: NavBarProps) => {
   const [title, setTitle] = useState(props?.navigationBarTitleText);
-  const [frontColor, setFrontColor] = useState('');
-  const [backgroundColor, setBackgroundColor] = useState(props?.navigationBarBackgroundColor);
+  const [frontColor, setFrontColor] = useState('#000');
+  const [backgroundColor, setBackgroundColor] = useState(props?.navigationBarBackgroundColor || '#fff');
 
   useEffect(() => {
     eventEmitter.on('setNavigationBarTitle', (options: Parameters<BaseApis['setNavigationBarTitle']>[0]) => {
@@ -38,4 +38,4 @@ export const useNavBarTitle = (props: NavBarProps) => {
   return { title, frontColor, backgroundColor };
 };
 
-export const useNavBarColor = () => {};
+export const useNavBarColor = () => { };
