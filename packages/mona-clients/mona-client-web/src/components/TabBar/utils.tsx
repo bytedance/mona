@@ -4,7 +4,7 @@ import { BaseApis } from '@bytedance/mona';
 import EventEmitter from '../../EventEmitter';
 import { useHistory } from 'react-router';
 import { TabBarProps } from '.';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 const eventEmitter = new EventEmitter();
 
@@ -54,7 +54,7 @@ export const useTabProps = (rawTab?: TabBarProps) => {
             }
             return prev;
           }
-          
+
           const target = old[index];
 
           old[index] = {
@@ -67,7 +67,7 @@ export const useTabProps = (rawTab?: TabBarProps) => {
           return {
             ...prev,
             list: old
-          } 
+          }
         })
 
         if (typeof success === 'function') {
@@ -112,7 +112,7 @@ export const useToggleDotShow = () => {
     eventEmitter.on('setTabBarDotToggle', (show: boolean, options?: Parameters<BaseApis['showTabBarRedDot']>[0]): void => {
       if (show && options?.index) {
         setDotIndexs((prev) => Array.from(new Set([...prev, options?.index])))
-      } else if(!show && options?.index) {
+      } else if (!show && options?.index) {
         setDotIndexs(prev => {
           const index = prev.indexOf(options.index);
           const next = [...prev];
@@ -158,12 +158,19 @@ export const useToggleShow = () => {
 
 export const useSelectTab = (tab?: TabBarProps) => {
   const history = useHistory();
-  const getIndex = () => tab?.list?.findIndex(v => formatPath(v.pagePath) === history.location.pathname);
+  const getIndex = useCallback(() => tab?.list?.findIndex(v => formatPath(v.pagePath) === history.location.pathname), [tab, history]);
+
+  useEffect(() => {
+    const unlisten = history.listen(() => {
+      setCurrent(getIndex())
+    })
+    return () => unlisten();
+  }, [history, getIndex]);
   const [current, setCurrent] = useState(getIndex());
   const onSelect = (url: string) => {
     redirectTo({ url: formatPath(url) })
     setCurrent(getIndex())
   }
-  
+
   return { currentIndex: current, setCurrent: onSelect }
 }

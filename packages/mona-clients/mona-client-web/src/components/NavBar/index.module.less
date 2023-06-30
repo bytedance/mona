@@ -1,13 +1,25 @@
 .mona-web-navbar {
-  position: relative;
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 44px;
   padding: 0 40px;
   font-size: 14px;
+  padding-top: constant(safe-area-inset-top);
+  /*兼容 IOS<11.2*/
+  padding-top: env(safe-area-inset-top);
 }
 
+.mona-navbar-extra-height {
+  padding-top: 44px;
+  padding-top: calc(constant(safe-area-inset-top) + 44px);
+  /*兼容 IOS<11.2*/
+  padding-top: calc(env(safe-area-inset-top) + 44px);
+}
 
 .mona-web-navbar-left {
   position: absolute;

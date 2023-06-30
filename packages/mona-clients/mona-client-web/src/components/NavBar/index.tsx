@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { AppConfig } from '@bytedance/mona';
 import { useNavBarTitle } from './utils';
 import styles from './index.module.less';
@@ -9,6 +9,16 @@ const NavBar: FC<NavBarProps> = props => {
   if (!props.navigationBarTitleText) {
     return null;
   }
+
+  useEffect(() => {
+    const classList = document.body.classList;
+    const styleName = styles['mona-navbar-extra-height'];
+    if (!classList.contains(styleName)) {
+      classList.add(styleName);
+    }
+
+    return () => classList.remove(styleName);
+  }, []);
 
   const { title, frontColor, backgroundColor } = useNavBarTitle(props);
 

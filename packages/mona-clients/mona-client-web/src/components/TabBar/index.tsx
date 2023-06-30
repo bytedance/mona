@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useBadge, useSelectTab, useTabProps, useToggleDotShow, useToggleShow } from './utils';
 import styles from './index.module.less';
 
@@ -36,6 +36,16 @@ const TabBar: FC<{ tab?: TabBarProps }> = ({ tab: rawTab }) => {
   const { badges } = useBadge();
   const { show, withAnimation } = useToggleShow();
   const { dotIndexs } = useToggleDotShow();
+
+  useEffect(() => {
+    const classList = document.body.classList;
+    const styleName = styles['mona-tabbar-extra-height'];
+    if (!classList.contains(styleName)) {
+      classList.add(styleName);
+    }
+
+    return () => classList.remove(styleName);
+  }, []);
 
   if (!tab || tab.list.length <= 0) {
     return null;
