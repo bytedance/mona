@@ -7,9 +7,13 @@ import TabBar from './components/TabBar';
 import formatPath from '@bytedance/mona-shared/dist/formatPath';
 import { GLOBAL_LIFECYCLE_STORE } from '@bytedance/mona-shared/dist/constants';
 import { parseSearch } from '@bytedance/mona-shared/dist/search';
+import { setNavigationBarTitle } from './apis/api';
 
 export const WrapperComponent: React.FC<{ title: string }> = ({ children, title }) => {
   document.title = title || '应用';
+  useEffect(() => {
+    setNavigationBarTitle({ title: document.title });
+  }, [document.title])
 
   return <>{children}</>;
 };
