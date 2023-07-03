@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 import { useBadge, useSelectTab, useTabProps, useToggleDotShow, useToggleShow } from './utils';
 import styles from './index.module.less';
 
@@ -36,15 +36,18 @@ const TabBar: FC<{ tab?: TabBarProps }> = ({ tab: rawTab }) => {
   const { badges } = useBadge();
   const { show, withAnimation } = useToggleShow();
   const { dotIndexs } = useToggleDotShow();
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const classList = document.body.classList;
-    const styleName = styles['mona-tabbar-extra-height'];
-    if (!classList.contains(styleName)) {
-      classList.add(styleName);
+    const el = document.body;
+    const originPaddingBottom = el.style.paddingBottom;
+    if (ref) {
+      el.style.paddingBottom = `calc(${originPaddingBottom ?? '0px'} + ${ref.current?.offsetHeight ?? 0}px)`
     }
 
-    return () => classList.remove(styleName);
+    return () => {
+      el.style.paddingBottom = originPaddingBottom;
+    };
   }, []);
 
   if (!tab || tab.list.length <= 0) {
@@ -54,6 +57,7 @@ const TabBar: FC<{ tab?: TabBarProps }> = ({ tab: rawTab }) => {
   return (
     <div
       className={`${styles.container} ${!show ? styles.hidden : ''}`}
+      ref={ref}
       style={{
         transition: withAnimation ? 'transform .2s linear' : 'noset',
         backgroundColor: tab?.backgroundColor || '#fff',

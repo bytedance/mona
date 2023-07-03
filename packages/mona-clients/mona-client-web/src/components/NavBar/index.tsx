@@ -1,12 +1,18 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { AppConfig } from '@bytedance/mona';
 import { useNavBarTitle } from './utils';
 import styles from './index.module.less';
+const MONA_STATUS_BAR_HEIGHT = '__MONA_STATUS_BAR_HEIGHT__';
+
+const isAndroid = navigator.userAgent.includes('com.ss.android.merchant');
+// @ts-ignore
+const statusBarHeight = window[MONA_STATUS_BAR_HEIGHT];
 
 export type NavBarProps = AppConfig['window'];
 
 const NavBar: FC<NavBarProps> = props => {
   const [canBack, setCanBack] = useState((history as any)._pos > 0);
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const h: any = history;
@@ -18,13 +24,15 @@ const NavBar: FC<NavBarProps> = props => {
   }, [setCanBack])
 
   useEffect(() => {
-    const classList = document.body.classList;
-    const styleName = styles['mona-navbar-extra-height'];
-    if (!classList.contains(styleName)) {
-      classList.add(styleName);
+    const el = document.body;
+    const originPaddingTop = el.style.paddingTop;
+    if (ref) {
+      el.style.paddingTop = `${originPaddingTop ?? '0px'} + ${ref.current?.offsetHeight ?? 0}px`
     }
 
-    return () => classList.remove(styleName);
+    return () => {
+      el.style.paddingTop = originPaddingTop;
+    };
   }, []);
 
   const { title, frontColor, backgroundColor } = useNavBarTitle(props);
@@ -39,7 +47,7 @@ const NavBar: FC<NavBarProps> = props => {
   }
 
   return (
-    <div className={styles['mona-web-navbar']} style={{ ...navBarStyle }}>
+    <div ref={ref} className={styles['mona-web-navbar']} style={{ ...navBarStyle, ...(isAndroid ? { paddingTop: statusBarHeight } : {}) }}>
       {
         canBack ? (
           <div className={styles['mona-web-navbar-left']} onClick={() => history.go(-1)}>
