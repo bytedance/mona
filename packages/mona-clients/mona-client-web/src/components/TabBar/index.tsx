@@ -41,14 +41,14 @@ const TabBar: FC<{ tab?: TabBarProps }> = ({ tab: rawTab }) => {
   useEffect(() => {
     const el = document.body;
     const originPaddingBottom = el.style.paddingBottom;
-    if (ref) {
-      el.style.paddingBottom = `calc(${originPaddingBottom ?? '0px'} + ${ref.current?.offsetHeight ?? 0}px)`
+    if (ref.current) {
+      el.style.paddingBottom = `calc(${originPaddingBottom || '0px'} + ${ref.current?.offsetHeight ?? 0}px)`
     }
 
     return () => {
       el.style.paddingBottom = originPaddingBottom;
     };
-  }, []);
+  }, [ref]);
 
   if (!tab || tab.list.length <= 0) {
     return null;

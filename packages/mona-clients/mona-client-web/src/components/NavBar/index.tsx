@@ -26,14 +26,14 @@ const NavBar: FC<NavBarProps> = props => {
   useEffect(() => {
     const el = document.body;
     const originPaddingTop = el.style.paddingTop;
-    if (ref) {
-      el.style.paddingTop = `${originPaddingTop ?? '0px'} + ${ref.current?.offsetHeight ?? 0}px`
+    if (ref.current) {
+      el.style.paddingTop = `calc(${originPaddingTop || '0px'} + ${ref.current?.offsetHeight ?? 0}px)`
     }
 
     return () => {
       el.style.paddingTop = originPaddingTop;
     };
-  }, []);
+  }, [ref]);
 
   const { title, frontColor, backgroundColor } = useNavBarTitle(props);
 
