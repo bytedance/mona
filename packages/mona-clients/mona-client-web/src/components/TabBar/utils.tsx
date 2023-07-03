@@ -161,6 +161,10 @@ export const useSelectTab = (tab?: TabBarProps) => {
   const getIndex = useCallback(() => tab?.list?.findIndex(v => formatPath(v.pagePath) === history.location.pathname), [tab, history]);
 
   useEffect(() => {
+    // 修复初始跳转，路由获取不正确的问题
+    setTimeout(() => {
+      setCurrent(getIndex())
+    })
     const unlisten = history.listen(() => {
       setCurrent(getIndex())
     })
