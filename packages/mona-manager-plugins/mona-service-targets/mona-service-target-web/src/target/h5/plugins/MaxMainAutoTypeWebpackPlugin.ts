@@ -29,8 +29,8 @@ class MaxMainAutoTypeWebpackPlugin {
 export const generateTsCode = (jsApiList: JsApi[]) => {
   let code = 'export interface App {';
  jsApiList.forEach(api => {
-    const { jsApiName, requestArgJson, responseArgJson, isRequestRequired, isAsync, jsApiDesc } = api;
-    const processedInputParams = processInputParams(requestArgJson, isRequestRequired);
+    const { jsApiName, requestArgJson, responseArgJson, isRequestRequired = false, isAsync, jsApiDesc } = api;
+     const processedInputParams = processInputParams({ inputParams: requestArgJson, isRequired: isRequestRequired, isMultiParams: jsApiName.startsWith('on') });
     const processedOutputParams = processOutputParams(responseArgJson, isAsync);
     code += `\n/**\n${jsApiDesc}*/\n${jsApiName}:(${processedInputParams})=>${processedOutputParams};`;
   });
@@ -44,22 +44,26 @@ const enum TypeCode {
   Boolean = 4,
   Map = 5,
   Object = 6,
+  Function = 10
 }
 const typeMap: { [key: string]: string } = {
   [TypeCode.Number]: 'number',
   [TypeCode.String]: 'string',
   [TypeCode.Boolean]: 'boolean',
+  [TypeCode.Function]: 'Function',
 };
 //递归根据入参json以及是否必传结构生成ts
-const paramToTs = (inputParams: RequestArg[]) => {
+const paramToTs = (inputParams: RequestArg[], multi: boolean = false) => {
   let res = '';
   if (inputParams?.length > 0) {
-    res = '{\n';
+    if (!multi) {
+      res = '{\n';
+    }
     for (let inputParam of inputParams) {
       let { fieldName, isRequired, fieldType, children, subFieldType, mapKeyType, mapValueType } = inputParam;
-      if (fieldType === TypeCode.Number || fieldType === TypeCode.String || fieldType === TypeCode.Boolean) {
-        // 如果类型是number、string或者boolean
-        res += `${fieldName}${isRequired ? '' : '?'}:${typeMap[fieldType]};\n`;
+      if (typeMap[fieldType]) {
+        // 如果类型是number、string、boolean、Function
+        res += `${fieldName}${isRequired ? '' : '?'}:${typeMap[fieldType]}${multi ? ',' : ';'}\n`;
       } else if (fieldType === TypeCode.Map) {
         // 如果是映射Map,key只能是number或string。value可以是除了map的所有类型
         let mapValueRes = '';
@@ -81,36 +85,46 @@ const paramToTs = (inputParams: RequestArg[]) => {
         } else if (mapValueType === TypeCode.Object) {
           mapValueRes = paramToTs(children as RequestArg[]);
         }
-        res += `${fieldName}${isRequired ? '' : '?'}:Map<${typeMap[mapKeyType]},${mapValueRes}>;\n`;
+        res += `${fieldName}${isRequired ? '' : '?'}:Map<${typeMap[mapKeyType]},${mapValueRes}>${multi ? ',' : ''}\n`;
       } else if (fieldType === TypeCode.Object) {
         //对象
-        res += `${fieldName}${isRequired ? '' : '?'}:${paramToTs(children as RequestArg[])};`;
+        res += `${fieldName}${isRequired ? '' : '?'}:${paramToTs(children as RequestArg[])}${multi ? ',' : ''}`;
       } else {
         // 数组
         if (subFieldType === TypeCode.Number || subFieldType === TypeCode.String || subFieldType === TypeCode.Boolean) {
           // 数组值类型为number string boolean
-          res += `${fieldName}${isRequired ? '' : '?'}:${typeMap[subFieldType]}[];`;
+          res += `${fieldName}${isRequired ? '' : '?'}:${typeMap[subFieldType]}[]${multi ? ',' : ''}`;
         } else if (subFieldType === TypeCode.Object) {
           // 数组值类型为对象
-          res += `${fieldName}${isRequired ? '' : '?'}:${paramToTs(children as RequestArg[])}[];`;
+          res += `${fieldName}${isRequired ? '' : '?'}:${paramToTs(children as RequestArg[])}[]${multi ? ',' : ''}`;
         }
       }
     }
-    res += '}';
+    if (!multi) {
+      res += '}';
+    }
   }
   return res;
 };
 //处理入参
-const processInputParams = (inputParams: RequestArg[], isRequired: boolean) => {
-  let tsRes = paramToTs(inputParams);
-  let res = '';
-  if (tsRes) {
-    res = `data${isRequired ? '' : '?'}:${tsRes},\noptions?: EventOptionsType`;
+const processInputParams = ({ inputParams, isRequired, isMultiParams = false }: {inputParams: RequestArg[], isRequired: boolean, isMultiParams: boolean}) => {
+  let tsRes = '';
+
+  if (isMultiParams) {
+    const res = paramToTs(inputParams, true);
+    tsRes += inputParams ? res : '';
+  } else {
+    const res = paramToTs(inputParams);
+    tsRes = inputParams ? `data${isRequired ? '' : '?'}:${res}` : '';
   }
-  if (!res) {
-    res = 'options?: EventOptionsType';
-  }
-  return res;
+  // let res = '';
+  // if (tsRes) {
+  //   res = `${tsRes}\noptions?: EventOptionsType`;
+  // }
+  // if (!res) {
+  //   res = 'options?: EventOptionsType';
+  // }
+  return tsRes;
 };
 
 //处理出参，若为空，或者不为interface，置为void，否则处理掉interface前缀，输出{x:xxx}
@@ -123,7 +137,7 @@ const processOutputParams = (outputParams: ResponseArg[], isAsync: boolean) => {
   if (isAsync) {
     res = `Promise<${res}>`;
   } else {
-    res = `${res} | ErrorResponse`;
+    res = `${res}`;
   }
   return res;
 };
