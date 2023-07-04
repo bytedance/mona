@@ -84,7 +84,6 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
           let parseData;
           try {
             parseData = JSON.parse(r.data);
-            console.warn(`not valid json for ${r.data}, use origin data`);
           } catch (e) {
             parseData = r.data;
           }
