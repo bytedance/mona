@@ -23,6 +23,8 @@
   "dependencies": {
     "@bytedance/mona-manager": "0.3.16-beta.2",
     "@bytedance/mona-service-commands": "0.3.16-beta.2",
+    "@bytedance/mona-service-target-lynx": "0.3.16-beta.2",
+    "@bytedance/mona-service-target-mini": "0.3.16-beta.2",
     "@bytedance/mona-service-target-web": "0.3.16-beta.2",
     "dotenv": "^10.0.0",
     "minimist": "^1.2.5",
