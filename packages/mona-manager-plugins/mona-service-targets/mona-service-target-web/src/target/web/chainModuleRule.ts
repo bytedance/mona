@@ -1,4 +1,3 @@
-import path from 'path';
 import Config from 'webpack-chain';
 
 import { ConfigHelper } from '@bytedance/mona-manager';
