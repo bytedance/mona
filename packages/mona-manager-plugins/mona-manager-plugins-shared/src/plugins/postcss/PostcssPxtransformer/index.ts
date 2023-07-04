@@ -32,6 +32,7 @@ const deviceRatio = {
   640: 2.34 / 2,
   750: 1,
   828: 1.81 / 2,
+  375: 2 / 1
 };
 
 const defaults: PxTransformerOptions = {
@@ -44,7 +45,7 @@ const defaults: PxTransformerOptions = {
   minPixelValue: 0,
   exclude: null,
   platform: 'mini',
-  designWidth: 750,
+  designWidth: 375,
   deviceRatio,
 };
 
@@ -130,7 +131,7 @@ module.exports = (options: Partial<PxTransformerOptions> = {}) => {
 
   switch (opts.platform) {
     case 'web': {
-      opts.rootValue = options.rootValue || baseFontSize * opts.deviceRatio[opts.designWidth];
+      opts.rootValue = options.rootValue || baseFontSize / opts.deviceRatio[opts.designWidth];
       targetUnit = 'rem';
       break;
     }
