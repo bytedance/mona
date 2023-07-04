@@ -62,7 +62,7 @@ function commonCssRule(styleRule: Config.Rule<Config.Module>, configHelper: Conf
       postcssOptions: {
         plugins: [
           [
-            path.join(require.resolve('@bytedance/mona-manager-plugins-shared'), 'dist/plugins/postcss/PostcssPreSelector.js'),
+            require.resolve('@bytedance/mona-manager-plugins-shared/dist/plugins/postcss/PostcssPreSelector.js'),
             { selector: `#${configHelper.buildId}` },
           ],
           target === 'light' && [path.join(__dirname, '../../plugins/postcss/monaUiPrefix.js')],

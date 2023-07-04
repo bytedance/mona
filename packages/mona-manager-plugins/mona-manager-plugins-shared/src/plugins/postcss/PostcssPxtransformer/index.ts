@@ -45,7 +45,7 @@ const defaults: PxTransformerOptions = {
   minPixelValue: 0,
   exclude: null,
   platform: 'mini',
-  designWidth: 375,
+  designWidth: 750,
   deviceRatio,
 };
 
@@ -144,6 +144,7 @@ module.exports = (options: Partial<PxTransformerOptions> = {}) => {
   const exclude = opts.exclude;
   let isExcludeFile = false;
   let pxReplace: ReturnType<typeof createPxReplace>;
+
   return {
     postcssPlugin: 'postcss-pxtransform',
     Once(css: any) {
@@ -160,7 +161,9 @@ module.exports = (options: Partial<PxTransformerOptions> = {}) => {
       }
 
       const rootValue = typeof opts.rootValue === 'function' ? opts.rootValue(css.source.input) : opts.rootValue;
-      pxReplace = createPxReplace(rootValue, opts.unitPrecision, opts.minPixelValue, targetUnit);
+      // 组件库默认375标准
+      const value = /node_modules\/@bytedance\/mona-client-web/.test(filePath) ? baseFontSize / 2 : rootValue;
+      pxReplace = createPxReplace(value, opts.unitPrecision, opts.minPixelValue, targetUnit);
     },
     Declaration(decl: any) {
       if (isExcludeFile) return;
