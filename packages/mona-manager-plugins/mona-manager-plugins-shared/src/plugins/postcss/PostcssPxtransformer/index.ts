@@ -45,7 +45,7 @@ const defaults: PxTransformerOptions = {
   minPixelValue: 0,
   exclude: null,
   platform: 'mini',
-  designWidth: 375,
+  designWidth: 750,
   deviceRatio,
 };
 
