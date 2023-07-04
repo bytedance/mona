@@ -144,7 +144,6 @@ module.exports = (options: Partial<PxTransformerOptions> = {}) => {
   const exclude = opts.exclude;
   let isExcludeFile = false;
   let pxReplace: ReturnType<typeof createPxReplace>;
-  const rootValue = typeof opts.rootValue === 'function' ? opts.rootValue(css.source.input) : opts.rootValue;
 
   return {
     postcssPlugin: 'postcss-pxtransform',
@@ -161,7 +160,7 @@ module.exports = (options: Partial<PxTransformerOptions> = {}) => {
         isExcludeFile = false;
       }
 
-
+      const rootValue = typeof opts.rootValue === 'function' ? opts.rootValue(css.source.input) : opts.rootValue;
       // 组件库默认375标准
       const value = /node_modules\/@bytedance\/mona-client-web/.test(filePath) ? baseFontSize / 2 : rootValue;
       pxReplace = createPxReplace(value, opts.unitPrecision, opts.minPixelValue, targetUnit);
