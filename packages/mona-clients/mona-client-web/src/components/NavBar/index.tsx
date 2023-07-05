@@ -24,14 +24,18 @@ const NavBar: FC<NavBarProps> = props => {
   }, [setCanBack])
 
   useEffect(() => {
-    const el = document.body;
-    const originPaddingTop = el.style.paddingTop;
+    const el = document.getElementById('root')!;
+    const originMarginTop = el.style.marginTop;
+    const originHeight = el.style.height || '100vh';
     if (ref.current) {
-      el.style.paddingTop = `calc(${originPaddingTop || '0px'} + ${ref.current?.offsetHeight ?? 0}px)`
+      const height = ref.current?.offsetHeight ?? 0;
+      el.style.marginTop = `${height}px`
+      el.style.height = `calc(${originHeight} - ${height}px)`;
     }
 
     return () => {
-      el.style.paddingTop = originPaddingTop;
+      el.style.marginTop = originMarginTop;
+      el.style.height = originHeight;
     };
   }, [ref]);
 
