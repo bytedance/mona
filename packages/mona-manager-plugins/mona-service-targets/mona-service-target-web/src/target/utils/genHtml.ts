@@ -15,7 +15,7 @@ export const genH5Html = (_buildId: string, injectScript: string = '') => {
       ${injectScript}
   </head>
   <body>
-      <div id="root" style="height: 100vh; position: "relative"; overflow: 'auto"></div>
+      <div id="root" style="height: 100vh; position: relative; overflow: auto></div>
   </body>
   </html>
   `;
