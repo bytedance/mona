@@ -18,6 +18,7 @@ const pkgs = {
   'target-web': '@bytedance/mona-service-target-web',
   'target-mini': '@bytedance/mona-service-target-mini',
   'target-lynx': '@bytedance/mona-service-target-lynx',
+  'manager-shared': '@bytedance/mona-manager-plugins-shared'
 };
 const rawTargets = process.argv.slice(2);
 const startIndex = rawTargets.indexOf('-s');

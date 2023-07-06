@@ -27,6 +27,7 @@ interface PxTransformerOptions {
 const pxRegex = require('./lib/pixel-unit-regex');
 const filterPropList = require('./lib/filter-prop-list');
 const type = require('./lib/type');
+const path = require('path');
 
 const deviceRatio = {
   640: 2.34 / 2,
@@ -162,7 +163,7 @@ module.exports = (options: Partial<PxTransformerOptions> = {}) => {
 
       const rootValue = typeof opts.rootValue === 'function' ? opts.rootValue(css.source.input) : opts.rootValue;
       // 组件库默认375标准
-      const value = /node_modules/.test(filePath) ? baseFontSize / 2 : rootValue;
+      const value = new RegExp(['node_modules', '@bytedance', 'mona-client-web'].join(process.platform === 'win32' ? '\\\\' : '/')).test(filePath) ? baseFontSize / 2 : rootValue;
       pxReplace = createPxReplace(value, opts.unitPrecision, opts.minPixelValue, targetUnit);
     },
     Declaration(decl: any) {
