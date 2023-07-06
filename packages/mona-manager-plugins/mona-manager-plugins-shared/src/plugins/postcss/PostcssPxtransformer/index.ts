@@ -162,7 +162,7 @@ module.exports = (options: Partial<PxTransformerOptions> = {}) => {
 
       const rootValue = typeof opts.rootValue === 'function' ? opts.rootValue(css.source.input) : opts.rootValue;
       // 组件库默认375标准
-      const value = /node_modules\/@bytedance\/mona-client-web/.test(filePath) ? baseFontSize / 2 : rootValue;
+      const value = /node_modules/.test(filePath) ? baseFontSize / 2 : rootValue;
       pxReplace = createPxReplace(value, opts.unitPrecision, opts.minPixelValue, targetUnit);
     },
     Declaration(decl: any) {

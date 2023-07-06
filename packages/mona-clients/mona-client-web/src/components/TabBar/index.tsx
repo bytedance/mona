@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useRef } from 'react';
 import { useBadge, useSelectTab, useTabProps, useToggleDotShow, useToggleShow } from './utils';
+import { createPortal } from 'react-dom';
 import styles from './index.module.less';
 
 export type TabBarProps = {
@@ -89,4 +90,6 @@ const TabBar: FC<{ tab?: TabBarProps }> = ({ tab: rawTab }) => {
   );
 };
 
-export default TabBar;
+export default (props: { tab?: TabBarProps }) => {
+  return createPortal(<TabBar {...props} />, document.body);
+};

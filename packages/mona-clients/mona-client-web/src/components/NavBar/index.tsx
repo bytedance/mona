@@ -2,6 +2,7 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import { AppConfig } from '@bytedance/mona';
 import { useNavBarTitle } from './utils';
 import styles from './index.module.less';
+import { createPortal } from 'react-dom';
 const MONA_STATUS_BAR_HEIGHT = '__MONA_STATUS_BAR_HEIGHT__';
 
 const isAndroid = navigator.userAgent.includes('com.ss.android.merchant');
@@ -67,4 +68,6 @@ const NavBar: FC<NavBarProps> = props => {
   );
 };
 
-export default NavBar;
+export default (props: NavBarProps) => {
+  return createPortal(<NavBar {...props} />, document.body);
+};
