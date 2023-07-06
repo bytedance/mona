@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-cli-commands",
-  "version": "0.3.16-alpha.19",
+  "version": "0.3.16-alpha.20",
   "displayName": "mona-cli-commands",
   "description": "mona-cli commands plugins for mona-manager",
   "main": "./dist/index",
@@ -16,8 +16,8 @@
   "author": "xiaokun.kenny@bytedance.com",
   "license": "MIT",
   "dependencies": {
-    "@bytedance/mona-manager": "0.3.16-alpha.19",
-    "@bytedance/mona-shared": "0.3.16-alpha.19",
+    "@bytedance/mona-manager": "0.3.16-alpha.20",
+    "@bytedance/mona-shared": "0.3.16-alpha.20",
     "axios": "^1.3.4",
     "chalk": "^4.1.2",
     "compare-version": "^0.1.2",
