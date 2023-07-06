@@ -244,10 +244,11 @@ export function getUrl(params: { ctx: PluginContext; platform: string; platformU
   return `${url}${query}`;
 }
 
+// h5在preive打包时走development
 export function buildProject(_target: string) {
   return (ctx: PluginContext) => {
     console.log('build');
-    execSync(`yarn build`, {});
+    execSync(`yarn build --test`, {});
 
     // execSync(`mona-service build -t ${target ?? 'h5'} `, {});
     return ctx;
