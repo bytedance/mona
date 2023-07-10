@@ -27,11 +27,13 @@ interface PxTransformerOptions {
 const pxRegex = require('./lib/pixel-unit-regex');
 const filterPropList = require('./lib/filter-prop-list');
 const type = require('./lib/type');
+const path = require('path');
 
 const deviceRatio = {
   640: 2.34 / 2,
   750: 1,
   828: 1.81 / 2,
+  375: 2 / 1
 };
 
 const defaults: PxTransformerOptions = {
@@ -130,7 +132,7 @@ module.exports = (options: Partial<PxTransformerOptions> = {}) => {
 
   switch (opts.platform) {
     case 'web': {
-      opts.rootValue = options.rootValue || baseFontSize * opts.deviceRatio[opts.designWidth];
+      opts.rootValue = options.rootValue || baseFontSize / opts.deviceRatio[opts.designWidth];
       targetUnit = 'rem';
       break;
     }
@@ -143,6 +145,7 @@ module.exports = (options: Partial<PxTransformerOptions> = {}) => {
   const exclude = opts.exclude;
   let isExcludeFile = false;
   let pxReplace: ReturnType<typeof createPxReplace>;
+
   return {
     postcssPlugin: 'postcss-pxtransform',
     Once(css: any) {
@@ -159,7 +162,9 @@ module.exports = (options: Partial<PxTransformerOptions> = {}) => {
       }
 
       const rootValue = typeof opts.rootValue === 'function' ? opts.rootValue(css.source.input) : opts.rootValue;
-      pxReplace = createPxReplace(rootValue, opts.unitPrecision, opts.minPixelValue, targetUnit);
+      // 组件库默认375标准
+      const value = new RegExp(['node_modules', '@bytedance', 'mona-client-web'].join(process.platform === 'win32' ? '\\\\' : '/')).test(filePath) ? baseFontSize / 2 : rootValue;
+      pxReplace = createPxReplace(value, opts.unitPrecision, opts.minPixelValue, targetUnit);
     },
     Declaration(decl: any) {
       if (isExcludeFile) return;

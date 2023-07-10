@@ -782,8 +782,8 @@ export interface ChooseAddressesSuccessCallbackArgs {
 export interface ChooseAddressesOptions extends Callbacks<ChooseAddressesSuccessCallbackArgs, CommonErrorArgs> {}
 
 export interface GetSettingSuccessCallbackArgs {
-  errMsg: string;
-  authSetting: {
+  errMsg?: string;
+  authSetting?: {
     'scope.userInfo'?: boolean;
     'scope.userLocation'?: boolean;
     'scope.address'?: boolean;
@@ -791,6 +791,7 @@ export interface GetSettingSuccessCallbackArgs {
     'scope.album'?: boolean;
     'scope.camera'?: boolean;
   };
+  apiAuthSetting?: Record<string, boolean>;
 }
 export interface GetSettingOptions extends Callbacks<GetSettingSuccessCallbackArgs, CommonErrorArgs> {}
 type OpenSettingsOptions = GetSettingOptions;
@@ -804,7 +805,8 @@ type Scope =
   | 'scope.camera';
 
 export interface AuthorizeOptions extends Callbacks {
-  scope: Scope;
+  scope?: Scope;
+  apiName: string;
 }
 
 export interface ShowDouyinOpenAuthSuccessCallbackArgs {
@@ -1431,6 +1433,8 @@ export interface OriginApis {
   getClipboardData: (options?: Callbacks<{ data: string } & CommonErrorArgs, CommonErrorArgs>) => void;
   setClipboardData: (options: SetClipboardDataOptions) => void;
   getSystemInfo: (options?: GetSystemInfoOptions) => void;
+  getSetting: (options?: GetSettingOptions) => void;
+  authorize: (options: AuthorizeOptions) => void;
 }
 
 abstract class Api {

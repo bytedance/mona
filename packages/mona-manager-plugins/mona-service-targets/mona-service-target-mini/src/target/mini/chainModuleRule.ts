@@ -117,8 +117,8 @@ function createCssRule(webpackConfig: Config, configHelper: ConfigHelper) {
         postcssOptions: {
           plugins: [
             pxtOptions.enabled
-              ? // TODO: 后面使用mona-manager-plugins-shared
-                [path.join(__dirname, '../../plugins/postcss/PostcssPxtransformer/index.js'), pxtOptions]
+              ? 
+                [require.resolve('@bytedance/mona-manager-plugins-shared/dist/plugins/postcss/PostcssPxtransformer/index.js'), pxtOptions]
               : null,
           ].filter(p => p),
         },

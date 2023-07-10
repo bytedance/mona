@@ -1,5 +1,6 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 import { useBadge, useSelectTab, useTabProps, useToggleDotShow, useToggleShow } from './utils';
+import { createPortal } from 'react-dom';
 import styles from './index.module.less';
 
 export type TabBarProps = {
@@ -36,6 +37,23 @@ const TabBar: FC<{ tab?: TabBarProps }> = ({ tab: rawTab }) => {
   const { badges } = useBadge();
   const { show, withAnimation } = useToggleShow();
   const { dotIndexs } = useToggleDotShow();
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = document.getElementById('root')!;
+    const originMarginBottom = el.style.marginBottom;
+    const originHeight = el.style.height || '100vh';
+    if (ref.current) {
+      const height = ref.current?.offsetHeight ?? 0;
+      el.style.marginBottom = `${height}px`
+      el.style.height = `calc(${originHeight} - ${height}px)`;
+    }
+
+    return () => {
+      el.style.marginBottom = originMarginBottom;
+      el.style.height = originHeight;
+    };
+  }, [ref]);
 
   if (!tab || tab.list.length <= 0) {
     return null;
@@ -44,6 +62,7 @@ const TabBar: FC<{ tab?: TabBarProps }> = ({ tab: rawTab }) => {
   return (
     <div
       className={`${styles.container} ${!show ? styles.hidden : ''}`}
+      ref={ref}
       style={{
         transition: withAnimation ? 'transform .2s linear' : 'noset',
         backgroundColor: tab?.backgroundColor || '#fff',
@@ -71,4 +90,6 @@ const TabBar: FC<{ tab?: TabBarProps }> = ({ tab: rawTab }) => {
   );
 };
 
-export default TabBar;
+export default (props: { tab?: TabBarProps }) => {
+  return createPortal(<TabBar {...props} />, document.body);
+};

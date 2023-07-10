@@ -7,6 +7,8 @@ import { chainPlugins } from '../utils/chainPlugins';
 import { chainResolve } from '../utils/chainResolve';
 import { IPlugin } from '@bytedance/mona-manager';
 
+import MaxSubAutoTypeWebpackPlugin from './plugins/MaxMainAutoTypeWebpackPlugin';
+
 const { H5 } = Platform;
 
 const mobile: IPlugin = ctx => {
@@ -36,6 +38,9 @@ const mobile: IPlugin = ctx => {
       chainModuleRule(webpackConfig, configHelper);
       chainPlugins(webpackConfig, configHelper, H5, genH5Html);
       chainOptimization(webpackConfig, configHelper);
+
+      const isDev = process.env.NODE_ENV !== 'production';
+      isDev && webpackConfig.plugin('MaxSubAutoTypeWebpackPlugin').use(MaxSubAutoTypeWebpackPlugin)
     });
   });
 };
