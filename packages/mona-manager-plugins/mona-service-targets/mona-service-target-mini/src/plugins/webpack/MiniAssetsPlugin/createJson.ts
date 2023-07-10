@@ -16,7 +16,7 @@ import { getPageEntryPath, getRelativePath } from '@/target/utils/utils';
 import { formatReactNodeName } from '@/target/utils/reactNode';
 import { DEFAULT_APPID } from '@bytedance/mona-manager-plugins-shared';
 import { MiniComponentEntry } from '@/target/entires/miniComponentEntry';
-
+import { industryComponents } from '@/config/industry';
 const RawSource = sources.RawSource;
 const ejsRelativePath = '../../../assets/ejs';
 
@@ -87,11 +87,23 @@ export default async function createJson(compilation: Compilation, configHelper:
     pageConfig.usingComponents = {
       ...usingComponents,
       ...(pageConfig.usingComponents || {}),
+      ...industryComponents,
     };
 
     const source = new RawSource(JSON.stringify(pageConfig, null, 2));
     compilation.emitAsset(file, source);
   });
+
+  //package.json,增加"industrySDK": true
+  const packageJsonFile = 'package.json';
+  if (!compilation.getAsset(packageJsonFile)) {
+    const tplPath = path.join(__dirname, ejsRelativePath, './package.json.ejs');
+    const raw = await ejs.renderFile(tplPath, {
+      name,
+    });
+    const source = new RawSource(raw);
+    compilation.emitAsset(packageJsonFile, source);
+  }
 }
 
 function processModuleFactory(cwd: string, handledModules: Set<string>) {
@@ -137,6 +149,7 @@ function processModuleFactory(cwd: string, handledModules: Set<string>) {
               //TODO: 优化
               getPageEntryPath(path.join(componentEntry.outputDir, `./${componentEntry.basename}`), cwd),
             ),
+            ...industryComponents,
           };
           monaStore.pageEntires.set(page, pageInfo);
         } else {
@@ -152,7 +165,6 @@ function processModuleFactory(cwd: string, handledModules: Set<string>) {
 // 详见https://microapp.bytedance.com/docs/zh-CN/mini-app/develop/framework/custom-component/custom-component/#使用自定义组件
 export function addUsingComponents(compilation: Compilation, configHelper: ConfigHelper) {
   const pagesPath = new Map();
-
   configHelper.appConfig.pages.forEach(page => {
     const res = getPageEntryPath(page, configHelper.cwd);
     pagesPath.set(res, page);

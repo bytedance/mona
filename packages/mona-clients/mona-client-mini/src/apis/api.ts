@@ -207,3 +207,4 @@ export const unsubscribeAllSpecifiedUserComment: BaseApis['unsubscribeAllSpecifi
   tt.unsubscribeAllSpecifiedUserComment,
 );
 export const onReceiveSpecifiedComment: BaseApis['onReceiveSpecifiedComment'] = tt.onReceiveSpecifiedComment;
+export const fetchCoupons: BaseApis['fetchCoupons'] = promisify(tt.fetchCoupons);

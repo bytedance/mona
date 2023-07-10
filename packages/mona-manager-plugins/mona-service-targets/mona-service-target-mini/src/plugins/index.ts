@@ -5,6 +5,7 @@ import TerserWebpackPlugin from 'terser-webpack-plugin';
 
 import MiniEntryPlugin from './webpack/MiniEntryPlugin';
 import MiniAssetsPlugin from './webpack/MiniAssetsPlugin';
+import MiniJsApiPlugin from './webpack/MiniJsApiPlugin';
 import OptimizeEntriesPlugin from './webpack/ChunksEntriesPlugin';
 import { CopyPublicPlugin } from '@bytedance/mona-manager-plugins-shared';
 
@@ -19,6 +20,7 @@ export const MonaPlugins = {
   TerserWebpackPlugin,
   MiniEntryPlugin,
   MiniAssetsPlugin,
+  MiniJsApiPlugin,
   OptimizeEntriesPlugin,
   CopyPublicPlugin,
   babel: {
