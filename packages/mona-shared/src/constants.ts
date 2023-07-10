@@ -45,7 +45,7 @@ const MiniComponentType = {
   'open-data': '35',
   ptext: '36',
   'member-button': '37',
-  'coupon-button': '38',
+  'coupon-card': '38',
 };
 
 // TODO:开发模式语义化, 小程序运行时 build两份代码, index.production.js, index.development.js

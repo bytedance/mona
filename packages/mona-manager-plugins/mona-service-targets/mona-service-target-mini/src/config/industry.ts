@@ -1,3 +1,3 @@
 export const industryComponents = {
-  'coupon-button': 'ext://industry/coupon-button',
+  'coupon-card': 'ext://industry/coupon-card',
 };

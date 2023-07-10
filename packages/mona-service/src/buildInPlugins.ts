@@ -1,11 +1,10 @@
-import dynamicInstallPlugins from "./dynamicInstallPlugins";
+import dynamicInstallPlugins from './dynamicInstallPlugins';
 
 const flatten = (params: any[]) => [].concat(...params);
 export const pathToPlugin = (pathname: string) => require(pathname);
 export const convertPlugins = (plugins: string[]) => flatten(plugins.filter(r => r).map(pathToPlugin));
 
-
-const getBuildInPlugins = async function() {
+const getBuildInPlugins = async function () {
   const dynamicPlugins = await dynamicInstallPlugins();
 
   return convertPlugins([
@@ -16,8 +15,6 @@ const getBuildInPlugins = async function() {
     '@bytedance/mona-service-target-web',
     dynamicPlugins,
   ]);
-}
-
-
+};
 
 export default getBuildInPlugins;

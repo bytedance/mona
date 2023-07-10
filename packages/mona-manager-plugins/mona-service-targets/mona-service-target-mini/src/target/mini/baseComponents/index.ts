@@ -34,7 +34,7 @@ import webview from './Webview/alias';
 import map from './Map/alias';
 import camera from './Camera/alias';
 import memberButton from './MemberButton/alias';
-import couponButton from './CouponButton/alias';
+import couponCard from './CouponCard/alias';
 
 // import map from './Ca/alias';
 // import * as Components from '@bytedance/mona-components';
@@ -362,9 +362,9 @@ export const ejsParamsObj: Record<
     reactComponentName: 'MemberButton',
     alias: memberButton,
   },
-  [ComponentType['coupon-button']]: {
-    reactComponentName: 'CouponButton',
-    alias: couponButton,
+  [ComponentType['coupon-card']]: {
+    reactComponentName: 'CouponCard',
+    alias: couponCard,
   },
 };
 

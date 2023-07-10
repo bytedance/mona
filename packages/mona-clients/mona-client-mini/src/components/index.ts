@@ -40,7 +40,7 @@ import {
   TextProps,
   RichTextProps,
   MemberButtonProps,
-  CouponButtonProps,
+  CouponCardProps,
 } from '@bytedance/mona';
 
 export const Text = createBaseComponent<TextProps>(ComponentType['text']);
@@ -84,7 +84,7 @@ export const Webview = createBaseComponent<WebviewProps>(ComponentType['web-view
 export const Ad = createBaseComponent<AdProps>(ComponentType['ad']);
 export const OpenData = createBaseComponent<OpenDataProps>(ComponentType['open-data']);
 export const MemberButton = createBaseComponent<MemberButtonProps>(ComponentType['member-button']);
-export const CouponButton = createBaseComponent<CouponButtonProps>(ComponentType['coupon-button']);
+export const CouponCard = createBaseComponent<CouponCardProps>(ComponentType['coupon-card']);
 
 export const Link = (function createBaseComponent() {
   const Component = React.forwardRef(({ children, to }: any, ref) =>

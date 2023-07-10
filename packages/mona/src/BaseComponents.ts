@@ -114,14 +114,22 @@ export interface MemberButtonProps extends BaseProps {
   'bind:cancel': any;
   'bind:error': any;
 }
-export interface CouponButtonProps extends BaseProps {
+export interface CouponCardProps extends BaseProps {
   shopId: string;
   couponId: string;
-  buttonText: {
-    unapplieddText?: string;
+  isShowButtonOnly: boolean;
+  title: string;
+  subTitle: string;
+  imgUrl: string;
+  buttonOptions: {
+    unappliedText?: string;
     appliedText?: string;
     expiredText?: string;
     usedText?: string;
+    activeBackgroundColor?: string;
+    activeColor?: string;
+    disableBackgroundColor?: string;
+    disableColor?: string;
   };
   modalOptions: {
     title?: string;
@@ -132,11 +140,9 @@ export interface CouponButtonProps extends BaseProps {
     cancelText?: string;
     cancelColor?: string;
   };
-  activeBackgroundColor: string;
-  activeColor: string;
-  disableBackgroundColor: string;
-  disableColor: string;
-  url: string;
+  navigateUrl: string;
+  isShowCouponInfo: boolean;
+  productId: string;
 }
 export interface ProgressProps extends BaseProps {
   percent?: number;
