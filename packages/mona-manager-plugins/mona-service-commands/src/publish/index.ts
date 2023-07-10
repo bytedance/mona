@@ -8,6 +8,28 @@ import { upload } from './utils';
 import { compressDir } from '../compress/utils';
 import { generateRequestFromOpen } from '../common';
 
+const getSceneRoute = async (request: any) => {
+  const { data } = await request('/captain/app/version/searchScene?pageNo=1&pageSize=1000');
+
+  const choices = data?.reduce((prev: any[], cur: { sceneName: any }) => {
+    prev.push(cur.sceneName);
+    return prev;
+  }, []);
+
+  const { sceneName } = await inquirer.prompt([
+    {
+      type: 'list',
+      name: 'sceneName',
+      message: '请选择投放场景',
+      choices,
+    },
+  ]);
+
+  const sceneId = data.filter((v: { sceneName: any }) => v.sceneName === sceneName)[0].sceneId;
+
+  return [{ sceneId, enterRoute: '' }];
+};
+
 const publish: IPlugin = ctx => {
   ctx.registerCommand(
     'publish',
@@ -73,9 +95,21 @@ const publish: IPlugin = ctx => {
 
           // upload
           const { fileId, fileName } = await upload(output, user.userId, args);
+          let sceneRoute: { sceneId: any; enterRoute: string }[] = [];
+          try {
+            sceneRoute = await getSceneRoute(request);
+          } catch (err) {}
 
           // params
-          const params = { version: answer.version, versionType: 1, appId, desc: answer.desc || '', fileId, fileName };
+          const params = {
+            version: answer.version,
+            versionType: 1,
+            appId,
+            desc: answer.desc || '',
+            fileId,
+            fileName,
+            sceneRoute,
+          };
 
           console.log(chalk.cyan(`即将创建新版本`));
           // create new version
