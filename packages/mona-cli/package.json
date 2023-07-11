@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-cli",
-  "version": "0.3.17",
+  "version": "0.3.18",
   "displayName": "mona",
   "description": "Merchant app's developing and building tools",
   "main": "./bin/mona",
@@ -20,8 +20,8 @@
   "author": "zhangxiaowei.chris@bytedance.com",
   "license": "MIT",
   "dependencies": {
-    "@bytedance/mona-cli-commands": "0.3.17",
-    "@bytedance/mona-manager": "0.3.17"
+    "@bytedance/mona-cli-commands": "0.3.18",
+    "@bytedance/mona-manager": "0.3.18"
   },
   "devDependencies": {
     "@types/node": "^16.4.5"
