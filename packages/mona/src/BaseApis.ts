@@ -1779,6 +1779,14 @@ abstract class Api {
   // exit light app
   abstract exitLightApp?(): void;
   abstract lightAppLeftArrowHandle?(): void;
+  abstract fetchCoupons: PromisifyReturn<
+    (
+      options: { couponIds: string[] } & Callbacks<
+        { coupons: { couponId: string; name: string }[] } & CommonErrorArgs,
+        CommonExtendsErrorArgs
+      >,
+    ) => void
+  >;
 }
 type BaseApis = Api & { [key: string | symbol | number]: (options: any) => void };
 export default BaseApis;

@@ -12,6 +12,7 @@ export {
   useRequest,
   lightAppLeftArrowHandle,
   request,
+  app,
   uploadFileTemporary,
   app,
 } from '@bytedance/mona-client-web';

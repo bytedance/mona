@@ -59,7 +59,6 @@ export default class TaskController {
       if (task.taskNode.isDeleted()) {
         return;
       }
-
       if (task.type === NodeTask.SPLICE) {
         res[this.genUpdatePath([...task.parentPath, COMPLIER_NODES_STR, task.key])] = task.targetNode;
         if (task.children) {

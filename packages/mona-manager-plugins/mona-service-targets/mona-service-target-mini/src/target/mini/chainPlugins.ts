@@ -20,4 +20,5 @@ export function chainPlugins(webpackConfig: Config, configHelper: ConfigHelper, 
     },
   ]);
   webpackConfig.plugin('OptimizeEntriesPlugin').use(MonaPlugins.OptimizeEntriesPlugin);
+  webpackConfig.plugin('miniJsApiPlugin').use(MonaPlugins.MiniJsApiPlugin);
 }

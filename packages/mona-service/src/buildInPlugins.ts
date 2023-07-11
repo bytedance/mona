@@ -16,7 +16,6 @@ const buildInPlugins = convertPlugins([
 
 export default buildInPlugins;
 
-
 // const getBuildInPlugins = async function() {
 //   const dynamicPlugins = await dynamicInstallPlugins();
 
@@ -29,7 +28,5 @@ export default buildInPlugins;
 //     dynamicPlugins,
 //   ]);
 // }
-
-
 
 // export default getBuildInPlugins;

@@ -20,7 +20,6 @@ const mini: IPlugin = ctx => {
     const { cwd, projectConfig } = configHelper;
 
     tctx.overrideStartCommand(() => {
-      console.log('from npm ');
       const { builder } = tctx;
       const webpackConfig = builder.resolveWebpackConfig();
       if (!webpackConfig) {

@@ -17,3 +17,5 @@ export const Mona: BaseApis = new Proxy({} as any, {
   },
   set: () => false,
 });
+
+export { mini } from './specApi';
