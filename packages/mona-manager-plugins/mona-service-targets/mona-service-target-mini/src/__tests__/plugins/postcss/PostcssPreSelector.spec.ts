@@ -1,5 +1,5 @@
 const postcss = require('postcss');
-const plugin = require('../../../plugins/postcss/PostcssPreSelector');
+const plugin = require('@bytedance/mona-manager-plugins-shared/dist/plugins/postcss/PostcssPreSelector');
 
 function run(input: string) {
   return postcss([plugin({ selector: '#pre' })]).process(input, { from: '', to: '' }).then(result => {

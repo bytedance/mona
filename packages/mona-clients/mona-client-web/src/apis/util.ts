@@ -84,7 +84,6 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
           let parseData;
           try {
             parseData = JSON.parse(r.data);
-            console.warn(`not valid json for ${r.data}, use origin data`);
           } catch (e) {
             parseData = r.data;
           }
@@ -540,6 +539,82 @@ export const webGetSystemInfoSync: BaseApis['getSystemInfoSync'] = () => {
   };
 
   return systemInfo;
+};
+const USER_AUTHORIZATION_CACHE = '__USER_AUTHORIZATION_CACHE__';
+const MONA_APPID = '__MONA_APPID__';
+const MONA_JSAPI_LIST = '__MONA_JSAPI_LIST__';
+const MONA_SHOW_AUTHORIZE_MODAL = '__MONA_SHOW_AUTHORIZE_MODAL__';
+
+export const webGetSetting: OriginApis['getSetting'] = options => {
+  try {
+    // @ts-ignore
+    const appid = window[MONA_APPID];
+    const data = webGetStorageSync(USER_AUTHORIZATION_CACHE);
+
+    if (data) {
+      const apiAuthSetting = JSON.parse(data)?.[appid];
+      options?.success?.({ apiAuthSetting });
+      options?.complete?.({ apiAuthSetting });
+    } else {
+      options?.success?.({ apiAuthSetting: {} });
+      options?.complete?.({ apiAuthSetting: {} });
+    }
+  } catch (e) {
+    console.log('e', e);
+    options?.fail?.({ errMsg: 'getSetting:fail' });
+    options?.complete?.({ errMsg: 'getSetting:fail' });
+  }
+};
+
+const removePrefix = (apiName: string) => {
+  if (typeof apiName === 'string') {
+    const arr = apiName.split('.');
+    return arr[arr.length - 1];
+  }
+  return apiName;
+} 
+export const webAuthorize: OriginApis['authorize'] = options => {
+  const setAuthorzationCache = (isTrue: boolean) => {
+    const data = webGetStorageSync(USER_AUTHORIZATION_CACHE);
+    let dataObj: { [key: string]: { [key: string]: boolean } };
+    // @ts-ignore
+    const appid = window[MONA_APPID];
+    if (data) {
+      // 有缓存
+      dataObj = JSON.parse(data);
+      dataObj[appid] = { ...dataObj[appid], [options.apiName]: isTrue };
+    } else {
+      // 没有缓存
+      dataObj = {};
+      dataObj[appid] = { [options.apiName]: isTrue };
+    }
+    webSetStorageSync(USER_AUTHORIZATION_CACHE, JSON.stringify(dataObj));
+  };
+  const rejectCallback = () => {
+    try {
+      setAuthorzationCache(false);
+      options?.success?.(false);
+      options?.complete?.(false);
+    } catch (err) {
+      options?.fail?.({ errMsg: 'authorize:fail' });
+      options?.complete?.({ errMsg: 'authorize:fail' });
+    }
+  };
+  const allowCallback = () => {
+    try {
+      setAuthorzationCache(true);
+      options?.success?.(true);
+      options?.complete?.(true);
+    } catch (err) {
+      options?.fail?.({ errMsg: 'authorize:fail' });
+      options?.complete?.({ errMsg: 'authorize:fail' });
+    }
+  };
+  const authorizationText =
+    // @ts-ignore
+    window[MONA_JSAPI_LIST]?.find((item: any) => item?.jsApiName === removePrefix(options.apiName))?.reqAuthDesc || '请求您的授权';
+  // @ts-ignore
+  window[MONA_SHOW_AUTHORIZE_MODAL] && window[MONA_SHOW_AUTHORIZE_MODAL](authorizationText, allowCallback, rejectCallback);
 };
 
 export const webOpen = (url: string) => window.open(url, '_blank', 'noopener,noreferrer');

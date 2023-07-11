@@ -111,7 +111,7 @@ jobs:
           message: 'chore(release): publish version ${{ env.cversion }} --tag=${{ env.ctag }}'
 
       - name: Create Pull Request
-        # if: contains('alpha beta', env.ctag) == false
+        if: contains('alpha beta', env.ctag) == false
         # https://github.com/emiliopedrollo/create-pull-request
         uses: emiliopedrollo/create-pull-request@v1.1.0
         id: cpr
@@ -161,7 +161,7 @@ jobs:
             publish v${{ env.cversion }}
 
       - name: Comment in PR
-        # if: contains('alpha beta', env.ctag) == false
+        if: contains('alpha beta', env.ctag) == false
         uses: actions/github-script@0.8.0
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}

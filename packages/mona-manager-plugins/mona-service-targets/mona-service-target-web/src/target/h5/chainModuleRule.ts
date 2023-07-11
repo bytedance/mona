@@ -1,4 +1,3 @@
-import path from 'path';
 import Config from 'webpack-chain';
 
 import { ConfigHelper } from '@bytedance/mona-manager';
@@ -43,8 +42,8 @@ function commonCssRule(styleRule: Config.Rule<Config.Module>, configHelper: Conf
       postcssOptions: {
         plugins: [
           pxtOptions.enabled
-            ? // TODO: 后面使用mona-manager-plugins-shared
-              [path.join(__dirname, '../../plugins/postcss/PostcssPxtransformer/index.js'), pxtOptions]
+            ? 
+              [require.resolve('@bytedance/mona-manager-plugins-shared/dist/plugins/postcss/PostcssPxtransformer/index.js'), pxtOptions]
             : null,
         ].filter(p => p),
       },
