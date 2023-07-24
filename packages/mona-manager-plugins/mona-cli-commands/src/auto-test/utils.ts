@@ -13,7 +13,6 @@ export async function importRemoteModule<M>(location: string): Promise<M> {
         'x-tt-env': process.env.UI_TEST_TT_ENV
       }
     });
-    console.log(11, process.env.UI_TEST_TT_ENV);
     const res = execute(data) as M;
 
     return res;
