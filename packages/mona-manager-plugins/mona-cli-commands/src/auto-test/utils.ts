@@ -6,11 +6,19 @@ const req = axios.get;
 
 export async function importRemoteModule<M>(location: string): Promise<M> {
   try {
-    const { data } = await req(location);
+    const { data } = await req(location, {
+      headers: {
+        'cache-control': 'no-cache',
+        pragma: 'no-cache',
+        'x-tt-env': process.env.UI_TEST_TT_ENV
+      }
+    });
+    console.log(11, process.env.UI_TEST_TT_ENV);
     const res = execute(data) as M;
 
     return res;
   } catch (error) {
+    console.error(error);
     return {} as never;
   }
 }
