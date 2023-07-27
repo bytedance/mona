@@ -27,6 +27,10 @@ const templates = [
     name: 'h5（适用于移动端应用开发）',
     value: 'h5',
   },
+  {
+    name: 'mobile（适用于新版移动端应用开发）',
+    value: 'mobile',
+  },
 ];
 
 const maxTemplateTypes = [

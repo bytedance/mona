@@ -12,4 +12,5 @@ export enum Platform {
   H5 = 'h5',
   MAX = 'max',
   MAX_TEMPLATE = 'max-template',
+  MOBILE = 'mobile',
 }

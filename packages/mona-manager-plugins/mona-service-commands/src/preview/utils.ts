@@ -10,7 +10,7 @@ import path from 'path';
 import fs from 'fs';
 import os from 'os';
 import chalk from 'chalk';
-import { OPEN_DOMAIN, DEFAULT_PORT } from '@bytedance/mona-shared';
+import { OPEN_DOMAIN, DEFAULT_PORT, LIGHT_SCHEMA_DOMAIN } from '@bytedance/mona-shared';
 
 const isWin = os.platform() === 'win32';
 type Request<T = any> = (path: string, options?: AxiosRequestConfig<any>) => Promise<T>;
@@ -258,7 +258,30 @@ export function buildProject(_target: string) {
 export const generateH5Qrcode = (args: any) => {
   return async (params: { appId: string; version: string }) => {
     const domain = args.domain || OPEN_DOMAIN;
-    const originUrl =  `https://${domain}/ecom-app/h5?appId=${params?.appId}&version=${params?.version}&isPreview=true&hide_nav_bar=1`;
+    const originUrl = `https://${domain}/ecom-app/h5?appId=${params?.appId}&version=${params?.version}&isPreview=true&hide_nav_bar=1`;
+    const preViewCodeUrl = `snssdk3102://open_webview?url=${encodeURIComponent(originUrl)}`;
+    const qrcode = await new Promise((resolve, reject) => {
+      console.log('请使用最新版抖店APP扫描', preViewCodeUrl);
+      // @ts-ignore
+      // qrcode render failed in windows terminal when options with small: true
+      QRCode.toString(preViewCodeUrl, { type: 'terminal', small: !isWin }, (err, url) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(url);
+        }
+      });
+    });
+
+    return { qrcode, expireTime: Date.now() / 1000 + 8 * 60 * 60 };
+  };
+};
+
+export const generateMobileQrcode = (args: any) => {
+  return async (params: { appId: string; version: string }) => {
+    const domain = args.domain || LIGHT_SCHEMA_DOMAIN;
+    // TODO: 改为微应用协议
+    const originUrl = `https://${domain}/mobile/${params?.appId}?entry=xxx&isPreview=true`;
     const preViewCodeUrl = `snssdk3102://open_webview?url=${encodeURIComponent(originUrl)}`;
     const qrcode = await new Promise((resolve, reject) => {
       console.log('请使用最新版抖店APP扫描', preViewCodeUrl);

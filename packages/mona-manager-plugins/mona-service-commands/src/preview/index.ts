@@ -12,6 +12,7 @@ import {
   openUrlWithBrowser,
   buildProject,
   generateH5Qrcode,
+  generateMobileQrcode,
   processProjectData,
   askMixedComponentFactory,
   askMixedTemplateFactory,
@@ -65,6 +66,15 @@ const preview: IPlugin = ctx => {
             processProjectData,
             createTestVersionFactory(request, args),
             generateH5Qrcode(args),
+            printQrcode('抖店APP'),
+          )(ctx);
+          break;
+        case AppSceneTypeEnum.MOBILE:
+          await pipe(
+            buildProject('mobile'),
+            processProjectData,
+            createTestVersionFactory(request, args),
+            generateMobileQrcode(args),
             printQrcode('抖店APP'),
           )(ctx);
           break;
