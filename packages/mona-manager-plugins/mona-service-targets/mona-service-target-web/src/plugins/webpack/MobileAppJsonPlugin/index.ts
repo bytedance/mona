@@ -1,7 +1,8 @@
 import { ConfigHelper } from '@bytedance/mona-manager';
-import { Compiler } from 'webpack';
+import { Compiler, sources } from 'webpack';
 import fs from 'fs';
 import path from 'path';
+
 const APP_CONFIG_TS_PATH = 'app.config.ts';
 const APP_CONFIG_JS_PATH = 'app.config.js';
 
@@ -14,17 +15,18 @@ class MobileAppJsonPlugin {
   }
 
   apply(compiler: Compiler) {
-    compiler.hooks.afterEmit.tap('MobileAppJsonPlugin', () => {
+    compiler.hooks.emit.tap('MobileAppJsonPlugin', compilation => {
       try {
-        const { cwd, projectConfig } = this.configHelper;
+        const { cwd } = this.configHelper;
         const appConfigPath = fs.existsSync(path.join(cwd, APP_CONFIG_TS_PATH))
           ? path.join(cwd, APP_CONFIG_TS_PATH)
           : path.join(cwd, APP_CONFIG_JS_PATH);
-        const outputFilePath = path.join(cwd, projectConfig.output, 'app.json');
         if (fs.existsSync(appConfigPath)) {
           const appConfigObj = require(appConfigPath).default;
           const jsonContent = JSON.stringify(appConfigObj);
-          fs.writeFileSync(outputFilePath, jsonContent);
+          // 将目标文件的内容写入内存中
+          const source = new sources.RawSource(jsonContent);
+          compilation.emitAsset('app.json', source);
         }
       } catch (err) {
         console.warn(err);
