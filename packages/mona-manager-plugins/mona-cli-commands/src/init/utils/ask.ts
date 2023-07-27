@@ -28,7 +28,7 @@ const templates = [
     value: 'h5',
   },
   {
-    name: 'mobile（适用于新版移动端应用开发）',
+    name: 'mobile（适用于移动端微应用开发）',
     value: 'mobile',
   },
 ];
