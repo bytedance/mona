@@ -4,6 +4,11 @@ import { LifecycleContext, AppLifecycleGlobalContext, AppLifecycle } from '@byte
 import { isClassComponent } from '@bytedance/mona-shared/dist/reactNode';
 import { GLOBAL_LIFECYCLE_STORE } from '@bytedance/mona-shared/dist/constants';
 
+const lightAppLifeCycleParamsKey = {
+  launch: '__MONA_LIGHT_APP_LIFE_CYCLE_LANUCH_QUERY',
+  show: '__MONA_LIGHT_APP_LIFE_CYCLE_SHOW_QUERY',
+};
+
 export function createAppLifeCycle(Component: React.ComponentType<any>) {
   const appLifecycleContext = new LifecycleContext();
   const appEntryRef = React.createRef<any>();
@@ -33,6 +38,12 @@ export function createAppLifeCycle(Component: React.ComponentType<any>) {
   const handlePageNotFound = (...rest: any[]) => {
     callLifecycle(AppLifecycle.pageNotFound, ...rest);
   };
+  const handleShow = (...rest: any[]) => {
+    callLifecycle(AppLifecycle.show, ...rest);
+  };
+  const handleHide = (...rest: any[]) => {
+    callLifecycle(AppLifecycle.hide, ...rest);
+  };
 
   //@ts-ignore
   window[GLOBAL_LIFECYCLE_STORE] = {
@@ -40,6 +51,8 @@ export function createAppLifeCycle(Component: React.ComponentType<any>) {
     handleLaunch,
     handleVisibilityChange,
     handlePageNotFound,
+    handleShow,
+    handleHide,
   };
   // onError
   window.addEventListener('error', handleError);
@@ -49,9 +62,8 @@ export function createAppLifeCycle(Component: React.ComponentType<any>) {
     // componentDidCatch
     componentDidMount() {
       handleVisibilityChange();
-
-      // onLaunch
-      handleLaunch();
+      handleShow(window[lightAppLifeCycleParamsKey.show as any] || {});
+      handleLaunch(window[lightAppLifeCycleParamsKey.launch as any] || {});
     }
     componentWillUnmount() {
       window.removeEventListener('error', handleError);

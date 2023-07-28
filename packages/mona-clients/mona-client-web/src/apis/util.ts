@@ -25,6 +25,11 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
   if (typeof data.url === 'undefined' && typeof data.fn === 'undefined') {
     return Promise.reject(new Error('url and funcName must be specified'));
   }
+  const isLightApp = data.fn && window.__MONA_LIGHT_APP_GET_TOEKN;
+
+  if (data.fn && window.__LIGHT_ISV_REQ) {
+    return window.__LIGHT_ISV_REQ(data);
+  }
 
   const defaultHeader = {
     'Content-Type': 'application/json',
@@ -37,7 +42,6 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
     signal: controller.signal,
   };
 
-  const isLightApp = data.fn && window.__MONA_LIGHT_APP_GET_TOEKN;
   let token = '';
   // light app
   if (isLightApp) {
