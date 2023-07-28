@@ -14,6 +14,10 @@ const start: IPlugin = ctx => {
     },
     (args, _, targetContext) => {
       process.env.NODE_ENV = 'development';
+
+      if (args.coverage && args.target === 'light') {
+        process.env.COVERAGE = '1';
+      }
       if (targetContext?.startFn) {
         targetContext?.startFn(args);
       }

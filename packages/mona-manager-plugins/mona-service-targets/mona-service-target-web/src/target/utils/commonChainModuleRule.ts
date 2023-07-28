@@ -65,6 +65,8 @@ function createJsRule({ webpackConfig, configHelper, TARGET }: ModuleRule) {
           path.join(__dirname, '../../plugins/babel/BabelPluginMultiTarget.js'),
           { target: TARGET, context: cwd, alias: genAlias(TARGET) },
         ],
+        // coverage
+        process.env.COVERAGE === '1' && require.resolve('@bytedance/babel-coverage-plugin')
       ].filter(Boolean),
     });
   // jsRule

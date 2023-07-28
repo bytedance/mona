@@ -88,9 +88,26 @@ class PluginEntryModule {
         ConfigProvider.config({ prefixCls: 'mui' });`
       : '';
 
+    const coverageCode = process.env.COVERAGE === '1' ? `
+      import { createCoverageUploader } from '@bytedance/coverage-uploader/dist/uplodaer'
+
+      const instance = createCoverageUploader({
+        url: 'http://localhost:9125/coverage/client',
+        interval: 2000,
+        preReport(c) {
+          return {
+            coverage: c
+          }
+        },
+      })
+      
+      instance.init();
+    ` : '';
+
     const code = `
       import './public-path';
       ${injectCode}
+      ${coverageCode}
       import { createPlugin, createPluginLifeCycle, createPluginPageLifecycle } from '@bytedance/mona-runtime';
       import App from './${path.basename(filename)}';
       ${this._generateRoutesCode()}
@@ -99,6 +116,8 @@ class PluginEntryModule {
       const { provider: p } =  createPlugin(createPluginLifeCycle(App), routes, { defaultPath, light }, ${injectMonaUi} ? { ConfigProvider, zh_CN} : null);
       export const provider = p;
     `;
+
+    
 
     return code;
   }
