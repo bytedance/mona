@@ -21,6 +21,7 @@
   "dependencies": {
     "@bytedance/mona": "0.3.19-alpha.1",
     "@bytedance/mona-shared": "0.3.19-alpha.1",
+    "abortcontroller-polyfill": "^1.7.5",
     "ahooks": "^3.7.0"
   },
   "devDependencies": {

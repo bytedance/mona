@@ -35,7 +35,10 @@ const publish: IPlugin = ctx => {
     'publish',
     {
       description: '发布新版本代码到开放平台',
-      options: [{ name: 'help', description: '输出帮助信息', alias: 'h' }],
+      options: [
+        { name: 'help', description: '输出帮助信息', alias: 'h' },
+        { name: 'target', description: '上传端，当为微应用时需指定上传pc端还是移动端，默认为light', alias: 't' },
+      ],
       usage: 'mona-service publish',
     },
     async (args, configHelper) => {
@@ -109,6 +112,7 @@ const publish: IPlugin = ctx => {
             fileId,
             fileName,
             sceneRoute,
+            AppSupportEndEnum: args.t === 'mobile' ? 1 : 2,
           };
 
           console.log(chalk.cyan(`即将创建新版本`));

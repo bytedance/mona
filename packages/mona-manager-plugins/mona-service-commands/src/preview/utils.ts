@@ -280,8 +280,7 @@ export const generateH5Qrcode = (args: any) => {
 export const generateMobileQrcode = (args: any) => {
   return async (params: { appId: string; version: string }) => {
     const domain = args.domain || LIGHT_SCHEMA_DOMAIN;
-    // TODO: 改为微应用协议
-    const originUrl = `https://${domain}/mobile/${params?.appId}?entry=xxx&isPreview=true`;
+    const originUrl = `https://${domain}/mobile/open?_appId=${params?.appId}&_version=${params?.version}&_env=preview&_from=monaPreview`;
     const preViewCodeUrl = `snssdk3102://open_webview?url=${encodeURIComponent(originUrl)}`;
     const qrcode = await new Promise((resolve, reject) => {
       console.log('请使用最新版抖店APP扫描', preViewCodeUrl);

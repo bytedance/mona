@@ -19,7 +19,6 @@ export enum AppSceneTypeEnum {
   LIGHT_APP = 3,
   H5 = 4,
   PIGEON_PLUGIN = 5,
-  MOBILE = 6,
 }
 
 export function deleteUser() {

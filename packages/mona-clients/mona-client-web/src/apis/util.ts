@@ -1,3 +1,4 @@
+import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
 import formatPath from '@bytedance/mona-shared/dist/formatPath';
 import {
   GetImageInfoSuccessCallbackArgs,
@@ -572,7 +573,7 @@ const removePrefix = (apiName: string) => {
     return arr[arr.length - 1];
   }
   return apiName;
-} 
+};
 export const webAuthorize: OriginApis['authorize'] = options => {
   const setAuthorzationCache = (isTrue: boolean) => {
     const data = webGetStorageSync(USER_AUTHORIZATION_CACHE);
@@ -612,9 +613,12 @@ export const webAuthorize: OriginApis['authorize'] = options => {
   };
   const authorizationText =
     // @ts-ignore
-    window[MONA_JSAPI_LIST]?.find((item: any) => item?.jsApiName === removePrefix(options.apiName))?.reqAuthDesc || '请求您的授权';
+    window[MONA_JSAPI_LIST]?.find((item: any) => item?.jsApiName === removePrefix(options.apiName))?.reqAuthDesc ||
+    '请求您的授权';
   // @ts-ignore
-  window[MONA_SHOW_AUTHORIZE_MODAL] && window[MONA_SHOW_AUTHORIZE_MODAL](authorizationText, allowCallback, rejectCallback);
+  window[MONA_SHOW_AUTHORIZE_MODAL] &&
+    // @ts-ignore
+    window[MONA_SHOW_AUTHORIZE_MODAL](authorizationText, allowCallback, rejectCallback);
 };
 
 export const webOpen = (url: string) => window.open(url, '_blank', 'noopener,noreferrer');
