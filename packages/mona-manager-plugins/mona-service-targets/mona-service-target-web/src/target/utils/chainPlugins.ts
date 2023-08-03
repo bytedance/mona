@@ -46,7 +46,7 @@ export function chainPlugins(
         ],
       ]);
 
-  if (TARGET === Platform.MOBILE) {
+  if (TARGET === Platform.MOBILE || TARGET === Platform.LIGHT) {
     // 如果是mobile，将app.config.ts/js 转成json复制到dist
     webpackConfig.plugin('MobileAppJsonPlugin').use(MobileAppJsonPlugin, [configHelper]);
   }
