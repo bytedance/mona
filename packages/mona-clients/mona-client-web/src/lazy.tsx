@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-
+import styles from './index.module.less';
 const wrapperStyle: React.CSSProperties = {
   position: 'absolute',
   top: 0,
@@ -22,22 +22,17 @@ const centerStyle: React.CSSProperties = {
   height: '100%',
   width: '100%',
 };
-const imgStyle: React.CSSProperties = {
-  width: '64%',
-  // margin-bottom: 5.333%;
-  display: 'inline-block',
-};
+
 export const Loading: React.FC = () => {
   return (
     <div style={wrapperStyle}>
       <div style={centerStyle}>
         <img
-          style={imgStyle}
-          src={'https://lf3-fe.ecombdstatic.com/obj/ecom-open-butler/mona/loading.png'}
+          className={styles.loading}
+          src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTIgMkM2LjQ3NzE1IDIgMiA2LjQ3NzE1IDIgMTJDMiAxNy41MjI4IDYuNDc3MTUgMjIgMTIgMjJDMTQuMzU0OSAyMiAxNi41MjIxIDIxLjE4NDggMTguMjMwOSAxOS44MjE5QzE4LjY2MjcgMTkuNDc3NiAxOC43MzM2IDE4Ljg0ODQgMTguMzg5MiAxOC40MTY2QzE4LjA0NDggMTcuOTg0OCAxNy40MTU2IDE3LjkxNCAxNi45ODM5IDE4LjI1ODNDMTUuNjE2NSAxOS4zNDg4IDEzLjg4NTcgMjAgMTIgMjBDNy41ODE3MiAyMCA0IDE2LjQxODMgNCAxMkM0IDcuNTgxNzIgNy41ODE3MiA0IDEyIDRDMTYuNDE4MyA0IDIwIDcuNTgxNzIgMjAgMTJDMjAgMTIuNTUyMyAyMC40NDc3IDEzIDIxIDEzQzIxLjU1MjMgMTMgMjIgMTIuNTUyMyAyMiAxMkMyMiA2LjQ3NzE1IDE3LjUyMjggMiAxMiAyWiIgZmlsbD0iIzE5NjZGRiIvPjwvc3ZnPg=="
           //@ts-ignore
           onError={e => e.target && (e.target.src = '')}
         />
-        <div className="mona-empty-desc">loading...</div>
       </div>
     </div>
   );
