@@ -1,4 +1,4 @@
-import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
+import './abortcontroller-polfill';
 import formatPath from '@bytedance/mona-shared/dist/formatPath';
 import {
   GetImageInfoSuccessCallbackArgs,

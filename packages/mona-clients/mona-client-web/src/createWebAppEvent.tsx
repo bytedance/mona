@@ -28,13 +28,7 @@ export function createAppLifeCycle(Component: React.ComponentType<any>) {
   const handleLaunch = (...rest: any[]) => {
     callLifecycle(AppLifecycle.launch, ...rest);
   };
-  const handleVisibilityChange = () => {
-    if (document.visibilityState === 'visible') {
-      callLifecycle(AppLifecycle.show);
-    } else {
-      callLifecycle(AppLifecycle.hide);
-    }
-  };
+
   const handlePageNotFound = (...rest: any[]) => {
     callLifecycle(AppLifecycle.pageNotFound, ...rest);
   };
@@ -43,6 +37,13 @@ export function createAppLifeCycle(Component: React.ComponentType<any>) {
   };
   const handleHide = (...rest: any[]) => {
     callLifecycle(AppLifecycle.hide, ...rest);
+  };
+  const handleVisibilityChange = () => {
+    if (document.visibilityState === 'visible') {
+      handleShow(window[lightAppLifeCycleParamsKey.show as any] || {});
+    } else {
+      handleHide();
+    }
   };
 
   //@ts-ignore
@@ -56,17 +57,18 @@ export function createAppLifeCycle(Component: React.ComponentType<any>) {
   };
   // onError
   window.addEventListener('error', handleError);
+  window.addEventListener('unhandledrejection', handleError);
   // onShow & onHide
   document.addEventListener('visibilitychange', handleVisibilityChange);
   class AppConfig extends React.Component {
     // componentDidCatch
     componentDidMount() {
       handleVisibilityChange();
-      handleShow(window[lightAppLifeCycleParamsKey.show as any] || {});
       handleLaunch(window[lightAppLifeCycleParamsKey.launch as any] || {});
     }
     componentWillUnmount() {
       window.removeEventListener('error', handleError);
+      window.removeEventListener('unhandledrejection', handleError);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     }
     render() {
