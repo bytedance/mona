@@ -13,7 +13,7 @@ export const WrapperComponent: React.FC<{ title: string }> = ({ children, title 
   document.title = title || '应用';
   useEffect(() => {
     setNavigationBarTitle({ title: document.title });
-  }, [document.title])
+  }, [document.title]);
 
   return <>{children}</>;
 };
@@ -71,9 +71,9 @@ export const HistorySetWrapper: React.FC = ({ children }) => {
   return <>{children}</>;
 };
 
-const defaultLightConfig: AppConfig['light'] = { mode: 'sidebar-semi-420' };
+const defaultLightConfig: any = { mode: 'sidebar-semi-420' };
 
-function prepareLightApp(config: AppConfig['light']) {
+function prepareLightApp(config: any) {
   // @ts-ignore
   if (typeof window.__MONA_LIGHT_APP_INIT_CB === 'function' && typeof config === 'object') {
     // @ts-ignore
@@ -90,7 +90,7 @@ export function createWebApp(
     tabBar?: AppConfig['tabBar'];
     navBar?: AppConfig['window'];
     defaultPath?: string;
-    light?: AppConfig['light'];
+    light?: any;
   },
   libraryConfig?: {
     ConfigProvider: React.FC<{ prefixCls: string; locale: any; children?: React.ReactNode }>;
@@ -100,8 +100,8 @@ export function createWebApp(
   const Provider = libraryConfig?.ConfigProvider
     ? libraryConfig.ConfigProvider
     : ({ children }: { children: React.ReactNode }) => {
-      return <>{children}</>;
-    };
+        return <>{children}</>;
+      };
 
   const render = ({ dom }: { dom: Element | Document }) => {
     prepareLightApp(options?.light);
