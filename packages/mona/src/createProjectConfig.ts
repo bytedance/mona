@@ -36,6 +36,11 @@ export interface ProjectConfig {
     monaUi?: boolean;
     openSafeSdk?: boolean;
   };
+  mock?: {
+    enable: boolean;
+    port?: number;
+    path?: string;
+  } | boolean,
   abilities?: {
     define?: Record<string, string>;
     copy?: PluginOptions;

@@ -64,7 +64,7 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
     console.error(`必须在主端调用微应用${data.fn}`);
   }
 
-  const url = isLightApp ? `https://${window.__MONA_LIGNT_APP_DOMAIN_NAME}/invoke` : data.url;
+  const url = isLightApp ? window.__MONA_LIGHT_REQUEST_URL || `https://${window.__MONA_LIGNT_APP_DOMAIN_NAME}/invoke` : data.url;
 
   if ((init.method as string).toUpperCase() === 'POST') {
     init.body = data.body ? data.body : data.data ? JSON.stringify(data.data) : '';

@@ -72,11 +72,6 @@ class PluginEntryModule {
     return defaultPathCode;
   }
 
-  private _generateLightConfigCode() {
-    const lightConfigCode = `const light = ${JSON.stringify(this.configHelper.appConfig.light)}`;
-    return lightConfigCode;
-  }
-
   private _generatePluginEntryCode(filename: string) {
     const { library, runtime } = this.configHelper.projectConfig;
     const injectMonaUi = library || runtime?.monaUi;
@@ -104,16 +99,18 @@ class PluginEntryModule {
       instance.init();
     ` : '';
 
+    const mockUrlCode = process.env.MOCK_URL ? `window.__MONA_LIGHT_REQUEST_URL = ${process.env.MOCK_URL};` : ''
+
     const code = `
       import './public-path';
       ${injectCode}
       ${coverageCode}
       import { createPlugin, createPluginLifeCycle, createPluginPageLifecycle } from '@bytedance/mona-runtime';
       import App from './${path.basename(filename)}';
+      ${mockUrlCode}
       ${this._generateRoutesCode()}
       ${this._generateDefaultPathCode()}
-      ${this._generateLightConfigCode()}
-      const { provider: p } =  createPlugin(createPluginLifeCycle(App), routes, { defaultPath, light }, ${injectMonaUi} ? { ConfigProvider, zh_CN} : null);
+      const { provider: p } =  createPlugin(createPluginLifeCycle(App), routes, { defaultPath }, ${injectMonaUi} ? { ConfigProvider, zh_CN} : null);
       export const provider = p;
     `;
 

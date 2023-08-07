@@ -1,4 +1,5 @@
 import { IPlugin } from '@bytedance/mona-manager';
+import { mock } from './mock';
 
 const start: IPlugin = ctx => {
  
@@ -17,6 +18,10 @@ const start: IPlugin = ctx => {
 
       if (args.coverage && args.target === 'light') {
         process.env.COVERAGE = '1';
+      }
+
+      if (args.target === 'light') {
+        mock(ctx, args);
       }
       if (targetContext?.startFn) {
         targetContext?.startFn(args);

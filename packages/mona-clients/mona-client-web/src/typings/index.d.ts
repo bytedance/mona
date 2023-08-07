@@ -14,6 +14,7 @@ declare interface Window {
   __MONA_EVENTEMITTER_LISTENER: { [key: string]: Function[] };
   __MONA_LIGHT_APP_GET_TOEKN?: () => string;
   __MONA_LIGNT_APP_DOMAIN_NAME?: string;
+  __MONA_LIGHT_REQUEST_URL?: string;
   __MONA_LIGHT_APP_NAVIGATE_CB?: (...args: any) => void;
   __MONA_LIGHT_APP_EXIT_APP_CB?: () => void;
   __MONA_LIGHT_APP_LEFT_ICON_BACK?: () => void;

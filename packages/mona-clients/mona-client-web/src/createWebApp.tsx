@@ -71,9 +71,9 @@ export const HistorySetWrapper: React.FC = ({ children }) => {
   return <>{children}</>;
 };
 
-const defaultLightConfig: AppConfig['light'] = { mode: 'sidebar-semi-420' };
-
-function prepareLightApp(config: AppConfig['light']) {
+// TODO: 没用是否删掉 @fengbo
+const defaultLightConfig: any = { mode: 'sidebar-semi-420' };
+function prepareLightApp(config: any) {
   // @ts-ignore
   if (typeof window.__MONA_LIGHT_APP_INIT_CB === 'function' && typeof config === 'object') {
     // @ts-ignore
@@ -90,7 +90,6 @@ export function createWebApp(
     tabBar?: AppConfig['tabBar'];
     navBar?: AppConfig['window'];
     defaultPath?: string;
-    light?: AppConfig['light'];
   },
   libraryConfig?: {
     ConfigProvider: React.FC<{ prefixCls: string; locale: any; children?: React.ReactNode }>;
@@ -104,7 +103,8 @@ export function createWebApp(
     };
 
   const render = ({ dom }: { dom: Element | Document }) => {
-    prepareLightApp(options?.light);
+    // TODO: delete
+    prepareLightApp({});
 
     ReactDOM.render(
       <Provider prefixCls="mui" locale={libraryConfig?.zh_CN}>
