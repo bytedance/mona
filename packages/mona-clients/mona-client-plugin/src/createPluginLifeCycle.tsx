@@ -115,6 +115,7 @@ export function createPluginPageLifecycle(Component: React.ComponentType<any>) {
       // onReady
       handleReady();
     }
+
     componentWillUnmount() {
       // onUnload
       handleUnload();

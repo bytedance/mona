@@ -8,12 +8,12 @@ import { chainResolve } from '../utils/chainResolve';
 import { IPlugin } from '@bytedance/mona-manager';
 import { MonaPlugins } from '@/plugins';
 
-const { H5 } = Platform;
+const { MOBILE } = Platform;
 
 const mobile: IPlugin = ctx => {
   const configHelper = ctx.configHelper;
 
-  ctx.registerTarget(H5, tctx => {
+  ctx.registerTarget(MOBILE, tctx => {
     tctx.chainWebpack(webpackConfig => {
       const { cwd, projectConfig } = configHelper;
       webpackConfig
@@ -33,9 +33,9 @@ const mobile: IPlugin = ctx => {
       //   // webpackConfig.externals({ react: 'react', 'react-dom': 'react-dom', 'react-router-dom': 'react-router-dom' });
       //   // webpackConfig.output.libraryTarget('umd');
       // }
-      chainResolve(webpackConfig, configHelper, H5);
+      chainResolve(webpackConfig, configHelper, MOBILE);
       chainModuleRule(webpackConfig, configHelper);
-      chainPlugins(webpackConfig, configHelper, H5, genH5Html);
+      chainPlugins(webpackConfig, configHelper, MOBILE, genH5Html);
       chainOptimization(webpackConfig, configHelper);
 
       const isDev = process.env.NODE_ENV !== 'production';

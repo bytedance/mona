@@ -2,10 +2,10 @@ import { writeFile, readFile } from 'fs';
 import path from 'path';
 import { JsApi, RequestArg, ResponseArg, getJsApiList } from './util';
 
-class MaxMainAutoTypeWebpackPlugin {
+class MobileAutoTypePlugin {
   constructor() {}
   apply(compiler: any) {
-    compiler.hooks.compile.tap('MaxSubAutoTypeWebpackPlugin', async () => {
+    compiler.hooks.compile.tap('MobileAutoTypePlugin', async () => {
       try {
         const res = await getJsApiList();
         let {
@@ -28,9 +28,13 @@ class MaxMainAutoTypeWebpackPlugin {
 //生成api声明，即 export interface Max{}
 export const generateTsCode = (jsApiList: JsApi[]) => {
   let code = 'export interface App {';
- jsApiList.forEach(api => {
+  jsApiList.forEach(api => {
     const { jsApiName, requestArgJson, responseArgJson, isRequestRequired = false, isAsync, jsApiDesc } = api;
-     const processedInputParams = processInputParams({ inputParams: requestArgJson, isRequired: isRequestRequired, isMultiParams: jsApiName.startsWith('on') });
+    const processedInputParams = processInputParams({
+      inputParams: requestArgJson,
+      isRequired: isRequestRequired,
+      isMultiParams: jsApiName.startsWith('on'),
+    });
     const processedOutputParams = processOutputParams(responseArgJson, isAsync);
     code += `\n/**\n${jsApiDesc}*/\n${jsApiName}:(${processedInputParams})=>${processedOutputParams};`;
   });
@@ -44,7 +48,7 @@ const enum TypeCode {
   Boolean = 4,
   Map = 5,
   Object = 6,
-  Function = 10
+  Function = 10,
 }
 const typeMap: { [key: string]: string } = {
   [TypeCode.Number]: 'number',
@@ -107,7 +111,15 @@ const paramToTs = (inputParams: RequestArg[], multi: boolean = false) => {
   return res;
 };
 //处理入参
-const processInputParams = ({ inputParams, isRequired, isMultiParams = false }: {inputParams: RequestArg[], isRequired: boolean, isMultiParams: boolean}) => {
+const processInputParams = ({
+  inputParams,
+  isRequired,
+  isMultiParams = false,
+}: {
+  inputParams: RequestArg[];
+  isRequired: boolean;
+  isMultiParams: boolean;
+}) => {
   let tsRes = '';
 
   if (isMultiParams) {
@@ -183,4 +195,4 @@ const writeCodeToFile = (eventsTsFilePath: string, code: string) => {
   });
 };
 
-export default MaxMainAutoTypeWebpackPlugin;
+export default MobileAutoTypePlugin;

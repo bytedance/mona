@@ -3,15 +3,20 @@ import { Compiler } from 'webpack';
 import chokidar from 'chokidar';
 import PluginEntryModule from './PluginEntryModule';
 import WebEntryModule from './WebEntryModule';
+import { Platform } from '@bytedance/mona-manager-plugins-shared';
 
 class ConfigHMRPlugin {
   configHelper: ConfigHelper;
   entryModule: PluginEntryModule | WebEntryModule;
   pluginName = 'ConfigHMRPlugin';
 
-  constructor(configHelper: ConfigHelper, isPlugin?: boolean) {
+  constructor(configHelper: ConfigHelper, TARGET: Platform) {
     this.configHelper = configHelper;
-    this.entryModule = isPlugin ? new PluginEntryModule(configHelper) : new WebEntryModule(configHelper);
+    if (TARGET === Platform.LIGHT || TARGET === Platform.PLUGIN) {
+      this.entryModule = new PluginEntryModule(configHelper);
+    } else {
+      this.entryModule = new WebEntryModule(configHelper, TARGET === Platform.MOBILE);
+    }
   }
 
   apply(compiler: Compiler) {

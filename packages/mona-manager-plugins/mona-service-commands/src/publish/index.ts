@@ -7,7 +7,10 @@ import path from 'path';
 import { upload } from './utils';
 import { compressDir } from '../compress/utils';
 import { generateRequestFromOpen } from '../common';
-
+export enum AppSupportEndEnum {
+  PC = 1,
+  MOBILE = 2,
+}
 const getSceneRoute = async (request: any) => {
   const { data } = await request('/captain/app/version/searchScene?pageNo=1&pageSize=1000');
 
@@ -35,7 +38,10 @@ const publish: IPlugin = ctx => {
     'publish',
     {
       description: '发布新版本代码到开放平台',
-      options: [{ name: 'help', description: '输出帮助信息', alias: 'h' }],
+      options: [
+        { name: 'help', description: '输出帮助信息', alias: 'h' },
+        { name: 'target', description: '上传端，当为微应用时需指定上传pc端还是移动端，默认为light', alias: 't' },
+      ],
       usage: 'mona-service publish',
     },
     async (args, configHelper) => {
@@ -109,6 +115,7 @@ const publish: IPlugin = ctx => {
             fileId,
             fileName,
             sceneRoute,
+            endType: args.t === 'mobile' ? AppSupportEndEnum.MOBILE : AppSupportEndEnum.PC,
           };
 
           console.log(chalk.cyan(`即将创建新版本`));

@@ -13,7 +13,7 @@ export const WrapperComponent: React.FC<{ title: string }> = ({ children, title 
   document.title = title || '应用';
   useEffect(() => {
     setNavigationBarTitle({ title: document.title });
-  }, [document.title])
+  }, [document.title]);
 
   return <>{children}</>;
 };

@@ -1,3 +1,4 @@
+import './abortcontroller-polfill';
 import formatPath from '@bytedance/mona-shared/dist/formatPath';
 import {
   GetImageInfoSuccessCallbackArgs,
@@ -24,6 +25,11 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
   if (typeof data.url === 'undefined' && typeof data.fn === 'undefined') {
     return Promise.reject(new Error('url and funcName must be specified'));
   }
+  const isLightApp = data.fn && window.__MONA_LIGHT_APP_GET_TOEKN;
+
+  if (data.fn && window.__LIGHT_ISV_REQ) {
+    return window.__LIGHT_ISV_REQ(data);
+  }
 
   const defaultHeader = {
     'Content-Type': 'application/json',
@@ -36,7 +42,6 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
     signal: controller.signal,
   };
 
-  const isLightApp = data.fn && window.__MONA_LIGHT_APP_GET_TOEKN;
   let token = '';
   // light app
   if (isLightApp) {
@@ -572,7 +577,7 @@ const removePrefix = (apiName: string) => {
     return arr[arr.length - 1];
   }
   return apiName;
-} 
+};
 export const webAuthorize: OriginApis['authorize'] = options => {
   const setAuthorzationCache = (isTrue: boolean) => {
     const data = webGetStorageSync(USER_AUTHORIZATION_CACHE);
@@ -612,9 +617,12 @@ export const webAuthorize: OriginApis['authorize'] = options => {
   };
   const authorizationText =
     // @ts-ignore
-    window[MONA_JSAPI_LIST]?.find((item: any) => item?.jsApiName === removePrefix(options.apiName))?.reqAuthDesc || '请求您的授权';
+    window[MONA_JSAPI_LIST]?.find((item: any) => item?.jsApiName === removePrefix(options.apiName))?.reqAuthDesc ||
+    '请求您的授权';
   // @ts-ignore
-  window[MONA_SHOW_AUTHORIZE_MODAL] && window[MONA_SHOW_AUTHORIZE_MODAL](authorizationText, allowCallback, rejectCallback);
+  window[MONA_SHOW_AUTHORIZE_MODAL] &&
+    // @ts-ignore
+    window[MONA_SHOW_AUTHORIZE_MODAL](authorizationText, allowCallback, rejectCallback);
 };
 
 export const webOpen = (url: string) => window.open(url, '_blank', 'noopener,noreferrer');

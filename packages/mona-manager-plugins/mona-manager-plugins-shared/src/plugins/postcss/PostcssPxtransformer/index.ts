@@ -33,7 +33,7 @@ const deviceRatio = {
   640: 2.34 / 2,
   750: 1,
   828: 1.81 / 2,
-  375: 2 / 1
+  375: 2 / 1,
 };
 
 const defaults: PxTransformerOptions = {
@@ -162,8 +162,11 @@ module.exports = (options: Partial<PxTransformerOptions> = {}) => {
       }
 
       const rootValue = typeof opts.rootValue === 'function' ? opts.rootValue(css.source.input) : opts.rootValue;
+      const isWindows = process.platform === 'win32';
       // 组件库默认375标准
-      const value = new RegExp(['node_modules', '@bytedance', 'mona-client-web'].join(process.platform === 'win32' ? '\\\\' : '/')).test(filePath) ? baseFontSize / 2 : rootValue;
+      const value = new RegExp(`node_modules${isWindows ? '\\\\' : '/'}(@bytedance|@open-fxg)`).test(filePath)
+        ? baseFontSize / 2
+        : rootValue;
       pxReplace = createPxReplace(value, opts.unitPrecision, opts.minPixelValue, targetUnit);
     },
     Declaration(decl: any) {

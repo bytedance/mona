@@ -60,7 +60,6 @@ export function generateRequestFromOpen(args: any, cookie: string) {
         ...header,
       },
     };
-
     return axios.request(config).then(res => {
       const data = res.data as any;
       if (data.code === 0) {
@@ -88,7 +87,6 @@ export async function createUploadForm(
   const form = new FormData();
   Object.keys(params).forEach(key => {
     const value = params[key];
-
     if (typeof value !== 'object') {
       form.append(key, value);
     } else {

@@ -23,6 +23,7 @@ export function chainPlugins(
     MiniCssExtractPlugin,
     ContextReplacementPlugin,
     LightApiPlugin,
+    MobileAppJsonPlugin,
   } = MonaPlugins;
 
   webpackConfig.when(
@@ -30,9 +31,7 @@ export function chainPlugins(
     w => w.plugin('ReactRefreshWebpackPlugin').use(ReactRefreshWebpackPlugin),
     w => w.plugin('MiniCssExtractPlugin').use(MiniCssExtractPlugin, [{ filename: '[name].[contenthash:7].css' }]),
   );
-  webpackConfig
-    .plugin('ConfigHMRPlugin')
-    .use(ConfigHMRPlugin, [configHelper, [Platform.LIGHT, Platform.PLUGIN].includes(TARGET)]);
+  webpackConfig.plugin('ConfigHMRPlugin').use(ConfigHMRPlugin, [configHelper, TARGET]);
 
   // 如果是plugin，需要复制pigeon.json文件
   TARGET !== Platform.PLUGIN
@@ -46,6 +45,11 @@ export function chainPlugins(
           },
         ],
       ]);
+
+  if (TARGET === Platform.MOBILE || TARGET === Platform.LIGHT) {
+    // 如果是mobile，将app.config.ts/js 转成json复制到dist
+    webpackConfig.plugin('MobileAppJsonPlugin').use(MobileAppJsonPlugin, [configHelper]);
+  }
   const { runtime } = configHelper?.projectConfig;
   if (process.env.ENTRY_TYPE !== 'js') {
     webpackConfig.plugin('HtmlWebpackPlugin').use(

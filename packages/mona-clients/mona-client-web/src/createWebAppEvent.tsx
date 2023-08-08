@@ -4,6 +4,11 @@ import { LifecycleContext, AppLifecycleGlobalContext, AppLifecycle } from '@byte
 import { isClassComponent } from '@bytedance/mona-shared/dist/reactNode';
 import { GLOBAL_LIFECYCLE_STORE } from '@bytedance/mona-shared/dist/constants';
 
+const lightAppLifeCycleParamsKey = {
+  launch: '__MONA_LIGHT_APP_LIFE_CYCLE_LANUCH_QUERY',
+  show: '__MONA_LIGHT_APP_LIFE_CYCLE_SHOW_QUERY',
+};
+
 export function createAppLifeCycle(Component: React.ComponentType<any>) {
   const appLifecycleContext = new LifecycleContext();
   const appEntryRef = React.createRef<any>();
@@ -23,15 +28,22 @@ export function createAppLifeCycle(Component: React.ComponentType<any>) {
   const handleLaunch = (...rest: any[]) => {
     callLifecycle(AppLifecycle.launch, ...rest);
   };
-  const handleVisibilityChange = () => {
-    if (document.visibilityState === 'visible') {
-      callLifecycle(AppLifecycle.show);
-    } else {
-      callLifecycle(AppLifecycle.hide);
-    }
-  };
+
   const handlePageNotFound = (...rest: any[]) => {
     callLifecycle(AppLifecycle.pageNotFound, ...rest);
+  };
+  const handleShow = (...rest: any[]) => {
+    callLifecycle(AppLifecycle.show, ...rest);
+  };
+  const handleHide = (...rest: any[]) => {
+    callLifecycle(AppLifecycle.hide, ...rest);
+  };
+  const handleVisibilityChange = () => {
+    if (document.visibilityState === 'visible') {
+      handleShow(window[lightAppLifeCycleParamsKey.show as any] || {});
+    } else {
+      handleHide();
+    }
   };
 
   //@ts-ignore
@@ -40,21 +52,23 @@ export function createAppLifeCycle(Component: React.ComponentType<any>) {
     handleLaunch,
     handleVisibilityChange,
     handlePageNotFound,
+    handleShow,
+    handleHide,
   };
   // onError
   window.addEventListener('error', handleError);
+  window.addEventListener('unhandledrejection', handleError);
   // onShow & onHide
   document.addEventListener('visibilitychange', handleVisibilityChange);
   class AppConfig extends React.Component {
     // componentDidCatch
     componentDidMount() {
       handleVisibilityChange();
-
-      // onLaunch
-      handleLaunch();
+      handleLaunch(window[lightAppLifeCycleParamsKey.launch as any] || {});
     }
     componentWillUnmount() {
       window.removeEventListener('error', handleError);
+      window.removeEventListener('unhandledrejection', handleError);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     }
     render() {

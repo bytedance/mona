@@ -4,12 +4,13 @@ import inquirer from 'inquirer';
 import ora from 'ora';
 import { importRemoteModule } from './utils';
 import { hasYarn } from '../init/utils/common';
+import open from 'open';
 
 const START = 'start';
 
 interface Module {
   ReplayCli: {
-    run: (param: { inquirer: typeof inquirer; ora: typeof ora; packageManager: 'npm' | 'yarn' }) => Promise<void>;
+    run: (param: { inquirer: typeof inquirer; ora: typeof ora; packageManager: 'npm' | 'yarn', open: typeof open }) => Promise<void>;
   };
 }
 
@@ -32,14 +33,14 @@ const autoTest: IPlugin = ctx => {
       }
 
       const { ReplayCli } = await importRemoteModule<Module>(
-        'http://lgw.jinritemai.com/app/light-sdk/auto-test/2.0/precheck.js',
+        'https://lgw.jinritemai.com/app/light-sdk/auto-test/2.0/precheck.js',
       );
 
       const packageManager = hasYarn() ? 'yarn' : 'npm';
 
       switch (command) {
         case START:
-          await ReplayCli.run({ inquirer, ora, packageManager })
+          await ReplayCli.run({ inquirer, ora, packageManager, open })
           break;
         default:
           break;

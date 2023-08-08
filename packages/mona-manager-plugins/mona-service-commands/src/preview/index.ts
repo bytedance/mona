@@ -12,6 +12,7 @@ import {
   openUrlWithBrowser,
   buildProject,
   generateH5Qrcode,
+  generateMobileQrcode,
   processProjectData,
   askMixedComponentFactory,
   askMixedTemplateFactory,
@@ -30,6 +31,11 @@ const preview: IPlugin = ctx => {
           name: 'platform',
           description: '平台类型（当target为light即微应用时，有效值为compass，不填默认compass）',
           alias: 'p',
+        },
+        {
+          name: 'target',
+          description: '预览端（当为微应用时，需指定是在pc上预览还是移动端预览，默认为light）',
+          alias: 't',
         },
       ],
       usage: 'mona-service preview -t max',
@@ -57,12 +63,25 @@ const preview: IPlugin = ctx => {
           await pipe(askMixedTemplateFactory(request), processMaxTemplateData, ...maxProcess)(ctx);
           break;
         case AppSceneTypeEnum.LIGHT_APP:
-          await pipe(getPlatform, getUrl, openUrlWithBrowser)({ ctx, args });
-          break;
+          if (args.t === 'mobile') {
+            await pipe(
+              buildProject('mobile'),
+              processProjectData('mobile'),
+              createTestVersionFactory(request, args),
+              generateMobileQrcode(args),
+              printQrcode('抖店APP'),
+            )(ctx);
+            break;
+          } else {
+            // await pipe(buildProject('light'), processProjectData, createTestVersionFactory(request, args));
+            await pipe(getPlatform, getUrl, openUrlWithBrowser)({ ctx, args });
+            break;
+          }
+
         case AppSceneTypeEnum.H5:
           await pipe(
             buildProject('h5'),
-            processProjectData,
+            processProjectData(),
             createTestVersionFactory(request, args),
             generateH5Qrcode(args),
             printQrcode('抖店APP'),

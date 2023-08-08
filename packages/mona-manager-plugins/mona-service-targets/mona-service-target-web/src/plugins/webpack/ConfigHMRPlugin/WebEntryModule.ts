@@ -9,11 +9,12 @@ class WebEntryModule {
   configHelper: ConfigHelper;
   name: string;
   module: VirtualModulesPlugin;
-
-  constructor(configHelper: ConfigHelper) {
+  isMobile: boolean;
+  constructor(configHelper: ConfigHelper, isMobile: boolean) {
     this.configHelper = configHelper;
     this.name = 'entry.js';
     this.module = this.createModule();
+    this.isMobile = isMobile;
   }
 
   // change extention filename
@@ -30,7 +31,7 @@ class WebEntryModule {
     const publicPathVirtualPath = path.join(entryPath, '..', 'public-path.js');
     module[publicPathVirtualPath] = `__webpack_public_path__ = window.${MONA_PUBLIC_PATH} || '/';`;
     const virtualPath = path.join(entryPath, '..', 'app.entry.js');
-    module[virtualPath] = this._generateWebAppEntryCode(entryPath);
+    module[virtualPath] = this._generateWebAppEntryCode(entryPath, this.isMobile);
     this.name = virtualPath;
 
     return new VirtualModulesPlugin(module);
@@ -41,7 +42,7 @@ class WebEntryModule {
     this.configHelper.readAllConfig();
 
     // update module
-    const code = this._generateWebAppEntryCode(this.configHelper.entryPath);
+    const code = this._generateWebAppEntryCode(this.configHelper.entryPath, this.isMobile);
     const virtualPath = this.name;
     this.module.writeModule(virtualPath, code);
   }
@@ -96,17 +97,19 @@ class WebEntryModule {
     return defaultPathCode;
   }
 
-  private _generateWebAppEntryCode(filename: string) {
+  private _generateWebAppEntryCode(filename: string, isMobile: boolean) {
     const code = `
       import './public-path';
       import { createWebApp, show, createAppLifeCycle, createPageLifecycle, lazy } from '@bytedance/mona-runtime';
       import App from './${path.basename(filename)}';
       ${this._generateRoutesCode()}
       ${this._generateTabBarCode()}
-      ${this._generateNavBarCode()}
+      ${!isMobile ? this._generateNavBarCode() : ''}
       ${this._generateDefaultPathCode()}
       
-      const { provider: p } =  createWebApp(createAppLifeCycle(App), routes, { tabBar, navBar, defaultPath });
+      const { provider: p } =  createWebApp(createAppLifeCycle(App), routes, { tabBar,${
+        !isMobile ? ' navBar,' : ''
+      } defaultPath });
       export const provider = p;
     `;
 
