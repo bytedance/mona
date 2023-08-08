@@ -73,6 +73,7 @@ class PluginEntryModule {
   }
 
   private _generateLightConfigCode() {
+    // @ts-ignore 忽略 light
     const lightConfigCode = `const light = ${JSON.stringify(this.configHelper.appConfig.light)}`;
     return lightConfigCode;
   }

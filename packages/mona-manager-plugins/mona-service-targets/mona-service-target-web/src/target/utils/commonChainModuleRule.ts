@@ -66,7 +66,13 @@ function createJsRule({ webpackConfig, configHelper, TARGET }: ModuleRule) {
           { target: TARGET, context: cwd, alias: genAlias(TARGET) },
         ],
         // coverage
-        process.env.COVERAGE === '1' && require.resolve('@bytedance/babel-coverage-plugin')
+        process.env.COVERAGE === '1' && [
+          require.resolve('@bytedance/babel-coverage-plugin'),
+          {
+            coverageGlobalScopeFunc: false,
+            coverageGlobalScope: 'window'
+          }
+        ]
       ].filter(Boolean),
     });
   // jsRule
