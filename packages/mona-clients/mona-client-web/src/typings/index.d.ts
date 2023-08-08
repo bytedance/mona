@@ -21,4 +21,5 @@ declare interface Window {
   __MONA_LIGHT_APP_LOCAL_STORAGE?: Storage;
   __MONA_LIGHT_APP_LIFE_CYCLE_LANUCH_QUERY: { appId: string; referrerInfo: { appId: string } };
   __MONA_LIGHT_USE_TEST?: boolean;
+  __LIGHT_ISV_REQ?: (data: any) => any;
 }
