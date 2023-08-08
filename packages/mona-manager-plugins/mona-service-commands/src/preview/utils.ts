@@ -72,7 +72,6 @@ export const createTestVersionFactory =
   async (params: Record<string, string | number | FileType>) => {
     const argsHeaders = args.header ? JSON.parse(args.header) : {};
     const { form, requestOptions } = await createUploadForm(params, argsHeaders);
-    console.log('form', form, requestOptions);
     const res = await request('/captain/app/version/test/create', {
       method: 'POST',
       data: form,
