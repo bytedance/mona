@@ -22,7 +22,7 @@ class LightApiPlugin {
           // 更改api.d.ts ，添加import { LightRequest } from './lightApi';
           //export declare const request: BaseApis['request'];===>export declare const request: LightRequest;
           writeApiTsFile(apiTsFilePath);
-          console.log('api has been pulled');
+          console.log('已拉取微应用API列表，使用request方法请求，将有对应提示！');
         }
       } catch (err: any) {
         console.warn(err?.message);

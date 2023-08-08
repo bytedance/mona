@@ -13,7 +13,7 @@ const start: IPlugin = ctx => {
         { name: 'port', description: '指定启动端口', alias: 'p' },
       ],
     },
-    (args, _, targetContext) => {
+    async (args, _, targetContext) => {
       process.env.NODE_ENV = 'development';
 
       if (args.coverage && args.target === 'light') {
@@ -21,7 +21,7 @@ const start: IPlugin = ctx => {
       }
 
       if (args.target === 'light') {
-        mock(ctx, args);
+        await mock(ctx, args);
       }
       if (targetContext?.startFn) {
         targetContext?.startFn(args);

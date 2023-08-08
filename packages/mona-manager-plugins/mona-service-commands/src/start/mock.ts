@@ -4,6 +4,7 @@ import path from 'path';
 import http from 'http';
 import { generateRequestFromOpen, requestBeforeCheck } from '@/common';
 import { PluginContext } from '@bytedance/mona-manager';
+// import url from 'url';
 
 export const enum TypeCode {
   Int64Number = 1,
@@ -60,7 +61,6 @@ const typeToData = (params: (InterfaceMetaReqInfo | InterfaceMetaResInfo)[]) => 
   for (let param of params) {
     const { type, subType, children, mapValueType, mapValueSubType } = param;
     let paramName = '';
-    console.log(param);
     if ('requestName' in param) {
       paramName = param.requestName;
     } else {
@@ -171,19 +171,60 @@ export function writeDataFile(data: Record<string, any>, dataPath: string) {
 
 }
 
-export function startMockServer(filePath: string, port: number) {
+function wrapData(data: any) {
+  return JSON.stringify({
+    "BaseResp": {
+        "StatusCode": 0,
+        "StatusMessage": ""
+    },
+    "BizError": {
+        "code": 10000,
+        "message": ""
+    },
+    "data": JSON.stringify(data)
+  })
+}
 
-  console.log(filePath);
+const possibleDomain = [
+  'https://compass.jinritemai.com',
+  'https://fxg.jinritemai.com',
+  'https://fuwu.jinritemai.com'
+]
+export function startMockServer(filePath: string, port: number) {
   const server = http.createServer((req, res) => {
-    console.log('req--', req);
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/plain');
-    res.end('Hello, this is the home page!');
+    const headers = req.headers;
+
+    let body = '';
+    req.on('data', chunk => {
+      body += chunk.toString();
+    })
+    req.on('end', () => {
+      console.log('body', body);
+      let resData = {};
+      if (req.method === 'POST') {
+        const reqData = JSON.parse(body || '{"method":"test"}');
+        const { method } = reqData;
+        const rawData = fs.readFileSync(filePath).toString();
+        const data = JSON.parse(rawData);
+        resData = data[method]?.data || {};
+      }
+      
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'text/plain');
+      if (headers.origin && possibleDomain.includes(headers.origin)) {
+        res.setHeader('Access-Control-Allow-Origin', headers.origin);
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'x-open-token, x-open-compass, x-use-test, content-type')
+      }
+      
+      res.end(wrapData(resData));
+    })
   })
 
-    server.listen(port, () => {
-      console.log(`Mock server is running at http://localhost:${port}`);
-    });
+  server.listen(port, () => {
+    console.log(`Mock server is running at http://localhost:${port}`);
+  });
 }
 
 const URL = '/captain/light/isv/interface/list';
@@ -196,9 +237,12 @@ export async function mock(ctx: PluginContext, args: Record<string, any>) {
   const dev = ctx.configHelper.projectConfig.dev;
   const rawMock = ctx.configHelper.projectConfig.mock;
   const devPort = dev?.port === 'auto' ? DEFAULT_MOCK_CONFIG.port : dev?.port;
-  const port = (args.port || devPort || DEFAULT_MOCK_CONFIG.port) + 1;
+  const port = Number((args.port || devPort || DEFAULT_MOCK_CONFIG.port)) - 1;
 
   const config = typeof rawMock === 'boolean' ? Object.assign({}, DEFAULT_MOCK_CONFIG, { enabled: rawMock, port }) : Object.assign({}, DEFAULT_MOCK_CONFIG, { port }, rawMock);
+
+  const abilities = ctx.configHelper.projectConfig.abilities;
+  ctx.configHelper.projectConfig.abilities = { ...abilities, define: { ...abilities?.define }}
 
   if (!config.enabled) {
     return;
@@ -209,12 +253,7 @@ export async function mock(ctx: PluginContext, args: Record<string, any>) {
   // 2. 生成本地测试数据
   const data = await generateMockData(res);
 
-  // set mock proxy
-  const proxy = { ...dev?.proxy, [config.path]: { target: `http://localhost:${config.port}`} };
-  ctx.configHelper.projectConfig.dev = { ...dev, proxy };
-
-  // set env url
-  process.env.MOCK_URL = config.path;
+  process.env.MOCK_URL = JSON.stringify(`http://localhost:${config.port}`);
   
   const dataPath = path.join(ctx.configHelper.cwd, 'mock', 'index.json');
   await writeDataFile(data, dataPath);
