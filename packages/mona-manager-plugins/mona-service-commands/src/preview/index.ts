@@ -66,7 +66,7 @@ const preview: IPlugin = ctx => {
           if (args.t === 'mobile') {
             await pipe(
               buildProject('mobile'),
-              processProjectData,
+              processProjectData('mobile'),
               createTestVersionFactory(request, args),
               generateMobileQrcode(args),
               printQrcode('抖店APP'),
@@ -81,7 +81,7 @@ const preview: IPlugin = ctx => {
         case AppSceneTypeEnum.H5:
           await pipe(
             buildProject('h5'),
-            processProjectData,
+            processProjectData(),
             createTestVersionFactory(request, args),
             generateH5Qrcode(args),
             printQrcode('抖店APP'),

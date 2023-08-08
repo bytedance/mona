@@ -27,6 +27,11 @@ interface CreateTestAppVersionResp {
   versionId: string;
 }
 
+export enum AppSupportEndEnum {
+  PC = 1,
+  MOBILE = 2,
+}
+
 // pipe func
 export const pipe =
   (...funcs: Function[]) =>
@@ -64,9 +69,10 @@ export function watch(dir: string, options: { open: boolean }, callback: Functio
 
 export const createTestVersionFactory =
   (request: Request<CreateTestAppVersionResp>, args: Record<string, any>) =>
-  async (params: Record<string, string | FileType>) => {
+  async (params: Record<string, string | number | FileType>) => {
     const argsHeaders = args.header ? JSON.parse(args.header) : {};
     const { form, requestOptions } = await createUploadForm(params, argsHeaders);
+    console.log('form', form, requestOptions);
     const res = await request('/captain/app/version/test/create', {
       method: 'POST',
       data: form,
@@ -300,22 +306,26 @@ export const generateMobileQrcode = (args: any) => {
 };
 
 // process max component data
-export async function processProjectData(ctx: PluginContext) {
-  const helper = ctx?.configHelper || ctx.builder?.configHelper;
+export function processProjectData(target?: string) {
+  return async function (ctx: PluginContext) {
+    const helper = ctx?.configHelper || ctx.builder?.configHelper;
 
-  const { appId = '', output } = helper.projectConfig;
+    const { appId = '', output } = helper.projectConfig;
 
-  // compress
-  const filePath = await compressDistDir(output);
-
-  return {
-    appId,
-    testFile: {
-      filePath,
-    },
+    // compress
+    const filePath = await compressDistDir(output);
+    const appJsonFilePath = path.join(helper.cwd, output, 'app.json');
+    const appJsonStr = fs.readFileSync(appJsonFilePath).toString();
+    return {
+      appId,
+      testFile: {
+        filePath,
+      },
+      frontendConfig: target === 'mobile' || target === 'light' ? appJsonStr : undefined,
+      endType: target === 'mobile' ? AppSupportEndEnum.MOBILE : target === 'light' ? AppSupportEndEnum.PC : undefined,
+    };
   };
 }
-
 export function openUrlWithBrowser(url: string) {
   console.log(chalk.cyan(`打开 ${url}`));
   open(url);
