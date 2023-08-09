@@ -10,6 +10,7 @@ class LightApiPlugin {
   apply(compiler: any) {
     compiler.hooks.compile.tap('LightApiPlugin', async () => {
       try {
+        console.log('拉取微应用测试环境接口对应类型，生成代码提示...')
         const res = await getLightApiList(this.appid);
         let { testEnvInterfaceList } = res;
         if (testEnvInterfaceList.length > 0) {
@@ -22,7 +23,9 @@ class LightApiPlugin {
           // 更改api.d.ts ，添加import { LightRequest } from './lightApi';
           //export declare const request: BaseApis['request'];===>export declare const request: LightRequest;
           writeApiTsFile(apiTsFilePath);
-          console.log('已拉取微应用API列表，使用request方法请求，将有对应提示！');
+          console.log('已拉取成功，使用request方法请求，将有对应提示！');
+        } else {
+          console.warn('接口类型为空，请让后端上传对应接口类型，重启会自动拉取并生成对应提示！')
         }
       } catch (err: any) {
         console.warn(err?.message);
