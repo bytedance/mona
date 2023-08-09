@@ -12,3 +12,4 @@ export * from './promisify';
 export * from './_transformWebStyle';
 export * from './_transformWebClass';
 export * from './user';
+export * from './genRequest';

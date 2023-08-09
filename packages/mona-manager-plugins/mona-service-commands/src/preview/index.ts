@@ -17,7 +17,7 @@ import {
   askMixedComponentFactory,
   askMixedTemplateFactory,
 } from './utils';
-import { AppSceneTypeEnum, generateRequestFromOpen, requestBeforeCheck } from '../common';
+import { AppSceneTypeEnum, requestBeforeCheck } from '../common';
 import chalk from 'chalk';
 
 const preview: IPlugin = ctx => {
@@ -44,8 +44,7 @@ const preview: IPlugin = ctx => {
       // output dir
 
       // assert
-      const { user, appId } = await requestBeforeCheck(ctx, args);
-      const request = generateRequestFromOpen(args, user.cookie);
+      const { appId, request } = await requestBeforeCheck(ctx, args);
 
       const appDetail: any = await request<any>('/captain/appManage/getAppDetail', {
         method: 'GET',

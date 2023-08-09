@@ -1,4 +1,4 @@
-import { generateRequestFromOpen, requestBeforeCheck } from "@/common";
+import { requestBeforeCheck } from "@/common";
 import { IPlugin } from "@bytedance/mona-manager";
 import chalk from "chalk";
 import { generateMockData, startMockServer, writeDataFile } from "./utils";
@@ -18,8 +18,7 @@ const mock: IPlugin = ctx => {
     },
     async args => {
       console.log(chalk.yellow('目前仅支持微应用'));
-      const { user, appId } = await requestBeforeCheck(ctx, args);
-      const request = generateRequestFromOpen(args, user.cookie);
+      const { appId, request } = await requestBeforeCheck(ctx, args);
 
       // 1. 获取IDL
       const res = await request(URL, { data: { appId } });

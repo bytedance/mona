@@ -1,17 +1,14 @@
 import assert from 'assert';
-import axios, { AxiosRequestConfig } from 'axios';
+import { AxiosRequestConfig } from 'axios';
 import chalk from 'chalk';
 import fs from 'fs';
 import FormData from 'form-data';
-import path from 'path';
-
-import { OPEN_DOMAIN, OPEN_DEV_HEADERS } from '@bytedance/mona-shared';
 
 import { getConfigPath } from './util';
 import { PluginContext } from '@bytedance/mona-manager';
-
-const homePath = (process.env.HOME ? process.env.HOME : process.env.USERPROFILE) || __dirname;
-const userDataFile = path.join(homePath, '.mona_user');
+import { genRequest } from '@bytedance/mona-shared';
+import { readUser } from '@bytedance/mona-shared';
+import { deleteUser } from '@bytedance/mona-shared';
 
 export enum AppSceneTypeEnum {
   DESIGN_CENTER_TEMPLATE = 1,
@@ -19,59 +16,6 @@ export enum AppSceneTypeEnum {
   LIGHT_APP = 3,
   H5 = 4,
   PIGEON_PLUGIN = 5,
-}
-
-export function deleteUser() {
-  if (fs.existsSync(userDataFile)) {
-    fs.unlinkSync(userDataFile);
-  }
-}
-
-export function readUser(): { cookie: string; nickName: string; userId: string } | null {
-  try {
-    const str = fs.readFileSync(userDataFile);
-    const result = str ? JSON.parse(str.toString()) : null;
-    if (result && result.cookie && result.nickName && result.userId) {
-      return result;
-    }
-  } catch (_) {
-    // do nothing
-  }
-  return null;
-}
-
-export function saveUser(data: any) {
-  fs.writeFileSync(userDataFile, JSON.stringify(data));
-}
-
-export function generateRequestFromOpen(args: any, cookie: string) {
-  return function <T = any>(path: string, options?: AxiosRequestConfig<any>): Promise<T> {
-    const domain = args.domain || OPEN_DOMAIN;
-    const header = args.header ? JSON.parse(args.header) : OPEN_DEV_HEADERS;
-    const url = `https://${domain}${path}`;
-
-    const config = {
-      url,
-      ...options,
-      headers: {
-        cookie,
-        'Content-Type': 'application/json',
-        ...options?.headers,
-        ...header,
-      },
-    };
-    return axios.request(config).then(res => {
-      const data = res.data as any;
-      if (data.code === 0) {
-        return data.data;
-      } else {
-        throw new Error(
-          (data.message || '未知错误') +
-            (args.debug ? ` [path: ${path}, logid:${res?.headers?.['x-tt-logid'] || 'unknow'}] ` : ''),
-        );
-      }
-    });
-  };
 }
 
 export interface FileType {
@@ -131,7 +75,7 @@ export async function requestBeforeCheck(ctx: PluginContext, args: Record<string
   const user = readUser();
   assert(user, `未登录，请使用 mona login 进行登录`);
 
-  const request = generateRequestFromOpen(args, user.cookie);
+  const request = genRequest(args);
   // ensure user status is not expired
   try {
     console.log(chalk.cyan(`检查当前登录态...`));
@@ -142,5 +86,5 @@ export async function requestBeforeCheck(ctx: PluginContext, args: Record<string
     throw new Error('登录态已过期，请使用mona login重新登录');
   }
 
-  return { user, appId };
+  return { user, appId, request };
 }

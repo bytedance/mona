@@ -21,7 +21,9 @@
     "@babel/core": "7.19.0",
     "@babel/preset-env": "^7.16.5",
     "@babel/preset-typescript": "^7.16.5",
-    "@babel/register": "^7.16.5"
+    "@babel/register": "^7.16.5",
+    "axios": "^0.26.0",
+    "assert": "^2.0.0"
   },
   "devDependencies": {
     "@types/node": "^16.4.5",

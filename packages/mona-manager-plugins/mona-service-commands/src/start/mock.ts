@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import fs from 'fs';
 import path from 'path';
 import http from 'http';
-import { generateRequestFromOpen, requestBeforeCheck } from '@/common';
+import { requestBeforeCheck } from '@/common';
 import { PluginContext } from '@bytedance/mona-manager';
 // import url from 'url';
 
@@ -230,8 +230,7 @@ export function startMockServer(filePath: string, port: number) {
 const URL = '/captain/light/isv/interface/list';
 const DEFAULT_MOCK_CONFIG = { enabled: false, port: 9990, path: '/_light_api' }
 export async function mock(ctx: PluginContext, args: Record<string, any>) {
-  const { user, appId } = await requestBeforeCheck(ctx, args);
-  const request = generateRequestFromOpen(args, user.cookie);
+  const { appId, request } = await requestBeforeCheck(ctx, args);
 
   // generate config
   const dev = ctx.configHelper.projectConfig.dev;

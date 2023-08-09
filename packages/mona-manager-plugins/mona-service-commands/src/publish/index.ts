@@ -6,7 +6,6 @@ import fs from 'fs';
 import path from 'path';
 import { upload } from './utils';
 import { compressDir } from '../compress/utils';
-import { generateRequestFromOpen } from '../common';
 export enum AppSupportEndEnum {
   PC = 1,
   MOBILE = 2,
@@ -47,10 +46,7 @@ const publish: IPlugin = ctx => {
     async (args, configHelper) => {
       try {
         // get appId from project config, at the same time it is compatible with old usag
-        // console.log('targetContext?.builder.configHelper.projectConfig', configHelper);
-        const { user, appId } = await requestBeforeCheck(ctx, args);
-
-        const request = generateRequestFromOpen(args, user.cookie);
+        const { user, appId, request } = await requestBeforeCheck(ctx, args);
 
         // compress
         const output = await compressDir(process.cwd(), [configHelper.projectConfig.output]);
