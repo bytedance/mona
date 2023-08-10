@@ -72,7 +72,6 @@ export const createTestVersionFactory =
   async (params: Record<string, string | number | FileType>) => {
     const argsHeaders = args.header ? JSON.parse(args.header) : {};
     const { form, requestOptions } = await createUploadForm(params, argsHeaders);
-    console.log('form', form, requestOptions);
     const res = await request('/captain/app/version/test/create', {
       method: 'POST',
       data: form,
@@ -314,15 +313,25 @@ export function processProjectData(target?: string) {
 
     // compress
     const filePath = await compressDistDir(output);
-    const appJsonFilePath = path.join(helper.cwd, output, 'app.json');
-    const appJsonStr = fs.readFileSync(appJsonFilePath).toString();
+
+    if (target === 'mobile' || target === 'light') {
+      const appJsonFilePath = path.join(helper.cwd, output, 'app.json');
+      const appJsonStr = fs.readFileSync(appJsonFilePath).toString();
+      return {
+        appId,
+        testFile: {
+          filePath,
+        },
+        frontendConfig: appJsonStr,
+        endType: target === 'mobile' ? AppSupportEndEnum.MOBILE : AppSupportEndEnum.PC,
+      };
+    }
+
     return {
       appId,
       testFile: {
         filePath,
       },
-      frontendConfig: target === 'mobile' || target === 'light' ? appJsonStr : undefined,
-      endType: target === 'mobile' ? AppSupportEndEnum.MOBILE : target === 'light' ? AppSupportEndEnum.PC : undefined,
     };
   };
 }
