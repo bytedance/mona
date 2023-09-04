@@ -11,6 +11,8 @@ import https from 'https';
 import ip from 'ip';
 import portfinder from 'portfinder';
 import ora from 'ora';
+import inquirer from 'inquirer';
+
 // const fetch = require('node-fetch');
 // import axios from 'axios';
 // const WS_DOMAIN = 'opws.jinritemai.com';
@@ -19,6 +21,38 @@ export const SPI_DOMAIN = 'lgw.jinritemai.com';
 const getFreePort = async () => {
   return await portfinder.getPortPromise({ port: 3003, stopPort: 9999 });
 };
+
+const isFreePort = async (port: number) => {
+  try {
+    await portfinder.getPortPromise({ port: port, stopPort: port });
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
+
+const QA = async () => {
+  // TODO: 当前目录读取 appId
+  return await inquirer.prompt([
+    {
+      type: 'input',
+      name: 'localServerPort',
+      message: '请输入本地后端服务端口号',
+      default: '3000',
+      validate(input: string) {
+        if (!input) {
+          return '请输入本地后端服务端口号';
+        }
+
+        if (Number.isNaN(+input)) {
+          return '无效的端口号';
+        }
+        return true;
+      },
+    },
+  ]);
+};
+
 const StartServer = async (port = 8088) => {
   return new Promise(resolve => {
     const localDevServer = new Koa();
@@ -52,7 +86,6 @@ const StartServer = async (port = 8088) => {
         method: 'POST',
         headers: {
           ...ctx.request.header,
-          
         } as any,
         body: JSON.stringify(ctx.request.body),
         agent: new https.Agent({
@@ -116,7 +149,17 @@ const StartServer = async (port = 8088) => {
 };
 
 async function main() {
+  const { localServerPort } = await QA();
   const spinner = ora('正在启动本地调试网关，获取本地信息').start();
+  const spinnerPingLocalServer = ora('测试本地网关连通性').start();
+
+  const freeport = await isFreePort(localServerPort);
+
+  if (!freeport) {
+    spinnerPingLocalServer.fail('后端本地服务未启动\n');
+  } else {
+    spinnerPingLocalServer.succeed('后端本地服务已启动\n');
+  }
 
   try {
     const port = await getFreePort();
