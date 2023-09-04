@@ -12,6 +12,8 @@ import ip from 'ip';
 import portfinder from 'portfinder';
 import ora from 'ora';
 import inquirer from 'inquirer';
+import { openSpiServiceClient } from './idl/api';
+import opFetch from './idl/request';
 
 // const fetch = require('node-fetch');
 // import axios from 'axios';
@@ -53,7 +55,7 @@ const QA = async () => {
   ]);
 };
 
-const StartServer = async (port = 8088) => {
+const StartServer = async (port = 8088, reqUri: string) => {
   return new Promise(resolve => {
     const localDevServer = new Koa();
     const router = new Router();
@@ -80,18 +82,23 @@ const StartServer = async (port = 8088) => {
       // });
       delete ctx.request.header['connection'];
       delete ctx.request.header['host'];
-
+      const inputParams: Record<string, any> = ctx.request.body as any;
       console.log('https :>> ', https);
-      const res = await fetch(`https://${SPI_DOMAIN}/invoke`, {
+      const RequestInfo = await openSpiServiceClient.GetInvokeRequestForLightApp(inputParams, ctx.request.header);
+      const responseByLocal = await opFetch(RequestInfo.url || reqUri, {
         method: 'POST',
-        headers: {
-          ...ctx.request.header,
-        } as any,
-        body: JSON.stringify(ctx.request.body),
-        agent: new https.Agent({
-          rejectUnauthorized: false,
-        }),
+        body: RequestInfo.body,
+        headers: RequestInfo.header,
       });
+      const responseInfo = await openSpiServiceClient.GetInvokeResponseForLightApp(
+        {
+          body: responseByLocal,
+          appId: inputParams?.appId,
+          method: inputParams?.method,
+        },
+        ctx.request.header,
+      );
+      ctx.response.body = responseInfo;
       console.log('ctx.request.header :>> ', ctx.request.header);
       // const res = await fetch('https://lgw.jinritemai.com/invoke', {
       //   headers: {
@@ -121,18 +128,7 @@ const StartServer = async (port = 8088) => {
       //     rejectUnauthorized: false,
       //   }),
       // });
-      const resp = {
-        headers: res.headers,
-        body: res.body,
-        ok: res.ok,
-        status: res.status,
-        statusText: res.statusText,
-      };
-      console.log(resp);
-      debugger;
-
-      console.log('res:>', res);
-      console.log('res:> header', res.headers);
+  
 
       // ctx.body = '<h1>欢迎光临home页面</h1>';
     });
@@ -170,7 +166,8 @@ async function main() {
     const networkUri = `http://${myIp}:${port}`;
     const localUri = `http://localhost:${port}`;
 
-    await StartServer(port);
+    const reqUri = `http://${myIp}:${localServerPort}`;
+    await StartServer(port, reqUri);
 
     spinner.succeed('启动成功，网关运行在: \n');
 
