@@ -60,27 +60,15 @@ const StartServer = async (port = 8088, _reqUri: string) => {
     const router = new Router();
     localDevServer.use(
       Cors({
-        // origin: 'https://fxg.jinritemai.com', // 前端地址
         credentials: true,
       }),
     );
     localDevServer.use(bodyParser());
 
-    // router.get('/invoke', (...args) => {
-    //   console.log('invoke args :>> ', args);
-    //   return {};
-    // });
-
     router.post('/invoke', async ctx => {
-      // const res = await axios.post(`https://${SPI_DOMAIN}/invoke`, ctx.request.body, {
-      //   headers: ctx.request.header,
-      //   withCredentials: true,
-      //   httpsAgent: new https.Agent({
-      //     rejectUnauthorized: false,
-      //   }),
-      // });
       delete ctx.request.header['connection'];
       delete ctx.request.header['host'];
+
       const inputParams: Record<string, any> = ctx.request.body as any;
       const RequestInfo = await openSpiServiceClient.GetInvokeRequestForLightApp(inputParams, ctx.request.header);
       console.log('RequestInfo', RequestInfo);
@@ -96,7 +84,6 @@ const StartServer = async (port = 8088, _reqUri: string) => {
           param: typeof responseByLocal === 'string' ? responseByLocal : JSON.stringify(responseByLocal),
           appId: inputParams?.appId,
           method: inputParams?.method,
-          // header: RequestInfo.header,
         },
         ctx.request.header,
       );
@@ -104,41 +91,7 @@ const StartServer = async (port = 8088, _reqUri: string) => {
 
       ctx.response.body = responseInfo;
       console.log('ctx.request.header :>> ', ctx.request.header);
-      // const res = await fetch('https://lgw.jinritemai.com/invoke', {
-      //   headers: {
-      //     accept: '*/*',
-      //     'accept-language': 'zh-CN,zh;q=0.9',
-      //     'cache-control': 'no-cache',
-      //     'content-type': 'application/json',
-      //     pragma: 'no-cache',
-      //     'sec-ch-ua': '"Chromium";v="116", "Not)A;Brand";v="24", "Google Chrome";v="116"',
-      //     'sec-ch-ua-mobile': '?0',
-      //     'sec-ch-ua-platform': '"macOS"',
-      //     'sec-fetch-dest': 'empty',
-      //     'sec-fetch-mode': 'cors',
-      //     'sec-fetch-site': 'same-site',
-      //     'x-open-compass': '',
-      //     'x-open-token':
-      //       'CgwIARCtHBiqICABKAESnwEKnAE1tVfU1PnY7XPwnlus5yE7h5sgm+vnn3JbTvT9/NEdTQ2QDdvSrvcEycVZAPsb/BjKh+JqS60NncxHBHt2RqwfcPg1gPAAg+yfNEZp6Wv/DVvvC4xqfBiwVRlJlkPqev7IDhbZ9e2RKaXgWNcJQOUTnzHpEZCt1eRdh3om5JxC1+nmmHJ+iRoHX9Itz3OTcFN/d2aSjq7YW+C7XvUaAA==',
-      //     'x-use-test': '0',
-      //   },
-      //   // referrer: 'https://fxg.jinritemai.com/',
-      //   // referrerPolicy: 'strict-origin-when-cross-origin',
-      //   method: 'POST',
-      //   // mode: 'cors',
-      //   // credentials: 'include',
-      //   body: JSON.stringify(ctx.request.body),
-      //   agent: new https.Agent({
-      //     rejectUnauthorized: false,
-      //   }),
-      // });
-
-      // ctx.body = '<h1>欢迎光临home页面</h1>';
     });
-    // router.options('/invoke', (...args) => {
-    //   console.log('invoke args :>> ', args);
-    //   return {};
-    // });
 
     localDevServer.use(router.routes()).use(router.allowedMethods());
     localDevServer.listen(port, () => {
@@ -169,7 +122,7 @@ async function getServerHref() {
   return reqUri;
 }
 
-async function main() {
+export async function localServer(_args: any) {
   const spinner = ora('正在启动本地调试网关，获取本地信息').start();
 
   //  1. 获取本地后端地址
@@ -199,5 +152,3 @@ async function main() {
     process.exit(0);
   }
 }
-
-main();

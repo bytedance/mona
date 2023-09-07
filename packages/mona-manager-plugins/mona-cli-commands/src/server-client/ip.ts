@@ -1,6 +1,7 @@
 import opFetch from './idl/request';
 import { deleteUser, readUser } from '@bytedance/mona-shared';
 import chalk from 'chalk';
+
 async function reportIp() {
   const user = readUser();
   if (!user) {
@@ -8,14 +9,15 @@ async function reportIp() {
     return;
   }
   if (user?.cookie) {
-    return opFetch('https://opencloud.jinritemai.com', {
+    return opFetch('https://opencloud.jinritemai.com/', {
       headers: {
         cookie: user?.cookie,
       },
     });
   }
 }
-async function main() {
+
+export async function ipInterval() {
   //  1. 获取本地后端地址
 
   try {
@@ -26,9 +28,7 @@ async function main() {
   } catch (error: any) {
     deleteUser();
     console.log(`未登录，请使用 mona login 进行登录`);
-    process.exit(0);
+    // process.exit(0);
     // spinner.fail('网关启动失败 ' + error?.message);
   }
 }
-
-main();
