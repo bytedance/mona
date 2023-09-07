@@ -1,5 +1,6 @@
 import fetch from 'node-fetch';
 import https from 'https';
+import http from 'http';
 
 type SpiResponse<T = Record<string, any>> = {
   BizError: {
@@ -77,11 +78,15 @@ export async function opFetch(input: RequestInfo, init: RequestInit = {}, opts: 
     // @ts-ignore
     const resp = await fetch(input, {
       ...(init || {}),
-      headers: dropObjEmptyValue(init?.headers),
-      agent: new https.Agent({
-        rejectUnauthorized: false,
-      }),
+      headers: { ...dropObjEmptyValue(init?.headers), 'x-tt-env': 'ppe_14493651', 'x-use-ppe': '1' },
+      //@ts-ignore
+      agent: input.startsWith('https://')
+        ? new https.Agent({
+            rejectUnauthorized: false,
+          })
+        : new http.Agent({}),
     });
+    console.log('resp', input, resp?.headers);
     // @ts-ignore
     return parseResponse(resp);
   } catch (error) {

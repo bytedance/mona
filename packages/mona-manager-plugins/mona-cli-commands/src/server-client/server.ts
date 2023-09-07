@@ -6,8 +6,7 @@ import Koa from 'koa';
 import Router from '@koa/router';
 import Cors from '@koa/cors';
 import bodyParser from 'koa-bodyparser';
-import fetch from 'node-fetch';
-import https from 'https';
+// import https from 'https';
 import ip from 'ip';
 import portfinder from 'portfinder';
 import ora from 'ora';
@@ -55,7 +54,7 @@ const QA = async () => {
   ]);
 };
 
-const StartServer = async (port = 8088, reqUri: string) => {
+const StartServer = async (port = 8088, _reqUri: string) => {
   return new Promise(resolve => {
     const localDevServer = new Koa();
     const router = new Router();
@@ -83,21 +82,26 @@ const StartServer = async (port = 8088, reqUri: string) => {
       delete ctx.request.header['connection'];
       delete ctx.request.header['host'];
       const inputParams: Record<string, any> = ctx.request.body as any;
-      console.log('https :>> ', https);
       const RequestInfo = await openSpiServiceClient.GetInvokeRequestForLightApp(inputParams, ctx.request.header);
-      const responseByLocal = await opFetch(RequestInfo.url || reqUri, {
-        method: 'POST',
-        body: RequestInfo.body,
-        headers: RequestInfo.header,
-      });
+      console.log('RequestInfo', RequestInfo);
+      // const responseByLocal = await opFetch(`http://10.85.165.89:8080/${RequestInfo.path}`, {
+      //   method: 'POST',
+      //   body: JSON.parse(RequestInfo.body),
+      //   headers: RequestInfo.header,
+      // });
+      const responseByLocal = { success: true, code: 'test', message: null, data: 'test' };
+
       const responseInfo = await openSpiServiceClient.GetInvokeResponseForLightApp(
         {
-          body: responseByLocal,
+          body: typeof responseByLocal === 'string' ? responseByLocal : JSON.stringify(responseByLocal),
           appId: inputParams?.appId,
           method: inputParams?.method,
+          // header: RequestInfo.header,
         },
         ctx.request.header,
       );
+      debugger;
+
       ctx.response.body = responseInfo;
       console.log('ctx.request.header :>> ', ctx.request.header);
       // const res = await fetch('https://lgw.jinritemai.com/invoke', {
@@ -128,7 +132,6 @@ const StartServer = async (port = 8088, reqUri: string) => {
       //     rejectUnauthorized: false,
       //   }),
       // });
-  
 
       // ctx.body = '<h1>欢迎光临home页面</h1>';
     });

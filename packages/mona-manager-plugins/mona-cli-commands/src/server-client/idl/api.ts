@@ -9,13 +9,13 @@ export class OpenSpiService {
   constructor() {}
 
   GetInvokeRequestForLightApp(req: any, headers: any) {
-    const uri = `${this.uriPrefix}/localhost/invoke/request`;
+    const uri = `${this.uriPrefix}/local/debug/invoke/request`;
     const body = req;
     return opFetch(uri, { method: 'POST', headers, body });
   }
 
   GetInvokeResponseForLightApp(req: any, headers: any) {
-    const uri = `${this.uriPrefix}/localhost/invoke/response`;
+    const uri = `${this.uriPrefix}/local/debug/invoke/response`;
     const body = req;
     return opFetch(uri, { method: 'POST', headers, body });
   }
