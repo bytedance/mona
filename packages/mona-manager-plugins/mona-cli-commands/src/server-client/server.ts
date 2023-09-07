@@ -84,7 +84,7 @@ const StartServer = async (port = 8088, _reqUri: string) => {
       const inputParams: Record<string, any> = ctx.request.body as any;
       const RequestInfo = await openSpiServiceClient.GetInvokeRequestForLightApp(inputParams, ctx.request.header);
       console.log('RequestInfo', RequestInfo);
-      const responseByLocal = await opFetch(`http://10.85.165.89:8080/${RequestInfo.path}`, {
+      const responseByLocal = await opFetch(`${_reqUri}${RequestInfo.path}`, {
         method: 'POST',
         body: JSON.parse(RequestInfo.body),
         headers: RequestInfo.header,
@@ -149,30 +149,43 @@ const StartServer = async (port = 8088, _reqUri: string) => {
   });
 };
 
-async function main() {
-  const { localServerPort } = await QA();
-  const spinner = ora('正在启动本地调试网关，获取本地信息').start();
+async function getServerHref() {
   const spinnerPingLocalServer = ora('测试本地网关连通性').start();
 
-  const freeport = await isFreePort(localServerPort);
-
+  const inputServerSchema = process.env.SERVER_IP;
+  let reqUri: URL;
+  if (inputServerSchema) {
+    reqUri = inputServerSchema?.startsWith('http')
+      ? new URL(inputServerSchema)
+      : new URL(`http://${inputServerSchema}`);
+  } else {
+    const { localServerPort } = await QA();
+    reqUri = new URL(`http://localhost:${localServerPort}`);
+  }
+  const freeport = await isFreePort(+reqUri.port);
   if (!freeport) {
     spinnerPingLocalServer.fail('后端本地服务未启动\n');
   } else {
     spinnerPingLocalServer.succeed('后端本地服务已启动\n');
   }
+  return reqUri;
+}
+
+async function main() {
+  const spinner = ora('正在启动本地调试网关，获取本地信息').start();
+
+  //  1. 获取本地后端地址
+  let reqUri: URL = await getServerHref();
 
   try {
-    const port = await getFreePort();
-    spinner.info(`获取端口号成功 ${port}`);
     const myIp = ip.address();
     spinner.info(`获取ip成功 ${myIp}`);
-
+    const port = await getFreePort();
+    spinner.info(`获取端口号成功 ${port}`);
     const networkUri = `http://${myIp}:${port}`;
     const localUri = `http://localhost:${port}`;
 
-    const reqUri = `http://${myIp}:${localServerPort}`;
-    await StartServer(port, reqUri);
+    await StartServer(port, reqUri.href);
 
     spinner.succeed('启动成功，网关运行在: \n');
 
