@@ -9,7 +9,7 @@ async function reportIp() {
     return;
   }
   if (user?.cookie) {
-    return opFetch('https://opencloud.jinritemai.com/', {
+    return opFetch('https://opencloud.jinritemai.com/api/cloudoperation/local/debug/ip/upload', {
       headers: {
         cookie: user?.cookie,
       },
