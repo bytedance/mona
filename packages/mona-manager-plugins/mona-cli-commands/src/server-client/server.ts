@@ -72,11 +72,13 @@ const StartServer = async (port = 8088, _reqUri: string) => {
       const inputParams: Record<string, any> = ctx.request.body as any;
       const RequestInfo = await openSpiServiceClient.GetInvokeRequestForLightApp(inputParams, ctx.request.header);
       console.log('RequestInfo', RequestInfo);
+
       const responseByLocal = await opFetch(`${_reqUri}${RequestInfo.path}`, {
         method: 'POST',
         body: JSON.parse(RequestInfo.body),
         headers: RequestInfo.header,
       });
+
       // const responseByLocal = { success: true, code: 'test', message: null, data: 'test' };
       console.log('responseByLocal', responseByLocal);
       const responseInfo = await openSpiServiceClient.GetInvokeResponseForLightApp(

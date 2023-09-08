@@ -116,6 +116,7 @@ const publish: IPlugin = ctx => {
             fileName,
             sceneRoute,
             endType: args.t === 'mobile' ? AppSupportEndEnum.MOBILE : AppSupportEndEnum.PC,
+            supportEnd: args.t === 'mobile' ? AppSupportEndEnum.MOBILE : AppSupportEndEnum.PC,
           };
 
           console.log(chalk.cyan(`即将创建新版本`));
