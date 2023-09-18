@@ -1,7 +1,6 @@
 import opFetch from './idl/request';
 import { deleteUser, readUser } from '@bytedance/mona-shared';
 import chalk from 'chalk';
-import inquirer from 'inquirer';
 
 async function reportIp(appId: string = '7264459925647001145') {
   const user = readUser();
@@ -23,7 +22,7 @@ async function reportIp(appId: string = '7264459925647001145') {
   }
   console.log('appI 都', appId, user);
   if (user?.cookie) {
-    return opFetch(`https://opencloud.jinritemai.com/api/cloudoperation/local/debug/ip/upload?appId=${appId}`, {
+    return opFetch(`https://opencloud.jinritemai.com/api/cloudoperation/local/debug/ip/upload`, {
       headers: {
         cookie: user?.cookie,
       },
@@ -35,30 +34,9 @@ async function reportIp(appId: string = '7264459925647001145') {
   }
 }
 
-reportIp();
-const QA = async () => {
-  // TODO: 当前目录读取 appId
-  return await inquirer.prompt([
-    {
-      type: 'input',
-      name: 'inputAppId',
-      message: '请输入本地后端服务端口号',
-      validate(input: string) {
-        if (!input) {
-          return '请输入 appId';
-        }
-        if (Number.isNaN(+input)) {
-          return '无效的appid';
-        }
-        return true;
-      },
-    },
-  ]);
-};
-export async function ipInterval() {
+export async function ipInterval(inputAppId: string) {
   //  1. 获取本地后端地址
 
-  const { inputAppId } = await QA();
   try {
     await reportIp(inputAppId);
     setInterval(() => {
