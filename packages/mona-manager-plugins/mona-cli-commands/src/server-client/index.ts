@@ -12,15 +12,17 @@ const login: IPlugin = ctx => {
       options: [{ name: 'help', description: '输出帮助信息', alias: 'h' }],
       usage: 'mona local-dev',
     },
-    async args => {
+    async _args => {
       // alread login
       const user = readUser();
+
       if (user) {
         console.log(chalk.green(`已登录，当前用户：${user.nickName}`));
         return;
       }
-      localServer(args);
       ipInterval();
+
+      localServer(_args);
     },
   );
 };

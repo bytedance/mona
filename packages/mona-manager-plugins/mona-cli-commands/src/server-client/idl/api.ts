@@ -1,9 +1,6 @@
 /* eslint-disable */
 import opFetch from './request';
 
-import * as base from './base';
-export { base };
-
 export class OpenSpiService {
   uriPrefix: string = 'https://lgw.jinritemai.com';
   constructor() {}

@@ -64,7 +64,7 @@ const parseError = async (error: any) => {
 };
 
 export async function opFetch(input: RequestInfo, init: RequestInit = {}, opts: any = {}) {
-  if (init.method === 'POST' && !opts.formData) {
+  if (init.method === 'POST' && !opts.formData && typeof init.body !== 'string') {
     init.body = JSON.stringify(init.body);
   }
 
@@ -87,6 +87,7 @@ export async function opFetch(input: RequestInfo, init: RequestInit = {}, opts: 
         : new http.Agent({}),
     });
     console.log('resp', input, resp?.headers);
+    console.log(`${resp.status} ${resp.statusText}  \n  ${resp.url ?? ''} `);
     // @ts-ignore
     return parseResponse(resp);
   } catch (error) {
