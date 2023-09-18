@@ -90,8 +90,11 @@ export async function opFetch(input: RequestInfo, init: RequestInit = {}, opts: 
           })
         : new http.Agent({}),
     });
-    console.log('resp', input, resp?.headers);
-    console.log(`${resp.status} ${resp.statusText}  \n  ${resp.url ?? ''} `);
+    // console.log('resp', input, resp?.headers);
+    // console.log(`${resp.status} ${resp.statusText}  \n  ${resp.url ?? ''} `);
+    if (opts?.onlyResp && resp.ok) {
+      return await resp.json();
+    }
     // @ts-ignore
     return parseResponse(resp);
   } catch (error) {

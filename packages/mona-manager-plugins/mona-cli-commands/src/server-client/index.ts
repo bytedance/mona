@@ -82,17 +82,10 @@ const login: IPlugin = ctx => {
   );
 };
 (async () => {
-  const { inputAppId, localServerUrl } = await QA();
-  const requUri = await getServerHref(localServerUrl);
+  const requUri = await getServerHref('10.85.171.224:8080');
   // alread login
-  const user = readUser();
-
-  if (user) {
-    console.log(chalk.green(`已登录，当前用户：${user.nickName}`));
-  }
-  ipInterval(inputAppId);
-
   localServer(requUri);
+  // ipInterval(inputAppId);
 })();
 
 module.exports = login;
