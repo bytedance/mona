@@ -22,9 +22,12 @@ const login: IPlugin = ctx => {
       }
       ipInterval();
 
-      localServer(_args);
+      localServer();
     },
   );
 };
+
+// localServer();
+// ipInterval();
 
 module.exports = login;

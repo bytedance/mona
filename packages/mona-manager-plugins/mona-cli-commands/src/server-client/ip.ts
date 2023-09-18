@@ -21,14 +21,16 @@ async function reportIp(appId: string = '7264459925647001145') {
     console.log(chalk.red(`未登录，请使用 mona login 进行登录`));
     return;
   }
-
+  console.log('appI 都', appId, user);
   if (user?.cookie) {
     return opFetch(`https://opencloud.jinritemai.com/api/cloudoperation/local/debug/ip/upload?appId=${appId}`, {
       headers: {
         cookie: user?.cookie,
-        'x-tt-env': 'ppe_14493651',
-        'x-use-ppe': '1',
       },
+      method: 'POST',
+      body: JSON.stringify({
+        bizAppId: appId,
+      }),
     });
   }
 }

@@ -124,7 +124,7 @@ async function getServerHref() {
   return reqUri;
 }
 
-export async function localServer(_args: any) {
+export async function localServer() {
   const spinner = ora('正在启动本地调试网关，获取本地信息').start();
 
   //  1. 获取本地后端地址
