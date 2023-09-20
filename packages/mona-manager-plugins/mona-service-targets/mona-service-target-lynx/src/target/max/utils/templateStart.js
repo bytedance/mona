@@ -1,11 +1,11 @@
 const fs = require('fs');
 const path = require('path');
-const openBrowser = require('react-dev-utils/openBrowser')
+const openBrowser = require('react-dev-utils/openBrowser');
 const getTmpData = require('./getTmpData.js');
 const getTmpComponentData = require('./getTmpComponentData.js');
 
 const WS_PORT = 10090;
-const TARGET_URL = `https://fxg.jinritemai.com/ffa/shop/decorate/selection/list?debug=1&WSPORT=${WS_PORT}&type=1`;
+const TARGET_URL = `https://fxg.jinritemai.com/ffa/shop/decorate/brand/list?debug=1&WSPORT=${WS_PORT}&type=1`;
 
 const MESSAGE_TYPE = {
   exchangeSchemaJSON: {
