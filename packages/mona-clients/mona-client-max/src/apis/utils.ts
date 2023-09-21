@@ -246,13 +246,7 @@ export const maxReportAnalytics: BaseApis['reportAnalytics'] = function (eventNa
       return;
     }
     const params = data.key === 'data' ? data.value : { [data.key]: data.value };
-    _global.reportAnalytics({ eventName, params }).then((res?: ResData) => {
-      if (res?.code === SUCCESS_CODE) {
-        console.log('[MonaLog]reportAnalytics上报数据成功', `eventName: ${eventName}`, `data: ${data}`);
-      } else {
-        console.log('[MonaLog]reportAnalytics上报数据失败', `eventName: ${eventName}`, `data: ${data}`);
-      }
-    });
+    _global.reportAnalytics({ eventName, params });
   } else {
     logNoImpl('reportAnalytics', eventName, data);
   }
