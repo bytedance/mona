@@ -115,8 +115,11 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
     })
     .catch(err => {
       data.fail?.({
-        errMsg: err.message,
+        errMsg: (typeof err === 'string' ? err : err?.message) || '未知错误',
         errNo: '',
+        toString() {
+          return (typeof err === 'string' ? err : err?.message) || '未知错误';
+        },
       });
     })
     .finally();
