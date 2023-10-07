@@ -2,7 +2,7 @@ import opFetch from './idl/request';
 import { deleteUser, readUser } from '@bytedance/mona-shared';
 import chalk from 'chalk';
 
-async function reportIp(appId: string = '7264459925647001145') {
+async function reportIp(appId: string) {
   const user = readUser();
   // return opFetch(
   //   'https://opencloud.jinritemai.com/api/cloudoperation/local/debug/ip/upload?bizAppId=7264459925647001145',
@@ -39,11 +39,11 @@ export async function ipInterval(inputAppId: string) {
   try {
     await reportIp(inputAppId);
     setInterval(() => {
-      reportIp();
+      reportIp(inputAppId);
     }, 30000);
   } catch (error: any) {
-    deleteUser();
-    console.log(`未登录，请使用 mona login 进行登录`);
+    // deleteUser();
+    console.log((typeof error === 'string' ? error : error?.message) || `未登录，请使用 mona login 进行登录`);
     // process.exit(0);
     // spinner.fail('网关启动失败 ' + error?.message);
   }

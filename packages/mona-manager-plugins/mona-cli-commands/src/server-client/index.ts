@@ -81,11 +81,11 @@ const login: IPlugin = ctx => {
     },
   );
 };
-(async () => {
-  const requUri = await getServerHref('10.85.171.224:8080');
-  // alread login
-  localServer(requUri);
-  // ipInterval(inputAppId);
-})();
+// (async () => {
+//   const requUri = await getServerHref('10.85.171.224:8080');
+//   // alread login
+//   localServer(requUri);
+//   // ipInterval(inputAppId);
+// })();
 
 module.exports = login;
