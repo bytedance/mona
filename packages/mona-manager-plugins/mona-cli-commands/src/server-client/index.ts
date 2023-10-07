@@ -5,6 +5,7 @@ import { isFreePort, localServer } from './server';
 import { ipInterval } from './ip';
 import inquirer from 'inquirer';
 import ora from 'ora';
+
 async function getServerHref(localServerUrl: string) {
   const inputServerSchema = localServerUrl;
   const reqUri = inputServerSchema?.startsWith('http')
@@ -22,6 +23,7 @@ async function getServerHref(localServerUrl: string) {
 
   return reqUri;
 }
+
 const QA = async () => {
   // TODO: 当前目录读取 appId
   return await inquirer.prompt(
@@ -85,7 +87,7 @@ const login: IPlugin = ctx => {
 //   const requUri = await getServerHref('10.85.171.224:8080');
 //   // alread login
 //   localServer(requUri);
-//   // ipInterval(inputAppId);
+//   ipInterval('7127544935871415845');
 // })();
 
 module.exports = login;

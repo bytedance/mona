@@ -75,10 +75,10 @@ export async function opFetch(input: RequestInfo, init: RequestInit = {}, opts: 
   }
 
   try {
-    console.log(input, {
-      ...(init || {}),
-      headers: { ...dropObjEmptyValue(init?.headers), 'x-tt-env': 'ppe_14493651', 'x-use-ppe': '1' },
-    });
+    // console.log(input, {
+    //   ...(init || {}),
+    //   headers: { ...dropObjEmptyValue(init?.headers), 'x-tt-env': 'ppe_14493651', 'x-use-ppe': '1' },
+    // });
     // @ts-ignore
     const resp = await fetch(input, {
       ...(init || {}),

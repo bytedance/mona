@@ -1,5 +1,5 @@
 import opFetch from './idl/request';
-import { deleteUser, readUser } from '@bytedance/mona-shared';
+import { readUser } from '@bytedance/mona-shared';
 import chalk from 'chalk';
 
 async function reportIp(appId: string) {
