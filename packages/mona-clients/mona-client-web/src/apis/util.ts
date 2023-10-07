@@ -48,12 +48,22 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
     token = await window.__MONA_LIGHT_APP_GET_TOEKN!();
     init.credentials = 'include';
     init.method = 'POST';
-    init.headers = {
-      ...init.headers,
-      'x-open-token': token,
-      'x-use-test': window.__MONA_LIGHT_USE_TEST,
-      'x-open-compass': window?.__MONA_LIGHT_APP_GET_COMPASS_TOKEN ? window.__MONA_LIGHT_APP_GET_COMPASS_TOKEN() : '',
-    };
+    if (typeof window.__LIGHT_APP_GET_TOKENS === 'function') {
+      init.headers = {
+        ...init.headers,
+        'x-open-token': token,
+        'x-use-test': window.__MONA_LIGHT_USE_TEST,
+        ...(window.__LIGHT_APP_GET_TOKENS() || {}),
+      };
+    } else {
+      init.headers = {
+        ...init.headers,
+        'x-open-token': token,
+        'x-use-test': window.__MONA_LIGHT_USE_TEST,
+        'x-open-compass': window?.__MONA_LIGHT_APP_GET_COMPASS_TOKEN ? window.__MONA_LIGHT_APP_GET_COMPASS_TOKEN() : '',
+      };
+    }
+
     const appId = window.__MONA_LIGHT_APP_LIFE_CYCLE_LANUCH_QUERY.appId;
     data.data = {
       appId,
