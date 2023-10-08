@@ -59,7 +59,7 @@ const QA = async () => {
   );
 };
 
-const login: IPlugin = ctx => {
+const localDev: IPlugin = ctx => {
   ctx.registerCommand(
     'local-dev',
     {
@@ -90,4 +90,4 @@ const login: IPlugin = ctx => {
 //   ipInterval('7127544935871415845');
 // })();
 
-module.exports = login;
+module.exports = localDev;
