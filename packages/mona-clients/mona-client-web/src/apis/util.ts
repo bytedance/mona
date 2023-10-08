@@ -117,6 +117,7 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
       data.fail?.({
         errMsg: (typeof err === 'string' ? err : err?.message) || '未知错误',
         errNo: '',
+        // @ts-ignore 忽略报错
         toString() {
           return (typeof err === 'string' ? err : err?.message) || '未知错误';
         },
