@@ -115,7 +115,7 @@ class PluginEntryModule {
       ${this._generateRoutesCode()}
       ${this._generateDefaultPathCode()}
       ${this._generateLightConfigCode()}
-      const { provider: p } =  createPlugin(createPluginLifeCycle(App), routes, { defaultPath, light }, ${injectMonaUi} ? { ConfigProvider, zh_CN, prefixCls:'${monaUiPrefix}'} : null);
+      const { provider: p } =  createPlugin(createPluginLifeCycle(App), routes, { defaultPath, light }, ${!!injectMonaUi} ? { ConfigProvider, zh_CN, prefixCls:'${monaUiPrefix}'} : null);
       export const provider = p;
     `;
 
