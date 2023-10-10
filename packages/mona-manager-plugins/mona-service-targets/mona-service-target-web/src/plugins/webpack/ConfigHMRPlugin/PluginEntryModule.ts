@@ -81,12 +81,14 @@ class PluginEntryModule {
   private _generatePluginEntryCode(filename: string) {
     const { library, runtime } = this.configHelper.projectConfig;
     const injectMonaUi = library || runtime?.monaUi;
+    const monaUiPrefix = (typeof injectMonaUi === 'object' ? injectMonaUi?.prefixCls : 'mui') || 'mui';
+
     const injectCode = injectMonaUi
       ? `import { ConfigProvider } from '@bytedance/mona-ui';
         import zh_CN from "@bytedance/mona-ui/es/components/locale/zh_CN";
         import '@bytedance/mona-ui/es/styles/index.less';
 
-        ConfigProvider.config({ prefixCls: 'mui' });`
+        ConfigProvider.config({ prefixCls: '${monaUiPrefix}' });`
       : '';
 
     const coverageCode = process.env.COVERAGE === '1' ? `
@@ -104,7 +106,6 @@ class PluginEntryModule {
       
       instance.init();
     ` : '';
-
     const code = `
       import './public-path';
       ${injectCode}
@@ -114,7 +115,7 @@ class PluginEntryModule {
       ${this._generateRoutesCode()}
       ${this._generateDefaultPathCode()}
       ${this._generateLightConfigCode()}
-      const { provider: p } =  createPlugin(createPluginLifeCycle(App), routes, { defaultPath, light }, ${injectMonaUi} ? { ConfigProvider, zh_CN} : null);
+      const { provider: p } =  createPlugin(createPluginLifeCycle(App), routes, { defaultPath, light }, ${injectMonaUi} ? { ConfigProvider, zh_CN, prefixCls:'${monaUiPrefix}'} : null);
       export const provider = p;
     `;
 

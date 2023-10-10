@@ -70,9 +70,9 @@ function createJsRule({ webpackConfig, configHelper, TARGET }: ModuleRule) {
           require.resolve('@bytedance/babel-coverage-plugin'),
           {
             coverageGlobalScopeFunc: false,
-            coverageGlobalScope: 'window'
-          }
-        ]
+            coverageGlobalScope: 'window',
+          },
+        ],
       ].filter(Boolean),
     });
   // jsRule
@@ -85,7 +85,8 @@ function createLessRule({ webpackConfig, configHelper, commonCssRule }: ModuleRu
   const lessRule = webpackConfig.module.rule('less').test(/\.less$/i);
   const { library, runtime } = configHelper.projectConfig;
   const injectMonaUi = library || runtime?.monaUi;
-  const modifyVars = injectMonaUi ? { '@auxo-prefix': 'mui' } : {};
+  const monaUiPrefix = (typeof injectMonaUi === 'object' ? injectMonaUi?.prefixCls : 'mui') || 'mui';
+  const modifyVars = injectMonaUi ? { '@auxo-prefix': monaUiPrefix } : {};
 
   commonCssRule(lessRule, configHelper)
     .use('less')
