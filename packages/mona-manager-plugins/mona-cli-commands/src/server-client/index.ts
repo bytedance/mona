@@ -59,7 +59,7 @@ const QA = async () => {
   );
 };
 
-const localDev: IPlugin = ctx => {
+const localDev: IPlugin = async ctx => {
   ctx.registerCommand(
     'local-dev',
     {
@@ -77,7 +77,7 @@ const localDev: IPlugin = ctx => {
       if (user) {
         console.log(chalk.green(`已登录，当前用户：${user.nickName}`));
       }
-      ipInterval(inputAppId);
+      await ipInterval(inputAppId);
 
       localServer(requUri);
     },
