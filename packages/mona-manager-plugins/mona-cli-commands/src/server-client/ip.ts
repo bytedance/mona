@@ -16,8 +16,10 @@ async function reportIp(appId: string) {
   //     // }),
   //   },
   // );
+
   if (!user) {
     console.log(chalk.red(`未登录，请使用 mona login 进行登录`));
+    process.exit(0);
     return;
   }
   if (user?.cookie) {
@@ -43,9 +45,14 @@ export async function ipInterval(inputAppId: string) {
     }, 30000);
   } catch (error: any) {
     // deleteUser();
+    const errMsg = typeof error === 'string' ? error : error?.message;
     console.log((typeof error === 'string' ? error : error?.message) || `未登录，请使用 mona login 进行登录`);
-    console.log(`1. 请执行 mong logout 清空本地登录缓存`);
-    console.log(`2. mona login 登录`);
+    console.log(chalk.red(`\n启动异常: `));
+
+    if (typeof errMsg === 'string' && errMsg?.includes('401')) {
+      console.log(chalk.red(`1. 请执行 mong logout 清空本地登录缓存`));
+      console.log(chalk.red(`2. mona login 登录`));
+    }
 
     process.exit(0);
   }
