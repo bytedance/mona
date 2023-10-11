@@ -44,7 +44,9 @@ export async function ipInterval(inputAppId: string) {
   } catch (error: any) {
     // deleteUser();
     console.log((typeof error === 'string' ? error : error?.message) || `未登录，请使用 mona login 进行登录`);
-    // process.exit(0);
-    // spinner.fail('网关启动失败 ' + error?.message);
+    console.log(`1. 未登录，请执行 mong logout 退出登录`);
+    console.log(`2. mona login 登录`);
+
+    process.exit(0);
   }
 }
