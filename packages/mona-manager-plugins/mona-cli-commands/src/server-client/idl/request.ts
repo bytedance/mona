@@ -75,10 +75,10 @@ export async function opFetch(input: RequestInfo, init: RequestInit = {}, opts: 
   }
 
   try {
-    // console.log(input, {
-    //   ...(init || {}),
-    //   headers: { ...dropObjEmptyValue(init?.headers), 'x-tt-env': 'ppe_14493651', 'x-use-ppe': '1' },
-    // });
+    console.log(`请求${input}入参`, {
+      ...(init || {}),
+      headers: { ...dropObjEmptyValue(init?.headers), 'x-tt-env': 'ppe_14493651', 'x-use-ppe': '1' },
+    });
     // @ts-ignore
     const resp = await fetch(input, {
       ...(init || {}),
@@ -90,7 +90,9 @@ export async function opFetch(input: RequestInfo, init: RequestInit = {}, opts: 
           })
         : new http.Agent({}),
     });
-    // console.log('resp', input, resp?.headers);
+
+    // @ts-ignore
+    console.log(`请求${input}返回 logid`, resp.headers['x-tt-logid']);
     // console.log(`${resp.status} ${resp.statusText}  \n  ${resp.url ?? ''} `);
     if (opts?.onlyResp && resp.ok) {
       return await resp.json();
