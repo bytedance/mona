@@ -13,9 +13,7 @@ async function getServerHref(localServerUrl: string) {
     : new URL(`http://${inputServerSchema}`);
   if (reqUri.port) {
     const spinnerPingLocalServer = ora('测试本地网关连通性').start();
-    console.log('reqUri.port', reqUri.port);
     const freeport = await isFreePort(+reqUri.port);
-    console.log('freeport', freeport);
 
     if (!freeport) {
       spinnerPingLocalServer.fail('后端本地服务未启动\n');
@@ -85,11 +83,11 @@ const localDev: IPlugin = async ctx => {
     },
   );
 };
-(async () => {
-  await getServerHref('localhost:3003');
-  // alread login
-  // localServer(requUri);
-  // ipInterval('7127544935871415845');
-})();
+// (async () => {
+//   await getServerHref('localhost:3003');
+//   // alread login
+//   // localServer(requUri);
+//   // ipInterval('7127544935871415845');
+// })();
 
 module.exports = localDev;
