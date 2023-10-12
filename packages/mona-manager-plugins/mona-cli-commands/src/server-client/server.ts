@@ -24,9 +24,13 @@ const getFreePort = async () => {
 
 export const isFreePort = async (port: number) => {
   try {
-    await portfinder.getPortPromise({ port: port, stopPort: port });
+    const res = await portfinder.getPortPromise({ port: port });
+    if (port !== res) {
+      return false;
+    }
     return true;
   } catch (error) {
+    console.error(error);
     return false;
   }
 };
@@ -67,7 +71,7 @@ const StartServer = async (port = 8088, _reqUri: string) => {
           { onlyResp: true },
         );
 
-        console.log('responseInfo', responseInfo);
+        // console.log('responseInfo', responseInfo);
 
         ctx.response.body = responseInfo;
       } catch (error) {

@@ -75,8 +75,8 @@ export async function opFetch(input: RequestInfo, init: RequestInit = {}, opts: 
   }
 
   try {
-    console.log(`请求${input}`);
-    console.log(`入参`, init.body);
+    // console.log(`请求${input}`);
+    // console.log(`入参`, init.body);
 
     // @ts-ignore
     const resp = await fetch(input, {
@@ -91,8 +91,7 @@ export async function opFetch(input: RequestInfo, init: RequestInit = {}, opts: 
     });
 
     // @ts-ignore
-    console.log(`返回 logid`, resp.headers.get('x-tt-logid'));
-    // console.log(`${resp.status} ${resp.statusText}  \n  ${resp.url ?? ''} `);
+    // console.log(`返回 logid`, resp.headers.get('x-tt-logid'));
     if (opts?.onlyResp && resp.ok) {
       return await resp.json();
     }
