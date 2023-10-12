@@ -1,26 +1,26 @@
 import chalk from 'chalk';
 import { IPlugin } from '@bytedance/mona-manager';
 import { readUser } from '@bytedance/mona-shared';
-import { isFreePort, localServer } from './server';
+import { localServer } from './server';
 import { ipInterval } from './ip';
 import inquirer from 'inquirer';
-import ora from 'ora';
+// import ora from 'ora';
 
 async function getServerHref(localServerUrl: string) {
   const inputServerSchema = localServerUrl;
   const reqUri = inputServerSchema?.startsWith('http')
     ? new URL(inputServerSchema)
     : new URL(`http://${inputServerSchema}`);
-  if (reqUri.port) {
-    const spinnerPingLocalServer = ora('测试本地网关连通性').start();
-    const freeport = await isFreePort(+reqUri.port);
+  // if (reqUri.port) {
+  //   const spinnerPingLocalServer = ora('测试本地网关连通性').start();
+  //   const freeport = await isFreePort(+reqUri.port);
 
-    if (!freeport) {
-      spinnerPingLocalServer.fail('后端本地服务未启动\n');
-    } else {
-      spinnerPingLocalServer.succeed('后端本地服务已启动\n');
-    }
-  }
+  //   if (!freeport) {
+  //     spinnerPingLocalServer.fail('后端本地服务未启动\n');
+  //   } else {
+  //     spinnerPingLocalServer.succeed('后端本地服务已启动\n');
+  //   }
+  // }
 
   return reqUri;
 }
