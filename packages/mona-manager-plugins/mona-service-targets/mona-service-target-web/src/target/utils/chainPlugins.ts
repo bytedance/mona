@@ -78,7 +78,8 @@ export function chainPlugins(
     },
   ]);
 
-  webpackConfig.plugin('ContextReplacementPlugin').use(ContextReplacementPlugin, [/moment[/\\]locale$/, /zh-ch/]);
+  // webpackConfig.plugin('ContextReplacementPlugin').use(ContextReplacementPlugin, [/moment[/\\]locale$/, /zh-ch/]);
+  webpackConfig.plugin('ContextReplacementPlugin').use(new ContextReplacementPlugin(/moment[/\\]locale$/, /zh-cn/));
   if (TARGET === Platform.LIGHT) {
     webpackConfig.plugin('LightApiPlugin').use(LightApiPlugin, [projectConfig.appId as string]);
   }
