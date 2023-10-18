@@ -18,6 +18,7 @@ const buildInPlugins = convertPlugins([
   '@bytedance/mona-cli-commands/dist/logout/index.js',
   update(pkg),
   '@bytedance/mona-cli-commands/dist/auto-test/index.js',
+  '@bytedance/mona-cli-commands/dist/server-client/index.js',
 ]);
 
 export default buildInPlugins;

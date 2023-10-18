@@ -95,6 +95,7 @@ export function createWebApp(
   libraryConfig?: {
     ConfigProvider: React.FC<{ prefixCls: string; locale: any; children?: React.ReactNode }>;
     zh_CN: any;
+    prefixCls?: string;
   },
 ) {
   const Provider = libraryConfig?.ConfigProvider
@@ -107,7 +108,7 @@ export function createWebApp(
     prepareLightApp(options?.light);
 
     ReactDOM.render(
-      <Provider prefixCls="mui" locale={libraryConfig?.zh_CN}>
+      <Provider prefixCls={libraryConfig?.prefixCls || 'mui'} locale={libraryConfig?.zh_CN}>
         <BrowserRouter>
           <HistorySetWrapper>
             <Component>

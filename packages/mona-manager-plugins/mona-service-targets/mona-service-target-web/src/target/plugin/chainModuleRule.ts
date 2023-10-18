@@ -55,6 +55,10 @@ function commonCssRule(styleRule: Config.Rule<Config.Module>, configHelper: Conf
     });
   const cmdArgv = minimist(process.argv.slice(2));
   const target = cmdArgv.t;
+  const { library, runtime } = configHelper.projectConfig;
+  const injectMonaUi = library || runtime?.monaUi;
+  const monaUiPrefix = typeof injectMonaUi === 'object' ? injectMonaUi?.prefixCls : undefined;
+
   styleRule
     .use('postcss-loader')
     .loader(require.resolve('postcss-loader'))
@@ -65,7 +69,7 @@ function commonCssRule(styleRule: Config.Rule<Config.Module>, configHelper: Conf
             require.resolve('@bytedance/mona-manager-plugins-shared/dist/plugins/postcss/PostcssPreSelector.js'),
             { selector: `#${configHelper.buildId}` },
           ],
-          target === 'light' && [path.join(__dirname, '../../plugins/postcss/monaUiPrefix.js')],
+          target === 'light' && !monaUiPrefix && [path.join(__dirname, '../../plugins/postcss/monaUiPrefix.js')],
         ].map(a => a),
       },
     });

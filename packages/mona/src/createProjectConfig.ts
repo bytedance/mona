@@ -33,7 +33,11 @@ export interface ProjectConfig {
   transformSvgToComponentInWeb?: boolean;
   library?: boolean;
   runtime?: {
-    monaUi?: boolean;
+    monaUi?:
+      | boolean
+      | {
+          prefixCls?: string;
+        };
     openSafeSdk?: boolean;
   };
   abilities?: {

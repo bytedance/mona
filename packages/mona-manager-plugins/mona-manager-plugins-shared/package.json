@@ -1,7 +1,7 @@
 {
   "name": "@bytedance/mona-manager-plugins-shared",
   "displayName": "mona-manager-plugins-shared",
-  "version": "0.3.26",
+  "version": "0.3.27",
   "description": "mona-manager plugins shared utils and plugins",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -17,7 +17,7 @@
   "author": "xiaokun.kenny@bytedance.com",
   "license": "MIT",
   "dependencies": {
-    "@bytedance/mona-manager": "0.3.26",
+    "@bytedance/mona-manager": "0.3.27",
     "copy-webpack-plugin": "^10.2.0",
     "webpack": "^5.58.2"
   },

@@ -17,6 +17,7 @@ export type TabBarProps = {
 };
 
 const isAbsolute = (path: string): boolean => /^https?/.test(path) || /^\/\//.test(path);
+
 function formatIconPath(path?: string) {
   if (!path) {
     return path;
