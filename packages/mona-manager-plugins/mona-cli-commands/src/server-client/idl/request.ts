@@ -81,7 +81,7 @@ export async function opFetch(input: RequestInfo, init: RequestInit = {}, opts: 
     // @ts-ignore
     const resp = await fetch(input, {
       ...(init || {}),
-      headers: { ...dropObjEmptyValue(init?.headers), 'x-tt-env': 'ppe_14493651', 'x-use-ppe': '1' },
+      headers: dropObjEmptyValue(init?.headers),
       //@ts-ignore
       agent: input.startsWith('https://')
         ? new https.Agent({
