@@ -50,7 +50,7 @@ export async function ipInterval(inputAppId: string) {
     console.log(chalk.red(`\n启动异常: `));
 
     if (typeof errMsg === 'string' && errMsg?.includes('401')) {
-      console.log(chalk.red(`1. 请执行 mong logout 清空本地登录缓存`));
+      console.log(chalk.red(`1. 请执行 mona logout 清空本地登录缓存`));
       console.log(chalk.red(`2. mona login 登录`));
     }
 
