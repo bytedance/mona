@@ -72,14 +72,15 @@ export const HistorySetWrapper: React.FC = ({ children }) => {
 };
 
 const defaultLightConfig: any = { mode: 'sidebar-semi-420' };
-
+let cbInit = false;
 function prepareLightApp(config: any) {
   // @ts-ignore
-  if (typeof window.__MONA_LIGHT_APP_INIT_CB === 'function' && typeof config === 'object') {
+  if (!cbInit && typeof window.__MONA_LIGHT_APP_INIT_CB === 'function' && typeof config === 'object') {
     // @ts-ignore
     window.__MONA_LIGHT_APP_INIT_CB({ ...defaultLightConfig, ...config });
+    cbInit = true;
     // @ts-ignore
-    window.__MONA_LIGHT_APP_INIT_CB = undefined;
+    // window.__MONA_LIGHT_APP_INIT_CB = undefined;
   }
 }
 
