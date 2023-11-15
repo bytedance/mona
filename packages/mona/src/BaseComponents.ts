@@ -144,6 +144,44 @@ export interface CouponCardProps extends BaseProps {
   isShowCouponInfo: boolean;
   productId: string;
 }
+
+export interface ProductFollowButtonProps extends Pick<BaseProps, 'style' | 'className' | 'hidden'> {
+  shopId: string; // 店铺 ID
+  productId: string; // 商品 ID
+  disabled?: boolean; // 是否禁用，默认 false
+  noStyle?: boolean; // 是否关闭默认样式，默认 false
+  size?: 'default' | 'mini'; // 按钮的大小，默认 mini
+  disabledClassName?: string; // 禁用状态下的样式类
+  followedClassName?: string; // 已收藏状态下的样式类
+  followedText?: string; // 已收藏文本，默认 取消收藏
+  unfollowedClassName?: string; // 未收藏状态下的样式类
+  unfollowedText?: string; // 未收藏文本，默认 收藏
+  onFollowed?: EventHandler; // 收藏成功回调
+  onUnfollowed?: EventHandler; // 取消收藏成功回调
+  onError?: EventHandler;
+}
+
+export interface SkuButtonProps extends Pick<BaseProps, 'style' | 'className' | 'hidden'> {
+  shopId: string; // 商品 ID
+  productId: string; // 店铺 ID
+  actionType?: 1 | 2; // SKU 行为，可取值 1（加购）、2（立购），默认 2
+  disabled?: boolean; // 是否禁用，默认 false
+  noStyle?: boolean; // 是否关闭默认样式，默认 false
+  size?: 'default' | 'mini'; // 按钮的大小，默认 default
+  type?: 'default' | 'primary'; // 按钮的样式类型，默认 primary
+  disabledClassName?: string; // 禁用状态下的样式类
+  text?: string; // 按钮文案，默认 立即购买
+  onSuccess?: EventHandler; // 打开成功回调
+  onError?: EventHandler;
+}
+
+export interface ShopFollowCardProps extends Pick<BaseProps, 'style' | 'className' | 'hidden'> {
+  shopId: string;
+  onFollowed?: EventHandler; // 关注成功回调
+  onUnfollowed?: EventHandler; // 取消关注成功回调
+  onError?: EventHandler;
+}
+
 export interface ProgressProps extends BaseProps {
   percent?: number;
   strokeWidth?: number;

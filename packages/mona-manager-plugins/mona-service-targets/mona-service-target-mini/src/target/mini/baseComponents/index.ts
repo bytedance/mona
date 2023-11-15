@@ -35,6 +35,9 @@ import map from './Map/alias';
 import camera from './Camera/alias';
 import memberButton from './MemberButton/alias';
 import couponCard from './CouponCard/alias';
+import productFollowButton from './ProductFollowButton/alias';
+import skuButton from './SkuButton/alias';
+import shopFollowCard from './ShopFollowCard/alias';
 
 // import map from './Ca/alias';
 // import * as Components from '@bytedance/mona-components';
@@ -365,6 +368,18 @@ export const ejsParamsObj: Record<
   [ComponentType['coupon-card']]: {
     reactComponentName: 'CouponCard',
     alias: couponCard,
+  },
+  [ComponentType['product-follow-button']]: {
+    reactComponentName: 'ProductFollowButton',
+    alias: productFollowButton,
+  },
+  [ComponentType['sku-button']]: {
+    reactComponentName: 'SkuButton',
+    alias: skuButton,
+  },
+  [ComponentType['shop-follow-card']]: {
+    reactComponentName: 'ShopFollowCard',
+    alias: shopFollowCard,
   },
 };
 
