@@ -36,6 +36,9 @@ import {
   RichTextProps,
   MemberButtonProps,
   CouponCardProps,
+  ProductFollowButtonProps,
+  SkuButtonProps,
+  ShopFollowCardProps,
 } from '@bytedance/mona';
 
 type Alias = string;
@@ -77,3 +80,6 @@ export type TextAlias = AliasMap<TextProps>;
 export type RichTextAlias = AliasMap<RichTextProps>;
 export type MemberButtonAlias = AliasMap<MemberButtonProps>;
 export type CouponCardAlias = AliasMap<CouponCardProps>;
+export type ProductFollowButtonAlias = AliasMap<ProductFollowButtonProps>;
+export type SkuButtonAlias = AliasMap<SkuButtonProps>;
+export type ShopFollowCardAlias = AliasMap<ShopFollowCardProps>;

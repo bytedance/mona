@@ -46,6 +46,9 @@ const MiniComponentType = {
   ptext: '36',
   'member-button': '37',
   'coupon-card': '38',
+  'product-follow-button': '39',
+  'sku-button': '40',
+  'shop-follow-card': '41',
 };
 
 // TODO:开发模式语义化, 小程序运行时 build两份代码, index.production.js, index.development.js
