@@ -19,6 +19,8 @@
   "dependencies": {
     "@bytedance/mona": "0.3.29",
     "@bytedance/mona-shared": "0.3.29",
+    "@rspack/cli": "^0.4.0",
+    "@rspack/core": "^0.4.0",
     "chalk": "^4.1.2",
     "command-line-usage": "^6.1.1",
     "lodash.merge": "^4.6.2",

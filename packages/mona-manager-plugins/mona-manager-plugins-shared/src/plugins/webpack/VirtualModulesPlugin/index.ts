@@ -14,7 +14,7 @@
 
 import path from 'path';
 import { VirtualStats } from './virtual-stats';
-import type { Compiler } from 'webpack';
+import type { Compiler } from '@rspack/core';
 
 let inode = 45000000;
 
@@ -297,8 +297,10 @@ class VirtualModulesPlugin {
     };
 
     const watchRunHook = (watcher: any, callback: () => void) => {
+      console.log("run watch run");
       this._watcher = watcher.compiler || watcher;
       const virtualFiles = (compiler as any).inputFileSystem._virtualFiles;
+      console.log('virtualFiles', virtualFiles);
       const fts = compiler.fileTimestamps as any;
       if (virtualFiles && fts && typeof fts.set === 'function') {
         Object.keys(virtualFiles).forEach(file => {
@@ -317,6 +319,7 @@ class VirtualModulesPlugin {
     if (compiler.hooks) {
       compiler.hooks.afterEnvironment.tap('VirtualModulesPlugin', afterEnvironmentHook);
       compiler.hooks.afterResolvers.tap('VirtualModulesPlugin', afterResolversHook);
+      console.log('compiler.hooks.watchRun', compiler.hooks.watchRun);
       compiler.hooks.watchRun.tapAsync('VirtualModulesPlugin', watchRunHook);
     } else {
       (compiler as any).plugin('after-environment', afterEnvironmentHook);

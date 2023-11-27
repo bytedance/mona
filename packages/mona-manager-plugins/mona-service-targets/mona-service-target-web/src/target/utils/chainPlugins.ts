@@ -1,9 +1,9 @@
 import path from 'path';
 import Config from 'webpack-chain';
-
+import { HtmlRspackPlugin, DefinePlugin, ProgressPlugin } from '@rspack/core'
 import { ConfigHelper } from '@bytedance/mona-manager';
 import { MonaPlugins } from '@/plugins';
-
+import ReactRefreshPlugin from '@rspack/plugin-react-refresh';
 import { Platform, getEnv } from '@bytedance/mona-manager-plugins-shared';
 import { SAFE_SDK_SCRIPT } from '../utils/genHtml';
 
@@ -17,10 +17,6 @@ export function chainPlugins(
   const {
     CopyPublicPlugin,
     ConfigHMRPlugin,
-    HtmlWebpackPlugin,
-    DefinePlugin,
-    ReactRefreshWebpackPlugin,
-    MiniCssExtractPlugin,
     ContextReplacementPlugin,
     LightApiPlugin,
     MobileAppJsonPlugin,
@@ -28,8 +24,7 @@ export function chainPlugins(
 
   webpackConfig.when(
     configHelper.isDev,
-    w => w.plugin('ReactRefreshWebpackPlugin').use(ReactRefreshWebpackPlugin),
-    w => w.plugin('MiniCssExtractPlugin').use(MiniCssExtractPlugin, [{ filename: '[name].[contenthash:7].css' }]),
+    w => w.plugin('ReactRefreshPlugin').use(ReactRefreshPlugin),
   );
   webpackConfig.plugin('ConfigHMRPlugin').use(ConfigHMRPlugin, [configHelper, TARGET]);
 
@@ -53,20 +48,12 @@ export function chainPlugins(
   const { runtime } = configHelper?.projectConfig;
   if (process.env.ENTRY_TYPE !== 'js') {
     webpackConfig.plugin('HtmlWebpackPlugin').use(
-      new HtmlWebpackPlugin({
+      new HtmlRspackPlugin({
         templateContent:
           typeof templateContent === 'function'
             ? templateContent(configHelper.buildId, runtime?.openSafeSdk ? SAFE_SDK_SCRIPT : '')
             : templateContent,
-        minify: {
-          collapseWhitespace: true,
-          keepClosingSlash: true,
-          removeComments: false,
-          removeRedundantAttributes: true,
-          removeScriptTypeAttributes: true,
-          removeStyleLinkTypeAttributes: true,
-          useShortDoctype: true,
-        },
+        minify: true,
       }),
     );
   }
@@ -77,6 +64,8 @@ export function chainPlugins(
       ...(projectConfig?.abilities?.define || {}),
     },
   ]);
+
+  webpackConfig.plugin('ProgressPlugin').use(ProgressPlugin, [{ prefix: 'Client' }])
 
   // webpackConfig.plugin('ContextReplacementPlugin').use(ContextReplacementPlugin, [/moment[/\\]locale$/, /zh-ch/]);
   webpackConfig.plugin('ContextReplacementPlugin').use(new ContextReplacementPlugin(/moment[/\\]locale$/, /zh-cn/));

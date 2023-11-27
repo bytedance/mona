@@ -1,5 +1,6 @@
 import path from 'path';
-import { VirtualModulesPlugin } from '@bytedance/mona-manager-plugins-shared';
+// import { VirtualModulesPlugin } from '@bytedance/mona-manager-plugins-shared';
+import { RspackVirtualModulePlugin } from 'rspack-plugin-virtual-module';
 import { readConfig } from '@bytedance/mona-shared';
 import { PageConfig } from '@bytedance/mona';
 import { ConfigHelper } from '@bytedance/mona-manager';
@@ -9,7 +10,7 @@ export const MONA_PUBLIC_PATH = '__mona_public_path__';
 class PluginEntryModule {
   configHelper: ConfigHelper;
   name: string;
-  module: VirtualModulesPlugin;
+  module: RspackVirtualModulePlugin;
 
   constructor(configHelper: ConfigHelper) {
     this.configHelper = configHelper;
@@ -28,13 +29,14 @@ class PluginEntryModule {
     const { entryPath } = this.configHelper;
 
     const module: Record<string, string> = {};
-    const publicPathVirtualPath = path.join(entryPath, '..', 'public-path.js');
+    const publicPathVirtualPath = 'public-path';
+    // const publicPathVirtualPath = path.join(entryPath, '..', 'public-path.js');
     module[publicPathVirtualPath] = `__webpack_public_path__ = window.${MONA_PUBLIC_PATH} || '/';`;
-    const virtualPath = path.join(entryPath, '..', 'app.entry.js');
+    const virtualPath = 'app.entry';
     module[virtualPath] = this._generatePluginEntryCode(entryPath);
     this.name = virtualPath;
 
-    return new VirtualModulesPlugin(module);
+    return new RspackVirtualModulePlugin(module, '.mona');
   }
 
   updateModule() {
@@ -55,7 +57,7 @@ class PluginEntryModule {
 
   private _generateRoutesCode() {
     const pages = Array.from(new Set((this.configHelper.appConfig.pages || []) as string[]));
-    let routesCode = pages.map((page, index) => `import Page${index} from './${page}';`).join('');
+    let routesCode = pages.map((page, index) => `import Page${index} from '${path.join(this.configHelper.cwd, `./src/${page}`)}';`).join('');
     routesCode += `const routes = [${pages
       .map(
         (page, index) =>
@@ -107,11 +109,11 @@ class PluginEntryModule {
       instance.init();
     ` : '';
     const code = `
-      import './public-path';
+      import 'public-path';
       ${injectCode}
       ${coverageCode}
       import { createPlugin, createPluginLifeCycle, createPluginPageLifecycle } from '@bytedance/mona-runtime';
-      import App from './${path.basename(filename)}';
+      import App from '${filename}';
       ${this._generateRoutesCode()}
       ${this._generateDefaultPathCode()}
       ${this._generateLightConfigCode()}

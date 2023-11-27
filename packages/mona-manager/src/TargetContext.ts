@@ -1,12 +1,52 @@
-import ora from 'ora';
+// import ora from 'ora';
 import path from 'path';
 import chalk from 'chalk';
-import webpack from 'webpack';
-import WebpackDevServer from 'webpack-dev-server';
+
+import { rspack, StatsCompilation, MultiStats, Stats } from '@rspack/core';
+import { RspackDevServer } from '@rspack/dev-server';
 import Builder, { ChainWebpackConfigFn, RawWebpackConfigFn } from './Builder';
 import { DEFAULT_PORT, DEFAULT_HOST } from '@bytedance/mona-shared';
+import { formatStatsMessages } from './utils/formatStats';
+import log from './utils/log';
 
 type Fn = (args: Record<string, any>) => void;
+
+function formatStats(stats: Stats | MultiStats, showWarnings = true) {
+  const statsData = stats.toJson({
+    preset: 'errors-warnings',
+  });
+
+  const { errors, warnings } = formatStatsMessages(statsData);
+
+  if (errors.length) {
+    const errorMsgs = `${errors.join('\n\n')}\n`;
+    const isTerserError = errorMsgs.includes('from Terser');
+    const title = chalk.bold(
+      chalk.red(isTerserError ? `Minify error: ` : `Compile error: `),
+    );
+    const tip = chalk.yellow(
+      isTerserError
+        ? `Failed to minify with terser, check for syntax errors.`
+        : 'Failed to compile, check the errors for troubleshooting.',
+    );
+
+    return {
+      message: `${title}\n${tip}\n${errorMsgs}`,
+      level: 'error',
+    };
+  }
+
+  // always show warnings in tty mode
+  if (warnings.length && (showWarnings || process.stdout.isTTY)) {
+    const title = chalk.bold(chalk.yellow(`Compile Warning: \n`));
+    return {
+      message: `${title}${`${warnings.join('\n\n')}\n`}`,
+      level: 'warning',
+    };
+  }
+
+  return {};
+}
 
 class TargetContext {
   target: string;
@@ -28,39 +68,47 @@ class TargetContext {
       return;
     }
 
-    const compiler = webpack(webpackConfig);
+    // console.log("use rspack", webpackConfig);
+    const compiler = rspack(webpackConfig as any);
+    compiler.run((_, statsOrigin) => {
+      const stats = statsOrigin!;
+      const obj = stats.toJson({
+        all: false,
+        timings: true,
+      });
 
-    const spinner = ora('编译中...').start();
-    spinner.color = 'green';
+      const printTime = (c: StatsCompilation) => {
+        if (c.time) {
+          const time = (c.time / 1000).toFixed(2) + 's';
+          // const target = Array.isArray(context.target)
+          //   ? context.target[index]
+          //   : context.target;
+          // const name = TARGET_ID_MAP[target || 'web'];
+          console.log(`Client compiled in ${time}`);
+        }
+      };
 
-    compiler.run((error: any, stats: any) => {
-      if (error) {
-        throw error;
+      if (!stats.hasErrors()) {
+        if (obj.children) {
+          obj.children.forEach((c) => {
+            printTime(c);
+          });
+        } else {
+          printTime(obj);
+        }
       }
 
-      const info = stats?.toJson();
+      const { message, level } = formatStats(stats);
 
-      if (stats?.hasErrors()) {
-        info?.errors?.forEach((err: Error) => {
-          console.log(chalk.red(err.message));
-        });
-        info?.children?.forEach((item: any) => {
-          console.log(item?.errors);
-        });
-
-        spinner.fail('编译失败');
-        process.exit(1);
+      if (level === 'error') {
+        log.error(message);
+      }
+      if (level === 'warning') {
+        log.warn(message);
       }
 
-      if (stats?.hasWarnings()) {
-        info?.warnings?.forEach((w: Error) => {
-          console.log(chalk.yellow(w.message));
-        });
-      }
-
-      spinner.succeed(`编译成功 ${new Date().toLocaleString()}`);
-      process.exit(0);
-    });
+      process.exit();
+    })
   }
 
   private _defaultStartFn(args: Record<string, any>) {
@@ -70,13 +118,14 @@ class TargetContext {
       return;
     }
 
+    // console.log("use rspack", webpackConfig);
     if (builder) {
-      const compiler = webpack(webpackConfig);
+      const compiler = rspack(webpackConfig as any);
       const { cwd, projectConfig } = builder.configHelper;
       const staticDir = path.join(cwd, projectConfig.output);
       const port = args.port || projectConfig.dev?.port || DEFAULT_PORT;
 
-      const devServerConfig =
+      const devServerConfig: any =
         webpackConfig.devServer ||
         Object.assign(
           {},
@@ -105,7 +154,7 @@ class TargetContext {
           { port },
         );
 
-      const devServer = new WebpackDevServer(devServerConfig, compiler);
+      const devServer = new RspackDevServer(devServerConfig, compiler);
 
       devServer.startCallback(() => {
         if (target !== 'max') {

@@ -1,5 +1,5 @@
 import { ConfigHelper } from '@bytedance/mona-manager';
-import { Compiler } from 'webpack';
+import { Compiler } from '@rspack/core';
 import chokidar from 'chokidar';
 import PluginEntryModule from './PluginEntryModule';
 import WebEntryModule from './WebEntryModule';
@@ -21,7 +21,7 @@ class ConfigHMRPlugin {
 
   apply(compiler: Compiler) {
     // Applying a webpack compiler to the virtual module
-    this.entryModule.module.apply(compiler);
+    this.entryModule.module.apply(compiler as any);
     const changed = new Set();
     const patchUpdateModule = (path: string) => {
       changed.add(path);
