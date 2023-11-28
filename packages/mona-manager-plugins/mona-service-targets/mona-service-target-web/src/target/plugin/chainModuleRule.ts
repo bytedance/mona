@@ -16,12 +16,12 @@ function commonCssRule(styleRule: Config.Rule<Config.Module>, configHelper: Conf
   //   r => r.loader(MonaPlugins.MiniCssExtractPlugin.loader),
   // );
 
-  // const { typings } = configHelper.projectConfig.abilities?.css || { typings: false };
+  const { typings } = configHelper.projectConfig.abilities?.css || { typings: false };
 
-  // typings &&
-  //   styleRule
-  //     .use('@teamsupercell/typings-for-css-modules-loader')
-  //     .loader(require.resolve('@teamsupercell/typings-for-css-modules-loader'));
+  typings &&
+    styleRule
+      .use('@teamsupercell/typings-for-css-modules-loader')
+      .loader(require.resolve('@teamsupercell/typings-for-css-modules-loader'));
 
   // styleRule
   //   .use('cssLoader')
@@ -31,28 +31,28 @@ function commonCssRule(styleRule: Config.Rule<Config.Module>, configHelper: Conf
   //     modules: {
   //       auto: true,
   //       localIdentName: '[local]_[hash:base64:5]',
-  //       getLocalIdent: (loaderContext: any, localIdentName: string, localName: string, options: any) => {
-  //         // 配合PostcssPreSelector插件
-  //         if (localName === configHelper.buildId) {
-  //           return localName;
-  //         }
+        // getLocalIdent: (loaderContext: any, localIdentName: string, localName: string, options: any) => {
+          // // 配合PostcssPreSelector插件
+          // if (localName === configHelper.buildId) {
+          //   return localName;
+          // }
 
-  //         if (!options.context) {
-  //           options.context = loaderContext.rootContext;
-  //         }
+          // if (!options.context) {
+          //   options.context = loaderContext.rootContext;
+          // }
 
-  //         const request = path.relative(options.context, loaderContext.resourcePath).replace(/\\/g, '/');
+          // const request = path.relative(options.context, loaderContext.resourcePath).replace(/\\/g, '/');
 
-  //         options.content = `${options.hashPrefix + request}+${localName}`;
+          // options.content = `${options.hashPrefix + request}+${localName}`;
 
-  //         localIdentName = localIdentName.replace(/\[local\]/gi, localName);
+          // localIdentName = localIdentName.replace(/\[local\]/gi, localName);
 
-  //         const hash = loaderUtils.interpolateName(loaderContext, localIdentName, options);
+          // const hash = loaderUtils.interpolateName(loaderContext, localIdentName, options);
 
-  //         return hash;
-  //       },
-  //     },
-  //   });
+          // return hash;
+        // },
+    //   },
+    // });
   const cmdArgv = minimist(process.argv.slice(2));
   const target = cmdArgv.t;
   const { library, runtime } = configHelper.projectConfig;

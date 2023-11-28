@@ -68,9 +68,12 @@ class TargetContext {
       return;
     }
 
-    // console.log("use rspack", webpackConfig);
     const compiler = rspack(webpackConfig as any);
-    compiler.run((_, statsOrigin) => {
+    compiler.run((err, statsOrigin) => {
+      if (err) {
+        throw err
+      }
+
       const stats = statsOrigin!;
       const obj = stats.toJson({
         all: false,
@@ -118,7 +121,7 @@ class TargetContext {
       return;
     }
 
-    // console.log("use rspack", webpackConfig);
+    // console.log("uses rspack", webpackConfig);
     if (builder) {
       const compiler = rspack(webpackConfig as any);
       const { cwd, projectConfig } = builder.configHelper;

@@ -17,6 +17,7 @@ export function chainPlugins(
   const {
     CopyPublicPlugin,
     ConfigHMRPlugin,
+    // MiniCssExtractPlugin,
     ContextReplacementPlugin,
     LightApiPlugin,
     MobileAppJsonPlugin,
@@ -25,6 +26,7 @@ export function chainPlugins(
   webpackConfig.when(
     configHelper.isDev,
     w => w.plugin('ReactRefreshPlugin').use(ReactRefreshPlugin),
+    // w => w.plugin('MiniCssExtractPlugin').use(MiniCssExtractPlugin, [{ filename: '[name].[contenthash:7].css' }]),
   );
   webpackConfig.plugin('ConfigHMRPlugin').use(ConfigHMRPlugin, [configHelper, TARGET]);
 

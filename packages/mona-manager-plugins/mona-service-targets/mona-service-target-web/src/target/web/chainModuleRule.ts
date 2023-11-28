@@ -11,7 +11,6 @@ function commonCssRule(styleRule: Config.Rule<Config.Module>, configHelper: Conf
   const { projectConfig } = configHelper;
 
   const pxtOptions = createPxtransformConfig(Platform.WEB, projectConfig);
-
   // styleRule.use('style-loader').when(
   //   configHelper.isDev,
   //   r => r.loader(require.resolve('style-loader')),
@@ -35,6 +34,7 @@ function commonCssRule(styleRule: Config.Rule<Config.Module>, configHelper: Conf
   //       localIdentName: '[local]_[hash:base64:5]',
   //     },
   //   });
+
   styleRule
     .use('postcss-loader')
     .loader(require.resolve('postcss-loader'))

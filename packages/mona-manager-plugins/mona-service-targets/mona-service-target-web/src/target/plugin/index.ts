@@ -15,7 +15,6 @@ const plugin: IPlugin = ctx => {
   ctx.registerTarget(PLUGIN, tctx => {
     tctx.chainWebpack(webpackConfig => {
       const { cwd, projectConfig } = configHelper;
-
       webpackConfig
         .devtool(configHelper.isDev ? projectConfig.abilities?.sourceMap! : false)
         .optimization.runtimeChunk(Boolean(configHelper.isDev))
@@ -34,7 +33,7 @@ const plugin: IPlugin = ctx => {
       chainResolve(webpackConfig, configHelper, PLUGIN);
       chainModuleRule(webpackConfig, configHelper);
       chainPlugins(webpackConfig, configHelper, PLUGIN, genPluginHtml);
-      chainOptimization(webpackConfig, configHelper);
+      chainOptimization(webpackConfig);
     });
   });
 };

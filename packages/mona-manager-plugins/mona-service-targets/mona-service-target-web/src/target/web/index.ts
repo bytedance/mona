@@ -32,7 +32,7 @@ const web: IPlugin = ctx => {
       chainResolve(webpackConfig, configHelper, WEB);
       chainModuleRule(webpackConfig, configHelper);
       chainPlugins(webpackConfig, configHelper, WEB, genWebHtml);
-      chainOptimization(webpackConfig, configHelper);
+      chainOptimization(webpackConfig);
     });
   });
 };

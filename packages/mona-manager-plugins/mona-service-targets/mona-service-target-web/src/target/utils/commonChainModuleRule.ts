@@ -133,12 +133,12 @@ function createLessRule({ webpackConfig, configHelper, commonCssRule }: ModuleRu
   const lessRule = webpackConfig.module.rule('less').test(/\.less$/i).type('css/module');
   const { library, runtime } = configHelper.projectConfig;
   const injectMonaUi = library || runtime?.monaUi;
-  const monaUiPrefix = (typeof injectMonaUi === 'object' ? (injectMonaUi)?.prefixCls : 'mui') || 'mui';
+  const monaUiPrefix = (typeof injectMonaUi === 'object' ? injectMonaUi?.prefixCls : 'mui') || 'mui';
   const modifyVars = injectMonaUi ? { '@auxo-prefix': monaUiPrefix } : {};
 
   commonCssRule(lessRule, configHelper)
     .use('less')
-    .loader('less-loader')
+    .loader(require.resolve('less-loader'))
     .options(
       deepMerge(configHelper.projectConfig?.abilities?.less || {}, {
         lessOptions: {
