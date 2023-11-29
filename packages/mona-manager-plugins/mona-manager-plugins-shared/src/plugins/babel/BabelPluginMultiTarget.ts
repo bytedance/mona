@@ -62,6 +62,11 @@ export function generateNewFileName(context: string, sourceFilename: string, tar
 
 export type Options = { target: string, context: string, alias?: {[key: string]: string} };
 
+//         projectConfig.enableMultiBuild && [
+//           //TODO:BabelPluginMultiTarget后面替换成@bytedance/mona-manager-plugins-shared
+//           path.join(__dirname, '../../plugins/babel/BabelPluginMultiTarget.js'),
+//           { target: TARGET, context: cwd, alias: genAlias(TARGET) },
+//         ],
 export default function BabelPluginMultiTarget({ types }: Babel): PluginObj<{ opts: Options }> {
   return {
     visitor: {

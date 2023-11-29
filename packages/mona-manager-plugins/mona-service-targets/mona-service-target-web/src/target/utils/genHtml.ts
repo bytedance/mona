@@ -1,3 +1,5 @@
+import { Platform } from "@bytedance/mona-manager-plugins-shared";
+
 export const HTML_HANDLE_TAG = 'createdByMonaCli';
 
 export const genH5Html = (_buildId: string, injectScript: string = '') => {
@@ -58,3 +60,16 @@ export const genWebHtml = (_buildId: string, injectScript: string = '') => {
   </html>
   `;
 };
+
+const platFormMap: { [key in Platform]: typeof genH5Html } = {
+  [Platform.H5]: genH5Html,
+  [Platform.MOBILE]: genH5Html,
+  [Platform.LIGHT]: genPluginHtml,
+  [Platform.PLUGIN]: genPluginHtml,
+  [Platform.WEB]: genWebHtml,
+  [Platform.MINI]: genWebHtml,
+  [Platform.MAX]: genWebHtml,
+  [Platform.MAX_TEMPLATE]: genWebHtml,
+}
+
+export const genHtmlCreator = (target: Platform) => (_buildId: string, injectScript: string = '') => platFormMap[target](_buildId, injectScript);

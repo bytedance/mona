@@ -2,52 +2,19 @@
 import Config from 'webpack-chain';
 import deepMerge from 'lodash.merge';
 import { ConfigHelper } from '@bytedance/mona-manager';
-
-// import { genAlias } from './chainResolve';
-import { Platform } from '@bytedance/mona-manager-plugins-shared';
-
-type CommonCssRule = (styleRule: Config.Rule<Config.Module>, configHelper: ConfigHelper) => Config.Rule<Config.Module>;
+// import { Platform } from '@bytedance/mona-manager-plugins-shared';
 
 interface ModuleRule {
   webpackConfig: Config;
   configHelper: ConfigHelper;
-  TARGET: Platform;
-  commonCssRule: CommonCssRule;
-}
-
-export function commonChainModuleRule(params: ModuleRule) {
-  createJsRule(params);
-  createCssRule(params);
-  createLessRule(params);
-  createAssetRule(params);
+  // TARGET: Platform;
 }
 
 function createJsRule({ webpackConfig }: ModuleRule) {
   const isDev = webpackConfig.get('mode') !== 'production';
-  // @ts-ignore
-  const jsRule = webpackConfig.module.rule('js').test(/\.(jsx?)$/i);
-  jsRule.use('js-loader').loader('builtin:swc-loader').set('options', {
-    sourceMap: isDev,
-    jsc: {
-      parser: {
-        syntax: 'ecmascript',
-        jsx: true,
-      },
-      transform: {
-        react: {
-          runtime: 'automatic',
-          development: isDev,
-          refresh: isDev,
-        },
-      },
-    },
-    env: {
-      targets: 'Chrome >= 64',
-    }
-  })
 
   // @ts-ignore
-  const tsRule = webpackConfig.module.rule('ts').test(/\.(tsx?)$/i);
+  const tsRule = webpackConfig.module.rule('ts').test(/\.((j|t)sx?)$/i);
   tsRule.use('ts-loader').loader('builtin:swc-loader').set('options', {
     sourceMap: isDev,
     jsc: {
@@ -61,6 +28,13 @@ function createJsRule({ webpackConfig }: ModuleRule) {
           development: isDev,
           refresh: isDev,
         },
+      },
+    },
+    rspackExperiments: {
+      import:  {
+        libraryName: '@bytedance/mona-ui',
+        libraryDirectory: 'es/components',
+        style: true,
       },
     },
     env: {
@@ -128,16 +102,17 @@ function createJsRule({ webpackConfig }: ModuleRule) {
 //   //   .options({ target: TARGET, configHelper });
 // }
 
-function createLessRule({ webpackConfig, configHelper, commonCssRule }: ModuleRule) {
+function createLessRule({ webpackConfig, configHelper }: ModuleRule) {
   // @ts-ignore
+  // TODO
   const lessRule = webpackConfig.module.rule('less').test(/\.less$/i).type('css/module');
   const { library, runtime } = configHelper.projectConfig;
   const injectMonaUi = library || runtime?.monaUi;
   const monaUiPrefix = (typeof injectMonaUi === 'object' ? injectMonaUi?.prefixCls : 'mui') || 'mui';
   const modifyVars = injectMonaUi ? { '@auxo-prefix': monaUiPrefix } : {};
 
-  commonCssRule(lessRule, configHelper)
-    .use('less')
+  lessRule
+    .use('less-loader')
     .loader(require.resolve('less-loader'))
     .options(
       deepMerge(configHelper.projectConfig?.abilities?.less || {}, {
@@ -150,10 +125,9 @@ function createLessRule({ webpackConfig, configHelper, commonCssRule }: ModuleRu
     );
 }
 
-function createCssRule({ webpackConfig, configHelper, commonCssRule }: ModuleRule) {
+function createCssRule({ webpackConfig }: ModuleRule) {
   // @ts-ignore
-  const cssRule = webpackConfig.module.rule('css').test(/\.css$/i).type('css/module');
-  commonCssRule(cssRule, configHelper);
+  webpackConfig.module.rule('css').test(/\.css$/i).type('css/module');
 }
 
 function createAssetRule({ webpackConfig, configHelper }: ModuleRule) {
@@ -178,4 +152,16 @@ function createAssetRule({ webpackConfig, configHelper }: ModuleRule) {
     .rule('font')
     .test(/\.(ttf|eot|woff|woff2)$/i)
     .set('type', resourceType);
+}
+
+
+export function chainModuleRule(webpackConfig: Config, configHelper: ConfigHelper) {
+  const params: ModuleRule = {
+    webpackConfig,
+    configHelper,
+  }
+  createJsRule(params);
+  createCssRule(params);
+  createLessRule(params);
+  createAssetRule(params);
 }

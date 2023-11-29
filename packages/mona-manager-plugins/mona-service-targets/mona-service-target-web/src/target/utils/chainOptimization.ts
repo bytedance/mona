@@ -5,6 +5,7 @@ import Config from 'webpack-chain';
 export function chainOptimization(webpackConfig: Config) {
   const optimization = webpackConfig.optimization;
 
+  optimization.runtimeChunk(Boolean(webpackConfig.get('mode') !== 'production'))
   optimization.splitChunks({
     chunks: 'all',
     minSize: 20000,

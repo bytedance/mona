@@ -1,11 +1,10 @@
-import path from 'path';
 import { Platform } from '@bytedance/mona-manager-plugins-shared';
-import { genPluginHtml } from '../utils/genHtml';
-import { chainModuleRule } from '../plugin/chainModuleRule';
-import { chainOptimization } from '../utils/chainOptimization';
-import { chainPlugins } from '../utils/chainPlugins';
-import { chainResolve } from '../utils/chainResolve';
 import { IPlugin } from '@bytedance/mona-manager';
+import chain from '../utils/chain';
+import LightApiPlugin from '@/plugins/webpack/LightApiPlugin';
+import MobileAppJsonPlugin from '@/plugins/webpack/MobileAppJsonPlugin';
+import path from 'path';
+import configPostcssPlugin from '../utils/configPostcssPlugin';
 
 const { LIGHT } = Platform;
 
@@ -14,24 +13,27 @@ const light: IPlugin = ctx => {
 
   ctx.registerTarget(LIGHT, tctx => {
     tctx.chainWebpack(webpackConfig => {
-      const { cwd, projectConfig } = configHelper;
-      webpackConfig
-        .devtool(configHelper.isDev ? projectConfig.abilities?.sourceMap! : false)
-        .mode(configHelper.isDev ? 'development' : 'production')
-        .entry('app.entry')
-        .add(path.join(configHelper.entryPath, '../..', 'node_modules/.mona/app.entry'));
-        // .add(path.join(configHelper.entryPath, '..', 'app.entry.js'));
+      chain(webpackConfig, configHelper, LIGHT);
+      const { projectConfig } = configHelper;
+
       webpackConfig.output
-        .path(path.join(cwd, projectConfig.output))
-        .filename(configHelper.isDev ? '[name].js' : '[name].[contenthash:7].js')
-        .publicPath('/')
         .libraryTarget('umd')
         .globalObject('window');
       webpackConfig.output.set('chunkLoadingGlobal', `webpackJsonp_${projectConfig.projectName}_${Date.now()}`);
-      chainResolve(webpackConfig, configHelper, LIGHT);
-      chainModuleRule(webpackConfig, configHelper);
-      chainPlugins(webpackConfig, configHelper, LIGHT, genPluginHtml);
-      chainOptimization(webpackConfig);
+
+      webpackConfig.plugin('LightApiPlugin').use(LightApiPlugin, [projectConfig.appId as string]);
+      webpackConfig.plugin('MobileAppJsonPlugin').use(MobileAppJsonPlugin, [configHelper]);
+
+      // style
+      const { library, runtime } = projectConfig;
+      const injectMonaUi = library || runtime?.monaUi;
+      const monaUiPrefix = typeof injectMonaUi === 'object' ? injectMonaUi?.prefixCls : undefined;
+
+      if (!monaUiPrefix) {
+        configPostcssPlugin(webpackConfig, [
+          path.join(__dirname, '../../plugins/postcss/monaUiPrefix.js')
+        ])
+      }
     });
   });
 };

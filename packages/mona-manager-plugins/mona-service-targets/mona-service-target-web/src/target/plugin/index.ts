@@ -1,11 +1,8 @@
-import path from 'path';
-import { Platform } from '@bytedance/mona-manager-plugins-shared';
-import { chainModuleRule } from './chainModuleRule';
-import { genPluginHtml } from '../utils/genHtml';
-import { chainOptimization } from '../utils/chainOptimization';
-import { chainPlugins } from '../utils/chainPlugins';
-import { chainResolve } from '../utils/chainResolve';
+import { CopyPublicPlugin, Platform } from '@bytedance/mona-manager-plugins-shared';
 import { IPlugin } from '@bytedance/mona-manager';
+import chain from '../utils/chain';
+import path from 'path';
+import configPostcssPlugin from '../utils/configPostcssPlugin';
 
 const { PLUGIN } = Platform;
 
@@ -14,26 +11,59 @@ const plugin: IPlugin = ctx => {
 
   ctx.registerTarget(PLUGIN, tctx => {
     tctx.chainWebpack(webpackConfig => {
+      chain(webpackConfig, configHelper, PLUGIN);
       const { cwd, projectConfig } = configHelper;
-      webpackConfig
-        .devtool(configHelper.isDev ? projectConfig.abilities?.sourceMap! : false)
-        .optimization.runtimeChunk(Boolean(configHelper.isDev))
-        .end()
-        .mode(configHelper.isDev ? 'development' : 'production')
-        .entry('app.entry')
-        .add(path.join(configHelper.entryPath, '..', 'app.entry.js'));
       webpackConfig.output
-        .pathinfo(false)
-        .path(path.join(cwd, projectConfig.output))
-        .filename(configHelper.isDev ? '[name].js' : '[name].[contenthash:7].js')
-        .publicPath('/')
         .libraryTarget('umd')
         .globalObject('window');
       webpackConfig.output.set('chunkLoadingGlobal', `webpackJsonp_${projectConfig.projectName}_${Date.now()}`);
-      chainResolve(webpackConfig, configHelper, PLUGIN);
-      chainModuleRule(webpackConfig, configHelper);
-      chainPlugins(webpackConfig, configHelper, PLUGIN, genPluginHtml);
-      chainOptimization(webpackConfig);
+
+      // TODO
+      webpackConfig.plugin('CopyPublicPlugin').use(CopyPublicPlugin, [
+        configHelper,
+        [
+          {
+            from: path.join(cwd, 'pigeon.json'),
+            noErrorOnMissing: true,
+          },
+        ],
+      ]);
+
+      // styleRule
+  //   .use('cssLoader')
+  //   .loader(require.resolve('css-loader'))
+  //   .options({
+  //     importLoaders: 2,
+  //     modules: {
+  //       auto: true,
+  //       localIdentName: '[local]_[hash:base64:5]',
+        // getLocalIdent: (loaderContext: any, localIdentName: string, localName: string, options: any) => {
+          // // 配合PostcssPreSelector插件
+          // if (localName === configHelper.buildId) {
+          //   return localName;
+          // }
+
+          // if (!options.context) {
+          //   options.context = loaderContext.rootContext;
+          // }
+
+          // const request = path.relative(options.context, loaderContext.resourcePath).replace(/\\/g, '/');
+
+          // options.content = `${options.hashPrefix + request}+${localName}`;
+
+          // localIdentName = localIdentName.replace(/\[local\]/gi, localName);
+
+          // const hash = loaderUtils.interpolateName(loaderContext, localIdentName, options);
+
+          // return hash;
+        // },
+    //   },
+    // });
+      // style
+      configPostcssPlugin(webpackConfig, [
+        require.resolve('@bytedance/mona-manager-plugins-shared/dist/plugins/postcss/PostcssPreSelector.js'),
+        { selector: `#${configHelper.buildId}` },
+      ])
     });
   });
 };
