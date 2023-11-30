@@ -1,8 +1,8 @@
 import chalk from 'chalk';
 import path from 'path';
-import webpack from 'webpack';
+import webpack, { StatsCompilation } from 'webpack';
 
-import { IPlugin } from '@bytedance/mona-manager';
+import { IPlugin, formatStats, log } from '@bytedance/mona-manager';
 import { MonaPlugins } from '@/plugins';
 
 import { chainModuleRule } from './chainModuleRule';
@@ -58,6 +58,61 @@ const mini: IPlugin = ctx => {
           console.log(chalk.gray('文件修改监听中...'));
         },
       );
+    });
+
+    tctx.overrideBuildCommand(() => {
+       const { builder } = tctx;
+        const webpackConfig = builder.resolveWebpackConfig();
+        if (!webpackConfig) {
+          return;
+        }
+
+        // @ts-ignore
+        // console.log(webpackConfig, webpackConfig.module?.rules?.[2]?.use)
+        const compiler = webpack(webpackConfig as any);
+        compiler.run((err, statsOrigin) => {
+          if (err) {
+            throw err;
+          }
+
+          const stats = statsOrigin!;
+          const obj = stats.toJson({
+            all: false,
+            timings: true,
+          });
+
+          const printTime = (c: StatsCompilation) => {
+            if (c.time) {
+              const time = (c.time / 1000).toFixed(2) + 's';
+              // const target = Array.isArray(context.target)
+              //   ? context.target[index]
+              //   : context.target;
+              // const name = TARGET_ID_MAP[target || 'web'];
+              console.log(`Client compiled in ${time}`);
+            }
+          };
+
+          if (!stats.hasErrors()) {
+            if (obj.children) {
+              obj.children.forEach((c) => {
+                printTime(c);
+              });
+            } else {
+              printTime(obj);
+            }
+          }
+
+          const { message, level } = formatStats(stats as any);
+
+          if (level === 'error') {
+            log.error(message);
+          }
+          if (level === 'warning') {
+            log.warn(message);
+          }
+
+          process.exit();
+        })
     });
 
     tctx.chainWebpack(webpackConfig => {

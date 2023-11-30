@@ -81,9 +81,14 @@ export const getMiniJsApiList: () => Promise<JsApiListResponse['data']> = async 
   } catch (err) {
     throw new Error('internal error');
   }
-  if (res?.data?.code === 0) {
+  if (res?.data?.code === 10000) {
     return res?.data?.data;
   } else {
-    throw new Error(res?.data?.message || '未知错误');
+    if (res?.data?.message) {
+      throw new Error(res?.data?.message);
+    }
+    return {
+      jsApiList: []
+    }
   }
 };

@@ -15,7 +15,7 @@ class miniJsApiPlugin {
           const apiTsFilePath = path.join(require.resolve('@bytedance/mona-client-web'), '../apis/specApi.d.ts');
           // 将生成的声明code，写入到lightApiTsFilePath声明文件中,
           writeMiniJsApiTsFile(apiTsFilePath, code);
-          console.log('api has been pulled');
+          // console.log('api has been pulled');
         }
       } catch (err: any) {
         console.warn(err?.message);

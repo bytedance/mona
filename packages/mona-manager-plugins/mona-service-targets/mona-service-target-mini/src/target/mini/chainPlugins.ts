@@ -4,6 +4,7 @@ import { TARGET, miniExt } from './constants';
 import { MonaPlugins } from '@/plugins';
 
 import { getEnv } from '@bytedance/mona-manager-plugins-shared';
+import webpack from 'webpack';
 
 export function chainPlugins(webpackConfig: Config, configHelper: ConfigHelper, miniEntryPlugin: any) {
   const { cwd, projectConfig } = configHelper;
@@ -19,6 +20,7 @@ export function chainPlugins(webpackConfig: Config, configHelper: ConfigHelper, 
       ...(projectConfig?.abilities?.define || {}),
     },
   ]);
+  webpackConfig.plugin('ProgressPlugin').use(webpack.ProgressPlugin)
   webpackConfig.plugin('OptimizeEntriesPlugin').use(MonaPlugins.OptimizeEntriesPlugin);
   webpackConfig.plugin('miniJsApiPlugin').use(MonaPlugins.MiniJsApiPlugin);
 }

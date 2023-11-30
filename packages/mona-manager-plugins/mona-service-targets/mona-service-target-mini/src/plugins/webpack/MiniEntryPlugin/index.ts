@@ -14,7 +14,7 @@ class MiniEntryPlugin {
   apply(compiler: Compiler) {
     const { module } = this.entryModule;
     // Applying a webpack compiler to the virtual module
-    module.apply(compiler);
+    module.apply(compiler as any);
   }
 }
 
