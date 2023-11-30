@@ -1,5 +1,5 @@
 import { ConfigHelper } from '@bytedance/mona-manager';
-import { Compiler, sources } from 'webpack';
+import { Compiler, sources } from '@rspack/core';
 import fs from 'fs';
 import path from 'path';
 
