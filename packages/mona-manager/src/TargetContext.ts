@@ -2,51 +2,15 @@
 import path from 'path';
 import chalk from 'chalk';
 
-import { rspack, StatsCompilation, MultiStats, Stats } from '@rspack/core';
+import { rspack, StatsCompilation } from '@rspack/core';
 import { RspackDevServer } from '@rspack/dev-server';
 import Builder, { ChainWebpackConfigFn, RawWebpackConfigFn } from './Builder';
 import { DEFAULT_PORT, DEFAULT_HOST } from '@bytedance/mona-shared';
-import { formatStatsMessages } from './utils/formatStats';
 import log from './utils/log';
+import { formatStats } from './utils/formatStats';
 
 type Fn = (args: Record<string, any>) => void;
 
-function formatStats(stats: Stats | MultiStats, showWarnings = true) {
-  const statsData = stats.toJson({
-    preset: 'errors-warnings',
-  });
-
-  const { errors, warnings } = formatStatsMessages(statsData);
-
-  if (errors.length) {
-    const errorMsgs = `${errors.join('\n\n')}\n`;
-    const isTerserError = errorMsgs.includes('from Terser');
-    const title = chalk.bold(
-      chalk.red(isTerserError ? `Minify error: ` : `Compile error: `),
-    );
-    const tip = chalk.yellow(
-      isTerserError
-        ? `Failed to minify with terser, check for syntax errors.`
-        : 'Failed to compile, check the errors for troubleshooting.',
-    );
-
-    return {
-      message: `${title}\n${tip}\n${errorMsgs}`,
-      level: 'error',
-    };
-  }
-
-  // always show warnings in tty mode
-  if (warnings.length && (showWarnings || process.stdout.isTTY)) {
-    const title = chalk.bold(chalk.yellow(`Compile Warning: \n`));
-    return {
-      message: `${title}${`${warnings.join('\n\n')}\n`}`,
-      level: 'warning',
-    };
-  }
-
-  return {};
-}
 
 class TargetContext {
   target: string;

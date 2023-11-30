@@ -11,4 +11,6 @@ class Log {
 
 const log = new Log();
 
+export { log, Log };
+
 export default log;

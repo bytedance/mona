@@ -319,7 +319,6 @@ class VirtualModulesPlugin {
     if (compiler.hooks) {
       compiler.hooks.afterEnvironment.tap('VirtualModulesPlugin', afterEnvironmentHook);
       compiler.hooks.afterResolvers.tap('VirtualModulesPlugin', afterResolversHook);
-      console.log('compiler.hooks.watchRun', compiler.hooks.watchRun);
       compiler.hooks.watchRun.tapAsync('VirtualModulesPlugin', watchRunHook);
     } else {
       (compiler as any).plugin('after-environment', afterEnvironmentHook);
