@@ -69,11 +69,11 @@ class TargetContext {
     }
 
     // @ts-ignore
-    console.log(webpackConfig, webpackConfig.module?.rules?.[2]?.use)
+    // console.log(webpackConfig, webpackConfig.module?.rules?.[2]?.use)
     const compiler = rspack(webpackConfig as any);
     compiler.run((err, statsOrigin) => {
       if (err) {
-        throw err
+        throw err;
       }
 
       const stats = statsOrigin!;

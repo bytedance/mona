@@ -21,7 +21,7 @@ function chain(webpackConfig: Config, configHelper: ConfigHelper, TARGET: Platfo
     .publicPath('/')
 
   chainResolve(webpackConfig, configHelper, TARGET);
-  chainModuleRule(webpackConfig, configHelper);
+  chainModuleRule(webpackConfig, configHelper, TARGET);
   chainPlugins(webpackConfig, configHelper, TARGET);
   chainOptimization(webpackConfig);
 }
