@@ -41,6 +41,9 @@ import {
   RichTextProps,
   MemberButtonProps,
   CouponCardProps,
+  ProductFollowButtonProps,
+  SkuButtonProps,
+  ShopFollowCardProps,
 } from '@bytedance/mona';
 
 export const Text = createBaseComponent<TextProps>(ComponentType['text']);
@@ -85,6 +88,9 @@ export const Ad = createBaseComponent<AdProps>(ComponentType['ad']);
 export const OpenData = createBaseComponent<OpenDataProps>(ComponentType['open-data']);
 export const MemberButton = createBaseComponent<MemberButtonProps>(ComponentType['member-button']);
 export const CouponCard = createBaseComponent<CouponCardProps>(ComponentType['coupon-card']);
+export const ProductFollowButton = createBaseComponent<ProductFollowButtonProps>(ComponentType['product-follow-button']);
+export const SkuButton = createBaseComponent<SkuButtonProps>(ComponentType['sku-button']);
+export const ShopFollowCard = createBaseComponent<ShopFollowCardProps>(ComponentType['shop-follow-card']);
 
 export const Link = (function createBaseComponent() {
   const Component = React.forwardRef(({ children, to }: any, ref) =>
