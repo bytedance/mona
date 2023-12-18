@@ -13,6 +13,7 @@ import {
 // import clipboard from 'clipboardy';
 
 import { showPreviewImage } from './components/';
+import { APP_ID, getAppId, getLightHeaders } from './light';
 
 export const LIGHT_APP_GET_TOEKN = '__MONA_LIGHT_APP_GET_TOEKN';
 
@@ -25,7 +26,7 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
   if (typeof data.url === 'undefined' && typeof data.fn === 'undefined') {
     return Promise.reject(new Error('url and funcName must be specified'));
   }
-  const isLightApp = data.fn && window.__MONA_LIGHT_APP_GET_TOEKN;
+  const isLightApp = data.fn;
 
   if (data.fn && window.__LIGHT_ISV_REQ) {
     return window.__LIGHT_ISV_REQ(data);
@@ -42,29 +43,15 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
     signal: controller.signal,
   };
 
-  let token = '';
   // light app
   if (isLightApp) {
-    token = await window.__MONA_LIGHT_APP_GET_TOEKN!();
     init.credentials = 'include';
     init.method = 'POST';
-    if (typeof window.__LIGHT_APP_GET_TOKENS === 'function') {
-      init.headers = {
-        ...init.headers,
-        'x-open-token': token,
-        'x-use-test': window.__MONA_LIGHT_USE_TEST,
-        ...(window.__LIGHT_APP_GET_TOKENS() || {}),
-      };
-    } else {
-      init.headers = {
-        ...init.headers,
-        'x-open-token': token,
-        'x-use-test': window.__MONA_LIGHT_USE_TEST,
-        'x-open-compass': window?.__MONA_LIGHT_APP_GET_COMPASS_TOKEN ? window.__MONA_LIGHT_APP_GET_COMPASS_TOKEN() : '',
-      };
-    }
-
-    const appId = window.__MONA_LIGHT_APP_LIFE_CYCLE_LANUCH_QUERY.appId;
+    init.headers = {
+      ...init.headers,
+      ...getLightHeaders(),
+    };
+    const appId = APP_ID || getAppId();
     data.data = {
       appId,
       method: data.fn,
@@ -76,7 +63,7 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
 
   // if app not mirco app ,but set fn params, prompt waring
   if (data.fn && !isLightApp) {
-    console.error(`必须在主端调用微应用${data.fn}`);
+    console.error(`必须在主端调用${data.fn}`);
   }
 
   const url = isLightApp ? `https://${window.__MONA_LIGNT_APP_DOMAIN_NAME}/invoke` : data.url;
