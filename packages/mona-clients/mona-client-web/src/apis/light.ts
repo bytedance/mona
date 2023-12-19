@@ -27,7 +27,16 @@
 //   const str = items.join('&');
 //   return str && !inBody ? `?${str}` : str;
 // }
-
+function canUseEval() {
+  try {
+    (() => {}).constructor('return window.fetch')();
+  } catch (error) {
+    return false;
+  }
+  return true;
+}
+const useEval = canUseEval();
+export const MyFetch = useEval ? (() => {}).constructor('return window.fetch')() : window.fetch;
 function getTokenByCookie(name: string) {
   const reg = new RegExp(`^${name}=`);
   try {
@@ -55,7 +64,7 @@ function getTokenByCookie(name: string) {
 export function getTokenInfoByDomain() {
   return {
     'x-open-client': 'doudian',
-    'x-open-microapp': getTokenByCookie('PHPSESSID') || getTokenByCookie('PHPSESSID_SS'),
+    'x-open-microapp': getTokenByCookie('PHPSESSID') || getTokenByCookie('PHPSESSID_SS') || '',
   };
 }
 
@@ -64,7 +73,7 @@ function getLightAppToken(req: Record<string, any>) {
     'Content-Type': 'application/json',
     ...getTokenInfoByDomain(),
   };
-  return fetch(`https://lgw.jinritemai.com/open/tokenForApp?appId=${req.appId}`, { method: 'GET', headers });
+  return MyFetch(`https://lgw.jinritemai.com/open/tokenForApp?appId=${req.appId}`, { method: 'GET', headers });
 }
 function getAppIdByUrl() {
   try {
@@ -75,13 +84,15 @@ function getAppIdByUrl() {
   } catch (error) {}
 }
 export function getAppId() {
+  const ee = new Error();
+  const pp = new Promise(() => {});
   return (
     window.__MONA_LIGHT_APP_LIFE_CYCLE_LANUCH_QUERY?.appId ||
     getAppIdByUrl() ||
     // @ts-ignore 兜底
-    window.Promise?.appId ||
+    pp?.appId ||
     // @ts-ignore 兜底
-    window.Error?.appId ||
+    ee?.appId ||
     ''
   );
 }
@@ -130,13 +141,19 @@ export class Token {
     }
     try {
       this._pendingFetch = getLightAppToken({ session: '', appId: _appId });
-      const data = await this._pendingFetch;
-      if (data?.BizError?.message) {
-        return data.BizError;
+      const data = (await this._pendingFetch) as Response;
+      if (!data.ok) {
+        return Promise.reject('token生成异常');
       }
-      _tokenMap.set(_lightAppTokenKey, data);
+      const respData = await data.json();
+      console.log('respData', respData);
 
-      return data.token;
+      if (respData?.BizError?.message) {
+        return respData.BizError;
+      }
+      _tokenMap.set(_lightAppTokenKey, respData);
+
+      return respData.token;
     } finally {
       this._pendingFetch = undefined;
     }
@@ -152,8 +169,9 @@ export function getLightToken(...args: any[]) {
     return tokenIns.getToken() as unknown as string;
   }
 }
+window.__MONA_LIGHT_USE_TEST = window.__MONA_LIGHT_USE_TEST || '0';
 export async function getLightHeaders() {
-  const token = await getLightToken();
+  const token = (await getLightToken()) || '';
   if (typeof window.__LIGHT_APP_GET_TOKENS === 'function') {
     return {
       'x-open-token': token,

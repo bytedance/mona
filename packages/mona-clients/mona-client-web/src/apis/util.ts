@@ -13,7 +13,7 @@ import {
 // import clipboard from 'clipboardy';
 
 import { showPreviewImage } from './components/';
-import { APP_ID, getAppId, getLightHeaders } from './light';
+import { APP_ID, MyFetch, getAppId, getLightHeaders } from './light';
 
 export const LIGHT_APP_GET_TOEKN = '__MONA_LIGHT_APP_GET_TOEKN';
 
@@ -47,10 +47,12 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
   if (isLightApp) {
     init.credentials = 'include';
     init.method = 'POST';
+    const lightHeaders = await getLightHeaders();
     init.headers = {
       ...init.headers,
-      ...getLightHeaders(),
+      ...lightHeaders,
     };
+
     const appId = APP_ID || getAppId();
     data.data = {
       appId,
@@ -66,12 +68,12 @@ export async function webRequest(data: Partial<RequestOptions>): RequestTask | P
     console.error(`必须在主端调用${data.fn}`);
   }
 
-  const url = isLightApp ? `https://${window.__MONA_LIGNT_APP_DOMAIN_NAME}/invoke` : data.url;
+  const url = isLightApp ? `https://${window.__MONA_LIGNT_APP_DOMAIN_NAME || 'lgw.jinritemai.com'}/invoke` : data.url;
 
   if ((init.method as string).toUpperCase() === 'POST') {
     init.body = data.body ? data.body : data.data ? JSON.stringify(data.data) : '';
   }
-  const promise = fetch(url as string, init);
+  const promise = MyFetch(url as string, init);
 
   promise
     .then(r => r.json())
