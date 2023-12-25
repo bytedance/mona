@@ -169,6 +169,7 @@ export function getLightToken(...args: any[]) {
     return tokenIns.getToken() as unknown as string;
   }
 }
+// @ts-ignore 
 window.__MONA_LIGHT_USE_TEST = window.__MONA_LIGHT_USE_TEST || '0';
 export async function getLightHeaders() {
   const token = (await getLightToken()) || '';

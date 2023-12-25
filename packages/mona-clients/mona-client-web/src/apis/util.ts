@@ -1,3 +1,4 @@
+// @ts-nocheck 临时发包
 import './abortcontroller-polfill';
 import formatPath from '@bytedance/mona-shared/dist/formatPath';
 import {
