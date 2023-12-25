@@ -9,7 +9,9 @@ interface AppConfigWindow {
   backgroundColorBottom?: string;
   enablePullDownRefresh?: boolean;
   onReachBottomDistance?: number;
-  transparentTitle?: 'none' | 'always' | 'auto'
+  transparentTitle?: 'none' | 'always' | 'auto';
+  // navigation?: {
+  // };
 }
 
 interface AppConfigTabBarItem {
@@ -23,16 +25,16 @@ interface AppConfigTabBar {
   selectedColor: string;
   backgroundColor: string;
   borderStyle?: 'black' | 'white';
-  list: AppConfigTabBarItem[]
+  list: AppConfigTabBarItem[];
 }
 
 type PermissionNames = 'scope.userLocation' | 'scope.address' | 'scope.record' | 'scope.album' | 'scope.camera';
 
 type AppConfigTabBarPermission = {
   [key in PermissionNames]: {
-    desc?: string
-  }
-}
+    desc?: string;
+  };
+};
 
 interface AppConfigNetworkTimeout {
   request?: number;
@@ -46,6 +48,9 @@ export interface AppConfig {
   entryPagePath?: string;
   window?: AppConfigWindow;
   tabBar?: AppConfigTabBar;
+  navbar?: {
+    showFullScreenButton?: boolean;
+  };
   navigateToMiniProgramAppIdList?: string[];
   permission?: AppConfigTabBarPermission;
   networkTimeout?: AppConfigNetworkTimeout;
