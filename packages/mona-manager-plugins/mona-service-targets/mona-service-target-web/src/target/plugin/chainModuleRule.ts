@@ -7,7 +7,7 @@ import { ConfigHelper } from '@bytedance/mona-manager';
 import { commonChainModuleRule } from '../utils/commonChainModuleRule';
 import { MonaPlugins } from '@/plugins';
 import { Platform } from '@bytedance/mona-manager-plugins-shared';
-import minimist from 'minimist';
+// import minimist from 'minimist';
 
 function commonCssRule(styleRule: Config.Rule<Config.Module>, configHelper: ConfigHelper) {
   styleRule.use('style-loader').when(
@@ -53,11 +53,11 @@ function commonCssRule(styleRule: Config.Rule<Config.Module>, configHelper: Conf
         },
       },
     });
-  const cmdArgv = minimist(process.argv.slice(2));
-  const target = cmdArgv.t;
-  const { library, runtime } = configHelper.projectConfig;
-  const injectMonaUi = library || runtime?.monaUi;
-  const monaUiPrefix = typeof injectMonaUi === 'object' ? injectMonaUi?.prefixCls : undefined;
+  // const cmdArgv = minimist(process.argv.slice(2));
+  // const target = cmdArgv.t;
+  // const { library, runtime } = configHelper.projectConfig;
+  // const injectMonaUi = library || runtime?.monaUi;
+  // const monaUiPrefix = typeof injectMonaUi === 'object' ? injectMonaUi?.prefixCls : undefined;
 
   styleRule
     .use('postcss-loader')
