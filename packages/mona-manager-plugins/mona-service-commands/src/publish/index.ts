@@ -128,12 +128,13 @@ const publish: IPlugin = ctx => {
         } else {
           const shouldEdit = latestVersionStatus && [2, 3, 5, 7].indexOf(latestVersionStatus) !== -1;
           const isTemplate = appDetail.appSceneType === AppSceneTypeEnum.DESIGN_CENTER_TEMPLATE;
+          const isComponent = appDetail.appSceneType === AppSceneTypeEnum.DESIGN_CENTER_COMPONENT;
           const isOldApp = appDetail?.appExtend?.frameworkType !== 1;
           // judge whether is mixed
           let isMixed = !isOldApp;
           if (isTemplate) {
             console.log(chalk.green(isMixed ? '当前为混排模板版本' : '当前为非混排模板版本'));
-          } else {
+          } else if (isComponent) {
             const entry = ctx.configHelper.entryPath;
             const ext = path.extname(entry);
             const targetTTMLFile = entry.replace(ext, '') + '.ttml';

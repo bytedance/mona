@@ -102,8 +102,8 @@ export function createWebApp(
   const Provider = libraryConfig?.ConfigProvider
     ? libraryConfig.ConfigProvider
     : ({ children }: { children: React.ReactNode }) => {
-        return <>{children}</>;
-      };
+      return <>{children}</>;
+    };
 
   const render = ({ dom }: { dom: Element | Document }) => {
     prepareLightApp(options?.light);
