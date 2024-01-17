@@ -23,7 +23,7 @@
     "@bytedance/mona-client-web": "0.3.32",
     "@bytedance/mona-shared": "0.3.32",
     "@bytedance/mona-speedy-components": "0.0.37",
-    "axios": "^0.26.0"
+    "axios": "^1.6.5"
   },
   "publishConfig": {
     "access": "public",
