@@ -89,9 +89,9 @@ jobs:
           http_status_code=$(curl -LI $GET_API_URL -o /dev/null -w '%{http_code}\n' -s \
             -H "Authorization: token ${GITHUB_TOKEN}")
           if [ "$http_status_code" -ne "404" ] ; then
-            echo "::set-output name=exists_tag::true"
+            echo "exists_tag=true" >> "$GITHUB_OUTPUT"
           else
-            echo "::set-output name=exists_tag::false"
+            echo "exists_tag=false" >> "$GITHUB_OUTPUT"
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -163,8 +163,8 @@ jobs:
       #   run: |
       #     if [ '${{ env.disttag }}' == 'alpha' ] ; then IS_DRAFT='true'; else IS_DRAFT='false'; fi
       #     if [ '${{ env.disttag }}' == 'beta' ] ; then IS_PRERELEASE='true'; else IS_PRERELEASE='false'; fi
-      #     echo "::set-output name=IS_DRAFT::${IS_DRAFT}"
-      #     echo "::set-output name=IS_PRERELEASE::${IS_PRERELEASE}"
+      #     echo "IS_DRAFT=${IS_DRAFT}" >> "$GITHUB_OUTPUT"
+      #     echo "IS_PRERELEASE=${IS_PRERELEASE}" >> "$GITHUB_OUTPUT"
       # - name: Create Release
       #   id: create_release
       #   if: startsWith( env.commitmsg , 'chore(release):' ) && steps.tag_check.outputs.exists_tag == 'false'
