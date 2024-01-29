@@ -6,6 +6,7 @@ function canUseEval() {
   }
   return true;
 }
+
 const useEval = canUseEval();
 export const MyFetch = useEval ? (() => {}).constructor('return window.fetch')() : window.fetch;
 function getTokenByCookie(name: string) {
@@ -25,12 +26,6 @@ function getTokenByCookie(name: string) {
   } catch {}
   return '';
 }
-// const fromCompass =
-//   /compass\.jinritemai\.com/.test(location.href) || /ecom-compass-boe\.bytedance\.net/.test(location.href);
-
-// const fromDmall = /dmall\.jinritemai\.com/.test(location.href) || /dmall-boe\.bytedance\.net/.test(location.href);
-
-// const fromEcom = /\.jinritemai\.com/.test(location.href) || /\.bytedance\.net/.test(location.href);
 
 export function getTokenInfoByDomain() {
   return {
@@ -55,6 +50,7 @@ function getAppIdByUrl() {
       ?.split('/')?.[0];
   } catch (error) {}
 }
+
 export function getAppId() {
   const ee = new Error();
   const pp = new Promise(() => {});
@@ -141,7 +137,7 @@ export function getLightToken(...args: any[]) {
     return tokenIns.getToken() as unknown as string;
   }
 }
-// @ts-ignore 
+// @ts-ignore
 window.__MONA_LIGHT_USE_TEST = window.__MONA_LIGHT_USE_TEST || '0';
 export async function getLightHeaders() {
   const token = (await getLightToken()) || '';
