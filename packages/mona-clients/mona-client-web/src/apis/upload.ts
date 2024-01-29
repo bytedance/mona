@@ -1,16 +1,5 @@
-const getTokenHeaders = async () => {
-  const appId = window.__MONA_LIGHT_APP_LIFE_CYCLE_LANUCH_QUERY?.appId;
+import { getLightHeaders } from './light';
 
-  if (window.__MONA_LIGHT_APP_GET_TOEKN && appId) {
-    const token = await window.__MONA_LIGHT_APP_GET_TOEKN();
-    return {
-      'x-open-token': token,
-      'x-use-test': window.__MONA_LIGHT_USE_TEST,
-      'x-open-compass': window.__MONA_LIGHT_APP_GET_COMPASS_TOKEN ? window.__MONA_LIGHT_APP_GET_COMPASS_TOKEN() : '',
-    };
-  }
-  return {};
-};
 const pipeResponse = async (response: Response) => {
   if (!response.ok) {
     return Promise.reject(new Error(`${response.status} ${response.statusText}  \n  ${response.url ?? ''} `));
@@ -33,7 +22,7 @@ export async function getDownLoadFileUrl(fileKey: string) {
 
   const appId = window.__MONA_LIGHT_APP_LIFE_CYCLE_LANUCH_QUERY?.appId;
   if (appId && fileKey) {
-    const headers: Record<string, any> = await getTokenHeaders();
+    const headers: Record<string, any> = await getLightHeaders();
 
     const data = await fetch(`${url}?appId=${appId}&fileKey=${fileKey}`, {
       headers,
@@ -55,7 +44,7 @@ export async function uploadFileTemporary(file: File) {
   if (window.__MONA_LIGHT_APP_GET_TOEKN && appId) {
     const url = `https://${domain}/light/upload/file/url`;
 
-    const headers: Record<string, any> = await getTokenHeaders();
+    const headers: Record<string, any> = await getLightHeaders();
     const data = await fetch(`${url}?appId=${appId}&extension=${ext}`, {
       headers,
       credentials: 'include',

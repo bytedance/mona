@@ -1,32 +1,3 @@
-// function queryStringify(params: Record<string, any>, inBody?: boolean) {
-//   const items: string[] = [];
-
-//   function itemStringify(obj: Record<string, any>, prefix: string) {
-//     const type = Object.prototype.toString.call(obj);
-//     if (type === '[object Array]') {
-//       obj.forEach((item: Record<string, any>, key: any) => {
-//         itemStringify(item, `${prefix}[${key}]`);
-//       });
-//     } else if (type === '[object Object]') {
-//       for (const key in obj) {
-//         itemStringify(obj[key], `${prefix}[${key}]`);
-//       }
-//     } else if (type === '[object Date]') {
-//       items.push(`${prefix}=${obj.toISOString()}`);
-//     } else if (type === '[object Null]') {
-//       items.push(`${prefix}=`);
-//     } else if (type !== '[object Undefined]') {
-//       items.push(`${prefix}=${encodeURIComponent(obj)}`);
-//     }
-//   }
-
-//   for (const k in params) {
-//     itemStringify(params[k], k);
-//   }
-
-//   const str = items.join('&');
-//   return str && !inBody ? `?${str}` : str;
-// }
 function canUseEval() {
   try {
     (() => {}).constructor('return window.fetch')();
@@ -75,6 +46,7 @@ function getLightAppToken(req: Record<string, any>) {
   };
   return MyFetch(`https://lgw.jinritemai.com/open/tokenForApp?appId=${req.appId}`, { method: 'GET', headers });
 }
+
 function getAppIdByUrl() {
   try {
     // @ts-ignore 兜底
