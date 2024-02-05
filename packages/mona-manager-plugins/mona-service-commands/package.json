@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-service-commands",
-  "version": "0.3.34",
+  "version": "0.3.35",
   "displayName": "mona-service-commands",
   "description": "mona-service commands plugins for mona-manager",
   "main": "./dist/index.js",
@@ -17,8 +17,8 @@
   "author": "xiaokun.kenny@bytedance.com",
   "license": "MIT",
   "dependencies": {
-    "@bytedance/mona-manager": "0.3.34",
-    "@bytedance/mona-shared": "0.3.34",
+    "@bytedance/mona-manager": "0.3.35",
+    "@bytedance/mona-shared": "0.3.35",
     "archiver": "^5.3.0",
     "assert": "^2.0.0",
     "axios": "^1.6.5",
