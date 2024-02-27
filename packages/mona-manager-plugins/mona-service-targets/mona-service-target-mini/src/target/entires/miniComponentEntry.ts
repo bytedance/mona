@@ -25,8 +25,10 @@ export const genMiniComponentEntry = (
 ) => {
   entryPath = entryPath.replace(path.extname(entryPath), '');
   if (monaStore.nativeEntryMap.has(entryPath)) {
+
     return monaStore.nativeEntryMap.get(entryPath)! as MiniComponentEntry;
   } else {
+  
     const nEntry = nativeEntry || new MiniComponentEntry(configHelper, entryPath);
     monaStore.nativeEntryMap.set(entryPath, nEntry);
     return nEntry;
@@ -74,7 +76,7 @@ export class MiniEntry {
   get context() {
     let context = this.dirPath;
     if (this.dirPath.includes(NODE_MODULES)) {
-      context = context.slice(0, context.indexOf(NODE_MODULES) + NODE_MODULES.length + 1);
+      context = context.slice(0, context.lastIndexOf(NODE_MODULES) + NODE_MODULES.length + 1);
     }
 
     return context;
@@ -85,7 +87,7 @@ export class MiniEntry {
     let outputPath = path.relative(dirPath, this.dirPath);
 
     if (this.dirPath.includes(NODE_MODULES)) {
-      outputPath = this.dirPath.slice(this.dirPath.indexOf(NODE_MODULES) + NODE_MODULES.length);
+      outputPath = this.dirPath.slice(this.dirPath.lastIndexOf(NODE_MODULES) + NODE_MODULES.length);
       outputPath = path.join(NPM_DIR, outputPath);
     } else if (!this.dirPath.startsWith(dirPath)) {
       const dirname = path.basename(this.dirPath);

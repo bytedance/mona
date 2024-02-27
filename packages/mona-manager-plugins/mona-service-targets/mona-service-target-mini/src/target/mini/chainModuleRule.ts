@@ -32,6 +32,13 @@ function createTtmlRules(webpackConfig: Config, _configHelper: ConfigHelper) {
         useRelativePath: true,
         name: path.join(namePrefix, '[path][name].ttml'),
         context: dir,
+        outputPath: (url: string) => {
+          if (url && url.includes('node_modules')) {
+            const outputPath1 = url.slice(url.lastIndexOf(NODE_MODULES) + NODE_MODULES.length);
+            return path.join(namePrefix, outputPath1);
+          }
+          return url;
+        },
       });
 
     ttmlRule.use('ttmlLoader').loader(path.resolve(__dirname, '../../plugins/loaders/miniTemplateLoader'));
@@ -117,8 +124,12 @@ function createCssRule(webpackConfig: Config, configHelper: ConfigHelper) {
         postcssOptions: {
           plugins: [
             pxtOptions.enabled
-              ? 
-                [require.resolve('@bytedance/mona-manager-plugins-shared/dist/plugins/postcss/PostcssPxtransformer/index.js'), pxtOptions]
+              ? [
+                  require.resolve(
+                    '@bytedance/mona-manager-plugins-shared/dist/plugins/postcss/PostcssPxtransformer/index.js',
+                  ),
+                  pxtOptions,
+                ]
               : null,
           ].filter(p => p),
         },

@@ -25,7 +25,7 @@ export default async function ImportCustomerComponentLoader(this: LoaderContext<
   let dirName = entryPath.replace(path.extname(entryPath), '');
   // 提取npm名称
   if (dirName.includes(NODE_MODULES)) {
-    dirName = dirName.slice(dirName.indexOf(NODE_MODULES) + NODE_MODULES.length + 1);
+    dirName = dirName.slice(dirName.lastIndexOf(NODE_MODULES) + NODE_MODULES.length + 1);
     requestType = NODE_MODULES;
   } else if (alias) {
     for (const i in alias) {
