@@ -48,7 +48,7 @@ export function chainOptimization(webpackConfig: Config, configHelper: ConfigHel
           ui: {
             test: /(antd|auxo|mona-ui)/,
             priority: 3,
-            name: 'antd',
+            name: 'auxo',
           },
           vendors: {
             test: /[\\/]node_modules[\\/]/,
