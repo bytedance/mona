@@ -39,7 +39,7 @@ function createJsRule({ webpackConfig, configHelper, TARGET }: ModuleRule) {
       presets: [
         [
           require.resolve('@babel/preset-env'),
-          TARGET === Platform.H5 && {
+          (TARGET === Platform.H5 || TARGET === Platform.LIGHT) && {
             // Overall browser coverage: 94% (2021-04-06)
             // https://browserslist.dev/?q=aU9TIDksIEFuZHJvaWQgNC40LCBsYXN0IDIgdmVyc2lvbnMsID4gMC4yJSwgbm90IGRlYWQ%3D
             targets: 'iOS 9, Android 4.4, last 2 versions, > 0.2%, not dead',
@@ -85,7 +85,7 @@ function createLessRule({ webpackConfig, configHelper, commonCssRule }: ModuleRu
   const lessRule = webpackConfig.module.rule('less').test(/\.less$/i);
   const { library, runtime } = configHelper.projectConfig;
   const injectMonaUi = library || runtime?.monaUi;
-  const monaUiPrefix = (typeof injectMonaUi === 'object' ? injectMonaUi?.prefixCls : 'mui') || 'mui';
+  const monaUiPrefix = (typeof injectMonaUi === 'object' ? injectMonaUi?.prefixCls : 'auxo') || 'auxo';
   const modifyVars = injectMonaUi ? { '@auxo-prefix': monaUiPrefix } : {};
 
   commonCssRule(lessRule, configHelper)

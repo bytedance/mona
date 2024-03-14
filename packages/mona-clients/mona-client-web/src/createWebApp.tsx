@@ -109,7 +109,7 @@ export function createWebApp(
     prepareLightApp(options?.light);
 
     ReactDOM.render(
-      <Provider prefixCls={libraryConfig?.prefixCls || 'mui'} locale={libraryConfig?.zh_CN}>
+      <Provider prefixCls={libraryConfig?.prefixCls || 'auxo'} locale={libraryConfig?.zh_CN}>
         <BrowserRouter>
           <HistorySetWrapper>
             <Component>

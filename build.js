@@ -6,7 +6,7 @@ const pkgs = {
   mini: '@bytedance/mona-client-mini',
   web: '@bytedance/mona-client-web',
   max: '@bytedance/mona-client-max',
-  plugin: '@bytedance/mona-client-plugin',
+  // plugin: '@bytedance/mona-client-plugin',
   events: '@bytedance/mona-plugin-events',
   runtime: '@bytedance/mona-runtime',
   shared: '@bytedance/mona-shared',

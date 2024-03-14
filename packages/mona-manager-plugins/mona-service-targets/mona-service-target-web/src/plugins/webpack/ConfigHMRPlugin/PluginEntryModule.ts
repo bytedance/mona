@@ -55,15 +55,35 @@ class PluginEntryModule {
 
   private _generateRoutesCode() {
     const pages = Array.from(new Set((this.configHelper.appConfig.pages || []) as string[]));
-    let routesCode = pages.map((page, index) => `import Page${index} from './${page}';`).join('');
+    const HomePage = pages[0];
+    let routesCode;
+    if (HomePage) {
+      routesCode = `import HomePage from './${HomePage}';
+   `;
+    }
     routesCode += `const routes = [${pages
       .map(
         (page, index) =>
-          `{ path: '${page}', component: createPluginPageLifecycle(Page${index}), title: '${this.getPageTitle(
-            page,
-          )}' }`,
+          `{ path: '${page}', component: createPageLifecycle(Page${index}), title: '${this.getPageTitle(page)}' }`,
       )
       .join(',')}];`;
+
+      routesCode += `const routes = [
+        ${
+          HomePage
+            ? ` { path: '${HomePage}', component: createPageLifecycle(HomePage), title: '${this.getPageTitle(
+                HomePage,
+              )}' },`
+            : ''
+        }
+         ${pages
+           .slice(1)
+           .map(page => {
+             return `{ path: '${page}', component: createPageLifecycle(lazy(() => import(/* webpackChunkName: "${page}" */ './${page}'))), title: '${this.getPageTitle(
+               page,
+             )}' }`;
+           })
+           .join(',')}];`;
     return routesCode;
   }
 
@@ -81,7 +101,7 @@ class PluginEntryModule {
   private _generatePluginEntryCode(filename: string) {
     const { library, runtime } = this.configHelper.projectConfig;
     const injectMonaUi = library || runtime?.monaUi;
-    const monaUiPrefix = (typeof injectMonaUi === 'object' ? injectMonaUi?.prefixCls : 'mui') || 'mui';
+    const monaUiPrefix = (typeof injectMonaUi === 'object' ? injectMonaUi?.prefixCls : 'auxo') || 'auxo';
 
     const injectCode = injectMonaUi
       ? `import { ConfigProvider } from '@bytedance/mona-ui';
@@ -91,7 +111,9 @@ class PluginEntryModule {
         ConfigProvider.config({ prefixCls: '${monaUiPrefix}' });`
       : '';
 
-    const coverageCode = process.env.COVERAGE === '1' ? `
+    const coverageCode =
+      process.env.COVERAGE === '1'
+        ? `
       import { createCoverageUploader } from '@bytedance/coverage-uploader/dist/uplodaer'
 
       const instance = createCoverageUploader({
@@ -105,21 +127,20 @@ class PluginEntryModule {
       })
       
       instance.init();
-    ` : '';
+    `
+        : '';
     const code = `
       import './public-path';
       ${injectCode}
       ${coverageCode}
-      import { createPlugin, createPluginLifeCycle, createPluginPageLifecycle } from '@bytedance/mona-runtime';
+      import { createWebApp, createAppLifeCycle, createPageLifecycle } from '@bytedance/mona-runtime';
       import App from './${path.basename(filename)}';
       ${this._generateRoutesCode()}
       ${this._generateDefaultPathCode()}
       ${this._generateLightConfigCode()}
-      const { provider: p } =  createPlugin(createPluginLifeCycle(App), routes, { defaultPath, light }, ${!!injectMonaUi} ? { ConfigProvider, zh_CN, prefixCls:'${monaUiPrefix}'} : null);
+      const { provider: p } =  createWebApp(createAppLifeCycle(App), routes, { defaultPath, light }, ${!!injectMonaUi} ? { ConfigProvider, zh_CN, prefixCls:'${monaUiPrefix}'} : null);
       export const provider = p;
     `;
-
-    
 
     return code;
   }

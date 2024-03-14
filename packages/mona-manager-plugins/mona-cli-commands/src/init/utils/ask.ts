@@ -4,12 +4,8 @@ import { checkChinese } from './common';
 
 const templates = [
   {
-    name: 'light（适用于微应用开发）',
+    name: 'light（适用于微应用、飞鸽插件开发）',
     value: 'light',
-  },
-  {
-    name: 'plugin（适用于飞鸽插件开发）',
-    value: 'plugin',
   },
   {
     name: 'max（适用于店铺装修模块开发）',

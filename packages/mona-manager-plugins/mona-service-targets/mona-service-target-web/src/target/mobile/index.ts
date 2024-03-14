@@ -33,6 +33,7 @@ const mobile: IPlugin = ctx => {
       //   // webpackConfig.externals({ react: 'react', 'react-dom': 'react-dom', 'react-router-dom': 'react-router-dom' });
       //   // webpackConfig.output.libraryTarget('umd');
       // }
+
       chainResolve(webpackConfig, configHelper, MOBILE);
       chainModuleRule(webpackConfig, configHelper);
       chainPlugins(webpackConfig, configHelper, MOBILE, genH5Html);
