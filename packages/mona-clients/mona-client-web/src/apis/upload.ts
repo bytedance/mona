@@ -45,7 +45,7 @@ export async function getDownLoadFileUrl(fileKey: string) {
 
 export async function uploadFileTemporary(file: File) {
   if (window.LIGHT_UPLOAD) {
-    const crc32Res = crc32(await file.arrayBuffer());
+    const crc32Res = require('./crc32.js').crc32(await file.arrayBuffer());
     return window.LIGHT_UPLOAD(file, crc32Res);
   }
   const domain = window.__MONA_LIGNT_APP_DOMAIN_NAME || 'lgw.jinritemai.com';
