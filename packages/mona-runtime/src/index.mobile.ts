@@ -3,6 +3,8 @@ export * from '@bytedance/mona-client-web';
 
 export { usePageEvent, useAppEvent, AppLifecycle, PageLifecycle } from '@bytedance/mona';
 
-export const pigeon = {};
+export const light = events.light || {};
+export const pigeon = events.pigeon || {};
+export const app = events.app || {};
 
-export const light = events.light || events.app;
+export const tt = events.light || events.pigeon || events.app;
