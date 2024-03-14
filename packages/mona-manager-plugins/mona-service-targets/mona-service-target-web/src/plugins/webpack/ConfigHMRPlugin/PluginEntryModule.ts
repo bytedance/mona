@@ -61,14 +61,14 @@ class PluginEntryModule {
       routesCode = `import HomePage from './${HomePage}';
    `;
     }
-    routesCode += `const routes = [${pages
-      .map(
-        (page, index) =>
-          `{ path: '${page}', component: createPageLifecycle(Page${index}), title: '${this.getPageTitle(page)}' }`,
-      )
-      .join(',')}];`;
+    // routesCode += `const routes = [${pages
+    //   .map(
+    //     (page, index) =>
+    //       `{ path: '${page}', component: createPageLifecycle(Page${index}), title: '${this.getPageTitle(page)}' }`,
+    //   )
+    //   .join(',')}];`;
 
-      routesCode += `const routes = [
+    routesCode += `const routes = [
         ${
           HomePage
             ? ` { path: '${HomePage}', component: createPageLifecycle(HomePage), title: '${this.getPageTitle(
@@ -79,7 +79,7 @@ class PluginEntryModule {
          ${pages
            .slice(1)
            .map(page => {
-             return `{ path: '${page}', component: createPageLifecycle(lazy(() => import(/* webpackChunkName: "${page}" */ './${page}'))), title: '${this.getPageTitle(
+             return `{ path: '${page}', component: createPageLifecycle(lazy(() => import(/* webpackChunkName: "${page}" */  /* webpackPrefetch: true */ './${page}'))), title: '${this.getPageTitle(
                page,
              )}' }`;
            })
@@ -133,7 +133,7 @@ class PluginEntryModule {
       import './public-path';
       ${injectCode}
       ${coverageCode}
-      import { createWebApp, createAppLifeCycle, createPageLifecycle } from '@bytedance/mona-runtime';
+      import { createWebApp, createAppLifeCycle, createPageLifecycle, lazy } from '@bytedance/mona-runtime';
       import App from './${path.basename(filename)}';
       ${this._generateRoutesCode()}
       ${this._generateDefaultPathCode()}

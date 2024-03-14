@@ -73,7 +73,7 @@ class WebEntryModule {
       ${pages
         .slice(1)
         .map(page => {
-          return `{ path: '${page}', component: createPageLifecycle(lazy(() => import(/* webpackChunkName: "${page}" */ './${page}'))), title: '${this.getPageTitle(
+          return `{ path: '${page}', component: createPageLifecycle(lazy(() => import(/* webpackChunkName: "${page}" */  /* webpackPrefetch: true */ './${page}'))), title: '${this.getPageTitle(
             page,
           )}' }`;
         })
