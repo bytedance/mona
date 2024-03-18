@@ -78,8 +78,9 @@ class PluginEntryModule {
         }
          ${pages
            .slice(1)
+           // webpackPrefetch:true 会导致沙箱加载异常，临时去掉
            .map(page => {
-             return `{ path: '${page}', component: createPageLifecycle(lazy(() => import(/* webpackChunkName: "${page}" */  /* webpackPrefetch: true */ './${page}'))), title: '${this.getPageTitle(
+             return `{ path: '${page}', component: createPageLifecycle(lazy(() => import(/* webpackChunkName: "${page}" */  './${page}'))), title: '${this.getPageTitle(
                page,
              )}' }`;
            })
