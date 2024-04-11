@@ -7,7 +7,7 @@ import download from 'download-git-repo';
 import { makeDir, readAllFiles, removeEmptyDirs } from './file';
 import axios from 'axios';
 
-const branch = 'v2';
+const branch = 'v3';
 
 const TEMPLATE_SOURCE = `github:bytedance/mona-templates#${branch}`;
 const TEMPLATE_SOURCE_GITEE = `direct:git@gitee.com:ByteDance/mona-templates.git#${branch}`;
