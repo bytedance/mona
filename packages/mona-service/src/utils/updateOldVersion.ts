@@ -25,7 +25,7 @@ const checkVersionPlugin: IPlugin = () => {
       if (res !== -1) {
         const runtimePath = path.join(path.dirname(require.resolve('@bytedance/mona-client-web')), 'createWebApp.js');
         const readRes = fs.readFileSync(runtimePath, 'utf-8');
-        const modText = readRes.toString().replace(`prefixCls: "mona"`, `prefixCls: "mui"`);
+        const modText = readRes.toString().replace(`prefixCls: "mona"`, `prefixCls: "auxo"`);
         fs.writeFileSync(runtimePath, modText);
       }
     }

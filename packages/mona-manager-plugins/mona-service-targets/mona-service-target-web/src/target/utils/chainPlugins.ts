@@ -6,7 +6,7 @@ import { MonaPlugins } from '@/plugins';
 
 import { Platform, getEnv } from '@bytedance/mona-manager-plugins-shared';
 import { SAFE_SDK_SCRIPT } from '../utils/genHtml';
-
+import fs from 'fs-extra';
 export function chainPlugins(
   webpackConfig: Config,
   configHelper: ConfigHelper,
@@ -33,20 +33,22 @@ export function chainPlugins(
   );
   webpackConfig.plugin('ConfigHMRPlugin').use(ConfigHMRPlugin, [configHelper, TARGET]);
 
-  // 如果是plugin，需要复制pigeon.json文件
-  TARGET !== Platform.PLUGIN
-    ? webpackConfig.plugin('CopyPublicPlugin').use(CopyPublicPlugin, [configHelper])
-    : webpackConfig.plugin('CopyPublicPlugin').use(CopyPublicPlugin, [
-        configHelper,
-        [
+  const pigeonJsonPath = path.join(cwd, 'pigeon.json');
+  const hasPigeonJSON = fs.existsSync(pigeonJsonPath);
+
+  webpackConfig.plugin('CopyPublicPlugin').use(CopyPublicPlugin, [
+    configHelper,
+    hasPigeonJSON
+      ? [
           {
-            from: path.join(cwd, 'pigeon.json'),
+            from: pigeonJsonPath,
             noErrorOnMissing: true,
           },
-        ],
-      ]);
+        ]
+      : [],
+  ]);
 
-  if (TARGET === Platform.MOBILE || TARGET === Platform.LIGHT) {
+  if (TARGET === Platform.MOBILE || TARGET === Platform.LIGHT || TARGET === Platform.PLUGIN) {
     // 如果是mobile，将app.config.ts/js 转成json复制到dist
     webpackConfig.plugin('MobileAppJsonPlugin').use(MobileAppJsonPlugin, [configHelper]);
   }

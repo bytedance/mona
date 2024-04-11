@@ -45,10 +45,10 @@ export function chainOptimization(webpackConfig: Config, configHelper: ConfigHel
             priority: 2,
             minChunks: 2,
           },
-          antd: {
+          auxo: {
             test: /(antd|auxo|mona-ui)/,
             priority: 3,
-            name: 'antd',
+            name: 'auxo',
           },
           vendors: {
             test: /[\\/]node_modules[\\/]/,
