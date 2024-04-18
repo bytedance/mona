@@ -4210,6 +4210,15 @@ batch@0.6.1:
   resolved "https://registry.npmjs.org/batch/-/batch-0.6.1.tgz"
   integrity sha512-x+VAiMRL6UPkx+kudNvxTl6hB2XNNCG2r+7wixVfIYwu/2HKRXimwQyaumLjMveWvT2Hkd/cAJw+QBMfJ/EKVw==
 
+bifrost-proxy@1.4.0:
+  version "1.4.0"
+  resolved "https://registry.npmjs.org/bifrost-proxy/-/bifrost-proxy-1.4.0.tgz#d305e2db50910992d8eb292294a5623f41e9b8b0"
+  integrity sha512-+s7oj7q6QDJLeegCkahhkVSO7lCO+MOEvSxxLLt+PGeYpKXKRZ1YzdjhjiQayxK3ven7sCcJ6hlcQLJNdIPeRQ==
+  dependencies:
+    hagent "^0.7.5"
+    lru-cache "^5.1.1"
+    uuid "^3.4.0"
+
 big.js@^5.2.2:
   version "5.2.2"
   resolved "https://registry.npmjs.org/big.js/-/big.js-5.2.2.tgz"
@@ -6789,6 +6798,14 @@ gzip-size@^6.0.0:
   integrity sha512-ax7ZYomf6jqPTQ4+XCpUGyXKHk5WweS+e05MBO4/y3WJ5RkmPXNKvX+bx1behVILVwr6JSQvZAku021CHPXG3Q==
   dependencies:
     duplexer "^0.1.2"
+
+hagent@^0.7.5:
+  version "0.7.5"
+  resolved "https://registry.npmjs.org/hagent/-/hagent-0.7.5.tgz#218ffdb8cb0c6bf69551ceee43297fdc656feb28"
+  integrity sha512-TuF2B0uvO3ANc5mxzBPE+XxRWBlaCkynl/ij1AtH641EA5E9mRvxEvEMaY9PdJTe0QUg8Cq5bE10Gj5Db9qUBA==
+  dependencies:
+    q "1.4.1"
+    safe-buffer "^5.0.1"
 
 handle-thing@^2.0.0:
   version "2.0.1"
@@ -9818,6 +9835,11 @@ punycode@^2.1.0, punycode@^2.1.1:
   resolved "https://registry.npmjs.org/punycode/-/punycode-2.1.1.tgz"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
+q@1.4.1:
+  version "1.4.1"
+  resolved "https://registry.npmjs.org/q/-/q-1.4.1.tgz#55705bcd93c5f3673530c2c2cbc0c2b3addc286e"
+  integrity sha512-/CdEdaw49VZVmyIDGUQKDDT53c7qBkO6g5CefWz91Ae+l4+cRtcDYwMTXh6me4O8TMldeGHG3N2Bl84V78Ywbg==
+
 qrcode@^1.5.0:
   version "1.5.0"
   resolved "https://registry.npmjs.org/qrcode/-/qrcode-1.5.0.tgz"
@@ -11619,6 +11641,11 @@ utils-merge@1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/utils-merge/-/utils-merge-1.0.1.tgz"
   integrity sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==
+
+uuid@^3.4.0:
+  version "3.4.0"
+  resolved "https://registry.npmjs.org/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
+  integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
 
 uuid@^8.3.2:
   version "8.3.2"
