@@ -16,6 +16,7 @@
   "author": "xiaokun.kenny@bytedance.com",
   "license": "MIT",
   "dependencies": {
+    "bifrost-proxy":"1.4.0",
     "@bytedance/mona-manager": "0.3.38",
     "@bytedance/mona-shared": "0.3.38",
     "@koa/cors": "^4.0.0",

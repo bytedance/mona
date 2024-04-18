@@ -1,3 +1,4 @@
+require('bifrost-proxy');
 const init = require('./init');
 const login = require('./login');
 const logout = require('./logout');
