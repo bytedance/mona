@@ -145,8 +145,8 @@ jobs:
         run: |
           if [ '${{ env.ctag }}' == 'alpha' ] ; then IS_DRAFT='true'; else IS_DRAFT='false'; fi
           if [ '${{ env.ctag }}' == 'beta' ] ; then IS_PRERELEASE='true'; else IS_PRERELEASE='false'; fi
-          echo "::set-output name=IS_DRAFT::${IS_DRAFT}"
-          echo "::set-output name=IS_PRERELEASE::${IS_PRERELEASE}"
+          echo "IS_DRAFT=${IS_DRAFT}" >> "$GITHUB_OUTPUT"
+          echo "IS_PRERELEASE=${IS_PRERELEASE}" >> "$GITHUB_OUTPUT"
 
       - name: Create Release
         id: create_release
