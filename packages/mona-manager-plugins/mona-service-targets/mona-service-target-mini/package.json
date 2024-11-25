@@ -9,8 +9,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "yarn clean  && yarn copy && ttsc -b",
-    "start": "ttsc -b -w",
+    "build": "yarn clean  && yarn copy && tspc -b",
+    "start": "tspc -b -w",
     "clean": "rm -rf dist",
     "copy": "copyfiles -u 1 ./src/assets/**/* ./dist/",
     "test": "jest"
@@ -60,9 +60,7 @@
     "@types/mini-css-extract-plugin": "^2.4.0",
     "@types/node": "^16.4.5",
     "@types/sax": "^1.2.4",
-    "ttypescript": "^1.5.12",
-    "typescript-json-schema": "^0.43.0",
-    "typescript-transform-paths": "^2.2.4"
+    "typescript-json-schema": "^0.43.0"
   },
   "publishConfig": {
     "access": "public",

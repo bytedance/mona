@@ -13,8 +13,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "yarn clean  && ttsc -b",
-    "start": "ttsc -b -w",
+    "build": "yarn clean  && tspc -b",
+    "start": "tspc -b -w",
     "clean": "rm -rf dist",
     "test": "jest"
   },

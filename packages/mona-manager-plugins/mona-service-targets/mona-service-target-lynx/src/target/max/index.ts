@@ -8,6 +8,7 @@ import { writeEntry } from './writeEntry';
 import chokidar from 'chokidar';
 import debounce from 'lodash.debounce';
 const speedy = require('@bytedance/mona-speedy');
+const speedy3 = require('@lynx-dev/rspeedy');
 
 let isFirst = true;
 
@@ -48,6 +49,13 @@ const max: IPlugin = ctx => {
         .slice(0, 2)
         .concat([cmd, '--config', path.join(tempLynxDir, 'lynx.config.js'), '--config-name', name]);
       speedy.run();
+
+      if (name === 'component') {
+        process.argv = process.argv
+        .slice(0, 2)
+        .concat([cmd, '--config', path.join(tempLynxDir, 'lynx-3.config.js'), '--config-name', name]);
+        speedy3.run();
+      }
     };
 
     // 复写start命令

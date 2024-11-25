@@ -5,8 +5,8 @@
   "main": "./dist/index",
   "lynx": "./dist/index.max.js",
   "scripts": {
-    "build": "yarn clean && ttsc -b",
-    "start": "ttsc -b -w",
+    "build": "yarn clean && tspc -b",
+    "start": "tspc -b -w",
     "clean": "rm -rf dist"
   },
   "files": [
@@ -21,9 +21,7 @@
   "sideEffects": false,
   "devDependencies": {
     "rollup": "^2.53.2",
-    "ttypescript": "^1.5.12",
-    "typescript-json-schema": "^0.43.0",
-    "typescript-transform-paths": "^2.2.4"
+    "typescript-json-schema": "^0.43.0"
   },
   "dependencies": {
     "@bytedance/mona": "0.3.38",

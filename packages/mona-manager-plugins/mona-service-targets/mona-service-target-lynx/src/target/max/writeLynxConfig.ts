@@ -21,6 +21,7 @@ export const writeLynxConfig = ({
   notBuildWeb?: boolean;
 }) => {
   const lynxConfigFile = path.join(tempReactLynxDir, 'lynx.config.js');
+  const lynx3ConfigFile = path.join(tempReactLynxDir, 'lynx-3.config.js');
   const lynxEntry = getLynxEntry(tempReactLynxDir);
   const webEntry = getLynxEntry(tempReactLynxDir, true);
 
@@ -81,5 +82,29 @@ export const writeLynxConfig = ({
             },
           ];
           `;
-  return fs.writeFileSync(lynxConfigFile, lynxConfigStr);
+          const lynx3ConfigStr = `
+          module.exports = [
+            {
+              name: "component",
+              input: {
+                component: "${lynxEntry}",
+              },
+              dsl: "dynamic-component-ng",
+              encode: {
+                targetSdkVersion: "2.1",
+                defaultOverflowVisible:false,
+                enableEventRefactor: true
+              },
+              define: {
+                __MONA_APPID: JSON.stringify("${appid}")
+              },
+              compilerNGOptions:{
+                disableRuntimeCheckUnintentionalSetState:true,
+              }
+            },
+          ];
+          `;
+  fs.writeFileSync(lynxConfigFile, lynxConfigStr);
+  // lynx3配置文件
+  fs.writeFileSync(lynx3ConfigFile, lynx3ConfigStr);
 };

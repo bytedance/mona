@@ -7,8 +7,8 @@
   "module": "./dist/index.js",
   "browser": "./dist/index.web.js",
   "scripts": {
-    "build": "yarn clean && ttsc -b",
-    "start": "ttsc -b -w",
+    "build": "yarn clean && tspc -b",
+    "start": "tspc -b -w",
     "clean": "rm -rf dist",
     "test": "jest"
   },
@@ -26,9 +26,7 @@
   "devDependencies": {
     "@types/node": "^16.4.5",
     "react": "^17.0.2",
-    "ttypescript": "^1.5.12",
-    "typescript-json-schema": "^0.43.0",
-    "typescript-transform-paths": "^2.2.4"
+    "typescript-json-schema": "^0.43.0"
   },
   "publishConfig": {
     "access": "public",

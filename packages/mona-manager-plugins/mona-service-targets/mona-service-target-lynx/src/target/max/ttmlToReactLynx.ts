@@ -181,7 +181,7 @@ const transformJSXFile = (codeFile: string, addLifeCycle = false) => {
     const s1 = defaultSpecifer ? defaultSpecifer : '';
     const s2 = specifers.length > 0 ? `{${specifers.join(', ')}}` : '';
     const s3 = [s1, s2].filter(v => !!v).join(' , ');
-    const code = (s3 ? `import ${s3} from '@bytedance/mona-runtime';\n` : '') + res?.code ?? '';
+    const code = (s3 ? `import ${s3} from '@bytedance/mona-runtime';\n` : '') + (res?.code || '');
     fs.writeFileSync(codeFile, code);
   }
 };
