@@ -29,6 +29,7 @@
     "@bytedance/mona-speedy": "0.0.37",
     "@bytedance/mona-speedy-components": "0.0.37",
     "@bytedance/mona-speedy-runtime": "0.0.37",
+    "@lynx-dev/react": "^0.0.0",
     "@lynx-dev/rspeedy": "^0.2.3",
     "axios": "^1.6.5",
     "babel-loader": "^8.2.2",

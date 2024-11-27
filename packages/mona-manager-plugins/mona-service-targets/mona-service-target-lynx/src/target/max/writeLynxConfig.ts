@@ -1,5 +1,6 @@
 import path from 'path';
 import fs from 'fs';
+// const { reactLynxPlugin } = require('@byted-lynx/react/');
 
 export const getLynxEntry = (tempReactLynxDir: string, isWeb = false) => {
   // 兼容window路径
@@ -27,6 +28,7 @@ export const writeLynxConfig = ({
 
   const lynxConfigStr = `
           const WebBootstrapPlugin = require('../target/max/plugins/WebBootstrapPlugin.js').default;
+
           module.exports = [
             {
               name: "app",
@@ -83,15 +85,21 @@ export const writeLynxConfig = ({
           ];
           `;
           const lynx3ConfigStr = `
+          const { reactLynxPlugin } = require('@lynx-dev/react/speedy-plugin')
+
           module.exports = [
             {
               name: "component",
               input: {
                 component: "${lynxEntry}",
               },
-              dsl: "dynamic-component-ng",
+              dsl: 'react',
+              dslPlugin: reactLynxPlugin({
+                isDynamicComponentLoader: true, // 需要此配置
+              }),
               encode: {
-                targetSdkVersion: "2.1",
+                targetSdkVersion: "2.8",
+                useLepusNG: true,
                 defaultOverflowVisible:false,
                 enableEventRefactor: true
               },
