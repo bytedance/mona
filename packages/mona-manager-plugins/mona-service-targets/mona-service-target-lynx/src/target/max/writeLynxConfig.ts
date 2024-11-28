@@ -1,6 +1,5 @@
 import path from 'path';
 import fs from 'fs';
-// const { reactLynxPlugin } = require('@byted-lynx/react/');
 
 export const getLynxEntry = (tempReactLynxDir: string, isWeb = false) => {
   // 兼容window路径

@@ -3,7 +3,7 @@
     "target": "es2017",
     "moduleResolution": "node",
     "strict": true,
-    "module": "commonjs",
+    "module": "ESNext",
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,

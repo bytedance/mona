@@ -7,13 +7,14 @@ import { ttmlToReactLynx } from './ttmlToReactLynx';
 import { writeEntry } from './writeEntry';
 import chokidar from 'chokidar';
 import debounce from 'lodash.debounce';
+import { main as speedy3 } from '@lynx-dev/rspeedy/lib/cli/main';
+
 const speedy = require('@bytedance/mona-speedy');
-const speedy3 = require('@lynx-dev/rspeedy');
 
 let isFirst = true;
 
 const { MAX, MAX_TEMPLATE } = Platform;
-const max: IPlugin = ctx => {
+const max: IPlugin = async ctx => {
   const configHelper = ctx.configHelper;
   const monaConfig = configHelper.projectConfig;
 
@@ -51,10 +52,10 @@ const max: IPlugin = ctx => {
       speedy.run();
 
       if (name === 'component') {
-        process.argv = process.argv
+        const lynx3Config = process.argv
         .slice(0, 2)
         .concat([cmd, '--config', path.join(tempLynxDir, 'lynx-3.config.js'), '--config-name', name]);
-        speedy3.run();
+        speedy3(lynx3Config);
       }
     };
 
