@@ -21,7 +21,7 @@ export const writeLynxConfig = ({
   notBuildWeb?: boolean;
 }) => {
   const lynxConfigFile = path.join(tempReactLynxDir, 'lynx.config.js');
-  const lynx3ConfigFile = path.join(tempReactLynxDir, 'lynx-3.config.js');
+  const lynx3ConfigFile = path.join(tempReactLynxDir, 'lynx-3.config.mjs');
   const lynxEntry = getLynxEntry(tempReactLynxDir);
   const webEntry = getLynxEntry(tempReactLynxDir, true);
 
@@ -89,13 +89,18 @@ export const writeLynxConfig = ({
 
           export default defineConfig({
             source: {
-              entry: "${lynxEntry}",
+              entry: {
+                component: "${lynxEntry}"
+              },
               alias: {
                 '@bytedance/mona-speedy-runtime': '@byted-lynx/react'
               },
               define: {
                 __MONA_APPID: JSON.stringify("${appid}")
               },
+            },
+            output: {
+              filename: '[name]/template-3.js'
             },
             plugins: [
               pluginReactLynx({

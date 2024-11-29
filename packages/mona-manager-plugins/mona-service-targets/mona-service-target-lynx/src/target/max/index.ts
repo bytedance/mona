@@ -51,10 +51,12 @@ const max: IPlugin = async ctx => {
       speedy.run();
 
       if (name === 'component') {
+        console.log('start build ReactLynx3')
         try {
-          child_process.execSync(`lynx-speedy --config ${path.join(tempLynxDir, 'lynx-3.config.js')}`, { encoding: 'utf-8' });
-        } catch (error) {
-          console.error('编译ReactLyxn3失败')
+          child_process.execSync(`rspeedy build --config ${path.join(tempLynxDir, 'lynx-3.config.mjs')}`, { encoding: 'utf-8' });
+          console.log('build ReactLynx3 success!')
+        } catch (error: any) {
+          console.error('编译ReactLyxn3失败', error.message)
         }
       }
     };
