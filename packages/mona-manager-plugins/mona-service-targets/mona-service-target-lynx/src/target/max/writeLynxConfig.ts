@@ -84,32 +84,25 @@ export const writeLynxConfig = ({
           ];
           `;
           const lynx3ConfigStr = `
-          const { reactLynxPlugin } = require('@lynx-dev/react/speedy-plugin')
+          import { pluginReactLynx } from "@byted-lynx/react-rsbuild-plugin";
+          import { defineConfig } from "@byted-lynx/rspeedy";
 
-          module.exports = [
-            {
-              name: "component",
-              input: {
-                component: "${lynxEntry}",
-              },
-              dsl: 'react',
-              dslPlugin: reactLynxPlugin({
-                isDynamicComponentLoader: true, // 需要此配置
-              }),
-              encode: {
-                targetSdkVersion: "2.8",
-                useLepusNG: true,
-                defaultOverflowVisible:false,
-                enableEventRefactor: true
+          export default defineConfig({
+            source: {
+              entry: "${lynxEntry}",
+              alias: {
+                '@bytedance/mona-speedy-runtime': '@byted-lynx/react'
               },
               define: {
                 __MONA_APPID: JSON.stringify("${appid}")
               },
-              compilerNGOptions:{
-                disableRuntimeCheckUnintentionalSetState:true,
-              }
             },
-          ];
+            plugins: [
+              pluginReactLynx({
+                experimental_isLazyBundle: true,
+              }),
+            ],
+          });
           `;
   fs.writeFileSync(lynxConfigFile, lynxConfigStr);
   // lynx3配置文件

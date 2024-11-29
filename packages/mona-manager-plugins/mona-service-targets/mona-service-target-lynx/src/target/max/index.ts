@@ -7,7 +7,6 @@ import { ttmlToReactLynx } from './ttmlToReactLynx';
 import { writeEntry } from './writeEntry';
 import chokidar from 'chokidar';
 import debounce from 'lodash.debounce';
-import { main as speedy3 } from '@lynx-dev/rspeedy/lib/cli/main';
 
 const speedy = require('@bytedance/mona-speedy');
 
@@ -52,10 +51,11 @@ const max: IPlugin = async ctx => {
       speedy.run();
 
       if (name === 'component') {
-        const lynx3Config = process.argv
-        .slice(0, 2)
-        .concat([cmd, '--config', path.join(tempLynxDir, 'lynx-3.config.js'), '--config-name', name]);
-        speedy3(lynx3Config);
+        try {
+          child_process.execSync(`lynx-speedy --config ${path.join(tempLynxDir, 'lynx-3.config.js')}`, { encoding: 'utf-8' });
+        } catch (error) {
+          console.error('编译ReactLyxn3失败')
+        }
       }
     };
 
