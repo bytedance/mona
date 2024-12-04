@@ -31,12 +31,16 @@ const templates = [
 
 const maxTemplateTypes = [
   {
-    name: 'component（店铺装修组件开发）',
+    name: 'component（普通店铺装修组件开发）',
     value: 'max',
   },
   {
     name: 'template（店铺装修模板开发）',
     value: 'max-template',
+  },
+  {
+    name: 'nav-component（分类页导航组件开发，需特殊处理）',
+    value: 'max-component-nav',
   },
 ];
 

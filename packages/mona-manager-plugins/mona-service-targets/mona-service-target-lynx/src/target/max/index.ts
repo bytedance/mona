@@ -23,11 +23,13 @@ const max: IPlugin = async ctx => {
 
     const transform = ({
       isInjectProps = false,
-      useComponent = false,
+      navComponent = false,
+      debugPage = '',
       notBuildWeb = false,
     }: {
       isInjectProps?: boolean;
-      useComponent?: boolean;
+      debugPage?: string;
+      navComponent?: boolean;
       notBuildWeb?: boolean;
     }) => {
       const entry = ttmlToReactLynx(tempLynxDir, configHelper);
@@ -35,7 +37,8 @@ const max: IPlugin = async ctx => {
       writeLynxConfig({
         tempReactLynxDir: tempLynxDir,
         appid: monaConfig.appId || 'NO_APPID',
-        useComponent,
+        navComponent,
+        debugPage,
         notBuildWeb,
       });
     };
@@ -48,19 +51,23 @@ const max: IPlugin = async ctx => {
       speedy.run();
 
       if (name === 'component') {
-        console.log('start build ReactLynx3')
+        console.log('start build ReactLynx3!')
         try {
           child_process.execSync(`rspeedy build --config ${path.join(tempLynxDir, 'lynx-3.config.mjs')}`, { encoding: 'utf-8' });
           console.log('build ReactLynx3 success!')
         } catch (error: any) {
-          console.error('编译ReactLyxn3失败', error.message)
+          console.error('build ReactLyxn3 failed!', error.message)
         }
       }
     };
 
     // 复写start命令
     tctx.overrideStartCommand(args => {
-      const useComponent = !!args['use-component'];
+      // 进入哪个装修页面
+      const debugPage = args['debug-page'];
+      // 是否是分类页的导航组件（需特殊处理）
+      const navComponent = !!args['nav-component']
+
       try {
         const sourceDir = path.join(configHelper.cwd, 'src');
         chokidar.watch(sourceDir).on(
@@ -69,11 +76,11 @@ const max: IPlugin = async ctx => {
             if (isFirst) {
               isFirst = false;
             } else {
-              transform({ isInjectProps: true, useComponent });
+              transform({ isInjectProps: true, debugPage, navComponent });
             }
           }, 600),
         );
-        transform({ isInjectProps: true, useComponent });
+        transform({ isInjectProps: true, debugPage, navComponent });
 
         // 4. 执行speedy dev
         // 由于父子进程同时监视文件会失效，模拟运行lynx-speedy dev --config xxx

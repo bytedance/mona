@@ -6,7 +6,7 @@ import chalk from 'chalk';
 const pluginName = 'WebBootstrapPlugin';
 
 let alreadyStart = false;
-const WebBootstrapPlugin = (entry: string, appid: string) => ({
+const WebBootstrapPlugin = ({ entry, appid, navComponent, debugPage }: { entry: string, appid: string, navComponent?: boolean, debugPage: string }) => ({
   name: pluginName,
   apply(compiler: any) {
     const isDev = process.env.NODE_ENV !== 'production';
@@ -16,7 +16,7 @@ const WebBootstrapPlugin = (entry: string, appid: string) => ({
         if (alreadyStart) {
           return Promise.resolve();
         }
-        let webpackConfig = require('../webpack-config/webpack.dev')({ entry, useWebExt: true, appid });
+        let webpackConfig = require('../webpack-config/webpack.dev')({ entry, useWebExt: true, appid, navComponent, debugPage });
         const webpackCompiler = webpack(webpackConfig);
         const devConfig = webpackConfig.devServer;
         const devServer = new WebpackDevServer(devConfig, webpackCompiler);

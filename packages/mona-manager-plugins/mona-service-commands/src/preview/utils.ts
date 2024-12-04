@@ -107,7 +107,7 @@ export function printQrcode(appName: string = '抖音') {
 }
 
 export const generateQrcodeFactory =
-  (request: Request<GetDynamicTestUrlResp>) => async (params: { appId: string; version: string; small?: boolean }) => {
+  (request: Request<GetDynamicTestUrlResp>) => async (params: { appId: string; version: string; pageType?: string; small?: boolean }) => {
     const res = await request('/captain/app/version/getDynamicTestUrl', {
       method: 'GET',
       params: {
@@ -116,7 +116,8 @@ export const generateQrcodeFactory =
       },
     });
 
-    const preViewCodeUrl = `aweme://goods/store?sec_shop_id=${res?.secShopId}&token=${res?.token}&tmp_id=${res?.tmpId}&enter_from=scan&entrance_location=scan&pass_through_api=%7B%22isJump%22%3A1%7D`;
+    // TODO 确定这里的页面
+    const preViewCodeUrl = params.pageType === 'xx' ? '' : `aweme://goods/store?sec_shop_id=${res?.secShopId}&token=${res?.token}&tmp_id=${res?.tmpId}&enter_from=scan&entrance_location=scan&pass_through_api=%7B%22isJump%22%3A1%7D`;
     const qrcode = await new Promise((resolve, reject) => {
       // @ts-ignore
       // qrcode render failed in windows terminal when options with small: true

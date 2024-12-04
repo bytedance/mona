@@ -5,6 +5,10 @@ const DEV_SERVER_PORT = 10089;
 const WS_PORT = 10079;
 const TARGET_URL = `https://fxg.jinritemai.com/ffa/shop/decorate/brand/list?debug=1&WSPORT=${WS_PORT}`;
 
+function generateTargetUrl({ debugPage = '', navComponent = false }) {
+  return `https://fxg.jinritemai.com/ffa/shop/decorate/${debugPage || 'brand'}/list?debug=1&WSPORT=${WS_PORT}${navComponent ? '&nav=1' : ''}`
+}
+
 const SEND_DATA = {
   indexURL: `http://localhost:${DEV_SERVER_PORT}/index.umd.js`,
   settingURL: `http://localhost:${DEV_SERVER_PORT}/schema.json`,
@@ -119,4 +123,5 @@ module.exports = {
   WS_PORT,
   AfterBuildPlugin,
   TARGET_URL,
+  generateTargetUrl
 };

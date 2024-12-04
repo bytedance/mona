@@ -12,12 +12,14 @@ export const getLynxEntry = (tempReactLynxDir: string, isWeb = false) => {
 export const writeLynxConfig = ({
   tempReactLynxDir,
   appid,
-  useComponent = false,
+  navComponent = false,
+  debugPage = '',
   notBuildWeb = false,
 }: {
   tempReactLynxDir: string;
   appid: string;
-  useComponent?: boolean;
+  debugPage: string;
+  navComponent?: boolean;
   notBuildWeb?: boolean;
 }) => {
   const lynxConfigFile = path.join(tempReactLynxDir, 'lynx.config.js');
@@ -34,7 +36,7 @@ export const writeLynxConfig = ({
               input: {
                 "app": "${lynxEntry}",
               },
-              dsl: ${useComponent ? JSON.stringify('dynamic-component-ng') : JSON.stringify('compilerNg')},
+              dsl: 'compilerNg',
               encode: {
                 targetSdkVersion: "2.1",
                 defaultOverflowVisible:false,
@@ -48,7 +50,7 @@ export const writeLynxConfig = ({
                   return 'doudian://monaview?url=' + encodeURIComponent(origin)
                 }
               },
-              ${notBuildWeb ? '' : `plugins: [WebBootstrapPlugin("${webEntry}", "${appid}")],`}
+              ${notBuildWeb ? '' : `plugins: [WebBootstrapPlugin({ entry: "${webEntry}", appid: "${appid}", navComponent: "${navComponent}", debugPage: "${debugPage}" })],`}
               define: {
                 __MONA_APPID: JSON.stringify("${appid}")
               },

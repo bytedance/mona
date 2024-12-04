@@ -17,13 +17,15 @@ import {
 } from './utils';
 import { AppSceneTypeEnum, generateRequestFromOpen, requestBeforeCheck } from '../common';
 import chalk from 'chalk';
+import { ask, Answer } from './ask';
 
 const preview: IPlugin = ctx => {
   ctx.registerCommand(
     'preview',
     {
       options: [
-        { name: 'help', description: '输出帮助信息', alias: 'h' }
+        { name: 'help', description: '输出帮助信息', alias: 'h' },
+        { name: 'preview-page', description: '店铺装修预览页面', alias: 'pp' }
       ],
       usage: 'mona-service preview',
     },
@@ -38,14 +40,22 @@ const preview: IPlugin = ctx => {
       });
 
       // common steps for all target: compress => upload
-      const maxProcess = [createTestVersionFactory(request, args), generateQrcodeFactory(request), printQrcode('抖音')];
+      const askOpts: Answer = {
+        previewPage: args.pp as Answer['previewPage'],
+      };
 
       switch (appDetail.appSceneType) {
         case AppSceneTypeEnum.DESIGN_CENTER_COMPONENT:
-          await pipe(buildMaxComponent, processMaxComponentData, ...maxProcess)(ctx);
+          const answer = await ask(askOpts);
+          const { previewPage: pageType } = answer;
+
+          await pipe(buildMaxComponent, processMaxComponentData, createTestVersionFactory(request, args), (params: any) => ({ ...params, pageType }), generateQrcodeFactory(request), printQrcode('抖音'))(ctx);
           break;
         case AppSceneTypeEnum.DESIGN_CENTER_TEMPLATE:
-          await pipe(processMaxTemplateData, ...maxProcess)(ctx);
+          const answerTemplate = await ask(askOpts);
+          const { previewPage } = answerTemplate;
+
+          await pipe(processMaxTemplateData, createTestVersionFactory(request, args), (params: any) => ({ ...params, pageType: previewPage }), generateQrcodeFactory(request), printQrcode('抖音'))(ctx);
           break;
         case AppSceneTypeEnum.LIGHT_APP:
           if (args.t === 'mobile') {
