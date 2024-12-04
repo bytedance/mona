@@ -25,7 +25,12 @@ const preview: IPlugin = ctx => {
     {
       options: [
         { name: 'help', description: '输出帮助信息', alias: 'h' },
-        { name: 'preview-page', description: '店铺装修预览页面', alias: 'pp' }
+        { name: 'preview-page', description: '店铺装修预览页面', alias: 'pp' },
+        {
+          name: 'target',
+          description: '预览端（当为微应用时，需指定是在pc上预览还是移动端预览，默认为light）',
+          alias: 't',
+        },
       ],
       usage: 'mona-service preview',
     },
