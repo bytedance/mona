@@ -14,8 +14,6 @@ import {
   generateH5Qrcode,
   generateMobileQrcode,
   processProjectData,
-  askMixedComponentFactory,
-  askMixedTemplateFactory,
 } from './utils';
 import { AppSceneTypeEnum, generateRequestFromOpen, requestBeforeCheck } from '../common';
 import chalk from 'chalk';
@@ -25,24 +23,11 @@ const preview: IPlugin = ctx => {
     'preview',
     {
       options: [
-        { name: 'help', description: '输出帮助信息', alias: 'h' },
-        // { name: 'watch', description: '是否监听文件更改', alias: 'w' },
-        {
-          name: 'platform',
-          description: '平台类型（当target为light即微应用时，有效值为compass，不填默认compass）',
-          alias: 'p',
-        },
-        {
-          name: 'target',
-          description: '预览端（当为微应用时，需指定是在pc上预览还是移动端预览，默认为light）',
-          alias: 't',
-        },
+        { name: 'help', description: '输出帮助信息', alias: 'h' }
       ],
-      usage: 'mona-service preview -t max',
+      usage: 'mona-service preview',
     },
     async args => {
-      // output dir
-
       // assert
       const { user, appId } = await requestBeforeCheck(ctx, args);
       const request = generateRequestFromOpen(args, user.cookie);
@@ -57,10 +42,10 @@ const preview: IPlugin = ctx => {
 
       switch (appDetail.appSceneType) {
         case AppSceneTypeEnum.DESIGN_CENTER_COMPONENT:
-          await pipe(askMixedComponentFactory(request), buildMaxComponent, processMaxComponentData, ...maxProcess)(ctx);
+          await pipe(buildMaxComponent, processMaxComponentData, ...maxProcess)(ctx);
           break;
         case AppSceneTypeEnum.DESIGN_CENTER_TEMPLATE:
-          await pipe(askMixedTemplateFactory(request), processMaxTemplateData, ...maxProcess)(ctx);
+          await pipe(processMaxTemplateData, ...maxProcess)(ctx);
           break;
         case AppSceneTypeEnum.LIGHT_APP:
           if (args.t === 'mobile') {

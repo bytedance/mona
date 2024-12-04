@@ -85,6 +85,7 @@ export const writeLynxConfig = ({
           `;
           const lynx3ConfigStr = `
           import { pluginReactLynx } from "@byted-lynx/react-rsbuild-plugin";
+          import { pluginLess } from '@rsbuild/plugin-less';
           import { defineConfig } from "@byted-lynx/rspeedy";
 
           export default defineConfig({
@@ -105,6 +106,9 @@ export const writeLynxConfig = ({
             plugins: [
               pluginReactLynx({
                 experimental_isLazyBundle: true,
+              }),
+              pluginLess({
+                /** less options */
               }),
             ],
           });

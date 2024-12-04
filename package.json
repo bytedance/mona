@@ -16,7 +16,8 @@
     "test:coverage": "jest --coverage",
     "test:c": "jest --coverage",
     "release": "node ./scripts/release.js",
-    "bnpm:sync": "node ./scripts/bnpmSync.js"
+    "bnpm:sync": "node ./scripts/bnpmSync.js",
+    "publish:local": "lerna exec -- yalc publish"
   },
   "repository": {
     "type": "git",

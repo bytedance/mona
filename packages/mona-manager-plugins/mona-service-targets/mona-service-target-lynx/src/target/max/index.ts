@@ -20,9 +20,6 @@ const max: IPlugin = async ctx => {
   ctx.registerTarget(MAX, tctx => {
     const tempLynxDir = path.join(__dirname, '../../../dist/.maxTmpTtml');
     // 原始webpack打包逻辑
-    const webpackStart = tctx.startFn;
-    const webpackBuild = tctx.buildFn;
-    const h5Entry = path.join(configHelper.cwd, monaConfig.input);
 
     const transform = ({
       isInjectProps = false,
@@ -63,52 +60,33 @@ const max: IPlugin = async ctx => {
 
     // 复写start命令
     tctx.overrideStartCommand(args => {
-      const { old } = args;
       const useComponent = !!args['use-component'];
       try {
-        if (!old) {
-          const sourceDir = path.join(configHelper.cwd, 'src');
-          chokidar.watch(sourceDir).on(
-            'all',
-            debounce(() => {
-              if (isFirst) {
-                isFirst = false;
-              } else {
-                transform({ isInjectProps: true, useComponent });
-              }
-            }, 600),
-          );
-          transform({ isInjectProps: true, useComponent });
+        const sourceDir = path.join(configHelper.cwd, 'src');
+        chokidar.watch(sourceDir).on(
+          'all',
+          debounce(() => {
+            if (isFirst) {
+              isFirst = false;
+            } else {
+              transform({ isInjectProps: true, useComponent });
+            }
+          }, 600),
+        );
+        transform({ isInjectProps: true, useComponent });
 
-          // 4. 执行speedy dev
-          // 由于父子进程同时监视文件会失效，模拟运行lynx-speedy dev --config xxx
-          runSpeedy('dev');
-        } else {
-          // 旧的打包逻辑
-          tctx.configureWebpack(() => {
-            monaConfig.chain = (pre: any) => pre;
-            return require('./webpack-config/webpack.dev')({ entry: h5Entry, appid: monaConfig.appId });
-          });
-          webpackStart({});
-        }
+        // 4. 执行speedy dev
+        // 由于父子进程同时监视文件会失效，模拟运行lynx-speedy dev --config xxx
+        runSpeedy('dev');
       } catch (err) {
         console.log('max-component start失败', err);
       }
     });
     // 复写build命令
     tctx.overrideBuildCommand(args => {
-      const { old } = args;
       try {
-        if (!old) {
-          transform({ notBuildWeb: args['not-build-web'] });
-          runSpeedy('build');
-        } else {
-          tctx.configureWebpack(() => {
-            monaConfig.chain = (pre: any) => pre;
-            return require('./webpack-config/webpack.prod')({ entry: h5Entry, appid: monaConfig.appId });
-          });
-          webpackBuild({});
-        }
+        transform({ notBuildWeb: args['not-build-web'] });
+        runSpeedy('build');
       } catch (err) {
         console.log('max-component build失败', err);
       }

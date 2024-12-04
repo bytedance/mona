@@ -30,7 +30,6 @@ try {
   const WebSocket = require('ws');
   const wss = new WebSocket.Server({ port: WS_PORT });
   console.log(`ws链接已建立!打开${TARGET_URL}，请在装修页面编排组件`);
-  console.log(`请注意，混排的模板从新版定制页进入，非混排的模板从旧版定制页进入`);
   openBrowser(TARGET_URL);
   wss.on('connection', ws => {
     wsForWatch = ws;

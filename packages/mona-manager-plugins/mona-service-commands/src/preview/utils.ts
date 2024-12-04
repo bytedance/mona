@@ -132,54 +132,15 @@ export const generateQrcodeFactory =
     return { qrcode, expireTime: res.expireTime };
   };
 
-export function askMixedComponentFactory(request: Request<any>) {
-  return async function (ctx: PluginContext) {
-    const appid = ctx.configHelper.projectConfig.appId;
-
-    console.log(chalk.green(`拉取当前组件信息：${appid}`));
-    // version detail
-    const appDetail: any = await request('/captain/appManage/getAppDetail', {
-      method: 'GET',
-      params: { appId: appid },
-    });
-    const isOldApp = appDetail?.appExtend?.frameworkType !== 1;
-    // judge whether is mixed
-    const entry = ctx.configHelper.entryPath;
-    const ext = path.extname(entry);
-    const targetTTMLFile = entry.replace(ext, '') + '.ttml';
-    const isMixed = fs.existsSync(targetTTMLFile);
-    console.log(chalk.green(isMixed ? '当前为混排组件版本' : '当前为非混排组件版本'));
-    const frameworkType = isOldApp ? (isMixed ? 1 : 0) : 1;
-    return { frameworkType, ctx };
-  };
-}
-
-export function askMixedTemplateFactory(request: Request<any>) {
-  return async function (ctx: PluginContext) {
-    const appid = ctx.configHelper.projectConfig.appId;
-
-    console.log(chalk.green(`拉取当前模板信息：${appid}`));
-    // version detail
-    const appDetail: any = await request('/captain/appManage/getAppDetail', {
-      method: 'GET',
-      params: { appId: appid },
-    });
-
-    const frameworkType = appDetail?.appExtend?.frameworkType;
-    console.log(chalk.green(frameworkType === 1 ? '当前为混排模板版本' : '当前为非混排模板版本'));
-    return { frameworkType, ctx };
-  };
-}
-
-export function buildMaxComponent(params: { ctx: PluginContext; frameworkType?: number }) {
-  const cmd = `mona-service build --not-build-web -t max${params.frameworkType === 0 ? ' --old' : ''}`;
+export function buildMaxComponent(params: { ctx: PluginContext }) {
+  const cmd = `mona-service build --not-build-web -t max}`;
   console.log(chalk.green(`开始构建 ${cmd}`));
   execSync(cmd, { stdio: 'inherit' });
   return params;
 }
 
 // process max component data
-export async function processMaxComponentData({ ctx, frameworkType }: { ctx: PluginContext; frameworkType?: number }) {
+export async function processMaxComponentData({ ctx }: { ctx: PluginContext; }) {
   const helper = ctx.configHelper || ctx.builder?.configHelper;
   const { appId = '', output } = helper.projectConfig;
 
@@ -195,7 +156,6 @@ export async function processMaxComponentData({ ctx, frameworkType }: { ctx: Plu
 
   return {
     appId,
-    frameworkType,
     testFile: {
       filePath,
     },
@@ -204,7 +164,7 @@ export async function processMaxComponentData({ ctx, frameworkType }: { ctx: Plu
 }
 
 // process max template data
-export async function processMaxTemplateData({ ctx, frameworkType }: { ctx: PluginContext; frameworkType?: number }) {
+export async function processMaxTemplateData({ ctx }: { ctx: PluginContext; }) {
   const helper = ctx.configHelper;
   const { appId = '' } = helper.projectConfig;
 
@@ -214,7 +174,6 @@ export async function processMaxTemplateData({ ctx, frameworkType }: { ctx: Plug
 
   return {
     appId,
-    frameworkType,
     templateAppDefaultValue,
   };
 }
