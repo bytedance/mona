@@ -35,10 +35,6 @@ const maxTemplateTypes = [
     value: 'max',
   },
   {
-    name: 'component-old（旧版h5版本店铺装修组件开发）',
-    value: 'max-h5',
-  },
-  {
     name: 'template（店铺装修模板开发）',
     value: 'max-template',
   },

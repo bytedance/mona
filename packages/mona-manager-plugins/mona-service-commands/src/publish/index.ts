@@ -127,20 +127,7 @@ const publish: IPlugin = ctx => {
           });
         } else {
           const shouldEdit = latestVersionStatus && [2, 3, 5, 7].indexOf(latestVersionStatus) !== -1;
-          const isTemplate = appDetail.appSceneType === AppSceneTypeEnum.DESIGN_CENTER_TEMPLATE;
           const isComponent = appDetail.appSceneType === AppSceneTypeEnum.DESIGN_CENTER_COMPONENT;
-          const isOldApp = appDetail?.appExtend?.frameworkType !== 1;
-          // judge whether is mixed
-          let isMixed = !isOldApp;
-          if (isTemplate) {
-            console.log(chalk.green(isMixed ? '当前为混排模板版本' : '当前为非混排模板版本'));
-          } else if (isComponent) {
-            const entry = ctx.configHelper.entryPath;
-            const ext = path.extname(entry);
-            const targetTTMLFile = entry.replace(ext, '') + '.ttml';
-            isMixed = fs.existsSync(targetTTMLFile);
-            console.log(chalk.green(isMixed ? '当前为混排组件版本' : '当前为非混排组件版本'));
-          }
 
           // ask desc
           const answer = await inquirer.prompt(
@@ -164,10 +151,9 @@ const publish: IPlugin = ctx => {
 
           // upload
           const { fileId, fileName } = await upload(output, user.userId, args);
-          const frameworkType = isOldApp && !isTemplate ? (isMixed ? 1 : 0) : undefined;
 
           // params
-          const params = { version: latestVersion, appId, desc: answer.desc || '', fileId, fileName, frameworkType };
+          const params = { version: latestVersion, appId, desc: answer.desc || '', fileId, fileName, frameworkType: isComponent ? 1 : undefined };
 
           if (shouldEdit) {
             console.log(chalk.cyan(`即将修改版本 ${latestVersion}`));
