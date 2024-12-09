@@ -50,7 +50,8 @@ const max: IPlugin = async ctx => {
         .concat([cmd, '--config', path.join(tempLynxDir, 'lynx.config.js'), '--config-name', name]);
       speedy.run();
 
-      if (name === 'component') {
+      const isPipelineEnv = process.env.CI_PIPELINE;
+      if (name === 'component' && isPipelineEnv) {
         console.log('start build ReactLynx3!')
         try {
           child_process.execSync(`rspeedy build --config ${path.join(tempLynxDir, 'lynx-3.config.mjs')}`, { encoding: 'utf-8' });

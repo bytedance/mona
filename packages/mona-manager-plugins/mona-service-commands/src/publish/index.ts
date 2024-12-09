@@ -3,7 +3,6 @@ import chalk from 'chalk';
 import { AppSceneTypeEnum, requestBeforeCheck } from '../common';
 import inquirer from 'inquirer';
 import fs from 'fs';
-import path from 'path';
 import { upload } from './utils';
 import { compressDir } from '../compress/utils';
 import { generateRequestFromOpen } from '../common';
