@@ -8,6 +8,16 @@ import { readUser, saveUser } from '@bytedance/mona-shared';
 
 const WS_DOMAIN = 'opws.jinritemai.com';
 
+function parseHeaders(headers: string) {
+  const result: Record<string, string> = {};
+  const lines = headers.split(';');
+  lines.forEach(line => {
+    const [key, value] = line.split('=');
+    result[key.trim()] = value.trim();
+  });
+  return result;
+}
+
 const login: IPlugin = ctx => {
   ctx.registerCommand(
     'login',
@@ -18,7 +28,7 @@ const login: IPlugin = ctx => {
     },
     args => {
       const domain = args.domain || OPEN_DOMAIN;
-      const header = args.header ? JSON.parse(args.header) : OPEN_DEV_HEADERS;
+      const header = args.header ? parseHeaders(args.headers) : OPEN_DEV_HEADERS;
 
       const openURL = `https://${domain}/authorization`;
       const wsURL = `wss://${args.domain || WS_DOMAIN}/ws/api/terminal`;

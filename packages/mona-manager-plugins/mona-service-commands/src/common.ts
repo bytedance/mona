@@ -43,11 +43,20 @@ export function readUser(): { cookie: string; nickName: string; userId: string }
 export function saveUser(data: any) {
   fs.writeFileSync(userDataFile, JSON.stringify(data));
 }
+function parseHeaders(headers: string) {
+  const result: Record<string, string> = {};
+  const lines = headers.split(';');
+  lines.forEach(line => {
+    const [key, value] = line.split('=');
+    result[key.trim()] = value.trim();
+  });
+  return result;
+}
 
 export function generateRequestFromOpen(args: any, cookie: string) {
   return function <T = any>(path: string, options?: AxiosRequestConfig<any>): Promise<T> {
     const domain = args.domain || OPEN_DOMAIN;
-    const header = args.header ? JSON.parse(args.header) : OPEN_DEV_HEADERS;
+    const header = args.headers ? parseHeaders(args.headers) : OPEN_DEV_HEADERS;
     const url = `https://${domain}${path}`;
 
     const config = {
