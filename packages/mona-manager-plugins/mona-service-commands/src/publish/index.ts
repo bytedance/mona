@@ -125,7 +125,7 @@ const publish: IPlugin = ctx => {
             data: params,
           });
         } else {
-          const shouldEdit = latestVersionStatus && [2, 3, 5, 7].indexOf(latestVersionStatus) !== -1;
+          const shouldEdit = latestVersionStatus && [2, 3, 5, 7, 11].indexOf(latestVersionStatus) !== -1;
           const isComponent = appDetail.appSceneType === AppSceneTypeEnum.DESIGN_CENTER_COMPONENT;
 
           // ask desc
