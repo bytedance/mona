@@ -50,7 +50,11 @@ export const writeLynxConfig = ({
                   return 'doudian://monaview?url=' + encodeURIComponent(origin)
                 }
               },
-              ${notBuildWeb ? '' : `plugins: [WebBootstrapPlugin({ entry: "${webEntry}", appid: "${appid}", navComponent: "${navComponent}", debugPage: "${debugPage}" })],`}
+              ${
+                notBuildWeb
+                  ? ''
+                  : `plugins: [WebBootstrapPlugin({ entry: "${webEntry}", appid: "${appid}", navComponent: "${navComponent}", debugPage: "${debugPage}" })],`
+              }
               define: {
                 __MONA_APPID: JSON.stringify("${appid}")
               },
@@ -75,7 +79,11 @@ export const writeLynxConfig = ({
                 defaultOverflowVisible:false,
                 enableEventRefactor: true
               },
-              ${notBuildWeb ? '' : `plugins: [WebBootstrapPlugin("${webEntry}", "${appid}")],`}
+              ${
+                notBuildWeb
+                  ? ''
+                  : `plugins: [WebBootstrapPlugin({ entry: "${webEntry}", appid: "${appid}", navComponent: "${navComponent}", debugPage: "${debugPage}" })],`
+              }
               define: {
                 __MONA_APPID: JSON.stringify("${appid}")
               },
