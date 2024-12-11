@@ -54,7 +54,7 @@ const max: IPlugin = async ctx => {
       if (name === 'component' && isPipelineEnv) {
         console.log('start build ReactLynx3!')
         try {
-          child_process.execSync(`rspeedy build --config ${path.join(tempLynxDir, 'lynx-3.config.mjs')}`, { encoding: 'utf-8' });
+          child_process.execSync(`yarn rspeedy build --config ${path.join(tempLynxDir, 'lynx-3.config.mjs')}`, { encoding: 'utf-8' });
           console.log('build ReactLynx3 success!')
         } catch (error: any) {
           console.error('build ReactLyxn3 failed!', error.message)
