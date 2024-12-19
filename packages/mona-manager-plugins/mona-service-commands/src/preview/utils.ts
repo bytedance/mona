@@ -134,7 +134,7 @@ export const generateQrcodeFactory =
   };
 
 export function buildMaxComponent(params: { ctx: PluginContext }) {
-  const cmd = `mona-service build --not-build-web -t max}`;
+  const cmd = `mona-service build --not-build-web -t max`;
   console.log(chalk.green(`开始构建 ${cmd}`));
   execSync(cmd, { stdio: 'inherit' });
   return params;

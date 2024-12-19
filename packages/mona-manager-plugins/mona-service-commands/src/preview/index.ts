@@ -54,7 +54,7 @@ const preview: IPlugin = ctx => {
           const answer = await ask(askOpts);
           const { previewPage: pageType } = answer;
 
-          await pipe(buildMaxComponent, processMaxComponentData, createTestVersionFactory(request, args), (params: any) => ({ ...params, pageType }), generateQrcodeFactory(request), printQrcode('抖音'))(ctx);
+          await pipe((ctx: any) => ({ ctx }), buildMaxComponent, processMaxComponentData, createTestVersionFactory(request, args), (params: any) => ({ ...params, pageType }), generateQrcodeFactory(request), printQrcode('抖音'))(ctx);
           break;
         case AppSceneTypeEnum.DESIGN_CENTER_TEMPLATE:
           const answerTemplate = await ask(askOpts);
