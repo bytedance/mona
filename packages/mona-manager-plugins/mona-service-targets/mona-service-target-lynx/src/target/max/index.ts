@@ -52,12 +52,13 @@ const max: IPlugin = async ctx => {
 
       const isPipelineEnv = process.env.CI_PIPELINE;
       if (name === 'component' && isPipelineEnv) {
-        console.log('start build ReactLynx3!')
+        console.log('分类页组件产物开始打包...')
         try {
-          child_process.execSync(`yarn rspeedy build --config ${path.join(tempLynxDir, 'lynx-3.config.mjs')}`, { encoding: 'utf-8' });
-          console.log('build ReactLynx3 success!')
+          child_process.execSync(`npx rspeedy build --config ${path.join(tempLynxDir, 'lynx-3.config.mjs')}`, { encoding: 'utf-8' });
+          console.log('分类页组件产物开始打包成功！！！');
         } catch (error: any) {
-          console.error('build ReactLyxn3 failed!', error.message)
+          console.error('分类页组件产物开始打包失败!', error.message);
+          throw error;
         }
       }
     };
