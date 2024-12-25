@@ -6,7 +6,7 @@ const WS_PORT = 10079;
 const TARGET_URL = `https://fxg.jinritemai.com/ffa/shop/decorate/brand/list?debug=1&WSPORT=${WS_PORT}`;
 
 function generateTargetUrl({ debugPage = '', navComponent }) {
-  const extra = ''
+  let extra = ''
   if (navComponent) {
     extra = `&nav_position=${navComponent.position}&nav_level=${navComponent.level}`
   }

@@ -14,7 +14,7 @@ const speedy = require('@bytedance/mona-speedy');
 let isFirst = true;
 
 export interface NavComponent {
-  position: 'left' | 'top',
+  position: 'sidebar' | 'topbar',
   level: number
 }
 
@@ -89,7 +89,7 @@ const max: IPlugin = async ctx => {
         const isSideBar = appDetail.appExtend.componentGroupType === 7;
 
         if (isTopBar || isSideBar) {
-          const position: 'left' | 'top' = isTopBar ? 'top' : 'left';
+          const position: 'topbar' | 'sidebar' = isTopBar ? 'topbar' : 'sidebar';
           navComponent = {
             position,
             level: appDetail.appExtend.componentLevel || 0

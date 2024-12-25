@@ -44,7 +44,9 @@ function generateDevConfig({ navComponent, debugPage }) {
         }
         const addr = devServer.server.address();
         openBrowser(`http://localhost:${addr.port}`);
-        openBrowser(generateTargetUrl({ navComponent, debugPage }));
+        const maxUrl = generateTargetUrl({ navComponent, debugPage });
+        console.log('打开 '+ maxUrl)
+        openBrowser(maxUrl);
       },
     },
     plugins: [
