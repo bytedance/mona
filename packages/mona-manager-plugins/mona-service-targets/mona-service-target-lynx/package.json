@@ -25,6 +25,7 @@
     "@babel/traverse": "^7.16.5",
     "@babel/types": "^7.16.0",
     "@bytedance/mona-manager": "0.3.39-alpha.10",
+    "@bytedance/mona-shared": "0.3.39-alpha.10",
     "@bytedance/mona-manager-plugins-shared": "0.3.39-alpha.10",
     "@bytedance/mona-speedy": "0.0.37",
     "@bytedance/mona-speedy-components": "0.0.37",

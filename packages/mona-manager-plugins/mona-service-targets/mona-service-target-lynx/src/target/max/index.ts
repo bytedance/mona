@@ -2,6 +2,7 @@ import path from 'path';
 import child_process from 'child_process';
 import { IPlugin } from '@bytedance/mona-manager';
 import { Platform } from '@bytedance/mona-manager-plugins-shared';
+import { requestBeforeCheck, generateRequestFromOpen } from '@bytedance/mona-shared';
 import { writeLynxConfig } from './writeLynxConfig';
 import { ttmlToReactLynx } from './ttmlToReactLynx';
 import { writeEntry } from './writeEntry';
@@ -11,6 +12,11 @@ import debounce from 'lodash.debounce';
 const speedy = require('@bytedance/mona-speedy');
 
 let isFirst = true;
+
+export interface NavComponent {
+  position: 'left' | 'top',
+  level: number
+}
 
 const { MAX, MAX_TEMPLATE } = Platform;
 const max: IPlugin = async ctx => {
@@ -23,13 +29,13 @@ const max: IPlugin = async ctx => {
 
     const transform = ({
       isInjectProps = false,
-      navComponent = false,
+      navComponent,
       debugPage = '',
       notBuildWeb = false,
     }: {
       isInjectProps?: boolean;
       debugPage?: string;
-      navComponent?: boolean;
+      navComponent?: NavComponent;
       notBuildWeb?: boolean;
     }) => {
       const entry = ttmlToReactLynx(tempLynxDir, configHelper);
@@ -64,11 +70,32 @@ const max: IPlugin = async ctx => {
     };
 
     // 复写start命令
-    tctx.overrideStartCommand(args => {
+    tctx.overrideStartCommand(async args => {
       // 进入哪个装修页面
       const debugPage = args['debug-page'];
-      // 是否是分类页的导航组件（需特殊处理）
-      const navComponent = !!args['nav-component']
+
+      // 如果是分类页，需要读取appId来拉取详情
+      let navComponent: NavComponent | undefined;
+      if (debugPage === 'category') {
+        const { user, appId } = await requestBeforeCheck(ctx, args);
+        const request = generateRequestFromOpen(args, user.cookie);
+
+        const appDetail: any = await request<any>('/captain/appManage/getAppDetail', {
+          method: 'GET',
+          params: { appId },
+        });
+
+        const isTopBar = appDetail.appExtend.componentGroupType === 6;
+        const isSideBar = appDetail.appExtend.componentGroupType === 7;
+
+        if (isTopBar || isSideBar) {
+          const position: 'left' | 'top' = isTopBar ? 'top' : 'left';
+          navComponent = {
+            position,
+            level: appDetail.appExtend.componentLevel || 0
+          }
+        }
+      }
 
       try {
         const sourceDir = path.join(configHelper.cwd, 'src');

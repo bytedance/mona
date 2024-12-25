@@ -2,11 +2,12 @@ import WebpackDevServer from 'webpack-dev-server';
 import webpack from 'webpack';
 import ora from 'ora';
 import chalk from 'chalk';
+import { NavComponent } from '..';
 
 const pluginName = 'WebBootstrapPlugin';
 
 let alreadyStart = false;
-const WebBootstrapPlugin = ({ entry, appid, navComponent, debugPage }: { entry: string, appid: string, navComponent?: boolean, debugPage: string }) => ({
+const WebBootstrapPlugin = ({ entry, appid, navComponent, debugPage }: { entry: string, appid: string, navComponent?: NavComponent, debugPage: string }) => ({
   name: pluginName,
   apply(compiler: any) {
     const isDev = process.env.NODE_ENV !== 'production';

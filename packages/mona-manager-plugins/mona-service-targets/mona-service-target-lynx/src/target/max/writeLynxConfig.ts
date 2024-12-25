@@ -1,5 +1,6 @@
 import path from 'path';
 import fs from 'fs';
+import { NavComponent } from '.';
 
 export const getLynxEntry = (tempReactLynxDir: string, isWeb = false) => {
   // 兼容window路径
@@ -12,14 +13,14 @@ export const getLynxEntry = (tempReactLynxDir: string, isWeb = false) => {
 export const writeLynxConfig = ({
   tempReactLynxDir,
   appid,
-  navComponent = false,
+  navComponent,
   debugPage = '',
   notBuildWeb = false,
 }: {
   tempReactLynxDir: string;
   appid: string;
   debugPage: string;
-  navComponent?: boolean;
+  navComponent?: NavComponent;
   notBuildWeb?: boolean;
 }) => {
   const lynxConfigFile = path.join(tempReactLynxDir, 'lynx.config.js');
@@ -53,7 +54,7 @@ export const writeLynxConfig = ({
               ${
                 notBuildWeb
                   ? ''
-                  : `plugins: [WebBootstrapPlugin({ entry: "${webEntry}", appid: "${appid}", navComponent: "${navComponent}", debugPage: "${debugPage}" })],`
+                  : `plugins: [WebBootstrapPlugin({ entry: "${webEntry}", appid: "${appid}", navComponent: ${navComponent ? JSON.stringify(navComponent) : 'undefined'}, debugPage: "${debugPage}" })],`
               }
               define: {
                 __MONA_APPID: JSON.stringify("${appid}")
@@ -82,7 +83,7 @@ export const writeLynxConfig = ({
               ${
                 notBuildWeb
                   ? ''
-                  : `plugins: [WebBootstrapPlugin({ entry: "${webEntry}", appid: "${appid}", navComponent: "${navComponent}", debugPage: "${debugPage}" })],`
+                  : `plugins: [WebBootstrapPlugin({ entry: "${webEntry}", appid: "${appid}",navComponent: ${navComponent ? JSON.stringify(navComponent) : 'undefined'}, debugPage: "${debugPage}" })],`
               }
               define: {
                 __MONA_APPID: JSON.stringify("${appid}")

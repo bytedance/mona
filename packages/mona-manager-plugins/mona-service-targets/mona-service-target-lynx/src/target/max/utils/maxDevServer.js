@@ -5,8 +5,12 @@ const DEV_SERVER_PORT = 10089;
 const WS_PORT = 10079;
 const TARGET_URL = `https://fxg.jinritemai.com/ffa/shop/decorate/brand/list?debug=1&WSPORT=${WS_PORT}`;
 
-function generateTargetUrl({ debugPage = '', navComponent = false }) {
-  return `https://fxg.jinritemai.com/ffa/shop/decorate/${debugPage || 'brand'}/list?debug=1&WSPORT=${WS_PORT}${navComponent ? '&nav=1' : ''}`
+function generateTargetUrl({ debugPage = '', navComponent }) {
+  const extra = ''
+  if (navComponent) {
+    extra = `&nav_position=${navComponent.position}&nav_level=${navComponent.level}`
+  }
+  return `https://fxg.jinritemai.com/ffa/shop-editor/designable?id=7450057439795233078&debug=1&WSPORT=${WS_PORT}&page_type=${debugPage}${navComponent ? extra : ''}`
 }
 
 const SEND_DATA = {

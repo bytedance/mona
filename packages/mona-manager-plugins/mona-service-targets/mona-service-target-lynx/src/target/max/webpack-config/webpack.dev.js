@@ -7,7 +7,7 @@ const generateBaseConfig = require('./webpack.base.js');
 const umdConfig = require('./build-umd-config.js');
 const esmConfig = require('./build-esm-config.js');
 const openBrowser = require('react-dev-utils/openBrowser')
-const { DEV_SERVER_PORT, AfterBuildPlugin, TARGET_URL, generateTargetUrl } = require('../utils/maxDevServer');
+const { DEV_SERVER_PORT, AfterBuildPlugin, generateTargetUrl } = require('../utils/maxDevServer');
 const getDevProps = require('../utils/getDevProps');
 
 const { name = '@shop-isv/isv-com' } = JSON.parse(
@@ -118,7 +118,7 @@ function generateDevConfig({ navComponent, debugPage }) {
   return devConfig;
 }
 
-module.exports = function ({ buildType = 'umd', entry, pxToRem = false, useWebExt = false, appid = '', navComponent = false, debugPage = '' }) {
+module.exports = function ({ buildType = 'umd', entry, pxToRem = false, useWebExt = false, appid = '', navComponent, debugPage = '' }) {
   const baseConfig = generateBaseConfig({ entry, pxToRem, useWebExt, appid, navComponent, debugPage });
   const moduleConfig = buildType === 'umd' ? umdConfig : esmConfig;
   const devConfig = generateDevConfig({ navComponent, debugPage });
