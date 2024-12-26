@@ -3,14 +3,13 @@ const path = require('path');
 
 const DEV_SERVER_PORT = 10089;
 const WS_PORT = 10079;
-const TARGET_URL = `https://fxg.jinritemai.com/ffa/shop/decorate/brand/list?debug=1&WSPORT=${WS_PORT}`;
 
 function generateTargetUrl({ debugPage = '', navComponent }) {
   let extra = ''
   if (navComponent) {
     extra = `&nav_position=${navComponent.position}&nav_level=${navComponent.level}`
   }
-  return `https://fxg.jinritemai.com/ffa/shop-editor/designable?id=7450057439795233078&debug=1&WSPORT=${WS_PORT}&page_type=${debugPage}${navComponent ? extra : ''}`
+  return `https://fxg.jinritemai.com/ffa/shop-editor/designable?debug=1&WSPORT=${WS_PORT}&page_type=${debugPage}${navComponent ? extra : ''}`
 }
 
 const SEND_DATA = {
@@ -39,6 +38,9 @@ const MESSAGE_TYPE = {
   },
   exchangePreviewJson: {
     name: 'EXCHANGE_PREVIEW_JSON',
+  },
+  exchangeCategoryJSON: {
+    name: 'EXCHANGE_CATEGORY_JSON',
   },
 };
 
@@ -96,6 +98,13 @@ try {
           fs.writeFileSync(reviewJsonFilePath, data);
         }
       }
+      if (type === MESSAGE_TYPE.exchangeCategoryJSON.name) {
+        const categoryJsonFilePath = path.resolve(process.cwd(), './src/category.json');
+
+        if (data) {
+          fs.writeFileSync(categoryJsonFilePath, data);
+        }
+      }
       if (type === MESSAGE_TYPE.exchangePreviewJson.name) {
         const previewJsonFilePath = path.resolve(process.cwd(), './src/preview.json');
         if (data) {
@@ -126,6 +135,5 @@ module.exports = {
   DEV_SERVER_PORT,
   WS_PORT,
   AfterBuildPlugin,
-  TARGET_URL,
   generateTargetUrl
 };
