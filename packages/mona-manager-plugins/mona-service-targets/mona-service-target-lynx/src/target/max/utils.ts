@@ -1,6 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { OPEN_DOMAIN, OPEN_DEV_HEADERS } from './domain';
-import { deleteUser, readUser } from './user';
+import { OPEN_DOMAIN, OPEN_DEV_HEADERS, readUser, deleteUser } from '@bytedance/mona-shared';
 import chalk from 'chalk';
 import assert from 'assert';
 

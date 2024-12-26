@@ -2,7 +2,7 @@ import path from 'path';
 import child_process from 'child_process';
 import { IPlugin } from '@bytedance/mona-manager';
 import { Platform } from '@bytedance/mona-manager-plugins-shared';
-import { requestBeforeCheck, generateRequestFromOpen } from '@bytedance/mona-shared';
+import { requestBeforeCheck, generateRequestFromOpen } from './utils';
 import { writeLynxConfig } from './writeLynxConfig';
 import { ttmlToReactLynx } from './ttmlToReactLynx';
 import { writeEntry } from './writeEntry';
