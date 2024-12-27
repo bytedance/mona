@@ -27,6 +27,10 @@ module.exports = class MvJsonPlugin {
     compiler.hooks.afterEmit.tap('AfterBuild', () => {
       handleFile('schema', '{}')
       handleFile('review', '')
+      const categoryFile = path.resolve(process.cwd(), './src/category.json');
+      if (fs.existsSync(categoryFile)) {
+        handleFile('category', {})
+      }
     })
   }
 }

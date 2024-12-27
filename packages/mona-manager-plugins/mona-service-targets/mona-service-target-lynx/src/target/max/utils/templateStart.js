@@ -14,6 +14,9 @@ const MESSAGE_TYPE = {
   exchangePreviewJson: {
     name: 'EXCHANGE_PREVIEW_JSON',
   },
+  exchangeCategoryJSON: {
+    name: 'EXCHANGE_CATEGORY_JSON',
+  },
 };
 
 const isJSON = v => {
@@ -43,6 +46,14 @@ try {
         if (data) {
           fs.writeFileSync(schemaJsonFilePath, getTmpData(data));
           fs.writeFileSync(componentsJsonFilePath, getTmpComponentData(data));
+        }
+      }
+
+       if (type === MESSAGE_TYPE.exchangeCategoryJSON.name) {
+        const categoryJsonFilePath = path.resolve(process.cwd(), './src/category.json');
+
+        if (data) {
+          fs.writeFileSync(categoryJsonFilePath, data);
         }
       }
 
