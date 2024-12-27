@@ -1,3 +1,5 @@
+import chalk from 'chalk';
+import minimist from 'minimist';
 import path from 'path';
 import child_process from 'child_process';
 import { IPlugin } from '@bytedance/mona-manager';
@@ -10,6 +12,7 @@ import chokidar from 'chokidar';
 import debounce from 'lodash.debounce';
 
 const speedy = require('@bytedance/mona-speedy');
+const { templateStart } = require('./utils/templateStart.js')
 
 let isFirst = true;
 
@@ -72,7 +75,7 @@ const max: IPlugin = async ctx => {
     // 复写start命令
     tctx.overrideStartCommand(async args => {
       // 进入哪个装修页面
-      const debugPage = args['debug-page'];
+      const debugPage = args['debug-page'] || 'brand';
 
       // 如果是分类页，需要读取appId来拉取详情
       let navComponent: NavComponent | undefined;
@@ -129,13 +132,34 @@ const max: IPlugin = async ctx => {
     });
   });
 
-  const configPath = path.resolve(__dirname, './utils/templateStart.js');
+  const isValidAppId = (appid: string) => /^\d{19}$/.test(appid);
   ctx.registerTarget(MAX_TEMPLATE, tctx => {
     tctx.overrideStartCommand(() => {
-      child_process.execSync(`node ${configPath}`, { stdio: 'inherit' });
+      // 重新解析，让topbar和sidebar为字符串
+      const args = minimist(process.argv.slice(2), {
+        string: ['topbar', 'sidebar']
+      });
+      const debugPage = args['debug-page'] || 'brand';
+      const data: any = {};
+      if (debugPage === 'category') {
+        const topbar = args['topbar'];
+        const sidebar = args['sidebar'];
+        if (!isValidAppId(topbar) && !isValidAppId(sidebar)) {
+          console.log(chalk.red('启动失败，检测到你正在开发分类页模板，请保证--topbar和--sidebar中至少一个是有效的appid！！！'));
+          return;
+        }
+        if (isValidAppId(topbar)) {
+          data.topbar = topbar;
+        }
+        if (isValidAppId(sidebar)) {
+          data.sidebar = sidebar;
+        }
+      }
+      
+      templateStart(debugPage, data)
     });
     tctx.overrideBuildCommand(() => {
-      console.log('当前target没有build命令');
+      console.log(chalk.red('当前target没有build命令'));
     });
   });
 };
