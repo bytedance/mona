@@ -29,7 +29,7 @@ module.exports = class MvJsonPlugin {
       handleFile('review', '')
       const categoryFile = path.resolve(process.cwd(), './src/category.json');
       if (fs.existsSync(categoryFile)) {
-        handleFile('category', {})
+        handleFile('category', '{}')
       }
     })
   }
