@@ -71,7 +71,7 @@ function templateStart(debugPage, sendData) {
         }
 
         if (type === MESSAGE_TYPE.exchangeCategoryJSON.name) {
-          const categoryJsonFilePath = path.resolve(process.cwd(), './src/category.json');
+          const categoryJsonFilePath = path.resolve(process.cwd(), './category.json');
 
           if (data) {
             fs.writeFileSync(categoryJsonFilePath, data);
