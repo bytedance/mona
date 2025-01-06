@@ -51,16 +51,20 @@ const preview: IPlugin = ctx => {
 
       switch (appDetail.appSceneType) {
         case AppSceneTypeEnum.DESIGN_CENTER_COMPONENT:
+          const isTopBar = appDetail.appExtend.componentGroupType === 6;
+          const isSideBar = appDetail.appExtend.componentGroupType === 7;
+          if (isTopBar || isSideBar) {
+            askOpts.previewPage = 'category';
+          }
           const answer = await ask(askOpts);
           const { previewPage: pageType } = answer;
 
           await pipe((ctx: any) => ({ ctx }), buildMaxComponent, processMaxComponentData, createTestVersionFactory(request, args), (params: any) => ({ ...params, pageType }), generateQrcodeFactory(request), printQrcode('抖音'))(ctx);
           break;
         case AppSceneTypeEnum.DESIGN_CENTER_TEMPLATE:
-          const answerTemplate = await ask(askOpts);
-          const { previewPage } = answerTemplate;
+          const previewPage = appDetail.appExtend.tmpType === 2 ? 'category' : 'default';
 
-          await pipe(processMaxTemplateData, createTestVersionFactory(request, args), (params: any) => ({ ...params, pageType: previewPage }), generateQrcodeFactory(request), printQrcode('抖音'))(ctx);
+          await pipe((ctx: any) => ({ ctx }), processMaxTemplateData, createTestVersionFactory(request, args), (params: any) => ({ ...params, pageType: previewPage }), generateQrcodeFactory(request), printQrcode('抖音'))(ctx);
           break;
         case AppSceneTypeEnum.LIGHT_APP:
           if (args.t === 'mobile') {

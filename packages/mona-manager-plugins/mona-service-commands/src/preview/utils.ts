@@ -117,7 +117,7 @@ export const generateQrcodeFactory =
     });
 
     // TODO 确定这里的页面
-    const preViewCodeUrl = params.pageType === 'xx' ? '' : `aweme://goods/store?sec_shop_id=${res?.secShopId}&token=${res?.token}&tmp_id=${res?.tmpId}&enter_from=scan&entrance_location=scan&pass_through_api=%7B%22isJump%22%3A1%7D`;
+    const preViewCodeUrl = `aweme://goods/store?${params.pageType === 'category' ? 'tab_id=2&' : ''}sec_shop_id=${res?.secShopId}&token=${res?.token}&tmp_id=${res?.tmpId}&enter_from=scan&entrance_location=scan&pass_through_api=%7B%22isJump%22%3A1%7D`;
     const qrcode = await new Promise((resolve, reject) => {
       // @ts-ignore
       // qrcode render failed in windows terminal when options with small: true
@@ -173,8 +173,16 @@ export async function processMaxTemplateData({ ctx }: { ctx: PluginContext; }) {
   const templateValuePath = path.join(helper.cwd, 'preview.json');
   const templateAppDefaultValue = fs.readFileSync(templateValuePath).toString();
 
+  const categoryPath = path.join(helper.cwd, 'category.json');
+  let categoryList;
+  if (fs.existsSync(categoryPath)) {
+    categoryList = fs.readFileSync(categoryPath).toString();
+  }
+
   return {
     appId,
+    frameworkType: 1,
+    categoryList,
     templateAppDefaultValue,
   };
 }
