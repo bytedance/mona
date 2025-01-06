@@ -59,6 +59,11 @@ const preview: IPlugin = ctx => {
           const answer = await ask(askOpts);
           const { previewPage: pageType } = answer;
 
+          if (pageType === 'category') {
+            console.log(chalk.blue("当前分类页组件不支持本地预览，请通过yarn upload上传新版本，在动态测试阶段进行预览！"));
+            break;
+          }
+
           await pipe((ctx: any) => ({ ctx }), buildMaxComponent, processMaxComponentData, createTestVersionFactory(request, args), (params: any) => ({ ...params, pageType }), generateQrcodeFactory(request), printQrcode('抖音'))(ctx);
           break;
         case AppSceneTypeEnum.DESIGN_CENTER_TEMPLATE:
