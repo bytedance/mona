@@ -134,12 +134,21 @@ const max: IPlugin = async ctx => {
 
   const isValidAppId = (appid: string) => /^\d{19}$/.test(appid);
   ctx.registerTarget(MAX_TEMPLATE, tctx => {
-    tctx.overrideStartCommand(() => {
+    tctx.overrideStartCommand(async () => {
       // 重新解析，让topbar和sidebar为字符串
       const args = minimist(process.argv.slice(2), {
         string: ['topbar', 'sidebar']
       });
-      const debugPage = args['debug-page'] || 'brand';
+      
+      const { user, appId } = await requestBeforeCheck(ctx, args);
+      const request = generateRequestFromOpen(args, user.cookie);
+
+      const appDetail: any = await request<any>('/captain/appManage/getAppDetail', {
+        method: 'GET',
+        params: { appId },
+      });
+
+      const debugPage = appDetail.appExtend.tmpType === 2 ? 'category' : 'brand';
       const data: any = {};
       if (debugPage === 'category') {
         const topbar = args['topbar'];

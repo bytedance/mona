@@ -5,8 +5,10 @@ const getTmpData = require('./getTmpData.js');
 const getTmpComponentData = require('./getTmpComponentData.js');
 
 const WS_PORT = 10090;
-const CATE_TARGET_URL = `https://fxg.jinritemai.com/ffa/shop-editor/designable?debug=1&WSPORT=${WS_PORT}&type=1`;
-const TARGET_URL = `https://fxg.jinritemai.com/ffa/shop-editor/designable?debug=1&WSPORT=${WS_PORT}&type=1`;
+
+function genUrl(pageType) {
+  `https://fxg.jinritemai.com/ffa/shop-editor/designable?debug=1&WSPORT=${WS_PORT}&type=1&page_type=${pageType}`; 
+}
 
 const MESSAGE_TYPE = {
   updateComponentInfo: {
@@ -37,12 +39,9 @@ function templateStart(debugPage, sendData) {
   try {
     const WebSocket = require('ws');
     const wss = new WebSocket.Server({ port: WS_PORT });
-    console.log(`ws链接已建立!打开${TARGET_URL}，请在装修页面编排组件`);
-    if (debugPage === 'category') {
-      openBrowser(CATE_TARGET_URL)
-    } else {
-      openBrowser(TARGET_URL);
-    }
+    const targetUrl = genUrl(debugPage);
+    console.log(`ws链接已建立!打开 ${targetUrl} 请在装修页面编排组件`)
+    openBrowser(genUrl(debugPage));
     wss.on('connection', ws => {
       wsForWatch = ws;
       const SEND_DATA = sendData;

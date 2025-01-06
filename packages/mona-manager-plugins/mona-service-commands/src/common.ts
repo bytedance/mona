@@ -72,6 +72,9 @@ export function generateRequestFromOpen(args: any, cookie: string) {
     return axios.request(config).then(res => {
       const data = res.data as any;
       if (data.code === 0) {
+        if (args.debug) {
+          console.log(` [path: ${path}, logid:${res?.headers?.['x-tt-logid'] || 'unknow'}] `)
+        }
         return data.data;
       } else {
         throw new Error(
