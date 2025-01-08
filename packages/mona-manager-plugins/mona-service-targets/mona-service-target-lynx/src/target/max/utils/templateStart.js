@@ -7,7 +7,7 @@ const getTmpComponentData = require('./getTmpComponentData.js');
 const WS_PORT = 10090;
 
 function genUrl(pageType) {
-  `https://fxg.jinritemai.com/ffa/shop-editor/designable?debug=1&WSPORT=${WS_PORT}&type=1&page_type=${pageType}`; 
+  return `https://fxg.jinritemai.com/ffa/shop-editor/designable?debug=1&WSPORT=${WS_PORT}&type=1&page_type=${pageType}`; 
 }
 
 const MESSAGE_TYPE = {
