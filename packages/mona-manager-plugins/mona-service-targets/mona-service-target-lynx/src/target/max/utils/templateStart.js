@@ -34,6 +34,21 @@ const isJSON = v => {
   }
 };
 
+function safeReadJsonFile(filePath) {
+    try {
+      if (fs.existsSync(filePath)) {
+        const data = fs.readFileSync(filePath, 'utf8');
+        // 将JSON字符串解析为JavaScript对象
+        const jsonData = JSON.parse(data);
+        return JSON.stringify(jsonData);
+      }
+      return ''
+    } catch (error) {
+        console.error('在读取 ' + filePath + ' 并作为json数据转换时出现错误:', error);
+        return '';
+    }
+}
+
 let wsForWatch;
 function templateStart(debugPage, sendData) {
   try {
@@ -45,7 +60,17 @@ function templateStart(debugPage, sendData) {
     wss.on('connection', ws => {
       wsForWatch = ws;
       const SEND_DATA = sendData;
-      wsForWatch.send(JSON.stringify({ data: SEND_DATA, type: MESSAGE_TYPE.updateComponentInfo.name }));
+
+      const schemaJsonFilePath = path.resolve(process.cwd(), './schema.json');
+      const categoryJsonFilePath = path.resolve(process.cwd(), './category.json');
+      const previewJsonFilePath = path.resolve(process.cwd(), './preview.json');
+      
+      wsForWatch.send(JSON.stringify({ data: {
+        ...SEND_DATA,
+        categoryJson: safeReadJsonFile(categoryJsonFilePath),
+        previewJson: safeReadJsonFile(previewJsonFilePath),
+        schemaJson: safeReadJsonFile(schemaJsonFilePath),
+      }, type: MESSAGE_TYPE.updateComponentInfo.name }));
 
       ws.on('message', message => {
         console.log(`ws received message => ${message}`);
@@ -60,7 +85,7 @@ function templateStart(debugPage, sendData) {
         }
 
         if (type === MESSAGE_TYPE.exchangeSchemaJSON.name) {
-          const schemaJsonFilePath = path.resolve(process.cwd(), './schema.json');
+          
           const componentsJsonFilePath = path.resolve(process.cwd(), './components.json');
           // 如果有data，说明是来写入data的
           if (data) {
@@ -70,7 +95,6 @@ function templateStart(debugPage, sendData) {
         }
 
         if (type === MESSAGE_TYPE.exchangeCategoryJSON.name) {
-          const categoryJsonFilePath = path.resolve(process.cwd(), './category.json');
 
           if (data) {
             fs.writeFileSync(categoryJsonFilePath, data);
@@ -78,7 +102,7 @@ function templateStart(debugPage, sendData) {
         }
 
         if (type === MESSAGE_TYPE.exchangePreviewJson.name) {
-          const previewJsonFilePath = path.resolve(process.cwd(), './preview.json');
+         
           if (data) {
             fs.writeFileSync(previewJsonFilePath, data);
           }
