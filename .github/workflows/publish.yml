@@ -21,7 +21,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.18.0]
+        node-version: [18.17.1]
 
     steps:
       # run identifier
@@ -135,7 +135,7 @@ jobs:
         uses: azu/action-package-version-to-git-tag@v1
         with:
           version: ${{ env.cversion }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.7 }}
           github_repo: ${{ github.repository }}
           git_commit_sha: ${{ github.sha }}
           git_tag_prefix: 'v'

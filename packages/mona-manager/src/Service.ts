@@ -6,7 +6,7 @@ import log from './utils/log';
 const pkg = require('../package.json');
 
 export interface IPlugin {
-  (ctx: PluginContext): void;
+  (ctx: PluginContext): Promise<void> | void;
 }
 
 class Service {
@@ -42,8 +42,8 @@ class Service {
   install() {
     const plugins = this._plugins;
     // apply all plugins
-    plugins.forEach(p => {
-      p.call(this, this._pluginContext);
+    plugins.forEach(async p => {
+      await p.call(this, this._pluginContext);
     });
   }
 

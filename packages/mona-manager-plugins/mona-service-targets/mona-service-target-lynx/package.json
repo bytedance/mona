@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-service-target-lynx",
-  "version": "0.3.38",
+  "version": "0.3.39",
   "displayName": "mona-service-target-lynx",
   "description": "mona-service lynx target plugin for mona-manager",
   "main": "./dist/index.js",
@@ -9,8 +9,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "yarn clean  && ttsc -b",
-    "start": "ttsc -b -w",
+    "build": "yarn clean  && tspc -b",
+    "start": "tspc -b -w",
     "clean": "rm -rf dist",
     "test": "jest"
   },
@@ -24,11 +24,13 @@
     "@babel/preset-typescript": "^7.16.5",
     "@babel/traverse": "^7.16.5",
     "@babel/types": "^7.16.0",
-    "@bytedance/mona-manager": "0.3.38",
-    "@bytedance/mona-manager-plugins-shared": "0.3.38",
-    "@bytedance/mona-speedy": "0.0.37",
-    "@bytedance/mona-speedy-components": "0.0.37",
-    "@bytedance/mona-speedy-runtime": "0.0.37",
+    "@bytedance/mona-manager": "^0.3.39",
+    "@bytedance/mona-manager-plugins-shared": "^0.3.39",
+    "@bytedance/mona-shared": "^0.3.39",
+    "@bytedance/mona-speedy": "0.0.38",
+    "@bytedance/mona-speedy-components": "0.0.38",
+    "@bytedance/mona-speedy-runtime": "0.0.38",
+    "assert": "^2.0.0",
     "axios": "^1.6.5",
     "babel-loader": "^8.2.2",
     "chalk": "^4.1.2",
@@ -39,6 +41,7 @@
     "less": "^4.1.2",
     "less-loader": "^10.2.0",
     "lodash.debounce": "^4.0.8",
+    "minimist": "^1.2.5",
     "ora": "^5.4.1",
     "postcss": "^8.3.11",
     "postcss-import": "^15.1.0",
@@ -61,9 +64,7 @@
     "@types/lodash.debounce": "^4.0.7",
     "@types/node": "^16.4.5",
     "@types/webpack-dev-server": "^4.3.1",
-    "ttypescript": "^1.5.12",
-    "typescript-json-schema": "^0.43.0",
-    "typescript-transform-paths": "^2.2.4"
+    "typescript-json-schema": "^0.43.0"
   },
   "publishConfig": {
     "access": "public",

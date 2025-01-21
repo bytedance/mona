@@ -44,7 +44,7 @@ function _wrapPromise<T extends Callbacks>({
   const _erroHandler =
     erroHandler ||
     function (err) {
-      return { errMsg: `${name}:fail ` + err?.message ?? '' } as any;
+      return { errMsg: `${name}:fail ` + (err?.message || '') } as any;
     };
   const promiseFunc = _global[name];
 

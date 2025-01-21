@@ -14,11 +14,10 @@ import {
   generateH5Qrcode,
   generateMobileQrcode,
   processProjectData,
-  askMixedComponentFactory,
-  askMixedTemplateFactory,
 } from './utils';
 import { AppSceneTypeEnum, generateRequestFromOpen, requestBeforeCheck } from '../common';
 import chalk from 'chalk';
+import { ask, Answer } from './ask';
 
 const preview: IPlugin = ctx => {
   ctx.registerCommand(
@@ -26,23 +25,16 @@ const preview: IPlugin = ctx => {
     {
       options: [
         { name: 'help', description: '输出帮助信息', alias: 'h' },
-        // { name: 'watch', description: '是否监听文件更改', alias: 'w' },
-        {
-          name: 'platform',
-          description: '平台类型（当target为light即微应用时，有效值为compass，不填默认compass）',
-          alias: 'p',
-        },
+        { name: 'preview-page', description: '店铺装修预览页面', alias: 'pp' },
         {
           name: 'target',
           description: '预览端（当为微应用时，需指定是在pc上预览还是移动端预览，默认为light）',
           alias: 't',
         },
       ],
-      usage: 'mona-service preview -t max',
+      usage: 'mona-service preview',
     },
     async args => {
-      // output dir
-
       // assert
       const { user, appId } = await requestBeforeCheck(ctx, args);
       const request = generateRequestFromOpen(args, user.cookie);
@@ -53,14 +45,31 @@ const preview: IPlugin = ctx => {
       });
 
       // common steps for all target: compress => upload
-      const maxProcess = [createTestVersionFactory(request, args), generateQrcodeFactory(request), printQrcode('抖音')];
+      const askOpts: Answer = {
+        previewPage: args.pp as Answer['previewPage'],
+      };
 
       switch (appDetail.appSceneType) {
         case AppSceneTypeEnum.DESIGN_CENTER_COMPONENT:
-          await pipe(askMixedComponentFactory(request), buildMaxComponent, processMaxComponentData, ...maxProcess)(ctx);
+          const isTopBar = appDetail.appExtend.componentGroupType === 6;
+          const isSideBar = appDetail.appExtend.componentGroupType === 7;
+          if (isTopBar || isSideBar) {
+            askOpts.previewPage = 'category';
+          }
+          const answer = await ask(askOpts);
+          const { previewPage: pageType } = answer;
+
+          if (pageType === 'category') {
+            console.log(chalk.blue("当前分类页组件不支持本地预览，请通过yarn upload上传新版本，在动态测试阶段进行预览！"));
+            break;
+          }
+
+          await pipe((ctx: any) => ({ ctx }), buildMaxComponent, processMaxComponentData, createTestVersionFactory(request, args), (params: any) => ({ ...params, pageType }), generateQrcodeFactory(request), printQrcode('抖音'))(ctx);
           break;
         case AppSceneTypeEnum.DESIGN_CENTER_TEMPLATE:
-          await pipe(askMixedTemplateFactory(request), processMaxTemplateData, ...maxProcess)(ctx);
+          const previewPage = appDetail.appExtend.tmpType === 2 ? 'category' : 'default';
+
+          await pipe((ctx: any) => ({ ctx }), processMaxTemplateData, createTestVersionFactory(request, args), (params: any) => ({ ...params, pageType: previewPage }), generateQrcodeFactory(request), printQrcode('抖音'))(ctx);
           break;
         case AppSceneTypeEnum.LIGHT_APP:
           if (args.t === 'mobile') {

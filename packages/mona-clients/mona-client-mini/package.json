@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-client-mini",
-  "version": "0.3.38",
+  "version": "0.3.39",
   "description": "miniapp for mona",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -21,8 +21,8 @@
   "license": "MIT",
   "sideEffects": false,
   "dependencies": {
-    "@bytedance/mona": "0.3.38",
-    "@bytedance/mona-shared": "0.3.38",
+    "@bytedance/mona": "^0.3.39",
+    "@bytedance/mona-shared": "^0.3.39",
     "react-reconciler": "^0.26.2",
     "scheduler": "^0.20.2"
   },
@@ -37,7 +37,7 @@
     "rollup": "2.53.2",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.0",
-    "rollup-plugin-typescript2": "^0.30.0",
+    "rollup-plugin-typescript2": "0.36.0",
     "tslib": "^2.3.1",
     "typescript-json-schema": "^0.43.0",
     "typescript-transform-paths": "^2.2.4"

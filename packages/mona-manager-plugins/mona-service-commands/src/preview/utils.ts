@@ -107,7 +107,7 @@ export function printQrcode(appName: string = '抖音') {
 }
 
 export const generateQrcodeFactory =
-  (request: Request<GetDynamicTestUrlResp>) => async (params: { appId: string; version: string; small?: boolean }) => {
+  (request: Request<GetDynamicTestUrlResp>) => async (params: { appId: string; version: string; pageType?: string; small?: boolean }) => {
     const res = await request('/captain/app/version/getDynamicTestUrl', {
       method: 'GET',
       params: {
@@ -116,7 +116,8 @@ export const generateQrcodeFactory =
       },
     });
 
-    const preViewCodeUrl = `aweme://goods/store?sec_shop_id=${res?.secShopId}&token=${res?.token}&tmp_id=${res?.tmpId}&enter_from=scan&entrance_location=scan&pass_through_api=%7B%22isJump%22%3A1%7D`;
+    // TODO 确定这里的页面
+    const preViewCodeUrl = `aweme://goods/store?${params.pageType === 'category' ? 'tab_id=2&' : ''}sec_shop_id=${res?.secShopId}&token=${res?.token}&tmp_id=${res?.tmpId}&enter_from=scan&entrance_location=scan&pass_through_api=%7B%22isJump%22%3A1%7D`;
     const qrcode = await new Promise((resolve, reject) => {
       // @ts-ignore
       // qrcode render failed in windows terminal when options with small: true
@@ -132,54 +133,15 @@ export const generateQrcodeFactory =
     return { qrcode, expireTime: res.expireTime };
   };
 
-export function askMixedComponentFactory(request: Request<any>) {
-  return async function (ctx: PluginContext) {
-    const appid = ctx.configHelper.projectConfig.appId;
-
-    console.log(chalk.green(`拉取当前组件信息：${appid}`));
-    // version detail
-    const appDetail: any = await request('/captain/appManage/getAppDetail', {
-      method: 'GET',
-      params: { appId: appid },
-    });
-    const isOldApp = appDetail?.appExtend?.frameworkType !== 1;
-    // judge whether is mixed
-    const entry = ctx.configHelper.entryPath;
-    const ext = path.extname(entry);
-    const targetTTMLFile = entry.replace(ext, '') + '.ttml';
-    const isMixed = fs.existsSync(targetTTMLFile);
-    console.log(chalk.green(isMixed ? '当前为混排组件版本' : '当前为非混排组件版本'));
-    const frameworkType = isOldApp ? (isMixed ? 1 : 0) : 1;
-    return { frameworkType, ctx };
-  };
-}
-
-export function askMixedTemplateFactory(request: Request<any>) {
-  return async function (ctx: PluginContext) {
-    const appid = ctx.configHelper.projectConfig.appId;
-
-    console.log(chalk.green(`拉取当前模板信息：${appid}`));
-    // version detail
-    const appDetail: any = await request('/captain/appManage/getAppDetail', {
-      method: 'GET',
-      params: { appId: appid },
-    });
-
-    const frameworkType = appDetail?.appExtend?.frameworkType;
-    console.log(chalk.green(frameworkType === 1 ? '当前为混排模板版本' : '当前为非混排模板版本'));
-    return { frameworkType, ctx };
-  };
-}
-
-export function buildMaxComponent(params: { ctx: PluginContext; frameworkType?: number }) {
-  const cmd = `mona-service build --not-build-web -t max${params.frameworkType === 0 ? ' --old' : ''}`;
+export function buildMaxComponent(params: { ctx: PluginContext }) {
+  const cmd = `mona-service build --not-build-web -t max`;
   console.log(chalk.green(`开始构建 ${cmd}`));
   execSync(cmd, { stdio: 'inherit' });
   return params;
 }
 
 // process max component data
-export async function processMaxComponentData({ ctx, frameworkType }: { ctx: PluginContext; frameworkType?: number }) {
+export async function processMaxComponentData({ ctx }: { ctx: PluginContext; }) {
   const helper = ctx.configHelper || ctx.builder?.configHelper;
   const { appId = '', output } = helper.projectConfig;
 
@@ -195,7 +157,6 @@ export async function processMaxComponentData({ ctx, frameworkType }: { ctx: Plu
 
   return {
     appId,
-    frameworkType,
     testFile: {
       filePath,
     },
@@ -204,7 +165,7 @@ export async function processMaxComponentData({ ctx, frameworkType }: { ctx: Plu
 }
 
 // process max template data
-export async function processMaxTemplateData({ ctx, frameworkType }: { ctx: PluginContext; frameworkType?: number }) {
+export async function processMaxTemplateData({ ctx }: { ctx: PluginContext; }) {
   const helper = ctx.configHelper;
   const { appId = '' } = helper.projectConfig;
 
@@ -212,9 +173,16 @@ export async function processMaxTemplateData({ ctx, frameworkType }: { ctx: Plug
   const templateValuePath = path.join(helper.cwd, 'preview.json');
   const templateAppDefaultValue = fs.readFileSync(templateValuePath).toString();
 
+  const categoryPath = path.join(helper.cwd, 'category.json');
+  let categoryList;
+  if (fs.existsSync(categoryPath)) {
+    categoryList = fs.readFileSync(categoryPath).toString();
+  }
+
   return {
     appId,
-    frameworkType,
+    frameworkType: 1,
+    categoryList,
     templateAppDefaultValue,
   };
 }

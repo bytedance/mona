@@ -1,11 +1,11 @@
 {
   "name": "@bytedance/mona",
-  "version": "0.3.38",
+  "version": "0.3.39",
   "description": "Merchant app's developing and building tools",
   "main": "./dist/index",
   "scripts": {
-    "build": "yarn clean && ttsc -b",
-    "start": "ttsc -b -w",
+    "build": "yarn clean && tspc -b",
+    "start": "tspc -b -w",
     "clean": "rm -rf dist",
     "test": "jest"
   },

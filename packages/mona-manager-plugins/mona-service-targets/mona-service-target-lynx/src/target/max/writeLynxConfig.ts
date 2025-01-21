@@ -1,5 +1,6 @@
 import path from 'path';
 import fs from 'fs';
+import { NavComponent } from '.';
 
 export const getLynxEntry = (tempReactLynxDir: string, isWeb = false) => {
   // 兼容window路径
@@ -12,27 +13,31 @@ export const getLynxEntry = (tempReactLynxDir: string, isWeb = false) => {
 export const writeLynxConfig = ({
   tempReactLynxDir,
   appid,
-  useComponent = false,
+  navComponent,
+  debugPage = '',
   notBuildWeb = false,
 }: {
   tempReactLynxDir: string;
   appid: string;
-  useComponent?: boolean;
+  debugPage: string;
+  navComponent?: NavComponent;
   notBuildWeb?: boolean;
 }) => {
   const lynxConfigFile = path.join(tempReactLynxDir, 'lynx.config.js');
+  const lynx3ConfigFile = path.join(tempReactLynxDir, 'lynx-3.config.mjs');
   const lynxEntry = getLynxEntry(tempReactLynxDir);
   const webEntry = getLynxEntry(tempReactLynxDir, true);
 
   const lynxConfigStr = `
           const WebBootstrapPlugin = require('../target/max/plugins/WebBootstrapPlugin.js').default;
+
           module.exports = [
             {
               name: "app",
               input: {
                 "app": "${lynxEntry}",
               },
-              dsl: ${useComponent ? JSON.stringify('dynamic-component-ng') : JSON.stringify('compilerNg')},
+              dsl: 'compilerNg',
               encode: {
                 targetSdkVersion: "2.1",
                 defaultOverflowVisible:false,
@@ -46,7 +51,11 @@ export const writeLynxConfig = ({
                   return 'doudian://monaview?url=' + encodeURIComponent(origin)
                 }
               },
-              ${notBuildWeb ? '' : `plugins: [WebBootstrapPlugin("${webEntry}", "${appid}")],`}
+              ${
+                notBuildWeb
+                  ? ''
+                  : `plugins: [WebBootstrapPlugin({ entry: "${webEntry}", appid: "${appid}", navComponent: ${navComponent ? JSON.stringify(navComponent) : 'undefined'}, debugPage: "${debugPage}" })],`
+              }
               define: {
                 __MONA_APPID: JSON.stringify("${appid}")
               },
@@ -71,7 +80,11 @@ export const writeLynxConfig = ({
                 defaultOverflowVisible:false,
                 enableEventRefactor: true
               },
-              ${notBuildWeb ? '' : `plugins: [WebBootstrapPlugin("${webEntry}", "${appid}")],`}
+              ${
+                notBuildWeb
+                  ? ''
+                  : `plugins: [WebBootstrapPlugin({ entry: "${webEntry}", appid: "${appid}",navComponent: ${navComponent ? JSON.stringify(navComponent) : 'undefined'}, debugPage: "${debugPage}" })],`
+              }
               define: {
                 __MONA_APPID: JSON.stringify("${appid}")
               },
@@ -81,5 +94,37 @@ export const writeLynxConfig = ({
             },
           ];
           `;
-  return fs.writeFileSync(lynxConfigFile, lynxConfigStr);
+          const lynx3ConfigStr = `
+          import { pluginReactLynx } from "@byted-lynx/react-rsbuild-plugin";
+          import { pluginLess } from '@rsbuild/plugin-less';
+          import { defineConfig } from "@byted-lynx/rspeedy";
+
+          export default defineConfig({
+            source: {
+              entry: {
+                component: "${lynxEntry}"
+              },
+              alias: {
+                '@bytedance/mona-speedy-runtime': '@byted-lynx/react'
+              },
+              define: {
+                __MONA_APPID: JSON.stringify("${appid}")
+              },
+            },
+            output: {
+              filename: '[name]/template-3.js'
+            },
+            plugins: [
+              pluginReactLynx({
+                experimental_isLazyBundle: true,
+              }),
+              pluginLess({
+                /** less options */
+              }),
+            ],
+          });
+          `;
+  fs.writeFileSync(lynxConfigFile, lynxConfigStr);
+  // lynx3配置文件
+  fs.writeFileSync(lynx3ConfigFile, lynx3ConfigStr);
 };

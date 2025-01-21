@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-service-target-web",
-  "version": "0.3.38",
+  "version": "0.3.39",
   "displayName": "mona-service-target-web",
   "description": "mona-service web target plugin for mona-manager",
   "main": "./dist/index.js",
@@ -9,8 +9,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "yarn clean  && ttsc -b",
-    "start": "ttsc -b -w",
+    "build": "yarn clean  && tspc -b",
+    "start": "tspc -b -w",
     "clean": "rm -rf dist",
     "test": "jest"
   },
@@ -24,9 +24,9 @@
     "@babel/preset-react": "^7.16.5",
     "@babel/preset-typescript": "^7.16.5",
     "@babel/types": "^7.16.0",
-    "@bytedance/mona-manager-plugins-shared": "0.3.38",
-    "@bytedance/mona-runtime": "0.3.38",
-    "@bytedance/mona-shared": "0.3.38",
+    "@bytedance/mona-manager-plugins-shared": "^0.3.39",
+    "@bytedance/mona-runtime": "^0.3.39",
+    "@bytedance/mona-shared": "^0.3.39",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.1",
     "@svgr/webpack": "^8.1.0",
     "@teamsupercell/typings-for-css-modules-loader": "^2.5.1",
@@ -62,9 +62,7 @@
     "@types/mini-css-extract-plugin": "^2.4.0",
     "@types/node": "^16.4.5",
     "@types/webpack-dev-server": "^4.3.1",
-    "ttypescript": "^1.5.12",
-    "typescript-json-schema": "^0.43.0",
-    "typescript-transform-paths": "^2.2.4"
+    "typescript-json-schema": "^0.43.0"
   },
   "publishConfig": {
     "access": "public",

@@ -20,7 +20,6 @@
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "strictNullChecks": true,
-    "suppressImplicitAnyIndexErrors": true,
     "noFallthroughCasesInSwitch": true
   },
   "include": ["./src"],
