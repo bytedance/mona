@@ -10,7 +10,7 @@ import axios from 'axios';
 const branch = 'v3';
 
 const TEMPLATE_SOURCE = `github:bytedance/mona-templates#${branch}`;
-const TEMPLATE_SOURCE_GITEE = `direct:git@gitee.com:ByteDance/mona-templates.git#${branch}`;
+const TEMPLATE_SOURCE_GITEE = `direct:https://gitee.com/ByteDance/mona-templates.git#${branch}`;
 
 const canPingGithub = async () => {
   try {

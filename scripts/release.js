@@ -54,7 +54,7 @@ const genPrompt = title => {
 };
 
 function main() {
-  log(chalk.bold.red(`请使用流水线进行发布 https://bytecycle.bytedance.net/space/ecom_hangzhou/module/pipeline/info/3507026?redirectUrl=%2Fspace%2Fecom_hangzhou%2Fmodule%2Fpipeline`));
+  // log(chalk.bold.red(`请使用流水线进行发布 https://bytecycle.bytedance.net/space/ecom_hangzhou/module/pipeline/info/3507026?redirectUrl=%2Fspace%2Fecom_hangzhou%2Fmodule%2Fpipeline`));
   // log(chalk.bold.red(`发布注意事项:\n   1. 确定已经merge main分支。\n   2. 确保当前分支最新`));
 
   // const newVersion = getVersion();
