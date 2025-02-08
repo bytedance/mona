@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-client-max",
-  "version": "0.3.40",
+  "version": "0.3.41",
   "description": "max for mona",
   "main": "./dist/index.js",
   "files": [
@@ -19,9 +19,9 @@
     "mona"
   ],
   "dependencies": {
-    "@bytedance/mona": "^0.3.40",
-    "@bytedance/mona-client-web": "^0.3.40",
-    "@bytedance/mona-shared": "^0.3.40",
+    "@bytedance/mona": "^0.3.41",
+    "@bytedance/mona-client-web": "^0.3.41",
+    "@bytedance/mona-shared": "^0.3.41",
     "@bytedance/mona-speedy-components": "0.0.38",
     "axios": "^1.6.5"
   },
