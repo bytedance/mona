@@ -18,6 +18,10 @@ type IProps = Partial<{
   customStyle?: ReactLynx.CSSProperties | string;
 }>;
 
+const dynamicUrl = `https://lf-webcast-sourcecdn-tos.bytegecko.com/obj/byte-gurd-source/10181/gecko/resource/ecommerce_shop_isv_component/image${__IS_LYNX3 ? '_rs' : ''}/template.js`
+
+console.log('__IS_LYNX3', __IS_LYNX3);
+
 export default class MaxImage extends Component<IProps> {
   render() {
     const {
@@ -56,7 +60,7 @@ export default class MaxImage extends Component<IProps> {
           binderror={binderror}
           bindtap={bindtap}
           bindload={bindload}
-          is="https://lf-webcast-sourcecdn-tos.bytegecko.com/obj/byte-gurd-source/10181/gecko/resource/ecommerce_shop_isv_component/image/template.js"
+          is={dynamicUrl}
         />
       ) : (
         <image

@@ -30,6 +30,9 @@ type IProps = Partial<{
   customClass?: string;
   customStyle?: ReactMax.CSSProperties | string;
 }>;
+
+const dynamicUrl = `https://lf-webcast-sourcecdn-tos.bytegecko.com/obj/byte-gurd-source/10181/gecko/resource/ecommerce_shop_isv_component/video${__IS_LYNX3 ? '_rs' : ''}/template.js`
+
 export default class ShopVideo extends Component<IProps> {
   render() {
     const {
@@ -80,7 +83,7 @@ export default class ShopVideo extends Component<IProps> {
         bindseek={this.props.bindseek}
         bindtap={this.props.bindtap}
         bindrelease={this.props.bindrelease}
-        is="https://lf-webcast-sourcecdn-tos.bytegecko.com/obj/byte-gurd-source/10181/gecko/resource/ecommerce_shop_isv_component/video/template.js"
+        is={dynamicUrl}
       />
     ) : (
       <x-video-pro

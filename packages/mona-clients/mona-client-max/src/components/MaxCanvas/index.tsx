@@ -6,6 +6,8 @@ type IProps = Partial<{
   customStyle?: ReactLynx.CSSProperties | string;
 }>;
 
+const dynamicUrl = `https://lf-webcast-sourcecdn-tos.bytegecko.com/obj/byte-gurd-source/10181/gecko/resource/ecommerce_shop_isv_component/canvas${__IS_LYNX3 ? '_rs' : ''}/template.js`
+
 export default class MaxCanvas extends Component<IProps> {
   render() {
     const { canvasId, customStyle, customClass, bindtap } = this.props;
@@ -18,7 +20,7 @@ export default class MaxCanvas extends Component<IProps> {
         customStyle={customStyle}
         customClass={customClass}
         bindtap={bindtap}
-        is="https://lf-webcast-sourcecdn-tos.bytegecko.com/obj/byte-gurd-source/10181/gecko/resource/ecommerce_shop_isv_component/canvas/template.js"
+        is={dynamicUrl}
       />
     ) : (
       // @ts-ignore

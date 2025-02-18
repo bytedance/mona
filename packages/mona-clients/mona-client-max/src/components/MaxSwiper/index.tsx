@@ -22,6 +22,7 @@ type IProps = Partial<{
   customStyle?: ReactMax.CSSProperties | string;
 }>;
 
+const dynamicUrl = `https://lf-webcast-sourcecdn-tos.bytegecko.com/obj/byte-gurd-source/10181/gecko/resource/ecommerce_shop_isv_component/swiper${__IS_LYNX3 ? '_rs' : ''}/template.js`
 export default class MaxSwiper extends Component<IProps> {
   render() {
     const {
@@ -66,7 +67,7 @@ export default class MaxSwiper extends Component<IProps> {
         bindtransition={this.props.bindtransition}
         bindscrollstart={this.props.bindscrollstart}
         bindscrollend={this.props.bindscrollend}
-        is="https://lf-webcast-sourcecdn-tos.bytegecko.com/obj/byte-gurd-source/10181/gecko/resource/ecommerce_shop_isv_component/swiper/template.js"
+        is={dynamicUrl}
       >
         {children}
       </component>

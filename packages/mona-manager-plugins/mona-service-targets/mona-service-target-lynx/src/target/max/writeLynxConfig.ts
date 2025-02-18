@@ -57,7 +57,8 @@ export const writeLynxConfig = ({
                   : `plugins: [WebBootstrapPlugin({ entry: "${webEntry}", appid: "${appid}", navComponent: ${navComponent ? JSON.stringify(navComponent) : 'undefined'}, debugPage: "${debugPage}" })],`
               }
               define: {
-                __MONA_APPID: JSON.stringify("${appid}")
+                __MONA_APPID: JSON.stringify("${appid}"),
+                __IS_LYNX3: JSON.stringify(false)
               },
               pageConfig: {
                 useNewSwiper: true,
@@ -86,7 +87,8 @@ export const writeLynxConfig = ({
                   : `plugins: [WebBootstrapPlugin({ entry: "${webEntry}", appid: "${appid}",navComponent: ${navComponent ? JSON.stringify(navComponent) : 'undefined'}, debugPage: "${debugPage}" })],`
               }
               define: {
-                __MONA_APPID: JSON.stringify("${appid}")
+                __MONA_APPID: JSON.stringify("${appid}"),
+                __IS_LYNX3: JSON.stringify(false)
               },
               compilerNGOptions:{
                 disableRuntimeCheckUnintentionalSetState:true,
@@ -108,7 +110,8 @@ export const writeLynxConfig = ({
                 '@bytedance/mona-speedy-runtime': '@byted-lynx/react'
               },
               define: {
-                __MONA_APPID: JSON.stringify("${appid}")
+                __MONA_APPID: JSON.stringify("${appid}"),
+                __IS_LYNX3: JSON.stringify(true)
               },
             },
             output: {
