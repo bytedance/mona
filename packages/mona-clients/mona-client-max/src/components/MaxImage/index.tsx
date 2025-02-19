@@ -20,8 +20,6 @@ type IProps = Partial<{
 
 const dynamicUrl = `https://lf-webcast-sourcecdn-tos.bytegecko.com/obj/byte-gurd-source/10181/gecko/resource/ecommerce_shop_isv_component/image${__IS_LYNX3 ? '_rs' : ''}/template.js`
 
-console.log('__IS_LYNX3', __IS_LYNX3);
-
 export default class MaxImage extends Component<IProps> {
   render() {
     const {
