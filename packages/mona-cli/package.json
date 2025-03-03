@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-cli",
-  "version": "0.3.39",
+  "version": "0.3.42",
   "displayName": "mona",
   "description": "Merchant app's developing and building tools",
   "main": "./bin/mona",
@@ -20,8 +20,8 @@
   "author": "zhangxiaowei.chris@bytedance.com",
   "license": "MIT",
   "dependencies": {
-    "@bytedance/mona-cli-commands": "^0.3.39",
-    "@bytedance/mona-manager": "^0.3.39"
+    "@bytedance/mona-cli-commands": "^0.3.42",
+    "@bytedance/mona-manager": "^0.3.42"
   },
   "devDependencies": {
     "@types/node": "^16.4.5"
@@ -30,5 +30,5 @@
     "access": "public",
     "registry": "https://registry.npmjs.org"
   },
-  "gitHead": "cc5aa5283af595fd7d8a7b4921f54e2797504edd"
+  "gitHead": "e54cfedd7502403d2e53ec958979a47443bf847c"
 }

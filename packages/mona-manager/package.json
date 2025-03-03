@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-manager",
-  "version": "0.3.39",
+  "version": "0.3.42",
   "displayName": "mona-manager",
   "description": "mona cli plugin system",
   "main": "./dist/index.js",
@@ -17,8 +17,8 @@
   "author": "xiaokun.kenny@bytedance.com",
   "license": "MIT",
   "dependencies": {
-    "@bytedance/mona": "^0.3.39",
-    "@bytedance/mona-shared": "^0.3.39",
+    "@bytedance/mona": "^0.3.42",
+    "@bytedance/mona-shared": "^0.3.42",
     "chalk": "^4.1.2",
     "command-line-usage": "^6.1.1",
     "lodash.merge": "^4.6.2",
@@ -41,5 +41,5 @@
     "access": "public",
     "registry": "https://registry.npmjs.org"
   },
-  "gitHead": "cc5aa5283af595fd7d8a7b4921f54e2797504edd"
+  "gitHead": "e54cfedd7502403d2e53ec958979a47443bf847c"
 }

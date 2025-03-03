@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-runtime",
-  "version": "0.3.39",
+  "version": "0.3.42",
   "description": "Merchant app's developing and building tools",
   "main": "./dist/index",
   "lynx": "./dist/index.max.js",
@@ -24,16 +24,16 @@
     "typescript-json-schema": "^0.43.0"
   },
   "dependencies": {
-    "@bytedance/mona": "^0.3.39",
-    "@bytedance/mona-client-max": "^0.3.39",
-    "@bytedance/mona-client-mini": "^0.3.39",
-    "@bytedance/mona-client-web": "^0.3.39",
-    "@bytedance/mona-plugin-events": "^0.3.39",
-    "@bytedance/mona-shared": "^0.3.39"
+    "@bytedance/mona": "^0.3.42",
+    "@bytedance/mona-client-max": "^0.3.42",
+    "@bytedance/mona-client-mini": "^0.3.42",
+    "@bytedance/mona-client-web": "^0.3.42",
+    "@bytedance/mona-plugin-events": "^0.3.42",
+    "@bytedance/mona-shared": "^0.3.42"
   },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
   },
-  "gitHead": "cc5aa5283af595fd7d8a7b4921f54e2797504edd"
+  "gitHead": "e54cfedd7502403d2e53ec958979a47443bf847c"
 }

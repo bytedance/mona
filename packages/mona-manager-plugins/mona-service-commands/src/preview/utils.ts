@@ -160,6 +160,7 @@ export async function processMaxComponentData({ ctx }: { ctx: PluginContext; }) 
     testFile: {
       filePath,
     },
+    frameworkType: 1,
     componentAppDefaultValue,
   };
 }

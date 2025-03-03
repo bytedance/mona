@@ -1,7 +1,7 @@
 {
   "name": "@bytedance/mona-manager-plugins-shared",
   "displayName": "mona-manager-plugins-shared",
-  "version": "0.3.39",
+  "version": "0.3.42",
   "description": "mona-manager plugins shared utils and plugins",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -17,7 +17,7 @@
   "author": "xiaokun.kenny@bytedance.com",
   "license": "MIT",
   "dependencies": {
-    "@bytedance/mona-manager": "^0.3.39",
+    "@bytedance/mona-manager": "^0.3.42",
     "copy-webpack-plugin": "^10.2.0",
     "webpack": "^5.58.2"
   },
@@ -30,5 +30,5 @@
     "access": "public",
     "registry": "https://registry.npmjs.org"
   },
-  "gitHead": "cc5aa5283af595fd7d8a7b4921f54e2797504edd"
+  "gitHead": "e54cfedd7502403d2e53ec958979a47443bf847c"
 }

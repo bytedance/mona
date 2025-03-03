@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-cli-commands",
-  "version": "0.3.39",
+  "version": "0.3.42",
   "displayName": "mona-cli-commands",
   "description": "mona-cli commands plugins for mona-manager",
   "main": "./dist/index",
@@ -16,8 +16,8 @@
   "author": "xiaokun.kenny@bytedance.com",
   "license": "MIT",
   "dependencies": {
-    "@bytedance/mona-manager": "^0.3.39",
-    "@bytedance/mona-shared": "^0.3.39",
+    "@bytedance/mona-manager": "^0.3.42",
+    "@bytedance/mona-shared": "^0.3.42",
     "@koa/cors": "^4.0.0",
     "@koa/router": "^12.0.0",
     "axios": "^1.6.5",
@@ -56,5 +56,5 @@
     "access": "public",
     "registry": "https://registry.npmjs.org"
   },
-  "gitHead": "cc5aa5283af595fd7d8a7b4921f54e2797504edd"
+  "gitHead": "e54cfedd7502403d2e53ec958979a47443bf847c"
 }
