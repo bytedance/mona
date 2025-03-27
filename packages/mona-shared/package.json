@@ -1,7 +1,7 @@
 {
   "name": "@bytedance/mona-shared",
   "displayName": "mona-shared",
-  "version": "0.3.42",
+  "version": "0.3.43-alpha.0",
   "description": "mona shared utils",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
