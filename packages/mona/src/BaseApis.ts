@@ -955,6 +955,8 @@ export interface SystemInfo {
   SDKVersion: string;
   screenWidth: number;
   screenHeight: number;
+  pixelWidth?: number;
+  pixelHeight?: number;
   windowWidth: number;
   windowHeight: number;
   pixelRatio: number;

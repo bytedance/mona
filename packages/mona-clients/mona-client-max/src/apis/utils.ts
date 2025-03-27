@@ -129,6 +129,8 @@ export const maxGetSystemInfoSync: BaseApis['getSystemInfoSync'] = function () {
     SDKVersion: SystemInfo?.lynxSdkVersion,
     screenWidth: globalProps?.screenWidth,
     screenHeight: globalProps?.screenHeight,
+    pixelHeight: SystemInfo?.pixelHeight,
+    pixelWidth: SystemInfo?.pixelWidth,
     windowWidth: globalProps?.screenWidth,
     windowHeight: globalProps?.screenHeight,
     pixelRatio: SystemInfo?.pixelRatio,
