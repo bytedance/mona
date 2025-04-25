@@ -56,7 +56,7 @@ export const writeLynxConfig = ({
               ${
                 notBuildWeb
                   ? 'plugins,'
-                  : `plugins: [WebBootstrapPlugin({ entry: "${webEntry}", appid: "${appid}", navComponent: ${
+                  : `plugins: [...plugins, WebBootstrapPlugin({ entry: "${webEntry}", appid: "${appid}", navComponent: ${
                       navComponent ? JSON.stringify(navComponent) : 'undefined'
                     }, debugPage: "${debugPage}" })],`
               }
@@ -87,8 +87,8 @@ export const writeLynxConfig = ({
               },
               ${
                 notBuildWeb
-                  ? ''
-                  : `plugins: [WebBootstrapPlugin({ entry: "${webEntry}", appid: "${appid}",navComponent: ${
+                  ? 'plugins,'
+                  : `plugins: [...plugins, WebBootstrapPlugin({ entry: "${webEntry}", appid: "${appid}",navComponent: ${
                       navComponent ? JSON.stringify(navComponent) : 'undefined'
                     }, debugPage: "${debugPage}" })],`
               }
