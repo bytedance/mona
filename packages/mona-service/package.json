@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-service",
-  "version": "0.3.42",
+  "version": "0.3.43",
   "displayName": "mona",
   "description": "Merchant app's developing and building tools",
   "main": "./dist/index.js",
@@ -21,11 +21,11 @@
   "author": "zhangxiaowei.chris@bytedance.com",
   "license": "MIT",
   "dependencies": {
-    "@bytedance/mona-manager": "^0.3.42",
-    "@bytedance/mona-service-commands": "^0.3.42",
-    "@bytedance/mona-service-target-lynx": "^0.3.42",
-    "@bytedance/mona-service-target-mini": "^0.3.42",
-    "@bytedance/mona-service-target-web": "^0.3.42",
+    "@bytedance/mona-manager": "^0.3.43",
+    "@bytedance/mona-service-commands": "^0.3.43",
+    "@bytedance/mona-service-target-lynx": "^0.3.43",
+    "@bytedance/mona-service-target-mini": "^0.3.43",
+    "@bytedance/mona-service-target-web": "^0.3.43",
     "dotenv": "^10.0.0",
     "minimist": "^1.2.5",
     "pkg-updater": "^1.0.4",
@@ -38,5 +38,5 @@
     "access": "public",
     "registry": "https://registry.npmjs.org"
   },
-  "gitHead": "e54cfedd7502403d2e53ec958979a47443bf847c"
+  "gitHead": "f4fc73a285d052c3c0ae96e206d73b34b20d242a"
 }

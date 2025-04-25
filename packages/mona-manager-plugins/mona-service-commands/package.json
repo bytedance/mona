@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-service-commands",
-  "version": "0.3.42",
+  "version": "0.3.43",
   "displayName": "mona-service-commands",
   "description": "mona-service commands plugins for mona-manager",
   "main": "./dist/index.js",
@@ -17,8 +17,8 @@
   "author": "xiaokun.kenny@bytedance.com",
   "license": "MIT",
   "dependencies": {
-    "@bytedance/mona-manager": "^0.3.42",
-    "@bytedance/mona-shared": "^0.3.42",
+    "@bytedance/mona-manager": "^0.3.43",
+    "@bytedance/mona-shared": "^0.3.43",
     "archiver": "^5.3.0",
     "assert": "^2.0.0",
     "axios": "^1.6.5",
@@ -45,5 +45,5 @@
     "access": "public",
     "registry": "https://registry.npmjs.org"
   },
-  "gitHead": "e54cfedd7502403d2e53ec958979a47443bf847c"
+  "gitHead": "f4fc73a285d052c3c0ae96e206d73b34b20d242a"
 }
