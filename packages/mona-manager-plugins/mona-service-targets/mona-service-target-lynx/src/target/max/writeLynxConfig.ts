@@ -27,10 +27,12 @@ export const writeLynxConfig = ({
   const lynx3ConfigFile = path.join(tempReactLynxDir, 'lynx-3.config.mjs');
   const lynxEntry = getLynxEntry(tempReactLynxDir);
   const webEntry = getLynxEntry(tempReactLynxDir, true);
+  const insertCode = typeof process.env.INSERT_LYNX_CONFIG === 'string' ? process.env.INSERT_LYNX_CONFIG : '';
 
   const lynxConfigStr = `
           const WebBootstrapPlugin = require('../target/max/plugins/WebBootstrapPlugin.js').default;
-
+          ${insertCode}
+          const plugins = typeof insertPlugins !== 'undefined' && Array.isArray(insertPlugins) ? insertPlugins: []          
           module.exports = [
             {
               name: "app",
@@ -53,8 +55,10 @@ export const writeLynxConfig = ({
               },
               ${
                 notBuildWeb
-                  ? ''
-                  : `plugins: [WebBootstrapPlugin({ entry: "${webEntry}", appid: "${appid}", navComponent: ${navComponent ? JSON.stringify(navComponent) : 'undefined'}, debugPage: "${debugPage}" })],`
+                  ? 'plugins,'
+                  : `plugins: [WebBootstrapPlugin({ entry: "${webEntry}", appid: "${appid}", navComponent: ${
+                      navComponent ? JSON.stringify(navComponent) : 'undefined'
+                    }, debugPage: "${debugPage}" })],`
               }
               define: {
                 __MONA_APPID: JSON.stringify("${appid}"),
@@ -84,7 +88,9 @@ export const writeLynxConfig = ({
               ${
                 notBuildWeb
                   ? ''
-                  : `plugins: [WebBootstrapPlugin({ entry: "${webEntry}", appid: "${appid}",navComponent: ${navComponent ? JSON.stringify(navComponent) : 'undefined'}, debugPage: "${debugPage}" })],`
+                  : `plugins: [WebBootstrapPlugin({ entry: "${webEntry}", appid: "${appid}",navComponent: ${
+                      navComponent ? JSON.stringify(navComponent) : 'undefined'
+                    }, debugPage: "${debugPage}" })],`
               }
               define: {
                 __MONA_APPID: JSON.stringify("${appid}"),
@@ -96,10 +102,13 @@ export const writeLynxConfig = ({
             },
           ];
           `;
-          const lynx3ConfigStr = `
+  const lynx3ConfigStr = `
           import { pluginReactLynx } from "@byted-lynx/react-rsbuild-plugin";
           import { pluginLess } from '@rsbuild/plugin-less';
           import { defineConfig } from "@byted-lynx/rspeedy";
+
+          ${insertCode}
+          const plugins = typeof insertPlugins !== 'undefined' && Array.isArray(insertPlugins) ? insertPlugins: []        
 
           export default defineConfig({
             source: {
@@ -124,6 +133,7 @@ export const writeLynxConfig = ({
               pluginLess({
                 /** less options */
               }),
+              ...plugins
             ],
           });
           `;
