@@ -13,7 +13,7 @@ export const startWeb = ({ entry, appid, navComponent, debugPage }: { entry: str
     }
     let webpackConfig = require('./webpack-config/webpack.dev')({
       entry,
-      useWebExt: true,
+      useWebExt: false,
       appid,
       navComponent,
       debugPage,
@@ -25,7 +25,7 @@ export const startWeb = ({ entry, appid, navComponent, debugPage }: { entry: str
     alreadyStart = true;
     return devServer.start();
   } else {
-    let webpackConfig = require('./webpack-config/webpack.prod')({ entry, useWebExt: true, appid });
+    let webpackConfig = require('./webpack-config/webpack.prod')({ entry, useWebExt: false, appid });
     const webpackCompiler = webpack(webpackConfig);
 
     const spinner = ora('编译web产物中...').start();

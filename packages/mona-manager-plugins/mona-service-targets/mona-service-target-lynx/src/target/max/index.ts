@@ -102,6 +102,7 @@ const max: IPlugin = async ctx => {
       }
 
       if (args['only-web']) {
+        console.log('only-web模式下，启动web组件');
         // const entry = monaConfig.input;
         // writeEntry(tempLynxDir, entry, true);
         startWeb({
@@ -152,7 +153,7 @@ const max: IPlugin = async ctx => {
       const args = minimist(process.argv.slice(2), {
         string: ['topbar', 'sidebar']
       });
-      
+
       const { user, appId } = await requestBeforeCheck(ctx, args);
       const request = generateRequestFromOpen(args, user.cookie);
 
@@ -177,7 +178,7 @@ const max: IPlugin = async ctx => {
           data.sidebar = sidebar;
         }
       }
-      
+
       templateStart(debugPage, data)
     });
     tctx.overrideBuildCommand(() => {

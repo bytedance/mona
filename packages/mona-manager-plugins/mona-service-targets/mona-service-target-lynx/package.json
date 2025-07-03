@@ -24,6 +24,7 @@
     "@babel/preset-typescript": "^7.16.5",
     "@babel/traverse": "^7.16.5",
     "@babel/types": "^7.16.0",
+    "react-error-boundary": "^6.0.0",
     "@bytedance/mona-manager": "^0.3.43",
     "@bytedance/mona-manager-plugins-shared": "^0.3.43",
     "@bytedance/mona-shared": "^0.3.43",
