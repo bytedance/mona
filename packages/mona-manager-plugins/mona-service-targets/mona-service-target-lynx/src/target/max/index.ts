@@ -10,6 +10,7 @@ import { ttmlToReactLynx } from './ttmlToReactLynx';
 import { writeEntry } from './writeEntry';
 import chokidar from 'chokidar';
 import debounce from 'lodash.debounce';
+import { startWeb } from './startWeb';
 
 const speedy = require('@bytedance/mona-speedy');
 const { templateStart } = require('./utils/templateStart.js')
@@ -98,6 +99,18 @@ const max: IPlugin = async ctx => {
             level: appDetail.appExtend.componentLevel || 0
           }
         }
+      }
+
+      if (args['only-web']) {
+        // const entry = monaConfig.input;
+        // writeEntry(tempLynxDir, entry, true);
+        startWeb({
+          entry: monaConfig.input,
+          appid: monaConfig.appId || 'NO_APPID',
+          navComponent,
+          debugPage,
+        });
+        return;
       }
 
       try {
