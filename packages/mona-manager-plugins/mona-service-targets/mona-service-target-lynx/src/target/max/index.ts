@@ -10,7 +10,7 @@ import { ttmlToReactLynx } from './ttmlToReactLynx';
 import { writeEntry } from './writeEntry';
 import chokidar from 'chokidar';
 import debounce from 'lodash.debounce';
-import { startWeb } from './startWeb';
+import { buildWeb, startWeb } from './startWeb';
 
 const speedy = require('@bytedance/mona-speedy');
 const { templateStart } = require('./utils/templateStart.js')
@@ -138,6 +138,16 @@ const max: IPlugin = async ctx => {
     // 复写build命令
     tctx.overrideBuildCommand(args => {
       try {
+        if (args['only-web']) {
+          console.log('only-web模式下，构建web组件');
+          buildWeb({
+            entry: monaConfig.input,
+            appid: monaConfig.appId || 'NO_APPID',
+            // navComponent,
+            debugPage: "",
+          });
+          return;
+        }
         transform({ notBuildWeb: args['not-build-web'] });
         runSpeedy('build');
       } catch (err) {

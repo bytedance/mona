@@ -62,3 +62,57 @@ export const startWeb = ({ entry, appid, navComponent, debugPage }: { entry: str
 
   return Promise.resolve();
 }
+
+
+export function buildWeb({
+  entry,
+  appid,
+  navComponent,
+  debugPage,
+}: {
+  entry: string;
+  appid: string;
+  navComponent?: NavComponent;
+  debugPage: string;
+}) {
+  // 这里和 WebBootstrapPlugin 生产分支一致
+  const webpackConfig = require('./webpack-config/webpack.prod')({
+    entry,
+    useWebExt: false,
+    appid,
+    navComponent,
+    debugPage,
+  });
+  const webpackCompiler = webpack(webpackConfig);
+
+  const spinner = ora('编译web产物中...').start();
+  spinner.color = 'green';
+  webpackCompiler.run((error: any, stats: any) => {
+    if (error) {
+      throw error;
+    }
+
+    const info = stats?.toJson();
+
+    if (stats?.hasErrors()) {
+      info?.errors?.forEach((err: Error) => {
+        console.log(chalk.red(err.message));
+      });
+      info?.children?.forEach((item: any) => {
+        console.log(item?.errors);
+      });
+
+      spinner.fail('web编译失败');
+      process.exit(1);
+    }
+
+    if (stats?.hasWarnings()) {
+      info?.warnings?.forEach((w: Error) => {
+        console.log(chalk.yellow(w.message));
+      });
+    }
+
+    spinner.succeed(`web编译成功 ${new Date().toLocaleString()}`);
+    process.exit(0);
+  });
+}
