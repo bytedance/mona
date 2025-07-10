@@ -1,21 +1,50 @@
 const VirtualModulesPlugin = require('webpack-virtual-modules');
 const path = require('path');
+const fs = require('fs');
 
 module.exports = function createModule(entry, id, useWebExt) {
   const module = {};
   const virtualPath = path.join(entry, '..', 'app.entry.js');
-  module[virtualPath] = _generatePluginEntryCode(id, useWebExt);
+  module[virtualPath] = _generatePluginEntryCode(entry, id, useWebExt);
   return new VirtualModulesPlugin(module);
 };
 
-function _generatePluginEntryCode(id, useWebExt) {
+/**
+ * 获取文件的实际扩展名
+ * @param {string} dirPath - 目录路径
+ * @param {string} baseName - 基础文件名（不包含扩展名）
+ * @returns {string} 实际的文件扩展名
+ */
+function getActualFileExtension(dirPath, baseName) {
+  const possibleExtensions = ['.jsx', '.tsx', '.js', '.ts'];
+
+  for (const ext of possibleExtensions) {
+    const filePath = path.join(dirPath, `${baseName}${ext}`);
+    if (fs.existsSync(filePath)) {
+      return ext;
+    }
+  }
+
+  // 如果没有找到文件，默认使用 .jsx
+  return '.jsx';
+}
+
+function _generatePluginEntryCode(entry, id, useWebExt) {
+  const entryDir = path.dirname(entry);
+
+  // 获取 index 文件的实际扩展名
+  const actualExtension = getActualFileExtension(entryDir, 'index');
+
+  // 获取 index.web 文件的实际扩展名
+  const webExtension = getActualFileExtension(entryDir, 'index.web');
+
   const code = useWebExt
     ? `
-    import ErrorBoundary from './index.web'
+    import ErrorBoundary from './index.web${webExtension}'
     export default function Entry(props) { return <ErrorBoundary buildId="${id}" dataSource={props} />}
   `
     : `
-    import App from './index'
+    import App from './index${actualExtension}'
     import ReactDOM from 'react-dom'
     import { ErrorBoundary } from 'react-error-boundary'
 

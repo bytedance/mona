@@ -10,6 +10,7 @@ import { ttmlToReactLynx } from './ttmlToReactLynx';
 import { writeEntry } from './writeEntry';
 import chokidar from 'chokidar';
 import debounce from 'lodash.debounce';
+import { buildWeb, startWeb } from './startWeb';
 
 const speedy = require('@bytedance/mona-speedy');
 const { templateStart } = require('./utils/templateStart.js')
@@ -100,6 +101,19 @@ const max: IPlugin = async ctx => {
         }
       }
 
+      if (args['only-web']) {
+        console.log('only-web模式下，启动web组件');
+        // const entry = monaConfig.input;
+        // writeEntry(tempLynxDir, entry, true);
+        startWeb({
+          entry: monaConfig.input,
+          appid: monaConfig.appId || 'NO_APPID',
+          navComponent,
+          debugPage,
+        });
+        return;
+      }
+
       try {
         const sourceDir = path.join(configHelper.cwd, 'src');
         chokidar.watch(sourceDir).on(
@@ -124,6 +138,16 @@ const max: IPlugin = async ctx => {
     // 复写build命令
     tctx.overrideBuildCommand(args => {
       try {
+        if (args['only-web']) {
+          console.log('only-web模式下，构建web组件');
+          buildWeb({
+            entry: monaConfig.input,
+            appid: monaConfig.appId || 'NO_APPID',
+            // navComponent,
+            debugPage: "",
+          });
+          return;
+        }
         transform({ notBuildWeb: args['not-build-web'] });
         runSpeedy('build');
       } catch (err) {
@@ -139,7 +163,7 @@ const max: IPlugin = async ctx => {
       const args = minimist(process.argv.slice(2), {
         string: ['topbar', 'sidebar']
       });
-      
+
       const { user, appId } = await requestBeforeCheck(ctx, args);
       const request = generateRequestFromOpen(args, user.cookie);
 
@@ -164,7 +188,7 @@ const max: IPlugin = async ctx => {
           data.sidebar = sidebar;
         }
       }
-      
+
       templateStart(debugPage, data)
     });
     tctx.overrideBuildCommand(() => {
