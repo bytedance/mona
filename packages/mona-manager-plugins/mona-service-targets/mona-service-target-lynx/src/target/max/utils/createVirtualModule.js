@@ -40,13 +40,18 @@ function _generatePluginEntryCode(entry, id, useWebExt) {
 
   const code = useWebExt
     ? `
-    import ErrorBoundary from './index.web${webExtension}'
-    export default function Entry(props) { return <ErrorBoundary buildId="${id}" dataSource={props} />}
+    import React from 'react';
+    import ErrorBoundary from './index.web${webExtension}';
+    const Entry = React.forwardRef((props, ref) => (
+      <ErrorBoundary ref={ref} buildId="${id}" dataSource={props} />
+    ));
+    export default Entry;
   `
     : `
-    import App from './index${actualExtension}'
-    import ReactDOM from 'react-dom'
-    import { ErrorBoundary } from 'react-error-boundary'
+    import React from 'react';
+    import App from './index${actualExtension}';
+    import ReactDOM from 'react-dom';
+    import { ErrorBoundary } from 'react-error-boundary';
 
     function ErrorFallback({error, resetErrorBoundary}) {
       return (
@@ -58,14 +63,14 @@ function _generatePluginEntryCode(entry, id, useWebExt) {
       )
     }
 
-    function myComp (props) {
-      return <ErrorBoundary FallbackComponent={ErrorFallback}>
+    const MyComp = React.forwardRef((props, ref) => (
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
         <div id="${id}">
-          <App {...props}/>
+          <App ref={ref} {...props}/>
         </div>
       </ErrorBoundary>
-    }
-    export default myComp;
+    ));
+    export default MyComp;
   `;
   return code;
 }
