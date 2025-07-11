@@ -1,6 +1,6 @@
 {
   "name": "@bytedance/mona-client-max",
-  "version": "0.3.46",
+  "version": "0.3.47",
   "description": "max for mona",
   "main": "./dist/index.js",
   "files": [
@@ -19,11 +19,11 @@
     "mona"
   ],
   "dependencies": {
-    "@bytedance/mona": "0.3.46",
-    "@bytedance/mona-client-web": "0.3.46",
-    "@bytedance/mona-shared": "0.3.46",
+    "@bytedance/mona": "0.3.47",
+    "@bytedance/mona-client-web": "0.3.47",
+    "@bytedance/mona-shared": "0.3.47",
     "@bytedance/mona-speedy-components": "0.0.38",
-    "@bytedance/mona-speedy-runtime":"0.0.38",
+    "@bytedance/mona-speedy-runtime": "0.0.38",
     "axios": "^1.6.5"
   },
   "publishConfig": {
