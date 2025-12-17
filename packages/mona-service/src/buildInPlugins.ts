@@ -7,7 +7,7 @@ export const convertPlugins = (plugins: string[]) => flatten(plugins.filter(r =>
 const buildInPlugins = convertPlugins([
   process.env.AUTOMATED_TEST === '1' ? '@ecom/mona-dynamic-detection' : '',
   './utils/checkVersion',
-  './utils/updateOldVersion',
+  // './utils/updateOldVersion',
   '@bytedance/mona-service-commands',
   '@bytedance/mona-service-target-web',
   '@bytedance/mona-service-target-mini',
