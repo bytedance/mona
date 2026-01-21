@@ -33,6 +33,8 @@ function generateDevConfig({ navComponent, debugPage }) {
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
         'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
         'Cache-Control': 'no-cache',
+        // 关键：允许私有网络访问，出于安全考虑，现代浏览器（尤其是 Chrome v94+）
+        'Access-Control-Allow-Private-Network': 'true' 
       },
       allowedHosts: 'all',
       compress: true,
